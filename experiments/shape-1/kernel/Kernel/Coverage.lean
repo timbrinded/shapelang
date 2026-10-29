@@ -1,138 +1,185 @@
-import Kernel.Loosen
-/-! Coverage (model §4.5, §7.4, A.4.5, A.7.4): footprints, channels and whether changed
-code under a claim was observable. -/
+import Kernel.Laws
+/-! Coverage (A.7.4 [D3]): the coverage set, Need(x) with observability read from the base
+alone (A.4.5.6), meeting by complete absence-sound entries (base ∧ head) or hatch-completeness,
+one obligation per component, and vocabulary coverage. Executable layer. -/
 namespace Shape
 
-inductive Chan | effect (t : String) | hatch (l : String) | call (l : String) | edge (k : String)
-deriving DecidableEq, Repr, Inhabited
+open Std
 
-def Chan.str : Chan → String
-  | .effect t => "effect(" ++ t ++ ")" | .hatch l => "hatch(" ++ l ++ ")"
-  | .call l => "call(" ++ l ++ ")" | .edge k => "edge(" ++ k ++ ")"
+structure Need where
+  claim : Claim
+  channel : String
+  met : Bool
+  final : Bool
+  tier : Tier
+deriving Inhabited
 
-def registeredLangs : List String := ["ts", "rust", "rs", "verus"]
+structure CovOb where
+  subject : String
+  comp : Option String
+  uncovered : List String
+  unmet : List (String × String × String × Tier)
+  tier : Tier
+  owner : String
+  unmetClaims : List String
+  finalClaims : List String
+  depCode : List String
+deriving Inhabited
 
-def isRawExec (e : Env) (x : String) : Bool :=
-  idLang x == "raw" && ((e.mh.find? (·.id == x)).any (·.kind == "exec") ||
-    scriptExts.contains (extOf (idPath x)) || scriptNames.contains ((splitChar '/' (idPath x)).getLastD ""))
+structure VocabOb where
+  subject : String
+  sites : List String
+  tier : Tier
+  facts : List WFact
+deriving Inhabited
 
-def isCommand (x : String) : Bool := idLang x == "pkgjson" || idLang x == "gha"
+structure CovResult where
+  set : List String := []
+  needs : List (String × List Need) := []
+  unobservable : List String := []
+  obligations : List CovOb := []
+  vocab : List VocabOb := []
+  covered : Nat := 0
+deriving Inhabited
 
-def isExecutable (e : Env) (x : String) : Bool :=
-  registeredLangs.contains (idLang x) || isRawExec e x || isCommand x
+/-- Observable channel (A.4.5.6): a hatch channel, or a channel some provider whose base
+    declaration is absence-sound declares in the base. -/
+def Ctx.observable (c : Ctx) (ch : String) : Bool :=
+  strPrefix "hatch(" ch ||
+  c.provs.any (fun g => match g.base with
+    | some b => b.absence && channelCovered b.observes ch
+    | none => false)
 
-/-- Carriers of resource-code kinds (A.12.4). -/
-def carries (e : Env) (x t : String) : Bool :=
-  let tk := rcTagKind t
-  let lang := idLang x
-  if tk == "pg.table" || tk == "mysql.table" || tk == "sqlite.table" then
-    ["ts", "rust", "rs", "verus", "sql"].contains lang || isRawExec e x || isCommand x
-  else if tk == "ts.call" then
-    lang == "ts" || (lang == "raw" && ["html", "htm", "astro", "vue", "svelte"].contains (extOf (idPath x)))
-  else lang != "raw" || isRawExec e x || isCommand x
+/-- tier*(c, x) (A.6.2.4). -/
+def Ctx.tierAt (c : Ctx) (cl : Claim) (x : String) : Tier :=
+  match c.Wb with
+  | none => cl.tier
+  | some wb =>
+    (((c.heirOf.get? cl.fp).getD []).filterMap (c.bClaims.get? ·)).foldl (fun t cb =>
+      if (c.footprint wb cb).1.contains x then tierMax t cb.tier else t) cl.tier
 
-def chanApplies (e : Env) (x : String) : Chan → Bool
-  | .effect t => carries e x t
-  | .hatch l => idLang x == l
-  | .call l => idLang x == l
-  | .edge _ => isExecutable e x
-
-def boundCodes (S : Esf) : List String := sortStrs (S.res.flatMap (fun r => r.bind.map canonRC))
-
-def chanOfAtom (S : Esf) (a : Atom) : List Chan :=
-  if a.isTrust then
-    (sortStrs ((S.hatches.filter (fun h => impl S h.1 a.verb)).map (·.2))).map Chan.hatch
-  else ((S.res.filter (·.q == a.res)).flatMap (·.bind)).map (fun t => Chan.effect (canonRC t))
-
-/-- Need(x): every (claim, channel) with x in F(c) and the channel applying to x. -/
-def needsOf (e : Env) (rs : List Record) (x : String) : List (Claim × Chan) :=
-  let S := e.head
-  let u := att S e.mh x
-  S.claims.flatMap fun c =>
-    let chans : List Chan := match c.op with
-      | .effectForbid a sc ex => if covers S sc ex u then chanOfAtom S a else []
-      | .authority k _ => if compOf S u == some k then (boundCodes S).map Chan.effect else []
-      | .effectsUpper uq _ | .effectsLower uq _ =>
-        if (reachU e rs uq).contains x then Chan.call (idLang x) :: (boundCodes S).map Chan.effect else []
-      | .edgeForbid Ssel X k _ _ => match compOf S u with
-        | some kq => if nselMatch Ssel kq && !nselMatch X kq then
-            [if k == "calls" then Chan.call (idLang x) else Chan.edge k] else []
-        | none => []
-      | .pathForbid _ _ K _ | .cycleForbid K => match compOf S u with
-        | some _ => K.map (fun k => if k == "calls" then Chan.call (idLang x) else Chan.edge k)
-        | none => []
-      | _ => []
-    (chans.filter (chanApplies e x)).map (fun ch => (c, ch))
-
-def provObserves (p : Prov) : Chan → Bool
-  | .effect t => p.observes.any (fun o =>
-      strPrefix "effect(" o && strSuffix ")" o && rcMatches (String.ofList ((o.toList.drop 7).dropLast)) t)
-  | .call l => p.observes.contains ("call(" ++ l ++ ")")
-  | .edge k => p.observes.any (fun o => o == "edge(" ++ k ++ ")" || strPrefix ("edge(" ++ k ++ ",") o)
-  | .hatch _ => false
-
-def hatchComplete (e : Env) (x : String) : Bool :=
-  let es := e.mh.filter (·.id == x)
-  !es.isEmpty && es.all (·.hatchComplete)
-
-/-- Met by a usable complete entry from a provider absence-sound and observing the channel
-    in base and head, not producer-changed; hatch channels by hatch-completeness. -/
-def chanMet (e : Env) (rs : List Record) (x : String) : Chan → Bool
-  | .hatch _ => hatchComplete e x
-  | ch => rs.any fun r => r.kind == .observation && !isPC e r &&
-      (match r.provider with
-       | some q => match bothProv e q with
-         | some (b, h) => b.absence && h.absence && provObserves b ch && provObserves h ch
-         | none => false
-       | none => false) &&
-      r.entries.any (fun en => en.id == x && en.complete && entryUsableIn e.mh en)
-
-def coverageSet (e : Env) (rs : List Record) : List String :=
-  if !hasBase e then [] else
-  sortStrs ((mIds e.mh).filter (finest e) ++
-    rs.flatMap (fun r => (r.entries.filter (fun en => en.deps.any (fun d => inDelta e d.id))).map (·.id)))
-
-def uncovered (e : Env) (rs : List Record) : List (String × List (Claim × Chan)) :=
-  (coverageSet e rs).filterMap fun x =>
-    let un := (needsOf e rs x).filter (fun p => !chanMet e rs x p.2)
-    if un.isEmpty then none else some (x, un)
-
-def covGroup (e : Env) (x : String) : String :=
-  match compOfId e.head e.mh x with
-  | some k => "component " ++ k
-  | none => "ungoverned"
-
-def compTierStar (e : Env) (k : String) : Tier :=
-  let th := ((e.head.comps.find? (·.q == k)).map (·.tier)).getD .normal
-  match e.base.bind (fun b => b.comps.find? (·.q == k)) with
-  | some cb => tierMax th cb.tier
+/-- tier*(K) = max(tier_b(ρ⁻¹K), tier_h(K)); ungoverned normal. -/
+def Ctx.compTierStar (c : Ctx) (k : String) : Tier :=
+  let th := ((c.head.comps.find? (·.q == k)).map (·.tier)).getD .normal
+  let bq := c.rho.inv k
+  match c.base with
+  | some b => match b.comps.find? (·.q == bq) with
+    | some kb => tierMax th kb.tier
+    | none => th
   | none => th
 
-def covMembers (e : Env) (rs : List Record) (g : String) : List (String × List (Claim × Chan)) :=
-  (uncovered e rs).filter (fun p => covGroup e p.1 == g)
+/-- A need met by a usable complete entry from a provider declaring the channel, absence-sound in
+    base and head, not producer-changed (A.7.4.3, A.15.9). -/
+def Ctx.needMet (c : Ctx) (x : String) (info : IdInfo) (ch : String) : Bool :=
+  if strPrefix "hatch(" ch then info.hatchComplete
+  else c.provs.any fun g =>
+    g.absenceB && channelCovered g.channelsB ch &&
+    (match c.nearestEntry x g.q with
+     | some ue => ue.entry.complete && !ue.pc
+     | none => false)
 
-def covComp (g : String) : Option String := if strPrefix "component " g then some (dropChars 10 g) else none
-
-def covTier (e : Env) (rs : List Record) (g : String) : Tier :=
-  let t0 := match covComp g with | some kq => compTierStar e kq | none => .normal
-  ((covMembers e rs g).flatMap (fun p => p.2.map (·.1))).foldl (fun t c => tierMax t (tierStar e c)) t0
-
-def mkCov (e : Env) (rs : List Record) (g : String) : Ob :=
-  let members := covMembers e rs g
-  let claims := members.flatMap (fun p => p.2.map (·.1))
-  let baseOwner := match covComp g with
-    | some kq => ((e.base.bind (fun b => b.comps.find? (·.q == kq))).map (·.owner)).getD
-        (((e.head.comps.find? (·.q == kq)).map (·.owner)).getD (govS e).owner)
-    | none => (govS e).owner
-  let aff := sortStrs (members.map (·.1))
-  { kind := .coverage, family := .coverage, key := obKey "coverage" none (.item g), subject := .item g,
-    introduced := true, tier := covTier e rs g, owner := baseOwner, affected := aff, code := finestRows e aff,
-    answerable := true, mechanical := false,
-    unmetFinal := sortStrs ((claims.filter (fun c => tierStar e c == .final)).map (ownerStar e ·)) }
-
-/-- One coverage obligation per component (and for `ungoverned`); below normal it is health only. -/
-def coverageObs (e : Env) (rs : List Record) : List Ob :=
-  (sortStrs ((uncovered e rs).map (fun p => covGroup e p.1))).filterMap fun g =>
-    if (covTier e rs g).rank < Tier.normal.rank then none else some (mkCov e rs g)
+def Ctx.coverage (c : Ctx) : CovResult := Id.run do
+  if !c.hasBase || !c.readable then return {}
+  let claims := c.head.claims.filter (·.isUpper)
+  let fps : List (Claim × List String × List String) := claims.map (fun cl => let f := c.footprint c.Wh cl; (cl, f.1, f.2))
+  -- the coverage set (A.7.4.1)
+  let mut set0 : List String := c.mh.order.filter (c.delta.finest.contains ·)
+  let mut depCause : List (String × List String) := []
+  for r in c.records do
+    for en in r.entries do
+      let ch := (en.deps.filter (fun d => c.delta.inDelta d.id)).map (·.id)
+      if !ch.isEmpty && c.mh.has en.id then
+        set0 := set0 ++ [en.id]
+        depCause := depCause ++ [(en.id, ch)]
+  match c.base, c.Wb with
+  | some b, some wb =>
+    let keys := rhoKeys c.rho.map
+    for (cl, fh, _) in fps do
+      match b.claims.find? (fun cb => cb.fp == cl.fp || (renameClaim keys cb).fp == cl.fp) with
+      | some cb =>
+        let fb := (c.footprint wb cb).1
+        set0 := set0 ++ fh.filter (fun x => !fb.contains x)
+      | none => pure ()
+  | _, _ => pure ()
+  let set := sortStrs set0
+  let mut needs : List (String × List Need) := []
+  let mut unobs : List String := []
+  let mut covered := 0
+  let mut uncovered : List (String × List Need) := []
+  for x in set do
+    let some info := c.mh.info? x | continue
+    let mut list : List Need := []
+    for (cl, fh, chans) in fps do
+      if !fh.contains x then continue
+      for t in chans do
+        match channelAt t info with
+        | none => pure ()
+        | some ch =>
+          let tx := c.tierAt cl x
+          let fin := tx == .final
+          if !c.observable ch && !fin then
+            unobs := unobs ++ [cl.fp ++ " " ++ ch]
+            continue
+          let nd : Need := { claim := cl, channel := ch, met := c.needMet x info ch, final := fin, tier := tx }
+          list := list ++ [nd]
+    needs := needs ++ [(x, list)]
+    if list.all (·.met) then covered := covered + 1
+    else uncovered := uncovered ++ [(x, list.filter (!·.met))]
+  -- one obligation per component (A.7.4.4)
+  let compOf (x : String) : String := (c.Wh.compOfU (c.Wh.att1 x)).getD "ungoverned"
+  let comps := sortStrs (uncovered.map (fun p => compOf p.1))
+  let mut obs : List CovOb := []
+  for k in comps do
+    let items := uncovered.filter (fun p => compOf p.1 == k)
+    let isU := k == "ungoverned"
+    let unmet := items.flatMap (fun (x, ns) => ns.map (fun n => (x, n.claim.fp, n.channel, n.tier)))
+    let t0 := if isU then Tier.normal else c.compTierStar k
+    let t := unmet.foldl (fun t u => tierMax t u.2.2.2) t0
+    let owner := if isU then c.gov.owner else
+      match c.base.bind (fun b => b.comps.find? (·.q == c.rho.inv k)) with
+      | some kb => kb.owner
+      | none => ((c.head.comps.find? (·.q == k)).map (·.owner)).getD c.gov.owner
+    let ob : CovOb :=
+      { subject := if isU then "ungoverned" else "component " ++ k, comp := if isU then none else some k,
+        uncovered := sortStrs (items.map (·.1)),
+        unmet := sortOnL (fun u => [u.1, u.2.1, u.2.2.1]) unmet, tier := t, owner := owner,
+        unmetClaims := sortStrs (unmet.map (·.2.1)),
+        finalClaims := sortStrs ((unmet.filter (·.2.2.2 == .final)).map (·.2.1)),
+        depCode := sortStrs (items.flatMap (fun (x, _) => ((depCause.filter (·.1 == x)).flatMap (·.2)))) }
+    obs := obs ++ [ob]
+  -- vocabulary coverage (A.7.4.6)
+  let reported := c.baseReported
+  let lowerFps := c.baseLowerFps
+  let mut vocab : List VocabOb := []
+  for f in c.facts do
+    if f.ty != "effect" || !f.observed then continue
+    let some x := f.at? | continue
+    let some info := c.mh.info? x | continue
+    if !c.factNew reported lowerFps f then continue
+    let lifted := c.Wh.resOf f.res
+    let subj? : Option String :=
+      if lifted.isNone && c.Wh.boundKinds.contains (rcTagKind f.res) then some ("resourceCode " ++ f.res)
+      else if lifted.isSome && !c.head.verbs.contains f.verb then some ("verb " ++ f.verb)
+      else none
+    let some subj := subj? | continue
+    let mut tier? : Option Tier := none
+    for (cl, fh, chans) in fps do
+      if !fh.contains x then continue
+      let applies := chans.any fun t => match channelAt t info with
+        | some ch =>
+          strPrefix "effect(" ch && (if strPrefix "verb " subj then channelCovered [ch] ("effect(" ++ f.res ++ ")")
+            else rcTagKind ((chanInner "effect(" ch).getD "") == rcTagKind f.res)
+        | none => false
+      if applies then tier? := some (match tier? with | some t => tierMax t (c.tierAt cl x) | none => c.tierAt cl x)
+    let some t := tier? | continue
+    match vocab.find? (·.subject == subj) with
+    | some v =>
+      vocab := vocab.map (fun w => if w.subject == subj then { w with sites := sortStrs (w.sites ++ [x]), tier := tierMax w.tier t, facts := w.facts ++ [f] } else w)
+      let _ := v
+    | none => vocab := vocab ++ [{ subject := subj, sites := [x], tier := t, facts := [f] }]
+  let res : CovResult :=
+    { set := set, needs := needs, unobservable := sortStrs unobs, obligations := obs,
+      vocab := sortOn (·.subject) vocab, covered := covered }
+  return res
 
 end Shape

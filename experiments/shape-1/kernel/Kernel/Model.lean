@@ -1,8 +1,13 @@
 import Kernel.Order
-/-! Shape 1.0 kernel: core datatypes (model §2–§9, annex A.3–A.9, A.12.9).
+import Kernel.Json
+import Kernel.Sha256
+import Std.Data.HashMap
+/-! Shape 1.0 kernel (model version 7): core datatypes (model §2–§9, annex A.3–A.9, A.12.9).
 
-The kernel reads elaborated shapes (ESF), manifests and pre-pass-validated records. Parsing
-of `.shape` text, signatures and tree checks are outside the kernel (A.11.2.1). -/
+The kernel reads a `shape.kernel.case/v1` (records §4, A.11.2.1): both elaborated shapes (ESF),
+manifests with refs and flags, pre-pass-validated records, review lines, authors* and now*.
+Parsing of `.shape` text, signatures, record validation and tree checks are the pre-pass's
+(A.11.2.1). -/
 namespace Shape
 
 def TRUST : String := "std::Trust"
@@ -20,6 +25,8 @@ def Tier.ofRank : Nat → Tier
   | 1 => .low | 2 => .normal | 3 => .critical | 4 => .final | _ => .low
 
 def tierMax (a b : Tier) : Tier := if a.rank ≥ b.rank then a else b
+
+def tiersMax (ts : List Tier) (d : Tier := .low) : Tier := ts.foldl tierMax d
 
 /-- Evidence level; `none` is the informal level no test or proof reaches (A.5.3.1). -/
 inductive Level | declared | tested | proven | none
@@ -43,7 +50,7 @@ deriving DecidableEq, Repr, Inhabited
 structure Atom where
   verb : String
   res : String
-deriving DecidableEq, Repr, Inhabited
+deriving DecidableEq, Repr, Inhabited, Hashable
 
 def Atom.show (a : Atom) : String := a.verb ++ "<" ++ a.res ++ ">"
 def Atom.isTrust (a : Atom) : Bool := a.res == TRUST
@@ -56,16 +63,18 @@ deriving DecidableEq, Repr, Inhabited
 inductive NSel | all | comp (q : String) | res (q : String)
 deriving DecidableEq, Repr, Inhabited
 
-/-- Law statements: schema (template instance), hosted (symbol at closure), informal. -/
+/-- Law statements: schema (template instance; args as JCS texts), hosted (symbol at closure),
+    informal. -/
 inductive Stmt | schema (name fp : String) (args : List String) | hosted (ref : String) | text (t : String)
 deriving DecidableEq, Repr, Inhabited
 
-/-- Claim operators (model §4.2). Trust claims are `effectForbid` on `std::Trust` atoms. -/
+/-- Claim operators (model §4.2). Trust claims are `effectForbid` on `std::Trust` atoms.
+    `effectsLower` carries its plain atoms and its `a via v` entries separately. -/
 inductive Op
   | effectForbid (a : Atom) (scope exc : List USel)
   | authority (k : String) (grants : List Atom)
   | effectsUpper (u : String) (atoms : List Atom)
-  | effectsLower (u : String) (atoms : List Atom)
+  | effectsLower (u : String) (atoms : List Atom) (vias : List (Atom × String))
   | edgeExists (a kind b : String)
   | edgeForbid (S X : List NSel) (kind : String) (T Y : List NSel)
   | pathForbid (S T : List NSel) (kinds : List String) (V : List NSel)
@@ -89,19 +98,43 @@ structure Claim where
   owner : String
   tier : Tier
   req : Option Req
+  /-- JCS of the NF's `args`, used for renaming under ρ (A.5.6.3) -/
+  argsJ : String := "{}"
+  /-- the op name as printed (`effect.forbid`, …) -/
+  opName : String := ""
+  /-- schema | hosted | informal (laws only), "" otherwise -/
+  form : String := ""
+  /-- the declaration bearing the claim (unit, component or resource Q) -/
+  bearer : Option String := none
+  /-- where an inherited owner / tier is written (`shape`, `component Q`, `unit Q`, `default`;
+      none when the claim's own declaration writes it), A.8.2.3 L7 [D18] -/
+  ownerFrom : Option String := none
+  tierFrom : Option String := none
 deriving DecidableEq, Repr, Inhabited
 
 def Claim.isForbid (c : Claim) : Bool := match c.op with | .effectForbid .. => true | _ => false
 def Claim.isAuthority (c : Claim) : Bool := match c.op with | .authority .. => true | _ => false
+def Claim.isSummary (c : Claim) : Bool := match c.op with | .effectsUpper .. => true | _ => false
 def Claim.isLaw (c : Claim) : Bool := match c.op with | .law .. => true | _ => false
 def Claim.isStructUpper (c : Claim) : Bool :=
   match c.op with | .edgeForbid .. | .pathForbid .. | .cycleForbid .. => true | _ => false
+def Claim.isLower (c : Claim) : Bool :=
+  match c.op with | .effectsLower .. | .edgeExists .. => true | _ => false
+/-- Upper bounds: forbids, authority, summaries, structural forbids (A.4.1.6). -/
+def Claim.isUpper (c : Claim) : Bool :=
+  match c.op with
+  | .effectForbid .. | .authority .. | .effectsUpper .. | .edgeForbid .. | .pathForbid .. | .cycleForbid .. => true
+  | _ => false
+def Claim.checkerDecided (c : Claim) : Bool := !c.isLaw && match c.op with | .other _ => false | _ => true
+def Claim.firstId (c : Claim) : String := c.ids.headD c.fp
 
 structure Actor where
   q : String
   kind : String
   operator : Option String
   members : List String
+  identities : List String := []
+  was : Option String := none
 deriving DecidableEq, Repr, Inhabited
 
 structure Comp where
@@ -111,7 +144,13 @@ structure Comp where
   boundary : Bool
   paths : List String
   allows : List String
+  /-- ids of the boundary's named assumptions -/
   assumes : List String
+  exceptPaths : List String := []
+  /-- `none`: open authority (no grants clause) -/
+  grants : Option (List Atom) := none
+  was : Option String := none
+  ownerFrom : Option String := none
 deriving DecidableEq, Repr, Inhabited
 
 structure Res where
@@ -119,6 +158,8 @@ structure Res where
   owner : String
   tier : Tier
   bind : List String
+  was : Option String := none
+  ownerFrom : Option String := none
 deriving DecidableEq, Repr, Inhabited
 
 structure UnitD where
@@ -128,22 +169,29 @@ structure UnitD where
   owner : String
   tier : Tier
   bind : Option String
+  was : Option String := none
+  /-- summary mode (`complete` | `partial`), when the unit declares effects -/
+  summaryMode : Option String := none
+  ownerFrom : Option String := none
+  tierFrom : Option String := none
 deriving DecidableEq, Repr, Inhabited
 
 structure Prov where
   q : String
   produces : List RecKind
+  producesS : List String
   observes : List String
   decides : List String
   presence : Bool
   absence : Bool
+  persist : Bool
   depsComplete : Bool
   identity : Option String
-  trusts : List String
+  trusts : List (String × String)
+  hasImpl : Bool
   implPaths : List String
+  implIds : List String
   implDigest : Option String
-  /-- JCS of each governance field as written (L7 compares them, A.8.2.3) -/
-  fields : List (String × String)
 deriving DecidableEq, Repr, Inhabited
 
 structure TierPol where
@@ -162,9 +210,9 @@ deriving DecidableEq, Repr, Inhabited
 
 /-- std::DefaultPolicy (syntax §4, A.9.5). -/
 def defaultPolicy : Policy :=
-  { low := ⟨.declared, [], 365, ["owner", "agents"]⟩
-    normal := ⟨.declared, ["latent-loosening"], 365, ["owner", "agents"]⟩
-    critical := ⟨.tested, ["unestablished", "coverage", "latent-loosening"], 90, ["owner"]⟩
+  { low := ⟨.declared, [], 365, ["agents", "owner"]⟩
+    normal := ⟨.declared, ["latent-loosening"], 365, ["agents", "owner"]⟩
+    critical := ⟨.tested, ["coverage", "latent-loosening", "unestablished"], 90, ["owner"]⟩
     budget := none }
 
 def Policy.tier (p : Policy) : Tier → TierPol
@@ -178,37 +226,121 @@ structure Exc where
   waives : List String
   targetClaims : List String
   targetComp : Option String
+  /-- the target as written (`rule X`, `component K`, …) -/
+  targetRef : String
   subjects : Option (List ExcSubj)
   owner : String
   expires : Int
 deriving DecidableEq, Repr, Inhabited
 
-/-- The elaborated shape, without its policy and exceptions (those are separate inputs
-    so that governance can be varied independently of the theory, see `Input`). -/
+structure Template where
+  q : String
+  schemaFp : String
+  params : List (String × String)
+  order : List (String × String)
+deriving DecidableEq, Repr, Inhabited
+
+/-- An error passed through from the elaborator (head shape errors, base defects). -/
+structure ErrIn where
+  code : String
+  subject : String
+  causes : List (String × String) := []
+  dischargers : J := .arr []
+deriving Inhabited
+
+/-- The elaborated shape (shape.elaborated.v1, A.12.9). -/
 structure Esf where
   q : String
   owner : String
-  actors : List Actor
-  verbs : List String
-  effects : List (String × String)
-  hatches : List (String × String)
-  kinds : List (String × String × String)
-  comps : List Comp
-  res : List Res
-  units : List UnitD
-  claims : List Claim
-  provs : List Prov
-deriving DecidableEq, Repr, Inhabited
+  /-- the shape's manifest identity (A.5.2.17, D27) -/
+  manifestId : Option String := none
+  actors : List Actor := []
+  verbs : List String := []
+  effects : List (String × String) := []
+  hatches : List (String × String) := []
+  kinds : List (String × String × String) := []
+  comps : List Comp := []
+  res : List Res := []
+  units : List UnitD := []
+  claims : List Claim := []
+  provs : List Prov := []
+  templates : List Template := []
+  excs : List Exc := []
+  policy : Policy := defaultPolicy
+  errors : List ErrIn := []
+deriving Inhabited
 
-structure MEntry where
+/-! ### Manifests -/
+
+structure IdInfo where
   id : String
-  proj : String
-  digest : String
+  lang : String
+  path : String
+  symbol : Option String
   kind : String
   parent : Option String
+  /-- projection → digest (the first scheme listed) -/
+  digests : List (String × String)
+  /-- projection → scheme -/
+  schemes : List (String × String)
+  /-- every (projection, digest) listed, all schemes (multi-scheme digests are ≡, A.5.6.2) -/
+  allDigests : List (String × String)
   markers : List (String × Nat)
   hatchComplete : Bool
-deriving DecidableEq, Repr, Inhabited
+  executable : Bool
+  refs : List String
+deriving Inhabited, Repr
+
+structure Manifest where
+  revision : String
+  ids : Std.HashMap String IdInfo
+  /-- the identities, sorted -/
+  order : List String
+  children : Std.HashMap String (List String)
+  /-- signed by the base manifest identity (decided by the pre-pass, A.5.2.17) -/
+  authenticated : Bool
+  present : Bool
+deriving Inhabited
+
+def Manifest.empty : Manifest := { revision := "", ids := {}, order := [], children := {}, authenticated := false, present := false }
+
+def Manifest.info? (m : Manifest) (x : String) : Option IdInfo := m.ids.get? x
+def Manifest.has (m : Manifest) (x : String) : Bool := m.ids.contains x
+def Manifest.digest (m : Manifest) (x p : String) : Option String :=
+  (m.ids.get? x).bind fun i => (i.digests.find? (·.1 == p)).map (·.2)
+def Manifest.scheme (m : Manifest) (x p : String) : Option String :=
+  (m.ids.get? x).bind fun i => (i.schemes.find? (·.1 == p)).map (·.2)
+/-- x's digest at p is ≡ d: equal to some digest listed at p (any scheme). -/
+def Manifest.digestIs (m : Manifest) (x p d : String) : Bool :=
+  match m.ids.get? x with
+  | some i => i.allDigests.any (fun q => q.1 == p && q.2 == d)
+  | none => false
+def Manifest.markers (m : Manifest) (x : String) : List (String × Nat) :=
+  ((m.ids.get? x).map (·.markers)).getD []
+def Manifest.parent (m : Manifest) (x : String) : Option String := (m.ids.get? x).bind (·.parent)
+
+/-- x and its ancestors by `parent`, nearest first. -/
+def Manifest.ancestors (m : Manifest) (x : String) : List String :=
+  let rec go (fuel : Nat) (y : String) (acc : List String) : List String :=
+    match fuel with
+    | 0 => (y :: acc).reverse
+    | fuel + 1 =>
+      if acc.contains y then acc.reverse
+      else match m.parent y with
+        | some p => go fuel p (y :: acc)
+        | none => (y :: acc).reverse
+  go (m.order.length + 1) x []
+
+partial def Manifest.descendants (m : Manifest) (x : String) : List String :=
+  let rec go (stack : List String) (seen : List String) : List String :=
+    match stack with
+    | [] => seen
+    | y :: rest =>
+      if seen.contains y then go rest seen
+      else go (((m.children.get? y).getD []) ++ rest) (y :: seen)
+  go [x] []
+
+/-! ### Records -/
 
 structure Cite where
   id : String
@@ -224,7 +356,8 @@ structure OEntry where
   deps : List Cite
 deriving DecidableEq, Repr, Inhabited
 
-/-- A raw fact: `ty` is `effect`, `call`, `edge` (records) or `hatch` (manifest). -/
+/-- A raw fact: `ty` is `effect`, `call`, `edge` (records). `n` is absent when the provider
+    did not report it (a missing n counts as unknown, A.12.8.4). -/
 structure Fact where
   ty : String
   loc : String
@@ -232,8 +365,10 @@ structure Fact where
   res : String
   to : String
   kind : String
-  n : Nat
-deriving DecidableEq, Repr, Inhabited
+  n : Option Nat
+  /-- the fact as the record gives it -/
+  raw : J := .null
+deriving Repr, Inhabited
 
 structure Record where
   id : String
@@ -243,161 +378,70 @@ structure Record where
   revision : String
   time : Int
   claimFp : Option String
+  claimId : Option String
   code : List Cite
   deps : List Cite
+  /-- the record carries a `deps` field (reuse through deps complete needs one, A.5.4.1) -/
+  hasDeps : Bool := false
   harness : List Cite
+  hasHarness : Bool
   entries : List OEntry
   facts : List Fact
   assumptions : List (String × String)
-  counterexample : Bool
+  /-- the counterexample as given (records §3) -/
+  counterexample : Option J
   judge : Option String
   aboutChange : Option String
   refs : List String
   authenticated : Bool
+  /-- a persisted judgment of an earlier change (persisted.base), A.16.4(b) -/
+  persistedBase : Bool
+  pairSpace : String
+  pairFrom : String
+  pairTo : String
+deriving Inhabited
+
+/-- A review line (A.7.6), with its base actor resolved by the pre-pass when there is one. -/
+structure Review where
+  actor : Option String
+  identity : String
+  line : String
+  change : Option String
+  /-- `review:` + 16 hex of H(review as the input gives it) (A.16.28) -/
+  ref : String
+deriving Inhabited, Repr
+
+inductive Mode | change | audit | preview
 deriving DecidableEq, Repr, Inhabited
 
-inductive Mode | change | audit
-deriving DecidableEq, Repr, Inhabited
+def Mode.name : Mode → String | .change => "change" | .audit => "audit" | .preview => "preview"
 
-/-- Everything the change fixes apart from evidence and governance values. -/
-structure Env where
+/-- A kernel case (records §4, A.11.2.1). -/
+structure Input where
   mode : Mode
   now : Int
   changeIds : List String
   authors : List String
   unmappedBot : Bool
   head : Esf
+  /-- the base shape (`none` in audit mode or when unreadable) -/
   base : Option Esf
+  hasBaseRev : Bool
+  baseUnreadable : Bool
   headRev : String
-  mh : List MEntry
-  mb : List MEntry
-  cells : List (String × String)
-deriving Inhabited
-
-/-- A kernel case: the change, its evidence and its governance values. -/
-structure Input where
-  env : Env
+  baseRev : String
+  mh : Manifest
+  mb : Manifest
   records : List Record
   baseRecords : List Record
-  headPolicy : Policy
-  basePolicy : Option Policy
-  headExcs : List Exc
-  baseExcs : List Exc
+  /-- how many baseRecords the input supplied, rejected ones included (health baseObservations) -/
+  baseRecordsSupplied : Nat := 0
+  reviews : List Review
+  /-- pre-pass products printed as given -/
+  inputDigest : String
+  rejected : List J
+  clockClamped : Bool
+  options : J
 deriving Inhabited
-
-/-! ### Encodings (for canonical sets) -/
-
-instance : Enc Tier := Enc.ofInj Tier.rank (by intro a b h; cases a <;> cases b <;> simp_all [Tier.rank])
-instance : Enc Level := Enc.ofInj Level.rank (by intro a b h; cases a <;> cases b <;> simp_all [Level.rank])
-
-def RecKind.code : RecKind → Nat
-  | .observation => 0 | .test => 1 | .proof => 2 | .judgment => 3 | .equivalence => 4
-instance : Enc RecKind := Enc.ofInj RecKind.code (by intro a b h; cases a <;> cases b <;> simp_all [RecKind.code])
-
-def Result.code : Result → Nat
-  | .observes => 0 | .supports => 1 | .contradicts => 2 | .inconclusive => 3 | .approves => 4
-  | .equivalent => 5 | .implies => 6
-instance : Enc Result := Enc.ofInj Result.code (by intro a b h; cases a <;> cases b <;> simp_all [Result.code])
-
-instance : Enc Mode := Enc.ofInj (fun m => match m with | Mode.change => 0 | Mode.audit => 1)
-  (by intro a b h; cases a <;> cases b <;> simp_all)
-
-instance : Enc Atom := Enc.ofInj (fun a => (a.verb, a.res)) (by intro a b h; cases a; cases b; simp_all)
-
-def USel.toE : USel → Nat × String
-  | .all => (0, "") | .ungoverned => (1, "") | .comp q => (2, q) | .unit q => (3, q)
-instance : Enc USel := Enc.ofInj USel.toE (by intro a b h; cases a <;> cases b <;> simp_all [USel.toE])
-
-def NSel.toE : NSel → Nat × String
-  | .all => (0, "") | .comp q => (1, q) | .res q => (2, q)
-instance : Enc NSel := Enc.ofInj NSel.toE (by intro a b h; cases a <;> cases b <;> simp_all [NSel.toE])
-
-def Stmt.toE : Stmt → Nat × String × String × List String
-  | .schema n f a => (0, n, f, a) | .hosted r => (1, r, "", []) | .text t => (2, t, "", [])
-instance : Enc Stmt := Enc.ofInj Stmt.toE (by intro a b h; cases a <;> cases b <;> simp_all [Stmt.toE])
-
-def Op.toE : Op → Nat × List String × List Atom × List USel × List USel × List NSel × List NSel ×
-    List NSel × List NSel × Option Stmt
-  | .effectForbid a s x => (0, [], [a], s, x, [], [], [], [], none)
-  | .authority k g => (1, [k], g, [], [], [], [], [], [], none)
-  | .effectsUpper u c => (2, [u], c, [], [], [], [], [], [], none)
-  | .effectsLower u c => (3, [u], c, [], [], [], [], [], [], none)
-  | .edgeExists a k b => (4, [a, k, b], [], [], [], [], [], [], [], none)
-  | .edgeForbid S X k T Y => (5, [k], [], [], [], S, X, T, Y, none)
-  | .pathForbid S T K V => (6, K, [], [], [], S, T, V, [], none)
-  | .cycleForbid K => (7, K, [], [], [], [], [], [], [], none)
-  | .law on st => (8, on, [], [], [], [], [], [], [], some st)
-  | .other n => (9, [n], [], [], [], [], [], [], [], none)
-instance : Enc Op := Enc.ofInj Op.toE (by intro a b h; cases a <;> cases b <;> simp_all [Op.toE])
-
-instance : Enc Req := Enc.ofInj (fun r => (r.level, r.judged, r.pins, r.proj))
-  (by intro a b h; cases a; cases b; simp_all)
-instance : Enc Claim := Enc.ofInj (fun c => (c.ids, c.op, c.fp, c.owner, c.tier, c.req))
-  (by intro a b h; cases a; cases b; simp_all)
-instance : Enc Actor := Enc.ofInj (fun a => (a.q, a.kind, a.operator, a.members))
-  (by intro a b h; cases a; cases b; simp_all)
-instance : Enc Comp := Enc.ofInj (fun c => (c.q, c.owner, c.tier, c.boundary, c.paths, c.allows, c.assumes))
-  (by intro a b h; cases a; cases b; simp_all)
-instance : Enc Res := Enc.ofInj (fun r => (r.q, r.owner, r.tier, r.bind))
-  (by intro a b h; cases a; cases b; simp_all)
-instance : Enc UnitD := Enc.ofInj (fun u => (u.q, u.comp, u.name, u.owner, u.tier, u.bind))
-  (by intro a b h; cases a; cases b; simp_all)
-instance : Enc Prov := Enc.ofInj (fun p => (p.q, p.produces, p.observes, p.decides, p.presence, p.absence,
-    p.depsComplete, p.identity, p.trusts, p.implPaths, p.implDigest, p.fields))
-  (by intro a b h; cases a; cases b; simp_all)
-def ExcSubj.toE : ExcSubj → Nat × String × String
-  | .unitSel s => (0, s, "") | .code i => (1, i, "") | .pair a b => (2, a, b)
-instance : Enc ExcSubj := Enc.ofInj ExcSubj.toE (by intro a b h; cases a <;> cases b <;> simp_all [ExcSubj.toE])
-instance : Enc Exc := Enc.ofInj (fun e => (e.q, e.waives, e.targetClaims, e.targetComp, e.subjects, e.owner, e.expires))
-  (by intro a b h; cases a; cases b; simp_all)
-instance : Enc MEntry := Enc.ofInj (fun m => (m.id, m.proj, m.digest, m.kind, m.parent, m.markers, m.hatchComplete))
-  (by intro a b h; cases a; cases b; simp_all)
-instance : Enc Cite := Enc.ofInj (fun c => (c.id, c.proj, c.digest)) (by intro a b h; cases a; cases b; simp_all)
-instance : Enc OEntry := Enc.ofInj (fun e => (e.id, e.proj, e.digest, e.complete, e.deps))
-  (by intro a b h; cases a; cases b; simp_all)
-instance : Enc Fact := Enc.ofInj (fun f => (f.ty, f.loc, f.verb, f.res, f.to, f.kind, f.n))
-  (by intro a b h; cases a; cases b; simp_all)
-instance : Enc Record := Enc.ofInj (fun r => (r.id, r.kind, r.result, r.provider, r.revision, r.time, r.claimFp,
-    r.code, r.deps, r.harness, r.entries, r.facts, r.assumptions, r.counterexample, r.judge, r.aboutChange,
-    r.refs, r.authenticated))
-  (by intro a b h; cases a; cases b; simp_all)
-
-/-! ### Canonical inputs (T1) -/
-
-def Esf.canon (s : Esf) : Esf :=
-  { s with actors := Shape.canon s.actors, verbs := Shape.canon s.verbs, effects := Shape.canon s.effects, hatches := Shape.canon s.hatches,
-           kinds := Shape.canon s.kinds, comps := Shape.canon s.comps, res := Shape.canon s.res,
-           units := Shape.canon s.units, claims := Shape.canon s.claims, provs := Shape.canon s.provs }
-
-def Env.canon (e : Env) : Env :=
-  { e with changeIds := Shape.canon e.changeIds, authors := Shape.canon e.authors,
-           head := e.head.canon, base := e.base.map Esf.canon, mh := Shape.canon e.mh,
-           mb := Shape.canon e.mb, cells := Shape.canon e.cells }
-
-def Input.canon (i : Input) : Input :=
-  { i with env := i.env.canon, records := Shape.canon i.records, baseRecords := Shape.canon i.baseRecords,
-           headExcs := Shape.canon i.headExcs, baseExcs := Shape.canon i.baseExcs }
-
-/-- Two elaborated shapes are the same up to the order and multiplicity of every collection. -/
-def Esf.Equiv (a b : Esf) : Prop :=
-  a.q = b.q ∧ a.owner = b.owner ∧ SetEq a.actors b.actors ∧ SetEq a.verbs b.verbs ∧ SetEq a.effects b.effects ∧
-  SetEq a.hatches b.hatches ∧ SetEq a.kinds b.kinds ∧ SetEq a.comps b.comps ∧ SetEq a.res b.res ∧
-  SetEq a.units b.units ∧ SetEq a.claims b.claims ∧ SetEq a.provs b.provs
-
-def OptEsfEquiv : Option Esf → Option Esf → Prop
-  | none, none => True
-  | some a, some b => Esf.Equiv a b
-  | _, _ => False
-
-def Env.Equiv (a b : Env) : Prop :=
-  a.mode = b.mode ∧ a.now = b.now ∧ SetEq a.changeIds b.changeIds ∧ SetEq a.authors b.authors ∧
-  a.unmappedBot = b.unmappedBot ∧ Esf.Equiv a.head b.head ∧ OptEsfEquiv a.base b.base ∧
-  a.headRev = b.headRev ∧ SetEq a.mh b.mh ∧ SetEq a.mb b.mb ∧ SetEq a.cells b.cells
-
-/-- Inputs equal up to permutation (and duplication) of every input collection. -/
-def Input.Equiv (a b : Input) : Prop :=
-  Env.Equiv a.env b.env ∧ SetEq a.records b.records ∧ SetEq a.baseRecords b.baseRecords ∧
-  a.headPolicy = b.headPolicy ∧ a.basePolicy = b.basePolicy ∧ SetEq a.headExcs b.headExcs ∧
-  SetEq a.baseExcs b.baseExcs
 
 end Shape

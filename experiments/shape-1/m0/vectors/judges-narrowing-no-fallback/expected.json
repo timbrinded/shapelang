@@ -32,9 +32,9 @@
       "introduced": true,
       "severity": "blocking",
       "tier": "critical",
-      "binding": "bd:2d5ebb7807c14352f21581d3e583d0c1ffb211adfc35f3f7a3f8aa25f156fe33"
+      "binding": "bd:4153465bf02c181bfb488d4d8cb8883d3ff4ca8fc224caa52375fefbf7208e06"
      },
-     "why": "A.5.4.1: the implementation bunfig.toml meets Δcode, so producer-changed; binding affected adds that finest change (A.7.2.2)"
+     "why": "A.5.4.1: the implementation bunfig.toml meets Δcode, so producer-changed; binding affected adds that finest change and code its (bunfig.toml, own) row (A.7.2.2, A.16.19)"
     },
     {
      "in": "answered",

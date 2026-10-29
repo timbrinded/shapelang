@@ -290,9 +290,13 @@ export interface ValidationContext {
   now: number;
   mode: "change" | "audit" | "preview";
   persisted: boolean;
-  /** providers declared in the base (by Q) and head-only providers */
-  baseProviders: Map<string, { produces: string[]; identity: string | null }>;
-  headProviders: Map<string, { produces: string[]; identity: string | null }>;
+  /** providers declared in the base (by Q) and head-only providers (empty for base records) */
+  baseProviders: Map<string, { produces: string[]; identity: string | null; persist: boolean }>;
+  headProviders: Map<string, { produces: string[]; identity: string | null; persist: boolean }>;
+  /** authenticated providers (a base identity no other base provider shares) → identity */
+  authenticated: Map<string, string>;
+  /** providers presence-sound under G* (a) (base records: base only) (RJ14, A.16.6(b)) */
+  presence: Set<string>;
   /** base actors: Q → identities, kind, operator */
   actors: Map<string, { identities: string[]; kind: string; operator: string | null }>;
   /** identity → actor Q (base) */
@@ -341,6 +345,11 @@ export function validateRecord(r: ParsedRecord, ctx: ValidationContext): Rejecti
   }
   if (s.about && subj.get(`shape:answer/${s.about.change}`) !== H(s.about).slice(7))
     return rej("RJ02", "answer subject mismatch");
+  if (
+    s.scope &&
+    subj.get(`shape:scope/${s.provider?.id ?? "-"}/${s.revision}`) !== s.scope.root.replace(/^sha256:/, "")
+  )
+    return rej("RJ02", "scope subject mismatch");
   // RJ03 scope root
   if (s.scope && s.scope.root !== scopeRoot(s.scope.entries))
     return rej("RJ03", "scope root mismatch");
@@ -360,7 +369,7 @@ export function validateRecord(r: ParsedRecord, ctx: ValidationContext): Rejecti
   // RJ07 signature
   const preview = ctx.mode === "preview";
   if (r.badSignature && !preview) return rej("RJ07", "invalid signature");
-  const authenticatedProvider = baseP?.identity ?? null;
+  const authenticatedProvider = pq ? (ctx.authenticated.get(pq) ?? null) : null;
   const mustSign =
     !preview && (s.kind === "judgment" || ctx.persisted || authenticatedProvider !== null);
   if (mustSign && r.signers.length === 0)
@@ -398,8 +407,11 @@ export function validateRecord(r: ParsedRecord, ctx: ValidationContext): Rejecti
     return rej("RJ10", "empty citations");
   if (ctx.persisted && s.kind === "proof" && (s.deps ?? []).length === 0)
     return rej("RJ10", "persisted proof without deps");
-  // RJ11 persisted record kinds
-  if (ctx.persisted && !(s.kind === "judgment" || s.kind === "proof"))
+  // RJ11 persisted record kinds: judgments and signed persist proofs (A.5.8.2)
+  if (
+    ctx.persisted &&
+    !(s.kind === "judgment" || (s.kind === "proof" && !!pq && !!baseP?.persist))
+  )
     return rej("RJ11", "persisted record is not a judgment or persist proof");
   // RJ12 fact paths absent from the tree; RJ13 digests contradicting the revision's manifest
   const tree = ctx.trees.get(s.revision);
@@ -431,6 +443,14 @@ export function validateRecord(r: ParsedRecord, ctx: ValidationContext): Rejecti
     return rej("RJ14", "missing harness");
   if (s.kind === "observation" && (s.facts ?? []).some((f) => f.type === "hatch"))
     return rej("RJ14", "hatch facts in an observation");
+  // a presence-sound observer reports n on every effect fact (A.5.2.1, D15)
+  if (
+    s.kind === "observation" &&
+    pq &&
+    ctx.presence.has(pq) &&
+    (s.facts ?? []).some((f) => f.type === "effect" && typeof f.n !== "number")
+  )
+    return rej("RJ14", "effect fact without n from a presence-sound observer");
   return null;
 }
 

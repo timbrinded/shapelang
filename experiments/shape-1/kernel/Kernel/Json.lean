@@ -82,7 +82,8 @@ def insertBy {α} (lt : α → α → Bool) (x : α) : List α → List α
   | [] => [x]
   | y :: ys => if lt y x then y :: insertBy lt x ys else x :: y :: ys
 
-def sortBy {α} (lt : α → α → Bool) (l : List α) : List α := l.foldr (insertBy lt) []
+/-- Stable sort by a strict order (merge sort). -/
+def sortBy {α} (lt : α → α → Bool) (l : List α) : List α := l.mergeSort (fun a b => !lt b a)
 
 partial def J.jcs : J → String
   | .null => "null"

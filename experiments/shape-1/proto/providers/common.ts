@@ -271,7 +271,12 @@ export function selfValidate(
 ): Rejection | null {
   const parsed = parseRecord(e.record) as ParsedRecord;
   const identity = info.decl.identity ?? null;
-  const prov = new Map([[info.q, { produces: info.decl.produces as string[], identity }]]);
+  const prov = new Map([
+    [
+      info.q,
+      { produces: info.decl.produces as string[], identity, persist: info.decl.persist ?? false }
+    ]
+  ]);
   const digests = new Map<string, string>();
   for (const x of man.ids.values())
     for (const [p, d] of x.digests) digests.set(`${x.id}\u0000${p}\u0000${x.schemes.get(p)}`, d);
@@ -281,6 +286,8 @@ export function selfValidate(
     persisted: false,
     baseProviders: prov,
     headProviders: prov,
+    authenticated: identity ? new Map([[info.q, identity]]) : new Map(),
+    presence: new Set((info.decl.sound ?? []).includes("presence") ? [info.q] : []),
     actors: actors ?? new Map(),
     actorByIdentity: new Map(),
     relays: new Map(),

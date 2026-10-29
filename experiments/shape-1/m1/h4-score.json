@@ -1,0 +1,818 @@
+{
+ "summary": {
+  "cases": 33,
+  "correct": 31,
+  "wrong": 0,
+  "abstain": 2
+ },
+ "rows": [
+  {
+   "case": "claim_misdescribes_code",
+   "manual": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fwdQ": [],
+    "expl": null,
+    "final": false
+   },
+   "decider": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fired": [],
+    "exploited": false,
+    "final": false,
+    "verdict": "pass",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "draft_trait_removed",
+   "manual": {
+    "loosens": "yes",
+    "order": "incomparable",
+    "fwdQ": [
+     "L1"
+    ],
+    "expl": true,
+    "final": true
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "incomparable",
+    "fired": [
+     "L1"
+    ],
+    "exploited": true,
+    "final": true,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "effects_unknown",
+   "manual": {
+    "loosens": "no",
+    "order": "tighter",
+    "fwdQ": [],
+    "expl": null,
+    "final": false
+   },
+   "decider": {
+    "loosens": "no",
+    "order": "tighter",
+    "fired": [],
+    "exploited": false,
+    "final": false,
+    "verdict": "pass",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "governed_directory_moved",
+   "manual": {
+    "loosens": "yes",
+    "order": "incomparable",
+    "fwdQ": [
+     "L1"
+    ],
+    "expl": false,
+    "final": false
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "incomparable",
+    "fired": [
+     "L1"
+    ],
+    "exploited": false,
+    "final": false,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "governed_paths_narrowed",
+   "manual": {
+    "loosens": "yes",
+    "order": "looser",
+    "fwdQ": [
+     "L1"
+    ],
+    "expl": false,
+    "final": false
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "looser",
+    "fired": [
+     "L1"
+    ],
+    "exploited": false,
+    "final": false,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "grant_added",
+   "manual": {
+    "loosens": "no",
+    "order": "tighter",
+    "fwdQ": [],
+    "expl": null,
+    "final": false
+   },
+   "decider": {
+    "loosens": "no",
+    "order": "tighter",
+    "fired": [],
+    "exploited": false,
+    "final": false,
+    "verdict": "blocked",
+    "errors": [
+     "E-conduct {\"claim\":\"sha256:b794b7a06f9480bd46b38281cf927ebb50f7b5267c7c80fdd53671d62ac7d6f9\",\"kind\":\"contradiction\",\"subject\":{\"atom\":\"HardDelete<history::Revision>\",\"code\":\"ts:src/history/purge.ts#purgeOldRevisions\"},\"v\":\"shape.obligation.v1\"}"
+    ]
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "guarded_fn_edited_in_place",
+   "manual": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fwdQ": [],
+    "expl": null,
+    "final": false
+   },
+   "decider": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fired": [],
+    "exploited": false,
+    "final": false,
+    "verdict": "owed",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "memory_and_trait_removed",
+   "manual": {
+    "loosens": "yes",
+    "order": "looser",
+    "fwdQ": [
+     "L4"
+    ],
+    "expl": false,
+    "final": false
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "looser",
+    "fired": [
+     "L4"
+    ],
+    "exploited": false,
+    "final": false,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "memory_guard_removed",
+   "manual": {
+    "loosens": "yes",
+    "order": "looser",
+    "fwdQ": [
+     "L4"
+    ],
+    "expl": false,
+    "final": false
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "looser",
+    "fired": [
+     "L4"
+    ],
+    "exploited": false,
+    "final": false,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "path_rule_narrowed",
+   "manual": {
+    "loosens": "yes",
+    "order": "looser",
+    "fwdQ": [
+     "L3"
+    ],
+    "expl": true,
+    "final": false
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "looser",
+    "fired": [
+     "L3"
+    ],
+    "exploited": true,
+    "final": false,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "path_rule_removed",
+   "manual": {
+    "loosens": "yes",
+    "order": "looser",
+    "fwdQ": [
+     "L3"
+    ],
+    "expl": true,
+    "final": false
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "looser",
+    "fired": [
+     "L3"
+    ],
+    "exploited": true,
+    "final": false,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "read_only_function_added",
+   "manual": {
+    "loosens": "no",
+    "order": "tighter",
+    "fwdQ": [],
+    "expl": null,
+    "final": false
+   },
+   "decider": {
+    "loosens": "no",
+    "order": "tighter",
+    "fired": [],
+    "exploited": false,
+    "final": false,
+    "verdict": "pass",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "relation_left_out",
+   "manual": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fwdQ": [],
+    "expl": null,
+    "final": false
+   },
+   "decider": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fired": [],
+    "exploited": false,
+    "final": false,
+    "verdict": "pass",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "renamed_component",
+   "manual": {
+    "loosens": "rename",
+    "order": "undecided",
+    "fwdQ": [
+     "L3"
+    ],
+    "expl": false,
+    "final": false
+   },
+   "decider": {
+    "loosens": "no",
+    "order": "undecided",
+    "fired": [
+     "L3"
+    ],
+    "exploited": false,
+    "final": false,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "abstain (manual undecided)",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "renamed_component_and_narrowed_rule",
+   "manual": {
+    "loosens": "yes",
+    "order": "looser",
+    "fwdQ": [
+     "L3"
+    ],
+    "expl": true,
+    "final": false
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "looser",
+    "fired": [
+     "L3"
+    ],
+    "exploited": true,
+    "final": false,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "resource_renamed_trait_dropped",
+   "manual": {
+    "loosens": "yes",
+    "order": "incomparable",
+    "fwdQ": [
+     "L1"
+    ],
+    "expl": true,
+    "final": true
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "incomparable",
+    "fired": [
+     "L1"
+    ],
+    "exploited": true,
+    "final": true,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "resource_renamed_trait_kept",
+   "manual": {
+    "loosens": "rename",
+    "order": "undecided",
+    "fwdQ": [
+     "L1"
+    ],
+    "expl": false,
+    "final": true
+   },
+   "decider": {
+    "loosens": "no",
+    "order": "undecided",
+    "fired": [
+     "L1"
+    ],
+    "exploited": false,
+    "final": true,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "abstain (manual undecided)",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "rule_added",
+   "manual": {
+    "loosens": "no",
+    "order": "tighter",
+    "fwdQ": [],
+    "expl": null,
+    "final": false
+   },
+   "decider": {
+    "loosens": "no",
+    "order": "tighter",
+    "fired": [],
+    "exploited": false,
+    "final": false,
+    "verdict": "pass",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "rule_and_trait_removed_together",
+   "manual": {
+    "loosens": "yes",
+    "order": "incomparable",
+    "fwdQ": [
+     "L1"
+    ],
+    "expl": true,
+    "final": true
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "incomparable",
+    "fired": [
+     "L1"
+    ],
+    "exploited": true,
+    "final": true,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "rule_moved_between_files",
+   "manual": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fwdQ": [],
+    "expl": null,
+    "final": false
+   },
+   "decider": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fired": [],
+    "exploited": false,
+    "final": false,
+    "verdict": "pass",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "rule_removed",
+   "manual": {
+    "loosens": "yes",
+    "order": "incomparable",
+    "fwdQ": [
+     "L1"
+    ],
+    "expl": true,
+    "final": true
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "incomparable",
+    "fired": [
+     "L1"
+    ],
+    "exploited": true,
+    "final": true,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "trait_removed_from_resource",
+   "manual": {
+    "loosens": "yes",
+    "order": "incomparable",
+    "fwdQ": [
+     "L1"
+    ],
+    "expl": true,
+    "final": true
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "incomparable",
+    "fired": [
+     "L1"
+    ],
+    "exploited": true,
+    "final": true,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "unused_rule_removed",
+   "manual": {
+    "loosens": "yes",
+    "order": "looser",
+    "fwdQ": [
+     "L3"
+    ],
+    "expl": false,
+    "final": false
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "looser",
+    "fired": [
+     "L3"
+    ],
+    "exploited": false,
+    "final": false,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "guard-policy-removal",
+   "manual": {
+    "loosens": "yes",
+    "order": "looser",
+    "fwdQ": [
+     "L1"
+    ],
+    "expl": false,
+    "final": true
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "looser",
+    "fired": [
+     "L1"
+    ],
+    "exploited": false,
+    "final": true,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "guard-equivalent-relocation",
+   "manual": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fwdQ": [],
+    "expl": null,
+    "final": false
+   },
+   "decider": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fired": [],
+    "exploited": false,
+    "final": false,
+    "verdict": "pass",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "cal1-removal-destructive",
+   "manual": {
+    "loosens": "yes",
+    "order": "incomparable",
+    "fwdQ": [
+     "L1"
+    ],
+    "expl": true,
+    "final": true
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "incomparable",
+    "fired": [
+     "L1"
+    ],
+    "exploited": true,
+    "final": true,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "cal2-supported-loosening",
+   "manual": {
+    "loosens": "yes",
+    "order": "looser",
+    "fwdQ": [
+     "L1"
+    ],
+    "expl": false,
+    "final": true
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "looser",
+    "fired": [
+     "L1"
+    ],
+    "exploited": false,
+    "final": true,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "cal3-relocated-rule",
+   "manual": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fwdQ": [],
+    "expl": null,
+    "final": false
+   },
+   "decider": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fired": [],
+    "exploited": false,
+    "final": false,
+    "verdict": "pass",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "cal4-protected-to-appendonly",
+   "manual": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fwdQ": [],
+    "expl": null,
+    "final": false
+   },
+   "decider": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fired": [],
+    "exploited": false,
+    "final": false,
+    "verdict": "pass",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "cal5-path-weakened",
+   "manual": {
+    "loosens": "yes",
+    "order": "looser",
+    "fwdQ": [
+     "L3"
+    ],
+    "expl": true,
+    "final": false
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "looser",
+    "fired": [
+     "L3"
+    ],
+    "exploited": true,
+    "final": false,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "cal6-vendored-final-removed",
+   "manual": {
+    "loosens": "yes",
+    "order": "looser",
+    "fwdQ": [
+     "L1"
+    ],
+    "expl": false,
+    "final": true
+   },
+   "decider": {
+    "loosens": "yes",
+    "order": "looser",
+    "fired": [
+     "L1"
+    ],
+    "exploited": false,
+    "final": true,
+    "verdict": "blocked",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "cal7-generic-attestation",
+   "manual": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fwdQ": [],
+    "expl": null,
+    "final": false
+   },
+   "decider": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fired": [],
+    "exploited": false,
+    "final": false,
+    "verdict": "pass",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  },
+  {
+   "case": "cal8-false-completeness",
+   "manual": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fwdQ": [],
+    "expl": null,
+    "final": false
+   },
+   "decider": {
+    "loosens": "no",
+    "order": "equivalent",
+    "fired": [],
+    "exploited": false,
+    "final": false,
+    "verdict": "pass",
+    "errors": []
+   },
+   "result": "correct",
+   "reasons": [],
+   "info": []
+  }
+ ]
+}

@@ -191,7 +191,19 @@
      "lang": "bend"
     },
     {
+     "kind": "unsafe",
+     "lang": "rust"
+    },
+    {
      "kind": "ts_ignore",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_expect_error",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_nocheck",
      "lang": "ts"
     }
    ],
@@ -283,6 +295,8 @@
      "entries": [
       {
        "digest": "sha256:a33d0ca3762193f37db4870ae3c098e1e94a5a431782e7114b393a2e7ba18bac",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-cli/src/freshness.ts",
        "kind": "file",
        "parent": null,
@@ -291,6 +305,8 @@
       },
       {
        "digest": "sha256:adc8e1b4d94f72805dbcbb7b9f7067ac2ac6e37f53825f44ab8c95657f50e74b",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-cli/src/freshness.ts",
        "kind": "file",
        "parent": null,
@@ -299,6 +315,8 @@
       },
       {
        "digest": "sha256:3018423164cf0d769cf3a0b13c4f5a70297ad51908b34467dcf8eb9ca4193703",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
        "kind": "symbol",
        "parent": "ts:packages/shp-cli/src/freshness.ts",
@@ -307,6 +325,8 @@
       },
       {
        "digest": "sha256:823f392ddd34a1b34cbaa11254016fc04917fd5994d51432e7545452b6f638c6",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
        "kind": "symbol",
        "parent": "ts:packages/shp-cli/src/freshness.ts",
@@ -325,7 +345,6 @@
   "revision": "b3"
  },
  "baseRecords": [],
- "cells": [],
  "change": {
   "ids": [
    "github:acme/shape#3"
@@ -520,7 +539,19 @@
      "lang": "bend"
     },
     {
+     "kind": "unsafe",
+     "lang": "rust"
+    },
+    {
      "kind": "ts_ignore",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_expect_error",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_nocheck",
      "lang": "ts"
     }
    ],
@@ -612,6 +643,8 @@
      "entries": [
       {
        "digest": "sha256:a33d0ca3762193f37db4870ae3c098e1e94a5a431782e7114b393a2e7ba18bac",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-cli/src/freshness.ts",
        "kind": "file",
        "parent": null,
@@ -620,6 +653,8 @@
       },
       {
        "digest": "sha256:adc8e1b4d94f72805dbcbb7b9f7067ac2ac6e37f53825f44ab8c95657f50e74b",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-cli/src/freshness.ts",
        "kind": "file",
        "parent": null,
@@ -628,6 +663,8 @@
       },
       {
        "digest": "sha256:3018423164cf0d769cf3a0b13c4f5a70297ad51908b34467dcf8eb9ca4193703",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
        "kind": "symbol",
        "parent": "ts:packages/shp-cli/src/freshness.ts",
@@ -636,6 +673,8 @@
       },
       {
        "digest": "sha256:823f392ddd34a1b34cbaa11254016fc04917fd5994d51432e7545452b6f638c6",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
        "kind": "symbol",
        "parent": "ts:packages/shp-cli/src/freshness.ts",

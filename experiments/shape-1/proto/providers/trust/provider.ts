@@ -154,11 +154,11 @@ export function overlayInput(
 ): CheckInput {
   const head = {
     ...input.head,
-    manifest: overlayManifest(input.head.manifest, readHead).statement
+    manifest: overlayManifest(input.head.manifest as Statement, readHead).statement
   };
   const base =
     input.base && readBase
-      ? { ...input.base, manifest: overlayManifest(input.base.manifest, readBase).statement }
+      ? { ...input.base, manifest: overlayManifest(input.base.manifest as Statement, readBase).statement }
       : input.base;
   return { ...input, head, base };
 }

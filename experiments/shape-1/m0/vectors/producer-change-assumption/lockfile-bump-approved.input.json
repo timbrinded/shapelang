@@ -551,7 +551,7 @@
  "reviews": [
   {
    "identity": "github(\"dana\")",
-   "line": "shape approve bd:3af169bbd19fa50f",
+   "line": "shape approve bd:b0c6e37595bbe046",
    "change": "github:acme/app#7"
   }
  ],

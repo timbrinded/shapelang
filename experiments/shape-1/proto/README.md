@@ -187,7 +187,7 @@ Identities and schemes:
 
 ## 7. Output (`shape.check.output/v1`, plus extensions)
 
-Top-level fields: `verdict`, `errors[{code, subject, message, causes, dischargers}]`, `rejected[{record, code: RJxx, detail}]`, `obligations`, `answered[{obligation, records, self, exploited, as: discharge | exception-answer}]`, `loosening[{question, subject, answer, exploited, final, affected, counterexample, obligation}]`, `renames[{base, head, rule: was | binding | component | hint}]`, `debt[{obligation, exception, owner, expiresInDays, flagged}]`, `preexisting`, `budget {limit, used, overflow}`, `health`, and `summary[{group, tier, eligible, approve, judge, members}]` (the phase-1 review lines).
+Top-level fields: `verdict`, `errors[{code, subject, message, causes, dischargers}]`, `rejected[{record, code: RJxx, detail}]`, `obligations`, `answered[{obligation, records, self, exploited, as: discharge | exception-answer}]`, `loosening[{question, subject, answer, exploited, final, affected, counterexample, obligation}]`, `renames[{base, head, rule: was | binding | component}]` (components, resources, units and actors that ρ maps to another name; a rule-3 hint is never listed, A.16.38), `debt[{obligation, exception, owner, expiresInDays, flagged}]`, `preexisting`, `budget {limit, used, overflow}`, `health`, and `summary[{group, tier, eligible, approve, judge, members}]` (the phase-1 review lines).
 
 Each obligation has:
 

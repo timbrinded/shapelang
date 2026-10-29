@@ -38,7 +38,7 @@ def _canon_decl(d):
             d["units"] = sorted(d["units"], key=lambda u: u["name"])
         if isinstance(d.get("grants"), list):
             d["grants"] = sorted(d["grants"])
-        for f in ("paths", "allows", "relationsComplete"):
+        for f in ("paths", "exceptPaths", "allows", "relationsComplete"):  # exceptPaths: version 7 (A.16.2(g), A.16.3)
             if f in d:
                 d[f] = _sorted_set(d[f])
         if "assumes" in d:

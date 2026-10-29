@@ -9,12 +9,6 @@
    "reason": "stale",
    "severity": "owed",
    "tier": "normal"
-  },
-  {
-   "kind": "coverage",
-   "severity": "owed",
-   "subject": "component tooling::ShpCli",
-   "tier": "normal"
   }
  ],
  "verdict": "owed"

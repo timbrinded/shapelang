@@ -35,7 +35,7 @@ import {
   rewriteAgainst
 } from "./loader.ts";
 import { parseRecord, signStatement, signerFromSeed } from "./records.ts";
-import { coreOutput, renderHuman } from "./render.ts";
+import { coreBytes, renderHuman } from "./render.ts";
 import { fromSeconds } from "./util.ts";
 
 interface Args {
@@ -264,7 +264,7 @@ async function cmdCheck(a: Args): Promise<number> {
       const rw = rewriteAgainst(head.source, hm.statement);
       headSource = rw.source ?? head.source;
       if (base?.source)
-        base = { ...base, source: rewriteAgainst(base.source, base.manifest).source };
+        base = { ...base, source: rewriteAgainst(base.source, base.manifest as Statement).source };
       if (rw.renames.length > 0)
         process.stderr.write(
           `migrate: rewrote ${rw.renames.length} unit sources against the head manifest\n`
@@ -295,7 +295,7 @@ async function cmdCheck(a: Args): Promise<number> {
   if (one(a, "write-input"))
     writeFileSync(one(a, "write-input") as string, `${JSON.stringify(input, null, 1)}\n`);
   const out = derive(input);
-  if (a.bools.has("core")) process.stdout.write(`${JSON.stringify(coreOutput(out), null, 1)}\n`);
+  if (a.bools.has("core")) process.stdout.write(coreBytes(out));
   else if (a.bools.has("json")) process.stdout.write(`${JSON.stringify(out, null, 1)}\n`);
   else process.stdout.write(renderHuman(out));
   return EXIT[out.verdict];

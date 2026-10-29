@@ -6,8 +6,10 @@ import { label } from "../src/jcs.ts";
 import { scopeRoot, signerFromSeed } from "../src/records.ts";
 import { ob, obsOf, run } from "./helpers.ts";
 
-const B = "ob:bb51a88f52f5081e";
-const C_FORBID = "ob:031024b1dfd16fe2";
+// version 7 keys (m0/golden/deltas.json): the AppendOnly clause forbids Update [D13], which renames
+// Variant B's contradiction and Variant C's forbid loosening; the authority key is unchanged
+const B = "ob:98ff6f5f02010232";
+const C_FORBID = "ob:e8ec989a6cf48d9a";
 const C_AUTH = "ob:ca99c5461b8ff9a8";
 
 describe("Example 1: an agent PR adds a purge to an append-only log", () => {
@@ -16,11 +18,13 @@ describe("Example 1: an agent PR adds a purge to an append-only log", () => {
     expect(out.verdict).toBe("pass");
     expect(out.errors).toEqual([]);
   });
-  test("an empty base (first adoption) is owed: the law is preexisting weak", () => {
+  // version 7 (A.5.4.3, A.6.2.6 [D9]): fastCheck is head-only, so its record never establishes and
+  // holds no reason; the law is preexisting missing, not weak (EXAMPLES Example 1 "Empty base")
+  test("an empty base (first adoption) is owed: the law is preexisting missing", () => {
     const out = run(ex1("empty-base"));
     expect(out.verdict).toBe("owed");
     const u = obsOf(out, "unestablished")[0];
-    expect(u?.reason).toBe("weak");
+    expect(u?.reason).toBe("missing");
     expect(u?.introduced).toBe(false);
     expect(u?.severity).toBe("owed");
     expect(out.obligations.filter((o) => o.kind === "loosening")).toEqual([]);
@@ -35,7 +39,8 @@ describe("Example 1: an agent PR adds a purge to an append-only log", () => {
     expect(o?.tier).toBe("final");
     expect(o?.severity).toBe("blocking");
     expect(o?.rule).toBe(2);
-    expect(o?.claim?.ids).toEqual(["audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"]);
+    // version 7 [D13]: the AppendOnly clause is forbid Update, which HardDelete implies
+    expect(o?.claim?.ids).toEqual(["audit::AuditEvent/AppendOnly/effect.forbid-Update"]);
     expect(o?.subject).toEqual({
       code: "ts:src/audit/purge.ts#purgeOldEvents",
       atom: "HardDelete<audit::AuditEvent>"
@@ -72,7 +77,8 @@ describe("Example 1: an agent PR adds a purge to an append-only log", () => {
     expect(out.verdict).toBe("blocked");
   });
   test("B′: an ungoverned purge still violates the * forbid", () => {
-    const o = ob(run(ex1("Bprime")), "ob:0e15fc409b2de2ab");
+    // version 7 key: the Update forbid [D13]
+    const o = ob(run(ex1("Bprime")), "ob:66055a3355822d3b");
     expect(o?.severity).toBe("blocking");
     expect(o?.force).toBe("sound");
   });
@@ -85,13 +91,16 @@ describe("Example 1: an agent PR adds a purge to an append-only log", () => {
     expect(o?.rule).toBe(4);
     expect(o?.dischargers[0]?.eligible).toEqual(["audit::bob", "audit::carol"]);
   });
-  test("Variant A: E-conduct and L1 loosened on AuditStore, exploited", () => {
+  // version 7 (A.8.2.3 L1 [D17], A.4.5.1 [D2]; deltas ex1-A): HardDelete and Update are newly in A
+  // but the final Update forbid still excludes them, so no authority part, and the new summary needs
+  // no call(ts) coverage; the verdict is blocked by the E-conduct error alone, and the head is
+  // tighter (its new summary bounds purgeOldEvents)
+  test("Variant A: E-conduct blocks alone; L1 is implied and the head is tighter", () => {
     const out = run(ex1("A"));
     expect(out.errors.map((e) => e.code)).toEqual(["E-conduct"]);
-    const l = ob(out, C_AUTH);
-    expect(l?.questions).toEqual(["L1"]);
-    expect(l?.tier).toBe("critical");
-    expect(l?.exploited).toBe(true);
+    expect(ob(out, C_AUTH)).toBeUndefined();
+    expect(out.obligations).toEqual([]);
+    expect(out.order).toBe("tighter");
     expect(out.verdict).toBe("blocked");
   });
   test("Variant C: two exploited L1 loosenings with the vector bindings", () => {
@@ -107,17 +116,24 @@ describe("Example 1: an agent PR adds a purge to an append-only log", () => {
     const rows = out.loosening.filter((r) => r.obligation.startsWith(C_FORBID));
     expect(rows[0]?.affected).toContain('cell:["audit::AuditStore.*","audit::AuditStore.*"]');
     expect(rows[0]?.affected).toContain('cell:["ungoverned","ungoverned"]');
-    // the phase-1 approve line names both refs
+    // the phase-1 approve line names both refs (version 7 bindings, A.12.11)
     expect(
       out.summary?.some(
         (s) =>
-          s.approve?.includes("bd:8d771e08d86d43b2") && s.approve.includes("bd:2785f31d20281bdd")
+          s.approve?.includes("bd:a7514dcb4cfb7068") && s.approve.includes("bd:6bca5b3fe0d0787d")
       )
     ).toBe(true);
   });
-  test("Variant C: the new complete summary needs call(ts) coverage; with a call observer the group is the vector's", () => {
+  // version 7 (A.4.5.1 [D2], A.7.4.2 [D3]; deltas ex1-C): summaries are direct, so the new complete
+  // summary has no call(ts) channel and raises no coverage; with or without a call observer the
+  // two loosenings form the vectors.py group of Variant C
+  test("Variant C: the new complete summary needs no call(ts) coverage; the group is the vector's", () => {
     const plain = run(ex1("C"));
-    expect(obsOf(plain, "coverage").length).toBe(1);
+    expect(obsOf(plain, "coverage").length).toBe(0);
+    expect(plain.obligations.map((o) => o.group)).toEqual([
+      "g:9f2b9e1c945e64187b39b5210fdc1218ca8249dfff9d7f26654c29d954985f2c",
+      "g:9f2b9e1c945e64187b39b5210fdc1218ca8249dfff9d7f26654c29d954985f2c"
+    ]);
     const inp = ex1("C");
     const K = signerFromSeed("31");
     const prov: Decl = {
@@ -161,8 +177,8 @@ describe("Example 1: an agent PR adds a purge to an append-only log", () => {
     );
     const out = run(inp);
     expect(out.obligations.map((o) => o.group)).toEqual([
-      "g:1a70082cc28046319bf3834eab91ef44ab823bc11c48141d5b96c276c92a899a",
-      "g:1a70082cc28046319bf3834eab91ef44ab823bc11c48141d5b96c276c92a899a"
+      "g:9f2b9e1c945e64187b39b5210fdc1218ca8249dfff9d7f26654c29d954985f2c",
+      "g:9f2b9e1c945e64187b39b5210fdc1218ca8249dfff9d7f26654c29d954985f2c"
     ]);
   });
   test("Variant C answered: bob and carol discharge both loosenings", () => {
@@ -179,15 +195,16 @@ describe("Example 1: an agent PR adds a purge to an append-only log", () => {
     for (const r of inp.reviews) r.change = "github:acme/audit#57";
     expect(run(inp).answered).toEqual([]);
   });
+  // version 7: the answers are the base relay's records (A.7.6.3, A.16.4(c); a base relay makes
+  // review lines act on nothing), and the forbid's ref is bd:a7514dcb4cfb7068 [D13]; carol's
+  // answer alone is one person for a final loosening (A.6.3.4)
   test("carol alone cannot discharge the final loosening (two persons)", () => {
-    const inp = ex1("C");
-    inp.reviews = [
-      {
-        identity: 'github("carol")',
-        line: "shape approve bd:8d771e08d86d43b2",
-        change: "github:acme/audit#57"
-      }
-    ];
+    const inp = ex1("C-answered");
+    const carol = inp.records.filter((r) => {
+      const st = JSON.parse(Buffer.from((r as { payload: string }).payload, "base64").toString());
+      return st.predicate.shape.judge !== "audit::bob";
+    });
+    inp.records = carol;
     expect(run(inp).answered).toEqual([]);
   });
 });
@@ -226,7 +243,11 @@ describe("Example 2: a Verus change adds an assume", () => {
   });
   test("exception plus a person's exception answer makes both debt, 51 days to expiry", () => {
     const out = run(ex2({ exception: true, approve: true }));
-    expect(out.debt.map((d) => [d.obligation.slice(0, 19), d.expiresInDays, d.flagged])).toEqual([
+    // version 7 (A.16.28): debt rows have no flagged field; the 14-day flag is display, read here
+    // from expiresInDays
+    expect(
+      out.debt.map((d) => [d.obligation.slice(0, 19), d.expiresInDays, d.expiresInDays <= 14])
+    ).toEqual([
       ["ob:815d7ebb9678dbea", 51, false],
       ["ob:8b9a1c953f7ed31c", 51, false]
     ]);
@@ -234,16 +255,19 @@ describe("Example 2: a Verus change adds an assume", () => {
     expect(ob(out, "ob:815d7ebb9678dbea")?.severity).toBe("owed");
     expect(ob(out, "ob:815d7ebb9678dbea")?.exception).toBe("ironkv::SetAssumeAccepted");
   });
-  test("spec defect surfaced: the Hatch clause also forbids boundary-allowed kinds", () => {
+  // version 7 (A.4.2.4, A.12.8.1 [D1]; deltas ex2): forbid hatch * gives one clause per declared hatch
+  // verb plus Undeclared and no Hatch clause, so the boundary-allowed external_body at Host::send
+  // raises nothing; the Undeclared clause is declared-only
+  test("D1: no Hatch clause, so the boundary-allowed external_body at Host::send raises nothing", () => {
     const out = run(ex2());
     const host = out.obligations.find(
       (o) => (o.subject as { atom?: string } | null)?.atom === "external_body<std::Trust>"
     );
-    expect(host?.claim?.fp).toBe(
-      "sha256:dc8454f26ba4a098a6681e766d63ddf9226954a5a5bf8ed9d8148c7b0996fac8"
-    );
-    expect(host?.introduced).toBe(false);
-    expect(host?.severity).toBe("owed");
+    expect(host).toBeUndefined();
+    expect(out.preexisting).toEqual([]);
+    expect(
+      (out.health.declaredOnly as { claim: string }[]).map((d) => d.claim)
+    ).toContain("sha256:6cd2e34ae382f2271643ee1e21eb71ea70700a980a610cd7ab8e9442b5698cd7");
   });
 });
 
@@ -312,9 +336,13 @@ describe("Example 4: observed drift on a calls relation", () => {
       nodes: ["checker::ShapeModelLowerer", "checker::ShapeRuleEngine"]
     });
     expect(out.budget.used).toBe(1);
-    expect(out.health.unobservable as string[]).toContain(
-      "checker::ShapeRuleEngineReadsLoweredFacts"
-    );
+    // version 7 (A.4.5.6, A.10.4 [D3]; deltas ex4): the relation and the cycle rule are listed as
+    // declared-only claims with route contradiction-only (tsCallGraph declares call(ts), sound none)
+    const dOnly = out.health.declaredOnly as { claim: string; route: string }[];
+    expect(dOnly.map((d) => [d.claim.slice(0, 23), d.route])).toEqual([
+      ["sha256:8a8f0d5a3028807a", "contradiction-only"],
+      ["sha256:d1d638be608c2992", "contradiction-only"]
+    ]);
   });
   test("closing the set: a new calls relation widens exceptTo; L3 loosened, exploited", () => {
     const out = run(ex4({ complete: true, headDiagnostics: true }));

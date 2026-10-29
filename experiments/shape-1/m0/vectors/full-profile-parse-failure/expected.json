@@ -1,0 +1,168 @@
+{
+ "vector": "full-profile-parse-failure",
+ "title": "A head shape file that does not parse is a blocking E-parse error, never invalid; an unparsable base gives only L0, owned and answerable by the head's shape owner",
+ "decides": [
+  "A.16.1",
+  "A.16.16",
+  "A.16.25",
+  "A.10.1",
+  "A.6.4.1",
+  "A.6.4.5",
+  "A.7.5.1",
+  "A.7.6.5"
+ ],
+ "cases": [
+  {
+   "case": "parse-control",
+   "input": "parse-control.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "both shapes parse and nothing is owed"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "no error"
+    }
+   ]
+  },
+  {
+   "case": "head-parse-error",
+   "input": "head-parse-error.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 1: errors block; A.10.1: E-parse is a head shape error, not malformed input, so the verdict is not invalid"
+    },
+    {
+     "in": "errors",
+     "select": {
+      "code": "E-parse"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "shape/extra.shape"
+     },
+     "why": "A.16.25: the E-parse subject is the failing shape file's path; the component block of shape/extra.shape is never closed"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "only the parse failure; shape/fc.shape parses and equals the base's"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "the head's parsed declarations equal the base's and Core has no claims"
+    }
+   ]
+  },
+  {
+   "case": "base-parse-error",
+   "input": "base-parse-error.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 3: L0 blocks until answered"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.6.4.1: the base never makes the verdict invalid and shape errors are the head's only"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:620fe93c78ec81a3ddd10e1ca9ac7a42817bd9d1dfe6eef715091250f96d48d5"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "loosening",
+      "subject": "shape",
+      "questions": [
+       "L0"
+      ],
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "owner": "fc::Maint",
+      "claim": null,
+      "binding": "bd:cae720168cac846335f0a7d17bcb7fad3e57a60ff2309606bb2fe7a43e89851d"
+     },
+     "why": "A.6.4.5: an unparsable base gives L0 undecided, subject shape; A.8.2.2: tier critical; A.16.16: the head's shape owner fc::Maint stands in for the base shape owner; A.15.2: claim null; A.7.2.2, A.12.8.7: affected and code empty, delta \"L0 unreadable\""
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "A.6.4.5: L1-L7 and coverage are skipped"
+    },
+    {
+     "in": "loosening",
+     "select": {
+      "question": "L0"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "shape",
+      "answer": "undecided",
+      "exploited": false,
+      "obligation": "ob:620fe93c78ec81a3ddd10e1ca9ac7a42817bd9d1dfe6eef715091250f96d48d5"
+     },
+     "why": "A.6.4.5; A.8.3.2: L0 is never exploited"
+    }
+   ]
+  },
+  {
+   "case": "base-parse-error-answered",
+   "input": "base-parse-error-answered.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.7.6.5: tim's approve line discharges L0, the only obligation"
+    },
+    {
+     "in": "answered",
+     "select": {
+      "obligation": "ob:620fe93c78ec81a3ddd10e1ca9ac7a42817bd9d1dfe6eef715091250f96d48d5"
+     },
+     "check": "fields",
+     "value": {
+      "as": "discharge",
+      "self": false
+     },
+     "why": "A.16.16: the head's policy and actors stand in for the unreadable base; Gate critical judges [owner] resolve the shape subject's owner fc::Maint to tim, who is no author; A.7.6.8: without a relay the CI-supplied line acts as an answer; A.7.6.4: bd:cae720168cac8463 expands to the L0 binding"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "discharged obligations move to answered (A.7.5.2)"
+    }
+   ]
+  }
+ ]
+}

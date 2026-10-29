@@ -1,5 +1,6 @@
-// A shape resolved over the head manifest: unit bindings, attribution att_S, resource mapping,
-// lifting, and the permitted set P(u) = A(u) ∖ Prot(u) with protection levels (A.3.3, A.4.4.7).
+// A shape resolved over the head manifest (version 7): unit bindings, attribution att_S with except
+// globs, resource mapping, lifting, and the permitted set P(u) = (A(u) ∩ S(u)) ∖ Prot(u) with
+// protection levels Lvl(u) (A.3.3, A.4.4.7, A.6.4.3-4, A.16.21, A.16.34).
 import { globMatches, specificity } from "./globs.ts";
 import { type IdentityInfo, type ManifestIndex, ancestorsOrSelf } from "./manifest.ts";
 import {
@@ -15,6 +16,7 @@ import { canonResourceCode, tagKind } from "./resource-code.ts";
 import { type Tier, cmpStr, maxTier, sortedUniq, tierRank } from "./util.ts";
 
 export const UNGOVERNED = "ungoverned";
+export const UNDECLARED = `Undeclared<${TRUST}>`;
 
 export interface World {
   side: "b" | "h";
@@ -22,21 +24,27 @@ export interface World {
   man: ManifestIndex;
   upOf: Map<string, Set<string>>;
   downOf: Map<string, Set<string>>;
-  hatchKinds: Map<string, string>;
-  unitBind: Map<string, string | null>;
-  identityUnit: Map<string, string>;
+  /** hatch kind → languages it is declared for */
+  hatchLangs: Map<string, Set<string>>;
+  /** unit → bound identities (head: at most one; base: rename in place may give several) */
+  unitBinds: Map<string, string[]>;
+  /** identity → units binding it (head: one, else E-overlap) */
+  identityUnits: Map<string, string[]>;
   compByQ: Map<string, ComponentItem>;
   unitByQ: Map<string, UnitItem>;
   resOfCode: Map<string, string>;
   boundKinds: Set<string>;
   positions: string[];
+  /** the position of x (base ties: the codepoint-least of the tied positions) */
   att: (x: string) => string;
-  attCache: Map<string, string>;
+  /** every position x is attributed to (base ties and overlaps: all of them, A.6.4.4) */
+  attAll: (x: string) => string[];
   codeOfPos: Map<string, string[]>;
   forbids: Claim[];
   authority: Map<string, Claim>;
+  summary: Map<string, Claim>;
   nodes: string[];
-  globOwners: { glob: string; owner: string }[];
+  globOwners: { glob: string; owner: string; except: string[] }[];
   errors: ShapeError[];
 }
 
@@ -68,11 +76,18 @@ function closureMaps(esf: ESF): { up: Map<string, Set<string>>; down: Map<string
   return { up, down };
 }
 
-function lastSegment(info: IdentityInfo): string | null {
+export function lastSegment(info: IdentityInfo): string | null {
   if (!info.symbol) return null;
   const sep = info.lang === "rust" || info.lang === "verus" ? "::" : ".";
   const seg = info.symbol.split(sep).pop() ?? "";
   return seg.replace(/%2E/g, ".").replace(/%23/g, "#").replace(/%25/g, "%");
+}
+
+/** ⟦paths(K)⟧: K's globs minus its except globs (A.3.3.3 [D25]). */
+export function inRegion(c: ComponentItem, path: string): boolean {
+  return (
+    c.paths.some((g) => globMatches(g, path)) && !c.exceptPaths.some((g) => globMatches(g, path))
+  );
 }
 
 export interface WorldOptions {
@@ -87,13 +102,18 @@ export function buildWorld(esf: ESF, man: ManifestIndex, opts: WorldOptions): Wo
     if (opts.side === "h") errors.push({ code, subject, message, causes: [], dischargers: [] });
   };
   const { up, down } = closureMaps(esf);
-  const hatchKinds = new Map(esf.hatches.map((h) => [h.kind, h.lang]));
+  const hatchLangs = new Map<string, Set<string>>();
+  for (const h of esf.hatches) {
+    const s = hatchLangs.get(h.kind) ?? new Set<string>();
+    s.add(h.lang);
+    hatchLangs.set(h.kind, s);
+  }
   const compByQ = new Map(esf.components.map((c) => [c.q, c]));
   const unitByQ = new Map(esf.units.map((u) => [u.q, u]));
   const ids = [...man.ids.keys()].sort(cmpStr);
 
   const inPaths = (c: ComponentItem, info: IdentityInfo): boolean =>
-    c.paths.length === 0 || c.paths.some((g) => globMatches(g, info.path));
+    c.paths.length === 0 || inRegion(c, info.path);
   const byName = (u: UnitItem, m: ManifestIndex): string[] => {
     const c = compByQ.get(u.component);
     if (!c) return [];
@@ -104,16 +124,16 @@ export function buildWorld(esf: ESF, man: ManifestIndex, opts: WorldOptions): Wo
   };
 
   // ---- unit bindings over M_h ---------------------------------------------------------------
-  const unitBind = new Map<string, string | null>();
+  const unitBinds = new Map<string, string[]>();
   for (const u of esf.units) {
-    let bound: string | null = null;
+    let bound: string[] = [];
     if (opts.side === "h") {
       if (u.bind) {
-        if (man.ids.has(u.bind)) bound = u.bind;
+        if (man.ids.has(u.bind)) bound = [u.bind];
         else err("E-unbound", `unit ${u.q}`, `${u.bind} is not in the head manifest`);
       } else {
         const cands = byName(u, man);
-        if (cands.length === 1) bound = cands[0] as string;
+        if (cands.length === 1) bound = [cands[0] as string];
         else if (cands.length === 0)
           err(
             "E-unbound",
@@ -128,55 +148,62 @@ export function buildWorld(esf: ESF, man: ManifestIndex, opts: WorldOptions): Wo
           );
       }
     } else {
-      // base: default names take the unique M_h match; else x_b if present; else a unique new
-      // identity in x_b's file (rename in place); else ∅ (A.6.4.3)
+      // base (A.6.4.3, A.16.21): default names take the unique M_h match; else x_b if present;
+      // else every new identity in x_b's file (rename in place); else ∅; relocation not followed
       let xb: string | null = u.bind;
       if (!u.bind) {
         const cands = byName(u, man);
-        if (cands.length === 1) bound = cands[0] as string;
+        if (cands.length === 1) bound = [cands[0] as string];
         else if (opts.baseMan) {
           const bc = byName(u, opts.baseMan);
           xb = bc.length === 1 ? (bc[0] as string) : null;
-        }
+        } else xb = null;
       }
-      if (!bound && xb) {
-        if (man.ids.has(xb)) bound = xb;
+      if (bound.length === 0 && xb) {
+        if (man.ids.has(xb)) bound = [xb];
         else if (opts.baseMan) {
           const file = xb.split("#")[0] as string;
-          const fresh = ids.filter((x) => x.startsWith(`${file}#`) && !opts.baseMan?.ids.has(x));
-          if (fresh.length === 1) bound = fresh[0] as string;
+          bound = ids.filter((x) => x.startsWith(`${file}#`) && !opts.baseMan?.ids.has(x));
         }
       }
     }
-    unitBind.set(u.q, bound);
+    unitBinds.set(u.q, bound);
   }
-  const identityUnit = new Map<string, string>();
-  for (const [u, x] of [...unitBind.entries()].sort((a, b) => cmpStr(a[0], b[0]))) {
-    if (!x) continue;
-    const prev = identityUnit.get(x);
-    if (prev) err("E-overlap", `unit ${u}`, `${x} is bound by ${prev} and ${u}`);
-    else identityUnit.set(x, u);
+  const identityUnits = new Map<string, string[]>();
+  for (const [u, xs] of [...unitBinds.entries()].sort((a, b) => cmpStr(a[0], b[0]))) {
+    for (const x of xs) {
+      const prev = identityUnits.get(x) ?? [];
+      if (prev.length > 0 && opts.side === "h") {
+        err(
+          "E-overlap",
+          [`unit ${prev[0]}`, `unit ${u}`].sort(cmpStr).join(" "),
+          `${x} is bound by ${prev[0]} and ${u}`
+        );
+        continue;
+      }
+      identityUnits.set(x, [...prev, u].sort(cmpStr));
+    }
   }
 
   // ---- attribution ---------------------------------------------------------------------------
-  const globOwners: { glob: string; owner: string }[] = [];
+  const globOwners: { glob: string; owner: string; except: string[] }[] = [];
   for (const c of esf.components)
-    for (const g of c.paths) globOwners.push({ glob: g, owner: `${c.q}.*` });
-  const attCache = new Map<string, string>();
+    for (const g of c.paths) globOwners.push({ glob: g, owner: `${c.q}.*`, except: c.exceptPaths });
+  const attCache = new Map<string, string[]>();
   const overlapSeen = new Set<string>();
-  const att = (x: string): string => {
+  const attAll = (x: string): string[] => {
     const hit = attCache.get(x);
     if (hit) return hit;
-    let res: string = UNGOVERNED;
+    let res: string[] = [UNGOVERNED];
     const anc = man.ids.has(x) ? ancestorsOrSelf(man, x) : [x];
-    const bound = anc.find((a) => identityUnit.has(a));
-    if (bound) res = identityUnit.get(bound) as string;
+    const bound = anc.find((a) => identityUnits.has(a));
+    if (bound) res = identityUnits.get(bound) as string[];
     else {
       const path = man.ids.get(x)?.path ?? x.replace(/^[^:]*:/, "").split("#")[0] ?? "";
       let best = -1;
       let who: string[] = [];
       for (const o of globOwners) {
-        if (!globMatches(o.glob, path)) continue;
+        if (!globMatches(o.glob, path) || o.except.some((g) => globMatches(g, path))) continue;
         const s = specificity(o.glob);
         if (s > best) {
           best = s;
@@ -184,22 +211,24 @@ export function buildWorld(esf: ESF, man: ManifestIndex, opts: WorldOptions): Wo
         } else if (s === best && !who.includes(o.owner)) who.push(o.owner);
       }
       who.sort(cmpStr);
-      if (who.length > 1) {
+      if (who.length > 1 && opts.side === "h") {
         const k = who.join("|");
         if (!overlapSeen.has(k)) {
           overlapSeen.add(k);
           err(
             "E-overlap",
-            `component ${posComp(who[0] as string)}`,
+            who.map((w) => `component ${posComp(w)}`).join(" "),
             `equally specific globs of ${who.map((w) => posComp(w)).join(" and ")} match ${path}`
           );
         }
+        who = [who[0] as string];
       }
-      if (who.length > 0) res = who[0] as string;
+      if (who.length > 0) res = who;
     }
     attCache.set(x, res);
     return res;
   };
+  const att = (x: string): string => attAll(x)[0] as string;
   const positions = sortedUniq([
     ...esf.units.map((u) => u.q),
     ...esf.components.map((c) => `${c.q}.*`),
@@ -208,10 +237,11 @@ export function buildWorld(esf: ESF, man: ManifestIndex, opts: WorldOptions): Wo
   const codeOfPos = new Map<string, string[]>();
   for (const p of positions) codeOfPos.set(p, []);
   for (const x of ids) {
-    const p = att(x);
-    const list = codeOfPos.get(p);
-    if (list) list.push(x);
-    else codeOfPos.set(p, [x]);
+    for (const p of attAll(x)) {
+      const list = codeOfPos.get(p);
+      if (list) list.push(x);
+      else codeOfPos.set(p, [x]);
+    }
   }
 
   // ---- resources ----------------------------------------------------------------------------------
@@ -227,6 +257,8 @@ export function buildWorld(esf: ESF, man: ManifestIndex, opts: WorldOptions): Wo
   const forbids = esf.claims.filter((c) => c.op === "effect.forbid");
   const authority = new Map<string, Claim>();
   for (const c of esf.claims) if (c.op === "authority") authority.set(String(c.args.component), c);
+  const summary = new Map<string, Claim>();
+  for (const c of esf.claims) if (c.op === "effects.upper") summary.set(String(c.args.unit), c);
   const nodes = sortedUniq([
     ...esf.components.filter((c) => !c.q.startsWith("std::")).map((c) => c.q),
     ...esf.resources.filter((r) => !r.q.startsWith("std::")).map((r) => r.q)
@@ -237,23 +269,29 @@ export function buildWorld(esf: ESF, man: ManifestIndex, opts: WorldOptions): Wo
     man,
     upOf: up,
     downOf: down,
-    hatchKinds,
-    unitBind,
-    identityUnit,
+    hatchLangs,
+    unitBinds,
+    identityUnits,
     compByQ,
     unitByQ,
     resOfCode,
     boundKinds,
     positions,
     att,
-    attCache,
+    attAll,
     codeOfPos,
     forbids,
     authority,
+    summary,
     nodes,
     globOwners,
     errors
   };
+}
+
+/** The unit's single bound identity (head), or null. */
+export function bindOf(w: World, u: string): string | null {
+  return w.unitBinds.get(u)?.[0] ?? null;
 }
 
 // ---- lifting and permitted sets ---------------------------------------------------------------
@@ -269,8 +307,10 @@ export function liftEffect(
   return { atom: `${verb}<${r}>`, resource: r };
 }
 
-export function liftHatch(w: World, kind: string): string {
-  return w.hatchKinds.has(kind) ? `${kind}<${TRUST}>` : `Hatch<${TRUST}>`;
+/** A manifest marker of kind h at an identity of language L lifts to h<Trust> when the shape
+ *  declares h for L, else to Undeclared<Trust> (A.3.4.5, A.16.9(a)). */
+export function liftHatch(w: World, kind: string, lang: string): string {
+  return w.hatchLangs.get(kind)?.has(lang) ? `${kind}<${TRUST}>` : UNDECLARED;
 }
 
 export function verbDeclared(w: World, verb: string): boolean {
@@ -297,6 +337,17 @@ export function covers(f: Claim, pos: string): boolean {
   return scope.some((s) => inUnitSel(s, pos)) && !except.some((s) => inUnitSel(s, pos));
 }
 
+/** atom ∈ cl(C): implied by some atom of C on the same resource */
+export function inClosure(w: World, atoms: string[], atom: string): boolean {
+  const a = parseAtom(atom);
+  if (!a) return false;
+  return atoms.some((c) => {
+    const p = parseAtom(c);
+    return !!p && p.resource === a.resource && impl(w, p.verb, a.verb);
+  });
+}
+
+/** b ∈ A(u): cl(G(comp(u))) ∪ TrustAtoms under declared grants, else every atom. */
 export function inA(w: World, pos: string, atom: string): boolean {
   const comp = posComp(pos);
   if (!comp) return true;
@@ -305,10 +356,17 @@ export function inA(w: World, pos: string, atom: string): boolean {
   const a = parseAtom(atom);
   if (!a) return false;
   if (a.resource === TRUST) return true;
-  return c.grants.some((g) => {
-    const p = parseAtom(g);
-    return !!p && p.resource === a.resource && impl(w, p.verb, a.verb);
-  });
+  return inClosure(w, c.grants, atom);
+}
+
+/** b ∈ S(u): cl(C) ∪ TrustAtoms under a complete summary, else every atom (A.16.34). */
+export function inS(w: World, pos: string, atom: string): boolean {
+  const s = w.summary.get(pos);
+  if (!s) return true;
+  const a = parseAtom(atom);
+  if (!a) return false;
+  if (a.resource === TRUST) return true;
+  return inClosure(w, s.args.atoms as string[], atom);
 }
 
 export function protectingForbids(w: World, pos: string, atom: string): Claim[] {
@@ -320,24 +378,13 @@ export function protectingForbids(w: World, pos: string, atom: string): Claim[] 
   });
 }
 
-export function lvl(
-  w: World,
-  pos: string,
-  atom: string,
-  tierOf: (c: Claim) => Tier = (c) => c.tier
-): Tier | null {
-  const fs = protectingForbids(w, pos, atom);
-  if (fs.length === 0) return null;
-  return maxTier(...fs.map(tierOf));
-}
-
-export function permitted(w: World, pos: string, atom: string): boolean {
-  return inA(w, pos, atom) && protectingForbids(w, pos, atom).length === 0;
-}
-
-/** Excluding claims of atom b at position u: protecting forbids, plus authority if b ∉ A(u). */
+/** Excluding claims of b ∉ P(u), in A.4.4.7's kinds: forbids, the summary, authority. */
 export function excludingClaims(w: World, pos: string, atom: string): Claim[] {
   const out = [...protectingForbids(w, pos, atom)];
+  if (!inS(w, pos, atom)) {
+    const s = w.summary.get(pos);
+    if (s) out.push(s);
+  }
   if (!inA(w, pos, atom)) {
     const comp = posComp(pos);
     const auth = comp ? w.authority.get(comp) : undefined;
@@ -346,10 +393,26 @@ export function excludingClaims(w: World, pos: string, atom: string): Claim[] {
   return out;
 }
 
+export function permitted(w: World, pos: string, atom: string): boolean {
+  return inA(w, pos, atom) && inS(w, pos, atom) && protectingForbids(w, pos, atom).length === 0;
+}
+
+/** Lvl(u)(a): the highest tier among the claims excluding a at u, ⊥ (null) if none. */
+export function lvl(
+  w: World,
+  pos: string,
+  atom: string,
+  tierOf: (c: Claim) => Tier = (c) => c.tier
+): Tier | null {
+  const cs = excludingClaims(w, pos, atom);
+  if (cs.length === 0) return null;
+  return maxTier(...cs.map(tierOf));
+}
+
 export function compCode(w: World, comp: string): string[] {
   const out: string[] = [];
   for (const [p, xs] of w.codeOfPos) if (posComp(p) === comp) out.push(...xs);
-  return out.sort(cmpStr);
+  return sortedUniq(out);
 }
 
 export function unitCode(w: World, unit: string): string[] {

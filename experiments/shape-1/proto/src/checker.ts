@@ -1,24 +1,20 @@
-// Checker-decided claims (structure, authority, conduct): W_decl, lifted edges, coherence errors,
-// contradictions with canonical witnesses, refutations, footprints and channels (A.4.4–A.4.5).
+// Checker-decided claims (version 7): W_decl, lifted edges, coherence errors, contradictions of
+// effect forbids, summaries and authority through P(u) (raw_fact_exact), structure
+// contradictions with canonical witnesses and supports, refutations of lower bounds, footprints
+// and channels (A.4.4–A.4.5, A.15.4, A.15.12, A.16.5, A.16.8, A.16.25, A.16.26).
 import type { Ctx } from "./context.ts";
-import { type WFact, channelCovered, factId } from "./evidence.ts";
 import { idToSourceRef } from "./elaborate.ts";
+import { type UsableEntry, type WFact, channelCovered, factId } from "./evidence.ts";
+import { jcs } from "./jcs.ts";
 import { type IdentityInfo, ancestorsOrSelf } from "./manifest.ts";
-import {
-  type Cause,
-  type Claim,
-  type JsonValue,
-  type ShapeError,
-  TRUST,
-  parseAtom
-} from "./model.ts";
-import { carriers, parseResourceCode } from "./resource-code.ts";
+import { type Cause, type Claim, type JsonValue, type ShapeError, TRUST, parseAtom } from "./model.ts";
+import { carriers } from "./resource-code.ts";
 import { type Tier, cmpStr, cmpTuple, maxTier, sortedUniq, tierRank } from "./util.ts";
 import {
   UNGOVERNED,
   type World,
+  bindOf,
   compCode,
-  covers,
   excludingClaims,
   impl,
   inUnitSel,
@@ -41,6 +37,12 @@ export interface Contra {
   causes: Cause[];
   message: string;
   refuted: boolean;
+  /** refutations: the refuting records' ids */
+  refuting: string[];
+  /** effect contradictions: the site, for tier* and the matching of exceptions */
+  site: { x: string; pos: string; atom: string } | null;
+  /** structure contradictions: the support's lifted edges (A.4.4.11, A.16.5) */
+  supportEdges: Edge[];
 }
 
 export interface Edge {
@@ -50,13 +52,12 @@ export interface Edge {
   facts: WFact[];
 }
 
+const REGISTERED = new Set(["ts", "rust", "verus"]);
+
 // ---- declared world ----------------------------------------------------------------------------
 
-/** W_decl(S_h): declared summary atoms, `via` call pairs and relation edges as declared facts. */
-export function declaredFacts(ctx: Ctx): WFact[] {
-  const out: WFact[] = [];
-  const W = ctx.Wh;
-  const mk = (raw: Record<string, unknown>, extra: Partial<WFact>): WFact => ({
+function declFact(raw: Record<string, unknown>, extra: Partial<WFact>): WFact {
+  return {
     fid: factId(raw),
     type: "declared",
     at: null,
@@ -73,10 +74,21 @@ export function declaredFacts(ctx: Ctx): WFact[] {
     relocated: false,
     n: 1,
     sources: [],
+    anchors: [],
     raw,
     ...extra
-  });
-  for (const c of ctx.head.claims) {
+  };
+}
+
+/** W_decl(S_h): declared summary atoms, `via` call pairs and relation edges (A.4.4.4). */
+export function declaredFacts(ctx: Ctx): WFact[] {
+  return declaredFactsOf(ctx.head.claims, ctx.Wh);
+}
+
+/** W_decl of a shape's claims under a world. */
+export function declaredFactsOf(claims: Claim[], W: World): WFact[] {
+  const out: WFact[] = [];
+  for (const c of claims) {
     if (c.op === "effects.lower") {
       const u = String(c.args.unit);
       for (const entry of c.args.atoms as string[]) {
@@ -86,24 +98,16 @@ export function declaredFacts(ctx: Ctx): WFact[] {
         const a = parseAtom(atom);
         if (via) {
           out.push(
-            mk(
+            declFact(
               { type: "declared", claim: c.fp, atom: entry },
-              {
-                kind: "call",
-                at: W.unitBind.get(u) ?? null,
-                unit: u,
-                to: W.unitBind.get(via) ?? null,
-                atom,
-                verb: a?.verb ?? null,
-                resource: a?.resource ?? null
-              }
+              { kind: "call", at: bindOf(W, u), unit: u, to: bindOf(W, via), atom }
             )
           );
           out.push(
-            mk(
+            declFact(
               { type: "declared", claim: c.fp, atom, unit: via },
               {
-                at: W.unitBind.get(via) ?? null,
+                at: bindOf(W, via),
                 unit: via,
                 atom,
                 verb: a?.verb ?? null,
@@ -113,10 +117,10 @@ export function declaredFacts(ctx: Ctx): WFact[] {
           );
         } else {
           out.push(
-            mk(
+            declFact(
               { type: "declared", claim: c.fp, atom },
               {
-                at: W.unitBind.get(u) ?? null,
+                at: bindOf(W, u),
                 unit: u,
                 atom,
                 verb: a?.verb ?? null,
@@ -128,7 +132,7 @@ export function declaredFacts(ctx: Ctx): WFact[] {
       }
     } else if (c.op === "edge.exists") {
       out.push(
-        mk(
+        declFact(
           { type: "declared", claim: c.fp },
           { kind: String(c.args.kind), unit: String(c.args.from), to: String(c.args.to) }
         )
@@ -158,15 +162,16 @@ export function factCost(f: WFact): [number, number] {
   return f.presenceSound ? [0, 1] : [1, 1];
 }
 
-function bestFact(facts: WFact[]): WFact {
+/** The representative: least by (presence-sound first, declared first, fact id) (A.4.4.9). */
+export function bestFact(facts: WFact[]): WFact {
   return [...facts].sort((a, b) =>
     cmpTuple([...factCost(a), a.fid], [...factCost(b), b.fid])
   )[0] as WFact;
 }
 
-/** Lifted edges E_S of W_eval: relations, `via` pairs and observed calls/edges between components. */
+/** Lifted edges E_S: relations, `via` pairs, calls between distinct components and declared-kind
+ *  raw edges; edges touching ungoverned are dropped and counted (A.4.4.2). */
 export function liftedEdges(
-  ctx: Ctx,
   w: World,
   facts: WFact[]
 ): { edges: Edge[]; ungovernedCalls: number; droppedEdges: number } {
@@ -177,7 +182,7 @@ export function liftedEdges(
   const add = (from: string, kind: string, to: string, f: WFact): void => {
     const k = `${from}\u0000${kind}\u0000${to}`;
     const e = byKey.get(k) ?? { from, kind, to, facts: [] };
-    e.facts.push(f);
+    if (!e.facts.some((x) => x.fid === f.fid)) e.facts.push(f);
     byKey.set(k, e);
   };
   const compAt = (x: string): string | null => posComp(w.att(x));
@@ -211,7 +216,6 @@ export function liftedEdges(
       add(a, f.kind, b, f);
     }
   }
-  void ctx;
   const edges = [...byKey.values()].sort((x, y) =>
     cmpTuple([x.from, x.kind, x.to], [y.from, y.kind, y.to])
   );
@@ -219,102 +223,8 @@ export function liftedEdges(
   return { edges, ungovernedCalls, droppedEdges };
 }
 
-// ---- tier* ------------------------------------------------------------------------------------
-
-export function tierStar(ctx: Ctx, c: Claim): Tier {
-  let t = c.tier;
-  for (const bfp of ctx.heirOf.get(c.fp) ?? []) {
-    const b = ctx.baseClaims.get(bfp);
-    if (b) t = maxTier(t, b.tier);
-  }
-  return t;
-}
-
 function claimId(c: Claim): string {
   return c.ids[0] ?? c.fp;
-}
-
-// ---- authority and effect forbids ------------------------------------------------------------------
-
-export function effectSites(
-  ctx: Ctx,
-  facts: WFact[]
-): { x: string; pos: string; atom: string; f: WFact }[] {
-  const W = ctx.Wh;
-  const out: { x: string; pos: string; atom: string; f: WFact }[] = [];
-  for (const f of facts) {
-    if (f.type === "effect" && f.at && f.verb && f.resource) {
-      const l = liftEffect(W, f.verb, f.resource);
-      if (l) out.push({ x: f.at, pos: W.att(f.at), atom: l.atom, f });
-    } else if (f.type === "hatch" && f.at && f.kind) {
-      out.push({ x: f.at, pos: W.att(f.at), atom: liftHatch(W, f.kind), f });
-    } else if (f.declared && f.atom && f.unit && f.kind !== "call" && !f.to) {
-      out.push({ x: f.at ?? `unit:${f.unit}`, pos: f.unit, atom: f.atom, f });
-    }
-  }
-  return out;
-}
-
-export function evalEffects(ctx: Ctx, facts: WFact[], errors: ShapeError[]): Contra[] {
-  const W = ctx.Wh;
-  const subjects = new Map<string, { x: string; pos: string; atom: string; facts: WFact[] }>();
-  for (const s of effectSites(ctx, facts)) {
-    if (permitted(W, s.pos, s.atom)) continue;
-    const k = JSON.stringify([s.x, s.atom]);
-    const e = subjects.get(k) ?? { x: s.x, pos: s.pos, atom: s.atom, facts: [] };
-    e.facts.push(s.f);
-    subjects.set(k, e);
-  }
-  const out: Contra[] = [];
-  for (const [, s] of [...subjects.entries()].sort((a, b) => cmpStr(a[0], b[0]))) {
-    const excl = excludingClaims(W, s.pos, s.atom).sort((a, b) =>
-      cmpTuple(
-        [-tierRank(tierStar(ctx, a)), a.op === "effect.forbid" ? 0 : 1, a.fp],
-        [-tierRank(tierStar(ctx, b)), b.op === "effect.forbid" ? 0 : 1, b.fp]
-      )
-    );
-    const claim = excl[0];
-    if (!claim) continue;
-    const subject = { code: s.x, atom: s.atom };
-    const decl = s.facts.filter((f) => f.declared);
-    const causes: Cause[] = [];
-    const w = bestFact(s.facts);
-    const where = s.x.startsWith("unit:") ? s.x.slice(5) : idToSourceRef(s.x);
-    causes.push({ type: "fact", id: w.fid, text: factText(w) });
-    if (w.type === "effect" && w.resource) {
-      const r = parseAtom(s.atom)?.resource ?? "";
-      causes.push({ type: "binding", id: `resource ${r}`, text: `${r} binds ${w.resource}` });
-    }
-    causes.push({ type: "code", id: s.x, text: `${where} is attributed to ${s.pos}` });
-    for (const o of excl.slice(1))
-      causes.push({ type: "claim", id: o.fp, text: `${claimId(o)} also excludes it` });
-    if (decl.length > 0) {
-      errors.push({
-        code: "E-conduct",
-        subject: `${claimId(claim)} ${JSON.stringify(subject)}`,
-        message: `${s.pos} declares ${s.atom}, which ${claimId(claim)} excludes`,
-        causes,
-        dischargers: [
-          { act: "edit-shape", by: "author", agentSafe: true, eligible: [], creates: null }
-        ]
-      });
-      continue;
-    }
-    out.push({
-      claim,
-      subject,
-      force: w.presenceSound ? "sound" : "heuristic",
-      witness: [w],
-      support: s.facts,
-      supportCode: sortedUniq(s.facts.flatMap((f) => (f.at ? [f.at] : []))),
-      excluding: excl,
-      tierStar: maxTier(...excl.map((c) => tierStar(ctx, c))),
-      causes,
-      message: `${where} (in ${s.pos}) performs ${s.atom}${w.resource ? ` on ${w.resource}` : ""}. ${claimId(claim)} forbids it.`,
-      refuted: false
-    });
-  }
-  return out;
 }
 
 function factText(f: WFact): string {
@@ -327,117 +237,112 @@ function factText(f: WFact): string {
   return `declared by ${f.claim}${f.atom ? ` (${f.atom})` : ""}`;
 }
 
-// ---- reach and conduct ------------------------------------------------------------------------------
-
-export function reach(ctx: Ctx, from: string[]): Map<string, WFact[]> {
-  // shortest call chains by (heuristic, observed, length) from any start identity
-  const best = new Map<string, { cost: [number, number, number]; chain: WFact[] }>();
-  const queue: { x: string; cost: [number, number, number]; chain: WFact[] }[] = from.map((x) => ({
-    x,
-    cost: [0, 0, 0],
-    chain: []
-  }));
-  while (queue.length > 0) {
-    queue.sort((a, b) => cmpTuple([...a.cost, a.x], [...b.cost, b.x]));
-    const cur = queue.shift() as { x: string; cost: [number, number, number]; chain: WFact[] };
-    if (best.has(cur.x)) continue;
-    best.set(cur.x, { cost: cur.cost, chain: cur.chain });
-    for (const c of ctx.calls.get(cur.x) ?? []) {
-      if (best.has(c.to)) continue;
-      const fc = factCost(c.fact);
-      queue.push({
-        x: c.to,
-        cost: [cur.cost[0] + fc[0], cur.cost[1] + fc[1], cur.cost[2] + 1],
-        chain: [...cur.chain, c.fact]
-      });
-    }
-  }
-  return new Map([...best.entries()].map(([k, v]) => [k, v.chain]));
+/** The JCS of the key preimage a violation would have as a contradiction (A.16.25). */
+function keyPreimage(c: Claim, subject: JsonValue): string {
+  return jcs({ claim: c.fp, kind: "contradiction", subject, v: "shape.obligation.v1" });
 }
 
-export function inClosure(w: World, atoms: string[], atom: string): boolean {
-  const a = parseAtom(atom);
-  if (!a) return false;
-  return atoms.some((c) => {
-    const p = parseAtom(c);
-    return !!p && p.resource === a.resource && impl(w, p.verb, a.verb);
-  });
+function editShape(): { act: "edit-shape"; by: "author"; agentSafe: true; eligible: string[]; creates: null } {
+  return { act: "edit-shape", by: "author", agentSafe: true, eligible: [], creates: null };
 }
 
-export function evalUpper(ctx: Ctx, facts: WFact[], errors: ShapeError[]): Contra[] {
+// ---- authority, effect forbids and summaries ---------------------------------------------------
+
+export interface Site {
+  x: string;
+  pos: string;
+  atom: string;
+  f: WFact;
+}
+
+/** Effect sites: lifted effect facts, manifest hatch facts and declared summary atoms. */
+export function effectSites(ctx: Ctx, facts: WFact[]): Site[] {
   const W = ctx.Wh;
-  const out: Contra[] = [];
-  const sites = effectSites(ctx, facts).filter((s) => !(parseAtom(s.atom)?.resource === TRUST));
-  const sitesAt = new Map<string, typeof sites>();
-  for (const s of sites) {
-    const k = s.f.declared ? (s.f.at ?? `unit:${s.f.unit}`) : s.x;
-    sitesAt.set(k, [...(sitesAt.get(k) ?? []), s]);
+  const out: Site[] = [];
+  for (const f of facts) {
+    if (f.type === "effect" && f.at && f.verb && f.resource) {
+      const l = liftEffect(W, f.verb, f.resource);
+      if (l) out.push({ x: f.at, pos: W.att(f.at), atom: l.atom, f });
+    } else if (f.type === "hatch" && f.at && f.kind) {
+      const lang = ctx.Mh.ids.get(f.at)?.lang ?? "";
+      out.push({ x: f.at, pos: W.att(f.at), atom: liftHatch(W, f.kind, lang), f });
+    } else if (f.declared && f.atom && f.unit && f.kind !== "call" && !f.to) {
+      out.push({ x: f.at ?? `unit:${f.unit}`, pos: f.unit, atom: f.atom, f });
+    }
   }
-  for (const c of ctx.head.claims) {
-    if (c.op !== "effects.upper") continue;
-    const u = String(c.args.unit);
-    const C = c.args.atoms as string[];
-    const start = [...(W.codeOfPos.get(u) ?? [])];
-    const r = reach(ctx, start);
-    const keys = [...r.keys(), ...(W.unitBind.get(u) ? [] : [`unit:${u}`])];
-    const subjects = new Map<string, { atom: string; options: { f: WFact; chain: WFact[] }[] }>();
-    for (const x of keys) {
-      for (const s of sitesAt.get(x) ?? []) {
-        if (s.f.declared && s.f.unit === u) continue;
-        if (inClosure(W, C, s.atom)) continue;
-        const e = subjects.get(s.atom) ?? { atom: s.atom, options: [] };
-        e.options.push({ f: s.f, chain: r.get(x) ?? [] });
-        subjects.set(s.atom, e);
-      }
-    }
-    for (const [atom, s] of [...subjects.entries()].sort((a, b) => cmpStr(a[0], b[0]))) {
-      const scored = s.options
-        .map((o) => {
-          const all = [...o.chain, o.f];
-          const h = all.filter((f) => !f.declared && !f.presenceSound).length;
-          const ob = all.filter((f) => f.observed).length;
-          return {
-            o,
-            all,
-            key: [h, ob, all.length, ...all.map((f) => f.fid)] as (string | number)[]
-          };
-        })
-        .sort((a, b) => cmpTuple(a.key, b.key));
-      const w = scored[0];
-      if (!w) continue;
-      const subject = { unit: u, atom };
-      const causes: Cause[] = w.all.map((f) => ({
-        type: "fact" as const,
-        id: f.fid,
-        text: factText(f)
-      }));
-      if (w.all.every((f) => f.declared)) {
-        errors.push({
-          code: "E-conduct",
-          subject: `${claimId(c)} ${JSON.stringify(subject)}`,
-          message: `${u}'s complete summary omits ${atom}, which W_decl gives it`,
-          causes,
-          dischargers: [
-            { act: "edit-shape", by: "author", agentSafe: true, eligible: [], creates: null }
-          ]
-        });
-        continue;
-      }
-      const support = s.options.flatMap((o) => [...o.chain, o.f]);
-      out.push({
-        claim: c,
-        subject,
-        force: w.all.every((f) => f.declared || f.presenceSound) ? "sound" : "heuristic",
-        witness: w.all,
-        support,
-        supportCode: sortedUniq(support.flatMap((f) => (f.at ? [f.at] : []))),
-        excluding: [c],
-        tierStar: tierStar(ctx, c),
-        causes,
-        message: `calling ${u} may cause ${atom}, outside its complete summary ${claimId(c)}.`,
-        refuted: false
+  return out;
+}
+
+/** tier* of an effect-forbid, summary or authority obligation at its fact: the higher of the
+ *  claim's head tier and Lvl_b at the fact's base position (A.6.2.3, A.16.13). */
+export type LvlB = (x: string, atom: string, f: WFact) => Tier | null;
+
+export function evalEffects(ctx: Ctx, facts: WFact[], errors: ShapeError[], lvlB: LvlB): Contra[] {
+  const W = ctx.Wh;
+  const subjects = new Map<string, { x: string; pos: string; atom: string; facts: WFact[] }>();
+  for (const s of effectSites(ctx, facts)) {
+    if (permitted(W, s.pos, s.atom)) continue;
+    const k = JSON.stringify([s.x, s.atom]);
+    const e = subjects.get(k) ?? { x: s.x, pos: s.pos, atom: s.atom, facts: [] };
+    if (!e.facts.some((f) => f.fid === s.f.fid)) e.facts.push(s.f);
+    subjects.set(k, e);
+  }
+  const out: Contra[] = [];
+  const kindRank = (c: Claim): number =>
+    c.op === "effect.forbid" ? 0 : c.op === "effects.upper" ? 1 : 2;
+  for (const [, s] of [...subjects.entries()].sort((a, b) => cmpStr(a[0], b[0]))) {
+    const L = s.x.startsWith("unit:") ? null : lvlB(s.x, s.atom, bestFact(s.facts));
+    const tstar = (c: Claim): Tier => (L ? maxTier(c.tier, L) : c.tier);
+    const excl = excludingClaims(W, s.pos, s.atom).sort((a, b) =>
+      cmpTuple(
+        [-tierRank(tstar(a)), kindRank(a), a.fp],
+        [-tierRank(tstar(b)), kindRank(b), b.fp]
+      )
+    );
+    const claim = excl[0];
+    if (!claim) continue;
+    const subject = { code: s.x, atom: s.atom };
+    const w = bestFact(s.facts);
+    if (s.facts.some((f) => f.declared)) {
+      const decl = bestFact(s.facts.filter((f) => f.declared));
+      errors.push({
+        code: "E-conduct",
+        subject: keyPreimage(claim, subject),
+        message: `${s.pos} declares ${s.atom}, which ${claimId(claim)} excludes`,
+        causes: [
+          { type: "fact", id: decl.fid, text: factText(decl) },
+          ...(s.x.startsWith("unit:") ? [] : [{ type: "code" as const, id: s.x }])
+        ],
+        dischargers: [editShape()]
       });
+      continue;
     }
+    const where = s.x.startsWith("unit:") ? s.x.slice(5) : idToSourceRef(s.x);
+    const causes: Cause[] = [{ type: "fact", id: w.fid, text: factText(w) }];
+    if (w.type === "effect" && w.resource) {
+      const r = parseAtom(s.atom)?.resource ?? "";
+      causes.push({ type: "binding", id: `resource ${r}`, text: `${r} binds ${w.resource}` });
+    }
+    causes.push({ type: "code", id: s.x, text: `${where} is attributed to ${s.pos}` });
+    for (const o of excl.slice(1))
+      causes.push({ type: "claim", id: o.fp, text: `${claimId(o)} also excludes it` });
+    causes.push({ type: "claim", id: claim.fp, text: `${claimId(claim)} forbids it` });
+    out.push({
+      claim,
+      subject,
+      force: w.presenceSound ? "sound" : "heuristic",
+      witness: [w],
+      support: s.facts,
+      supportCode: sortedUniq(s.facts.flatMap((f) => (f.at ? [f.at] : []))),
+      excluding: excl,
+      tierStar: tstar(claim),
+      causes,
+      message: `${where} (in ${s.pos}) performs ${s.atom}${w.resource ? ` on ${w.resource}` : ""}. ${claimId(claim)} forbids it.`,
+      refuted: false,
+      refuting: [],
+      site: { x: s.x, pos: s.pos, atom: s.atom },
+      supportEdges: []
+    });
   }
   return out;
 }
@@ -448,18 +353,21 @@ export function boundCodes(w: World): string[] {
   return sortedUniq(w.esf.resources.flatMap((r) => r.bind));
 }
 
+/** chan(v<R>): effect(t) per t bound to R; for Trust, hatch(L) per language with a declared
+ *  hatch kind in ↓v (A.4.5.2). */
 export function chanOfAtom(w: World, atom: string): string[] {
   const a = parseAtom(atom);
   if (!a) return [];
   if (a.resource === TRUST) {
     const langs = new Set<string>();
-    for (const [h, lang] of w.hatchKinds) if (impl(w, h, a.verb)) langs.add(lang);
+    for (const [h, ls] of w.hatchLangs) if (impl(w, h, a.verb)) for (const l of ls) langs.add(l);
     return [...langs].sort(cmpStr).map((l) => `hatch(${l})`);
   }
   const r = w.esf.resources.find((x) => x.q === a.resource);
   return (r?.bind ?? []).map((t) => `effect(${t})`);
 }
 
+/** prod(k, T): call(L) for calls; edge(k) to components; edge(k, t) per bound t of T. */
 export function prod(w: World, kind: string, targets: Set<string>): string[] {
   if (kind === "calls") return ["call(*)"];
   const kd = w.esf.kinds.find((k) => k.name === kind);
@@ -472,18 +380,14 @@ export function prod(w: World, kind: string, targets: Set<string>): string[] {
   return out;
 }
 
-export function unitsOfSel(w: World, sels: string[]): string[] {
-  return w.positions.filter((p) => sels.some((s) => inUnitSel(s, p)));
-}
-
 export function governedCode(w: World): string[] {
   const out: string[] = [];
   for (const [p, xs] of w.codeOfPos) if (p !== UNGOVERNED) out.push(...xs);
-  return out.sort(cmpStr);
+  return sortedUniq(out);
 }
 
-/** F(c) and T(c) for a checker-decided claim under a world (A.4.5.1-2). */
-export function footprint(ctx: Ctx, w: World, c: Claim): { code: string[]; channels: string[] } {
+/** F(c) and T(c) of a checker-decided claim under a world (A.4.5.1-2 [D2]). */
+export function footprint(w: World, c: Claim): { code: string[]; channels: string[] } {
   switch (c.op) {
     case "authority":
       return {
@@ -502,14 +406,11 @@ export function footprint(ctx: Ctx, w: World, c: Claim): { code: string[]; chann
       };
     }
     case "effects.upper":
-    case "effects.lower": {
-      const u = String(c.args.unit);
-      const r = reach(ctx, [...(w.codeOfPos.get(u) ?? [])]);
+    case "effects.lower":
       return {
-        code: sortedUniq(r.keys()),
-        channels: ["call(*)", ...boundCodes(w).map((t) => `effect(${t})`)]
+        code: [...(w.codeOfPos.get(String(c.args.unit)) ?? [])].sort(cmpStr),
+        channels: boundCodes(w).map((t) => `effect(${t})`)
       };
-    }
     case "edge.exists": {
       const a = String(c.args.from);
       return {
@@ -546,12 +447,13 @@ export function footprint(ctx: Ctx, w: World, c: Claim): { code: string[]; chann
   }
 }
 
+export function isExecutable(info: IdentityInfo): boolean {
+  return REGISTERED.has(info.lang) || info.executable;
+}
+
 /** Does channel t apply to identity x (A.4.5.3)? Returns the instantiated channel or null. */
 export function channelAt(t: string, info: IdentityInfo): string | null {
-  const registered = info.lang === "ts" || info.lang === "rust" || info.lang === "verus";
-  const command = info.lang === "pkgjson" || info.lang === "gha";
-  const rawExec = info.lang === "raw" && info.executable;
-  const executable = registered || rawExec || (command && info.executable);
+  const registered = REGISTERED.has(info.lang);
   if (t === "call(*)") return registered ? `call(${info.lang})` : null;
   const call = /^call\((\w+)\)$/.exec(t);
   if (call) return info.lang === call[1] ? t : null;
@@ -559,64 +461,57 @@ export function channelAt(t: string, info: IdentityInfo): string | null {
   if (hatch) return info.lang === hatch[1] ? t : null;
   const eff = /^effect\((.+)\)$/.exec(t);
   if (eff) {
-    const rc = eff[1] ?? "";
-    const car = carriers(rc);
-    if (registered && (car.langs === "all" || car.langs.has(info.lang))) return t;
-    if ((rawExec || (command && info.executable)) && car.rawCarrier) return t;
+    const car = carriers(eff[1] ?? "");
+    if (registered) return car.langs === "all" || car.langs.has(info.lang) ? t : null;
+    // raw files of the kind's listed extensions carry it; otherwise a raw or command identity
+    // flagged executable is a raw carrier (A.12.4, A.16.22 [D27])
     const ext = info.path.split(".").pop() ?? "";
     if (info.lang === "raw" && car.rawExts.includes(ext)) return t;
-    void parseResourceCode;
-    return null;
+    return info.executable && car.rawCarrier ? t : null;
   }
-  if (t.startsWith("edge(")) return executable ? t : null;
+  if (t.startsWith("edge(")) return isExecutable(info) ? t : null;
   return null;
 }
 
 // ---- refutation of lower bounds -----------------------------------------------------------------------
 
-function entryFor(
-  ctx: Ctx,
-  x: string
-): { provider: string; record: string; producerChanged: boolean }[] {
-  const out: { provider: string; record: string; producerChanged: boolean }[] = [];
-  for (const a of ancestorsOrSelf(ctx.Mh, x)) {
-    for (const e of ctx.obsEntries.get(a) ?? []) if (e.entry.complete) out.push(e);
-  }
-  return out;
+/** Per provider, the entry of the nearest ancestor-or-self of x that has a usable entry from it
+ *  (A.15.9). */
+export function nearestEntries(ctx: Ctx, x: string): UsableEntry[] {
+  const out = new Map<string, UsableEntry>();
+  for (const a of ancestorsOrSelf(ctx.Mh, x))
+    for (const e of ctx.obsEntries.get(a) ?? []) if (!out.has(e.provider)) out.set(e.provider, e);
+  return [...out.values()];
 }
 
-/** Footprint identities each covered by a usable complete entry on an applicable channel from a
- *  provider absence-sound in the given direction. */
+/** Footprint identities each covered on an applicable channel of T(c) by a usable complete entry
+ *  from a provider absence-sound under (a) (A.16.8(a)). */
 export function fullyObserved(
   ctx: Ctx,
   code: string[],
-  channels: string[],
-  dir: "a" | "b"
-): { ok: boolean; covered: string[] } {
+  channels: string[]
+): { ok: boolean; covered: string[]; records: string[] } {
   const covered: string[] = [];
-  let any = false;
+  const records = new Set<string>();
+  if (code.length === 0) return { ok: false, covered, records: [] };
   for (const x of code) {
     const info = ctx.Mh.ids.get(x);
-    if (!info) continue;
-    const needed = channels.map((t) => channelAt(t, info)).filter((t): t is string => t !== null);
-    if (needed.length === 0) continue;
-    any = true;
-    const es = entryFor(ctx, x).filter((e) => {
+    if (!info) return { ok: false, covered, records: [] };
+    const applicable = channels.map((t) => channelAt(t, info)).filter((t): t is string => t !== null);
+    let hit: UsableEntry | null = null;
+    for (const e of nearestEntries(ctx, x)) {
       const g = ctx.provs.get(e.provider);
-      if (!g) return false;
-      if (dir === "b" && e.producerChanged) return false;
-      return dir === "a" ? g.absenceA : g.absenceB;
-    });
-    const ok = needed.every((t) =>
-      es.some((e) => {
-        const g = ctx.provs.get(e.provider);
-        return !!g && channelCovered(dir === "a" ? g.channelsA : g.channelsB, t);
-      })
-    );
-    if (!ok) return { ok: false, covered };
+      if (!g || !g.absenceA || !e.entry.complete) continue;
+      if (applicable.some((t) => channelCovered(g.channelsA, t))) {
+        hit = e;
+        break;
+      }
+    }
+    if (!hit) return { ok: false, covered, records: [] };
     covered.push(x);
+    records.add(hit.record);
   }
-  return { ok: any, covered };
+  return { ok: true, covered, records: [...records].sort(cmpStr) };
 }
 
 export function evalLower(ctx: Ctx, facts: WFact[], edges: Edge[]): Contra[] {
@@ -628,42 +523,42 @@ export function evalLower(ctx: Ctx, facts: WFact[], edges: Edge[]): Contra[] {
   );
   for (const c of ctx.head.claims) {
     if (c.op === "effects.lower") {
-      const fp = footprint(ctx, W, c);
-      const obs = fullyObserved(ctx, fp.code, fp.channels, "a");
+      const fp = footprint(W, c);
+      const obs = fullyObserved(ctx, fp.code, fp.channels);
       if (!obs.ok) continue;
-      const inReach = new Set(fp.code);
+      const inCode = new Set(fp.code);
       for (const entry of c.args.atoms as string[]) {
-        const atom = entry.split(" via ")[0] as string;
-        const a = parseAtom(atom);
+        if (entry.includes(" via ")) continue;
+        const a = parseAtom(entry);
         if (!a) continue;
         const present = observedSites.some((s) => {
           const b = parseAtom(s.atom);
-          return inReach.has(s.x) && !!b && b.resource === a.resource && impl(W, b.verb, a.verb);
+          return inCode.has(s.x) && !!b && b.resource === a.resource && impl(W, b.verb, a.verb);
         });
         if (present) continue;
         out.push({
           claim: c,
-          subject: { unit: String(c.args.unit), atom },
+          subject: { unit: String(c.args.unit), atom: entry },
           force: "sound",
           witness: [],
           support: [],
           supportCode: obs.covered,
           excluding: [c],
-          tierStar: tierStar(ctx, c),
+          tierStar: c.tier,
           causes: [
-            {
-              type: "claim",
-              id: c.fp,
-              text: `complete absence-sound entries cover ${obs.covered.length} identities and none reports ${atom}`
-            }
+            ...obs.records.map((r) => ({ type: "record" as const, id: r })),
+            { type: "claim", id: c.fp, text: `complete absence-sound entries report no ${entry}` }
           ],
-          message: `${c.args.unit} is declared to cause ${atom}, but complete observations of its reach report none.`,
-          refuted: true
+          message: `${c.args.unit} is declared to cause ${entry}, but complete observations of its code report none.`,
+          refuted: true,
+          refuting: obs.records,
+          site: null,
+          supportEdges: []
         });
       }
     } else if (c.op === "edge.exists") {
-      const fp = footprint(ctx, W, c);
-      const obs = fullyObserved(ctx, fp.code, fp.channels, "a");
+      const fp = footprint(W, c);
+      const obs = fullyObserved(ctx, fp.code, fp.channels);
       if (!obs.ok) continue;
       const present = edges.some(
         (e) =>
@@ -681,16 +576,20 @@ export function evalLower(ctx: Ctx, facts: WFact[], edges: Edge[]): Contra[] {
         support: [],
         supportCode: obs.covered,
         excluding: [c],
-        tierStar: tierStar(ctx, c),
+        tierStar: c.tier,
         causes: [
+          ...obs.records.map((r) => ({ type: "record" as const, id: r })),
           {
             type: "claim",
             id: c.fp,
-            text: `complete absence-sound entries cover ${obs.covered.length} identities of ${c.args.from} and report no ${c.args.kind} edge to ${c.args.to}`
+            text: `complete absence-sound entries report no ${c.args.kind} edge ${c.args.from} -> ${c.args.to}`
           }
         ],
         message: `${claimId(c)}: no ${c.args.kind} edge ${c.args.from} -> ${c.args.to} is observed where observation is complete.`,
-        refuted: true
+        refuted: true,
+        refuting: obs.records,
+        site: null,
+        supportEdges: []
       });
     }
   }
@@ -699,16 +598,11 @@ export function evalLower(ctx: Ctx, facts: WFact[], edges: Edge[]): Contra[] {
 
 // ---- structure ----------------------------------------------------------------------------------------
 
-function edgeCost(e: Edge): [number, number] {
-  const f = bestFact(e.facts);
-  return factCost(f);
-}
-
 function pathCost(path: Edge[]): (number | string)[] {
   let h = 0;
   let o = 0;
   for (const e of path) {
-    const [a, b] = edgeCost(e);
+    const [a, b] = factCost(bestFact(e.facts));
     h += a;
     o += b;
   }
@@ -736,6 +630,7 @@ function shortestPaths(
     }
     for (const e of out.get(cur.n) ?? []) {
       if (settled.has(e.to)) continue;
+      if (e.to === start) continue;
       if (cur.path.some((p) => p.from === e.to)) continue;
       queue.push({ n: e.to, path: [...cur.path, e] });
     }
@@ -743,7 +638,8 @@ function shortestPaths(
   return best;
 }
 
-function sccs(nodes: string[], edges: Edge[]): string[][] {
+/** Non-trivial strongly connected components; a node with a self-loop is one (A.4.2.1). */
+export function sccs(nodes: string[], edges: { from: string; to: string }[]): string[][] {
   const adj = new Map<string, string[]>();
   for (const e of edges) adj.set(e.from, [...(adj.get(e.from) ?? []), e.to]);
   let index = 0;
@@ -772,7 +668,8 @@ function sccs(nodes: string[], edges: Edge[]): string[][] {
         comp.push(w);
         if (w === v) break;
       }
-      if (comp.length > 1) out.push(comp.sort(cmpStr));
+      if (comp.length > 1 || edges.some((e) => e.from === v && e.to === v))
+        out.push(comp.sort(cmpStr));
     }
   };
   for (const n of [...nodes].sort(cmpStr)) if (!idx.has(n)) strong(n);
@@ -786,9 +683,10 @@ export function evalStructure(ctx: Ctx, edges: Edge[], errors: ShapeError[]): Co
     c: Claim,
     subject: JsonValue,
     witness: Edge[],
-    support: WFact[],
+    supportEdges: Edge[],
     what: string
   ): void => {
+    const support = supportEdges.flatMap((e) => e.facts);
     const wfacts = witness.map((e) => bestFact(e.facts));
     const causes: Cause[] = wfacts.map((f) => ({
       type: "fact" as const,
@@ -798,27 +696,29 @@ export function evalStructure(ctx: Ctx, edges: Edge[], errors: ShapeError[]): Co
     if (wfacts.every((f) => f.declared)) {
       errors.push({
         code: "E-structure",
-        subject: `${claimId(c)} ${JSON.stringify(subject)}`,
+        subject: keyPreimage(c, subject),
         message: `declared structure violates ${claimId(c)}: ${what}`,
         causes,
-        dischargers: [
-          { act: "edit-shape", by: "author", agentSafe: true, eligible: [], creates: null }
-        ]
+        dischargers: [editShape()]
       });
       return;
     }
+    const uniq = [...new Map(support.map((f) => [f.fid, f])).values()];
     out.push({
       claim: c,
       subject,
       force: wfacts.every((f) => f.declared || f.presenceSound) ? "sound" : "heuristic",
       witness: wfacts,
-      support,
-      supportCode: sortedUniq(support.flatMap((f) => (f.at ? [f.at] : []))),
+      support: uniq,
+      supportCode: sortedUniq(uniq.flatMap((f) => (f.at ? [f.at] : []))),
       excluding: [c],
-      tierStar: tierStar(ctx, c),
-      causes,
+      tierStar: c.tier,
+      causes: [...causes, { type: "claim", id: c.fp, text: `${claimId(c)} forbids it` }],
       message: `${what}. ${claimId(c)} forbids it.`,
-      refuted: false
+      refuted: false,
+      refuting: [],
+      site: null,
+      supportEdges: [...new Map(supportEdges.map((e) => [`${e.from}\u0000${e.kind}\u0000${e.to}`, e])).values()]
     });
   };
   for (const c of ctx.head.claims) {
@@ -829,7 +729,7 @@ export function evalStructure(ctx: Ctx, edges: Edge[], errors: ShapeError[]): Co
       for (const y of nodeSet(W, c.args.exceptTo as string[])) T.delete(y);
       for (const e of edges) {
         if (e.kind !== c.args.kind || !S.has(e.from) || !T.has(e.to)) continue;
-        emit(c, { from: e.from, to: e.to }, [e], e.facts, `${e.kind} edge ${e.from} -> ${e.to}`);
+        emit(c, { from: e.from, to: e.to }, [e], [e], `${e.kind} edge ${e.from} -> ${e.to}`);
       }
     } else if (c.op === "path.forbid") {
       const K = new Set(c.args.kinds as string[]);
@@ -837,37 +737,37 @@ export function evalStructure(ctx: Ctx, edges: Edge[], errors: ShapeError[]): Co
       const T = nodeSet(W, c.args.to as string[]);
       const V = nodeSet(W, c.args.exceptVia as string[]);
       const kEdges = edges.filter((e) => K.has(e.kind));
+      const interior = (n: string): boolean => !V.has(n) && !S.has(n) && !T.has(n);
       for (const s of [...S].sort(cmpStr)) {
         if (V.has(s)) continue;
-        const sp = shortestPaths(s, kEdges, (n) => !V.has(n) && !S.has(n) && !T.has(n));
+        const sp = shortestPaths(s, kEdges, interior);
         for (const t of [...T].sort(cmpStr)) {
           if (t === s) continue;
           const p = sp.get(t);
           if (!p) continue;
-          // support: K-edges (a,b) with a reachable from s and t reachable from b through allowed interiors
-          const fwd = new Set([
-            s,
-            ...[...sp.keys()].filter((n) => !V.has(n) && !S.has(n) && !T.has(n))
-          ]);
-          const back = new Set<string>([t]);
+          // support: K-edges (a,b) with a reachable from s and t reachable from b through
+          // interiors outside V ∪ S ∪ T (A.4.4.11)
+          const fwd = new Set<string>([s]);
           let grew = true;
           while (grew) {
             grew = false;
             for (const e of kEdges)
-              if (
-                back.has(e.to) &&
-                !back.has(e.from) &&
-                !V.has(e.from) &&
-                !T.has(e.from) &&
-                (e.from === s || !S.has(e.from))
-              ) {
+              if (fwd.has(e.from) && !fwd.has(e.to) && interior(e.to)) {
+                fwd.add(e.to);
+                grew = true;
+              }
+          }
+          const back = new Set<string>([t]);
+          grew = true;
+          while (grew) {
+            grew = false;
+            for (const e of kEdges)
+              if (back.has(e.to) && !back.has(e.from) && (e.from === s || interior(e.from))) {
                 back.add(e.from);
                 grew = true;
               }
           }
-          const support = kEdges
-            .filter((e) => fwd.has(e.from) && back.has(e.to))
-            .flatMap((e) => e.facts);
+          const support = kEdges.filter((e) => fwd.has(e.from) && back.has(e.to));
           emit(
             c,
             { from: s, to: t },
@@ -900,7 +800,7 @@ export function evalStructure(ctx: Ctx, edges: Edge[], errors: ShapeError[]): Co
           c,
           { nodes: comp },
           best,
-          inner.flatMap((e) => e.facts),
+          inner,
           `cycle ${[n, ...best.map((e) => e.to)].join(" -> ")}`
         );
       }
@@ -909,4 +809,6 @@ export function evalStructure(ctx: Ctx, edges: Edge[], errors: ShapeError[]): Co
   return out;
 }
 
-export { covers, tierRank };
+export function ungovernedIds(w: World): string[] {
+  return [...(w.codeOfPos.get(UNGOVERNED) ?? [])];
+}

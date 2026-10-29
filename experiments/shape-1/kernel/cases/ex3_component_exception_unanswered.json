@@ -226,7 +226,19 @@
      "lang": "bend"
     },
     {
+     "kind": "unsafe",
+     "lang": "rust"
+    },
+    {
      "kind": "ts_ignore",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_expect_error",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_nocheck",
      "lang": "ts"
     }
    ],
@@ -345,6 +357,8 @@
      "entries": [
       {
        "digest": "sha256:dacd92e0e52666dee5ca9650a24d61b19602c583dde1a00228dbc2991969d95a",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
        "kind": "file",
        "parent": null,
@@ -353,6 +367,8 @@
       },
       {
        "digest": "sha256:63946a52d2e1aa63990626523d27ce738ede3e07c391df5a7341c920c750adf2",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
        "kind": "file",
        "parent": null,
@@ -361,6 +377,8 @@
       },
       {
        "digest": "sha256:1e9c3d29492cf2b4d1e8443ae37a91bb372196f4556c7cb518edfa1b8a3ee25f",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts",
@@ -369,6 +387,8 @@
       },
       {
        "digest": "sha256:3855b11d3e4b3bf24fedda11b47408cde5898bd082ba98ef6844d46197915729",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts",
@@ -387,7 +407,6 @@
   "revision": "b4"
  },
  "baseRecords": [],
- "cells": [],
  "change": {
   "ids": [
    "github:acme/shape#4"
@@ -617,7 +636,19 @@
      "lang": "bend"
     },
     {
+     "kind": "unsafe",
+     "lang": "rust"
+    },
+    {
      "kind": "ts_ignore",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_expect_error",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_nocheck",
      "lang": "ts"
     }
    ],
@@ -736,6 +767,8 @@
      "entries": [
       {
        "digest": "sha256:29dc593c1e6d491eb14915b4be6f8160a6ec9f19d75569bb89ab748fdc0632bc",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
        "kind": "file",
        "parent": null,
@@ -744,6 +777,8 @@
       },
       {
        "digest": "sha256:63946a52d2e1aa63990626523d27ce738ede3e07c391df5a7341c920c750adf2",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
        "kind": "file",
        "parent": null,
@@ -752,6 +787,8 @@
       },
       {
        "digest": "sha256:27f5a8824c3349cedb4316c00c8234f12a24b91266c79588af550a99b50790fc",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts",
@@ -760,6 +797,8 @@
       },
       {
        "digest": "sha256:8c4fa2264181b75034eb61395557067a4b48975cc0b2254703d8b2603d737154",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts",

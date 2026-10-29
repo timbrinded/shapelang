@@ -1,0 +1,1111 @@
+implementation: /root/.bun/bin/bun /home/user/shapelang/experiments/shape-1/proto/src/cli.ts check --input - --core  (input on stdin)
+vectors: /home/user/shapelang/experiments/shape-1/m0/vectors
+vector 2099-judgment: A persisted judgment dated 2099 is rejected under RJ06 every run and does not move now*, so the clock-dependent debt row still reads 51 days  [decides A.6.1.3, A.12.6, A.7.7.1, A.12.10.6, A.15.7]
+  case judgment-dated-2099 (exit 0, 85 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 5: the only obligation is debt
+    PASS    rejected fields where {"code":"RJ06"} = {"record":"sha256:b56f0da46c383c4a8af4e1ad4fbbe210232f0141c87dcd0d6e39f13fad7d22d3"}
+            why: A.12.6 RJ06: the persisted judgment's time (2099) is after now*; it re-applies to persisted records every run (A.6.1.3)
+    PASS    rejected count = 1
+            why: envelopes of one statement are one record (A.5.1.1); it is listed once
+    PASS    obligations fields where {"key":"ob:b7c6214c0e86f05f579d11ee0d6f5144777bf1d1ab70d7f2639bf370957565ca"} = {"binding":"bd:0a843fea91ded80ef688f0cc3ddeacac4493db4425b46d976a200536d0f45b30","claim.fp":"sha256:94a79b456457febbe...
+            why: A.5.4.3: the rejected record has no force, so missing; Req does not meet Δcode (only README changed), so not introduced (A.7.3.3); matched by GuardWaived, so debt (rule 5, A.4.6.6)
+    PASS    debt fields where {"obligation":"ob:b7c6214c0e86f05f579d11ee0d6f5144777bf1d1ab70d7f2639bf370957565ca"} = {"exception":"m::GuardWaived","exceptions":["m::GuardWaived"],"expiresInDays":51,"owner":"m::Owners"}
+            why: A.6.1.3: now* = max(now, base committer time) is not moved by the 2099 record, so the exception (expires 2026-12-15) is active and expiresInDays = ceil((expires - now*)/86400) = 51 (A.7.7.1, A.12.10.6); owner is the exception's (A.15.7)
+  case judgment-dated-2026 (exit 0, 115 ms)
+    PASS    verdict equals = "pass"
+            why: the judgment is usable and the law Sat
+    PASS    rejected count = 0
+            why: RJ06 does not apply to a time before now*
+    PASS    obligations count = 0
+            why: A.5.3.7: a usable eligible judgment establishes the informal law
+    PASS    debt count = 0
+            why: A.4.6.9: the exception matches nothing and is inert
+vector allowed-hatch-at-boundary: Example 2's base: HostTrusted's allowed external_body markers raise nothing, in change mode and in audit mode  [decides A.14.2.6, A.4.2.4, A.11.5, D1]
+  case change-base-unchanged (exit 0, 151 ms)
+    PASS    verdict equals = "pass"
+            why: A.11.5 acceptance: Example 2's base raises no obligation at HostTrusted
+    PASS    obligations count where {"subject.code":"verus:ironkv/src/host_t.rs#Host::send"} = 0
+            why: A.14.2.6, A.4.2.4 [D1]: the external_body clause excepts HostTrusted, which allows external_body, and no Hatch clause exists
+    PASS    obligations count where {"kind":"contradiction"} = 0
+            why: D1: hatch * gives the declared-verb clauses plus Undeclared, none of which forbids HostTrusted's allowed markers
+    PASS    obligations count = 0
+            why: the proof and dana's judgments establish the three laws; no code changed
+  case audit-base (exit 0, 110 ms)
+    PASS    verdict equals = "pass"
+            why: A.11.5 acceptance: Example 2's base raises no obligation at HostTrusted
+    PASS    obligations count where {"subject.code":"verus:ironkv/src/host_t.rs#Host::send"} = 0
+            why: A.14.2.6, A.4.2.4 [D1]: the external_body clause excepts HostTrusted, which allows external_body, and no Hatch clause exists
+    PASS    obligations count where {"kind":"contradiction"} = 0
+            why: D1: hatch * gives the declared-verb clauses plus Undeclared, none of which forbids HostTrusted's allowed markers
+    PASS    obligations count = 0
+            why: the proof and dana's judgments establish the three laws; no code changed
+vector append-only-update: std AppendOnly forbids Update, so an ungoverned script rewriting (Update) or redacting an append-only table raises a final sound contradiction; Read stays permitted  [decides D13, SYNTAX §4, A.3.4.2, A.4.4.7, A.7.5.1]
+  case ungoverned-update (exit 1, 91 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 2: introduced sound contradiction with tier* final
+    PASS    obligations fields where {"key":"ob:8e534caa49ee999859dfe4584ec8e8d3b56e0e0b99ff388c02bcb4f1cba2e9d2","kind":"contradiction"} = {"binding":"bd:52c7e0faf3840b26b547cc2a45068afd72cd4ceccdae7d3e76ffd9110c4d2474","claim.fp":"sha256:3fe8f5ac7169085e7...
+            why: D13, syntax §4: std AppendOnly<R> is forbid Update<R> (fp 3fe8f5ac7169085e over *), and Update ∈ ↓Update; att = ungoverned, which has no authority, so the forbid is the only excluding claim (A.4.4.7); A.7.3.1 new fact at a new identity; A.6.2.3 tier* final; A.7.5.1 rule 2; A.7.2.2 binding: (x, own, null, head) for the new identity
+    PASS    obligations count = 1
+            why: A.7.4.3: the new identities are covered by sqlEffects' complete entries (absence-sound in base and head)
+  case ungoverned-redact (exit 1, 104 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 2: introduced sound contradiction with tier* final
+    PASS    obligations fields where {"key":"ob:58e3cfadff4b28042a107a98e466e36cf6d9a27886c8dcc95e0be81d0985c3e3","kind":"contradiction"} = {"binding":"bd:a98a55ec21641a82ad5fa0865ca9ae89e1d739abd3dae09afb849e81b3482bf9","claim.fp":"sha256:3fe8f5ac7169085e7...
+            why: D13, syntax §4: std AppendOnly<R> is forbid Update<R> (fp 3fe8f5ac7169085e over *), and Redact ∈ ↓Update; att = ungoverned, which has no authority, so the forbid is the only excluding claim (A.4.4.7); A.7.3.1 new fact at a new identity; A.6.2.3 tier* final; A.7.5.1 rule 2; A.7.2.2 binding: (x, own, null, head) for the new identity
+    PASS    obligations count = 1
+            why: A.7.4.3: covered as in ungoverned-update
+  case ungoverned-read (exit 0, 94 ms)
+    PASS    verdict equals = "pass"
+            why: A.4.4.7: Read ∉ ↓Update, so P(ungoverned) contains Read<AuditEvent>
+    PASS    obligations count = 0
+            why: no claim excludes Read at ungoverned code; coverage met
+vector approve-without-exception: Example 2's approve line without the exception discharges neither the sound hatch contradiction nor the assumption obligation (blocked); with the exception both become debt  [decides A.14.2.6, A.7.6.5, A.7.6.6, A.7.6.7, A.4.6.6, A.7.7.1, D1]
+  case approve-only (exit 1, 146 ms)
+    PASS    verdict equals = "blocked"
+            why: A.14.2.6: the approve line answers nothing, so both obligations stay open and blocking
+    PASS    obligations fields where {"key":"ob:815d7ebb9678dbead1b3bef2195fa49bbf807b46d53827e5a944e8009cfc4403"} = {"binding":"bd:2ea660886d27e5e3e377c2e500e48bcb542e347d272df45c3ca3a92e4491972a","exception":null,"force":"sound","gr...
+            why: Example 2 step 1: sound introduced hatch contradiction; A.7.6.5/A.7.6.7: a sound contradiction has no answer discharger
+    PASS    obligations fields where {"key":"ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d"} = {"binding":"bd:1da36a42e325dc5acd89366516a304d11c2ce32f9dba52dc6934ad33a2c0535d","exception":null,"group":"g:f16ee5b2...
+            why: Example 2 step 2; A.7.6.5: reason assumption has no answer discharger, and without a matching exception the ref is no exception answer (A.7.6.6)
+    PASS    answered count = 0
+            why: A.7.6.5: neither ref discharges
+    PASS    debt count = 0
+            why: A.4.6.5: no exception, no match
+    PASS    obligations count where {"subject.code":"verus:ironkv/src/host_t.rs#Host::send"} = 0
+            why: A.14.2.6 [D1]: HostTrusted's allowed external_body markers raise nothing
+  case exception-and-approve (exit 0, 127 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 5: both obligations are exception-answered debt
+    PASS    obligations fields where {"key":"ob:815d7ebb9678dbead1b3bef2195fa49bbf807b46d53827e5a944e8009cfc4403"} = {"binding":"bd:2ea660886d27e5e3e377c2e500e48bcb542e347d272df45c3ca3a92e4491972a","exception":"ironkv::SetAssumeAccept...
+            why: A.4.6.6, A.7.6.6: matched, introduced, exception-answered by dana (IronKvTeam, not an author): debt
+    PASS    obligations fields where {"key":"ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d"} = {"binding":"bd:1da36a42e325dc5acd89366516a304d11c2ce32f9dba52dc6934ad33a2c0535d","exception":"ironkv::SetAssumeAccept...
+            why: A.4.6.6, A.7.6.6
+    PASS    answered fields where {"obligation":"ob:815d7ebb9678dbead1b3bef2195fa49bbf807b46d53827e5a944e8009cfc4403"} = {"as":"exception-answer"}
+            why: A.7.5.2: exception-answered obligations are listed in answered as exception-answer
+    PASS    answered fields where {"obligation":"ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d"} = {"as":"exception-answer"}
+            why: A.7.5.2
+    PASS    debt fields where {"obligation":"ob:815d7ebb9678dbead1b3bef2195fa49bbf807b46d53827e5a944e8009cfc4403"} = {"exception":"ironkv::SetAssumeAccepted","exceptions":["ironkv::SetAssumeAccepted"],"expiresInDays":51,"owner":"ironk...
+            why: A.7.7.1: expiresInDays = ceil((2026-12-15 - 2026-10-25T12:00Z)/86400) = 51 (Example 2); owner = the exception's owner (A.15.7)
+    PASS    debt fields where {"obligation":"ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d"} = {"exception":"ironkv::SetAssumeAccepted","exceptions":["ironkv::SetAssumeAccepted"],"expiresInDays":51,"owner":"ironk...
+            why: A.7.7.1
+    PASS    obligations count where {"subject.code":"verus:ironkv/src/host_t.rs#Host::send"} = 0
+            why: A.14.2.6 [D1]
+vector attribute-macro-out-dir-include: A dependency attribute macro, and include! of OUT_DIR (non-literal, out-of-tree) code, make an identity not hatch-complete, raising hatch(rust) coverage; a builtin attribute does not  [decides A.3.4.4, A.12.2.8, A.7.4.3, D20]
+  case dependency-attribute-macro (exit 1, 86 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: critical blocks coverage
+    PASS    obligations fields where {"key":"ob:0cb0f86f8883391644e93bcce2b116cbbe3e2628ca14e3197b374cb55eb68b72","kind":"coverage"} = {"binding":"bd:deda8a328457f0fc5874090602b74872f9e26e47eb0f094541e93c0fc71a2876","group":"g:750787ed67f1165967c22862a...
+            why: A.3.4.4 [D20]: #[tracing::instrument] is a macro in attribute position, neither a built-in attribute nor defined in the tree, so parse is not hatch-complete; unmet (NoUnsafe fp, hatch(rust)) at the finest change parse
+  case include-out-dir (exit 1, 87 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: critical blocks coverage
+    PASS    obligations fields where {"key":"ob:0cb0f86f8883391644e93bcce2b116cbbe3e2628ca14e3197b374cb55eb68b72","kind":"coverage"} = {"binding":"bd:999ca1013ef9a1db18a428aeb06d0a9cdf93f2c3306b2597a5086c0f22fae68f","group":"g:750787ed67f1165967c22862a...
+            why: A.3.4.4, A.12.2.8 [D20]: include! is excluded from the builtin list and counts as in-tree code only with a string-literal path to an in-tree hatch-complete file; concat!(env!("OUT_DIR"), …) is neither, so the file identity rust:src/tables.rs (its own text changed) is not hatch-complete
+  case builtin-attribute-control (exit 0, 84 ms)
+    PASS    verdict equals = "pass"
+            why: A.12.2.8: #[inline] is a built-in attribute, so parse stays hatch-complete
+    PASS    obligations count = 0
+            why: need met
+vector barrel-import: A judgment's Req follows a workspace barrel import to the declaring function: editing that helper or re-pointing the barrel stales the guard, editing another re-export does not  [decides A.12.2.10, A.5.3.4, A.5.4.1, A.7.3.3, A.12.3.2, D4]
+  case helper-behind-barrel-edited (exit 0, 110 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 9: unestablished does not block at normal under DefaultPolicy
+    PASS    obligations fields where {"key":"ob:a1c9b9585980fe945f9f5b4e5336a74458e3cadcb79dfa3ffcb241073f282b53"} = {"binding":"bd:16e4e1e07fdbd31ca46f4c4e26d02fe160366e7d3c4a413579f90759760a21ba","claim.fp":"sha256:9f0167e916fa9c025...
+            why: A.12.2.10: u's import of h through the workspace barrel lib/src/index.ts resolves to the declaring identity lib/src/h.ts#h, which the manifest records as u's ref; A.5.3.4 [D4]: Req for a judgment adds the functions of comp(u) reachable through Refs°, so h@unit is in Req and its moved digest stales the judgment (A.5.4.1), introduced since Req meets Δcode (A.7.3.3)
+  case unimported-reexport-edited (exit 0, 89 ms)
+    PASS    verdict equals = "pass"
+            why: the judgment is usable
+    PASS    obligations count = 0
+            why: A.5.3.4: k, re-exported by the same barrel but not imported by u, is not reachable through Refs°, so Req = {u, h} is unchanged and the judgment stays usable
+  case barrel-repointed (exit 0, 97 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 9
+    PASS    obligations fields where {"key":"ob:a1c9b9585980fe945f9f5b4e5336a74458e3cadcb79dfa3ffcb241073f282b53"} = {"binding":"bd:7b0f41c2b53587bb861c740f7df8e2785f65a5f3d8b14406b7750664dd496efb","introduced":true,"reason":"stale","...
+            why: A.12.2.10, A.5.7.2: re-pointing the barrel changes what u's import resolves to, so u's unit digest (env by identity) moves and its ref becomes h2; Req = {u@unit, h2@unit}, which the base judgment does not cite, so stale (A.5.4.1 'Req partly uncited'), introduced (A.7.3.3)
+vector base-failing-law-counterexample: A law already failing at base is introduced again only when the head's counterexample differs (assertion or inputs); an equal counterexample stays preexisting  [decides A.7.3.3, §7.3, A.5.5.1, A.7.1.5, D4]
+  case different-inputs (exit 1, 117 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7: introduced sound contradiction
+    PASS    obligations fields where {"claim.fp":"sha256:f101e55b35ddc9a227af31af0e0d85c988711d47fda3c444e211bbd8a3a28096","kind":"contradiction"} = {"binding":"bd:480c3cd93de6155ad5292c2b20c578f3f0461edbd085ecec360712c26bb9e44e","force":"sound","introduced":true,"k...
+            why: A.5.5.1: a presence-sound test's counterexample is a sound contradiction (subject null, A.12.8.5); A.7.3.3 [D4]: Req (check@unit) meets the delta and the base record's counterexample has other inputs ({x: 3} vs {x: 4}); A.7.2.2 code lists every Req pair
+    PASS    obligations count where {"kind":"unestablished"} = 0
+            why: A.7.1.5, T9: a sound contradiction suppresses unestablished
+  case equal-counterexample-other-seed (exit 0, 109 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 6
+    PASS    obligations fields where {"claim.fp":"sha256:f101e55b35ddc9a227af31af0e0d85c988711d47fda3c444e211bbd8a3a28096","kind":"contradiction"} = {"binding":"bd:480c3cd93de6155ad5292c2b20c578f3f0461edbd085ecec360712c26bb9e44e","force":"sound","introduced":false,"...
+            why: A.7.3.3 [D4]: a usable base-revision record of the same base-declared provider made this contradiction with an equal counterexample (equal assertion and inputs; the seed is not compared), so it is not introduced
+    PASS    obligations count where {"kind":"unestablished"} = 0
+            why: A.7.1.5
+  case different-assertion (exit 1, 107 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7
+    PASS    obligations fields where {"claim.fp":"sha256:f101e55b35ddc9a227af31af0e0d85c988711d47fda3c444e211bbd8a3a28096","kind":"contradiction"} = {"binding":"bd:480c3cd93de6155ad5292c2b20c578f3f0461edbd085ecec360712c26bb9e44e","force":"sound","introduced":true,"k...
+            why: A.7.3.3: equal inputs but a different assertion is a different counterexample
+vector base-totality: The base never makes the verdict invalid: an unreadable base gives only L0 (blocking, subject shape), base shape errors are lenient defects, and the same defect in the head is a blocking head error  [decides A.6.4.1, A.6.4.2, A.6.4.5, A.8.2.2, A.10.1, A.10.2]
+  case unreadable-base (exit 1, 93 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 3: L0 blocks until the base shape owner answers
+    PASS    errors count = 0
+            why: A.6.4.1, A.10.2: the base never makes the verdict invalid and shape errors apply to the head only
+    PASS    obligations fields where {"key":"ob:620fe93c78ec81a3ddd10e1ca9ac7a42817bd9d1dfe6eef715091250f96d48d5"} = {"binding":"bd:cae720168cac846335f0a7d17bcb7fad3e57a60ff2309606bb2fe7a43e89851d","claim":null,"introduced":true,"kind...
+            why: A.6.4.5: unparsable base gives L0 undecided with subject shape; A.8.2.2: subject shape has tier critical; A.15.2: claim null for a non-claim subject; A.8.3.2: L0 affected is empty; A.12.8.7 delta 'L0 unreadable'
+    PASS    loosening fields where {"question":"L0"} = {"answer":"undecided","exploited":false,"obligation":"ob:620fe93c78ec81a3ddd10e1ca9ac7a42817bd9d1dfe6eef715091250f96d...
+            why: A.6.4.5: L0 undecided; A.8.3.2: L0 is never exploited
+    PASS    obligations count = 1
+            why: A.6.4.5: L1-L7 and coverage are skipped for this run, and no record contradicts anything
+  case base-shape-errors (exit 0, 96 ms)
+    PASS    verdict equals = "pass"
+            why: A.6.4.1-2: base defects (an unbound unit, a forbid on an undeclared resource) are lenient base failures, not errors; nothing else is owed
+    PASS    errors count = 0
+            why: A.6.4.1: shape errors apply to the head only
+    PASS    obligations count = 0
+            why: A.6.4.2: the defective base items elaborate to empty bindings or are dropped as baseDefects; A.7.4.2 [D3]: the forbid's channel effect(pg.table("t")) is unobservable (no provider), so the edited f needs no coverage
+  case head-shape-error (exit 1, 101 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 1: errors block; A.10.1: a shape error is not malformed input, so not invalid
+    PASS    errors fields where {"code":"E-unbound"} = {"subject":"unit m::K.g"}
+            why: A.3.3.2: a default-name unit with no matching identity is E-unbound in the head; A.15.1: subject '<kind> Q'
+    PASS    errors count = 1
+            why: A.6.4.1: only the head's error is reported
+vector callee-bug-unit-law: A bug in a callee introduces the unit law's contradiction through the contradicting record's cone (refs), though Req is unchanged; an edit outside the cone leaves it preexisting  [decides A.7.3.3, A.5.4.4, D4]
+  case callee-edited (exit 1, 121 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7
+    PASS    obligations fields where {"key":"ob:63e1f0afd6e5926075cdc077bde32550aa83ba3e0915e58595d22591c5822d49"} = {"binding":"bd:da3515ee892d314d9407cdf14407692a1e4291fdfd6db290219cfd6636ac5e34","claim.fp":"sha256:6e432aa74fd0a9022...
+            why: A.7.3.3 [D4]: Req (total@unit) did not move, but the cone of the contradicting record (total closed under Refs°, reaching round) meets Δcode at the edited callee, so the sound contradiction is introduced; no base-revision record made it, so the counterexample clause does not apply
+    PASS    obligations count where {"kind":"unestablished"} = 0
+            why: A.7.1.5: the sound contradiction suppresses unestablished
+  case unrelated-edit (exit 0, 130 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 6
+    PASS    obligations fields where {"key":"ob:63e1f0afd6e5926075cdc077bde32550aa83ba3e0915e58595d22591c5822d49"} = {"force":"sound","introduced":false,"severity":"owed","tier":"critical"}
+            why: A.7.3.3: neither Req nor the contradicting record's cone (total, round) meets Δcode (only other.ts changed), so the contradiction is preexisting
+vector cell-pairs-universe: L1 compares cells, including the universe cell (ungoverned, ungoverned) when no component has globs, and a glob narrowing loosens exactly the new (K.*, ungoverned) cell  [decides A.8.1.4, A.8.2.3, A.8.3.2, A.7.2.2, A.8.1.3]
+  case no-globs-star-forbid-removed (exit 1, 112 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: DefaultPolicy normal blocks latent loosening
+    PASS    obligations fields where {"key":"ob:3c127b86760e528b4003d73f253f6ee496ae42410c3387e81b6b318867f554eb"} = {"binding":"bd:4585bb9b695330398d83dba65523a7ae33196d9f959c793676d07961e4a9f489","exploited":false,"introduced":true,...
+            why: A.8.1.4: with no component globs the only cell is the universe cell (ungoverned, ungoverned), which L1 compares like every identity; removing the * forbid demotes the six atoms of ↓Update from normal to none everywhere (A.8.2.3 L1, one part, delta per atom); A.7.2.2: affected = demoted positions and cells, no code changed
+    PASS    loosening fields where {"question":"L1"} = {"affected":["cell:[\"ungoverned\",\"ungoverned\"]","raw:README.md","ts:src/a.ts","ts:src/a.ts#f"],"answer":"loosened...
+            why: A.8.3.2: L1 affected = demoted positions, the universe cell included (DRT HB1)
+    PASS    order equals = "looser"
+            why: A.8.1.3 [D17]: forward loosened, reverse pass implied
+  case glob-narrowed (exit 1, 131 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9
+    PASS    obligations fields where {"key":"ob:ca8dd9c94bcbc88881bdfd3abb62d9e08ae3bd3b51df2db7e6c7d92ceb86a563"} = {"binding":"bd:82ff9c77ddb1bc7dc8791e2bba6979a7f9379a58217a5bca5500df9e81617b84","questions":["L1"],"severity":"block...
+            why: A.8.1.4: narrowing K's glob from src/**/*.ts to src/k/**/*.ts creates the cell (K.*, ungoverned) of future files such as src/a.ts, where the forbid's protection falls from normal to none; the universe cell and (K.*, K.*) keep their levels and the identities stay in K
+    PASS    loosening fields where {"question":"L1"} = {"affected":["cell:[\"m::K.*\",\"ungoverned\"]"],"answer":"loosened","obligation":"ob:ca8dd9c94bcbc88881bdfd3abb62d9e...
+            why: A.8.3.2: only the (K.*, ungoverned) cell is demoted
+    PASS    order equals = "looser"
+            why: A.8.1.3
+vector code-moved-lower-tier: Moving code by glob from a final component to a low-tier one with equal grants lowers the authority level per position: an L1 loosening of component Vault at final, not a silent pass  [decides A.4.4.7, A.8.2.3, A.8.2.2, A.8.3.1, A.7.4.2, D11]
+  case moved-by-glob (exit 1, 108 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 4: a final loosening blocks until two eligible persons answer
+    PASS    obligations fields where {"key":"ob:5ba6021e051f6a8c272e71d0e83b8e956905035b5fdb4a82e58b4bb584551fa6"} = {"binding":"bd:72752d482ec40f0ccbeb34ed7476a19fcd9e981fe7d53d96b821a735c4fff0eb","claim":null,"exploited":true,"intro...
+            why: A.4.4.7 [D11]: Lvl includes authority(comp(u))'s tier for atoms outside A(u); moving src/vault/purge/** from Vault (final) to Scratch (low) lowers that level at p.ts, purge and the (Vault.*, Scratch.*) cell, so A.8.2.3 L1 has one part per base component, subject component Vault, delta 'L1 authority final>low', tier and answerer Vault's base tier and owner (A.8.2.2); exploited: tier final and the affected new identities are uncovered on the unobservable effect(pg.table("ledger")) channel (A.8.3.1, none observable: all count)
+    PASS    loosening fields where {"question":"L1"} = {"affected":["cell:[\"m::Vault.*\",\"m::Scratch.*\"]","ts:src/vault/purge/p.ts","ts:src/vault/purge/p.ts#purge"],"ans...
+            why: A.8.3.2: L1 affected = demoted positions and cells
+    PASS    obligations count where {"kind":"coverage"} = 0
+            why: A.7.4.2: at Scratch.* the authority pair's tier* is low and the channel unobservable, so no need
+    PASS    order equals = "looser"
+            why: A.8.1.3
+  case kept-in-vault (exit 1, 88 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 4: coverage with an unmet final pair
+    PASS    obligations fields where {"key":"ob:004b1235c86d9b8878f0f78eed74d122e0dafe2994bed3400bb1ed60bd50e204"} = {"binding":"bd:491b0624184402214421f6b86d45fb9a4be5bc7fa98d013f3a11d2a5cb4c28b3","introduced":true,"kind":"coverage",...
+            why: A.7.4.2: new code under final authority(Vault) needs effect(pg.table("ledger")) although unobservable, since tier*(c, x) is final; nothing meets it (A.7.4.3); A.7.4.4 tier final; owner Vault's base owner
+    PASS    loosening count = 0
+            why: the shape is unchanged
+vector coverage-binding-pairs: A coverage binding hashes its unmet (claim fp, channel) pairs, so an answer for one gap does not discharge a coverage obligation whose unmet pairs grew  [decides A.7.2.2, A.12.8.6, A.7.6.4, A.7.6.5, D22]
+  case one-unmet-pair (exit 1, 96 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: critical blocks coverage
+    PASS    obligations fields where {"key":"ob:534ecddc3e9f3c3c879cc54d599b9d0523ec5184eeb474d8d340ebc19664b5bd","kind":"coverage"} = {"binding":"bd:fc30a72b64af3c9525e2bd492e08ff39b51a043558b7fad32961333a8cc5b1b4","introduced":true,"owner":"cb::Store...
+            why: A.7.4.2-3: save needs (NoClock, effect(ts.call("Date.now"))) and (NoRand, effect(ts.call("Math.random"))), both observable; clockScan's complete entry meets the first, randScan's entry is incomplete; A.7.2.2 delta ['<NoRand fp> effect(ts.call("Math.random"))']
+  case two-unmet-pairs (exit 1, 139 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: critical blocks coverage
+    PASS    obligations fields where {"key":"ob:534ecddc3e9f3c3c879cc54d599b9d0523ec5184eeb474d8d340ebc19664b5bd","kind":"coverage"} = {"binding":"bd:733ab0bb4c1dba73cda4a7e4cabf3c0b7d52dc1d8d19567f3fabb2f2bbaa2437","introduced":true,"owner":"cb::Store...
+            why: A.7.2.2, A.12.8.6 [D22]: same key and code, but the delta now lists both unmet pairs, so the binding differs from one-unmet-pair
+  case two-unmet-pairs-old-answer (exit 1, 92 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: the coverage obligation stays open
+    PASS    obligations fields where {"key":"ob:534ecddc3e9f3c3c879cc54d599b9d0523ec5184eeb474d8d340ebc19664b5bd","kind":"coverage"} = {"binding":"bd:733ab0bb4c1dba73cda4a7e4cabf3c0b7d52dc1d8d19567f3fabb2f2bbaa2437","introduced":true,"owner":"cb::Store...
+            why: A.7.6.4: kate's ref is the one-unmet-pair binding's prefix, which begins no open obligation's binding, so it expands to nothing
+    PASS    answered count = 0
+            why: A.7.6.4: an unexpanded ref answers nothing
+  case two-unmet-pairs-answered (exit 0, 103 ms)
+    PASS    verdict equals = "pass"
+            why: A.7.6.5: the coverage obligation is discharged and nothing else is open
+    PASS    obligations count = 0
+            why: A.7.5.2: discharged obligations move to answered
+    PASS    answered fields where {"obligation":"ob:534ecddc3e9f3c3c879cc54d599b9d0523ec5184eeb474d8d340ebc19664b5bd"} = {"as":"discharge"}
+            why: A.7.6.5: kate (StoreTeam, base owner of Store and owner* of both unmet claims) is an eligible non-author person for every answer item; the pairs are critical, so one person suffices
+vector deleted-unit: Deleting a bound file together with its unit gives a defined verdict (pass, or an L4 question when a law on the unit is removed), while keeping the unit is a head E-unbound  [decides A.6.4.3, A.6.4.6, A.8.2.3, A.0.7]
+  case file-and-unit-deleted (exit 0, 156 ms)
+    PASS    verdict equals = "pass"
+            why: A.6.4.6: deleted bound file and unit give a defined verdict, here pass
+    PASS    errors count = 0
+            why: A.6.4.1: nothing in the base errors; the head has no unit left to bind
+    PASS    obligations count = 0
+            why: A.6.4.3: the base unit's binding resolves over M_h to ∅ (identity and file gone), so its summary protects no position and L1 has no part (A.8.2.3); L2 is retired (A.0.7)
+    PASS    loosening count = 0
+            why: A.8.2.3: summaries are decided by L1 only
+  case file-deleted-unit-kept (exit 1, 83 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 1
+    PASS    errors fields where {"code":"E-unbound"} = {"subject":"unit m::K.u"}
+            why: A.3.3.2: the head keeps unit u with no identity named u; A.15.1 subject
+  case file-unit-and-law-deleted (exit 1, 99 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: latent loosening at normal
+    PASS    obligations fields where {"key":"ob:75b618c791e1b6728812f0de5344b775c6d15f42229dac06759bc3035c6020cd"} = {"binding":"bd:44d1baaeecd5231b1f62033408a84431cd817d23c57f3db83745e3cde7f7edd1","exploited":false,"introduced":true,...
+            why: A.8.2.3 L4: a removed law is loosened; A.8.3.2: L4 affected = Req identities, empty because the base binding resolves to ∅ (A.6.4.3); delta 'L4 removed' (A.12.8.7)
+    PASS    obligations count where {"kind":"loosening"} = 1
+            why: L2 is retired (A.0.7): the removed summary raises no part
+vector dependency-macro: An identity invoking a dependency's macro in statement position is not hatch-complete, so hatch(verus) coverage is raised and nothing claims the hidden assume is absent  [decides A.3.4.4, A.12.2.8, A.7.4.3, A.7.4.4, D20]
+  case statement-macro-from-dependency (exit 1, 88 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: DefaultPolicy critical blocks coverage
+    PASS    obligations fields where {"key":"ob:db705c420cd9df5c09ae416042c21204da8a7395349010869dee6c0c62ff6a8b","kind":"coverage"} = {"binding":"bd:6c728db4a75e2ca6f7c3fb3b0ef22e7d8041505af1a5ed219197209a7975c433","group":"g:4583196982edcda23e2a46db2...
+            why: A.3.4.4 [D20]: dep_macros::trust_me! is neither builtin nor defined in the tree, so the manifest flags set hatchComplete false; A.7.4.2 need (NoAssume fp 1584bb88…, hatch(verus)), hatch channels always observable (A.4.5.6); A.7.4.3 met only if hatchComplete; A.7.4.4 tier max(critical, critical); A.7.2.2 delta '<fp> hatch(verus)'
+    PASS    obligations count where {"kind":"contradiction"} = 0
+            why: A.3.4.4: the manifest lists no assume marker at set, so there is no hatch fact
+    PASS    obligations count = 1
+            why: only the coverage obligation
+  case plain-edit-control (exit 0, 88 ms)
+    PASS    verdict equals = "pass"
+            why: A.7.4.3: set is hatch-complete, so hatch(verus) is met
+    PASS    obligations count = 0
+            why: no marker, need met
+vector directory-move: A directory move of unedited files keeps own digests, relocates every identity, yields no finest change and no new hatch fact  [decides A.6.1.5, A.7.3.1, A.3.2.5, A.7.4.1, D6]
+  case moved-unedited (exit 0, 115 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 6: the relocated drift is not introduced
+    PASS    obligations fields where {"key":"ob:3fc43dec79a5799bf8ac0d18b88229af1e6324bcb19911804dc3d54af1b2dabc","kind":"contradiction"} = {"binding":"bd:d867ed0847f254997234006cf6e100b05436f699ace71048862f929bbe5b01bd","claim.fp":"sha256:1584bb88c66cbc8b0...
+            why: A.6.1.5 [D6]: new src/new/lib.rs#f is relocated from deleted src/old/lib.rs#f (same kind, language and own digest, unique), so it is no finest change; A.7.3.1: the hatch fact is not new since M_b lists 1 assume marker at the relocation source; A.7.2.2 binding: affected [new f], no finest change
+    PASS    obligations count where {"kind":"coverage"} = 0
+            why: A.7.4.1: no finest change, no changed observed dependency, no footprint growth
+    PASS    obligations count = 1
+            why: only the relocated drift
+  case moved-and-edited (exit 1, 109 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7: introduced sound contradiction
+    PASS    obligations fields where {"key":"ob:3fc43dec79a5799bf8ac0d18b88229af1e6324bcb19911804dc3d54af1b2dabc","kind":"contradiction"} = {"binding":"bd:756a844eb01350624ba07a83e2625d4a0af6be1cada4bd3b59e588dfc5158946","introduced":true,"severity":"blocki...
+            why: A.6.1.5: f's own digest moved, so it is not relocated and is a finest change; A.7.3.1: its hatch fact is new; A.7.2.2 code (new f, own, null, head)
+    PASS    obligations count where {"kind":"coverage"} = 0
+            why: A.7.4.3: f is hatch-complete
+vector dropped-harness: An edited harness makes a fresh record producer-changed, and dropping the record or its harness field gives E-provider-missing: blocked in every case, never pass  [decides A.5.4.1, A.5.2.13, A.12.6, A.7.3.3, D9]
+  case record-present (exit 1, 90 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: DefaultPolicy critical blocks unestablished
+    PASS    obligations fields where {"key":"ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"} = {"binding":"bd:8cea8d2a37915cd4bb0447b7dd011efc1fc9934909aa9c32dbab72c9bf00d5b8","claim.fp":"sha256:85e169c4b02653f16...
+            why: A.5.4.1 [D9]: the fresh record cites the head harness digest, but its harness meets Δcode, so it is producer-changed (otherwise usable, supporting); A.7.3.3: reason producer-changed introduces; A.7.2.2, A.16.19: affected adds the harness finest change, code holds every Req pair plus (test/run.test.ts, own) with its base and head digests
+    PASS    errors count = 0
+            why: A.5.2.13: a producer-changed record counts as supplied
+  case record-dropped (exit 1, 96 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 1: errors block
+    PASS    errors count where {"code":"E-provider-missing"} = 1
+            why: A.5.2.13: the authenticated base test provider unitTest supplies no applicable record at head for the claim it decides
+    PASS    obligations fields where {"key":"ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"} = {"binding":"bd:2b0e7f5c0d5f14f18ba83800a508a50421aeb21711aec7ae66a333f11aa5badd","introduced":false,"reason":"missing...
+            why: A.5.4.3: no record holds a reason, so missing; Req (run@unit) does not meet Δcode and no record's cone does, so not introduced (A.7.3.3), owed by rule 6
+  case harness-field-dropped (exit 1, 108 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 1
+    PASS    rejected count where {"code":"RJ14"} = 1
+            why: A.12.6 RJ14: a test record without harness is rejected
+    PASS    errors count where {"code":"E-provider-missing"} = 1
+            why: A.5.2.13: rejected records do not count as supplied
+    PASS    obligations fields where {"key":"ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"} = {"binding":"bd:2b0e7f5c0d5f14f18ba83800a508a50421aeb21711aec7ae66a333f11aa5badd","introduced":false,"reason":"missing...
+            why: A.5.4.3: no record holds a reason, so missing; Req (run@unit) does not meet Δcode and no record's cone does, so not introduced (A.7.3.3), owed by rule 6
+vector empty-req: A law whose Req is empty is vacuously Sat and never attributed to a component, so a component exception cannot match it  [decides A.5.3.7, A.4.6.4, A.4.6.5, A.15.8, D14]
+  case law-on-empty-component (exit 0, 113 ms)
+    PASS    verdict equals = "pass"
+            why: A.5.3.7 [D14]: Req(c) = ∅ makes the law Sat (vacuous, listed in health only)
+    PASS    obligations count = 0
+            why: A.5.3.7 [D14]: no unestablished obligation for a vacuous law
+    PASS    debt count = 0
+            why: A.4.6.4 [D14]: a law obligation is attributed to K only when Req ≠ ∅; CliWaiver matches nothing (inert, A.4.6.9)
+  case law-on-cli-control (exit 0, 96 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 5: the only obligation is matched, non-introduced, owed debt
+    PASS    obligations fields where {"claim.fp":"sha256:11b1f9586d8c5ba962436d9bce93c3a2092a259b284e847c0812ca7eb24abeef","kind":"unestablished"} = {"exception":"emp::CliWaiver","introduced":false,"key":"ob:a45af40784ffbd99a25ea03e5324d5fbc89882811989c4332a5aa8eec8...
+            why: A.5.4.3 missing (no judgment); A.7.3.3 Req (Cli's code) does not meet the delta (only README moved); A.4.6.4-5 attributed to Cli (∅ ≠ Req ⊆ code(Cli)), kind unestablished listed; A.7.6.7 exception set once it takes effect
+    PASS    debt fields where {"obligation":"ob:a45af40784ffbd99a25ea03e5324d5fbc89882811989c4332a5aa8eec8256ae6"} = {"exception":"emp::CliWaiver","exceptions":["emp::CliWaiver"],"expiresInDays":37,"owner":"emp::CliTeam"}
+            why: A.7.7.1, A.15.7: debt row from the only matching exception; expiresInDays = ceil((2026-12-01T00:00Z - 2026-10-25T12:00Z)/86400) = ceil(36.5) = 37
+vector equal-fp-merge: Two laws with equal fps merge into one claim with all ids, the highest tier and the owner of the highest-tier id (ties: least id), and one obligation  [decides A.4.1.7, §4.1, A.6.2.5]
+  case highest-tier-owner (exit 1, 91 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: the merged claim is critical and DefaultPolicy critical blocks unestablished
+    PASS    obligations fields where {"claim.fp":"sha256:456e7f03a36b0ee68c0c80e0e2c182917b7b565c9ce8fb86f31fd93640158c73","kind":"unestablished"} = {"binding":"bd:3e659c0840591721138ac950c736117e97c991bd5c4ad1ed369566afc1ec3d33","claim.ids":["merge::GuardA","merge:...
+            why: A.4.1.7: equal fps merge with all ids, the highest tier (critical, GuardZ) and the owner of the highest-tier id (TeamZ); A.6.2.5 owner* from the merged base claim; A.7.3.3 Req (isoToday@unit) meets the delta
+    PASS    obligations count = 1
+            why: A.4.1.7: obligations deduplicate
+  case tied-tiers-least-id (exit 1, 113 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9
+    PASS    obligations fields where {"claim.fp":"sha256:456e7f03a36b0ee68c0c80e0e2c182917b7b565c9ce8fb86f31fd93640158c73","kind":"unestablished"} = {"claim.ids":["merge::GuardA","merge::GuardZ"],"claim.tier":"critical","key":"ob:b3b0061c4d96e68004929dd922fcc396a3da...
+            why: A.4.1.7: tied tiers take the owner of the least id (GuardA, TeamA)
+    PASS    obligations count = 1
+            why: A.4.1.7: obligations deduplicate
+vector fact-without-n: An observed fact without n counts as unknown and is new; a presence-sound observer's effect fact without n is rejected (RJ14)  [decides A.7.3.1, A.12.6 RJ14, A.12.8.4, A.5.2.1, D15]
+  case sound-equal-n (exit 0, 112 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 6: the contradiction is not introduced
+    PASS    obligations fields where {"claim.fp":"sha256:d19246f45f95a9f2545e199d3406b9dbeb4220a1c22b9229f55bd45ca44af097","kind":"contradiction"} = {"binding":"bd:f7ed1f6b002955a3eea9395d9f59187fd7c3d8c585f344345e8cc07fc1d376c9","force":"sound","introduced":false,"...
+            why: A.7.3.1: a usable base-revision entry reports the fact with n_b = 1 >= n_h = 1, both present, so it is not new
+    PASS    obligations count where {"kind":"coverage"} = 0
+            why: A.7.4.3: met by the head's complete entry from an observer absence-sound in base and head
+  case sound-more-n (exit 1, 115 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7: an introduced sound contradiction blocks
+    PASS    obligations fields where {"claim.fp":"sha256:d19246f45f95a9f2545e199d3406b9dbeb4220a1c22b9229f55bd45ca44af097","kind":"contradiction"} = {"binding":"bd:f7ed1f6b002955a3eea9395d9f59187fd7c3d8c585f344345e8cc07fc1d376c9","force":"sound","introduced":true,"k...
+            why: A.7.3.1: n_b = 1 < n_h = 2 (a second site), so the fact is new; A.7.3.3 introduced
+  case sound-base-without-n (exit 1, 126 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7: an introduced sound contradiction blocks
+    PASS    rejected fields where {"record":"sha256:d6a80fe433245d605dc51b39f48eda543c7bfee9eb12bc67375676e3f178e7c1"} = {"code":"RJ14"}
+            why: A.12.6 RJ14 [D15]: an effect fact without n from a presence-sound observer is rejected (listed by id, no force)
+    PASS    obligations fields where {"claim.fp":"sha256:d19246f45f95a9f2545e199d3406b9dbeb4220a1c22b9229f55bd45ca44af097","kind":"contradiction"} = {"binding":"bd:f7ed1f6b002955a3eea9395d9f59187fd7c3d8c585f344345e8cc07fc1d376c9","force":"sound","introduced":true,"k...
+            why: A.7.3.1, A.7.3.2: no usable base-revision entry reports the fact (the base record is rejected), so the fact at changed code is new
+  case heuristic-without-n (exit 0, 102 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 7: a heuristic contradiction is owed
+    PASS    obligations fields where {"claim.fp":"sha256:d19246f45f95a9f2545e199d3406b9dbeb4220a1c22b9229f55bd45ca44af097","kind":"contradiction"} = {"binding":"bd:f7ed1f6b002955a3eea9395d9f59187fd7c3d8c585f344345e8cc07fc1d376c9","force":"heuristic","introduced":tru...
+            why: A.7.3.1 [D15]: n is missing on both sides, which counts as unknown, hence new; A.5.5.1 heuristic (absence-only observer); RJ14 does not apply to a non-presence-sound observer
+    PASS    rejected count = 0
+            why: A.12.6 RJ14 covers presence-sound observers only
+  case heuristic-equal-n (exit 0, 100 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 6: not introduced
+    PASS    obligations fields where {"claim.fp":"sha256:d19246f45f95a9f2545e199d3406b9dbeb4220a1c22b9229f55bd45ca44af097","kind":"contradiction"} = {"binding":"bd:f7ed1f6b002955a3eea9395d9f59187fd7c3d8c585f344345e8cc07fc1d376c9","force":"heuristic","introduced":fal...
+            why: A.7.3.1: n_b = 1 >= n_h = 1, both present, so the fact is not new
+vector final-coverage-one-person-team: Final coverage needs two distinct eligible persons even when claim owner = component owner = a one-person team; bob alone cannot discharge it, bob plus a shape-owner person can  [decides A.6.3.4, A.7.6.5, A.7.1.3, A.7.5.1, D11]
+  case bob-only (exit 1, 148 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 4: coverage with an unmet final pair blocks until two eligible persons answer
+    PASS    obligations fields where {"key":"ob:f99ad91d0fb961864cea647e6188ac9c56b6d243cb026fee5224db411dfce977","kind":"coverage"} = {"binding":"bd:3dc865076264f85eb7774f015024350b63d0aede67ed3156fadb99bcb6b52f6b","group":"g:653ab42b86f21de0466ca752c...
+            why: A.4.5.3: purge.sh (on the script list, attributed to AuditStore.* by src/audit/**) is a raw executable carrying pg.table; unmet pairs (AppendOnly forbid, final) and (authority, critical); A.7.4.4 tier final; owner K's base owner AuditTeam
+    PASS    answered count = 0
+            why: A.6.3.4 [D11]: two distinct persons are needed who together cover the claims' owner* (AuditTeam), K's base owner (AuditTeam) and the base shape owner (Platform); bob alone is one person
+  case bob-and-carol (exit 0, 139 ms)
+    PASS    verdict equals = "pass"
+            why: A.7.6.5: the coverage obligation is discharged and nothing else is open
+    PASS    obligations count = 0
+            why: A.7.5.2: discharged obligations move to answered
+    PASS    answered fields where {"obligation":"ob:f99ad91d0fb961864cea647e6188ac9c56b6d243cb026fee5224db411dfce977"} = {"as":"discharge"}
+            why: A.6.3.4 vector: claim owner = K's owner = the one-person team AuditTeam needs bob and a person of the shape owner; carol (Platform, not an author) is that person
+vector final-drift-tier-lowered: Preexisting final drift is owed, never debt and never blocking; lowering the drifted forbid's tier is a two-person final loosening and leaves tier* final until answered  [decides A.7.5.1, A.6.2.3, A.4.6.7, A.8.2.3, D11]
+  case unrelated-change (exit 0, 120 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rules 2 and 6 [D11]: the only obligation is a non-introduced final contradiction, which is owed
+    PASS    obligations fields where {"claim.fp":"sha256:87e5c35b301889b6bd11d1f189fcc9ea7dbfe855626fd0167ca5b20b33416e68","kind":"contradiction"} = {"binding":"bd:9a6e73b586075196715e448311e261a01b5129d19ec6dea38b65e1c05ad350d3","exception":null,"force":"sound","gr...
+            why: A.7.3.1: checkFreshness is not in the code delta, so the observed fact is not new (A.7.3.3: not introduced); A.6.2.3 tier* = max(final, Lvl_b final); A.7.5.1 rule 6 owed; A.7.2.2 binding: support code [checkFreshness], no finest change, empty delta
+    PASS    obligations count = 1
+            why: A.7.4.1: README is raw data with no channel under any claim; nothing else is raised
+    PASS    loosening count = 0
+            why: A.8.2: base and head shapes are identical
+    PASS    preexisting fields where {"obligation":"ob:2e3aa713724acf57a6262abbd90407112a60d1d7decaa849f6a731e9d0b92850"} = {"owner":"fd::EngineTeam"}
+            why: A.7.7.2, A.12.10.1: the non-introduced open contradiction is listed as preexisting with owner*
+    PASS    debt count = 0
+            why: A.7.5.1 rule 5: no exception matches
+  case tier-lowered (exit 1, 109 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 4: a final loosening blocks until two eligible persons answer
+    PASS    obligations fields where {"claim.fp":"sha256:87e5c35b301889b6bd11d1f189fcc9ea7dbfe855626fd0167ca5b20b33416e68","kind":"contradiction"} = {"exception":null,"force":"sound","introduced":false,"key":"ob:2e3aa713724acf57a6262abbd90407112a60d1d7decaa849f6a731...
+            why: A.6.2.3 [D11]: tier* = max(tier_h critical, Lvl_b(Engine.check)(Read) final) = final with no two-person answer; A.4.6.7: no exception matches an obligation with tier*(o) final, so DriftWaiver is inert; A.7.5.1 rule 6 owed (preexisting final drift is owed, never debt)
+    PASS    debt count = 0
+            why: A.7.5.1 last sentence and A.4.6.7: preexisting final drift is never debt
+    PASS    errors count = 0
+            why: A.4.6.7: E-exception only when the target claim's head tier is final; ClockFree's head tier is critical
+    PASS    obligations fields where {"key":"ob:497b8519afe20d324d09f87e1f2d715920a4e2f2901f394b0b702cea0727153d","kind":"loosening"} = {"binding":"bd:5ceb0ab01a13b8607fa8f8e03cf0a49f34abc53f6890b29bab1ef6b5edc14c99","claim.fp":"sha256:87e5c35b301889b6b...
+            why: A.8.2.1: one obligation for the base claim; L1 (A.8.2.3: Lvl_h(checkFreshness) of Read and Export falls final>critical) and L7 (tier of a base claim with an heir fell); A.8.2.2 tier = tier_b final; A.7.2.2 binding over affected [checkFreshness], no code (no finest change) and delta ['L1 level Export<fd::SystemClock> final>critical', 'L1 level Read<fd::SystemClock> final>critical', 'L7 tier "final" "critical"']; A.15.2 claim field of the base claim
+    PASS    obligations count = 2
+            why: only the drift contradiction and the loosening are raised
+    PASS    loosening fields where {"question":"L1","subject":"sha256:87e5c35b301889b6bd11d1f189fcc9ea7dbfe855626fd0167ca5b20b33416e68"} = {"affected":["ts:src/engine/fresh.ts#checkFreshness"],"answer":"loosened","final":true}
+            why: A.8.2.3 L1 (exact): the demoted position is checkFreshness (att = Engine.check, no cell for a unit); A.8.3.2 affected = demoted positions
+    PASS    loosening fields where {"question":"L7","subject":"sha256:87e5c35b301889b6bd11d1f189fcc9ea7dbfe855626fd0167ca5b20b33416e68"} = {"affected":[],"answer":"loosened","final":true}
+            why: A.8.2.3 L7: a base claim with heirs has no heir with tier >= (loosened, not undecided); A.8.3.2 L7 affected is empty
+  case tier-lowered-answered (exit 0, 113 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1: the final loosening is discharged by two persons and the drift is owed
+    PASS    obligations count where {"kind":"loosening"} = 0
+            why: A.7.5.2: discharged obligations move to answered
+    PASS    answered fields where {"obligation":"ob:497b8519afe20d324d09f87e1f2d715920a4e2f2901f394b0b702cea0727153d"} = {"as":"discharge"}
+            why: A.7.6.5, A.6.3.4: bob (EngineTeam, the base owner) and carol (Platform, the base shape owner) are two distinct eligible non-author persons answering the final loosening's binding ref
+    PASS    obligations fields where {"claim.fp":"sha256:87e5c35b301889b6bd11d1f189fcc9ea7dbfe855626fd0167ca5b20b33416e68","kind":"contradiction"} = {"exception":null,"introduced":false,"key":"ob:2e3aa713724acf57a6262abbd90407112a60d1d7decaa849f6a731e9d0b92850","sev...
+            why: A.6.2.3 last sentence [D11]: a base claim whose final loosening two persons answered in this run contributes tier_h (critical) of its heir instead, so tier* = critical; A.7.5.1 rule 6 owed
+    PASS    debt count = 0
+            why: A.7.5.1 rule 5: no exception is declared in this case
+vector final-law-admit: A final law is not satisfied through an admit its boundary allows (reason assumption, blocking), while the same proof establishes the law at critical  [decides A.5.4.4, A.5.4.1, A.5.4.3, D11]
+  case final-law (exit 1, 97 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: tier final uses critical's policy, which blocks unestablished
+    PASS    obligations fields where {"key":"ob:565281480d16f09ff9495efcedd14d555f461a052dd4adc6b013b06342f565a5"} = {"binding":"bd:5b75bbd4d0df313a16f87cfaf4bce0f13795845b9c7538f084fae0d34fc604c4","claim.fp":"sha256:d3c2e593e6a2f042e...
+            why: A.5.4.4 [D11]: a final law is never satisfied through any hatch fact in its cone, allowed or not, so the admit allowed by the DMap boundary is no declared assumption for it; the proof rests on an undeclared assumption (A.5.4.1), reason assumption (A.5.4.3); introduced since Req meets Δcode (set edited)
+  case critical-law (exit 0, 89 ms)
+    PASS    verdict equals = "pass"
+            why: the admit is a declared assumption for a non-final law
+    PASS    obligations count = 0
+            why: A.5.4.4: the boundary allows admit in base and head, so for the critical law the hatch is declared and the proof establishes
+vector final-law-single-judgment: A claim judgment of a final informal law needs two distinct eligible persons, no agent: one judgment, or a person plus an agent, leaves it unestablished  [decides A.5.3.7, A.6.3.3, A.6.3.4, A.5.4.3, D11]
+  case no-judgment (exit 1, 104 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: tier final uses critical's policy, whose blocks include unestablished
+    PASS    obligations fields where {"claim.fp":"sha256:9275df0f0a63e79e5c0cbdc560fd0c88890b7892245b53858054da06b67018d3","kind":"unestablished"} = {"binding":"bd:1074f51caff46360cfbec0cdcced8d5c8c639e8d4cfc4fb7cddb1d087970a5bb","introduced":true,"key":"ob:50fdaa17...
+            why: A.5.3.7 no judgment; A.5.4.3 reason missing; A.7.3.3 Req (isoToday@unit) meets the code delta, so introduced; A.7.2.2 binding cites every Req pair
+    PASS    obligations count = 1
+            why: no other claim is checker-decided
+  case one-person (exit 1, 98 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9 as in no-judgment
+    PASS    obligations fields where {"claim.fp":"sha256:9275df0f0a63e79e5c0cbdc560fd0c88890b7892245b53858054da06b67018d3","kind":"unestablished"} = {"binding":"bd:1074f51caff46360cfbec0cdcced8d5c8c639e8d4cfc4fb7cddb1d087970a5bb","introduced":true,"key":"ob:50fdaa17...
+            why: A.5.3.7 [D11]: tier*(c) final needs supporting judgments from two distinct eligible persons; bob's usable judgment holds no reason under A.5.4.3, so the reason stays missing
+    PASS    rejected count = 0
+            why: A.12.6: bob's judgment is signed by an identity of his base actor
+  case person-and-agent (exit 1, 82 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9 as in no-judgment
+    PASS    obligations fields where {"claim.fp":"sha256:9275df0f0a63e79e5c0cbdc560fd0c88890b7892245b53858054da06b67018d3","kind":"unestablished"} = {"binding":"bd:1074f51caff46360cfbec0cdcced8d5c8c639e8d4cfc4fb7cddb1d087970a5bb","introduced":true,"key":"ob:50fdaa17...
+            why: A.6.3.3: j is never an agent for any act on a final claim (final ignores agents), so reviewBot is ineligible although the Strict critical judges list agents; only one eligible person remains (A.5.3.7)
+    PASS    rejected count = 0
+            why: A.12.6 RJ09: reviewBot is a known agent with an operator; its record is valid but ineligible
+  case two-persons (exit 0, 90 ms)
+    PASS    verdict equals = "pass"
+            why: A.5.3.7: two distinct eligible persons judged the final law; nothing else is open
+    PASS    obligations count = 0
+            why: A.6.3.4: bob (base owner CliTeam) and carol (base shape owner Platform, also listed in the critical judges) are two distinct eligible non-author persons, so the law is Sat
+vector full-profile-blob-ids: In the full profile, files must hold exactly the revision's shape files with the tree's blob ids, for the base as for the head; a .shape file outside shape/ is a raw identity and is not listed  [decides A.16.1, A.3.1.1, A.12.7.3, A.10.1, A.10.2]
+  case files-match (exit 0, 81 ms)
+    PASS    verdict equals = "pass"
+            why: A.16.1(b): files list exactly shape.lock and shape/fc.shape with the trees' blob ids, commits and manifests agree (A.16.1(d)); Core has no claims, so nothing is owed
+    PASS    errors count = 0
+            why: A.10.1: no shape, coherence or input-integrity error
+    PASS    obligations count = 0
+            why: no claim, no loosening (the shapes are identical), no coverage need (A.7.4.5)
+  case head-file-text-differs (exit 2, 60 ms)
+    PASS    verdict equals = "invalid"
+            why: A.3.1.1, A.12.7.3, A.16.1(b): the head's shape/fc.shape text does not have the head tree's blob id, so the input is invalid
+  case head-shape-file-omitted (exit 2, 67 ms)
+    PASS    verdict equals = "invalid"
+            why: A.12.7.3, A.16.1(b): the head tree holds shape/extra.shape, a shape file, which head.files omit
+  case head-extra-file (exit 2, 79 ms)
+    PASS    verdict equals = "invalid"
+            why: A.3.1.1, A.16.1(b): head.files list shape/ghost.shape, which the head tree does not hold
+  case base-file-text-differs (exit 2, 74 ms)
+    PASS    verdict equals = "invalid"
+            why: A.16.1(f): the base files CI supplies are input integrity, not base shape content, so A.10.2's "never because of the base" does not apply; the base's shape/fc.shape does not match the base tree's blob
+  case raw-shape-file-outside-shape-dir (exit 0, 111 ms)
+    PASS    verdict equals = "pass"
+            why: A.3.1.1, A.16.1(b): docs/notes.shape is not under shape/, so it is a raw identity (raw:docs/notes.shape) and files rightly omit it
+    PASS    errors count = 0
+            why: A.10.1: no error
+vector full-profile-manifest-identity: Under a base manifest identity both manifests must be DSSE-signed by it (else E-provider-missing, never invalid); commits must hash to their revisions and name the manifest's tree (else invalid); an identity added in the head acts after merge  [decides A.16.1, A.5.2.17, A.6.1.2, A.12.7.5, A.8.2.3, A.16.24, D27]
+  case both-signed (exit 0, 98 ms)
+    PASS    verdict equals = "pass"
+            why: A.5.2.17: both manifests are DSSE-signed by the identity the base shape names; commits verify (A.16.1(d))
+    PASS    errors count = 0
+            why: no error
+  case head-unsigned (exit 1, 79 ms)
+    PASS    verdict equals = "blocked"
+            why: A.10.1: E-provider-missing is an input-integrity error, which blocks; it is not invalid (A.5.2.17)
+    PASS    errors count where {"code":"E-provider-missing","subject":"manifest"} = 1
+            why: A.5.2.17 [D27]: the head manifest is a bare statement; A.15.1, A.16.25: subject manifest
+    PASS    errors count = 1
+            why: the base manifest is signed by the identity; nothing else is wrong
+  case head-signed-by-other-key (exit 1, 90 ms)
+    PASS    verdict equals = "blocked"
+            why: A.10.1, A.5.2.17
+    PASS    errors count where {"code":"E-provider-missing","subject":"manifest"} = 1
+            why: A.5.2.17: a manifest signed by a key other than the base manifest identity is E-provider-missing
+  case commit-tree-mismatch (exit 2, 82 ms)
+    PASS    verdict equals = "invalid"
+            why: A.6.1.2, A.12.7.5, A.16.1(d): the head commit hashes to head.revision but its tree line names a tree other than the one rebuilt from the head manifest
+  case revision-mismatch (exit 2, 79 ms)
+    PASS    verdict equals = "invalid"
+            why: A.6.1.2, A.16.1(d): head.revision is not the SHA-1 of the head commit object
+  case identity-added-in-head (exit 1, 114 ms)
+    PASS    errors count = 0
+            why: A.5.2.17, A.6.2.6: the manifest identity is read from the base, which names none, so unsigned manifests are only unauthenticated (health)
+    PASS    loosening fields where {"question":"L7","subject":"shape"} = {"answer":"undecided","exploited":false}
+            why: A.8.2.3 L7: undecided iff the manifest identity changed; A.5.2.17: a head edit of the field is an L7 question acting after merge; A.8.3.2: L7 is never exploited
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: the shape subject is critical (A.8.2.2) and Gate critical blocks latent loosening
+vector full-profile-pack-pins: A head lock pin without a matching pack is invalid input; a bad base pin is only a base defect that drops the pack  [decides A.16.1, A.3.1.3, A.3.1.4, A.6.4.1, A.6.4.2, A.10.1]
+  case pins-match (exit 0, 120 ms)
+    PASS    verdict equals = "pass"
+            why: A.3.1.3, A.16.1(c): both locks pin acme 1.0.0 at H({v: shape.pack.v1, files: [[acme.shape, sha256 of its text]]}), which the supplied pack matches; nothing is owed
+    PASS    errors count = 0
+            why: no error
+    PASS    obligations count = 0
+            why: the shapes are identical and Core has no claims
+  case head-pin-digest-wrong (exit 2, 63 ms)
+    PASS    verdict equals = "invalid"
+            why: A.3.1.4 ("a bad head pin is invalid"), A.10.1 (head packs), A.16.1(c): the head lock's digest differs from the supplied pack's
+  case head-pin-pack-missing (exit 2, 63 ms)
+    PASS    verdict equals = "invalid"
+            why: A.3.1.4 (packs covers every pin of either lock), A.16.1(c): the head pin acme 1.0.0 has no pack entry
+  case base-pin-digest-wrong (exit 0, 84 ms)
+    PASS    verdict equals = "pass"
+            why: A.3.1.4 ("a bad base pin a base defect"), A.6.4.1-2, A.16.1(c): the base drops acme leniently and never makes the verdict invalid; neither shape uses anything acme declares
+    PASS    errors count = 0
+            why: A.6.4.1: shape errors apply to the head only
+    PASS    obligations count = 0
+            why: pack items are never loosening subjects [D18]; no claim reads acme's effect
+vector full-profile-parse-failure: A head shape file that does not parse is a blocking E-parse error, never invalid; an unparsable base gives only L0, owned and answerable by the head's shape owner  [decides A.16.1, A.16.16, A.16.25, A.10.1, A.6.4.1, A.6.4.5, A.7.5.1, A.7.6.5]
+  case parse-control (exit 0, 89 ms)
+    PASS    verdict equals = "pass"
+            why: both shapes parse and nothing is owed
+    PASS    errors count = 0
+            why: no error
+  case head-parse-error (exit 1, 81 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 1: errors block; A.10.1: E-parse is a head shape error, not malformed input, so the verdict is not invalid
+    PASS    errors fields where {"code":"E-parse"} = {"subject":"shape/extra.shape"}
+            why: A.16.25: the E-parse subject is the failing shape file's path; the component block of shape/extra.shape is never closed
+    PASS    errors count = 1
+            why: only the parse failure; shape/fc.shape parses and equals the base's
+    PASS    obligations count = 0
+            why: the head's parsed declarations equal the base's and Core has no claims
+  case base-parse-error (exit 1, 99 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 3: L0 blocks until answered
+    PASS    errors count = 0
+            why: A.6.4.1: the base never makes the verdict invalid and shape errors are the head's only
+    PASS    obligations fields where {"key":"ob:620fe93c78ec81a3ddd10e1ca9ac7a42817bd9d1dfe6eef715091250f96d48d5"} = {"binding":"bd:cae720168cac846335f0a7d17bcb7fad3e57a60ff2309606bb2fe7a43e89851d","claim":null,"introduced":true,"kind...
+            why: A.6.4.5: an unparsable base gives L0 undecided, subject shape; A.8.2.2: tier critical; A.16.16: the head's shape owner fc::Maint stands in for the base shape owner; A.15.2: claim null; A.7.2.2, A.12.8.7: affected and code empty, delta "L0 unreadable"
+    PASS    obligations count = 1
+            why: A.6.4.5: L1-L7 and coverage are skipped
+    PASS    loosening fields where {"question":"L0"} = {"answer":"undecided","exploited":false,"obligation":"ob:620fe93c78ec81a3ddd10e1ca9ac7a42817bd9d1dfe6eef715091250f96d...
+            why: A.6.4.5; A.8.3.2: L0 is never exploited
+  case base-parse-error-answered (exit 0, 105 ms)
+    PASS    verdict equals = "pass"
+            why: A.7.6.5: tim's approve line discharges L0, the only obligation
+    PASS    answered fields where {"obligation":"ob:620fe93c78ec81a3ddd10e1ca9ac7a42817bd9d1dfe6eef715091250f96d48d5"} = {"as":"discharge","self":false}
+            why: A.16.16: the head's policy and actors stand in for the unreadable base; Gate critical judges [owner] resolve the shape subject's owner fc::Maint to tim, who is no author; A.7.6.8: without a relay the CI-supplied line acts as an answer; A.7.6.4: bd:cae720168cac8463 expands to the L0 binding
+    PASS    obligations count = 0
+            why: discharged obligations move to answered (A.7.5.2)
+vector guard-helper-edit: A guard (RefactorSensitive judgment) goes stale when a same-file helper its unit references changes, and stays usable when an unreferenced function changes  [decides A.5.3.4, A.5.4.1, A.7.3.3, D4]
+  case helper-edited (exit 1, 123 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: critical blocks unestablished
+    PASS    obligations fields where {"key":"ob:aed859084e777949dd8d62e7914b95b3e7996ab97d5e549b17d54b6b0e779568"} = {"binding":"bd:36ee5119bdc68b2e02d8e0c9a8999685474ed8eeabd7874b6e973a56b4ceeced","claim.fp":"sha256:579322b3d89673936...
+            why: A.5.3.4 [D4]: Req of the RefactorSensitive judgment on unit isoToday adds fmt, a function of Retention reachable through Refs°; fmt's unit digest moved, so the judgment is stale (A.5.4.1) and, Req meeting Δcode, introduced (A.7.3.3); tier critical from Retention (A.4.1.3)
+  case unreferenced-function-edited (exit 0, 95 ms)
+    PASS    verdict equals = "pass"
+            why: the judgment stays usable
+    PASS    obligations count = 0
+            why: A.5.3.4: other is not referenced by isoToday, so Req = {isoToday, fmt} is unchanged
+vector head-drops-absence: A head that drops absence from the observer keeps the coverage need (observability reads the base) but cannot meet it (base ∧ head), so final coverage is raised and blocks  [decides A.4.5.6, A.7.4.2, A.7.4.3, A.6.2.6, A.14.1.5, D3]
+  case absence-dropped (exit 1, 130 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 4: final coverage and a final loosening block until two persons answer
+    PASS    obligations fields where {"key":"ob:f99ad91d0fb961864cea647e6188ac9c56b6d243cb026fee5224db411dfce977","kind":"coverage"} = {"binding":"bd:5b387eeae50ce5e8ca07a44e02f968da3376699cb6f4f1cb96db4ed5042cae62","introduced":true,"owner":"audit::Au...
+            why: A.7.4.2 [D3]: appendEvent (a finest change) needs (AppendOnly forbid, effect(pg.table("audit_events"))), final, and (authority(AuditStore), same channel), observable from the base declaration; A.7.4.3: meeting needs absence in base and head (A.6.2.6 (b)), so no entry meets either; A.7.4.4 tier max(critical, final); A.7.2.2 delta lists both pairs
+    PASS    obligations fields where {"key":"ob:ae867d9fedbd638a8baeee2d00bfce60354cf08f3b841270ec7a2bcbd0ecab1d","kind":"loosening"} = {"introduced":true,"owner":"audit::Platform","questions":["L7"],"severity":"blocking","subject":"provider audit::sqlE...
+            why: A.8.2.3 L7: a provider field (absence) changed: undecided; A.8.2.2: provider tier = highest base tier of claims whose channels meet effect(pg.table("*")) = final; answerer the base shape owner; A.14.1.5
+    PASS    loosening fields where {"question":"L7","subject":"provider audit::sqlEffects"} = {"answer":"undecided"}
+            why: A.8.2.3 L7: another provider field changed, so undecided
+    PASS    obligations count where {"kind":"contradiction"} = 0
+            why: Append at appendEvent is granted and outside ↓Update
+  case absence-kept-control (exit 0, 134 ms)
+    PASS    verdict equals = "pass"
+            why: A.7.4.3: sqlEffects is absence-sound in base and head, and its complete head entry meets both pairs
+    PASS    obligations count = 0
+            why: nothing open
+vector head-only-provider: A head-only provider's supporting record holds no reason, so the law stays unestablished(missing) with the same key and binding as without it, and an approve line answers nothing  [decides A.5.1.3, A.5.4.3, A.6.2.6, A.7.6.5, D9]
+  case head-only-record-and-approve (exit 1, 129 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: critical blocks unestablished
+    PASS    obligations fields where {"key":"ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"} = {"binding":"bd:cfb36d1667f9b935e31a2dd5832575b0171a8f95cd94efc7a4673095b30bb4d0","claim.fp":"sha256:85e169c4b02653f16...
+            why: A.5.1.3 [D9]: a record of a provider the base does not declare never establishes and holds no reason; A.5.4.3: so the reason is missing, not producer-changed or weak; introduced since Req meets Δcode (A.7.3.3); binding without producer-change additions (A.7.2.2)
+    PASS    answered count = 0
+            why: A.7.6.5: reason missing has no answer discharger
+    PASS    errors count = 0
+            why: A.5.2.13: bunTest declares no identity, so no E-provider-missing
+  case no-head-only-provider (exit 1, 112 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: critical blocks unestablished
+    PASS    obligations fields where {"key":"ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"} = {"binding":"bd:cfb36d1667f9b935e31a2dd5832575b0171a8f95cd94efc7a4673095b30bb4d0","claim.fp":"sha256:85e169c4b02653f16...
+            why: A.5.1.3 [D9]: a record of a provider the base does not declare never establishes and holds no reason; A.5.4.3: so the reason is missing, not producer-changed or weak; introduced since Req meets Δcode (A.7.3.3); binding without producer-change additions (A.7.2.2)
+    PASS    answered count = 0
+            why: A.7.6.5: reason missing has no answer discharger
+    PASS    errors count = 0
+            why: A.5.2.13: bunTest declares no identity, so no E-provider-missing
+vector heuristic-failing-test: A failing test from an unsound provider gives an owed heuristic contradiction plus a blocking unestablished(missing) at critical, never pass; with presence soundness it is one blocking sound contradiction  [decides A.5.3.7, A.5.4.3, A.5.5.1, A.7.1.5, A.14.3.7]
+  case unsound-provider (exit 1, 112 ms)
+    PASS    verdict equals = "blocked"
+            why: the unestablished obligation blocks, so the change never passes (A.14.3.7)
+    PASS    obligations fields where {"key":"ob:16e19bc25b2fdcf5b5a4bb167c9f3e1c64476255943699268f3a7b33e51bb4cf"} = {"binding":"bd:908391d4e14cd84545475293c526417b60764338a18f077d35fa6425e9e738d1","claim.fp":"sha256:85e169c4b02653f16...
+            why: A.5.5.1: a failing test with a counterexample from a provider without presence soundness is a heuristic contradiction; rule 7: heuristic is owed; introduced since Req meets Δcode (A.7.3.3); law contradiction binding = Req pairs (A.7.2.2)
+    PASS    obligations fields where {"key":"ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"} = {"binding":"bd:279c231ba57d12c2effac263c04b28aba260d31fbc5920c26e637e3d1b674852","group":"g:24da0f422a39852eb8328fd10...
+            why: A.5.3.7: a heuristic contradiction neither establishes nor prevents Sat, and no supporting record exists; A.5.4.3: usable heuristic contradictions hold no reason, so missing; rule 9: DefaultPolicy critical blocks unestablished; one group through the shared affected finest change run (A.7.2.3)
+  case presence-sound-provider (exit 1, 113 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7
+    PASS    obligations fields where {"key":"ob:16e19bc25b2fdcf5b5a4bb167c9f3e1c64476255943699268f3a7b33e51bb4cf"} = {"force":"sound","introduced":true,"severity":"blocking","tier":"critical"}
+            why: A.5.5.1: with presence soundness the counterexample is a sound contradiction
+    PASS    obligations count where {"kind":"unestablished"} = 0
+            why: A.7.1.5, T9: a sound contradiction suppresses unestablished
+vector hosted-closure-weakened: A hosted law whose statement closure digest moved has no heir, so L4 is undecided even when a fresh proof establishes the head law  [decides A.5.6.4, A.4.3.8, A.8.2.3, A.6.2.1, D13]
+  case closure-moved (exit 1, 101 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: L4 undecided and latent at critical; DefaultPolicy critical blocks latent loosening
+    PASS    obligations fields where {"key":"ob:d4f2c02cf2adc0561e410780a539c79b35cc5bc29dc1b2ebd7557ecc115ff434","kind":"loosening"} = {"binding":"bd:185d27416b67ba49f7478f5c4ef68c93ec4f8f3e6c3b8c2b5590d25017110e40","claim.fp":"sha256:1530a47742eae2072...
+            why: A.5.6.4 [D13]: hosted laws are ⊒ only with closure digests ≡ between M_b and M_h, so H(c_b) = ∅ (A.6.2.1); A.8.2.3 L4 undecided (closure change awaiting an implies record or answer), delta 'L4 head <fp>'; A.8.2.2 tier_b critical (inherited from DelegationMap); A.7.2.2 binding: affected Req identities [set], (set, own) of the finest change
+    PASS    loosening fields where {"question":"L4","subject":"sha256:1530a47742eae207216d89237f1da8fc04b5683de702b864687436e690002b1c"} = {"affected":["verus:src/map.rs#set"],"answer":"undecided","exploited":true}
+            why: A.8.3.2: L4 affected = Req identities; A.8.3.1, A.16.10: L4 has no channels, so the affected changed identity verus:src/map.rs#set counts as uncovered (A.7.4.5's vacuous coverage does not apply), and DefaultPolicy critical blocks coverage, so the part is exploited
+    PASS    obligations count where {"kind":"unestablished"} = 0
+            why: A.5.3.7: the fresh head-revision proof cites set@unit and set@closure and supports the head law, which is Sat
+  case closure-equal (exit 0, 81 ms)
+    PASS    verdict equals = "pass"
+            why: A.5.6.4: equal NF and ≡ closure digests give an heir, so L4 is implied (A.8.2.3)
+    PASS    obligations count = 0
+            why: no loosening; the proof establishes the law
+    PASS    loosening count = 0
+            why: A.8.2.3: L4 implied
+vector in-tree-non-builtin-macro: An in-tree Rust function invoking a non-builtin (dependency) macro is not hatch-complete, so hatch(rust) coverage is raised; a std macro keeps it hatch-complete  [decides A.3.4.4, A.12.2.8, A.4.5.2, A.7.4.3, D20]
+  case dependency-function-macro (exit 1, 81 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: critical blocks coverage
+    PASS    obligations fields where {"key":"ob:0f79685ae13fbe6e937bbceb492f1e6f131a0b57886db63c5dbd381e3e36d087","kind":"coverage"} = {"binding":"bd:b8e8aa6476425c5f925017af4b525a3d729e0f6b6d4fb3b05e55b1382d19e896","group":"g:6f69325beec72c5001526dd4c...
+            why: A.12.2.8: log::info! is not a std, core or alloc macro and is not defined in the tree, so parse is not hatch-complete (A.3.4.4); chan(unsafe<Trust>) = hatch(bend), hatch(rust) (A.4.5.2, std: unsafe in bend and rust), of which hatch(rust) applies; A.7.2.2 delta '<fp> hatch(rust)'
+    PASS    obligations count = 1
+            why: no marker, so no hatch fact
+  case std-builtin-macro-control (exit 0, 75 ms)
+    PASS    verdict equals = "pass"
+            why: A.12.2.8: println! is a builtin std macro, so parse stays hatch-complete and hatch(rust) is met
+    PASS    obligations count = 0
+            why: need met
+vector include-in-tree-literal: include! of a string-literal in-tree hatch-complete file keeps the includer hatch-complete and counts the included markers at the includer  [decides A.3.4.4, A.12.2.8, A.7.3.1, D20]
+  case include-file-with-marker (exit 1, 100 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7: an introduced sound contradiction blocks
+    PASS    obligations fields where {"key":"ob:a55f0503287e4150b3e9da221a327346ee3e316880f7c3250557ceb5d0cf218d","kind":"contradiction"} = {"binding":"bd:37d9a8e323be810083943ba858878f683f97100a1e71f717f905eefcb3c8abcd","claim.fp":"sha256:e7d64d2d0572de352...
+            why: A.3.4.4 [D20]: include!("../gen/tables.rs") is a literal in-tree path to a hatch-complete file, so its unsafe marker is counted at parse (markers {unsafe: 1}); the fact is sound (manifest, A.4.4.5) and new (parse is a finest change, A.7.3.1); NoUnsafeInParser covers Parser.*
+    PASS    obligations count where {"kind":"coverage"} = 0
+            why: A.7.4.3: parse is hatch-complete, so hatch(rust) is met
+    PASS    obligations count where {"subject.code":"rust:src/gen/tables.rs"} = 0
+            why: the included file's own marker lies in Gen, outside the forbid's scope
+  case include-marker-free-control (exit 0, 84 ms)
+    PASS    verdict equals = "pass"
+            why: A.3.4.4: the included in-tree file has no marker, so nothing is counted at parse
+    PASS    obligations count = 0
+            why: no hatch fact at parse; hatch-complete
+vector judge-line-without-relay: Without a relay a shape judge line makes no claim judgment (unrecorded); a judgment record signed by the judge does  [decides A.7.6.8, A.5.8.1, §7.6, D28]
+  case judge-line (exit 0, 96 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 9: normal does not block unestablished
+    PASS    obligations fields where {"claim.fp":"sha256:ba6a3234dd39139541e6f1cd24ed5dab3dd28e0d9b6141ef54320fd648f16e7d","kind":"unestablished"} = {"binding":"bd:452872429ea65a330fbe3afcee773ac91649611430437b6085751a6e5c0aeb5e","introduced":true,"key":"ob:588ac540...
+            why: A.7.6.8 [D28]: with no base-declared relay, bob's 'shape judge jl::IsoGuard' line makes no judgment (counted unrecorded in health); bob's base judgment cites the old isoToday digest: stale (A.5.4.1); Req meets the delta: introduced
+    PASS    answered count = 0
+            why: A.7.6.8: a judge line is not an answer
+  case self-signed-record-control (exit 0, 92 ms)
+    PASS    verdict equals = "pass"
+            why: A.5.8.1, A.7.6.8: bob's judgment record signed with his base identity establishes the law
+    PASS    obligations count = 0
+            why: Sat
+vector judges-narrowing-no-fallback: Narrowing the judges in the head cannot switch on the self fallback: it reads the base judges alone, so an author's answer stays ineligible while a base that names a second judge exists  [decides A.6.2.6, A.6.3.3, A.5.4.6, D12]
+  case base-judges-name-bob (exit 1, 89 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9
+    PASS    obligations fields where {"key":"ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"} = {"binding":"bd:4153465bf02c181bfb488d4d8cb8883d3ff4ca8fc224caa52375fefbf7208e06","claim.fp":"sha256:85e169c4b02653f16...
+            why: A.5.4.1: the implementation bunfig.toml meets Δcode, so producer-changed; binding affected adds that finest change and code its (bunfig.toml, own) row (A.7.2.2, A.16.19)
+    PASS    answered count = 0
+            why: A.6.2.6 [D12], A.6.3.3: tim is an author, and the self fallback reads the base judges alone: base critical judges are owner and bob, so tim is not the only base person eligible by role and the head's narrowing to owner cannot switch the fallback on (T2')
+    PASS    loosening count = 0
+            why: A.8.2.3 L7: judges_h ⊆ judges_b is no weakening
+  case base-judges-owner-only (exit 0, 90 ms)
+    PASS    verdict equals = "pass"
+            why: tim's self answer accepts the producer change and the law is re-evaluated Sat (A.5.4.6)
+    PASS    answered fields where {"obligation":"ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"} = {"as":"discharge","self":true}
+            why: A.6.3.3: with base critical judges [owner], tim is the only base person eligible by role, o involves no final item and no author is an unmapped bot, so the fallback admits him; self answers are marked
+    PASS    obligations count where {"kind":"unestablished"} = 0
+            why: A.5.4.6
+vector moved-harness-stale: An older-revision, deps-complete test record whose harness digest no longer matches M_h is stale (no force), not producer-changed  [decides A.5.4.1, A.5.4.2, A.7.3.3, D9]
+  case harness-digest-moved (exit 0, 104 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 6
+    PASS    obligations fields where {"key":"ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"} = {"binding":"bd:1eb4c1ae7108138034a5df2a0728f777d8cac0312d58194cb03a69bb068377c0","claim.fp":"sha256:85e169c4b02653f16...
+            why: A.5.4.1 [D9]: a moved harness digest is stale (the reused deps-complete record's harness digest differs from M_h), with no force (A.5.4.2); A.7.3.3: Req and the record's cone (run) do not meet Δcode (README only), so preexisting; not producer-changed, since stale matches first and the harness is not in Δcode
+    PASS    errors count = 0
+            why: A.5.2.13: bunTest is not authenticated (no identity)
+  case harness-digest-current (exit 0, 118 ms)
+    PASS    verdict equals = "pass"
+            why: the record is reused through deps complete
+    PASS    obligations count = 0
+            why: A.5.4.1-2: code, deps and harness digests match M_h, so the older-revision record is usable and establishes the law
+vector new-call-existing-edge: Example 4: a new call along an existing lifted edge keeps the cycle contradiction preexisting (only its binding grows), while the same call creating the edge introduces it  [decides A.7.3.1, A.7.3.3, A.7.2.2, A.14.4.2, D5]
+  case call-on-existing-edge (exit 0, 143 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 6
+    PASS    obligations fields where {"key":"ob:6efc5ef79a4f52afb377a55833ed8d9b6fd57521da5d44328afeab6daf0a6547"} = {"binding":"bd:d45ecb360d732b435b204b5aede8ff591fac0f5a857211e2256543473b3a4cee","claim.fp":"sha256:d1d638be608c2992c...
+            why: Example 4 and A.7.3.1/A.7.3.3 [D5]: the new call from extra.ts lies along the existing lifted edge ShapeModelLowerer -> ShapeRuleEngine, which is not new because not all its supporting facts are new, so the cycle stays preexisting; the new fact joins the support, so the binding adds extra.ts and its (own) finest change (A.7.2.2)
+    PASS    obligations count where {"kind":"coverage"} = 0
+            why: A.14.4.2, A.7.4.2 [D3]: call(ts) has no absence-sound observer, so changed code needs no coverage
+  case call-creating-the-edge (exit 0, 132 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 7: a heuristic contradiction is owed
+    PASS    obligations fields where {"key":"ob:6efc5ef79a4f52afb377a55833ed8d9b6fd57521da5d44328afeab6daf0a6547"} = {"binding":"bd:b7b9bb312fcfe5454c658f6d38c73cad64b7b2893a7cc24295e0db673b0fe1e5","force":"heuristic","introduced":tru...
+            why: A.7.3.1: the lifted edge's only supporting fact is new, so the edge is new and the cycle introduced (A.7.3.3 [D5]); sound none keeps it heuristic, so owed
+    PASS    obligations count where {"kind":"coverage"} = 0
+            why: A.7.4.2 [D3]
+vector off-path-cycle: A path forbid's support includes edges of an off-path cycle (s->m->x->y->m->t gives all five), which decide the binding and introducedness while the witness stays s->m->t  [decides A.4.4.11, A.4.4.8, A.4.4.10, A.15.4, A.7.2.2, A.7.3.3]
+  case all-old (exit 0, 97 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 6
+    PASS    obligations fields where {"key":"ob:6c88941d7de1881eb128ea61efdc115a00251291a0fa2241958d1f317e1e6358"} = {"binding":"bd:aa0c4d7f730f01a4afc85696f03162554cf434a128cc8d52a7a7d2819d1a89f3","claim.fp":"sha256:c5469e1c4add5cf48...
+            why: A.4.4.11 vector s->m->x->y->m->t: Supp holds all five edges, so the binding's affected code is the at-identities of all five facts (fs, fm, fx, fy), including the off-path cycle m->x->y->m; nothing changed, so code is empty and the obligation preexisting (A.7.2.2, A.7.3.3)
+    PASS    obligations count where {"key":"ob:6c88941d7de1881eb128ea61efdc115a00251291a0fa2241958d1f317e1e6358","witness":"sha256:400945f2f7179d902d83bb... = 0
+            why: A.15.4: the witness is the canonical path s->m->t, never the support
+    PASS    obligations count where {"key":"ob:6c88941d7de1881eb128ea61efdc115a00251291a0fa2241958d1f317e1e6358","witness":"sha256:856ef9034d0db31c55df7a... = 1
+            why: A.4.4.10: the canonical witness s->m->t contains m->t
+  case new-off-path-edge (exit 1, 105 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7
+    PASS    obligations fields where {"key":"ob:6c88941d7de1881eb128ea61efdc115a00251291a0fa2241958d1f317e1e6358"} = {"binding":"bd:9e444ff155f346f6d06b72a4988f6cd6948641d311776d39eb42ec21d85119d6","force":"sound","introduced":true,"s...
+            why: A.4.4.11 (supports decide introduced, path support over-approximated, only more conservative): the new lifted edge X->Y (its only fact at the edited fx is new, A.7.3.1) lies on the off-path cycle inside Supp, so the contradiction is introduced; binding adds (fx, own) as the affected finest change (A.7.2.2)
+    PASS    obligations count where {"kind":"coverage"} = 0
+            why: A.7.4.2 [D3]: call(ts) is unobservable and the tier normal
+vector preview-equals-change: Preview's core output equals change mode's on the same signed input with judgment records and answers removed  [decides A.12.7.2, A.7.6.5, A.5.3.7]
+  case change-with-judgment-and-answer (exit 0, 88 ms)
+    PASS    verdict equals = "pass"
+            why: the answer discharges the loosening and the judgment establishes the law
+    PASS    obligations count = 0
+            why: A.7.6.5: alice (base owner Owners, not an author) answers the L1 loosening; A.5.3.7: the judgment establishes Guard
+    PASS    answered fields where {"obligation":"ob:b950dcb21750fb86923b40b4e0d8b8f2da0996823ad90b8ad906754d1d9161b1"} = {"as":"discharge","self":false}
+            why: A.7.5.2: discharged obligations move to answered
+  case preview-with-judgment-and-answer (exit 1, 100 ms)
+    PASS    verdict equals = "blocked"
+            why: A.12.7.2: preview ignores judgments and answers, so the result equals change mode without them: the latent loosening blocks (rule 9)
+    PASS    obligations fields where {"key":"ob:b950dcb21750fb86923b40b4e0d8b8f2da0996823ad90b8ad906754d1d9161b1"} = {"binding":"bd:3265bbf187ac9db1a05c248a77572a3ee8b8cdfb1643d1dc47aa1391a537bcb5","introduced":true,"kind":"loosening"...
+            why: A.8.2.3 L1: removing the forbid demotes Export<Res> at K's positions and cell from normal to none; binding over the demoted positions and the cell (A.7.2.2)
+    PASS    obligations fields where {"key":"ob:1d5399a57ef66438478ef11b12be6469a93495ce6ef2ddb7bc0e9252aa45a682"} = {"binding":"bd:5f2501beda62bf7ac7ed5a1f3bfbe26cbf316b5c9d872aaab083da959e4cf1eb","introduced":false,"kind":"unestabli...
+            why: A.5.4.3: with the judgment ignored or absent no record holds a reason; Req unchanged, so preexisting (A.7.3.3, rule 6)
+    PASS    answered count = 0
+            why: A.12.7.2: answers and reviews are ignored in preview / absent in the stripped change
+    PASS    obligations count = 2
+            why: only the loosening and the unestablished law remain
+  case change-without-judgment-and-answer (exit 1, 102 ms)
+    PASS    verdict equals = "blocked"
+            why: A.12.7.2: preview ignores judgments and answers, so the result equals change mode without them: the latent loosening blocks (rule 9)
+    PASS    obligations fields where {"key":"ob:b950dcb21750fb86923b40b4e0d8b8f2da0996823ad90b8ad906754d1d9161b1"} = {"binding":"bd:3265bbf187ac9db1a05c248a77572a3ee8b8cdfb1643d1dc47aa1391a537bcb5","introduced":true,"kind":"loosening"...
+            why: A.8.2.3 L1: removing the forbid demotes Export<Res> at K's positions and cell from normal to none; binding over the demoted positions and the cell (A.7.2.2)
+    PASS    obligations fields where {"key":"ob:1d5399a57ef66438478ef11b12be6469a93495ce6ef2ddb7bc0e9252aa45a682"} = {"binding":"bd:5f2501beda62bf7ac7ed5a1f3bfbe26cbf316b5c9d872aaab083da959e4cf1eb","introduced":false,"kind":"unestabli...
+            why: A.5.4.3: with the judgment ignored or absent no record holds a reason; Req unchanged, so preexisting (A.7.3.3, rule 6)
+    PASS    answered count = 0
+            why: A.12.7.2: answers and reviews are ignored in preview / absent in the stripped change
+    PASS    obligations count = 2
+            why: only the loosening and the unestablished law remain
+vector producer-change-assumption: A producer change cannot mask an undeclared assumption: with both, the reason is assumption and an approve line discharges nothing; with the producer change alone it is answerable  [decides A.5.4.1, A.5.4.3, A.5.4.6, A.7.6.5, A.7.2.2, D9]
+  case assume-and-lockfile-bump-approved (exit 1, 125 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: critical blocks unestablished
+    PASS    obligations fields where {"key":"ob:565281480d16f09ff9495efcedd14d555f461a052dd4adc6b013b06342f565a5"} = {"binding":"bd:9b9ef99041425da68cbad716db0663750a3e313d643bffa5fe6a581c30f7b542","claim.fp":"sha256:d3c2e593e6a2f042e...
+            why: A.5.4.1 [D9]: per record the first match among stale, expired, assumption, weak, producer-changed is assumption (the undeclared assume in the proof's cone), and producer change is reported only for an otherwise usable record; A.5.4.3: the law reason is assumption; A.7.2.2: affected adds implementation finest changes only when producer-changed, so Cargo.lock is not in the binding
+    PASS    answered count = 0
+            why: A.7.6.5: dana's ref expands to an obligation with reason assumption, which has no answer discharger, and there is no exception (A.7.6.6)
+  case lockfile-bump-only (exit 1, 120 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9
+    PASS    obligations fields where {"key":"ob:565281480d16f09ff9495efcedd14d555f461a052dd4adc6b013b06342f565a5"} = {"binding":"bd:b0c6e37595bbe046dc4ca351c08bc25173ca5a723478d051d86b9f2e25e972fc","introduced":true,"reason":"producer...
+            why: A.5.4.1: the implementation (Cargo.lock) meets Δcode and the record is otherwise usable, so producer-changed; introduced by reason (A.7.3.3); binding affected adds the implementation finest change Cargo.lock and code its (Cargo.lock, own) row (A.7.2.2, A.16.19)
+  case lockfile-bump-approved (exit 0, 99 ms)
+    PASS    verdict equals = "pass"
+            why: the producer-changed answer is accepted and the re-evaluated law is Sat
+    PASS    answered fields where {"obligation":"ob:565281480d16f09ff9495efcedd14d555f461a052dd4adc6b013b06342f565a5"} = {"as":"discharge","self":false}
+            why: A.7.6.5: a producer-changed obligation has an answer discharger and dana (KvTeam, not an author, a person) is eligible at critical (A.6.3.3); A.5.4.6: the law is re-evaluated with the record not producer-changed, and no reason remains
+    PASS    obligations count where {"kind":"unestablished"} = 0
+            why: A.5.4.6: nothing remains open
+vector provider-channels-claim-tier: A provider loosening's subject tier is the highest base tier of the claims whose T(c) meets the provider's channels, not of every claim  [decides A.8.2.2, A.5.2.3, A.8.2.3, D22]
+  case clock-observer-edited (exit 0, 78 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 9: L7 is never exploited, and DefaultPolicy low blocks nothing
+    PASS    obligations fields where {"key":"ob:13b71a047617686d5f4de762330d1b4d490dd539982b35122cdfa77145846096","kind":"loosening"} = {"introduced":true,"owner":"prov::Maint","questions":["L7"],"severity":"owed","subject":"provider prov::clockScan","t...
+            why: A.8.2.3 L7: a provider field (depsComplete) changed: undecided; A.8.2.2 [D22]: clockScan's effect(ts.call("Date.now")) meets only NoClock's T(c) (low); OrdersKept's effect(pg.table("orders")) does not match (A.5.2.3), so the final claim does not count; answerer the base shape owner
+    PASS    loosening fields where {"question":"L7","subject":"provider prov::clockScan"} = {"answer":"undecided"}
+            why: A.8.2.3 L7: another provider field changed
+    PASS    obligations count = 1
+            why: no code changed
+  case sql-observer-edited-control (exit 1, 104 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 4: a final loosening blocks until two persons answer
+    PASS    obligations fields where {"key":"ob:34ff0ac92f5ad84f41396819c91713b696432e062ad84031a11076f9e5a064d9","kind":"loosening"} = {"owner":"prov::Maint","questions":["L7"],"severity":"blocking","subject":"provider prov::sqlScan","tier":"final"}
+            why: A.8.2.2: sqlScan's effect(pg.table("*")) meets OrdersKept's effect(pg.table("orders")) (final)
+vector provider-direction: Weakening an observer in the PR cannot lower severity: dropping presence keeps the contradiction sound, dropping absence keeps the coverage need but cannot meet it; either edit is a final L7 question  [decides A.14.1.5, A.6.2.6, A.4.5.6, A.7.4.2, A.7.4.3, A.8.2.2, A.8.2.3, D3]
+  case no-provider-edit (exit 1, 134 ms)
+    PASS    rejected count = 0
+            why: A.12.6 RJ14, A.5.2.1, A.12.5.2 [D15]: sqlEffects is presence-sound and now reports n on both effect facts, so its observation is accepted; no record is rejected
+    PASS    errors count = 0
+            why: A.5.2.13: the authenticated observer and test provider each supply an accepted, correctly signed head record; the base names no manifest identity (A.5.2.17), so no E-provider-missing; the head elaborates cleanly
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 2: an introduced sound contradiction with tier* final
+    PASS    obligations fields where {"key":"ob:98ff6f5f02010232b459f9b228f17abb7f78b90094b40b37a3e9a12bb3c32fd2"} = {"binding":"bd:1c907a8a119dd310a06e0e9ec876c2db0f003b4c1a33ca0b9d3d851b3e2d72c9","claim.fp":"sha256:3fe8f5ac7169085e7...
+            why: EXAMPLES Example 1 Variant B: AppendOnly (forbid Update, D13) excludes HardDelete at AuditStore.*; sound (A.4.4.13, A.6.2.6 (a)), introduced (new fact, A.7.3.1, A.7.3.2: no baseRecords), tier* final (A.6.2.3), rule 2; key, binding and group are vectors.py's ex1.B values (alone in its group, A.7.2.3)
+    PASS    obligations count = 1
+            why: Example 1 Variant B: complete entries absence-sound in base and head meet coverage at purge.ts and purgeOldEvents (A.7.4.3), and the fresh fastCheck record cites the grown Req and establishes the law (A.5.3.7, A.14.1.4)
+    PASS    loosening count = 0
+            why: A.8.2.3: base and head shapes are identical, so no question fires
+  case drop-presence (exit 1, 144 ms)
+    PASS    rejected count = 0
+            why: A.12.6 RJ14, A.5.2.1, A.12.5.2 [D15]: sqlEffects is presence-sound and now reports n on both effect facts, so its observation is accepted; no record is rejected
+    PASS    errors count = 0
+            why: A.5.2.13: the authenticated observer and test provider each supply an accepted, correctly signed head record; the base names no manifest identity (A.5.2.17), so no E-provider-missing; the head elaborates cleanly
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rules 2 and 4
+    PASS    obligations fields where {"key":"ob:98ff6f5f02010232b459f9b228f17abb7f78b90094b40b37a3e9a12bb3c32fd2"} = {"binding":"bd:1c907a8a119dd310a06e0e9ec876c2db0f003b4c1a33ca0b9d3d851b3e2d72c9","claim.fp":"sha256:3fe8f5ac7169085e7...
+            why: A.6.2.6 (a): contradiction force reads presence from base or head, so dropping presence in the head keeps the contradiction sound (A.14.1.5); introduced and final as in Variant B
+    PASS    obligations fields where {"key":"ob:98ff6f5f02010232b459f9b228f17abb7f78b90094b40b37a3e9a12bb3c32fd2"} = {"group":"g:e49eeaef1d87eb9aae889d4019cf944a91aeb22e46ef77341f2cf8aef85d314b"}
+            why: A.7.2.3 [D10]: the L7 loosening has no realising fact and no affected identity (A.8.3.2), and the contradiction's causes (A.14.1.3) name no changed base item, so the contradiction stays alone in g ex1.B
+    PASS    obligations fields where {"key":"ob:ae867d9fedbd638a8baeee2d00bfce60354cf08f3b841270ec7a2bcbd0ecab1d"} = {"claim":null,"introduced":true,"kind":"loosening","owner":"audit::Platform","questions":["L7"],"severity":"blocking"...
+            why: A.8.2.3 L7: a changed provider field (soundness) is undecided; A.8.2.2: provider subject tier = highest base tier of claims whose channels meet its own (AppendOnly's final forbid), answerer the base shape owner; A.7.3.3: loosenings are introduced; A.7.5.1 rule 4; A.15.2 claim null
+    PASS    loosening fields where {"question":"L7"} = {"affected":[],"answer":"undecided","exploited":false,"final":true,"obligation":"ob:ae867d9fedbd638a8baeee2d00bfce603...
+            why: A.8.2.3 L7 undecided; A.8.3.2: L7 has no affected positions and is never exploited
+    PASS    obligations count where {"kind":"coverage"} = 0
+            why: A.7.4.3: sqlEffects stays absence-sound in base and head, so its usable complete entries for purge.ts and purgeOldEvents meet every need
+    PASS    obligations count = 2
+            why: the contradiction and the L7 loosening only: coverage is met and the law is established
+  case drop-absence (exit 1, 130 ms)
+    PASS    rejected count = 0
+            why: A.12.6 RJ14, A.5.2.1, A.12.5.2 [D15]: sqlEffects is presence-sound and now reports n on both effect facts, so its observation is accepted; no record is rejected
+    PASS    errors count = 0
+            why: A.5.2.13: the authenticated observer and test provider each supply an accepted, correctly signed head record; the base names no manifest identity (A.5.2.17), so no E-provider-missing; the head elaborates cleanly
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rules 2 and 4
+    PASS    obligations fields where {"key":"ob:98ff6f5f02010232b459f9b228f17abb7f78b90094b40b37a3e9a12bb3c32fd2"} = {"binding":"bd:1c907a8a119dd310a06e0e9ec876c2db0f003b4c1a33ca0b9d3d851b3e2d72c9","claim.fp":"sha256:3fe8f5ac7169085e7...
+            why: A.6.2.6 (a): presence is kept (and base ∨ head would keep it anyway), so the contradiction stays sound
+    PASS    obligations fields where {"key":"ob:f99ad91d0fb961864cea647e6188ac9c56b6d243cb026fee5224db411dfce977"} = {"binding":"bd:68a9ae4674fb6556bd95ebd7fce4b09ce398092d75be1851fd5fea4972904b93","introduced":true,"kind":"coverage",...
+            why: A.4.5.6 [D3]: observability reads the base, where sqlEffects is absence-sound on effect(pg.table("*")), so purge.ts and purgeOldEvents still need (AppendOnly, effect(pg.table("audit_events"))) and (authority(AuditStore), same channel) (A.7.4.2 vector); A.7.4.3: meeting needs absence in base and head, which the head dropped, so both pairs stay unmet; A.7.4.4: tier max(critical, final); owner AuditStore's base owner (A.14.1.5); rule 4; binding delta '<fp> <channel>' per unmet pair (A.7.2.2, A.12.8.6)
+    PASS    obligations fields where {"key":"ob:ae867d9fedbd638a8baeee2d00bfce60354cf08f3b841270ec7a2bcbd0ecab1d"} = {"claim":null,"introduced":true,"kind":"loosening","owner":"audit::Platform","questions":["L7"],"severity":"blocking"...
+            why: A.8.2.3 L7 undecided on a changed provider field; final and answered by the base shape owner by A.8.2.2; rule 4
+    PASS    obligations count = 3
+            why: the contradiction, the AuditStore coverage obligation and the L7 loosening; the law is established
+vector raw-hashbang-executable: A raw file starting with #! is executable (manifest flag), so it carries pg.table and needs final coverage that no observer can meet; the same text without #! is data  [decides A.3.2.4, A.12.4, A.4.5.3, A.7.4.2, A.7.4.4, D27]
+  case hashbang-script (exit 1, 111 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 4: coverage with an unmet final pair blocks until two eligible persons answer
+    PASS    obligations fields where {"key":"ob:155fa0bf253e0793716dee7451858de84676f017da2d47ee65a8e9d24a457c67","kind":"coverage"} = {"binding":"bd:f326c1b92999bd03aff45c0fdb1badd6bb158adae9c3ed375aa2137e7a4c03ce","group":"g:fdf59b2a05cecc685dba5b0c4...
+            why: A.3.2.4 [D27]: raw:src/audit/purge starts with #! and the manifest flags it executable, making it a raw carrier (A.12.4: pg.table lists raw executables); A.4.5.3 effect(pg.table("audit_events")) applies; the forbid (scope *) covers ungoverned at final, so the pair is needed (A.7.4.2) and no observer reads raw files (§7.4); A.7.4.4 tier max(normal, final); owner of ungoverned is the shape owner (A.3.3.5)
+    PASS    obligations count = 1
+            why: no fact is observed at the script
+  case no-hashbang-data-control (exit 0, 121 ms)
+    PASS    verdict equals = "pass"
+            why: A.4.5.3: raw data (no #!, not on the script list, mode 100644, executable false) carries no channel
+    PASS    obligations count = 0
+            why: A.7.4.5: code under no applicable channel is covered vacuously
+vector refutation-introduced: A refuted lower bound is introduced when its footprint meets the code delta or a usable base-revision record reported the missing fact; otherwise it is preexisting  [decides A.7.3.3, A.4.4.14, A.4.4.8, D7]
+  case call-removed (exit 1, 116 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7: an introduced sound contradiction blocks
+    PASS    obligations fields where {"claim.fp":"sha256:777a831c111358c86e1190286bbe88c4cc909df7a5a860b44b21d628b50ce9f0","kind":"contradiction"} = {"force":"sound","introduced":true,"key":"ob:10d79b14858b17111ff0afb8370d8af77785b6f5c46691865437a8527da5bae5","owner...
+            why: A.4.4.14: every footprint identity of Rules has a complete call(ts) entry from an absence-sound observer and the Rules->Lower call is absent: refuted, always sound, subject null (A.4.4.8); A.7.3.3 [D7]: evaluate is in the footprint and in the code delta
+    PASS    obligations count = 1
+            why: A.7.4.2: lower bounds need no coverage; no other claim
+  case refuted-at-base-control (exit 0, 100 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 6
+    PASS    obligations fields where {"claim.fp":"sha256:777a831c111358c86e1190286bbe88c4cc909df7a5a860b44b21d628b50ce9f0","kind":"contradiction"} = {"force":"sound","introduced":false,"key":"ob:10d79b14858b17111ff0afb8370d8af77785b6f5c46691865437a8527da5bae5","owne...
+            why: A.7.3.3: no footprint identity changed (only README) and the base-revision record never reported the call
+  case base-reported-unchanged-code (exit 1, 124 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7
+    PASS    obligations fields where {"claim.fp":"sha256:777a831c111358c86e1190286bbe88c4cc909df7a5a860b44b21d628b50ce9f0","kind":"contradiction"} = {"force":"sound","introduced":true,"key":"ob:10d79b14858b17111ff0afb8370d8af77785b6f5c46691865437a8527da5bae5","owner...
+            why: A.7.3.3 [D7]: the footprint is unchanged, but a usable base-revision record (citing the unchanged base digests) reported the now-missing call
+vector rename-in-place: A base unit binding to a function renamed in place follows the file's new identities, so rebinding the unit elsewhere drops jurisdiction at the renamed code (L6 loosened at g)  [decides A.6.4.3, A.6.4.6, A.8.2.3, A.8.3.2]
+  case rebound-to-h (exit 1, 92 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: DefaultPolicy normal blocks latent loosening
+    PASS    obligations fields where {"key":"ob:303a1a953cd152c5263009b495177d3799f48cba69edb1b266ba4c8f281df3a6"} = {"claim.fp":"sha256:d8bc0b08cf64df2a10aec2ef2ed9b061076ef0657777292520c70ad61f6747c5","exploited":false,"introduced":...
+            why: A.6.4.3: the base unit's binding (src/a.ts#f, deleted) resolves over M_h to the new identities of its file, {g, h}; the head binds u to h, so g moves from u to K.*; A.8.2.3 L6: g's base law-member tuple of UIsPure (on unit K.u) is not dominated at g in the head, so L6 is loosened with the law as subject (A.8.2.1, A.15.2); not exploited (no forbidden fact, tier normal does not block coverage, A.8.3.1)
+    PASS    loosening fields where {"question":"L6"} = {"affected":["ts:src/a.ts#g"],"answer":"loosened","exploited":false,"obligation":"ob:303a1a953cd152c5263009b495177d37...
+            why: A.6.4.6 vector: f renamed to g in place with the unit rebound to h gives L6 loosened at g; A.8.3.2: L6 affected = dropped identities (h keeps its tuple)
+    PASS    loosening count where {"question":"L4"} = 0
+            why: A.8.2.3 L3-L4: the law has an equal-NF heir
+  case rebound-to-g (exit 0, 98 ms)
+    PASS    verdict equals = "pass"
+            why: nothing is loosened
+    PASS    loosening count = 0
+            why: A.6.4.3: the base binding resolves to {g}, the head binds u to g, so no position changes attribution (A.8.2.3 L6)
+    PASS    obligations count = 0
+            why: the declared-level law is Sat (A.5.3.7) and nothing else applies
+vector scc-merge: A new edge that merges a preexisting SCC introduces the merged SCC's contradiction even though its canonical witness is the old cycle; a call that lifts to no edge keeps the old SCC preexisting  [decides A.7.3.3, A.4.4.11, A.4.4.8, A.4.4.10, A.7.2.2, D5]
+  case merge (exit 1, 105 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7: an introduced sound contradiction blocks (tier normal, so rule 2 does not apply)
+    PASS    obligations count where {"kind":"contradiction"} = 1
+            why: A.4.4.8: one key per non-trivial SCC of E|calls; the head has the single SCC {A,B,C}
+    PASS    obligations fields where {"key":"ob:01bb1b7a263ab54bb036595154f1714cac2722f589d7ce4b113601f131060f68"} = {"binding":"bd:c3ed2bb708138fd7742337ed62dbea42f39a16cd657e0ad68c394962bafb03df","claim.fp":"sha256:d1d638be608c2992c...
+            why: A.7.3.3 [D5] with A.4.4.11 (supports decide introduced): Supp of the merged SCC holds the lifted edge C->A, whose only fact (at the new fc2) is new (A.7.3.1), so the contradiction is introduced although the canonical witness is the old cycle A->B->A; binding = support code fa, fb, fb2, fc2 plus (fc2, own) as the affected finest change (A.7.2.2); sound: callScan is presence-sound (A.4.4.13); tier* normal (A.6.2.3)
+    PASS    obligations count where {"key":"ob:01bb1b7a263ab54bb036595154f1714cac2722f589d7ce4b113601f131060f68","witness":"sha256:3bccd8beb7293db0b46441... = 0
+            why: A.15.4 and A.4.4.10: the witness is the canonical least cycle through the least node m::A, i.e. A->B->A (2 observed facts before 3), so the new fact is in the support but not in the witness
+    PASS    obligations count where {"key":"ob:01bb1b7a263ab54bb036595154f1714cac2722f589d7ce4b113601f131060f68","witness":"sha256:58e03bc2a609d209704c41... = 1
+            why: A.4.4.10: the canonical witness A->B->A contains the fact fa->fb
+    PASS    obligations count where {"key":"ob:b4a8b0bc2d232c9ad369efac33c1c6887fcc7740b1b7afb470a43bfc11d28a2c"} = 0
+            why: A.4.4.8: subjects are the head's SCCs; {A,B} is no longer an SCC
+    PASS    obligations count where {"kind":"coverage"} = 0
+            why: A.7.4.2 [D3]: call(ts) is not observable (callScan is not absence-sound in the base) and the claim's tier is not final, so no pair is needed
+  case no-merge (exit 0, 133 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 6: only a non-introduced obligation remains
+    PASS    obligations fields where {"key":"ob:b4a8b0bc2d232c9ad369efac33c1c6887fcc7740b1b7afb470a43bfc11d28a2c"} = {"binding":"bd:87687cf243ba09ea91fff4bfab82c3d6b3ae53ad23f4bb605cc759d7101bce99","claim.fp":"sha256:d1d638be608c2992c...
+            why: A.7.3.3 [D5]: no supporting lifted edge of {A,B} is new (fc2's call stays inside C and lifts to no edge, A.4.4.2), so preexisting; binding = support code fa, fb with no affected finest change (A.7.2.2)
+    PASS    obligations count where {"key":"ob:01bb1b7a263ab54bb036595154f1714cac2722f589d7ce4b113601f131060f68"} = 0
+            why: A.4.4.8: without C->A there is no SCC {A,B,C}
+    PASS    obligations count where {"kind":"coverage"} = 0
+            why: A.7.4.2 [D3]: call(ts) is unobservable and the tier is not final
+    PASS    preexisting count where {"obligation":"ob:b4a8b0bc2d232c9ad369efac33c1c6887fcc7740b1b7afb470a43bfc11d28a2c"} = 1
+            why: A.7.7.2: an open non-introduced obligation is listed as preexisting
+vector second-site: A second site under a subject with older sites is new by site count (n), and a site at another identity gets its own key; neither hides behind the older fact id  [decides A.7.3.1, A.7.3.3, A.4.4.8, D15]
+  case second-site (exit 1, 107 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7: introduced sound contradiction
+    PASS    obligations fields where {"key":"ob:fd3fe21fb1d263df2d620530513f491aec20c6ca716719af3c879bef23d134a3"} = {"binding":"bd:35cc6a255e0b553df0a99c156b4580b190a081caae09f9f7e23df02b2f9ed1eb","claim.fp":"sha256:79e90ba3ad9eab15c...
+            why: A.7.3.1 [D15]: write is in Δcode and the only base-revision entry reports the fact with n_b = 1 < n_h = 2, so the fact is new and the contradiction introduced (A.7.3.3); the second site shares the first's fact id and subject but does not hide behind it; binding (write, own) as the affected finest change (A.7.2.2)
+    PASS    obligations count where {"kind":"coverage"} = 0
+            why: A.7.4.2 [D3]: effect(pg.table("records")) is unobservable (sqlScan is presence-only) and the tier is normal
+  case same-count (exit 0, 91 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 6: the contradiction is preexisting
+    PASS    obligations fields where {"key":"ob:fd3fe21fb1d263df2d620530513f491aec20c6ca716719af3c879bef23d134a3"} = {"binding":"bd:35cc6a255e0b553df0a99c156b4580b190a081caae09f9f7e23df02b2f9ed1eb","force":"sound","introduced":false,"...
+            why: A.7.3.1: write changed but a usable base-revision entry reports the fact with n_b = 1 >= n_h = 1, so the fact is not new and the contradiction is preexisting; the binding still carries the edited write (A.7.2.2)
+    PASS    obligations count where {"kind":"coverage"} = 0
+            why: A.7.4.2 [D3]: unobservable channel, tier normal
+  case other-identity (exit 1, 111 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7 for the new site's introduced sound contradiction
+    PASS    obligations fields where {"key":"ob:6e39163a93c6751cd5ea22bc78496880b665676990457114dbd7f8c5191a5a77"} = {"binding":"bd:9cda2dc30bac7b323749f23f46c2c9acbafee47ce013ba248ca734f4ec730b7f","force":"sound","group":"g:7035c6770...
+            why: A.4.4.8: {code, atom} keys per site, so write2 has its own key; new identity, fact new (A.7.3.1), introduced
+    PASS    obligations fields where {"key":"ob:fd3fe21fb1d263df2d620530513f491aec20c6ca716719af3c879bef23d134a3"} = {"binding":"bd:2375e5673178d98b0031296ae7905b1c856c2f4a387285ee379793c6cd743e30","group":"g:1c47442fd5aaa299d0c60a9d4...
+            why: A.7.3.1: write unchanged, so its fact is not new; preexisting (rule 6); the two obligations share no support fact and no affected finest change, so separate groups (A.7.2.3)
+vector string-ordered-parameter: A string argument at a template parameter ordered leq or geq is E-template; integers there, and strings at unordered parameters, are accepted  [decides A.4.3.5, A.13.2, D13]
+  case string-at-leq (exit 1, 92 ms)
+    PASS    verdict equals = "blocked"
+            why: A.10.1, A.10.2: a head shape error blocks (exit 1); it does not make the input invalid
+    PASS    errors count where {"code":"E-template"} = 1
+            why: A.4.3.5 [D13]: "250ms" at Budget, ordered by leq, is E-template; one error for the one instance
+  case integer-at-leq (exit 0, 111 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 6: the law is unestablished(missing), preexisting (Req unchanged), owed
+    PASS    errors count = 0
+            why: A.4.3.5: a safe integer at a leq-ordered parameter is well-formed
+  case string-at-unordered (exit 0, 100 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 6 as in integer-at-leq
+    PASS    errors count = 0
+            why: A.4.3.5: strings order only by equality, which is the default (equal) order, so a string at an unordered value parameter is well-formed
+vector summary-direct: A complete summary bounds the unit's own code only: a callee's effect does not contradict the caller's summary, the caller's own effect does  [decides A.4.4.2, A.4.2.1, A.4.5.1, §4.1, D2]
+  case callee-reads-clock (exit 0, 121 ms)
+    PASS    verdict equals = "pass"
+            why: D2, A.4.4.2: Xd(format) holds only facts at format's own code; the Read is at stamp, which belongs to unit stamp (no summary)
+    PASS    obligations count = 0
+            why: A.4.5.1 [D2]: effects.upper has no call channel, and format's effect channel is met by clockScan's complete entry
+  case own-code-reads-clock (exit 1, 114 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7: introduced sound contradiction
+    PASS    obligations fields where {"key":"ob:adcafda3a5f311c9917e8154f337c8f7e081675231eb69738ce7f8f153d8733e","kind":"contradiction"} = {"binding":"bd:cde2a9f84450bc64ad274a68e5ffd47aab902ac1df47cfdcf8222bb643507257","claim.fp":"sha256:a626973e26001d0d6...
+            why: A.4.2.1: Xd(format) ⊄ cl(∅); A.4.4.8 subject {code, atom} for effects.upper; A.7.3.1 new fact at changed format; tier and owner from Store (normal, StoreTeam)
+    PASS    obligations count where {"kind":"contradiction"} = 1
+            why: D2: stamp's own Read is attributed to stamp, which no summary bounds, so it raises nothing
+vector this-method-guard-helper: A guard's Req includes the methods its unit reaches through this.m (manifest refs), so editing the helper stales the guard and introduces the obligation  [decides A.5.3.4, A.12.2.10, A.3.2.6, A.7.3.3, D4]
+  case helper-edited (exit 1, 86 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: DefaultPolicy critical blocks unestablished
+    PASS    obligations fields where {"claim.fp":"sha256:810fd5f18d2ba9d43194d8027c0e1bcbd6861a8bf28123c565d2abc0e0182b42","kind":"unestablished"} = {"binding":"bd:53810ed1dce7a7bb1caef157aa96ff06ea1a58d512a40ac921f17ef7a41bc698","introduced":true,"key":"ob:37a8ac43...
+            why: A.12.2.10 [D4]: this.format() in tick resolves to method Clock.format, listed in tick's manifest refs; A.5.3.4: Req for a judgment on unit tick = (tick, unit) plus (format, unit); the judgment's format digest moved: stale (A.5.4.1); A.7.3.3: (format, unit) is in the delta, so introduced; A.7.2.2 code lists both Req pairs
+  case helper-edited-judgment-cites-tick-only (exit 1, 90 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9
+    PASS    obligations fields where {"claim.fp":"sha256:810fd5f18d2ba9d43194d8027c0e1bcbd6861a8bf28123c565d2abc0e0182b42","kind":"unestablished"} = {"binding":"bd:53810ed1dce7a7bb1caef157aa96ff06ea1a58d512a40ac921f17ef7a41bc698","introduced":true,"key":"ob:37a8ac43...
+            why: A.5.3.5, A.5.4.1: a judgment citing tick alone omits part of Req (format), which gives stale; A.7.3.3 introduced as Req meets the delta
+  case unreferenced-method-edited-control (exit 0, 89 ms)
+    PASS    verdict equals = "pass"
+            why: A.5.3.4: Clock.parse is not reachable from tick through refs, so Req is unchanged and bob's judgment stays usable
+    PASS    obligations count = 0
+            why: the law is Sat
+vector trusted-body-edit: Editing the body of a function that already carries a hatch marker outside any allowing boundary makes the hatch fact new and the contradiction introduced  [decides A.7.3.1, A.7.3.3, D6]
+  case trusted-body-edited (exit 1, 112 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7
+    PASS    obligations fields where {"key":"ob:c7193ae634f6a98fdfd9b7221ea6666095cb4e039f0acc70f146e0396ab2bbc2"} = {"binding":"bd:6cd52f2b1370f601b235fd47efc6e54c465cea6b07dc65c3d1a7979981b21fda","claim.fp":"sha256:001074f4e213e6567...
+            why: A.7.3.1 [D6]: a hatch fact at a finest change is new even when M_b lists as many markers, so editing the trusted body introduces the external_body contradiction; binding (get, own) (A.7.2.2)
+    PASS    obligations count where {"kind":"coverage"} = 0
+            why: A.7.4.3: get is hatchComplete
+  case other-function-edited (exit 0, 100 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 6
+    PASS    obligations fields where {"key":"ob:c7193ae634f6a98fdfd9b7221ea6666095cb4e039f0acc70f146e0396ab2bbc2"} = {"binding":"bd:67745cae5b62efdc1f495b44ce53a5d4e4cb4ae9e2efc8e7ad8234245a49af64","force":"sound","introduced":false,"...
+            why: A.7.3.1: get is not a finest change and M_b lists 1 >= 1 external_body marker at get, so the fact is not new
+vector two-exceptions-earliest-expiry: With two exceptions matching an obligation's two excluding claims, the debt row lists both and takes exception, owner and days from the earliest-expiring; when it expires the obligation leaves debt  [decides A.7.7.1, A.4.6.5, A.15.7, A.4.4.7, D22]
+  case both-active (exit 0, 103 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 5: matched, non-introduced, owed debt
+    PASS    obligations fields where {"key":"ob:498720f00f9e0b1f9063c40929d57bd242bf16dbc988d1bcc45d5e8d3d747372","kind":"contradiction"} = {"claim.fp":"sha256:17a111ce57fa1ca042639815c37d387dfdaaf65dc218b775417d535926e5654e","force":"sound","introduced":fa...
+            why: A.4.4.7: the forbid and authority (grants none) both exclude Read; the obligation goes to the forbid (forbids before authority), authority a cause; A.4.6.5: each excluding claim is matched (AWaiver on the rule, ZWaiver on the authority), so rule 5 makes it debt; the obligation keeps its own owner (A.15.7)
+    PASS    debt fields where {"obligation":"ob:498720f00f9e0b1f9063c40929d57bd242bf16dbc988d1bcc45d5e8d3d747372"} = {"exception":"te::ZWaiver","exceptions":["te::AWaiver","te::ZWaiver"],"expiresInDays":30,"owner":"te::dave"}
+            why: A.7.7.1 vector: every matching exception sorted by id; exception, owner and expiresInDays from the earliest-expiring (ZWaiver, 2026-11-24: ceil(29.5) = 30), not the least id or the primary claim's (AWaiver, 311 days)
+  case earliest-expired (exit 0, 102 ms)
+    PASS    verdict equals = "owed"
+            why: A.7.5.1 rule 6: no longer matched, non-introduced, owed
+    PASS    obligations fields where {"key":"ob:498720f00f9e0b1f9063c40929d57bd242bf16dbc988d1bcc45d5e8d3d747372","kind":"contradiction"} = {"exception":null,"introduced":false,"severity":"owed"}
+            why: A.7.7.1 [D22]: now* 2026-11-24T12:00Z is past ZWaiver's expiry, so the authority excluding claim is unmatched; each excluding claim must be matched (A.4.6.5), so AWaiver alone does not make debt
+    PASS    debt count = 0
+            why: A.7.7.1: debt ends when the earliest-expiring exception expires
+vector two-level-admit: A proof assumes a hatch two reference levels below its cited code (set -> lemma_a -> lemma_b with admit()), and that change introduces the law's assumption obligation; an admit outside the cone does not  [decides A.5.4.4, A.5.4.3, A.7.3.3, D4]
+  case admit-two-levels-down (exit 1, 117 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 9: DefaultPolicy critical blocks unestablished
+    PASS    obligations fields where {"key":"ob:4c8acbe9339dac384bcc5c4bfaa3692cb18eb399b6ace0b8e1a386fe124d59d9"} = {"binding":"bd:613a4f55d9c94bc8c85e5f0be05dcf4c03a35c133836aef84c5e4a147ee44099","claim.fp":"sha256:5b0827574cfafcf32...
+            why: A.5.4.4: cone(r) closes set and lemma_a under Refs° (set -> lemma_a -> lemma_b), so M_h's admit fact at lemma_b is an assumption of the proof, undeclared (no boundary allows admit), giving reason assumption (A.5.4.1, A.5.4.3); introduced because that record's cone meets Δcode at lemma_b although Req (set@unit, set@closure) did not move (A.7.3.3 [D4]); binding = every Req pair (A.7.2.2)
+    PASS    obligations count where {"kind":"contradiction"} = 0
+            why: no hatch rule is declared, so the admit fact contradicts nothing
+  case admit-unreachable (exit 0, 105 ms)
+    PASS    verdict equals = "pass"
+            why: the proof is usable and establishes the law
+    PASS    obligations count = 0
+            why: A.5.4.4: lemma_c is not in the cone (no refs or calls reach it from set or lemma_a), so its admit is no assumption of the proof
+vector undeclared-hatch-kind: A hatch marker of a registry kind the shape does not declare is forbidden even inside a boundary (Undeclared clause), while a declared kind the boundary allows raises nothing  [decides A.3.4.5, A.4.2.4, A.3.4.4, D1]
+  case undeclared-kind-in-boundary (exit 1, 109 ms)
+    PASS    verdict equals = "blocked"
+            why: A.7.5.1 rule 7
+    PASS    obligations count where {"kind":"contradiction"} = 1
+            why: A.4.2.4 [D1]: only the Undeclared clause covers the boundary's code for this kind
+    PASS    obligations fields where {"claim.fp":"sha256:6cd2e34ae382f2271643ee1e21eb71ea70700a980a610cd7ab8e9442b5698cd7","kind":"contradiction"} = {"force":"sound","introduced":true,"severity":"blocking","subject.code":"ts:src/trusted/t.ts#shim","tier":"normal"}
+            why: A.3.4.5: a registry hatch kind the shape does not declare lifts to Undeclared<Trust>; A.4.2.4: forbid hatch * adds effect.forbid(Undeclared<Trust>, [*], []), excepting no boundary, so the marker inside Trusted is a sound (manifest) contradiction; new because shim is a finest change (A.7.3.1)
+    PASS    obligations count where {"kind":"coverage"} = 0
+            why: A.7.4.3: shim is hatchComplete, which meets every hatch(ts) pair; the Undeclared clause has no hatch channel (A.4.5.2)
+  case declared-allowed-kind-in-boundary (exit 0, 111 ms)
+    PASS    verdict equals = "pass"
+            why: nothing is raised
+    PASS    obligations count = 0
+            why: A.4.2.4 [D1]: the ts_ignore clause excepts Trusted, which allows ts_ignore, and no Hatch clause exists; coverage is met by hatchComplete
+vector unsigned-manifest-identity: When the base shape names a manifest identity, an unsigned or wrongly signed head manifest is E-provider-missing (subject manifest), never invalid  [decides A.5.2.17, A.5.2.13, A.15.1, §5.1, D27]
+  case head-unsigned (exit 1, 98 ms)
+    PASS    verdict equals = "blocked"
+            why: A.10.1: E-provider-missing is an input-integrity error, which blocks (exit 1, not invalid)
+    PASS    errors count where {"code":"E-provider-missing","subject":"manifest"} = 1
+            why: A.5.2.17 [D27]: the base names manifest ed25519(...); the head manifest is unsigned; A.15.1 subject 'manifest'
+    PASS    errors count = 1
+            why: the base manifest is signed by the identity; nothing else is wrong
+  case head-wrong-signer (exit 1, 99 ms)
+    PASS    verdict equals = "blocked"
+            why: A.10.1
+    PASS    errors count where {"code":"E-provider-missing","subject":"manifest"} = 1
+            why: A.5.2.17: a manifest signed by a key other than the base manifest identity is E-provider-missing
+  case both-signed-control (exit 0, 94 ms)
+    PASS    verdict equals = "pass"
+            why: A.5.2.17: both manifests are DSSE-signed by the base manifest identity
+    PASS    errors count = 0
+            why: no error
+  case no-identity-control (exit 0, 91 ms)
+    PASS    verdict equals = "pass"
+            why: A.5.2.17: without a base manifest identity both manifests are listed unauthenticated in health, no error
+    PASS    errors count = 0
+            why: no error
+
+summary: 56 vectors, 148 cases, 451 assertions: 451 passed, 0 failed, 0 not run; 0 format errors; 0 exit-code warnings
+RESULT: PASS

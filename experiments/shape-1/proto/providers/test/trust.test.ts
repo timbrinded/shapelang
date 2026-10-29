@@ -227,8 +227,11 @@ describe("overlay and derive", () => {
         (x) => `${(x.subject as { code: string }).code} ${(x.subject as { atom: string }).atom}`
       );
     expect(hatchSubjects).toContain("bend:bend/main.bend#halve unsafe<std::Trust>");
-    expect(hatchSubjects).toContain("bend:bend/main.bend#Clock.now Hatch<std::Trust>");
-    expect(hatchSubjects).toContain("lean:Demo/Lib.lean#Demo.helper Hatch<std::Trust>");
+    // version 7 (A.3.4.5, A.16.9(a) [D1]): a marker kind the shape does not declare for the
+    // identity's language (Bend foreign; Lean, which registry 1.0 does not register) lifts to
+    // Undeclared<Trust>, which the Undeclared clause of forbid hatch * excludes everywhere
+    expect(hatchSubjects).toContain("bend:bend/main.bend#Clock.now Undeclared<std::Trust>");
+    expect(hatchSubjects).toContain("lean:Demo/Lib.lean#Demo.helper Undeclared<std::Trust>");
     const inside = derive(
       input({
         source: shape("demo", [
@@ -246,14 +249,14 @@ describe("overlay and derive", () => {
         revision
       })
     );
-    // The boundary excepts itself from the unsafe clause, but the `Hatch` catch-all clause
-    // (effect.forbid(Hatch<Trust>, [*], [])) protects ↓Hatch, which holds every declared hatch verb,
-    // so allowed hatches inside boundaries are still contradicted (spec defect, A.4.2.4 vs A.3.4.3).
+    // version 7 (A.4.2.4, A.12.8.1 [D1]): forbid hatch * is one clause per declared hatch verb,
+    // each excepting the boundaries that allow it, plus the Undeclared clause, and no Hatch
+    // catch-all; so the boundary's allowed unsafe at halve is no contradiction (the version 6
+    // spec defect is gone)
     const halve = inside.obligations.filter(
       (x) => (x.subject as { code?: string }).code === "bend:bend/main.bend#halve"
     );
-    expect(halve.map((x) => x.claim?.ids[0])).toEqual(["demo::NoHatches/dc8454f26ba4"]);
-    expect(halve.some((x) => x.claim?.ids[0]?.endsWith("/e73e76608d8a"))).toBe(false);
+    expect(halve).toEqual([]);
   });
 
   test("Lean proof records: a clean theorem establishes its hosted law; a sorry in the cone leaves it unestablished (assumption)", async () => {

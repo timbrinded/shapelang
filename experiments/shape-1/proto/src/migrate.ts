@@ -92,14 +92,27 @@ const STD_EFFECTS = new Set([
   "Hatch"
 ]);
 const STD_KINDS = new Set(["calls", "callbacks", "provides", "data_flow", "coordinated_call"]);
-const PRELUDE_RESOURCE_MARKERS = [
+/** the 0.x prelude markers that std 1.0 declares (A.13.2) */
+const STD_MARKERS = new Set([
+  "PII",
   "Persistent",
   "Ephemeral",
   "Secret",
   "Public",
   "External",
-  "Internal"
-];
+  "Internal",
+  "StorageAdapter",
+  "DataPlane",
+  "ControlPlane"
+]);
+/** 0.x shape traits that std 1.0 declares as unit templates requiring a note (A.11.1(f)) */
+const STD_SHAPE_TRAITS = new Set([
+  "PreserveInline",
+  "RequiresDescription",
+  "TestOnly",
+  "ProtectedCheckOrder",
+  "NonIdiomatic"
+]);
 
 /** Reads `trait Name<T: Kind> { forbid [final] Effect<T> … }` bodies from 0.x text. */
 export function extractTraits(file: string, module: string, text: string): TraitBody[] {
@@ -177,7 +190,6 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
   const MIG = "shape1.migrated";
   const effects = new Set<string>();
   const kinds = new Map<string, { from: "component" | "resource"; to: "component" | "resource" }>();
-  const owners = new Set<string>();
   const resourceIds = new Set(ins.resources.map((r) => r.id));
   const traitsByQ = new Map<string, TraitBody>();
   for (const t of opts.traits ?? []) traitsByQ.set(`${t.module}::${t.name}`, t);
@@ -188,30 +200,52 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
     return `${effect}<${target.includes("::") ? target : local(target, module)}>`;
   };
 
-  // resources
+  // resources (A.11.1(e), A.16.33(a)): the tier of forbid final and of the prelude AppendOnly
+  // belongs to the migrated claim, never to the bearer; a resource keeps its 0.x tier
+  const twoPersons = sortedUniq(opts.maintainers ?? []).length >= 2;
+  const finalTier = twoPersons ? "final" : "critical";
+  const ruleDecls: { module: string; decl: Decl }[] = [];
   for (const r of [...ins.resources].sort((a, b) => cmpStr(a.id, b.id))) {
     const attach: TemplateApp[] = [];
-    let tier: "final" | undefined;
     for (const t of [...r.traits].sort(cmpStr)) {
       const short = t.split("::").pop() ?? t;
       if (short === "AppendOnly" && !t.includes("::")) {
-        attach.push({ name: "std::AppendOnly" });
-        tier = "final";
-      } else if (short === "PII" && !t.includes("::")) attach.push({ name: "std::PII" });
-      else if (PRELUDE_RESOURCE_MARKERS.includes(short) && !t.includes("::")) {
-        attach.push({ name: `${MIG}::${short}` });
-        usedTemplates.set(`${MIG}::${short}`, "resource");
-      } else {
-        attach.push({ name: t });
+        // the 0.x prelude AppendOnly (final HardDelete, Truncate, DropStorage) is std::NoHardDelete
+        ruleDecls.push({
+          module: r.module,
+          decl: {
+            decl: "rule",
+            name: `${r.name}_NoHardDelete`,
+            template: { name: "std::NoHardDelete", args: [r.name] },
+            tier: finalTier
+          }
+        });
+        notes.push(
+          `prelude AppendOnly on ${r.id} → rule ${r.name}_NoHardDelete = std::NoHardDelete<${r.name}> tier ${finalTier}` +
+            (twoPersons ? "" : " (lowered: the owner and shape owner lack two distinct persons)")
+        );
+      } else if (STD_MARKERS.has(short) && !t.includes("::")) attach.push({ name: `std::${short}` });
+      else {
+        const tb = traitsByQ.get(t);
+        if (tb?.forbids.some((f) => f.final) && !twoPersons) {
+          ruleDecls.push({
+            module: r.module,
+            decl: {
+              decl: "rule",
+              name: `${r.name}_${short}`,
+              template: { name: t, args: [r.name] },
+              tier: "critical"
+            }
+          });
+          notes.push(`trait ${t} on ${r.id}: forbid final lowered to critical (no two distinct persons)`);
+        } else attach.push({ name: t });
         usedTemplates.set(t, "resource");
-        if (traitsByQ.get(t)?.forbids.some((f) => f.final)) tier = "final";
       }
     }
     mod(r.module).decls.push({
       decl: "resource",
       name: r.name,
-      ...(attach.length > 0 ? { attach } : {}),
-      ...(tier ? { tier } : {})
+      ...(attach.length > 0 ? { attach } : {})
     });
   }
 
@@ -226,8 +260,10 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
       if (!f) continue;
       const attach: TemplateApp[] = [];
       for (const st of f.shapeTraits ?? []) {
-        if (st === "RefactorSensitive" || st.endsWith("::RefactorSensitive"))
-          attach.push({ name: "std::RefactorSensitive" });
+        const short = st.split("::").pop() ?? st;
+        // a RefactorSensitive marker yields its law only with a guard (A.11.1(g)), added below
+        if (short === "RefactorSensitive") continue;
+        if (STD_SHAPE_TRAITS.has(short)) attach.push({ name: `std::${short}` });
         else notes.push(`dropped shape trait ${st} on ${f.id}`);
       }
       const u: UnitDecl = { name: f.name };
@@ -243,10 +279,22 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
           atoms: f.effects.map((e) => ({ atom: atom(e.name, e.target, c.module) }))
         };
       if (attach.length > 0) u.attach = attach;
-      if (f.unsafe) notes.push(`unsafe on ${f.id} needs an exception (owner, expiry) — not minted`);
+      if (f.unsafe) {
+        // 0.x unsafe effects → a decision note holding them as text; nothing else (A.11.1(c))
+        mod(c.module).decls.push({
+          decl: "note",
+          name: `${c.name}_${f.name}_unsafe`,
+          kind: "decision",
+          about: [`unit ${c.name}.${f.name}`],
+          text: "0.x unsafe effects (reason, expires, requires), kept as text by migrate."
+        });
+        notes.push(`unsafe on ${f.id} → decision note ${c.name}_${f.name}_unsafe`);
+      }
       units.push(u);
     }
     const attach: TemplateApp[] = c.classifiers.map((t) => {
+      const short = t.split("::").pop() ?? t;
+      if (STD_MARKERS.has(short) && !t.includes("::")) return { name: `std::${short}` };
       usedTemplates.set(t, "component");
       return { name: t };
     });
@@ -260,16 +308,10 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
         : {}),
       ...(units.length > 0 ? { units } : {})
     };
-    // Owns<R, K> is attached to the resource side by argument order: Owns<R, K>; we apply it as a named rule
-    const owns = c.owns.map((r) => ({ r, k: c.id }));
+    // owns R → R's owner is the owning component's owner only; 0.x owns is name-checked and not
+    // exclusive, so no std::Owns is minted (A.11.1(d) [D19])
     mod(c.module).decls.push(decl);
-    for (const o of owns) {
-      mod(c.module).decls.push({
-        decl: "rule",
-        name: `${c.name}Owns${(o.r.split("::").pop() ?? o.r).replace(/\W/g, "")}`,
-        template: { name: "std::Owns", args: [o.r, o.k] }
-      });
-    }
+    for (const r of c.owns) notes.push(`owns ${r} in ${c.id} → resource owner only (no std::Owns)`);
   }
 
   // relations
@@ -318,14 +360,17 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
       clauses.push({ forbid: "path", from: sortedUniq(e.sources), to: [e.target], over: e.kinds });
     const when = r.whenHas.map((w) => ({
       param: w.subject,
-      has:
-        w.trait.includes("::") || ["AppendOnly", "PII"].includes(w.trait)
-          ? w.trait.includes("::")
-            ? w.trait
-            : `std::${w.trait}`
+      has: w.trait.includes("::")
+        ? w.trait
+        : STD_MARKERS.has(w.trait) || w.trait === "AppendOnly"
+          ? `std::${w.trait}`
           : w.trait
     }));
-    for (const w of when) if (!usedTemplates.has(w.has)) usedTemplates.set(w.has, "resource");
+    for (const w of when) {
+      if (w.has === "std::AppendOnly")
+        notes.push(`rule ${r.id}: when ${w.param} has AppendOnly names the prelude trait, migrated as std::NoHardDelete rules`);
+      if (!w.has.startsWith("std::") && !usedTemplates.has(w.has)) usedTemplates.set(w.has, "resource");
+    }
     mod(r.module).decls.push({
       decl: "rule",
       name: r.name,
@@ -334,23 +379,33 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
     });
   }
 
-  // memories → notes; guards → RefactorSensitive on the unit (informal law)
+  // memories → notes (A.11.1(g)); a guard → one informal law on its target (RefactorSensitive's
+  // law when the target carries that marker); a marker with no guard → the note alone
+  const markerOn = new Set(
+    ins.functions
+      .filter((f) => (f.shapeTraits ?? []).some((t) => (t.split("::").pop() ?? t) === "RefactorSensitive"))
+      .map((f) => f.id)
+  );
   for (const m of [...ins.memories].sort((a, b) => cmpStr(a.id, b.id))) {
     const tkind = m.target.kind === "fn" ? "unit" : m.target.kind;
-    const owner = m.owner ? `${MIG}::${m.owner}` : undefined;
-    if (m.owner) owners.add(m.owner);
+    // a 0.x owner names no actor migrate declares: dropped from owner, kept as a text line
+    const lines = [m.summary];
+    if (m.owner) {
+      lines.push(`owner: ${m.owner}`);
+      notes.push(`memory ${m.id}: owner ${m.owner} names no migrated actor; kept as text`);
+    }
     mod(m.module).decls.push({
       decl: "note",
       name: m.name,
       kind: "memory",
       about: [`${tkind} ${m.target.id}`],
-      ...(owner ? { owner } : {}),
-      text: m.summary,
+      text: lines.join("\n"),
       ...(m.confidence
         ? { confidence: m.confidence.toLowerCase() as "low" | "medium" | "high" }
         : {})
     });
-    if ((m.guards ?? []).length > 0 && m.target.kind === "fn") {
+    if ((m.guards ?? []).length === 0) continue;
+    if (m.target.kind === "fn" && markerOn.has(m.target.id)) {
       const comp = m.target.id.slice(0, m.target.id.lastIndexOf("."));
       const unitName = m.target.id.slice(m.target.id.lastIndexOf(".") + 1);
       const cm = [...modules.values()]
@@ -361,8 +416,17 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
         if (u && !(u.attach ?? []).some((a) => a.name.endsWith("RefactorSensitive")))
           u.attach = [...(u.attach ?? []), { name: "std::RefactorSensitive" }];
       }
+    } else {
+      const target = `${tkind} ${local(m.target.id, m.module)}`;
+      mod(m.module).decls.push({
+        decl: "law",
+        name: `${m.name}Guard`,
+        on: [target],
+        informal: `Changes to this ${tkind} preserve the constraint recorded in memory ${m.name}.`
+      });
     }
   }
+  for (const r of ruleDecls) mod(r.module).decls.push(r.decl);
   for (const b of ins.bindings)
     notes.push(
       `binding ${b.id} (when changed → require changed) maps to DocumentedBy; not migrated`
@@ -377,13 +441,12 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
     owner: `${MIG}::${ownerName}`
   });
   const maint = sortedUniq(opts.maintainers ?? []);
-  for (const o of sortedUniq([ownerName, ...owners]))
-    migDecls.push({
-      decl: "actor",
-      name: o,
-      kind: "team",
-      members: o === ownerName ? maint.map((m) => `person_${m.replace(/\W/g, "_")}`) : []
-    });
+  migDecls.push({
+    decl: "actor",
+    name: ownerName,
+    kind: "team",
+    members: maint.map((m) => `person_${m.replace(/\W/g, "_")}`)
+  });
   for (const m of maint)
     migDecls.push({
       decl: "actor",
@@ -396,15 +459,6 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
     migDecls.push({ decl: "kind", name: k, from: v.from, to: v.to });
   for (const [t, bearer] of [...usedTemplates.entries()].sort((a, b) => cmpStr(a[0], b[0]))) {
     if (t.startsWith("std::")) continue;
-    if (t.startsWith(`${MIG}::`)) {
-      migDecls.push({
-        decl: "template",
-        name: t.slice(MIG.length + 2),
-        params: [["T", bearer]],
-        body: []
-      });
-      continue;
-    }
     const tb = traitsByQ.get(t);
     const [m, n] = t.includes("::")
       ? [t.slice(0, t.lastIndexOf("::")), t.slice(t.lastIndexOf("::") + 2)]

@@ -1,0 +1,81 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "e6d2fbbedc7cf8af8648414239bd333f2b3084e2",
+  "commit": "tree 07dc6386c0330fe2123a574c8314c03ea5a789e9\nparent 535acbf0863d5a31c670fa1c78a470567e44baef\nauthor Dev Agent <dev-agent@example.invalid> 1792926000 +0000\ncommitter Dev Agent <dev-agent@example.invalid> 1792926000 +0000\n\nfull-profile-manifest-identity head\n",
+  "files": [
+   {
+    "path": "shape.lock",
+    "text": "{\"packs\":[],\"v\":\"shape.lock.v1\"}\n"
+   },
+   {
+    "path": "shape/fc.shape",
+    "text": "module fc\n\nshape Fc { owner Maint policy Gate manifest ed25519(\"696bef008e1698f93a5aa8b8bdb3a6c5d2c4e3d3c7a4ffa8a23369063ff99137\") }\n\nactor Maint { kind team member tim }\nactor tim { kind person identity github(\"tim\") }\n\npolicy Gate {\n  tier low { floor declared max_age 365 days judges owner, agents }\n  tier normal { floor declared blocks latent loosening max_age 365 days judges owner, agents }\n  tier critical { floor tested blocks unestablished, coverage, latent loosening max_age 90 days judges owner }\n}\n\ncomponent Core {\n  owner Maint\n  bind paths { \"src/**\" }\n}\n"
+   }
+  ],
+  "manifest": {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfTUFOSUZFU1QifV0sInNoYXBlIjp7ImVudHJpZXMiOlt7ImRpZ2VzdCI6InNoYTI1Njo2NTY2ZDVhNzQ1OTk5OTM4ZjZlOTI2NzRlOWIwZDg2MGRjNjllNDFmOTZlMzk5NDMzNWQ4ODY3YjA3YjcwZjQ4IiwiZXhlY3V0YWJsZSI6dHJ1ZSwiaGF0Y2hDb21wbGV0ZSI6dHJ1ZSwiaWQiOiJ0czpzcmMvY29yZS50cyIsImtpbmQiOiJmaWxlIiwicGFyZW50IjpudWxsLCJwcm9qZWN0aW9uIjoiZmlsZSIsInJlZnMiOltdLCJzY2hlbWUiOiJ0cy5maWxlLnYxIn0seyJkaWdlc3QiOiJzaGEyNTY6ZDhmZWJjOThjMmZkOWVkNDhkMzMwM2Y0YTc3YWVhN2E2ODBjMWU5ZjBmMGNjYWU5OGJmMzY1OTRlZDdiNGVkYSIsImV4ZWN1dGFibGUiOnRydWUsImhhdGNoQ29tcGxldGUiOnRydWUsImlkIjoidHM6c3JjL2NvcmUudHMiLCJraW5kIjoiZmlsZSIsInBhcmVudCI6bnVsbCwicHJvamVjdGlvbiI6Im93biIsInJlZnMiOltdLCJzY2hlbWUiOiJ0cy5vd24udjIifSx7ImRpZ2VzdCI6InNoYTI1NjpmZjQzODE5ZWQ0OTc0M2M0MjEwZmJiOTNmMzk4NTczNzgyZWQzZDg3NjhjYTMzMGI0OWUzNDVmNDY4YWY3ZDY4IiwiZXhlY3V0YWJsZSI6dHJ1ZSwiaGF0Y2hDb21wbGV0ZSI6dHJ1ZSwiaWQiOiJ0czpzcmMvY29yZS50cyNwaW5nIiwia2luZCI6ImZ1bmN0aW9uIiwicGFyZW50IjoidHM6c3JjL2NvcmUudHMiLCJwcm9qZWN0aW9uIjoib3duIiwicmVmcyI6W10sInNjaGVtZSI6InRzLm93bi52MiJ9LHsiZGlnZXN0Ijoic2hhMjU2OjE0YWExY2ZiMWViOGVkZDc2ODZhZTBlYzNmY2QyMWVjNzY5ZjBlZDUzNzEzZDAyODlhMTMwNDI5YjkxYzVhY2YiLCJleGVjdXRhYmxlIjp0cnVlLCJoYXRjaENvbXBsZXRlIjp0cnVlLCJpZCI6InRzOnNyYy9jb3JlLnRzI3BpbmciLCJraW5kIjoiZnVuY3Rpb24iLCJwYXJlbnQiOiJ0czpzcmMvY29yZS50cyIsInByb2plY3Rpb24iOiJ1bml0IiwicmVmcyI6W10sInNjaGVtZSI6InRzLnVuaXQudjIifV0sInJldmlzaW9uIjoiZTZkMmZiYmVkYzdjZjhhZjg2NDg0MTQyMzliZDMzM2YyYjMwODRlMiIsInRyZWUiOlt7ImJsb2IiOiIzMzRkYTI4ZGNjMDE0OWQwMGFhMjBmZWQ5OWMzZGNiNzI0Y2FiM2VjIiwibW9kZSI6IjEwMDY0NCIsInBhdGgiOiJzaGFwZS5sb2NrIn0seyJibG9iIjoiZjM3Njg4OTgyNWRkODFjN2YyMDlmNTNmMzJiOGVkYTg5M2JhNWNlOCIsIm1vZGUiOiIxMDA2NDQiLCJwYXRoIjoic2hhcGUvZmMuc2hhcGUifSx7ImJsb2IiOiI0ZTBlZGRlOTkzYzk3OWUxMTBkZGFkYjUyYTQ2ZWM2N2I4NGJjYTAzIiwibW9kZSI6IjEwMDY0NCIsInBhdGgiOiJzcmMvY29yZS50cyJ9XSwidiI6InNoYXBlLm1hbmlmZXN0LnYxIn19LCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9pbi10b3RvLmlvL2F0dGVzdGF0aW9uL3NjYWkvYXR0cmlidXRlLXJlcG9ydC92MC4zIiwic3ViamVjdCI6W3siZGlnZXN0Ijp7InNoYTI1NiI6ImMwZmM0MzRlMmE4NTg0NWQ4ZjkxYWNjODYwZWM2MGUwMzZkNGUxZTlmNWM2N2Y3YTFmNTkzNjY4ZmU1Zjk5ZmEifSwibmFtZSI6InNoYXBlOm1hbmlmZXN0L2U2ZDJmYmJlZGM3Y2Y4YWY4NjQ4NDE0MjM5YmQzMzNmMmIzMDg0ZTIifV19",
+   "signatures": [
+    {
+     "keyid": "696bef008e1698f93a5aa8b8bdb3a6c5d2c4e3d3c7a4ffa8a23369063ff99137",
+     "sig": "scoJAlfU1aATSQBcW0V21T74NZMnoN6r4kSaLLpJs06BO3UzchBWVL6JeLAZAERdA2gVlrBHBnnLfSuEj5WrBQ=="
+    }
+   ]
+  }
+ },
+ "base": {
+  "revision": "535acbf0863d5a31c670fa1c78a470567e44baef",
+  "commit": "tree 17d5030f66ff2198d32477e1b7313c734e5190bc\nauthor Dev Agent <dev-agent@example.invalid> 1792843200 +0000\ncommitter Dev Agent <dev-agent@example.invalid> 1792843200 +0000\n\nfull-profile-manifest-identity base\n",
+  "files": [
+   {
+    "path": "shape.lock",
+    "text": "{\"packs\":[],\"v\":\"shape.lock.v1\"}\n"
+   },
+   {
+    "path": "shape/fc.shape",
+    "text": "module fc\n\nshape Fc { owner Maint policy Gate manifest ed25519(\"696bef008e1698f93a5aa8b8bdb3a6c5d2c4e3d3c7a4ffa8a23369063ff99137\") }\n\nactor Maint { kind team member tim }\nactor tim { kind person identity github(\"tim\") }\n\npolicy Gate {\n  tier low { floor declared max_age 365 days judges owner, agents }\n  tier normal { floor declared blocks latent loosening max_age 365 days judges owner, agents }\n  tier critical { floor tested blocks unestablished, coverage, latent loosening max_age 90 days judges owner }\n}\n\ncomponent Core {\n  owner Maint\n  bind paths { \"src/**\" }\n}\n"
+   }
+  ],
+  "manifest": {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfTUFOSUZFU1QifV0sInNoYXBlIjp7ImVudHJpZXMiOlt7ImRpZ2VzdCI6InNoYTI1NjpmYTc2MTFmMWUzNDcyMjliZTgxN2UyNmFlN2E5MWZhY2ZjNWE1NTQ3NGI1YWRkYjE4YzlhYzVhZWNhZWY5MWJmIiwiZXhlY3V0YWJsZSI6dHJ1ZSwiaGF0Y2hDb21wbGV0ZSI6dHJ1ZSwiaWQiOiJ0czpzcmMvY29yZS50cyIsImtpbmQiOiJmaWxlIiwicGFyZW50IjpudWxsLCJwcm9qZWN0aW9uIjoiZmlsZSIsInJlZnMiOltdLCJzY2hlbWUiOiJ0cy5maWxlLnYxIn0seyJkaWdlc3QiOiJzaGEyNTY6ODE3ZmRlNWQ4ZjczOWU2YmJkY2UwYzk1MDUzZTM2MDkzMWUyZmJmNjdlNGEyNjNkOWIzN2NkNTRkN2E1NTFmMiIsImV4ZWN1dGFibGUiOnRydWUsImhhdGNoQ29tcGxldGUiOnRydWUsImlkIjoidHM6c3JjL2NvcmUudHMiLCJraW5kIjoiZmlsZSIsInBhcmVudCI6bnVsbCwicHJvamVjdGlvbiI6Im93biIsInJlZnMiOltdLCJzY2hlbWUiOiJ0cy5vd24udjIifSx7ImRpZ2VzdCI6InNoYTI1NjozYWMwNWU3M2ZiNTZkYmEzMThlZjQ2NGRlM2E3MmE4MGNmMDEzOTcyNGI3MDBiYzA0ZTZlY2IyM2IyMTc4MGQ4IiwiZXhlY3V0YWJsZSI6dHJ1ZSwiaGF0Y2hDb21wbGV0ZSI6dHJ1ZSwiaWQiOiJ0czpzcmMvY29yZS50cyNwaW5nIiwia2luZCI6ImZ1bmN0aW9uIiwicGFyZW50IjoidHM6c3JjL2NvcmUudHMiLCJwcm9qZWN0aW9uIjoib3duIiwicmVmcyI6W10sInNjaGVtZSI6InRzLm93bi52MiJ9LHsiZGlnZXN0Ijoic2hhMjU2OmFjY2I1YzFlNGUxNGY1NTMzZjA0Mjk5NWExMDZkODI5ODI3ZDA3NmExMjYzMDkyZTQ2OGZjZTc4OGEzYWE3YmQiLCJleGVjdXRhYmxlIjp0cnVlLCJoYXRjaENvbXBsZXRlIjp0cnVlLCJpZCI6InRzOnNyYy9jb3JlLnRzI3BpbmciLCJraW5kIjoiZnVuY3Rpb24iLCJwYXJlbnQiOiJ0czpzcmMvY29yZS50cyIsInByb2plY3Rpb24iOiJ1bml0IiwicmVmcyI6W10sInNjaGVtZSI6InRzLnVuaXQudjIifV0sInJldmlzaW9uIjoiNTM1YWNiZjA4NjNkNWEzMWM2NzBmYTFjNzhhNDcwNTY3ZTQ0YmFlZiIsInRyZWUiOlt7ImJsb2IiOiIzMzRkYTI4ZGNjMDE0OWQwMGFhMjBmZWQ5OWMzZGNiNzI0Y2FiM2VjIiwibW9kZSI6IjEwMDY0NCIsInBhdGgiOiJzaGFwZS5sb2NrIn0seyJibG9iIjoiZjM3Njg4OTgyNWRkODFjN2YyMDlmNTNmMzJiOGVkYTg5M2JhNWNlOCIsIm1vZGUiOiIxMDA2NDQiLCJwYXRoIjoic2hhcGUvZmMuc2hhcGUifSx7ImJsb2IiOiI1ZTkxYzRlMjgyOGJhMzMzNmQzZDg4NTA4YTllMDU0YzkxZGUyNTYxIiwibW9kZSI6IjEwMDY0NCIsInBhdGgiOiJzcmMvY29yZS50cyJ9XSwidiI6InNoYXBlLm1hbmlmZXN0LnYxIn19LCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9pbi10b3RvLmlvL2F0dGVzdGF0aW9uL3NjYWkvYXR0cmlidXRlLXJlcG9ydC92MC4zIiwic3ViamVjdCI6W3siZGlnZXN0Ijp7InNoYTI1NiI6IjY2ODMxMThjYzU0NDZhNzY2Mjc5N2QyZGExYjA3ZjMyZTVmM2ZjODVmNDdhMGE4ZWYzYTNkZTE1Mjg5MGVjOTkifSwibmFtZSI6InNoYXBlOm1hbmlmZXN0LzUzNWFjYmYwODYzZDVhMzFjNjcwZmExYzc4YTQ3MDU2N2U0NGJhZWYifV19",
+   "signatures": [
+    {
+     "keyid": "696bef008e1698f93a5aa8b8bdb3a6c5d2c4e3d3c7a4ffa8a23369063ff99137",
+     "sig": "qd0TM3WpZE3Gh+WxsfsRZVO+x9kQdKS/U04IK77xWGF2teA2fho3UdFObPASwdMFzArVdbshyazUVT2qg2thCA=="
+    }
+   ]
+  }
+ },
+ "packs": [],
+ "change": {
+  "ids": [
+   "github:acme/fc#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"dev-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "trustRoots": {
+  "fulcio": [],
+  "rekor": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

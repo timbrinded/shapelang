@@ -2,24 +2,10 @@
  "errors": [
   {
    "code": "E-conduct",
-   "subject": "unit audit::AuditStore.purgeOldEvents"
+   "subject": "{\"claim\":\"sha256:3fe8f5ac7169085e744c2b83e26fdd5285328148b8300b68510efd4de6b0aef8\",\"kind\":\"contradiction\",\"subject\":{\"atom\":\"HardDelete<audit::AuditEvent>\",\"code\":\"ts:src/audit/purge.ts#purgeOldEvents\"},\"v\":\"shape.obligation.v1\"}"
   }
  ],
  "exact": true,
- "obligations": [
-  {
-   "exploited": true,
-   "key": "ob:ca99c5461b8ff9a8410d4389337b30099a13b1a78bf99bd8f9cc107df9d04054",
-   "kind": "loosening",
-   "severity": "blocking",
-   "tier": "critical"
-  },
-  {
-   "kind": "coverage",
-   "severity": "blocking",
-   "subject": "component audit::AuditStore",
-   "tier": "critical"
-  }
- ],
+ "obligations": [],
  "verdict": "blocked"
 }

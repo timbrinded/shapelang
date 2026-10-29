@@ -118,7 +118,8 @@ export function carriers(t: string): {
     case "http.route":
       return { langs: "all", rawCarrier: true, rawExts: [] };
     default:
-      return { langs: "all", rawCarrier: true, rawExts: [] };
+      // kinds absent from the registry have no carriers until registered (A.3.3.9, A.12.4 [D3])
+      return { langs: new Set(), rawCarrier: false, rawExts: [] };
   }
 }
 

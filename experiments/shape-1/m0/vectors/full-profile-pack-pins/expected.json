@@ -1,0 +1,94 @@
+{
+ "vector": "full-profile-pack-pins",
+ "title": "A head lock pin without a matching pack is invalid input; a bad base pin is only a base defect that drops the pack",
+ "decides": [
+  "A.16.1",
+  "A.3.1.3",
+  "A.3.1.4",
+  "A.6.4.1",
+  "A.6.4.2",
+  "A.10.1"
+ ],
+ "cases": [
+  {
+   "case": "pins-match",
+   "input": "pins-match.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.3.1.3, A.16.1(c): both locks pin acme 1.0.0 at H({v: shape.pack.v1, files: [[acme.shape, sha256 of its text]]}), which the supplied pack matches; nothing is owed"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "no error"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "the shapes are identical and Core has no claims"
+    }
+   ]
+  },
+  {
+   "case": "head-pin-digest-wrong",
+   "input": "head-pin-digest-wrong.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "invalid",
+     "why": "A.3.1.4 (\"a bad head pin is invalid\"), A.10.1 (head packs), A.16.1(c): the head lock's digest differs from the supplied pack's"
+    }
+   ]
+  },
+  {
+   "case": "head-pin-pack-missing",
+   "input": "head-pin-pack-missing.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "invalid",
+     "why": "A.3.1.4 (packs covers every pin of either lock), A.16.1(c): the head pin acme 1.0.0 has no pack entry"
+    }
+   ]
+  },
+  {
+   "case": "base-pin-digest-wrong",
+   "input": "base-pin-digest-wrong.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.3.1.4 (\"a bad base pin a base defect\"), A.6.4.1-2, A.16.1(c): the base drops acme leniently and never makes the verdict invalid; neither shape uses anything acme declares"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.6.4.1: shape errors apply to the head only"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "pack items are never loosening subjects [D18]; no claim reads acme's effect"
+    }
+   ]
+  }
+ ]
+}

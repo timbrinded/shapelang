@@ -1,5 +1,21 @@
 """Generate kernel cases (shape.kernel.case/v1) for the worked examples of the core
-(version 6) and the annex vectors, with the expected obligations from vectors.py.
+(version 7) and the annex vectors, with the expected obligations from vectors.py
+(experiments/shape-1/spec/vectors/vectors.json, version 7).
+
+Version 7 updates (each case kept; inputs and expectations moved to the version 7 text):
+- std: AppendOnly forbids Update (A.3.4.2, D13); hatch kinds add unsafe in rust, ts_expect_error
+  and ts_nocheck (A.12.2.8, D20); forbid hatch * elaborates to one clause per declared hatch verb
+  plus Undeclared, never Hatch (A.4.2.4, D1);
+- manifests: raw executables carry the executable flag instead of kind "exec" (A.12.7.5, D27);
+- ex1_first_adoption: an empty base makes every provider head-only, whose records hold no reason,
+  so the law's reason is missing, not weak (A.5.4.3, A.6.2.6, D9; golden ex1-empty-base);
+- ex1_variant_a: the E-conduct subject is the key preimage (A.16.25); no authority loosening, since
+  the final Update forbid still blocks the gained atoms (A.8.2.3 L1, D17; vectors.py errata) and
+  summaries have no call channel, so no coverage (A.4.5.1, D2); golden ex1-A;
+- ex1_variant_b_no_test: E-provider-missing subject "provider Q claim C", C the first id (A.16.25);
+- ex3_refactor_stale, ex3_rejudged: no coverage obligation: the summary's channels are effect(t)
+  for bound t only and SystemClock binds none (A.4.5.1, D2), so ShpCli code is covered vacuously
+  (A.7.4.5); golden ex3-step1. ex3_rejudged therefore passes.
 
 Run: python3 -I gen_cases.py <out-dir>
 Writes <name>.json (the case) and <name>.expect.json (expected verdict and obligations)."""
@@ -26,10 +42,11 @@ STD_EFFECTS = [
     {"verb": "HardDelete", "implies": ["Update"]}, {"verb": "Truncate", "implies": ["HardDelete"]},
     {"verb": "DropStorage", "implies": ["Truncate"]}, {"verb": "Hatch", "implies": []},
 ]
-HATCH_KINDS = {"external_body": "verus", "external": "verus", "assume": "verus", "admit": "verus",
-               "assume_specification": "verus", "uninterp": "verus", "axiom": "verus", "unsafe": "bend",
-               "ts_ignore": "ts"}
-STD_HATCHES = [{"kind": k, "lang": l} for k, l in HATCH_KINDS.items()]
+HATCH_PAIRS = [("external_body", "verus"), ("external", "verus"), ("assume", "verus"), ("admit", "verus"),
+               ("assume_specification", "verus"), ("uninterp", "verus"), ("axiom", "verus"), ("unsafe", "bend"),
+               ("unsafe", "rust"), ("ts_ignore", "ts"), ("ts_expect_error", "ts"), ("ts_nocheck", "ts")]
+STD_HATCHES = [{"kind": k, "lang": l} for k, l in HATCH_PAIRS]
+HATCH_VERBS = sorted(set(k for k, _ in HATCH_PAIRS))
 STD_KINDS = [{"name": "calls", "from": "component", "to": "component"},
              {"name": "callbacks", "from": "component", "to": "component"},
              {"name": "provides", "from": "component", "to": "resource"},
@@ -75,9 +92,9 @@ def prov(q, produces, observes=(), decides=(), presence=False, absence=False, de
             "implementation": {"paths": list(paths), "digest": digest}}
 
 
-def entry(id_, proj, digest, kind="symbol", parent=None, markers=None, scheme=None):
+def entry(id_, proj, digest, kind="symbol", parent=None, markers=None, scheme=None, executable=False):
     e = {"id": id_, "projection": proj, "scheme": scheme or (id_.split(":")[0] + "." + proj + ".v2"),
-         "digest": digest, "kind": kind, "parent": parent}
+         "digest": digest, "kind": kind, "parent": parent, "executable": executable, "hatchComplete": True}
     if markers:
         e["markers"] = markers
     return e
@@ -104,7 +121,7 @@ def case(head_esf, head_man, head_rev, base_esf=None, base_man=None, base_rev="b
             "authors": list(authors),
             "head": {"revision": head_rev, "esf": head_esf, "manifest": head_man},
             "base": None if base_esf is None else {"revision": base_rev, "esf": base_esf, "manifest": base_man},
-            "cells": [list(c) for c in cells], "records": list(records), "baseRecords": list(base_records)}
+            "records": list(records), "baseRecords": list(base_records)}
 
 
 def write(name, c, expect):
@@ -135,8 +152,8 @@ UNIT_APPEND = {"q": A + "AuditStore.appendEvent", "component": A + "AuditStore",
                "owner": A + "AuditTeam", "tier": "critical", "bind": None, "was": None, "summary": None, "attach": []}
 UNIT_PURGE = {"q": A + "AuditStore.purgeOldEvents", "component": A + "AuditStore", "name": "purgeOldEvents",
               "owner": A + "AuditTeam", "tier": "critical", "bind": None, "was": None, "summary": None, "attach": []}
-C_APPENDONLY = claim(["audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"], "effect.forbid",
-                     {"atom": "HardDelete<audit::AuditEvent>", "scope": ["*"], "except": []}, A + "AuditTeam", "final")
+C_APPENDONLY = claim(["audit::AuditEvent/AppendOnly/effect.forbid-Update"], "effect.forbid",
+                     {"atom": "Update<audit::AuditEvent>", "scope": ["*"], "except": []}, A + "AuditTeam", "final")
 
 
 def c_authority(grants):
@@ -236,7 +253,7 @@ def base_esf1():
 
 
 AUTHORS1 = [A + "codeAgent", A + "alice"]
-V = json.load(open(os.environ.get("VECTORS", "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/shape1work/vec_out.json")))
+V = json.load(open(os.environ.get("VECTORS", os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "spec", "vectors", "vectors.json"))))
 
 base_rec1 = sql_obs("b0", OBS_ENTRIES_B, [FACT_APPEND])
 
@@ -289,8 +306,8 @@ write("ex1_variant_b_prime", c, {"verdict": "blocked", "obligations": [
 
 # --- B'' : raw shell executable, no observer reads shell -----------------------
 SH = "raw:src/audit/purge.sh"
-hm = base_entries1() + [entry(SH, "file", label("purge.sh file"), kind="exec", scheme="raw.file.v1"),
-                        entry(SH, "own", label("raw:src/audit/purge.sh own, head"), kind="exec", scheme="raw.own.v1")]
+hm = base_entries1() + [entry(SH, "file", label("purge.sh file"), kind="file", scheme="raw.file.v1", executable=True),
+                        entry(SH, "own", label("raw:src/audit/purge.sh own, head"), kind="file", scheme="raw.own.v1", executable=True)]
 c = case(base_esf1(), manifest("h3", hm), "h3", base_esf1(), manifest("b0", base_entries1()),
          records=[sql_obs("h3", OBS_ENTRIES_B, [FACT_APPEND]), fast_record("h3", BASE_CODE1)],
          base_records=[base_rec1], authors=AUTHORS1)
@@ -327,7 +344,7 @@ cC = case(headC, manifest("h1", head_entries1()), "h1", base_esf1(), manifest("b
 write("ex1_variant_c", cC, {"verdict": "blocked", "errors": [], "obligations": [
     {"key": V["key ex1.C.forbid"], "binding": V["binding ex1.C.forbid"], "group": V["group ex1.C"],
      "kind": "loosening", "tier": "final", "severity": "blocking", "exploited": True},
-    {"key": V["key ex1.C.authority (also Variant A)"], "binding": V["binding ex1.C.authority"], "group": V["group ex1.C"],
+    {"key": V["key ex1.C.authority"], "binding": V["binding ex1.C.authority"], "group": V["group ex1.C"],
      "kind": "loosening", "tier": "critical", "severity": "blocking", "exploited": True}], "exact": True})
 
 # Variant C answered: bob answers both, carol (second person) answers the final one.
@@ -335,18 +352,18 @@ refs_bob = [V["binding ex1.C.forbid"][:19], V["binding ex1.C.authority"][:19]]
 cC2 = copy.deepcopy(cC)
 cC2["records"] += [answer(A + "bob", refs_bob), answer(A + "carol", [V["binding ex1.C.forbid"][:19]])]
 write("ex1_variant_c_answered", cC2, {"verdict": "pass", "obligations": [],
-                                      "answered": [V["key ex1.C.forbid"], V["key ex1.C.authority (also Variant A)"]], "exact": True})
+                                      "answered": [V["key ex1.C.forbid"], V["key ex1.C.authority"]], "exact": True})
 # Only bob: the final loosening needs a second person; the critical one is discharged.
 cC3 = copy.deepcopy(cC)
 cC3["records"] += [answer(A + "bob", refs_bob)]
 write("ex1_variant_c_one_person", cC3, {"verdict": "blocked", "obligations": [
-    {"key": V["key ex1.C.forbid"], "severity": "blocking"}], "answered": [V["key ex1.C.authority (also Variant A)"]], "exact": True})
+    {"key": V["key ex1.C.forbid"], "severity": "blocking"}], "answered": [V["key ex1.C.authority"]], "exact": True})
 # Another change id never matches.
 cC4 = copy.deepcopy(cC)
 cC4["records"] += [answer(A + "bob", refs_bob, change="github:acme/audit#58"),
                    answer(A + "carol", [V["binding ex1.C.forbid"][:19]], change="github:acme/audit#58")]
 write("ex1_variant_c_other_change", cC4, {"verdict": "blocked", "obligations": [
-    {"key": V["key ex1.C.forbid"]}, {"key": V["key ex1.C.authority (also Variant A)"]}], "exact": True})
+    {"key": V["key ex1.C.forbid"]}, {"key": V["key ex1.C.authority"]}], "exact": True})
 
 # --- Variant A: keep AppendOnly, add the grant, declare the unit -> E-conduct + L1 --
 headA = esf(A + "AuditService", A + "Platform", ACTORS1, RES1,
@@ -356,11 +373,11 @@ headA = esf(A + "AuditService", A + "Platform", ACTORS1, RES1,
 cA = case(headA, manifest("h1", head_entries1()), "h1", base_esf1(), manifest("b0", base_entries1()),
           records=[sql_obs("h1", OBS_ENTRIES_H, [FACT_PURGE, FACT_APPEND]), fast_record("h1", HEAD_CODE1)],
           base_records=[base_rec1], authors=AUTHORS1, cells=CELLS1)
-write("ex1_variant_a", cA, {"verdict": "blocked", "errors": [{"code": "E-conduct", "subject": "unit audit::AuditStore.purgeOldEvents"}],
-                            "obligations": [{"key": V["key ex1.C.authority (also Variant A)"], "kind": "loosening",
-                                             "tier": "critical", "severity": "blocking", "exploited": True},
-                                            {"kind": "coverage", "subject": "component audit::AuditStore", "tier": "critical",
-                                             "severity": "blocking"}], "exact": True})
+CONDUCT_A = json.dumps({"claim": V["fp ex1.appendonly"], "kind": "contradiction",
+                        "subject": {"atom": "HardDelete<audit::AuditEvent>", "code": PURGE}, "v": "shape.obligation.v1"},
+                       sort_keys=True, separators=(",", ":"))
+write("ex1_variant_a", cA, {"verdict": "blocked", "errors": [{"code": "E-conduct", "subject": CONDUCT_A}],
+                            "obligations": [], "exact": True})
 
 # --- Audit mode on the base: pass --------------------------------------------
 c = case(base_esf1(), manifest("b0", base_entries1()), "b0", records=[sql_obs("b0", OBS_ENTRIES_B, [FACT_APPEND]),
@@ -372,14 +389,14 @@ empty = esf(A + "AuditService", A + "Platform", ACTORS1)
 c = case(base_esf1(), manifest("b0", base_entries1()), "b0", empty, manifest("b0", base_entries1()),
          records=[sql_obs("b0", OBS_ENTRIES_B, [FACT_APPEND]), fast_record("b0", BASE_CODE1)], authors=AUTHORS1)
 write("ex1_first_adoption", c, {"verdict": "owed", "obligations": [
-    {"kind": "unestablished", "reason": "weak", "introduced": False, "severity": "owed",
+    {"kind": "unestablished", "reason": "missing", "introduced": False, "severity": "owed",
      "claimFp": "sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3"}], "exact": True})
 
 # --- Variant B with the fastCheck record dropped: E-provider-missing ----------
 c = case(base_esf1(), manifest("h1", head_entries1()), "h1", base_esf1(), manifest("b0", base_entries1()),
          records=[sql_obs("h1", OBS_ENTRIES_H, [FACT_PURGE, FACT_APPEND])], base_records=[base_rec1], authors=AUTHORS1)
 write("ex1_variant_b_no_test", c, {"verdict": "blocked", "errors": [
-    {"code": "E-provider-missing", "subject": "provider audit::fastCheck sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3"}],
+    {"code": "E-provider-missing", "subject": "provider audit::fastCheck claim audit::EventsArePreserved"}],
     "obligations": [{"key": V["key ex1.B.contradiction"]},
                     {"kind": "unestablished", "reason": "missing", "severity": "blocking"}]})
 
@@ -409,7 +426,7 @@ UNITS2 = [{"q": I + "DelegationMap.set", "component": I + "DelegationMap", "name
 HOST_ALLOWS = {"external_body", "external", "uninterp"}
 CONFINE = [claim(["ironkv::NoHatchesOutsideBoundaries/" + h], "effect.forbid",
                  {"atom": "%s<std::Trust>" % h, "scope": ["*"], "except": ["component ironkv::HostTrusted"] if h in HOST_ALLOWS else []},
-                 I + "IronKvTeam", "critical") for h in sorted(list(HATCH_KINDS) + ["Hatch"])]
+                 I + "IronKvTeam", "critical") for h in HATCH_VERBS + ["Undeclared"]]
 LAW_SET = claim(["ironkv::SetRefinesSpec"], "law", {"on": ["unit ironkv::DelegationMap.set"],
                                                    "statement": {"ref": SET, "projection": "closure"}},
                 I + "IronKvTeam", "critical", req("proven", pins=[I + "verus"]))
@@ -469,10 +486,11 @@ c2base = case(esf2(), manifest("h2", entries2(True)), "h2", esf2(), manifest("b2
 EX2_OBS = [{"key": V["key ex2.contradiction"], "binding": V["binding ex2.contradiction"], "group": V["group ex2"],
             "kind": "contradiction", "force": "sound", "introduced": True, "severity": "blocking", "budget": "mechanical"},
            {"key": V["key ex2.unestablished"], "binding": V["binding ex2.unestablished"], "group": V["group ex2"],
-            "kind": "unestablished", "reason": "assumption", "introduced": True, "severity": "blocking", "budget": "mechanical"},
-           {"kind": "contradiction", "claimFp": "sha256:dc8454f26ba4a098a6681e766d63ddf9226954a5a5bf8ed9d8148c7b0996fac8",
-            "subject": {"code": HOST, "atom": "external_body<std::Trust>"}, "force": "sound", "introduced": False,
-            "severity": "owed"}]
+            "kind": "unestablished", "reason": "assumption", "introduced": True, "severity": "blocking", "budget": "mechanical"}]
+# Version 6 also expected a preexisting contradiction of the Hatch clause at host_t.rs#send's
+# external_body marker. Version 7 has no Hatch clause (A.4.2.4, D1): external_body is allowed at the
+# HostTrusted boundary, so the base raises nothing there (A.11.2.4 "allowed hatch at a boundary
+# raises nothing"; vector allowed-hatch-at-boundary; golden ex2).
 write("ex2_assume", c2base, {"verdict": "blocked", "errors": [], "obligations": EX2_OBS, "exact": True})
 
 refs2 = [V["binding ex2.contradiction"][:19], V["binding ex2.unestablished"][:19]]
@@ -487,8 +505,7 @@ c = copy.deepcopy(c2base)
 c["head"]["esf"] = esf2([EXC2])
 c["records"].append(answer(I + "dana", refs2, change="github:acme/ironkv#12", prov_id=I + "reviews"))
 write("ex2_exception_answered", c, {"verdict": "owed", "obligations": [
-    dict(EX2_OBS[0], severity="owed", exception=I + "SetAssume"), dict(EX2_OBS[1], severity="owed", exception=I + "SetAssume"),
-    EX2_OBS[2]],
+    dict(EX2_OBS[0], severity="owed", exception=I + "SetAssume"), dict(EX2_OBS[1], severity="owed", exception=I + "SetAssume")],
     "debt": [{"obligation": V["key ex2.contradiction"], "expiresInDays": 51},
              {"obligation": V["key ex2.unestablished"], "expiresInDays": 51}], "exact": True})
 c = copy.deepcopy(c2base)
@@ -552,14 +569,14 @@ c = case(s3, manifest("h3", entries3(True)), "h3", s3, manifest("b3", entries3(F
          authors=[T + "claude", T + "tim"], change_ids=["github:acme/shape#3"])
 write("ex3_refactor_stale", c, {"verdict": "owed", "obligations": [
     {"key": V["key ex3.unestablished.refactor"], "binding": V["binding ex3.unestablished.refactor"], "kind": "unestablished",
-     "reason": "stale", "introduced": True, "severity": "owed", "tier": "normal"}, {"kind": "coverage", "subject": "component tooling::ShpCli", "tier": "normal", "severity": "owed"}], "exact": True})
+     "reason": "stale", "introduced": True, "severity": "owed", "tier": "normal"}], "exact": True})
 # Re-judged by one line (self fallback, Claude authored): pass.
 tim_j2 = copy.deepcopy(tim_j)
 tim_j2["predicate"]["shape"]["code"] = [cite(ISO, "unit", ISO_H)]
 tim_j2["predicate"]["shape"]["revision"] = "h3"
 c2 = copy.deepcopy(c)
 c2["records"] = [tim_j2]
-write("ex3_rejudged", c2, {"verdict": "owed", "obligations": [{"kind": "coverage", "subject": "component tooling::ShpCli", "tier": "normal", "severity": "owed"}], "exact": True})
+write("ex3_rejudged", c2, {"verdict": "pass", "obligations": [], "exact": True})
 # Unchanged isoToday: the old judgment stays usable.
 c3 = case(s3, manifest("b3", entries3(False)), "b3", s3, manifest("b3", entries3(False)), "b3", records=[tim_j],
           authors=[T + "claude", T + "tim"], change_ids=["github:acme/shape#3"])

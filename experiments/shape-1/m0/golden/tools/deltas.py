@@ -108,6 +108,8 @@ D["ex1-empty-base"] = common("ex1-empty-base", "tighter", "the base is empty", m
      "clause": "A.5.1.3, A.5.4.3, A.6.2.6 (head-only providers: no reason) [D9]; EXAMPLES Example 1 ('Empty base: owed … preexisting missing')"},
     {"what": "health.unobservable [the four claim ids] -> []; health.declaredOnly lists the Update forbid (final), authority(AuditStore), appendEvent's effects.upper and effects.lower (critical), each with route declared-only: the empty base declares no provider",
      "clause": "A.4.5.6, A.10.4, A.7.4.2 [D3]"},
+    {"what": "health.baseDefects [\"E-parse shape\"] -> []: an empty base holds no shape declaration and is no base defect", "clause": "A.16.17, A.6.4.2 [D18]"},
+    {"what": "unestablished ob:e388df561228b690: the lower-requirement discharger's creates {loosening, critical, 1, [audit::AuditTeam]} -> null: the base holds no such law, so lowering it raises no question", "clause": "A.16.17, A.16.27, A.8.2.1"},
 ]
 
 EX2 = [
@@ -151,6 +153,7 @@ D["ex3-step2"] = common("ex3-step2", "equivalent", "base and head shapes are ide
 D["ex3-step2-harness-edited"] = common("ex3-step2-harness-edited", "equivalent", "base and head shapes are identical", manifests=True) + [
     {"what": "producer-changed unestablished ob:79b18d16e2bc560c: the discharger rerun (2nd of 4) removed; dischargers are answer, exception, lower-requirement",
      "clause": "A.7.1.3 (producer-changed: a person's answer; last: exception, lower the requirement) [D9]"},
+    {"what": "producer-changed unestablished ob:79b18d16e2bc560c: binding bd:c42a951fc2acb6de -> bd:1cff58dc3a971da2; code gains [determinism.test.ts, own, base, head], the harness finest change", "clause": "A.16.19, A.7.2.2, core §7.2"},
 ]
 D["ex3-step2-record-dropped"] = common("ex3-step2-record-dropped", "equivalent", "base and head shapes are identical", manifests=True)
 D["ex3-step2-refactor-sensitive-removed"] = common("ex3-step2-refactor-sensitive-removed", "looser", "the head removes the RefactorSensitive law (L4 loosened); the reverse pass adds it", manifests=True)
@@ -167,10 +170,12 @@ EX4 = [
 D["ex4"] = common("ex4", "equivalent", "base and head shapes are identical", manifests=True) + EX4 + [
     {"what": "health.unobservable [the relation, the cycle rule] -> []; health.declaredOnly lists relation 8a8f0d5a3028807a and rule d1d638be608c2992 (normal, route contradiction-only: tsCallGraph declares call(ts) with sound none)",
      "clause": "A.4.5.6, A.10.4 [D3]; EXAMPLES Example 4 ('Both claims are declared-only (route contradiction-only)')"},
+    {"what": "heuristic cycle contradiction ob:6efc5ef79a4f52af: the dismissing answer discharger's agentSafe false -> true (normal tier, judges owner and agents; its group is assigned to agents)", "clause": "A.16.27, A.6.3.3, A.10.3"},
 ]
 D["ex4-closing-the-set"] = common("ex4-closing-the-set", "looser", "L3 loosened forward; in the reverse pass the base's exceptTo {ShapeModelLowerer} claim is an heir of the head's", manifests=True) + EX4 + [
     {"what": "health.unobservable [4 claim ids] -> []; health.declaredOnly lists the head's relations complete clause (630a3439992eb6fc), both relations (8a8f0d5a3028807a, f175b0883c27059c) and the cycle rule, all normal, route contradiction-only",
      "clause": "A.4.5.6, A.10.4 [D3]"},
+    {"what": "heuristic cycle contradiction ob:6efc5ef79a4f52af: the dismissing answer discharger's agentSafe false -> true (normal tier, judges owner and agents; its group is assigned to agents)", "clause": "A.16.27, A.6.3.3, A.10.3"},
 ]
 
 if __name__ == "__main__":

@@ -33,9 +33,9 @@
       "introduced": true,
       "severity": "blocking",
       "tier": "critical",
-      "binding": "bd:dc4f0339e8d229d16dddb48d44d511f672b58c5b45507a3090d5b5bdfa0422de"
+      "binding": "bd:8cea8d2a37915cd4bb0447b7dd011efc1fc9934909aa9c32dbab72c9bf00d5b8"
      },
-     "why": "A.5.4.1 [D9]: the fresh record cites the head harness digest, but its harness meets Δcode, so it is producer-changed (otherwise usable, supporting); A.7.3.3: reason producer-changed introduces; A.7.2.2: affected adds the harness finest change, code holds every Req pair"
+     "why": "A.5.4.1 [D9]: the fresh record cites the head harness digest, but its harness meets Δcode, so it is producer-changed (otherwise usable, supporting); A.7.3.3: reason producer-changed introduces; A.7.2.2, A.16.19: affected adds the harness finest change, code holds every Req pair plus (test/run.test.ts, own) with its base and head digests"
     },
     {
      "in": "errors",

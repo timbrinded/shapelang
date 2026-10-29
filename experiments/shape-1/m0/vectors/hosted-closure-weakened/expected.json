@@ -55,7 +55,7 @@
        "verus:src/map.rs#set"
       ]
      },
-     "why": "A.8.3.2: L4 affected = Req identities; A.8.3.1: no counterexample and set lies under no constraining claim, so it is covered vacuously (A.7.4.5) and the part is not exploited"
+     "why": "A.8.3.2: L4 affected = Req identities; A.8.3.1, A.16.10: L4 has no channels, so the affected changed identity verus:src/map.rs#set counts as uncovered (A.7.4.5's vacuous coverage does not apply), and DefaultPolicy critical blocks coverage, so the part is exploited"
     },
     {
      "in": "obligations",

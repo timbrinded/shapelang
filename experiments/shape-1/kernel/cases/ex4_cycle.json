@@ -231,7 +231,19 @@
      "lang": "bend"
     },
     {
+     "kind": "unsafe",
+     "lang": "rust"
+    },
+    {
      "kind": "ts_ignore",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_expect_error",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_nocheck",
      "lang": "ts"
     }
    ],
@@ -304,6 +316,8 @@
      "entries": [
       {
        "digest": "sha256:05f94654da2fee3276135ad58e654d792ee6b86f8ca9ea62f89187c0e47b210f",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/lowering/facts.ts",
        "kind": "file",
        "parent": null,
@@ -312,6 +326,8 @@
       },
       {
        "digest": "sha256:0cc1783131ea095746a905d9c804655f5079429ada407e35beada7ebdbeb3b60",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/lowering/facts.ts",
        "kind": "file",
        "parent": null,
@@ -320,6 +336,8 @@
       },
       {
        "digest": "sha256:87fd7e3c4c54c1191078d4cc21d8d450d72184036fe708f51ef530ab654a886d",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/lowering/context.ts",
        "kind": "file",
        "parent": null,
@@ -328,6 +346,8 @@
       },
       {
        "digest": "sha256:6cfacec82fe6ff291edc3aca449219c7682da953604a23cd30218019eeaee21b",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/lowering/context.ts",
        "kind": "file",
        "parent": null,
@@ -336,6 +356,8 @@
       },
       {
        "digest": "sha256:da845a39ef667a7ee8d2635e07491cdbe521572ccf44a1ec58d954f97ce783b3",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts",
        "kind": "file",
        "parent": null,
@@ -344,6 +366,8 @@
       },
       {
        "digest": "sha256:be4778d6fb25f626c04c023fde43f2d42744512c522acb1e5e357b6eddd60006",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts",
        "kind": "file",
        "parent": null,
@@ -352,6 +376,8 @@
       },
       {
        "digest": "sha256:72442c39dba79df19934413ac87735017eb4326d79e88975bc47a17f81b04fc9",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts#requirementsForTarget",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
@@ -360,6 +386,8 @@
       },
       {
        "digest": "sha256:2681cf302fb11df3bcc6006deab3e99aed4e24322bd5164a64229f5a33abce8f",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts#requirementsForTarget",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
@@ -368,6 +396,8 @@
       },
       {
        "digest": "sha256:2c173eb15cea58648f5016660440707fe4e035e7b3c3a57bc1aac9ba3799956e",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
@@ -376,6 +406,8 @@
       },
       {
        "digest": "sha256:54fe6e39dbb623ee58d20b7944a492709f8c87ec5154ace4eb0ac5aeb315e4fe",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
@@ -384,6 +416,8 @@
       },
       {
        "digest": "sha256:9ac45211051fa3dbbbdffa49cc9e7a6121843b27e032041051fb50cb3ddd48a9",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts#requiresReevaluation",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
@@ -392,6 +426,8 @@
       },
       {
        "digest": "sha256:3e581c1f3b64b074abbb27bde13ee78079e65f4c8b458e5c16cc2daf83fd16da",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts#requiresReevaluation",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
@@ -410,7 +446,6 @@
   "revision": "h5"
  },
  "baseRecords": [],
- "cells": [],
  "change": {
   "ids": [
    "github:acme/shape#5"
@@ -645,7 +680,19 @@
      "lang": "bend"
     },
     {
+     "kind": "unsafe",
+     "lang": "rust"
+    },
+    {
      "kind": "ts_ignore",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_expect_error",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_nocheck",
      "lang": "ts"
     }
    ],
@@ -718,6 +765,8 @@
      "entries": [
       {
        "digest": "sha256:05f94654da2fee3276135ad58e654d792ee6b86f8ca9ea62f89187c0e47b210f",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/lowering/facts.ts",
        "kind": "file",
        "parent": null,
@@ -726,6 +775,8 @@
       },
       {
        "digest": "sha256:0cc1783131ea095746a905d9c804655f5079429ada407e35beada7ebdbeb3b60",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/lowering/facts.ts",
        "kind": "file",
        "parent": null,
@@ -734,6 +785,8 @@
       },
       {
        "digest": "sha256:87fd7e3c4c54c1191078d4cc21d8d450d72184036fe708f51ef530ab654a886d",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/lowering/context.ts",
        "kind": "file",
        "parent": null,
@@ -742,6 +795,8 @@
       },
       {
        "digest": "sha256:6cfacec82fe6ff291edc3aca449219c7682da953604a23cd30218019eeaee21b",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/lowering/context.ts",
        "kind": "file",
        "parent": null,
@@ -750,6 +805,8 @@
       },
       {
        "digest": "sha256:da845a39ef667a7ee8d2635e07491cdbe521572ccf44a1ec58d954f97ce783b3",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts",
        "kind": "file",
        "parent": null,
@@ -758,6 +815,8 @@
       },
       {
        "digest": "sha256:be4778d6fb25f626c04c023fde43f2d42744512c522acb1e5e357b6eddd60006",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts",
        "kind": "file",
        "parent": null,
@@ -766,6 +825,8 @@
       },
       {
        "digest": "sha256:72442c39dba79df19934413ac87735017eb4326d79e88975bc47a17f81b04fc9",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts#requirementsForTarget",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
@@ -774,6 +835,8 @@
       },
       {
        "digest": "sha256:2681cf302fb11df3bcc6006deab3e99aed4e24322bd5164a64229f5a33abce8f",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts#requirementsForTarget",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
@@ -782,6 +845,8 @@
       },
       {
        "digest": "sha256:2c173eb15cea58648f5016660440707fe4e035e7b3c3a57bc1aac9ba3799956e",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
@@ -790,6 +855,8 @@
       },
       {
        "digest": "sha256:54fe6e39dbb623ee58d20b7944a492709f8c87ec5154ace4eb0ac5aeb315e4fe",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
@@ -798,6 +865,8 @@
       },
       {
        "digest": "sha256:9ac45211051fa3dbbbdffa49cc9e7a6121843b27e032041051fb50cb3ddd48a9",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts#requiresReevaluation",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
@@ -806,6 +875,8 @@
       },
       {
        "digest": "sha256:3e581c1f3b64b074abbb27bde13ee78079e65f4c8b458e5c16cc2daf83fd16da",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:packages/shp-checker/src/checker/derivations.ts#requiresReevaluation",
        "kind": "symbol",
        "parent": "ts:packages/shp-checker/src/checker/derivations.ts",

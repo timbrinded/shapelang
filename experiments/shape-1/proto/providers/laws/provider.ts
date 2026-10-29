@@ -350,11 +350,14 @@ export async function runLaws(o: LawsOptions): Promise<{ records: Emitted[]; rep
       harness: sortCites(harness),
       assumptions: [{ id: `bun@${Bun.version}`, kind: "tool" }],
       bound,
+      // version 7 (A.12.5.2, A.16.35): a forceful test counterexample holds at least seed, inputs
+      // and assertion (here the failing law's name, or its claim id when unnamed)
       ...(contra
         ? {
             counterexample: {
-              law: contra.name || null,
-              input: contra.counterexample as JsonValue,
+              seed: Number.isSafeInteger(contra.seed) ? contra.seed : 0,
+              inputs: contra.counterexample as JsonValue,
+              assertion: contra.name || contra.claim,
               ...(contra.error ? { error: contra.error } : {})
             }
           }

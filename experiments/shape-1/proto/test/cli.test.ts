@@ -23,7 +23,10 @@ describe("shape1 CLI", () => {
     };
     expect(out.verdict).toBe("blocked");
     expect(out.obligations[0]?.message).toBeUndefined();
-    expect(out.obligations[0]?.key.startsWith("ob:bb51a88f52f5081e")).toBe(true);
+    // version 7 key: the AppendOnly clause forbids Update [D13] (m0/golden/deltas.json ex1-B)
+    expect(out.obligations[0]?.key.startsWith("ob:98ff6f5f02010232")).toBe(true);
+    // A.16.31: the core output is its JCS bytes, with no trailing newline
+    expect(r1.stdout.toString().endsWith("}")).toBe(true);
     expect(cli(["check", "--input", "-"], ex4()).status).toBe(0);
   });
   test("malformed input exits 2 (invalid)", () => {
@@ -87,7 +90,8 @@ describe("shape1 CLI", () => {
     expect(
       d.some((l) => l.question === "L1" && l.answer === "loosened" && l.final && l.exploited)
     ).toBe(true);
-  });
+    // four CLI runs (inspect, migration, manifest, decider each): more than bun's 5 s default
+  }, 60_000);
   test("human rendering shows causes and dischargers", () => {
     const r = cli(["check", "--input", "-"], ex1("B"));
     const text = r.stdout.toString();

@@ -20,17 +20,6 @@
    "kind": "unestablished",
    "reason": "assumption",
    "severity": "blocking"
-  },
-  {
-   "claimFp": "sha256:dc8454f26ba4a098a6681e766d63ddf9226954a5a5bf8ed9d8148c7b0996fac8",
-   "force": "sound",
-   "introduced": false,
-   "kind": "contradiction",
-   "severity": "owed",
-   "subject": {
-    "atom": "external_body<std::Trust>",
-    "code": "verus:ironkv/src/host_t.rs#send"
-   }
   }
  ],
  "verdict": "blocked"

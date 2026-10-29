@@ -1,80 +1,113 @@
 // @ts-nocheck
 // Differential bridge (one-off script): runs the TypeScript prototype and the Lean kernel on the
-// prototype's worked-example fixtures and compares verdicts and core obligation fields.
-// The prototype acts as the kernel's pre-pass: elaboration (ESF), signature parsing (records are
-// authenticated iff a signature verified), authors* and cells.
+// prototype's worked-example fixtures and compares the complete core output byte for byte (JCS,
+// A.16.31), listing the differing obligation fields when they disagree.
+// The prototype acts as the kernel's pre-pass (A.11.2.1): input verification (verifyInput: commits,
+// trees, manifests and their signers), elaboration (ESF), record parsing and validation (records
+// are authenticated iff a signature verified; rejected records are dropped), persisted records
+// (persistedBase marks persisted.base), authors* and the review lines with their base actors.
+// The kernel computes cells itself (A.8.1.4 [D23]); the case carries inputDigest, rejected and
+// clockClamped from the prototype, which alone can compute them.
 // Run: bun experiments/shape-1/kernel/test/bridge.ts <path-to-shapek>
 import { spawnSync } from "node:child_process";
 import * as F from "../../proto/examples/fixtures.ts";
 import { derive } from "../../proto/src/derive.ts";
 import { elaborate } from "../../proto/src/elaborate.ts";
 import { buildGov } from "../../proto/src/governance.ts";
-import { computeCells } from "../../proto/src/globs.ts";
+import { verifyInput } from "../../proto/src/input.ts";
+import { H } from "../../proto/src/jcs.ts";
 import { mergeRecords, parseRecord } from "../../proto/src/records.ts";
+import { coreBytes } from "../../proto/src/render.ts";
 import { toSeconds } from "../../proto/src/util.ts";
 
 const exe = process.argv[2] ?? "experiments/shape-1/kernel/.lake/build/bin/shapek";
 
-function records(list) {
+function records(list, rejected, persistedBase) {
   const parsed = [];
   for (const x of list ?? []) {
     const r = parseRecord(x);
     if (!r.error) parsed.push(r);
   }
-  return mergeRecords(parsed).map((r) => ({
-    id: r.id,
-    predicate: { shape: r.shape },
-    authenticated: r.signers.length > 0
-  }));
+  return mergeRecords(parsed)
+    .map((r) => ({
+      id: r.id,
+      rejected: rejected.has(r.id),
+      predicate: { shape: r.shape },
+      authenticated: r.signers.length > 0,
+      persistedBase: persistedBase.has(r.id)
+    }));
 }
 
-function kernelCase(input) {
-  const now = toSeconds(input.now);
-  const head = elaborate(input.head.source, { now });
-  const base = input.base?.source ? elaborate(input.base.source, { lenient: true, now }) : null;
-  const gov = input.mode === "audit" || !base ? head : base;
-  const gv = buildGov(gov, gov.policy, input.authors ?? []);
+function kernelCase(input, ts) {
+  const v = verifyInput(input);
+  if (!v.ok) return { unsupported: `invalid input: ${v.problems.join("; ")}`, kcase: null };
+  const rejected = new Set((ts.rejected ?? []).map((r) => r.record));
+  const nowRaw = toSeconds(input.now);
+  const now = Math.max(nowRaw, v.base?.committerTime ?? nowRaw);
+  const hasBase = input.mode !== "audit" && !!v.base;
+  const head = elaborate(v.head.source, { now, std: v.head.std });
+  head.errors = [
+    ...head.errors,
+    ...v.head.shapeErrors.map((e) => ({ code: e.code, subject: e.subject, causes: [], dischargers: [] })),
+    ...(ts.errors ?? [])
+      .filter((e) => e.code === "E-evidence-path" || e.code === "E-evidence-rewrite")
+      .map((e) => ({ code: e.code, subject: e.subject, causes: [], dischargers: [] }))
+  ];
+  const unreadable = hasBase && !!v.base?.unreadable;
+  const base = hasBase && !unreadable ? elaborate(v.base.source, { lenient: true, now, std: v.base.std }) : null;
+  if (base)
+    base.errors = [
+      ...base.errors,
+      ...(v.base?.defects ?? []).map((d) => ({ code: d.code, subject: d.subject, causes: [], dischargers: [] }))
+    ];
+  const gov = base ?? head;
+  const gv = buildGov(gov, gov.policy, gov.policy, input.authors ?? [], unreadable);
+  const ids = input.change?.ids ?? [];
   const reviews = [];
-  let unsupported = null;
   for (const rv of input.reviews ?? []) {
-    const actor = gv.byIdentity.get(rv.identity.trim());
-    if (actor) reviews.push({ actor, line: rv.line, change: rv.change ?? input.change.ids[0] });
-    else unsupported = rv.line;
+    if (rv.change && !ids.includes(rv.change)) continue;
+    reviews.push({
+      actor: gv.byIdentity.get(String(rv.identity ?? "").trim()) ?? null,
+      identity: String(rv.identity ?? "").trim(),
+      line: String(rv.line ?? "").trim(),
+      change: rv.change ?? null,
+      ref: `review:${H(rv).slice(7, 23)}`
+    });
   }
-  const owners = [];
-  if (base && input.mode !== "audit") {
-    for (const c of base.components)
-      for (const g of c.paths) owners.push({ side: "b", glob: g, owner: `${c.q}.*` });
-    for (const c of head.components)
-      for (const g of c.paths) owners.push({ side: "h", glob: g, owner: `${c.q}.*` });
-  }
-  const cells = owners.length
-    ? computeCells(owners)
-        .cells.filter((c) => typeof c.b === "string" && typeof c.h === "string")
-        .map((c) => [c.b, c.h])
-    : [];
+  const mid = unreadable ? null : gov.shape.manifest;
+  const auth = (r) => !!mid && !!r && r.manifestSigners.includes(mid);
+  const pBase = new Set(
+    (input.persisted?.base ?? []).map((p) => {
+      const r = parseRecord(p.record);
+      return r.error ? "" : r.id;
+    })
+  );
+  const recs = [...(input.records ?? []), ...(input.persisted?.head ?? []).map((p) => p.record)];
   return {
-    unsupported,
+    unsupported: null,
     kcase: {
       contract: "shape.kernel.case/v1",
       mode: input.mode,
-      now: Math.max(now, input.base?.committerTime ? toSeconds(input.base.committerTime) : now),
+      now,
       change: input.change,
       authors: [...gv.authors],
       unmappedBot: gv.unmappedBot,
-      head: { revision: input.head.revision, esf: head, manifest: input.head.manifest },
-      base:
-        input.mode === "audit" || !input.base
-          ? null
-          : {
-              revision: input.base.revision,
-              esf: base ?? { shape: { q: "", owner: "" } },
-              manifest: input.base.manifest
-            },
-      cells,
-      records: records(input.records),
+      head: { revision: v.head.revision, esf: head, manifest: input.head.manifest, manifestAuthenticated: auth(v.head) },
+      base: !hasBase
+        ? null
+        : {
+            revision: v.base.revision,
+            esf: unreadable ? null : base,
+            manifest: input.base.manifest,
+            manifestAuthenticated: auth(v.base)
+          },
+      records: records(recs, rejected, pBase),
       reviews,
-      baseRecords: records(input.baseRecords)
+      baseRecords: records(input.baseRecords, rejected, new Set()),
+      inputDigest: ts.inputDigest,
+      rejected: ts.rejected ?? [],
+      clockClamped: ts.health?.clockClamped ?? false,
+      options: input.options ?? { health: true, teeth: false }
     }
   };
 }
@@ -114,6 +147,7 @@ const fixtures = [
 ];
 
 let agreeCases = 0;
+let byteEqual = 0;
 let fieldAgree = 0;
 let fieldTotal = 0;
 const report = [];
@@ -126,7 +160,11 @@ for (const [name, mk] of fixtures) {
     continue;
   }
   const ts = derive(input);
-  const { kcase, unsupported } = kernelCase(input);
+  const { kcase, unsupported } = kernelCase(input, ts);
+  if (!kcase) {
+    report.push(`SKIP  ${name}: ${unsupported}`);
+    continue;
+  }
   const run = spawnSync(exe, [], { input: JSON.stringify(kcase) });
   let lean;
   try {
@@ -135,6 +173,8 @@ for (const [name, mk] of fixtures) {
     report.push(`${name}: kernel output unparsable ${run.stdout.toString().slice(0, 200)}`);
     continue;
   }
+  const bytesEqual = run.stdout.toString() === coreBytes(ts);
+  if (bytesEqual) byteEqual += 1;
   const diffs = [];
   if (ts.verdict !== lean.verdict) diffs.push(`verdict ts=${ts.verdict} lean=${lean.verdict}`);
   const tsErr = (ts.errors ?? [])
@@ -183,11 +223,11 @@ for (const [name, mk] of fixtures) {
   if (unsupported) diffs.push(`(review line not bridged: ${unsupported})`);
   if (diffs.length === 0) agreeCases += 1;
   report.push(
-    `${diffs.length === 0 ? "AGREE" : "DIFF "} ${name} (ts ${tsObs.size} obligations, lean ${leanObs.size})`
+    `${diffs.length === 0 ? "AGREE" : "DIFF "} ${name} (ts ${tsObs.size} obligations, lean ${leanObs.size}; core bytes ${bytesEqual ? "identical" : "differ"})`
   );
   for (const d of diffs) report.push(`      ${d}`);
 }
 console.log(report.join("\n"));
 console.log(
-  `cases agreeing: ${agreeCases}/${fixtures.length}; shared-obligation fields agreeing: ${fieldAgree}/${fieldTotal}`
+  `cases agreeing: ${agreeCases}/${fixtures.length}; byte-identical core output: ${byteEqual}/${fixtures.length}; shared-obligation fields agreeing: ${fieldAgree}/${fieldTotal}`
 );

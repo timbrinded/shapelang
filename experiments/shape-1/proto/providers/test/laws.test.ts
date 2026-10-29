@@ -213,7 +213,12 @@ describe("laws provider", () => {
     const ob = out.obligations.find((o) => o.claim?.ids.includes("demo::ClampBounded"));
     expect(ob?.kind).toBe("contradiction");
     expect(ob?.force).toBe("sound");
-    expect(out.verdict).toBe("blocked");
+    // version 7 (A.6.1.6, A.7.5.1 rule 6 [D16]): the input is audit mode, which introduces
+    // nothing, so the sound contradiction is preexisting and the verdict owed
+    expect(ob?.severity).toBe("owed");
+    expect(out.verdict).toBe("owed");
+    // version 7 (A.16.35): the record's counterexample is {seed, inputs, assertion}
+    expect(ob?.counterexample).toMatchObject({ inputs: 101 });
   }, 60_000);
 
   test("bound.mutants: an oracle law kills mutants, a determinism law kills none", async () => {

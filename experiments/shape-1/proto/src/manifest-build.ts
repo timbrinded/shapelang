@@ -255,9 +255,11 @@ function pushAll(entries: ManifestEntry[], ids: FpIdentity[]): void {
       };
       if (Object.keys(id.markers).length > 0) e.markers = id.markers;
       if (id.merged) e.merged = id.merged;
-      if (!id.hatchComplete) e.hatchComplete = false;
-      if (id.executable && id.id.startsWith("raw:")) e.executable = true;
-      if (id.executable && (id.kind === "script" || id.kind === "step")) e.executable = true;
+      // version 7 (A.12.7.5, A.16.22 [D27]): every entry carries refs, executable and
+      // hatchComplete; this builder resolves no refs (open: shp manifest, M3)
+      e.refs = [];
+      e.executable = id.executable;
+      e.hatchComplete = id.hatchComplete;
       entries.push(e);
     }
   }

@@ -1,4 +1,5 @@
-// Checker input and output contracts (records §4–5, A.12.7, A.12.10), prototype profile.
+// Checker input and output contracts (records §4–5, A.12.7, A.12.10, A.16.1-2): the full profile
+// (files, commit, packs, trustRoots) and the source profile (source, treeId, committerTime).
 import type { Statement } from "./manifest.ts";
 import type { Cause, Discharger, JsonValue, ShapeError } from "./model.ts";
 import type { SourceDoc } from "./source.ts";
@@ -6,13 +7,18 @@ import type { Tier } from "./util.ts";
 
 export interface RevisionInput {
   revision: string;
-  /** the shape, as shape.source.v1 (the prototype's stand-in for `files`); null: unreadable (L0) */
-  source: SourceDoc | null;
-  manifest: Statement;
-  /** optional git tree id the manifest's tree must rebuild to (stand-in for the commit check) */
+  /** source profile: the shape as shape.source.v1; null: unreadable (L0) */
+  source?: SourceDoc | null;
+  /** a manifest statement or its DSSE envelope */
+  manifest: Statement | { payloadType: string; payload: string; signatures: unknown[] };
+  /** source profile: optional git tree id the manifest's tree must rebuild to */
   treeId?: string;
-  /** base only: committer time, RFC 3339 (now* = max(now, it)) */
+  /** source profile, base: committer time, RFC 3339 (now* = max(now, it)) */
   committerTime?: string;
+  /** full profile: the commit object after its header */
+  commit?: string;
+  /** full profile: exactly the revision's shape files */
+  files?: { path: string; text: string }[];
 }
 
 export interface Author {
@@ -45,6 +51,10 @@ export interface CheckInput {
     head: { path: string; record: unknown }[];
   };
   options: { health: boolean; teeth: boolean };
+  /** full profile: one entry per pinned (name, version) */
+  packs?: { name: string; version: string; files: { path: string; text: string }[] }[];
+  /** full profile: Sigstore roots (ed25519 identities need none) */
+  trustRoots?: { fulcio: string[]; rekor: string[] };
 }
 
 export type Severity = "blocking" | "owed";
@@ -106,13 +116,15 @@ export interface CheckOutput {
     counterexample: JsonValue;
     obligation: string;
   }[];
+  /** the order class (A.8.1.3); null in audit mode */
+  order: "looser" | "tighter" | "equivalent" | "incomparable" | "undecided" | null;
   renames: { base: string; head: string; rule: string }[];
   debt: {
     obligation: string;
+    exceptions: string[];
     exception: string;
     owner: string;
     expiresInDays: number;
-    flagged: boolean;
   }[];
   preexisting: { obligation: string; owner: string }[];
   budget: { limit: number | null; used: number; overflow: string[] };

@@ -300,7 +300,9 @@ export function fingerprintRust(path: string, text: string): FpIdentity[] {
       else if (t === "assume_specification") add("assume_specification");
       else if (t === "uninterp" && (nx === "spec" || nx === "fn")) add("uninterp");
       else if (t === "axiom" && (nx === "fn" || nx === "spec" || nx === "proof")) add("axiom");
-      else if (t === "unsafe" && nx === "{") add("unsafe");
+      // A.12.2.8 [D20]: unsafe blocks, fn, impl and trait
+      else if (t === "unsafe" && (nx === "{" || nx === "fn" || nx === "impl" || nx === "trait"))
+        add("unsafe");
     }
     if (lang !== "verus") {
       const u = m.unsafe;

@@ -46,7 +46,6 @@ def shuffle_case(case, rng):
     c["records"] = sh(c["records"], dup=True)
     c["baseRecords"] = sh(c["baseRecords"], dup=True)
     c["authors"] = sh(c["authors"], dup=True)
-    c["cells"] = sh(c["cells"])
     c["change"]["ids"] = sh(c["change"]["ids"])
     for side in ["head", "base"]:
         s = c.get(side)

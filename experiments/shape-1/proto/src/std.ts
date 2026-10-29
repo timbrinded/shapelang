@@ -1,6 +1,7 @@
-// The std pack 1.0.0 (syntax §4 and A.13.2) as a shape.source.v1 module.
+// The std pack 1.0.0 (syntax §4 and A.13.2, version 7) as a shape.source.v1 module. The source
+// profile supplies it as the only pack (A.16.2(b)).
 import { H } from "./jcs.ts";
-import type { SourceModule } from "./source.ts";
+import type { Decl, NoteKind, SourceModule } from "./source.ts";
 
 export const SURFACE_TEXT = "The trusted surface of this component is acceptable.";
 export const REFACTOR_TEXT =
@@ -24,6 +25,7 @@ export const STD: SourceModule = {
     { decl: "effect", name: "DropStorage", implies: ["Truncate"] },
     { decl: "resource", name: "Trust" },
     { decl: "effect", name: "Hatch" },
+    { decl: "effect", name: "Undeclared", implies: ["Hatch"] },
     { decl: "kind", name: "calls", from: "component", to: "component" },
     { decl: "kind", name: "callbacks", from: "component", to: "component" },
     { decl: "kind", name: "provides", from: "component", to: "resource" },
@@ -43,10 +45,17 @@ export const STD: SourceModule = {
       lang: "verus"
     },
     { decl: "hatch", names: ["unsafe"], lang: "bend" },
-    { decl: "hatch", names: ["ts_ignore"], lang: "ts" },
+    { decl: "hatch", names: ["unsafe"], lang: "rust" },
+    { decl: "hatch", names: ["ts_ignore", "ts_expect_error", "ts_nocheck"], lang: "ts" },
     {
       decl: "template",
       name: "AppendOnly",
+      params: [["R", "resource"]],
+      body: [{ forbid: "effect", atom: "Update<R>" }]
+    },
+    {
+      decl: "template",
+      name: "NoHardDelete",
       params: [["R", "resource"]],
       body: [{ forbid: "effect", atom: "HardDelete<R>" }]
     },
@@ -100,7 +109,29 @@ export const STD: SourceModule = {
       params: [["K", "component"]],
       body: [{ law: { evidence: { level: "proven" } } }]
     },
-    { decl: "template", name: "PII", params: [["R", "resource"]], body: [] },
+    ...["PII", "Persistent", "Ephemeral", "Secret", "Public", "External", "Internal"].map(
+      (name): Decl => ({ decl: "template", name, params: [["R", "resource"]], body: [] })
+    ),
+    ...["StorageAdapter", "DataPlane", "ControlPlane"].map(
+      (name): Decl => ({ decl: "template", name, params: [["K", "component"]], body: [] })
+    ),
+    // the 0.x shape traits (A.13.2): templates on a unit that only require a note
+    ...(
+      [
+        ["PreserveInline", "rationale"],
+        ["RequiresDescription", "rationale"],
+        ["TestOnly", "rationale"],
+        ["ProtectedCheckOrder", ["rationale", "memory"]],
+        ["NonIdiomatic", ["rationale", "memory"]]
+      ] as [string, NoteKind | NoteKind[]][]
+    ).map(
+      ([name, kinds]): Decl => ({
+        decl: "template",
+        name,
+        params: [["U", "unit"]],
+        body: [{ requiresNote: kinds }]
+      })
+    ),
     {
       decl: "template",
       name: "Owns",

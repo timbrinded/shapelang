@@ -600,17 +600,26 @@ export function canonicalText(
 function countMarkers(ts: TsApi, src: string, exclude: [number, number][]): Record<string, number> {
   const K = ts.SyntaxKind;
   const sc = ts.createScanner(ts.ScriptTarget.Latest as number, false, 0, src);
-  let n = 0;
+  const m: Record<string, number> = {};
   for (;;) {
     const tk = sc.scan();
     if (tk === K.EndOfFileToken) break;
     if (tk === K.SingleLineCommentTrivia || tk === K.MultiLineCommentTrivia) {
       const start = tokenStart(sc);
       if (exclude.some(([a, b]) => start >= a && start < b)) continue;
-      if (/@ts-ignore\b/.test(sc.getTokenText())) n += 1;
+      const k = tsMarker(sc.getTokenText());
+      if (k) m[k] = (m[k] ?? 0) + 1;
     }
   }
-  return n > 0 ? { ts_ignore: n } : {};
+  return m;
+}
+
+/** A.12.2.8 [D20]: the TypeScript hatch markers, one per directive comment. */
+function tsMarker(comment: string): "ts_ignore" | "ts_expect_error" | "ts_nocheck" | null {
+  if (/@ts-ignore\b/.test(comment)) return "ts_ignore";
+  if (/@ts-expect-error\b/.test(comment)) return "ts_expect_error";
+  if (/@ts-nocheck\b/.test(comment)) return "ts_nocheck";
+  return null;
 }
 
 // ---- lexical fallback --------------------------------------------------------------------------
@@ -719,8 +728,12 @@ function lexicalFallback(path: string, text: string): FpIdentity[] {
   const ownCanon = `${lexCanon(own)} ${idents.map((d) => `⟨${d.name}⟩`).join(" ")}`;
   const ts1 = (from: number, to: number): string => lexCanon(toks.slice(from, to + 1));
   const markerCount = (list: LexTok[]): Record<string, number> => {
-    const n = list.filter((t) => t.comment && /@ts-ignore\b/.test(t.t)).length;
-    return n > 0 ? { ts_ignore: n } : {};
+    const m: Record<string, number> = {};
+    for (const t of list) {
+      const k = t.comment ? tsMarker(t.t) : null;
+      if (k) m[k] = (m[k] ?? 0) + 1;
+    }
+    return m;
   };
   const out: FpIdentity[] = [
     {

@@ -69,9 +69,9 @@
       "introduced": true,
       "severity": "blocking",
       "tier": "critical",
-      "binding": "bd:3af169bbd19fa50f7c23096bf0739bb18adc1da6ead4217dd6bafc54b5ade218"
+      "binding": "bd:b0c6e37595bbe046dc4ca351c08bc25173ca5a723478d051d86b9f2e25e972fc"
      },
-     "why": "A.5.4.1: the implementation (Cargo.lock) meets Δcode and the record is otherwise usable, so producer-changed; introduced by reason (A.7.3.3); binding affected adds the implementation finest change Cargo.lock (A.7.2.2)"
+     "why": "A.5.4.1: the implementation (Cargo.lock) meets Δcode and the record is otherwise usable, so producer-changed; introduced by reason (A.7.3.3); binding affected adds the implementation finest change Cargo.lock and code its (Cargo.lock, own) row (A.7.2.2, A.16.19)"
     }
    ]
   },

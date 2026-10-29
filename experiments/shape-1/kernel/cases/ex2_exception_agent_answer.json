@@ -41,22 +41,6 @@
    "claims": [
     {
      "args": {
-      "atom": "Hatch<std::Trust>",
-      "except": [],
-      "scope": [
-       "*"
-      ]
-     },
-     "ids": [
-      "ironkv::NoHatchesOutsideBoundaries/Hatch"
-     ],
-     "op": "effect.forbid",
-     "owner": "ironkv::IronKvTeam",
-     "requirement": null,
-     "tier": "critical"
-    },
-    {
-     "args": {
       "atom": "admit<std::Trust>",
       "except": [],
       "scope": [
@@ -157,6 +141,22 @@
     },
     {
      "args": {
+      "atom": "ts_expect_error<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/ts_expect_error"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
       "atom": "ts_ignore<std::Trust>",
       "except": [],
       "scope": [
@@ -165,6 +165,22 @@
      },
      "ids": [
       "ironkv::NoHatchesOutsideBoundaries/ts_ignore"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "ts_nocheck<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/ts_nocheck"
      ],
      "op": "effect.forbid",
      "owner": "ironkv::IronKvTeam",
@@ -199,6 +215,22 @@
      },
      "ids": [
       "ironkv::NoHatchesOutsideBoundaries/unsafe"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "Undeclared<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/Undeclared"
      ],
      "op": "effect.forbid",
      "owner": "ironkv::IronKvTeam",
@@ -419,7 +451,19 @@
      "lang": "bend"
     },
     {
+     "kind": "unsafe",
+     "lang": "rust"
+    },
+    {
      "kind": "ts_ignore",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_expect_error",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_nocheck",
      "lang": "ts"
     }
    ],
@@ -549,6 +593,8 @@
      "entries": [
       {
        "digest": "sha256:59b5f1fd15f00e2b8cef51fd2db4ad6f4090ad0767f959e8b776db7ee396140e",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs",
        "kind": "file",
        "parent": null,
@@ -557,6 +603,8 @@
       },
       {
        "digest": "sha256:8842375d84b7e80d5ae4f33cc891d0416ccd440b8d9f06e4b72232d2cb063f76",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs",
        "kind": "file",
        "parent": null,
@@ -565,6 +613,8 @@
       },
       {
        "digest": "sha256:6f1180911c9d6b41b4441e993941c6b6b61d238815faa7cbde959751ae1b03ff",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
        "kind": "symbol",
        "parent": "verus:ironkv/src/delegation_map_v.rs",
@@ -573,6 +623,8 @@
       },
       {
        "digest": "sha256:52aeddebdcc531fc660d05abc458d9146fbb78ede070eb9614467b60b57dcfd7",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
        "kind": "symbol",
        "parent": "verus:ironkv/src/delegation_map_v.rs",
@@ -581,6 +633,8 @@
       },
       {
        "digest": "sha256:1304a1cbb8c361924f9cdebcf223c2848c282fcd84c693086dee58071f193440",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
        "kind": "symbol",
        "parent": "verus:ironkv/src/delegation_map_v.rs",
@@ -589,6 +643,8 @@
       },
       {
        "digest": "sha256:447e6db6d5159076b32ae28c0f6c41582e1c285506d6182931d52d7d9a1b1d0b",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
        "kind": "symbol",
        "parent": "verus:ironkv/src/delegation_map_v.rs",
@@ -597,6 +653,8 @@
       },
       {
        "digest": "sha256:fd2796c2785d086b4c499b97ebcecbd42f8f84b0861ed69aee17e46e33854f0e",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
        "kind": "symbol",
        "parent": "verus:ironkv/src/delegation_map_v.rs",
@@ -605,6 +663,8 @@
       },
       {
        "digest": "sha256:38293c2eeaa475cfeac7d8d4b09fee1961a33cc347b35e821b2f5a789af50827",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
        "kind": "symbol",
        "parent": "verus:ironkv/src/delegation_map_v.rs",
@@ -613,6 +673,8 @@
       },
       {
        "digest": "sha256:d604e795ba9c30b54be93324f03bfba983c3f8cccc0188c1f8cc9ee7905105f2",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
        "kind": "symbol",
        "parent": "verus:ironkv/src/delegation_map_v.rs",
@@ -621,6 +683,8 @@
       },
       {
        "digest": "sha256:57743a505177657a7b647f7ecfa9849a1a8dd44c729693cfc05f07a77e2bafa3",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/host_t.rs",
        "kind": "file",
        "parent": null,
@@ -629,6 +693,8 @@
       },
       {
        "digest": "sha256:90af1faad92f4c3d133a22df7fcbef98bb551e912e4e2cd51f2735cfe9e52f7f",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/host_t.rs",
        "kind": "file",
        "parent": null,
@@ -637,6 +703,8 @@
       },
       {
        "digest": "sha256:3f4d25f77e8a23e03eb78acf8cc604db8f4ddece5b0383dbf9e106343cefe869",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/host_t.rs#send",
        "kind": "symbol",
        "parent": "verus:ironkv/src/host_t.rs",
@@ -645,6 +713,8 @@
       },
       {
        "digest": "sha256:e3242cd1364e843975cf5104c0a26217b1a81951e638aa7e9e408155f4bdf4d1",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/host_t.rs#send",
        "kind": "symbol",
        "markers": {
@@ -666,7 +736,6 @@
   "revision": "b2"
  },
  "baseRecords": [],
- "cells": [],
  "change": {
   "ids": [
    "github:acme/ironkv#12"
@@ -709,22 +778,6 @@
     }
    ],
    "claims": [
-    {
-     "args": {
-      "atom": "Hatch<std::Trust>",
-      "except": [],
-      "scope": [
-       "*"
-      ]
-     },
-     "ids": [
-      "ironkv::NoHatchesOutsideBoundaries/Hatch"
-     ],
-     "op": "effect.forbid",
-     "owner": "ironkv::IronKvTeam",
-     "requirement": null,
-     "tier": "critical"
-    },
     {
      "args": {
       "atom": "admit<std::Trust>",
@@ -827,6 +880,22 @@
     },
     {
      "args": {
+      "atom": "ts_expect_error<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/ts_expect_error"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
       "atom": "ts_ignore<std::Trust>",
       "except": [],
       "scope": [
@@ -835,6 +904,22 @@
      },
      "ids": [
       "ironkv::NoHatchesOutsideBoundaries/ts_ignore"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "ts_nocheck<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/ts_nocheck"
      ],
      "op": "effect.forbid",
      "owner": "ironkv::IronKvTeam",
@@ -869,6 +954,22 @@
      },
      "ids": [
       "ironkv::NoHatchesOutsideBoundaries/unsafe"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "Undeclared<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/Undeclared"
      ],
      "op": "effect.forbid",
      "owner": "ironkv::IronKvTeam",
@@ -1110,7 +1211,19 @@
      "lang": "bend"
     },
     {
+     "kind": "unsafe",
+     "lang": "rust"
+    },
+    {
      "kind": "ts_ignore",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_expect_error",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_nocheck",
      "lang": "ts"
     }
    ],
@@ -1240,6 +1353,8 @@
      "entries": [
       {
        "digest": "sha256:262a3b1b33bb11bc7aa68d1b4e192b2c532427eb746883bc5f7955c9968d9585",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs",
        "kind": "file",
        "parent": null,
@@ -1248,6 +1363,8 @@
       },
       {
        "digest": "sha256:8842375d84b7e80d5ae4f33cc891d0416ccd440b8d9f06e4b72232d2cb063f76",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs",
        "kind": "file",
        "parent": null,
@@ -1256,6 +1373,8 @@
       },
       {
        "digest": "sha256:5ab2582637d304f0050e6e6eb48b9a3f0ddca246e9d3777c775b0673f6034faf",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
        "kind": "symbol",
        "parent": "verus:ironkv/src/delegation_map_v.rs",
@@ -1264,6 +1383,8 @@
       },
       {
        "digest": "sha256:393b716540569fd40f27d1f90fc3727034dcd4e06b101c6835c47f3a8f030d8f",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
        "kind": "symbol",
        "markers": {
@@ -1275,6 +1396,8 @@
       },
       {
        "digest": "sha256:1304a1cbb8c361924f9cdebcf223c2848c282fcd84c693086dee58071f193440",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
        "kind": "symbol",
        "parent": "verus:ironkv/src/delegation_map_v.rs",
@@ -1283,6 +1406,8 @@
       },
       {
        "digest": "sha256:447e6db6d5159076b32ae28c0f6c41582e1c285506d6182931d52d7d9a1b1d0b",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
        "kind": "symbol",
        "parent": "verus:ironkv/src/delegation_map_v.rs",
@@ -1291,6 +1416,8 @@
       },
       {
        "digest": "sha256:fd2796c2785d086b4c499b97ebcecbd42f8f84b0861ed69aee17e46e33854f0e",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
        "kind": "symbol",
        "parent": "verus:ironkv/src/delegation_map_v.rs",
@@ -1299,6 +1426,8 @@
       },
       {
        "digest": "sha256:38293c2eeaa475cfeac7d8d4b09fee1961a33cc347b35e821b2f5a789af50827",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
        "kind": "symbol",
        "parent": "verus:ironkv/src/delegation_map_v.rs",
@@ -1307,6 +1436,8 @@
       },
       {
        "digest": "sha256:d604e795ba9c30b54be93324f03bfba983c3f8cccc0188c1f8cc9ee7905105f2",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
        "kind": "symbol",
        "parent": "verus:ironkv/src/delegation_map_v.rs",
@@ -1315,6 +1446,8 @@
       },
       {
        "digest": "sha256:57743a505177657a7b647f7ecfa9849a1a8dd44c729693cfc05f07a77e2bafa3",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/host_t.rs",
        "kind": "file",
        "parent": null,
@@ -1323,6 +1456,8 @@
       },
       {
        "digest": "sha256:90af1faad92f4c3d133a22df7fcbef98bb551e912e4e2cd51f2735cfe9e52f7f",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/host_t.rs",
        "kind": "file",
        "parent": null,
@@ -1331,6 +1466,8 @@
       },
       {
        "digest": "sha256:3f4d25f77e8a23e03eb78acf8cc604db8f4ddece5b0383dbf9e106343cefe869",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/host_t.rs#send",
        "kind": "symbol",
        "parent": "verus:ironkv/src/host_t.rs",
@@ -1339,6 +1476,8 @@
       },
       {
        "digest": "sha256:e3242cd1364e843975cf5104c0a26217b1a81951e638aa7e9e408155f4bdf4d1",
+       "executable": false,
+       "hatchComplete": true,
        "id": "verus:ironkv/src/host_t.rs#send",
        "kind": "symbol",
        "markers": {

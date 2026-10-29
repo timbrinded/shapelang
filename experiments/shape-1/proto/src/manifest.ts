@@ -1,6 +1,6 @@
 // Manifests (A.3.2.6, A.12.7.5): a revision's code identities with digests, parents and hatch
 // markers, as an in-toto statement. Pure: indexing, validation and git tree rebuilding.
-import { createHash } from "node:crypto";
+import { createHash, createPublicKey, verify as edVerify } from "node:crypto";
 import { H } from "./jcs.ts";
 import { cmpStr } from "./util.ts";
 
@@ -20,8 +20,9 @@ export interface ManifestEntry {
   parent: string | null;
   markers?: Record<string, number>;
   merged?: number;
-  /** prototype extensions (monotonic, A.12.5.1): parse completeness and executability the
-   *  checker cannot recompute because it never reads code */
+  /** the identities env(x) resolves to (A.3.2.6, A.12.7.5) */
+  refs?: string[];
+  /** flags the checker cannot recompute (A.12.7.5 [D27]); read from the manifest as given */
   hatchComplete?: boolean;
   executable?: boolean;
 }
@@ -116,6 +117,8 @@ export interface IdentityInfo {
   markers: Record<string, number>;
   hatchComplete: boolean;
   executable: boolean;
+  /** refs: what env(x) resolves to (union over the identity's entries) */
+  refs: string[];
 }
 
 export interface ManifestIndex {
@@ -132,13 +135,67 @@ export interface ManifestProblem {
   detail: string;
 }
 
-/** Validates and indexes a manifest statement; problems make the input invalid (A.12.7.5). */
-export function indexManifest(stmt: unknown): {
+/** A manifest as the input gives it: a bare statement or a DSSE envelope (A.12.7.5). */
+export interface ManifestEnvelopeInfo {
+  statement: unknown;
+  /** ed25519("<hex>") identities whose signatures verify */
+  signers: string[];
+  enveloped: boolean;
+  badSignature: boolean;
+}
+
+export function openManifest(input: unknown): ManifestEnvelopeInfo {
+  const o = input as { payloadType?: unknown; payload?: unknown; signatures?: unknown };
+  if (o && typeof o.payloadType === "string" && typeof o.payload === "string") {
+    const body = Buffer.from(o.payload, "base64");
+    let statement: unknown = null;
+    try {
+      statement = JSON.parse(body.toString("utf8")) as unknown;
+    } catch {
+      statement = null;
+    }
+    const signers: string[] = [];
+    let badSignature = false;
+    for (const sig of (Array.isArray(o.signatures) ? o.signatures : []) as {
+      keyid?: string;
+      sig?: string;
+    }[]) {
+      if (typeof sig.keyid === "string" && typeof sig.sig === "string" && verifyDsse(sig.keyid, o.payloadType, body, sig.sig))
+        signers.push(`ed25519("${sig.keyid}")`);
+      else badSignature = true;
+    }
+    return { statement, signers: [...new Set(signers)].sort(cmpStr), enveloped: true, badSignature };
+  }
+  return { statement: input, signers: [], enveloped: false, badSignature: false };
+}
+
+const SPKI_PREFIX = Buffer.from("302a300506032b6570032100", "hex");
+function verifyDsse(publicHex: string, payloadType: string, body: Buffer, sigB64: string): boolean {
+  try {
+    if (!/^[0-9a-f]{64}$/.test(publicHex)) return false;
+    const key = createPublicKey({
+      key: Buffer.concat([SPKI_PREFIX, Buffer.from(publicHex, "hex")]),
+      format: "der",
+      type: "spki"
+    });
+    const pae = Buffer.concat([
+      Buffer.from(`DSSEv1 ${Buffer.byteLength(payloadType)} ${payloadType} ${body.length} `),
+      body
+    ]);
+    return edVerify(null, pae, key, Buffer.from(sigB64, "base64"));
+  } catch {
+    return false;
+  }
+}
+
+/** Validates and indexes a manifest statement (or envelope); problems make the input invalid
+ *  (A.12.7.5). */
+export function indexManifest(input: unknown): {
   index: ManifestIndex | null;
   problems: ManifestProblem[];
 } {
   const problems: ManifestProblem[] = [];
-  const s = stmt as Statement;
+  const s = openManifest(input).statement as Statement;
   const p = (s?.predicate?.shape ?? null) as ManifestPredicate | null;
   if (!s || s._type !== STATEMENT_TYPE || !p || p.v !== "shape.manifest.v1") {
     return {
@@ -174,10 +231,14 @@ export function indexManifest(stmt: unknown): {
         schemes: new Map(),
         markers: {},
         hatchComplete: e.hatchComplete ?? true,
-        executable: e.executable ?? false
+        // an entry without the flag (a version 6 manifest): registered languages are executable
+        executable:
+          e.executable ?? ["ts", "rust", "verus"].includes(identityLang(e.id)),
+        refs: []
       };
       ids.set(e.id, info);
     }
+    if (Array.isArray(e.refs)) info.refs = [...new Set([...info.refs, ...e.refs])].sort(cmpStr);
     const prev = info.digests.get(e.projection);
     if (prev !== undefined && info.schemes.get(e.projection) === e.scheme && prev !== e.digest) {
       problems.push({ code: "conflicting-digest", detail: `${e.id}@${e.projection}` });
@@ -209,6 +270,9 @@ export function indexManifest(stmt: unknown): {
   for (const t of tree) {
     if (isShapeFile(t.path) || isRecordFile(t.path)) continue;
     if (!fileIds.has(t.path)) problems.push({ code: "omitted-path", detail: t.path });
+    // the checker verifies the mode against the tree: a mode-100755 path is executable (A.12.7.5)
+    else if (t.mode === "100755" && !ids.get(fileIds.get(t.path) as string)?.executable)
+      problems.push({ code: "mode-not-executable", detail: t.path });
   }
   const children = new Map<string, string[]>();
   for (const info of ids.values()) {

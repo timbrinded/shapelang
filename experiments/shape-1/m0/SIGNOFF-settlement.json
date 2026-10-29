@@ -1,0 +1,498 @@
+[
+ {
+  "item": "full-profile-blob-ids/files-match/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-blob-ids/files-match/1",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-blob-ids/files-match/2",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-blob-ids/head-file-text-differs/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-blob-ids/head-shape-file-omitted/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-blob-ids/head-extra-file/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-blob-ids/base-file-text-differs/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-blob-ids/raw-shape-file-outside-shape-dir/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-blob-ids/raw-shape-file-outside-shape-dir/1",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-pack-pins/pins-match/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-pack-pins/pins-match/1",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-pack-pins/pins-match/2",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-pack-pins/head-pin-digest-wrong/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-pack-pins/head-pin-pack-missing/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-pack-pins/base-pin-digest-wrong/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-pack-pins/base-pin-digest-wrong/1",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-pack-pins/base-pin-digest-wrong/2",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-parse-failure/parse-control/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-parse-failure/parse-control/1",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-parse-failure/head-parse-error/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-parse-failure/head-parse-error/1",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-parse-failure/head-parse-error/2",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-parse-failure/head-parse-error/3",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-parse-failure/base-parse-error/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names; A.16.16 as finalised (the head's shape owner and judges stand in for the unreadable base, no self fallback) gives the same value: owner fc::Maint, and tim, the answerer, is no author"
+ },
+ {
+  "item": "full-profile-parse-failure/base-parse-error/1",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names; A.16.16 as finalised (the head's shape owner and judges stand in for the unreadable base, no self fallback) gives the same value: owner fc::Maint, and tim, the answerer, is no author"
+ },
+ {
+  "item": "full-profile-parse-failure/base-parse-error/2",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names; A.16.16 as finalised (the head's shape owner and judges stand in for the unreadable base, no self fallback) gives the same value: owner fc::Maint, and tim, the answerer, is no author"
+ },
+ {
+  "item": "full-profile-parse-failure/base-parse-error/3",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names; A.16.16 as finalised (the head's shape owner and judges stand in for the unreadable base, no self fallback) gives the same value: owner fc::Maint, and tim, the answerer, is no author"
+ },
+ {
+  "item": "full-profile-parse-failure/base-parse-error/4",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names; A.16.16 as finalised (the head's shape owner and judges stand in for the unreadable base, no self fallback) gives the same value: owner fc::Maint, and tim, the answerer, is no author"
+ },
+ {
+  "item": "full-profile-parse-failure/base-parse-error-answered/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names; A.16.16 as finalised (the head's shape owner and judges stand in for the unreadable base, no self fallback) gives the same value: owner fc::Maint, and tim, the answerer, is no author"
+ },
+ {
+  "item": "full-profile-parse-failure/base-parse-error-answered/1",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names; A.16.16 as finalised (the head's shape owner and judges stand in for the unreadable base, no self fallback) gives the same value: owner fc::Maint, and tim, the answerer, is no author"
+ },
+ {
+  "item": "full-profile-parse-failure/base-parse-error-answered/2",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names; A.16.16 as finalised (the head's shape owner and judges stand in for the unreadable base, no self fallback) gives the same value: owner fc::Maint, and tim, the answerer, is no author"
+ },
+ {
+  "item": "full-profile-manifest-identity/both-signed/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-manifest-identity/both-signed/1",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-manifest-identity/head-unsigned/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-manifest-identity/head-unsigned/1",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-manifest-identity/head-unsigned/2",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-manifest-identity/head-signed-by-other-key/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-manifest-identity/head-signed-by-other-key/1",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-manifest-identity/commit-tree-mismatch/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-manifest-identity/revision-mismatch/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-manifest-identity/identity-added-in-head/0",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-manifest-identity/identity-added-in-head/1",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "full-profile-manifest-identity/identity-added-in-head/2",
+  "signers": [
+   "settle spec problems",
+   "blind new vectors"
+  ],
+  "basis": "independent derivations agree (the settler's assertions and the blind new-vector derivation: 0 disagreements, 0 input problems); the finaliser checked the value against A.16 as finalised and it is unchanged; inputs checked independently by the settlement review (blob ids, git trees, commit SHA-1s, tree lines, pack digests, manifest roots and subject digests, DSSE ed25519 signatures) and re-checked by the finaliser with the review's scratch vfull.py: each case carries exactly the defect its description names"
+ },
+ {
+  "item": "dropped-harness/record-present/1",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "value changed by A.16.19 (binding bd:dc4f0339… -> bd:8cea8d2a…); re-derived independently: the pre-A.16.19 preimage (affected [test/run.test.ts, Core.run], code the Req pair) reproduces the old frozen binding, and adding (ts:test/run.test.ts, own, base digest, head digest) gives the new one (finaliser scratch shape1work/m1m2/fin/verify_a1619.py, python3 -I -B: 20 of 20 checks hold)"
+ },
+ {
+  "item": "judges-narrowing-no-fallback/base-judges-name-bob/0",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "value unchanged; the case input's review line now names the new binding prefix (shape approve bd:4153465bf02c181b), checked to be the only input change (finaliser scratch shape1work/m1m2/fin/verify_a1619.py, python3 -I -B: 20 of 20 checks hold)"
+ },
+ {
+  "item": "judges-narrowing-no-fallback/base-judges-name-bob/1",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "value changed by A.16.19 (binding bd:2d5ebb78… -> bd:4153465b…), re-derived independently: the old preimage reproduces the old frozen value and adding (raw:bunfig.toml, own, base, head) gives the new one; the case input's review line now names the new binding prefix (shape approve bd:4153465bf02c181b), checked to be the only input change (finaliser scratch shape1work/m1m2/fin/verify_a1619.py, python3 -I -B: 20 of 20 checks hold)"
+ },
+ {
+  "item": "judges-narrowing-no-fallback/base-judges-name-bob/2",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "value unchanged; the case input's review line now names the new binding prefix (shape approve bd:4153465bf02c181b), checked to be the only input change (finaliser scratch shape1work/m1m2/fin/verify_a1619.py, python3 -I -B: 20 of 20 checks hold)"
+ },
+ {
+  "item": "judges-narrowing-no-fallback/base-judges-name-bob/3",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "value unchanged; the case input's review line now names the new binding prefix (shape approve bd:4153465bf02c181b), checked to be the only input change (finaliser scratch shape1work/m1m2/fin/verify_a1619.py, python3 -I -B: 20 of 20 checks hold)"
+ },
+ {
+  "item": "judges-narrowing-no-fallback/base-judges-owner-only/0",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "value unchanged; the case input's review line now names the A.16.19 binding prefix bd:4153465bf02c181b (same digests as base-judges-name-bob), the only input change, so the self answer still expands to the producer-changed obligation (A.7.6.4) (finaliser scratch shape1work/m1m2/fin/verify_a1619.py, python3 -I -B: 20 of 20 checks hold)"
+ },
+ {
+  "item": "judges-narrowing-no-fallback/base-judges-owner-only/1",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "value unchanged; the case input's review line now names the A.16.19 binding prefix bd:4153465bf02c181b (same digests as base-judges-name-bob), the only input change, so the self answer still expands to the producer-changed obligation (A.7.6.4) (finaliser scratch shape1work/m1m2/fin/verify_a1619.py, python3 -I -B: 20 of 20 checks hold)"
+ },
+ {
+  "item": "judges-narrowing-no-fallback/base-judges-owner-only/2",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "value unchanged; the case input's review line now names the A.16.19 binding prefix bd:4153465bf02c181b (same digests as base-judges-name-bob), the only input change, so the self answer still expands to the producer-changed obligation (A.7.6.4) (finaliser scratch shape1work/m1m2/fin/verify_a1619.py, python3 -I -B: 20 of 20 checks hold)"
+ },
+ {
+  "item": "producer-change-assumption/lockfile-bump-only/1",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "value changed by A.16.19 (binding bd:3af169bb… -> bd:b0c6e375…); re-derived independently: the old preimage (Req pairs set@closure and set@unit) reproduces the old frozen value and adding (raw:Cargo.lock, own, base, head) gives the new one (finaliser scratch shape1work/m1m2/fin/verify_a1619.py, python3 -I -B: 20 of 20 checks hold)"
+ },
+ {
+  "item": "producer-change-assumption/lockfile-bump-approved/0",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "value unchanged; the case input's review line now names the A.16.19 binding prefix bd:b0c6e37595bbe046, the only input change, so dana's answer still expands to the producer-changed obligation (A.7.6.4) (finaliser scratch shape1work/m1m2/fin/verify_a1619.py, python3 -I -B: 20 of 20 checks hold)"
+ },
+ {
+  "item": "producer-change-assumption/lockfile-bump-approved/1",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "value unchanged; the case input's review line now names the A.16.19 binding prefix bd:b0c6e37595bbe046, the only input change, so dana's answer still expands to the producer-changed obligation (A.7.6.4) (finaliser scratch shape1work/m1m2/fin/verify_a1619.py, python3 -I -B: 20 of 20 checks hold)"
+ },
+ {
+  "item": "producer-change-assumption/lockfile-bump-approved/2",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "value unchanged; the case input's review line now names the A.16.19 binding prefix bd:b0c6e37595bbe046, the only input change, so dana's answer still expands to the producer-changed obligation (A.7.6.4) (finaliser scratch shape1work/m1m2/fin/verify_a1619.py, python3 -I -B: 20 of 20 checks hold)"
+ },
+ {
+  "item": "hosted-closure-weakened/closure-moved/2",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "why text only: it now states the clause of the adjudicated value (A.8.3.1 with A.16.10(a): L4 has no channels, so the changed affected identity counts as uncovered); the value exploited true is unchanged and keeps its adjudicated sign-off"
+ },
+ {
+  "item": "ex1-empty-base",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "values changed by A.16.17 and A.16.27 (health.baseDefects [\"E-parse shape\"] -> []; the lower-requirement discharger's creates -> null); checked independently: the base source has 0 modules, so no base declaration exists to fail (A.6.4.2), and EventsArePreserved is head-only, so lowering it raises no question (A.8.2.1); regenerated with python3 -I -B m0/golden/tools/gen.py m0/golden/inputs <scratch>: all 21 goldens equal the generator's output byte for byte"
+ },
+ {
+  "item": "ex3-step2-harness-edited",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "value changed by A.16.19 (producer-changed binding bd:c42a951f… -> bd:1cff58dc…); re-derived independently: the old preimage reproduces the old frozen value, adding (determinism.test.ts, own, base, head) gives the new one, and no other field changed (finaliser scratch shape1work/m1m2/fin/verify_a1619.py, python3 -I -B: 20 of 20 checks hold); regenerated with python3 -I -B m0/golden/tools/gen.py m0/golden/inputs <scratch>: all 21 goldens equal the generator's output byte for byte"
+ },
+ {
+  "item": "ex4",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "value changed by A.16.27 (the heuristic dismissal's answer discharger agentSafe false -> true); checked independently: no policy is declared, so DefaultPolicy normal lists agents, the contradiction is at tier normal, and A.6.3.3 bars agents only from loosening, exception and producer-changed answers and final acts, which a dismissal is not; A.10.3 already assigns its group to agents (budget used 1); regenerated with python3 -I -B m0/golden/tools/gen.py m0/golden/inputs <scratch>: all 21 goldens equal the generator's output byte for byte"
+ },
+ {
+  "item": "ex4-closing-the-set",
+  "signers": [
+   "settle spec problems",
+   "finalize settlements"
+  ],
+  "basis": "value changed by A.16.27 (the heuristic dismissal's answer discharger agentSafe false -> true); checked independently: no policy is declared, so DefaultPolicy normal lists agents, the contradiction is at tier normal, and A.6.3.3 bars agents only from loosening, exception and producer-changed answers and final acts, which a dismissal is not; A.10.3 already assigns its group to agents (budget used 1); regenerated with python3 -I -B m0/golden/tools/gen.py m0/golden/inputs <scratch>: all 21 goldens equal the generator's output byte for byte"
+ },
+ {
+  "item": "ex3-step1",
+  "signers": [
+   "finalize settlements",
+   "review settlements"
+  ],
+  "basis": "input re-encoded for A.16.4(b) as finalised: tim's 2026-09-01 base-era judgment (record fe382e7093ff71ec) moved from records to persisted.base and persisted.head, its path added to both manifest trees and the subject digests recomputed; inputDigest changes and no other output value does (regenerated by gen.py, whose record lookup now reads persisted.head too; regenerated with python3 -I -B m0/golden/tools/gen.py m0/golden/inputs <scratch>: all 21 goldens equal the generator's output byte for byte). The settlement review proposed this re-encoding and derived that it keeps every frozen output but inputDigest (its must-fix issue on A.16.4(b)); that derivation is recorded here as its sign-off, for the judge to confirm"
+ },
+ {
+  "item": "ex3-step1-judged",
+  "signers": [
+   "finalize settlements",
+   "review settlements"
+  ],
+  "basis": "input re-encoded for A.16.4(b) as finalised: tim's 2026-09-01 base-era judgment (record fe382e7093ff71ec) moved from records to persisted.base and persisted.head, its path added to both manifest trees and the subject digests recomputed; inputDigest changes and no other output value does (regenerated by gen.py, whose record lookup now reads persisted.head too; regenerated with python3 -I -B m0/golden/tools/gen.py m0/golden/inputs <scratch>: all 21 goldens equal the generator's output byte for byte). The settlement review proposed this re-encoding and derived that it keeps every frozen output but inputDigest (its must-fix issue on A.16.4(b)); that derivation is recorded here as its sign-off, for the judge to confirm"
+ }
+]

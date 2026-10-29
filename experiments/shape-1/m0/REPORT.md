@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-29.
 
-**Status:** every registered M0 exit criterion is met. Two things qualify that. First, the sign-offs are by agents, not people. Second, the input-profile and settlement items under "Open before M1" must be closed before M1 builds against this set.
+**Status:** every registered M0 exit criterion is met. Two things qualify that. First, the sign-offs are by agents, not people. Second, the input-profile and settlement items under "Open before M1" had to be closed before M1 builds against this set; the settlement below (annex A.16) closes them, except six questions that need a decision.
 
 ## Exit criteria
 
@@ -56,6 +56,37 @@ These are the starting points for M1 and M2.
      - Example 3 Step 1 needing a relay to persist its judgment.
    - These must be settled in the annex. Otherwise M1 and M2 will each pick a reading, and the differential gate will report the difference as residual.
 
+## Settlement (A.16), 2026-10-29
+
+After the freeze, a settlement pass wrote annex A.16 ([spec/ANNEX.md](../spec/ANNEX.md), 37 settlements) for the three items above. A review raised 7 must-fix issues, and a finaliser resolved them in the text and the frozen set.
+
+- **Input profile (item 1).**
+  - A.16.1 fixes the full profile of RECORDS §4. A.16.2 admits the source profile for conformance sets only. It defines `shape.source.v1` with the four version 7 fields (`manifest`, actor `was`, `exceptPaths`, implementation `ids`), says how a checker processes it, and says how a frozen input converts to the full profile. A.16.3 gives the canonical form.
+  - Four full-profile vectors cover what the source profile skips (A.16.1(g)): `full-profile-blob-ids`, `full-profile-pack-pins`, `full-profile-parse-failure` and `full-profile-manifest-identity`, with 20 cases and 43 assertions. The set is now 56 vectors, 148 cases and 451 assertions.
+  - The registered M1 and M2 exits still name "the 52 M0 vectors". Under [REGISTERED.md](REGISTERED.md)'s rule, adding the four to them needs an owned, dated change recorded in the RFC.
+- **Claim judgments in records (item 2).** A.16.4: a claim judgment is an act of this change unless it is a persisted judgment of an earlier change, so supplying it in records never escapes the authorship bar (D12). Golden ex3-step1 and ex3-step1-judged now carry tim's base-era judgment in `persisted.base` and `persisted.head`. Only their `inputDigest` changed.
+- **Spec problems (item 3).** A.16 settles every problem except six that need a decision rather than a reading:
+  - a refutation re-introduced by every edit to its footprint (D7; SP 87, 98);
+  - unchanged code relocated across a component boundary introducing nothing (A.7.3.1, D6; SP 102);
+  - whether M5's H2 harness supplies base-revision test records (SP 86, 97);
+  - migrate's bind-by-name against explicit 0.x binds (SP 104, M4);
+  - Rust and Verus `refs` resolution (SP 17, M3);
+  - std 1.0.0's published pack bytes (SP 1, conversion part).
+
+  Who answers L0 over an unreadable base is read as A.11.1 reads a 0.x base (A.16.16), with no self fallback. The trade-off is recorded as open: A.11.6 (19) and question 10 of [OPEN_QUESTIONS.md](../spec/OPEN_QUESTIONS.md).
+- **Frozen values changed.**
+  - A.16.17: ex1-empty-base.
+  - A.16.19: the producer-changed bindings of dropped-harness/record-present, judges-narrowing-no-fallback, producer-change-assumption and ex3-step2-harness-edited, and the review lines that name them.
+  - A.16.27: ex4 and ex4-closing-the-set.
+  - A.16.4: ex3-step1 and ex3-step1-judged.
+
+  Their sign-offs, and those of the 43 new assertions, are in [SIGNOFF-settlement.json](SIGNOFF-settlement.json). SIGNOFF.json marks the 19 items it supersedes.
+- **Measured on 2026-10-29.**
+  - `python3 -I experiments/shape-1/m0/hexcheck.py`: 68 of 68 values match.
+  - `bun experiments/shape-1/m0/vectors/check.ts` (version 6 prototype): 275 of 451 assertions pass, with 0 format errors.
+    - On the 52 vectors, 261 of 408 pass. That is 6 fewer than at the freeze, all from A.16.19's bindings.
+    - On the four full-profile vectors, 14 of 43 pass. The version 6 prototype calls every full-profile input invalid, so only the `invalid` assertions match.
+
 ## Files
 
 | Path | Contents |
@@ -67,7 +98,7 @@ These are the starting points for M1 and M2.
 | `vectors/V6_DIFFERS.json` | Per vector, where version 6 reads the inputs differently |
 | `golden/` | The 21 golden outputs, version 7 inputs, deltas, generator tools and minor issues |
 | `h4/manual.json`, `h2/expectations.json` | Frozen readings |
-| `SIGNOFF.json` | Signers per item (workflow agent labels) and the basis for each sign-off |
+| `SIGNOFF.json`, `SIGNOFF-settlement.json` | Signers per item (workflow agent labels) and the basis for each sign-off; the second holds the settlement's re-signed items and the full-profile vectors |
 | `ERRATA.json`, `SPEC_PROBLEMS.json` | Errata, input fixes, ambiguity rulings and open problems |
 
 **Cost:** the workflow ran 17 agents for 3.9 hours and used about 7.6M subagent tokens.

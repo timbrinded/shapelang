@@ -3,18 +3,18 @@
  "exact": true,
  "obligations": [
   {
-   "binding": "bd:8d771e08d86d43b2d2d173d67a65d6275ff315fdcfc89a9d36c20edbc8332eb5",
+   "binding": "bd:a7514dcb4cfb7068eb51a981fe81680557d8c8d2e219c890c9eb09294d0ae084",
    "exploited": true,
-   "group": "g:1a70082cc28046319bf3834eab91ef44ab823bc11c48141d5b96c276c92a899a",
-   "key": "ob:031024b1dfd16fe266cf991b13b10ca3e58431846f44d3ae2c851d52644fd44a",
+   "group": "g:9f2b9e1c945e64187b39b5210fdc1218ca8249dfff9d7f26654c29d954985f2c",
+   "key": "ob:e8ec989a6cf48d9a11cc0aec2006e60bfb0200faed2798b0a3144d4e77b91585",
    "kind": "loosening",
    "severity": "blocking",
    "tier": "final"
   },
   {
-   "binding": "bd:2785f31d20281bdda1ebd5a9b6561490c4952af5f4ac71d00e23dea73b894954",
+   "binding": "bd:6bca5b3fe0d0787dfeb54eaf39595334ba4f7e526ef539c12f907d650c796e12",
    "exploited": true,
-   "group": "g:1a70082cc28046319bf3834eab91ef44ab823bc11c48141d5b96c276c92a899a",
+   "group": "g:9f2b9e1c945e64187b39b5210fdc1218ca8249dfff9d7f26654c29d954985f2c",
    "key": "ob:ca99c5461b8ff9a8410d4389337b30099a13b1a78bf99bd8f9cc107df9d04054",
    "kind": "loosening",
    "severity": "blocking",

@@ -59,6 +59,8 @@ function permuteManifest(
   st: CheckInput["head"]["manifest"],
   r: () => number
 ): CheckInput["head"]["manifest"] {
+  // the test inputs carry bare manifest statements (DSSE envelopes are kept as given)
+  if (!("predicate" in st)) return st;
   const p = st.predicate.shape as ManifestPredicate;
   const shuffled = { ...p, tree: shuffle(p.tree, r), entries: shuffle(p.entries, r) };
   // the statement subject is over the sorted predicate, so it is unchanged; keep the shuffled body
@@ -72,13 +74,13 @@ export function permute(input: CheckInput, seed: number): CheckInput {
   const x = clone(input);
   x.head = {
     ...x.head,
-    source: permuteSource(x.head.source, r),
+    source: permuteSource(x.head.source ?? null, r),
     manifest: permuteManifest(x.head.manifest, r)
   };
   if (x.base)
     x.base = {
       ...x.base,
-      source: permuteSource(x.base.source, r),
+      source: permuteSource(x.base.source ?? null, r),
       manifest: permuteManifest(x.base.manifest, r)
     };
   x.records = shuffle(x.records, r);

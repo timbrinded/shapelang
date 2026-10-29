@@ -160,7 +160,19 @@
      "lang": "bend"
     },
     {
+     "kind": "unsafe",
+     "lang": "rust"
+    },
+    {
      "kind": "ts_ignore",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_expect_error",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_nocheck",
      "lang": "ts"
     }
    ],
@@ -210,6 +222,8 @@
      "entries": [
       {
        "digest": "sha256:b147f095622b8e82c384851abed1340f2ee0e15ead51a743a4da5c3a3663a7ff",
+       "executable": false,
+       "hatchComplete": true,
        "id": "pkgjson:package.json",
        "kind": "file",
        "parent": null,
@@ -218,6 +232,8 @@
       },
       {
        "digest": "sha256:ac2f8e81226908f8920646fe9459842c7fccfdbb3444552e10868d5093470347",
+       "executable": false,
+       "hatchComplete": true,
        "id": "pkgjson:package.json",
        "kind": "file",
        "parent": null,
@@ -226,6 +242,8 @@
       },
       {
        "digest": "sha256:29701283f81b68ea3f34ac723b5326d09945f4ec372b16861da27d9c539d3d0e",
+       "executable": false,
+       "hatchComplete": true,
        "id": "raw:bun.lock",
        "kind": "file",
        "parent": null,
@@ -234,6 +252,8 @@
       },
       {
        "digest": "sha256:507e6c6eeca1322948d83aea7ac60cb927f84a2fcb52346fa4ec41e5883912ee",
+       "executable": false,
+       "hatchComplete": true,
        "id": "raw:bun.lock",
        "kind": "file",
        "parent": null,
@@ -242,6 +262,8 @@
       },
       {
        "digest": "sha256:a955648ac042149dbcf0ad36204b4e22132bec3f16e7b60385bb4cdced0b4138",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:src/audit/store.ts",
        "kind": "file",
        "parent": null,
@@ -250,6 +272,8 @@
       },
       {
        "digest": "sha256:160a210d7998cb331c389fa51bb18fac303e4d5c1f3d6c39c7c82b2901717541",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:src/audit/store.ts",
        "kind": "file",
        "parent": null,
@@ -258,6 +282,8 @@
       },
       {
        "digest": "sha256:df38d45acb53c51e2faaca77f1229602ab595acdd158a52f2a526d1fa3408f08",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:src/audit/store.ts#appendEvent",
        "kind": "symbol",
        "parent": "ts:src/audit/store.ts",
@@ -266,6 +292,8 @@
       },
       {
        "digest": "sha256:2b9ef62a172a9ba7eefdb6bb46f1a2c275bf1898823e1b0a0a20e4b90500baad",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:src/audit/store.ts#appendEvent",
        "kind": "symbol",
        "parent": "ts:src/audit/store.ts",
@@ -274,6 +302,8 @@
       },
       {
        "digest": "sha256:8f92bec50b0c01171d3f7ee059b9dcc680f814a50be82cf99c7761c5f7339c96",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:test/audit/history.test.ts",
        "kind": "file",
        "parent": null,
@@ -282,6 +312,8 @@
       },
       {
        "digest": "sha256:1a247c54cb6fe0d53af890a9690f67297e8e351a90980f166716d2050f7aabdd",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:test/audit/history.test.ts",
        "kind": "file",
        "parent": null,
@@ -300,7 +332,6 @@
   "revision": "b0"
  },
  "baseRecords": [],
- "cells": [],
  "change": {
   "ids": [
    "github:acme/audit#57"
@@ -361,14 +392,14 @@
    "claims": [
     {
      "args": {
-      "atom": "HardDelete<audit::AuditEvent>",
+      "atom": "Update<audit::AuditEvent>",
       "except": [],
       "scope": [
        "*"
       ]
      },
      "ids": [
-      "audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+      "audit::AuditEvent/AppendOnly/effect.forbid-Update"
      ],
      "op": "effect.forbid",
      "owner": "audit::AuditTeam",
@@ -575,7 +606,19 @@
      "lang": "bend"
     },
     {
+     "kind": "unsafe",
+     "lang": "rust"
+    },
+    {
      "kind": "ts_ignore",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_expect_error",
+     "lang": "ts"
+    },
+    {
+     "kind": "ts_nocheck",
      "lang": "ts"
     }
    ],
@@ -713,6 +756,8 @@
      "entries": [
       {
        "digest": "sha256:b147f095622b8e82c384851abed1340f2ee0e15ead51a743a4da5c3a3663a7ff",
+       "executable": false,
+       "hatchComplete": true,
        "id": "pkgjson:package.json",
        "kind": "file",
        "parent": null,
@@ -721,6 +766,8 @@
       },
       {
        "digest": "sha256:ac2f8e81226908f8920646fe9459842c7fccfdbb3444552e10868d5093470347",
+       "executable": false,
+       "hatchComplete": true,
        "id": "pkgjson:package.json",
        "kind": "file",
        "parent": null,
@@ -729,6 +776,8 @@
       },
       {
        "digest": "sha256:29701283f81b68ea3f34ac723b5326d09945f4ec372b16861da27d9c539d3d0e",
+       "executable": false,
+       "hatchComplete": true,
        "id": "raw:bun.lock",
        "kind": "file",
        "parent": null,
@@ -737,6 +786,8 @@
       },
       {
        "digest": "sha256:507e6c6eeca1322948d83aea7ac60cb927f84a2fcb52346fa4ec41e5883912ee",
+       "executable": false,
+       "hatchComplete": true,
        "id": "raw:bun.lock",
        "kind": "file",
        "parent": null,
@@ -745,6 +796,8 @@
       },
       {
        "digest": "sha256:a955648ac042149dbcf0ad36204b4e22132bec3f16e7b60385bb4cdced0b4138",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:src/audit/store.ts",
        "kind": "file",
        "parent": null,
@@ -753,6 +806,8 @@
       },
       {
        "digest": "sha256:160a210d7998cb331c389fa51bb18fac303e4d5c1f3d6c39c7c82b2901717541",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:src/audit/store.ts",
        "kind": "file",
        "parent": null,
@@ -761,6 +816,8 @@
       },
       {
        "digest": "sha256:df38d45acb53c51e2faaca77f1229602ab595acdd158a52f2a526d1fa3408f08",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:src/audit/store.ts#appendEvent",
        "kind": "symbol",
        "parent": "ts:src/audit/store.ts",
@@ -769,6 +826,8 @@
       },
       {
        "digest": "sha256:2b9ef62a172a9ba7eefdb6bb46f1a2c275bf1898823e1b0a0a20e4b90500baad",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:src/audit/store.ts#appendEvent",
        "kind": "symbol",
        "parent": "ts:src/audit/store.ts",
@@ -777,6 +836,8 @@
       },
       {
        "digest": "sha256:8f92bec50b0c01171d3f7ee059b9dcc680f814a50be82cf99c7761c5f7339c96",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:test/audit/history.test.ts",
        "kind": "file",
        "parent": null,
@@ -785,6 +846,8 @@
       },
       {
        "digest": "sha256:1a247c54cb6fe0d53af890a9690f67297e8e351a90980f166716d2050f7aabdd",
+       "executable": false,
+       "hatchComplete": true,
        "id": "ts:test/audit/history.test.ts",
        "kind": "file",
        "parent": null,

@@ -27,14 +27,25 @@ def inp(name):
 
 
 def rec_id_where(inputd, pred):
+    """The id of the one record, supplied in records or persisted in the head, that pred selects."""
     from common import statement_of
-    ids = [record_id(r) for r in inputd["records"] if pred(statement_of(r)["predicate"]["shape"])]
+    recs = inputd["records"] + [p["record"] for p in inputd["persisted"]["head"]]
+    ids = sorted({record_id(r) for r in recs if pred(statement_of(r)["predicate"]["shape"])})
     assert len(ids) == 1, ids
     return ids[0]
 
 
 def eq(a, b, what):
     assert a == b, (what, a, b)
+
+
+def mdig(inputd, side, ident, proj):
+    """The digest a revision's manifest lists for (ident, proj)."""
+    from common import statement_of
+    for e in statement_of(inputd[side]["manifest"])["predicate"]["shape"]["entries"]:
+        if e["id"] == ident and e["projection"] == proj:
+            return e["digest"]
+    raise KeyError((side, ident, proj))
 
 
 # =========================================================================================================
@@ -248,7 +259,7 @@ def ex1_empty_base(name):
         budget="mechanical", owner=TEAM, subject=None, group=group_id([k]),
         claim=claim_ref(FP_LAW, ["audit::EventsArePreserved"], "critical"), final=False, binding=b,
         dischargers=[dis("rerun", "ci", True), dis("exception", "judges", False, []),
-                     dis("lower-requirement", "author", True, [], creates("loosening", "critical", 1, [TEAM]))],
+                     dis("lower-requirement", "author", True, [], None)],  # A.16.17, A.16.27: the base has no such law
         causes=[])]
     h = health(
         declaredOnly=[declared_only(FP_FORBID, "final", "declared-only"), declared_only(FP_AUTH, "critical", "declared-only"),
@@ -256,7 +267,7 @@ def ex1_empty_base(name):
         ungoverned={"num": 3, "den": 5},
         unauthenticated=["manifest base", "manifest head", "provider audit::fastCheck", "provider audit::reviews",
                          "provider audit::sqlEffects"],
-        executesHead=["audit::fastCheck"], baseDefects=["E-parse shape"], preexisting=1)
+        executesHead=["audit::fastCheck"], preexisting=1)  # A.16.17: an empty base is no base defect
     return output(mode="change", inputDigest=input_digest(i), verdict="owed", obligations=obs, order="tighter",
                   preexisting=[{"obligation": k, "owner": TEAM}], budget={"limit": None, "used": 0, "overflow": []},
                   health=h)
@@ -434,7 +445,10 @@ def det_ob(i, reason):
     eq(k, ob_key({"kind": "unestablished", "claim": FP_DET, "subject": None}), "kdet")
     pc = reason == "producer-changed"
     # A.7.2.2: affected = Req identities plus, when producer-changed, the harness finest change
-    b = binding(k, [CSM, DET] if pc else [CSM], [[CSM, "unit", label("csm unit"), label("csm unit")]])
+    code = [[CSM, "unit", label("csm unit"), label("csm unit")]]
+    if pc:  # A.16.19: plus (x, own) per implementation or harness finest change
+        code.append([DET, "own", mdig(i, "base", DET, "own"), mdig(i, "head", DET, "own")])
+    b = binding(k, [CSM, DET] if pc else [CSM], code)
     if pc:
         test = rec_id_where(i, lambda s: s["kind"] == "test")
         d = [dis("answer", "judges", False, [ANN]), dis("exception", "judges", False, [ANN]),
@@ -540,7 +554,7 @@ def cycle_ob():
         force="heuristic", owner=CSMN, assignee="agents", group=g, claim=claim_ref(FP_CYC, ["checker::no_runtime_dependency_cycles"], "normal"),
         subject={"nodes": ["checker::ShapeModelLowerer", "checker::ShapeRuleEngine"]}, witness=[rep, decl], facts=facts,
         final=False, binding=b,
-        dischargers=[dis("answer", "judges", False, [CTIM]), dis("edit-code", "author", True),
+        dischargers=[dis("answer", "judges", True, [CTIM]), dis("edit-code", "author", True),  # A.16.27
                      dis("exception", "judges", False, [CTIM]),
                      dis("edit-shape", "author", True, [], creates("loosening", "normal", 1, [CSMN]))],
         causes=[{"type": "fact", "id": rep}, {"type": "fact", "id": decl}, {"type": "claim", "id": FP_CYC}])

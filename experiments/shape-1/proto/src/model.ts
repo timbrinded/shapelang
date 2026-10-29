@@ -44,6 +44,12 @@ export interface Claim {
   template: string | null;
   /** schema | hosted | informal, laws only */
   statementForm: "schema" | "hosted" | "informal" | null;
+  /** the declaration that holds the claim, "<kind> Q" (error subjects, A.15.1) */
+  decl: string;
+  /** where owner and tier were written: null on the claim, else the item it inherits from
+   *  ("unit Q", "component Q", "resource Q", "shape", or "default") (A.8.2.3 L7 [D18]) */
+  ownerFrom: string | null;
+  tierFrom: string | null;
 }
 
 export interface Actor {
@@ -52,6 +58,8 @@ export interface Actor {
   operator: string | null;
   identities: string[];
   members: string[];
+  /** ρ for actors (A.6.1.4 [D18]) */
+  was: string | null;
 }
 
 export interface ResourceItem {
@@ -62,6 +70,8 @@ export interface ResourceItem {
   bind: string[];
   was: string | null;
   attach: string[];
+  /** "shape" when the owner defaults to the shape owner, else null */
+  ownerFrom: string | null;
 }
 
 export interface ComponentItem {
@@ -70,6 +80,8 @@ export interface ComponentItem {
   owner: string;
   tier: Tier;
   paths: string[];
+  /** except globs, removed from every path glob (A.3.3.1 [D25]) */
+  exceptPaths: string[];
   /** null: open authority (no grants clause) */
   grants: string[] | null;
   allows: string[];
@@ -78,6 +90,8 @@ export interface ComponentItem {
   was: string | null;
   units: string[];
   attach: string[];
+  /** "shape" when the owner defaults to the shape owner, else null */
+  ownerFrom: string | null;
 }
 
 export interface UnitItem {
@@ -91,6 +105,9 @@ export interface UnitItem {
   was: string | null;
   summary: { mode: "complete" | "partial"; atoms: { atom: string; via: string | null }[] } | null;
   attach: string[];
+  /** owner and tier inherited from the component (L7 reports them once, at the component) */
+  ownerFrom: string | null;
+  tierFrom: string | null;
 }
 
 export interface TemplateItem {
@@ -98,7 +115,8 @@ export interface TemplateItem {
   schemaFp: string;
   params: [string, ParamKind][];
   order: [string, OrderDir][];
-  notes: string[];
+  /** requires note entries: each a sorted list of accepted kinds */
+  notes: string[][];
 }
 
 export type ExceptionSubject =
@@ -136,7 +154,8 @@ export interface ProviderItem {
   depsComplete: boolean;
   identity: string | null;
   trusts: [string, string][];
-  implementation: { paths: string[]; digest: string | null } | null;
+  /** path globs, identities (A.5.2.6 [D9]) and a digest */
+  implementation: { paths: string[]; ids: string[]; digest: string | null } | null;
 }
 
 export interface TierPolicy {
@@ -202,7 +221,8 @@ export interface ShapeError {
 
 export interface ESF {
   v: "shape.elaborated.v1";
-  shape: { q: string; owner: string; policy: string };
+  /** manifest: the manifest identity the shape names (A.5.2.17 [D27]), or null */
+  shape: { q: string; owner: string; policy: string; manifest: string | null; declared: boolean };
   actors: Actor[];
   effects: { verb: string; implies: string[] }[];
   kinds: { name: string; from: "component" | "resource"; to: "component" | "resource" }[];

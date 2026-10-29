@@ -97,7 +97,8 @@ function observation(
     revision,
     time: "2026-01-01T00:00:00Z",
     scope: { root: scopeRoot(entries), entries },
-    facts: [{ type: "effect", at, verb, resource: probeCode(resource) }],
+    // version 7 (RJ14 [D15]): a presence-sound observer reports n on every effect fact
+    facts: [{ type: "effect", at, verb, resource: probeCode(resource), n: 1 }],
     harness: [],
     assumptions: []
   };

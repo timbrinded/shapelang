@@ -1,8 +1,8 @@
 // teeth: model mutation for Shape 1.0 models (A.10.5, adapted from experiments/verus-probes/e10).
 // Closed-form kill sets over the elaborated head and its world (W_decl plus usable observed facts):
 //   W1  add an effect fact (position u, atom a) not already entailed there: killed by every effect
-//       forbid with a ∈ Prot(u), by authority(K) when a ∉ A(u), and by effects.upper(v, C) when u
-//       lies in v's reach and a ∉ cl(C);
+//       forbid with a ∈ Prot(u), by authority(K) when a ∉ A(u), and by u's own effects.upper(u, C)
+//       when a ∉ cl(C) (version 7: summaries are direct [D2]);
 //   W2  add a type-correct edge (A, k, B) not already present: killed by edge forbids matching it,
 //       path forbids whose sources reach A and whose targets B reaches (interiors outside V), and
 //       cycle forbids over k when B already reaches A;
@@ -20,6 +20,7 @@ import {
   covers,
   impl,
   inA,
+  inClosure,
   liftEffect,
   liftHatch,
   nodeSet,
@@ -136,7 +137,7 @@ export function worldFacts(o: Pick<TeethOptions, "esf" | "world" | "observations
     }
   }
   for (const x of W.man.ids.values())
-    for (const [k, n] of Object.entries(x.markers)) if (n > 0) add(W.att(x.id), liftHatch(W, k));
+    for (const [k, n] of Object.entries(x.markers)) if (n > 0) add(W.att(x.id), liftHatch(W, k, x.lang));
   // position-level reach through calls (summaries' footprint), and component call edges
   const callsFrom = new Map<string, Set<string>>();
   for (const [a, b] of callPairs) {
@@ -175,17 +176,19 @@ function entailed(W: World, present: Set<string> | undefined, atom: string): boo
   return false;
 }
 
-function inClosure(W: World, atoms: string[], atom: string): boolean {
-  const a = parseAtom(atom);
-  if (!a) return false;
-  return atoms.some((c) => {
-    const p = parseAtom(c.replace(/ via .+$/, ""));
-    return !!p && p.resource === a.resource && impl(W, a.verb, p.verb);
-  });
+/** a ∈ cl(C), cl the up-closure (A.3.4.1), as derive reads it (world.inClosure) */
+function inSummary(W: World, atoms: string[], atom: string): boolean {
+  return inClosure(
+    W,
+    atoms.map((c) => c.replace(/ via .+$/, "")),
+    atom
+  );
 }
 
 /** The claims a W1 mutant (fact `atom` at position `pos`) breaks: forbids protecting it,
- *  authority when ungranted, and complete summaries whose reach holds the position. */
+ *  authority when ungranted, and the complete summary of that very position (version 7:
+ *  summaries are direct, over the unit's own code [D2]; trust atoms are never bounded by a
+ *  summary, A.16.34). */
 export function w1Killers(
   W: World,
   uppers: Claim[],
@@ -199,10 +202,10 @@ export function w1Killers(
     const auth = comp ? W.authority.get(comp) : undefined;
     if (auth) killers.push(auth);
   }
+  void reachOf;
   for (const u of uppers) {
-    const unit = String(u.args.unit);
-    if (!reachOf.get(unit)?.has(pos)) continue;
-    if (!atom.endsWith(`<${TRUST}>`) && !inClosure(W, u.args.atoms as string[], atom))
+    if (String(u.args.unit) !== pos) continue;
+    if (!atom.endsWith(`<${TRUST}>`) && !inSummary(W, u.args.atoms as string[], atom))
       killers.push(u);
   }
   return killers;
@@ -252,7 +255,8 @@ export function teeth(o: TeethOptions): TeethReport {
   let w1k = 0;
   const atomUniverse = [
     ...resources.flatMap((r) => verbs.map((v) => `${v}<${r}>`)),
-    ...[...hatchVerbs, "Hatch"].map((h) => `${h}<${TRUST}>`)
+    // version 7: a marker lifts to a declared hatch verb or Undeclared, never to Hatch (A.3.4.5)
+    ...[...hatchVerbs].map((h) => `${h}<${TRUST}>`)
   ];
   for (const pos of W.positions) {
     for (const atom of atomUniverse) {

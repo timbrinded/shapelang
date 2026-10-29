@@ -1,0 +1,233 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "85700f6f1f806235344125f8004e5dea76a70aba",
+  "commit": "tree 209c4699d67a5de2bc66bcb23f860665b169ea01\nparent 6355485e499a067abe809f608c7ce7b24bf3fdc0\nauthor Dev Agent <dev-agent@example.invalid> 1792926000 +0000\ncommitter Dev Agent <dev-agent@example.invalid> 1792926000 +0000\n\nfull-profile-blob-ids head\n",
+  "files": [
+   {
+    "path": "shape.lock",
+    "text": "{\"packs\":[],\"v\":\"shape.lock.v1\"}\n"
+   },
+   {
+    "path": "shape/fc.shape",
+    "text": "module fc\n\nshape Fc { owner Maint policy Gate }\n\nactor Maint { kind team member tim }\nactor tim { kind person identity github(\"tim\") }\n\npolicy Gate {\n  tier low { floor declared max_age 365 days judges owner, agents }\n  tier normal { floor declared blocks latent loosening max_age 365 days judges owner, agents }\n  tier critical { floor tested blocks unestablished, coverage, latent loosening max_age 90 days judges owner }\n}\n\ncomponent Core {\n  owner Maint\n  bind paths { \"src/**\" }\n}\n\n"
+   }
+  ],
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/85700f6f1f806235344125f8004e5dea76a70aba",
+     "digest": {
+      "sha256": "bb39c31c3242701ff80d75927681bcdbe26118453523011b0f64597c059f96f4"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "85700f6f1f806235344125f8004e5dea76a70aba",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "334da28dcc0149d00aa20fed99c3dcb724cab3ec"
+      },
+      {
+       "path": "shape/fc.shape",
+       "mode": "100644",
+       "blob": "e5ba64fc5d6135f9c5e0c39f2b0507eeae811080"
+      },
+      {
+       "path": "src/core.ts",
+       "mode": "100644",
+       "blob": "4e0edde993c979e110ddadb52a46ec67b84bca03"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/core.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:cb4d25409b4841e1febabf8a1a9b335e0edde821399fc33d0976cfbb775f975c",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:0f3883b2d1e88225650600ebe4ad17eee29264ff91be72824e4aa54f81f0834b",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts#ping",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:82fb624c7e3b44d91e6487c62c2785e8462118d292a8a0d565330eaaad36b0ab",
+       "kind": "function",
+       "parent": "ts:src/core.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts#ping",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:ff8d64caa4d1655b6e547e2db1ea42b3a40bd4b68d8ebdbe2451d2ede6eea8bf",
+       "kind": "function",
+       "parent": "ts:src/core.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "6355485e499a067abe809f608c7ce7b24bf3fdc0",
+  "commit": "tree c68cd29992dd0ff5385437735fd6c54b5d0600a6\nauthor Dev Agent <dev-agent@example.invalid> 1792843200 +0000\ncommitter Dev Agent <dev-agent@example.invalid> 1792843200 +0000\n\nfull-profile-blob-ids base\n",
+  "files": [
+   {
+    "path": "shape.lock",
+    "text": "{\"packs\":[],\"v\":\"shape.lock.v1\"}\n"
+   },
+   {
+    "path": "shape/fc.shape",
+    "text": "module fc\n\nshape Fc { owner Maint policy Gate }\n\nactor Maint { kind team member tim }\nactor tim { kind person identity github(\"tim\") }\n\npolicy Gate {\n  tier low { floor declared max_age 365 days judges owner, agents }\n  tier normal { floor declared blocks latent loosening max_age 365 days judges owner, agents }\n  tier critical { floor tested blocks unestablished, coverage, latent loosening max_age 90 days judges owner }\n}\n\ncomponent Core {\n  owner Maint\n  bind paths { \"src/**\" }\n}\n"
+   }
+  ],
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/6355485e499a067abe809f608c7ce7b24bf3fdc0",
+     "digest": {
+      "sha256": "20135f5a909a1e8c10ffede98d4a3821991eb1098f8822ca3df98866047e0a89"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "6355485e499a067abe809f608c7ce7b24bf3fdc0",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "334da28dcc0149d00aa20fed99c3dcb724cab3ec"
+      },
+      {
+       "path": "shape/fc.shape",
+       "mode": "100644",
+       "blob": "e5ba64fc5d6135f9c5e0c39f2b0507eeae811080"
+      },
+      {
+       "path": "src/core.ts",
+       "mode": "100644",
+       "blob": "5e91c4e2828ba3336d3d88508a9e054c91de2561"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/core.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:d50068cc627651d8d0ec3a82da5484b2656236e5cb7e4c5a87f2cce69bf204d0",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:e6e92d9ebc444d60df5b88c424984a2f147db2d5e63bb1384f994e46ff66a115",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts#ping",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:0d9dfee1e58c69bd2f10a611d2c1313574c3b340ce47284cf8b17326c0ea0b8e",
+       "kind": "function",
+       "parent": "ts:src/core.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts#ping",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:7f8c36b4498591e2b40b6646a8a4b3b9095e7595727fd70b7dc433a971338635",
+       "kind": "function",
+       "parent": "ts:src/core.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "packs": [],
+ "change": {
+  "ids": [
+   "github:acme/fc#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"dev-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "trustRoots": {
+  "fulcio": [],
+  "rekor": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

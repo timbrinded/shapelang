@@ -1,0 +1,112 @@
+{
+ "vector": "full-profile-blob-ids",
+ "title": "In the full profile, files must hold exactly the revision's shape files with the tree's blob ids, for the base as for the head; a .shape file outside shape/ is a raw identity and is not listed",
+ "decides": [
+  "A.16.1",
+  "A.3.1.1",
+  "A.12.7.3",
+  "A.10.1",
+  "A.10.2"
+ ],
+ "cases": [
+  {
+   "case": "files-match",
+   "input": "files-match.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.16.1(b): files list exactly shape.lock and shape/fc.shape with the trees' blob ids, commits and manifests agree (A.16.1(d)); Core has no claims, so nothing is owed"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.10.1: no shape, coherence or input-integrity error"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "no claim, no loosening (the shapes are identical), no coverage need (A.7.4.5)"
+    }
+   ]
+  },
+  {
+   "case": "head-file-text-differs",
+   "input": "head-file-text-differs.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "invalid",
+     "why": "A.3.1.1, A.12.7.3, A.16.1(b): the head's shape/fc.shape text does not have the head tree's blob id, so the input is invalid"
+    }
+   ]
+  },
+  {
+   "case": "head-shape-file-omitted",
+   "input": "head-shape-file-omitted.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "invalid",
+     "why": "A.12.7.3, A.16.1(b): the head tree holds shape/extra.shape, a shape file, which head.files omit"
+    }
+   ]
+  },
+  {
+   "case": "head-extra-file",
+   "input": "head-extra-file.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "invalid",
+     "why": "A.3.1.1, A.16.1(b): head.files list shape/ghost.shape, which the head tree does not hold"
+    }
+   ]
+  },
+  {
+   "case": "base-file-text-differs",
+   "input": "base-file-text-differs.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "invalid",
+     "why": "A.16.1(f): the base files CI supplies are input integrity, not base shape content, so A.10.2's \"never because of the base\" does not apply; the base's shape/fc.shape does not match the base tree's blob"
+    }
+   ]
+  },
+  {
+   "case": "raw-shape-file-outside-shape-dir",
+   "input": "raw-shape-file-outside-shape-dir.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.3.1.1, A.16.1(b): docs/notes.shape is not under shape/, so it is a raw identity (raw:docs/notes.shape) and files rightly omit it"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.10.1: no error"
+    }
+   ]
+  }
+ ]
+}

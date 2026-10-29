@@ -1,39 +1,48 @@
 // Diagnostic-style rendering with cause chains (A.12.10.4-5), and the core output (A.11.2.3).
 import { idToSourceRef } from "./elaborate.ts";
 import type { CheckOutput, ObligationOut } from "./io-types.ts";
+import { jcs } from "./jcs.ts";
 import type { Discharger, ShapeError } from "./model.ts";
 
-/** Core output: omits message, causes[].text, command and snippet; byte-identical under permutation. */
+/** Core output (A.11.2.3, A.16.31): omits message, causes[].text, command, snippet, the
+ *  prototype extensions (affected, rule, matched) and the display summary. */
 export function coreOutput(out: CheckOutput): CheckOutput {
-  const stripD = (d: Discharger): Discharger => {
-    const { command: _c, snippet: _s, ...rest } = d;
-    void _c;
-    void _s;
-    return rest;
-  };
+  const stripD = (d: Discharger): Discharger => ({
+    act: d.act,
+    by: d.by,
+    agentSafe: d.agentSafe,
+    eligible: d.eligible,
+    creates: d.creates
+  });
   const stripE = (e: ShapeError): ShapeError => ({
     code: e.code,
     subject: e.subject,
     causes: e.causes.map((c) => ({ type: c.type, id: c.id })),
     dischargers: e.dischargers.map(stripD)
   });
+  const { summary: _s, ...rest } = out;
+  void _s;
   return {
-    ...out,
+    ...rest,
     errors: out.errors.map(stripE),
     obligations: out.obligations.map((o) => {
-      const { message: _m, affected: _a, rule: _r, matched: _x, ...rest } = o;
+      const { message: _m, affected: _a, rule: _r, matched: _x, ...ob } = o;
       void _m;
       void _a;
       void _r;
       void _x;
       return {
-        ...rest,
+        ...ob,
         causes: o.causes.map((c) => ({ type: c.type, id: c.id })),
         dischargers: o.dischargers.map(stripD)
       };
-    }),
-    summary: undefined
+    })
   };
+}
+
+/** The core output's RFC 8785 bytes, with no trailing newline (A.16.31). */
+export function coreBytes(out: CheckOutput): string {
+  return jcs(coreOutput(out));
 }
 
 function short(h: string): string {
@@ -151,7 +160,7 @@ export function renderHuman(out: CheckOutput): string {
     lines.push("debt:");
     for (const d of out.debt)
       lines.push(
-        `  ${short(d.obligation)} under ${d.exception}, owner ${d.owner}, expires in ${d.expiresInDays} days${d.flagged ? " (flagged)" : ""}`
+        `  ${short(d.obligation)} under ${d.exception}, owner ${d.owner}, expires in ${d.expiresInDays} days${d.expiresInDays <= 14 ? " (flagged)" : ""}`
       );
   }
   if (out.summary && out.summary.length > 0) {

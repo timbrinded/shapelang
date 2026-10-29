@@ -1670,9 +1670,11 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
   }
   stats.identities = identities.size;
   stats.ms = Date.now() - t0;
+  // version 7 (A.12.5.2, A.12.6 RJ14 [D15]): a presence-sound observer reports n on every effect
+  // fact, 1 included; call facts carry n only when above 1
   const withN = (m: Map<string, { fact: Fact; n: number }>): Fact[] =>
     [...m.values()]
-      .map(({ fact, n }) => (n > 1 ? { ...fact, n } : fact))
+      .map(({ fact, n }) => (fact.type === "effect" || n > 1 ? { ...fact, n } : fact))
       .sort((a, b) => cmpStr(JSON.stringify(a), JSON.stringify(b)));
   for (const s of identities.values()) {
     s.effectsIncomplete.sort(cmpStr);

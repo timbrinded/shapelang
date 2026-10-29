@@ -1,5 +1,7 @@
 // Inputs for the worked examples (examples §1–4), with the label digests and record shapes of
-// shape1work/model-v4/vectors.py so derived keys, bindings and groups can be compared exactly.
+// experiments/shape-1/spec/vectors/vectors.py so derived keys, bindings and groups can be compared
+// exactly. Every builder returns the version 7 input (./v7.ts): the 21 scenarios of
+// m0/golden/inputs are reproduced exactly; other option combinations get the same v7 changes.
 import type { CheckInput } from "../src/io-types.ts";
 import { label } from "../src/jcs.ts";
 import {
@@ -20,6 +22,7 @@ import {
 } from "../src/records.ts";
 import type { Decl, SourceDoc } from "../src/source.ts";
 import { auditSource, ironkvSource } from "./sources.ts";
+import { toV7 } from "./v7.ts";
 
 export const KEYS = {
   sqlEffects: signerFromSeed("01"),
@@ -182,7 +185,7 @@ export type Ex1Variant =
   | "C"
   | "C-answered";
 
-export function ex1(variant: Ex1Variant, extra: Partial<CheckInput> = {}): CheckInput {
+function ex1v6(variant: Ex1Variant, extra: Partial<CheckInput> = {}): CheckInput {
   const baseShape = auditSource({ ids: IDS });
   const baseMan = manifest(EX1.base, ex1BaseIds());
   const t = "2026-10-25T09:12:44Z";
@@ -397,7 +400,7 @@ export const EX2 = {
   INSERT: "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert"
 };
 
-export function ex2(
+function ex2v6(
   o: { exception?: boolean; approve?: boolean; hostMarkers?: boolean } = {}
 ): CheckInput {
   const src = ironkvSource({
@@ -574,7 +577,7 @@ export function ex3Source(): SourceDoc {
   return { v: "shape.source.v1", modules: [{ module: "tooling", imports: ["std"], decls }] };
 }
 
-export function ex3(o: { judgeLine?: boolean } = {}): CheckInput {
+function ex3v6(o: { judgeLine?: boolean } = {}): CheckInput {
   const ids = (side: "b" | "h"): IdSpec[] => [
     { id: "ts:packages/shp-cli/src/freshness.ts", own: label(`freshness own ${side}`) },
     { id: EX3.ISO, own: label(`isoToday own ${side}`), unit: side === "b" ? EX3.ISO_B : EX3.ISO_H },
@@ -699,7 +702,7 @@ export function ex4Source(
   return { v: "shape.source.v1", modules: [{ module: "checker", imports: ["std"], decls }] };
 }
 
-export function ex4(o: { complete?: boolean; headDiagnostics?: boolean } = {}): CheckInput {
+function ex4v6(o: { complete?: boolean; headDiagnostics?: boolean } = {}): CheckInput {
   const F = "ts:packages/shp-checker/src/checker/lowering/facts.ts";
   const C = "ts:packages/shp-checker/src/checker/lowering/context.ts";
   const D = "ts:packages/shp-checker/src/checker/derivations.ts";
@@ -907,7 +910,7 @@ export function ex3s2Source(o: { refactorSensitive?: boolean } = {}): SourceDoc 
   };
 }
 
-export function ex3s2(
+function ex3s2v6(
   o: {
     harnessEdited?: boolean;
     dropRecord?: boolean;
@@ -1037,4 +1040,36 @@ export function ex3s2(
     records: [...(o.dropRecord ? [] : [test]), scan, refactorJudgment],
     authors: [{ identity: 'github("claude[bot]")', verified: true, bot: true }]
   });
+}
+
+// ---- version 7 builders (A.16.2 source profile, as frozen in m0/golden/inputs) -------------------------
+
+export function ex1(variant: Ex1Variant, extra: Partial<CheckInput> = {}): CheckInput {
+  const name = variant === "B-weak" ? "ex1-B-weak-observer" : `ex1-${variant}`;
+  return toV7(name, ex1v6(variant, extra));
+}
+
+export function ex2(
+  o: { exception?: boolean; approve?: boolean; hostMarkers?: boolean } = {}
+): CheckInput {
+  return toV7("ex2", ex2v6(o));
+}
+
+export function ex3(o: { judgeLine?: boolean } = {}): CheckInput {
+  return toV7(o.judgeLine ? "ex3-step1-judged" : "ex3-step1", ex3v6(o));
+}
+
+export function ex4(o: { complete?: boolean; headDiagnostics?: boolean } = {}): CheckInput {
+  return toV7("ex4", ex4v6(o));
+}
+
+export function ex3s2(
+  o: {
+    harnessEdited?: boolean;
+    dropRecord?: boolean;
+    seededClock?: boolean;
+    removeRefactorSensitive?: boolean;
+  } = {}
+): CheckInput {
+  return toV7("ex3-step2", ex3s2v6(o));
 }

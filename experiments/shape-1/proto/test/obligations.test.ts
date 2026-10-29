@@ -2,12 +2,16 @@
 // exceptions, invalid inputs (A.4.4, A.5.3-5, A.7, A.8, A.12.6).
 import { describe, expect, test } from "bun:test";
 import { type IdSpec, baseInput, cite, manifest, signed } from "../examples/fixtures.ts";
+import { elaborate } from "../src/elaborate.ts";
 import type { CheckInput } from "../src/io-types.ts";
 import { H, label } from "../src/jcs.ts";
+import type { Statement } from "../src/manifest.ts";
 import {
   type Fact,
   type ShapeRecord,
   makeStatement,
+  persistedPath,
+  recordId,
   scopeRoot,
   signerFromSeed
 } from "../src/records.ts";
@@ -244,11 +248,14 @@ function input(
   });
 }
 
+// version 7 (A.12.6 RJ14, A.5.2.1 [D15]): a presence-sound observer reports n on every effect fact,
+// else its record is rejected; the facts here are single sites
 const write = (at: string, verb = "Update"): Fact => ({
   type: "effect",
   at,
   verb,
-  resource: 'pg.table("r")'
+  resource: 'pg.table("r")',
+  n: 1
 });
 
 describe("contradictions", () => {
@@ -351,7 +358,8 @@ describe("contradictions", () => {
     const c = obsOf(out, "contradiction").find((o) =>
       o.claim?.ids.includes("m::K.f/effects.upper")
     );
-    expect(c?.subject).toEqual({ unit: "m::K.f", atom: "Append<m::R>" });
+    // version 7 (A.12.8.5, A.4.4.8): a summary contradiction's subject is {code, atom} per site
+    expect(c?.subject).toEqual({ code: FA, atom: "Append<m::R>" });
   });
   test("coherence: a declared summary atom forbidden in its unit is E-conduct", () => {
     const w = world({ summary: ["Update<R>"] });
@@ -368,6 +376,7 @@ function testRecord(
     digest?: string;
     harness?: string;
     revision?: string;
+    deps?: boolean;
   } = {}
 ): unknown {
   const claim = {
@@ -394,8 +403,13 @@ function testRecord(
       claim: { id: "m::FBounded", fp, nf },
       code: [cite(FA, "unit", o.digest ?? label(`${FA} unit h`))],
       harness: o.harness ? [cite("ts:tools/test.ts", "own", o.harness)] : [],
+      ...(o.deps ? { deps: [] } : {}),
       assumptions: [],
-      ...(o.counterexample ? { counterexample: { input: 101 } } : {})
+      // version 7 (A.16.35, A.12.5.2): a forceful counterexample has at least seed, inputs and
+      // assertion; anything less is inconclusive
+      ...(o.counterexample
+        ? { counterexample: { seed: 7, inputs: [101], assertion: "f(x) <= 100" } }
+        : {})
     },
     [TEST]
   );
@@ -500,18 +514,46 @@ describe("laws", () => {
     ) as ReturnType<typeof makeStatement>;
     const rec = stmt.predicate.shape as ShapeRecord;
     rec.claim = { id: "m::FReviewed", fp };
-    const out = run(input(w, w, { records: [signed(rec, [P1])] }));
+    // version 7 (A.16.4(b) [D12]): a judgment supplied in records is an act of this change, so its
+    // judge p1 (an author through the bot) is ineligible and it holds no reason; the old judgment
+    // is an earlier change's, persisted in persisted.base and persisted.head
+    const env = signed(rec, [P1]);
+    const inp = input(w, w);
+    const path = persistedPath(recordId(makeStatement(rec)));
+    inp.persisted = { base: [{ path, record: env }], head: [{ path, record: env }] };
+    const out = run(inp);
     expect(obsOf(out, "unestablished")[0]?.reason).toBe("expired");
   });
+  // version 7 [D28, A.7.6.8]: a shape judge line without a relay makes no claim judgment (it is
+  // counted unrecorded), so the weak judgment is a persisted record of an earlier change
   test("weak: a judgment for a law that admits none", () => {
     const w = world({ law: {} });
-    const out = run(
+    const lawFp = run(input(w, w)).obligations.find((o) => o.claim?.ids.includes("m::FBounded"))
+      ?.claim?.fp as string;
+    const rec: ShapeRecord = {
+      v: "shape.evidence.v1",
+      kind: "judgment",
+      result: "supports",
+      provider: null,
+      revision: HEAD,
+      time: "2026-10-25T09:00:00Z",
+      claim: { id: "m::FBounded", fp: lawFp },
+      code: [cite(FA, "unit", label(`${FA} unit h`))],
+      judge: "m::p1"
+    };
+    const env = signed(rec, [P1]);
+    const inp = input(w, w, { changed: [FA] });
+    const path = persistedPath(recordId(makeStatement(rec)));
+    inp.persisted = { base: [{ path, record: env }], head: [{ path, record: env }] };
+    expect(obsOf(run(inp), "unestablished")[0]?.reason).toBe("weak");
+    const line = run(
       input(w, w, {
         changed: [FA],
         reviews: [{ identity: 'github("p2")', line: "shape judge m::FBounded" }]
       })
     );
-    expect(obsOf(out, "unestablished")[0]?.reason).toBe("weak");
+    expect(obsOf(line, "unestablished")[0]?.reason).toBe("missing");
+    expect(line.health.unrecorded).toEqual(["review m::p2: shape judge m::FBounded"]);
   });
   test("E-route: a tested law no provider decides", () => {
     const w = world({
@@ -546,15 +588,17 @@ describe("loosening questions", () => {
   test("L1: tightening (adding a forbid) raises nothing", () => {
     expect(obsOf(run(input(world(), world({ forbidJ: true }))), "loosening")).toEqual([]);
   });
-  test("L2: a widened complete summary", () => {
+  // version 7 (A.0.7, A.8.2.3 [D2]): L2 is retired; a widened complete summary is an L1 level part on
+  // the base summary, whose own complete summary counted as protection at its unit
+  test("L1: a widened complete summary (L2 retired)", () => {
+    const base = world({ summary: ["Read<R>"] });
     const out = run(
-      input(
-        world({ summary: ["Read<R>"] }),
-        world({ summary: ["Read<R>", "Append<R>"], grantsK: ["Read<R>", "Append<R>"] })
-      )
+      input(base, world({ summary: ["Read<R>", "Append<R>"], grantsK: ["Read<R>", "Append<R>"] }))
     );
-    const l = obsOf(out, "loosening").find((o) => o.questions?.includes("L2"));
-    expect(l).toBeDefined();
+    const summaryFp = elaborate(base, { now: 0 }).claims.find((c) => c.op === "effects.upper")?.fp;
+    const l = obsOf(out, "loosening").find((o) => o.subject === summaryFp);
+    expect(l?.questions).toEqual(["L1"]);
+    expect(out.loosening.some((r) => r.question === ("L2" as never))).toBe(false);
   });
   test("L3: a removed path forbid with a type-correct counterexample", () => {
     const out = run(input(world({ pathForbid: true }), world()));
@@ -605,7 +649,14 @@ describe("coverage", () => {
   });
   test("vocabulary coverage: a new fact on an unmapped table of a bound kind", () => {
     const w = world({ forbidJ: true });
-    const f: Fact = { type: "effect", at: GB, verb: "Update", resource: 'pg.table("audit_log")' };
+    // version 7 (RJ14 [D15]): n on the presence-sound observer's effect fact
+    const f: Fact = {
+      type: "effect",
+      at: GB,
+      verb: "Update",
+      resource: 'pg.table("audit_log")',
+      n: 1
+    };
     const out = run(
       input(w, w, {
         changed: [GB],
@@ -664,7 +715,8 @@ describe("governance, exceptions, records, input integrity", () => {
       }
     });
     const out = run(input(w, w, { records: [obsRecord(OBS, "m::obs", [write(GB)])], noObs: true }));
-    expect(out.debt.map((d) => [d.exception, d.expiresInDays, d.flagged])).toEqual([
+    // version 7 (A.16.28): no flagged field; the 14-day flag is display (expiresInDays <= 14)
+    expect(out.debt.map((d) => [d.exception, d.expiresInDays, d.expiresInDays <= 14])).toEqual([
       ["m::E3", 7, true]
     ]);
   });
@@ -730,7 +782,7 @@ describe("governance, exceptions, records, input integrity", () => {
   test("invalid: a manifest that omits a tracked path", () => {
     const w = world();
     const inp = input(w, w);
-    const m = clone(inp.head.manifest);
+    const m = clone(inp.head.manifest) as Statement;
     (m.predicate.shape as { tree: { path: string; mode: string; blob: string }[] }).tree.push({
       path: "src/k/hidden.ts",
       mode: "100644",
@@ -753,5 +805,211 @@ describe("governance, exceptions, records, input integrity", () => {
       input(b, h, { reviews: [{ identity: 'github("p2")', line: `shape approve ${ref}` }] })
     );
     expect(person.answered.length).toBe(1);
+  });
+});
+
+// DRT7 round 1: the prototype causes and the rulings settled in A.16.38-A.16.45
+describe("DRT7 round 1", () => {
+  const mapDecls = (doc: SourceDoc, f: (d: Decl) => Decl): SourceDoc => ({
+    ...doc,
+    modules: doc.modules.map((m) => ({ ...m, decls: m.decls.map(f) }))
+  });
+  const narrowK = (doc: SourceDoc): SourceDoc =>
+    mapDecls(doc, (d) => (d.decl === "component" && d.name === "K" ? { ...d, paths: ["src/k/*.ts"] } : d));
+  const P2 = signerFromSeed("25");
+  const judgment = (claimId: string, fp: string, result: "supports" | "contradicts", judge: string, time: string): ShapeRecord => ({
+    v: "shape.evidence.v1",
+    kind: "judgment",
+    result,
+    provider: null,
+    revision: HEAD,
+    time,
+    claim: { id: claimId, fp },
+    code: [cite(FA, "unit", label(`${FA} unit h`))],
+    judge
+  });
+  const lawFp = (w: SourceDoc, id: string): string =>
+    elaborate(w, { now: 0 }).claims.find((c) => c.ids.includes(id))?.fp as string;
+
+  test("A.16.38: an actor mapped by was is listed in renames; E-was applies to actors", () => {
+    const h = mapDecls(world(), (d) =>
+      d.decl === "actor" && d.name === "p2"
+        ? { ...d, name: "p3", was: "p2" }
+        : d.decl === "actor" && d.name === "Team"
+          ? { ...d, members: ["p1", "p3"] }
+          : d
+    );
+    const out = run(input(world(), h));
+    expect(out.renames).toEqual([{ base: "m::p2", head: "m::p3", rule: "was" }]);
+    expect(out.health.renames).toBe(1);
+    const clash = mapDecls(world(), (d) => (d.decl === "actor" && d.name === "p2" ? { ...d, was: "p1" } : d));
+    expect(run(input(world(), clash)).errors.map((e) => `${e.code} ${e.subject}`)).toContain("E-was actor m::p2");
+  });
+  test("A.8.2.3 L1: code leaving K for ungoverned gets authority+ and the authority tier fall", () => {
+    // P_L1_AUTHPLUS_COMPONENT: authority+ has no same-component condition (H4 governed_directory_moved)
+    const out = run(input(world(), narrowK(world())));
+    const l = obsOf(out, "loosening").find((o) => o.subject === "component m::K");
+    expect(l?.questions).toEqual(["L1"]);
+    expect(l?.message).toContain("L1 authority normal>none");
+    expect(l?.message).toContain("L1 authority+ ");
+  });
+  test("A.8.2.3, A.16.39 L1: K turning to open authority in place gives authority+ and normal>none, never Lvl_h", () => {
+    // P_L1_AUTH_OPEN_SAMECOMP: the two parts are independent conditions; S_L1_AUTH_TIERH: a head
+    // forbid still protecting Write<R> at low keeps the entry but never appears in the line
+    const low: Decl = {
+      decl: "rule",
+      name: "LowWrites",
+      tier: "low",
+      clauses: [{ forbid: "effect", atom: "Write<R>", within: ["component K"] }]
+    };
+    const out = run(input(world({ extra: [low] }), world({ grantsK: null, extra: [low] })));
+    const l = obsOf(out, "loosening").find((o) => o.subject === "component m::K");
+    expect(l?.message).toContain("L1 authority normal>none");
+    expect(l?.message).toContain("L1 authority+ ");
+    expect(l?.message).not.toContain("normal>low");
+  });
+  test("A.16.41 L6: narrowing K's globs drops the cell left behind from a law on component K", () => {
+    const law: Decl = { decl: "law", name: "KLaw", on: ["component K"], informal: "K stays readable." };
+    const b = world({ extra: [law] });
+    const out = run(input(b, narrowK(b)));
+    const l = obsOf(out, "loosening").find((o) => o.subject === lawFp(b, "m::KLaw"));
+    expect(l?.questions).toEqual(["L6"]);
+    expect(l?.message).toContain('L6 drop cell:["m::K.*","ungoverned"]');
+    expect(l?.message).toContain('"type":"law-member"');
+  });
+  test("A.4.4.2 L3: a calls self-loop is no type-correct candidate (counterexample is a 2-cycle)", () => {
+    const cyc: Decl = { decl: "rule", name: "NoCalls", clauses: [{ forbid: "cycle", over: ["calls"] }] };
+    const out = run(input(world({ extra: [cyc] }), world()));
+    const l = obsOf(out, "loosening").find((o) => o.questions?.includes("L3"));
+    const cx = l?.counterexample as { from: string; to: string }[];
+    expect(cx.length).toBe(2);
+    expect(cx.every((e) => e.from !== e.to)).toBe(true);
+  });
+  test("A.6.2.3: tier* of a declared summary atom reads Lvl_b, so a tied forbid is the E-conduct claim", () => {
+    // P_DECL_LVLB: the low forbid and the normal authority tie at tier* normal; forbid < authority
+    const low: Decl = {
+      decl: "rule",
+      name: "LowAppends",
+      tier: "low",
+      clauses: [{ forbid: "effect", atom: "Append<R>", within: ["component K"] }]
+    };
+    const w = world({ summary: ["Read<R>", "Append<R>"], summaryMode: "partial", extra: [low] });
+    const e = run(input(w, w)).errors.find((x) => x.code === "E-conduct");
+    expect(JSON.parse(e?.subject ?? "{}").claim).toBe(lawFp(w, "m::LowAppends"));
+  });
+  test("A.6.1.6, A.6.2.3: in audit mode tier* reads the head as governance base", () => {
+    // P_AUDIT_GOVBASE: the low forbid and the normal authority tie at normal; the forbid is chosen
+    const low: Decl = {
+      decl: "rule",
+      name: "LowAppends",
+      tier: "low",
+      clauses: [{ forbid: "effect", atom: "Append<R>", within: ["component K"] }]
+    };
+    const w = world({ extra: [low] });
+    const inp = input(w, w, { records: [obsRecord(OBS, "m::obs", [write(FA, "Append")])], noObs: true });
+    inp.mode = "audit";
+    inp.base = null;
+    const c = obsOf(run(inp), "contradiction").find((o) => (o.subject as { code?: string })?.code === FA);
+    expect(c?.claim?.fp).toBe(lawFp(w, "m::LowAppends"));
+    expect(c?.tier).toBe("normal");
+  });
+  test("A.6.3.4: one person's contradicting judgment of a final law is no contradiction", () => {
+    // P_FINAL_LAW_ONE_CONTRA_JUDGMENT: two distinct persons are needed (A.16.12)
+    const law: Decl = { decl: "law", name: "FFinal", on: ["unit K.f"], informal: "f stays final.", tier: "final" };
+    const w = mapDecls(world({ extra: [law] }), (d) =>
+      d.decl === "actor" && d.name === "p2" ? { ...d, identities: ['github("p2")', P2.identity] } : d
+    );
+    const j = signed(judgment("m::FFinal", lawFp(w, "m::FFinal"), "contradicts", "m::p2", "2026-10-25T09:00:00Z"), [P2]);
+    const out = run(input(w, w, { changed: [FA], records: [j] }));
+    expect(obsOf(out, "contradiction").filter((o) => o.claim?.ids.includes("m::FFinal"))).toEqual([]);
+    expect(obsOf(out, "unestablished").find((o) => o.claim?.ids.includes("m::FFinal"))?.reason).toBe("missing");
+  });
+  test("A.16.43: a self-fallback judgment contradicting with force is a use listed in health.self", () => {
+    // P_SELF_CONTRA_OMITTED: p1 is the only base person eligible and an author
+    const w = mapDecls(world({ informal: true }), (d) =>
+      d.decl === "actor" && d.name === "Team" ? { ...d, members: ["p1"] } : d
+    );
+    const j = signed(judgment("m::FReviewed", lawFp(w, "m::FReviewed"), "contradicts", "m::p1", "2026-10-25T09:00:00Z"), [P1]);
+    const inp = input(w, w, { changed: [FA], records: [j] });
+    inp.authors = [{ identity: 'github("p1")', verified: true, bot: false }];
+    const out = run(inp);
+    expect(obsOf(out, "contradiction").find((o) => o.claim?.ids.includes("m::FReviewed"))?.force).toBe("sound");
+    expect(out.health.self).toEqual(["judgment m::FReviewed by m::p1"]);
+  });
+  test("A.5.2.13: a stale record from a deps-complete provider is not reusable (E-provider-missing)", () => {
+    // P_PROVIDER_MISSING_STALE_REUSE
+    const w = mapDecls(world({ law: {} }), (d) =>
+      d.decl === "provider" && d.name === "tester" ? { ...d, depsComplete: true } : d
+    );
+    // a base-revision record with deps, citing f's base digest: reusable unless f moved
+    const rec = testRecord("supports", { revision: BASE, digest: label(`${FA} unit b`), deps: true });
+    const missing = (changed: string[]): string[] =>
+      run(input(w, w, { changed, records: [rec] }))
+        .errors.filter((e) => e.code === "E-provider-missing" && e.subject.startsWith("provider m::tester"))
+        .map((e) => e.subject);
+    expect(missing([FA])).toEqual(["provider m::tester claim m::FBounded"]);
+    expect(missing([])).toEqual([]);
+  });
+  test("A.6.2.1: a template law whose unit is renamed by was has an heir (positional args)", () => {
+    // P_L4_NO_HEIR_RENAMED_TEMPLATE_ARG: renaming keeps Bounded's arguments in order (sorting
+    // them as a set would put 180 before 30)
+    const b = world({ law: { lo: 30, hi: 180 }, unitBind: 'ts("src/k/a.ts#f")' });
+    const h = mapDecls(b, (d) =>
+      d.decl === "component" && d.name === "K"
+        ? { ...d, units: (d.units ?? []).map((u) => ({ ...u, name: "f2", was: "f" })) }
+        : d.decl === "law" && d.name === "FBounded" && d.template
+          ? { ...d, template: { ...d.template, args: ["K.f2", 30, 180] } }
+          : d
+    );
+    const out = run(input(b, h));
+    expect(out.renames).toEqual([{ base: "m::K.f", head: "m::K.f2", rule: "was" }]);
+    expect(out.loosening.filter((r) => r.question === "L4")).toEqual([]);
+  });
+  test("A.16.45(a,b): over an empty base, a protected unbound resource loosens in reverse (tighter)", () => {
+    // S_REVERSE_PASS_EMPTY_BASE: res:Q has no rule-3 hint in the reverse pass, so it stays unmapped
+    // under the hint reading and its failure is loosened, not undecided
+    const head: SourceDoc = {
+      v: "shape.source.v1",
+      modules: [
+        {
+          module: "m",
+          imports: ["std"],
+          decls: [
+            { decl: "shape", name: "S", owner: "Team" },
+            { decl: "actor", name: "Team", kind: "team", members: ["p1"] },
+            { decl: "actor", name: "p1", kind: "person", identities: ['github("p1")'] },
+            { decl: "resource", name: "Q" },
+            { decl: "component", name: "K", paths: ["src/k/**/*.ts"] },
+            {
+              decl: "rule",
+              name: "NoQWrites",
+              clauses: [{ forbid: "effect", atom: "Write<Q>", within: ["component K"] }]
+            }
+          ]
+        }
+      ]
+    };
+    const out = run(input({ v: "shape.source.v1", modules: [] }, head, { noObs: true }));
+    expect(obsOf(out, "loosening")).toEqual([]);
+    expect(out.order).toBe("tighter");
+  });
+  test("A.16.40: answered records list every eligible answer, whatever the input order", () => {
+    // S_ANSWER_RECORDS_ALL: p2 and p3 both answer the loosening of NoJWrites (owner Team)
+    const add = (doc: SourceDoc): SourceDoc =>
+      mapDecls(doc, (d) =>
+        d.decl === "actor" && d.name === "Team" ? { ...d, members: ["p1", "p2", "p3"] } : d
+      );
+    const b = add(world({ forbidJ: true, extra: [{ decl: "actor", name: "p3", kind: "person", identities: ['github("p3")'] }] }));
+    const h = add(world({ extra: [{ decl: "actor", name: "p3", kind: "person", identities: ['github("p3")'] }] }));
+    const ref = (run(input(b, h)).obligations[0]?.binding ?? "").slice(0, 19);
+    const reviews = [
+      { identity: 'github("p2")', line: `shape approve ${ref}` },
+      { identity: 'github("p3")', line: `shape approve ${ref}` }
+    ];
+    const a = run(input(b, h, { reviews }));
+    const z = run(input(b, h, { reviews: [...reviews].reverse() }));
+    expect(a.answered.length).toBe(1);
+    expect(a.answered[0]?.records.length).toBe(2);
+    expect(z.answered).toEqual(a.answered);
   });
 });

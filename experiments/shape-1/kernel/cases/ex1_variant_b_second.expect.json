@@ -2,7 +2,7 @@
  "exact": true,
  "obligations": [
   {
-   "binding": "bd:5f45c544d7284f454ad920198394cc095d29f4d1e59ab3ea54778a5ddace62e0",
+   "binding": "bd:55aeb9df71bf26a0b65a79a17d84b6ebb853da1c5be9ccbaa3aa61cd269027df",
    "key": "ob:155fa0bf253e0793716dee7451858de84676f017da2d47ee65a8e9d24a457c67",
    "kind": "coverage",
    "severity": "blocking",

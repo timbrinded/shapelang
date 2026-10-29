@@ -33,6 +33,15 @@ describe("TypeScript digests", () => {
     expect(fp(c)["ts:src/a.ts#f"]?.markers).toEqual({ ts_ignore: 1 });
     expect(fp(c)["ts:src/a.ts"]?.markers).toEqual({});
   });
+  // version 7 (A.12.2.8 [D20]): @ts-expect-error and @ts-nocheck are hatch markers too, with and
+  // without the compiler
+  test("ts_expect_error and ts_nocheck are counted where they occur", () => {
+    const c = `// @ts-nocheck\n${A.replace("return x", "// @ts-expect-error\n  return x")}`;
+    for (const useTs of [true, false]) {
+      expect(fp(c, useTs)["ts:src/a.ts#f"]?.markers).toEqual({ ts_expect_error: 1 });
+      expect(fp(c, useTs)["ts:src/a.ts"]?.markers).toEqual({ ts_nocheck: 1 });
+    }
+  });
   test("a nested change moves the parent's unit, not its own; env tracks data initialisers", () => {
     const d = A.replace("return 'a'", "return 'b'");
     expect(dig(fp(d), "ts:src/a.ts#f", "own")).toBe(dig(fp(A), "ts:src/a.ts#f", "own"));
@@ -84,6 +93,19 @@ describe("Rust and Verus", () => {
       fingerprintRust("x.rs", "macro_rules! m { () => {} }\nfn f() {}\n")[0]?.hatchComplete
     ).toBe(false);
     expect(fingerprintRust("x.rs", "fn f() {}\n")[0]?.hatchComplete).toBe(true);
+  });
+  // version 7 (A.12.2.8 [D20]): Rust unsafe counts on blocks, fn, impl and trait; never in Verus files
+  test("Rust unsafe markers: blocks, fn, impl and trait", () => {
+    const r = Object.fromEntries(
+      fingerprintRust(
+        "x.rs",
+        "unsafe trait T {}\nunsafe impl T for u8 {}\npub unsafe fn f() {}\nfn g() { unsafe { f() } }\n"
+      ).map((i) => [i.id, i])
+    );
+    expect(r["rust:x.rs"]?.markers).toEqual({ unsafe: 2 });
+    expect(r["rust:x.rs#f"]?.markers).toEqual({ unsafe: 1 });
+    expect(r["rust:x.rs#g"]?.markers).toEqual({ unsafe: 1 });
+    expect(ids(`${V}fn u() { unsafe { } }\n`)["verus:ironkv/src/d.rs#u"]?.markers).toEqual({});
   });
 });
 

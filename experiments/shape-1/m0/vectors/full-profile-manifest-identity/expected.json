@@ -1,0 +1,147 @@
+{
+ "vector": "full-profile-manifest-identity",
+ "title": "Under a base manifest identity both manifests must be DSSE-signed by it (else E-provider-missing, never invalid); commits must hash to their revisions and name the manifest's tree (else invalid); an identity added in the head acts after merge",
+ "decides": [
+  "A.16.1",
+  "A.5.2.17",
+  "A.6.1.2",
+  "A.12.7.5",
+  "A.8.2.3",
+  "A.16.24",
+  "D27"
+ ],
+ "cases": [
+  {
+   "case": "both-signed",
+   "input": "both-signed.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.5.2.17: both manifests are DSSE-signed by the identity the base shape names; commits verify (A.16.1(d))"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "no error"
+    }
+   ]
+  },
+  {
+   "case": "head-unsigned",
+   "input": "head-unsigned.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.10.1: E-provider-missing is an input-integrity error, which blocks; it is not invalid (A.5.2.17)"
+    },
+    {
+     "in": "errors",
+     "select": {
+      "code": "E-provider-missing",
+      "subject": "manifest"
+     },
+     "check": "count",
+     "value": 1,
+     "why": "A.5.2.17 [D27]: the head manifest is a bare statement; A.15.1, A.16.25: subject manifest"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "the base manifest is signed by the identity; nothing else is wrong"
+    }
+   ]
+  },
+  {
+   "case": "head-signed-by-other-key",
+   "input": "head-signed-by-other-key.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.10.1, A.5.2.17"
+    },
+    {
+     "in": "errors",
+     "select": {
+      "code": "E-provider-missing",
+      "subject": "manifest"
+     },
+     "check": "count",
+     "value": 1,
+     "why": "A.5.2.17: a manifest signed by a key other than the base manifest identity is E-provider-missing"
+    }
+   ]
+  },
+  {
+   "case": "commit-tree-mismatch",
+   "input": "commit-tree-mismatch.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "invalid",
+     "why": "A.6.1.2, A.12.7.5, A.16.1(d): the head commit hashes to head.revision but its tree line names a tree other than the one rebuilt from the head manifest"
+    }
+   ]
+  },
+  {
+   "case": "revision-mismatch",
+   "input": "revision-mismatch.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "invalid",
+     "why": "A.6.1.2, A.16.1(d): head.revision is not the SHA-1 of the head commit object"
+    }
+   ]
+  },
+  {
+   "case": "identity-added-in-head",
+   "input": "identity-added-in-head.input.json",
+   "assert": [
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.5.2.17, A.6.2.6: the manifest identity is read from the base, which names none, so unsigned manifests are only unauthenticated (health)"
+    },
+    {
+     "in": "loosening",
+     "select": {
+      "question": "L7",
+      "subject": "shape"
+     },
+     "check": "fields",
+     "value": {
+      "answer": "undecided",
+      "exploited": false
+     },
+     "why": "A.8.2.3 L7: undecided iff the manifest identity changed; A.5.2.17: a head edit of the field is an L7 question acting after merge; A.8.3.2: L7 is never exploited"
+    },
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: the shape subject is critical (A.8.2.2) and Gate critical blocks latent loosening"
+    }
+   ]
+  }
+ ]
+}

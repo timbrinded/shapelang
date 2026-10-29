@@ -1,0 +1,8 @@
+bun test v1.4.2 (744846f84)
+
+ 850 pass
+ 1 todo
+ 0 fail
+ 7 snapshots, 4010 expect() calls
+Ran 851 tests across 75 files. [104.34s]
+bun test exit 0

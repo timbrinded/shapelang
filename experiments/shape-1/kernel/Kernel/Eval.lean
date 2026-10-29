@@ -1,17 +1,24 @@
 import Kernel.Util
 import Kernel.Closure
-/-! Worlds and evaluation of the authority/conduct fragment (model §3.3–§4.4, A.4.4).
+/-! Worlds and evaluation of the authority/conduct fragment (model §3.3–§4.4, A.4.4.7).
 
-* `att` is attribution; `permitted` is P(u) = A(u) ∖ Prot(u); `lvl` is Lvl(u).
-* `HoldsA` is the semantics of authority and effect forbids over raw worlds, defined from
-  the ⇒-closure Xd(u), independently of `permitted`; `perm_exact` proves them equal.
-* L1 (`l1Gain`, `l1Drop`) is proved sound and complete for this fragment. -/
+Version 7: summaries are direct and enter P and Lvl [D2].
+* `permitted` is P(u) = (A(u) ∩ S(u)) ∖ Prot(u); `lvlT`/`lvl` is Lvl(u) (forbids, the unit's
+  complete summary, and authority(comp(u)) [D11]).
+* `HoldsA` is the semantics of authority, effect forbids and complete summaries over raw worlds,
+  defined from the ⇒-closure Xd(u), independently of `permitted`; `perm_exact` proves them equal
+  (`raw_fact_exact`, A.4.4.7).
+* L1 (`l1Gain`, `l1Drop`) is proved sound and complete for this fragment.
+Attribution is a parameter (`attF`), so the theorems hold for the executable attribution of
+`Kernel.World`. -/
 namespace Shape
 
 /-! ### The effect order ⇒ -/
 
-/-- `implies` pairs, plus `h ⇒ Hatch` for each declared hatch kind (A.3.4.3). -/
-def implPairs (S : Esf) : List (String × String) := S.effects ++ S.hatches.map (fun h => (h.1, "Hatch"))
+/-- `implies` pairs, `h ⇒ Hatch` for each declared hatch kind (A.3.4.3), and the reserved
+    `Undeclared ⇒ Hatch`. -/
+def implPairs (S : Esf) : List (String × String) :=
+  S.effects ++ S.hatches.map (fun h => (h.1, "Hatch")) ++ [("Undeclared", "Hatch")]
 
 def impl (S : Esf) (v w : String) : Bool := rtc (implPairs S) v w
 
@@ -29,83 +36,33 @@ theorem atomLe_trans (S : Esf) (a b c : Atom) (h1 : atomLe S a b = true) (h2 : a
 theorem atomLe_res (S : Esf) (a b : Atom) (h : atomLe S a b = true) : a.res = b.res := by
   simp only [atomLe, Bool.and_eq_true, beq_iff_eq] at h; exact h.1
 
-/-! ### Attribution -/
+/-! ### Positions -/
 
 inductive URef | unit (q : String) | pseudo (k : String) | ungov
-deriving DecidableEq, Repr, Inhabited
+deriving DecidableEq, Repr, Inhabited, Hashable
 
 def URef.name : URef → String
   | .unit q => q | .pseudo k => k ++ ".*" | .ungov => "ungoverned"
 
 def parseURef (s : String) : URef :=
   if s == "ungoverned" then .ungov
-  else if strSuffix ".*" s then .pseudo (String.ofList (s.toList.take (s.length - 2)))
+  else if strSuffix ".*" s then .pseudo (dropRight 2 s)
   else .unit s
 
-def mIds (m : List MEntry) : List String := sortStrs (m.map (·.id))
-
-def mDigest (m : List MEntry) (x proj : String) : Option String :=
-  (m.find? (fun me => me.id == x && me.proj == proj)).map (·.digest)
-
-def parentOf (m : List MEntry) (x : String) : Option String :=
-  (m.find? (fun me => me.id == x && me.parent.isSome)).bind (·.parent)
-
-/-- x and its ancestors by `parent`, nearest first. -/
-def ancestors (m : List MEntry) (x : String) : List String :=
-  let rec go (fuel : Nat) (y : String) : List String :=
-    match fuel with
-    | 0 => [y]
-    | fuel + 1 => match parentOf m y with
-      | some p => y :: go fuel p
-      | none => [y]
-  go (m.length + 1) x
-
-def unitBind (S : Esf) (m : List MEntry) (u : UnitD) : Option String :=
-  match u.bind with
-  | some b => some b
-  | none =>
-    let paths := (S.comps.find? (·.q == u.comp)).map (·.paths) |>.getD []
-    match (mIds m).filter (fun x => idSym x != "" && symLast (idSym x) == u.name &&
-        paths.any (fun g => globMatch g (idPath x))) with
-    | [x] => some x
-    | _ => none
-
-def unitOf (S : Esf) (m : List MEntry) (x : String) : Option String :=
-  (S.units.find? (fun u => unitBind S m u == some x)).map (·.q)
-
-def compByGlob (S : Esf) (path : String) : Option String :=
-  let cands := S.comps.flatMap fun c => (c.paths.filter (globMatch · path)).map (fun g => (specificity g, c.q))
-  match cands with
-  | [] => none
-  | c :: cs => some (cs.foldl (fun best x =>
-      if x.1 > best.1 || (x.1 == best.1 && strLt x.2 best.2) then x else best) c).2
-
-/-- att_S(x) (A.3.3.5). -/
-def att (S : Esf) (m : List MEntry) (x : String) : URef :=
-  match (ancestors m x).findSome? (unitOf S m) with
-  | some q => .unit q
-  | none => match compByGlob S (idPath x) with
-    | some k => .pseudo k
-    | none => .ungov
-
 /-- Positions of L1: identities and cells (A.8.1.4). -/
-inductive Pos | ident (x : String) | cell (vb vh : String)
+inductive Pos | ident (x : String) | cell (id : String)
 deriving DecidableEq, Repr, Inhabited
 
 def Pos.name : Pos → String
   | .ident x => x
-  | .cell vb vh => "cell:[" ++ "\"" ++ vb ++ "\",\"" ++ vh ++ "\"]"
-
-def attPos (S : Esf) (m : List MEntry) (isBase : Bool) : Pos → URef
-  | .ident x => att S m x
-  | .cell vb vh => parseURef (if isBase then vb else vh)
+  | .cell id => id
 
 def compOf (S : Esf) : URef → Option String
   | .unit q => (S.units.find? (·.q == q)).map (·.comp)
   | .pseudo k => some k
   | .ungov => none
 
-/-! ### Selectors, A(u), Prot(u), P(u), Lvl(u) -/
+/-! ### Selectors, A(u), S(u), Prot(u), P(u), Lvl(u) -/
 
 def selCovers (S : Esf) (s : USel) (u : URef) : Bool :=
   match s, u with
@@ -129,11 +86,29 @@ def authClaims (S : Esf) (k : String) : List Claim :=
     | .authority k' _ => k' == k
     | _ => false
 
+/-- The complete summaries (effects.upper) of a unit. -/
+def summaryAtoms (S : Esf) (q : String) : List (List Atom) :=
+  S.claims.filterMap fun c => match c.op with
+    | .effectsUpper u C => if u == q then some C else none
+    | _ => none
+
+def summaryClaims (S : Esf) (q : String) : List Claim :=
+  S.claims.filter fun c => match c.op with
+    | .effectsUpper u _ => u == q
+    | _ => false
+
 /-- b ∈ A(u): trust atoms always; all atoms under open authority and for `ungoverned`. -/
 def inA (S : Esf) (u : URef) (b : Atom) : Bool :=
   b.isTrust || match compOf S u with
     | none => true
     | some k => (authGrants S k).all (fun g => g.any (fun a => atomLe S a b))
+
+/-- b ∈ S(u) = cl(C) ∪ TrustAtoms for a unit with a complete summary, else all atoms
+    (A.4.4.7, A.16.34). -/
+def inS (S : Esf) (u : URef) (b : Atom) : Bool :=
+  b.isTrust || match u with
+    | .unit q => (summaryAtoms S q).all (fun C => C.any (fun a => atomLe S a b))
+    | _ => true
 
 def forbidCovers (S : Esf) (u : URef) (b : Atom) (c : Claim) : Bool :=
   match c.op with
@@ -143,25 +118,41 @@ def forbidCovers (S : Esf) (u : URef) (b : Atom) (c : Claim) : Bool :=
 def inProt (S : Esf) (u : URef) (b : Atom) : Bool := S.claims.any (forbidCovers S u b)
 
 /-- P(u) (A.4.4.7). -/
-def permitted (S : Esf) (u : URef) (b : Atom) : Bool := inA S u b && !inProt S u b
+def permitted (S : Esf) (u : URef) (b : Atom) : Bool := inA S u b && inS S u b && !inProt S u b
 
-/-- Lvl(u)(b): the highest tier rank of forbids protecting b at u, 0 for ⊥. -/
-def lvl (S : Esf) (u : URef) (b : Atom) : Nat :=
-  (S.claims.filter (forbidCovers S u b)).foldl (fun m c => max m c.tier.rank) 0
+/-- The claims excluding b at u (A.4.4.7): forbids putting b in Prot(u), the summary if
+    b ∉ S(u), authority if b ∉ A(u). -/
+def excluding (S : Esf) (u : URef) (b : Atom) : List Claim :=
+  S.claims.filter (forbidCovers S u b) ++
+  (match u with
+   | .unit q => if inS S u b then [] else summaryClaims S q
+   | _ => []) ++
+  (if inA S u b then [] else match compOf S u with
+    | some k => authClaims S k
+    | none => [])
 
-/-! ### Semantics of the authority fragment over raw worlds -/
+/-- Lvl(u)(b) under a tier assignment: the highest tier rank among the excluding claims, 0 for ⊥. -/
+def lvlT (S : Esf) (tr : Claim → Nat) (u : URef) (b : Atom) : Nat :=
+  (excluding S u b).foldl (fun m c => max m (tr c)) 0
+
+def lvl (S : Esf) (u : URef) (b : Atom) : Nat := lvlT S (fun c => c.tier.rank) u b
+
+/-! ### Semantics of the fragment over raw worlds -/
 
 /-- Xd(u) ∋ b: some raw fact attributed to u has an atom a ⇒ b. -/
 def Xd (S : Esf) (attF : Pos → URef) (W : List (Pos × Atom)) (u : URef) (b : Atom) : Prop :=
   ∃ x a, (x, a) ∈ W ∧ attF x = u ∧ atomLe S a b = true
 
 /-- A.4.2.1: effect.forbid(f, Σ, X): Xd(u) ∩ ↓f = ∅ for covered u; authority(K, G): every
-    non-trust atom of Xd(u), u ∈ U(K), is in cl(G). -/
+    non-trust atom of Xd(u), u ∈ U(K), is in cl(G); effects.upper(u, C): every non-trust atom of
+    Xd(u) is in cl(C) (A.16.34). -/
 def claimHoldsA (S : Esf) (attF : Pos → URef) (W : List (Pos × Atom)) (c : Claim) : Prop :=
   match c.op with
   | .effectForbid f sc ex => ∀ u b, covers S sc ex u = true → Xd S attF W u b → atomLe S b f = false
   | .authority k g => ∀ u b, compOf S u = some k → Xd S attF W u b → b.isTrust = false →
       ∃ a ∈ g, atomLe S a b = true
+  | .effectsUpper q C => ∀ b, Xd S attF W (.unit q) b → b.isTrust = false →
+      ∃ a ∈ C, atomLe S a b = true
   | _ => True
 
 def HoldsA (S : Esf) (attF : Pos → URef) (W : List (Pos × Atom)) : Prop :=
@@ -170,14 +161,46 @@ def HoldsA (S : Esf) (attF : Pos → URef) (W : List (Pos × Atom)) : Prop :=
 theorem trust_of_le (S : Esf) (a b : Atom) (h : atomLe S a b = true) : a.isTrust = b.isTrust := by
   simp [Atom.isTrust, atomLe_res S a b h]
 
-/-- **raw_fact_exact** on the executable model: the authority fragment holds on a world iff
-    every raw fact is permitted at its attribution. -/
+theorem mem_authGrants (S : Esf) (k : String) (g : List Atom) (hg : g ∈ authGrants S k) :
+    ∃ c ∈ S.claims, c.op = .authority k g := by
+  simp only [authGrants, List.mem_filterMap] at hg
+  obtain ⟨c, hc, hcg⟩ := hg
+  split at hcg
+  · rename_i k' g' hop
+    split at hcg
+    · rename_i hkk
+      simp only [Option.some.injEq] at hcg
+      subst hcg
+      simp only [beq_iff_eq] at hkk
+      subst hkk
+      exact ⟨c, hc, hop⟩
+    · simp at hcg
+  · simp at hcg
+
+theorem mem_summaryAtoms (S : Esf) (q : String) (C : List Atom) (hC : C ∈ summaryAtoms S q) :
+    ∃ c ∈ S.claims, c.op = .effectsUpper q C := by
+  simp only [summaryAtoms, List.mem_filterMap] at hC
+  obtain ⟨c, hc, hcC⟩ := hC
+  split at hcC
+  · rename_i u C' hop
+    split at hcC
+    · rename_i huq
+      simp only [Option.some.injEq] at hcC
+      subst hcC
+      simp only [beq_iff_eq] at huq
+      subst huq
+      exact ⟨c, hc, hop⟩
+    · simp at hcC
+  · simp at hcC
+
+/-- **raw_fact_exact** on the executable model: the fragment holds on a world iff every raw
+    fact is permitted at its attribution. -/
 theorem perm_exact (S : Esf) (attF : Pos → URef) (W : List (Pos × Atom)) :
     HoldsA S attF W ↔ ∀ x a, (x, a) ∈ W → permitted S (attF x) a = true := by
   constructor
   · intro h x a hxa
     simp only [permitted, Bool.and_eq_true, Bool.not_eq_true']
-    constructor
+    refine ⟨⟨?_, ?_⟩, ?_⟩
     · simp only [inA, Bool.or_eq_true]
       by_cases ht : a.isTrust = true
       · exact Or.inl ht
@@ -187,21 +210,24 @@ theorem perm_exact (S : Esf) (attF : Pos → URef) (W : List (Pos × Atom)) :
         | some k =>
           simp only [List.all_eq_true, List.any_eq_true]
           intro g hg
-          simp only [authGrants, List.mem_filterMap] at hg
-          obtain ⟨c, hc, hcg⟩ := hg
-          split at hcg
-          · rename_i k' g' hop
-            split at hcg
-            · rename_i hkk
-              simp only [Option.some.injEq] at hcg
-              subst hcg
-              have := h c hc
-              simp only [claimHoldsA, hop] at this
-              simp only [beq_iff_eq] at hkk
-              subst hkk
-              exact this (attF x) a hk ⟨x, a, hxa, rfl, atomLe_refl S a⟩ (by simpa using ht)
-            · simp at hcg
-          · simp at hcg
+          obtain ⟨c, hc, hop⟩ := mem_authGrants S k g hg
+          have := h c hc
+          simp only [claimHoldsA, hop] at this
+          exact this (attF x) a hk ⟨x, a, hxa, rfl, atomLe_refl S a⟩ (by simpa using ht)
+    · simp only [inS, Bool.or_eq_true]
+      by_cases ht : a.isTrust = true
+      · exact Or.inl ht
+      · right
+        cases hu : attF x with
+        | unit q =>
+          simp only [List.all_eq_true, List.any_eq_true]
+          intro C hC
+          obtain ⟨c, hc, hop⟩ := mem_summaryAtoms S q C hC
+          have := h c hc
+          simp only [claimHoldsA, hop] at this
+          exact this a ⟨x, a, hxa, hu, atomLe_refl S a⟩ (by simpa using ht)
+        | pseudo k => rfl
+        | ungov => rfl
     · simp only [inProt, List.any_eq_false]
       intro c hc hcov
       simp only [forbidCovers] at hcov
@@ -230,7 +256,7 @@ theorem perm_exact (S : Esf) (attF : Pos → URef) (W : List (Pos × Atom)) :
       intro u b hk ⟨x, a, hxa, hatt, hab⟩ hbt
       have hp := h x a hxa
       simp only [permitted, Bool.and_eq_true, inA, Bool.or_eq_true] at hp
-      rcases hp.1 with ht | hp1
+      rcases hp.1.1 with ht | hp1
       · rw [trust_of_le S a b hab] at ht
         rw [ht] at hbt
         exact absurd hbt (by decide)
@@ -241,9 +267,24 @@ theorem perm_exact (S : Esf) (attF : Pos → URef) (W : List (Pos × Atom)) :
           exact ⟨c, hc, by simp [hop]⟩
         obtain ⟨a', ha', hle⟩ := hp1 g hg
         exact ⟨a', ha', atomLe_trans S a' a b hle hab⟩
+    · rename_i q C hop
+      intro b ⟨x, a, hxa, hatt, hab⟩ hbt
+      have hp := h x a hxa
+      simp only [permitted, Bool.and_eq_true, inS, Bool.or_eq_true] at hp
+      rcases hp.1.2 with ht | hp1
+      · rw [trust_of_le S a b hab] at ht
+        rw [ht] at hbt
+        exact absurd hbt (by decide)
+      · rw [hatt] at hp1
+        simp only [List.all_eq_true, List.any_eq_true] at hp1
+        have hC : C ∈ summaryAtoms S q := by
+          simp only [summaryAtoms, List.mem_filterMap]
+          exact ⟨c, hc, by simp [hop]⟩
+        obtain ⟨a', ha', hle⟩ := hp1 C hC
+        exact ⟨a', ha', atomLe_trans S a' a b hle hab⟩
     · trivial
 
-/-! ### L1 for the authority fragment (A.8.2.3) -/
+/-! ### L1 for the fragment (A.8.2.3) -/
 
 def l1Gain (Sb Sh : Esf) (attB attH : Pos → URef) (x : Pos) (a : Atom) : Bool :=
   permitted Sh (attH x) a && !permitted Sb (attB x) a
@@ -266,7 +307,7 @@ theorem l1_false {Sb Sh : Esf} {attB attH : Pos → URef} {positions : List Pos}
   exact h2
 
 /-- **L1 soundness**: if L1 implies, every world over the positions and atoms that the head
-    admits is admitted by the base (⟦S_h⟧ ⊆ ⟦S_b⟧ on the authority fragment). -/
+    admits is admitted by the base (⟦S_h⟧ ⊆ ⟦S_b⟧ on the fragment, summaries included). -/
 theorem l1_sound (Sb Sh : Esf) (attB attH : Pos → URef) (positions : List Pos) (atoms : List Atom)
     (h : l1Loosened Sb Sh attB attH positions atoms = false) (W : List (Pos × Atom))
     (hW : ∀ p ∈ W, p.1 ∈ positions ∧ p.2 ∈ atoms) (hh : HoldsA Sh attH W) : HoldsA Sb attB W := by

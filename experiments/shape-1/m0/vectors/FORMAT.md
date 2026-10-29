@@ -1,8 +1,11 @@
 # M0 vector format
 
-An M0 vector fixes the expected checker output for one rule of the version 7 text (A.11.2.4 lists
-the 52). It is a directory `experiments/shape-1/m0/vectors/<id>/` holding `expected.json` and,
-optionally, the input files its cases name. [`check.ts`](check.ts) runs the vectors against an
+An M0 vector fixes the expected checker output for one rule of the version 7 text. The set holds
+56: the 52 that A.11.2.4 lists, and the four full-profile vectors that A.16.1(g) adds
+(`full-profile-blob-ids`, `full-profile-pack-pins`, `full-profile-parse-failure` and
+`full-profile-manifest-identity`). A vector is a directory `experiments/shape-1/m0/vectors/<id>/`
+holding `expected.json` and, optionally, the input files its cases name; the runner skips a
+directory without `expected.json`. [`check.ts`](check.ts) runs the vectors against an
 implementation.
 
 ## `expected.json`
@@ -37,7 +40,7 @@ implementation.
 | `decides` | a clause or a non-empty list of clauses (annex `A.n`, core `§n`, RFC `Dn`) that the vector decides |
 | `cases` | a non-empty list of cases |
 | `case` | the case name, unique within the vector |
-| `input` | a `shape.check.input/v1` object, or a string naming a JSON file holding one. A relative path resolves against the vector's directory. |
+| `input` | a `shape.check.input/v1` object, or a string naming a JSON file holding one. A relative path resolves against the vector's directory; the frozen vectors name their files relative to it. The input is in one of two profiles: the full profile of RECORDS §4 and A.16.1 (`files`, `commit`, `packs`, `trustRoots`; the four `full-profile-*` vectors), or the source profile of A.16.2 (`head.source` and `base.source` as `shape.source.v1` documents; the other 52). |
 | `assert` | a non-empty list of assertions |
 
 ## Assertions

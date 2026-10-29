@@ -186,12 +186,14 @@ export function typeOnly(x: typeof globalThis.Date): string {
         signer: null
       }
     });
+    // version 7 (A.12.5.2, RJ14 [D15]): every effect fact of a presence-sound observer carries n
     expect(scan.effects).toEqual([
       {
         type: "effect",
         at: "ts:src/real.ts#real",
         verb: "Read",
-        resource: 'ts.call("performance.now")'
+        resource: 'ts.call("performance.now")',
+        n: 1
       }
     ]);
     expect([...scan.identities.values()].filter((s) => s.effectsIncomplete.length > 0)).toEqual([]);
@@ -778,9 +780,11 @@ export function json(): string { return JSON.stringify(globalThis.JSON.parse("1"
         )
         .sort()
     ).toEqual([
-      "contradiction demo::A/authority ts:src/a/stamp.ts#stampA sound blocking",
-      "contradiction demo::B/authority ts:src/b/stamp.ts#stampB sound blocking",
-      "contradiction demo::C/authority ts:src/c/stamp.ts#stampC sound blocking"
+      // version 7 (A.6.1.6, A.7.5.1 rule 6 [D16]): audit mode introduces nothing, so each sound
+      // contradiction is preexisting and owed
+      "contradiction demo::A/authority ts:src/a/stamp.ts#stampA sound owed",
+      "contradiction demo::B/authority ts:src/b/stamp.ts#stampB sound owed",
+      "contradiction demo::C/authority ts:src/c/stamp.ts#stampC sound owed"
     ]);
   }, 60_000);
 
@@ -850,10 +854,12 @@ export function json(): string { return JSON.stringify(globalThis.JSON.parse("1"
         )
         .sort()
     ).toEqual([
-      "demo::A/authority ts:src/a/stamp.ts#stampA sound blocking",
-      "demo::B/authority ts:src/b/stamp.ts#stampB sound blocking"
+      // version 7 (A.6.1.6, A.7.5.1 rule 6 [D16]): audit mode, so preexisting and owed
+      "demo::A/authority ts:src/a/stamp.ts#stampA sound owed",
+      "demo::B/authority ts:src/b/stamp.ts#stampB sound owed"
     ]);
-    expect(out.verdict).toBe("blocked");
+    // version 7: owed obligations only, so the audit verdict is owed (A.7.5.1 rule 6, A.10.2)
+    expect(out.verdict).toBe("owed");
   }, 60_000);
 
   test("derive (change): globalThis[k].now() in new code is uncovered, never silently complete", async () => {

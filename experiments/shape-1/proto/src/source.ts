@@ -1,5 +1,7 @@
-// shape.source.v1: the prototype's JSON transcription of the Shape 1.0 surface syntax (syntax §2).
-// One declaration form per concept; field names follow the grammar's keywords.
+// shape.source.v1 (version 7, A.16.2(g)): the JSON transcription of the Shape 1.0 surface syntax
+// (syntax §2), the source profile's shape. One declaration form per concept; field names follow the
+// grammar's keywords. Version 7 adds shape.manifest, actor.was, component.exceptPaths and
+// implementation.ids.
 import type { Level, Tier } from "./util.ts";
 
 export type NoteKind = "rationale" | "memory" | "decision";
@@ -80,11 +82,11 @@ export type TBody =
   | Clause
   | { grants: string }
   | { law: { on?: string[]; informal?: string; evidence?: EvidenceSpec } }
-  | { requiresNote: NoteKind }
+  | { requiresNote: NoteKind | NoteKind[] }
   | { order: [string, OrderDir] };
 
 export type Decl =
-  | { decl: "shape"; name: string; owner: string; policy?: string }
+  | { decl: "shape"; name: string; owner: string; policy?: string; manifest?: string }
   | {
       decl: "actor";
       name: string;
@@ -92,6 +94,7 @@ export type Decl =
       operator?: string;
       identities?: string[];
       members?: string[];
+      was?: string;
     }
   | { decl: "effect"; name: string; implies?: string[] }
   | { decl: "kind"; name: string; from: "component" | "resource"; to: "component" | "resource" }
@@ -114,6 +117,8 @@ export type Decl =
       tier?: Tier;
       was?: string;
       paths?: string[];
+      /** globs removed from every path glob of the component (A.3.3.1 [D25]) */
+      exceptPaths?: string[];
       /** absent: open authority; "none": empty grants */
       grants?: string[] | "none";
       relationsComplete?: string[];
@@ -169,7 +174,7 @@ export type Decl =
       depsComplete?: boolean;
       identity?: string;
       trusts?: [string, string][];
-      implementation?: { paths?: string[]; digest?: string };
+      implementation?: { paths?: string[]; ids?: string[]; digest?: string };
     }
   | {
       decl: "policy";
@@ -184,6 +189,8 @@ export interface SourceModule {
   decls: Decl[];
   /** provenance for diagnostics (not hashed) */
   file?: string;
+  /** a pinned pack's module: exports vocabulary, templates and policies, never claims */
+  pack?: boolean;
 }
 
 export interface SourceDoc {

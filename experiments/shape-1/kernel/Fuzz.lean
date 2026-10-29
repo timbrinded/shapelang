@@ -1,7 +1,7 @@
 import Kernel
-/-! `l3fuzz`: compares the L3 decision (`l3Decide`, with its search) against brute force over
-every subset of the candidate edges, on random small component graphs. Usage:
-`l3fuzz <instances> <seed>`. -/
+/-! `l3fuzz`: compares the L3 decision (`l3Decide`: G_A, then the normative search) against brute
+force over every subset of the candidate edges, on random small component graphs. A found
+completing set is also validated (`validCex`, T5). Usage: `l3fuzz <instances> <seed>`. -/
 open Shape
 
 def lcg (s : Nat) : Nat := (s * 6364136223846793005 + 1442695040888963407) % 18446744073709551616
@@ -26,7 +26,7 @@ def main (args : List String) : IO UInt32 := do
   let mut s := seed0
   let mut agree := 0
   let mut disagree := 0
-  let mut budget := 0
+  let mut invalidCex := 0
   let mut counts : List (String × Nat) := []
   for _ in [0:n] do
     s := lcg s
@@ -44,21 +44,26 @@ def main (args : List String) : IO UInt32 := do
     let cb := pick s pool
     -- declared head edges: a random subset of candidates that the head admits
     s := lcg s
-    let W0 := cands.filter (fun _ => true) |>.zipIdx.filterMap (fun (e, i) => if (s >>> (i + 20)) % 3 == 0 then some e else none)
+    let W0 := cands.zipIdx.filterMap (fun (e, i) => if (s >>> (i + 20)) % 3 == 0 then some e else none)
     let W := if heads.all (fun h => evalStruct h W0) then W0 else []
     if !heads.all (fun h => evalStruct h W) then continue
+    -- observed head edges (the first pass): another random subset
+    s := lcg s
+    let E := cands.zipIdx.filterMap (fun (e, i) => if (s >>> (i + 24)) % 4 == 0 then some e else none)
     let rest := cands.filter (fun e => !W.contains e)
     let truth := (subsets rest).any fun P => heads.all (fun h => evalStruct h (W ++ P)) && !evalStruct cb (W ++ P)
-    let v := l3Decide heads cb W (gaEdges heads W cands)
-    let (name, says) := match v with
-      | .heir => ("heir", false) | .ga => ("ga", false) | .exhausted => ("exhausted", false)
-      | .edgeCex _ => ("edgeCex", true) | .searchCex _ => ("searchCex", true) | .budget => ("budget", truth)
+    let ga := gaEdges heads W rest
+    let (v, _) := l3Decide heads cb W E ga ns
+    let (name, says) : String × Bool := match v with
+      | .implied => ("implied", false)
+      | .found P => (if validCex heads cb W P then "found" else "found-invalid", true)
+      | .budget _ => ("budget", truth)
+    if name == "found-invalid" then invalidCex := invalidCex + 1
     counts := match counts.find? (·.1 == name) with
       | some _ => counts.map (fun p => if p.1 == name then (p.1, p.2 + 1) else p)
       | none => counts ++ [(name, 1)]
-    if name == "budget" then budget := budget + 1
-    if says == truth then agree := agree + 1 else
+    if says == truth && name != "found-invalid" then agree := agree + 1 else
       disagree := disagree + 1
       IO.println s!"DISAGREE verdict={name} truth={truth} heads={repr heads} base={repr cb} W={W}"
-  IO.println s!"instances={agree + disagree} agree={agree} disagree={disagree} budget={budget} verdicts={counts}"
+  IO.println s!"instances={agree + disagree} agree={agree} disagree={disagree} invalidCex={invalidCex} verdicts={counts}"
   return (if disagree == 0 then 0 else 1)

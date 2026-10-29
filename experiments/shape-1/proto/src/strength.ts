@@ -4,6 +4,7 @@ import type { Args, Claim, JsonValue, Op, TemplateItem } from "./model.ts";
 import { cmpStr } from "./util.ts";
 import { type World, impl, nodeSet } from "./world.ts";
 import { parseAtom } from "./model.ts";
+// version 7: hosted heirs need equal closure digests [D13]; heirs are computed for both passes
 
 /** Renames qualified names in an NF's args by ρ (base Q → head Q). */
 export function renameArgs(args: JsonValue, rho: Map<string, string>): JsonValue {
@@ -22,15 +23,24 @@ export function renameArgs(args: JsonValue, rho: Map<string, string>): JsonValue
     }
     return out;
   };
-  const walk = (v: JsonValue): JsonValue => {
+  // a schema statement's args are the template's parameters in order: renaming keeps their
+  // positions (A.5.6, A.6.2.1: NFs equal after renaming); every other array is a set
+  const walk = (v: JsonValue, positional = false): JsonValue => {
     if (typeof v === "string") return fix(v);
-    if (Array.isArray(v))
-      return v.map(walk).sort((a, b) => cmpStr(JSON.stringify(a), JSON.stringify(b)));
+    if (Array.isArray(v)) {
+      const xs = v.map((x) => walk(x));
+      return positional ? xs : xs.sort((a, b) => cmpStr(JSON.stringify(a), JSON.stringify(b)));
+    }
     if (v && typeof v === "object")
-      return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)]));
+      return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x, isSchemaArgs(v, k))]));
     return v;
   };
   return walk(args);
+}
+
+/** The args of a schema statement {schema, schemaFp, args}: a positional list. */
+function isSchemaArgs(o: { [k: string]: JsonValue }, k: string): boolean {
+  return k === "args" && typeof o.schema === "string" && Array.isArray(o.args);
 }
 
 export function renamedFp(c: Claim, rho: Map<string, string>): string {
@@ -39,13 +49,13 @@ export function renamedFp(c: Claim, rho: Map<string, string>): string {
   return claimNf(c.op, normaliseArrays(args) as Args).fp;
 }
 
-function normaliseArrays(v: JsonValue): JsonValue {
+function normaliseArrays(v: JsonValue, positional = false): JsonValue {
   if (Array.isArray(v)) {
-    const xs = v.map(normaliseArrays);
-    return xs.every((x) => typeof x === "string") ? [...new Set(xs as string[])].sort(cmpStr) : xs;
+    const xs = v.map((x) => normaliseArrays(x));
+    return !positional && xs.every((x) => typeof x === "string") ? [...new Set(xs as string[])].sort(cmpStr) : xs;
   }
   if (v && typeof v === "object")
-    return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, normaliseArrays(x)]));
+    return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, normaliseArrays(x, isSchemaArgs(v, k))]));
   return v;
 }
 
@@ -128,4 +138,46 @@ export function opOrderGeq(
     default:
       return false;
   }
+}
+
+export interface HeirEnv {
+  /** base ESF claims and head ESF claims */
+  baseClaims: Claim[];
+  headClaims: Claim[];
+  rho: Map<string, string>;
+  /** the head world (node sets of selectors) */
+  w: World;
+  templates: Map<string, TemplateItem>;
+  /** contributing claim-space equivalence records: fp → fps it implies */
+  claimImplies: Map<string, Set<string>>;
+  /** hosted laws: are the statement ref's closure digests ≡ between M_b and M_h? (A.5.6.4) */
+  closureEqual: (ref: string) => boolean;
+}
+
+/** H(c_b) = {c_h ⊒ ρc_b}; effect forbids and authority: equal NF only (A.6.2.1, A.5.6.3-4). */
+export function computeHeirs(env: HeirEnv): {
+  heirs: Map<string, string[]>;
+  heirOf: Map<string, string[]>;
+} {
+  const heirs = new Map<string, string[]>();
+  const heirOf = new Map<string, string[]>();
+  for (const cb of env.baseClaims) {
+    const rfp = renamedFp(cb, env.rho);
+    const ren = { op: cb.op, args: renameArgs(cb.args, env.rho) as Args };
+    const hosted = cb.op === "law" ? (cb.args.statement as { ref?: string }).ref : undefined;
+    const hs: string[] = [];
+    for (const ch of env.headClaims) {
+      if (ch.op !== cb.op) continue;
+      let ok = ch.fp === rfp || ch.fp === cb.fp;
+      if (ok && hosted !== undefined && !env.closureEqual(hosted)) ok = false;
+      if (!ok && cb.op !== "effect.forbid" && cb.op !== "authority" && hosted === undefined)
+        ok = opOrderGeq(ch, ren, env.w, env.templates);
+      if (!ok && (env.claimImplies.get(ch.fp)?.has(cb.fp) || env.claimImplies.get(ch.fp)?.has(rfp)))
+        ok = true;
+      if (ok) hs.push(ch.fp);
+    }
+    heirs.set(cb.fp, hs.sort(cmpStr));
+    for (const h of hs) heirOf.set(h, [...(heirOf.get(h) ?? []), cb.fp].sort(cmpStr));
+  }
+  return { heirs, heirOf };
 }

@@ -1,4 +1,5 @@
 // Globs (A.3.3.3), specificity (A.3.3.4) and cells by product-automaton BFS (A.8.1.4).
+import { jcs } from "./jcs.ts";
 import { cmpStr } from "./util.ts";
 
 type Token =
@@ -140,6 +141,8 @@ export interface GlobOwner {
   glob: string;
   /** pseudo-unit `Q.*` of the owning component */
   owner: string;
+  /** the component's except globs: a path they match leaves this glob (A.3.3.3 [D25]) */
+  except?: string[];
 }
 
 /** A cell's attribution on one side: a pseudo-unit, `ungoverned`, or (base ties) a sorted list. */
@@ -173,9 +176,16 @@ function classify(owners: GlobOwner[], accepting: boolean[], side: "b" | "h"): C
  * Paths are non-empty, never start or end with `/` and never contain `//`.
  */
 export function computeCells(owners: GlobOwner[], budget = 1_000_000): CellResult {
-  const nfas = owners.map((o) => buildNfa(o.glob));
+  const extra: string[] = [];
+  const exceptOf = owners.map((o) =>
+    (o.except ?? []).map((g) => {
+      extra.push(g);
+      return owners.length + extra.length - 1;
+    })
+  );
+  const nfas = [...owners.map((o) => buildNfa(o.glob)), ...extra.map((g) => buildNfa(g))];
   const lits = new Set<string>(["/"]);
-  for (const o of owners) for (const c of literalChars(o.glob)) lits.add(c);
+  for (const g of [...owners.map((o) => o.glob), ...extra]) for (const c of literalChars(g)) lits.add(c);
   let freshChar = "";
   for (const c of "abcdefghijklmnopqrstuvwxyz") {
     if (!lits.has(c)) {
@@ -201,7 +211,10 @@ export function computeCells(owners: GlobOwner[], budget = 1_000_000): CellResul
     const st = queue[head] as St;
     head += 1;
     if (st.last === "c") {
-      const acc = st.sets.map((s, i) => s.includes((nfas[i] as Nfa).accept));
+      const raw = st.sets.map((s, i) => s.includes((nfas[i] as Nfa).accept));
+      const acc = owners.map(
+        (_, i) => !!raw[i] && !(exceptOf[i] ?? []).some((j) => raw[j])
+      );
       const b = classify(owners, acc, "b");
       const h = classify(owners, acc, "h");
       const k = JSON.stringify([b, h]);
@@ -224,5 +237,5 @@ export function computeCells(owners: GlobOwner[], budget = 1_000_000): CellResul
 }
 
 export function cellId(b: CellSide, h: CellSide): string {
-  return `cell:${JSON.stringify([b, h])}`;
+  return `cell:${jcs([b, h])}`;
 }
