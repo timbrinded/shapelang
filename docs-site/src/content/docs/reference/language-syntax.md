@@ -234,9 +234,9 @@ component RevisionLog {
 
 Out-of-order members, a missing effects block, and two effects blocks are parse errors. `shp fmt` prints `unsafe` on the effects line, sorts effect entries, and sorts the trailing members by their text. What complete and unknown summaries claim is explained in [Effect Model](/shapelang/concepts/effect-model/).
 
-`add fn` and `modify fn` accept `signature` in the same position. A `modify fn`
-that omits it preserves the existing signature; a supplied signature replaces
-the previous one. Inspection includes a signature only when one is declared.
+`add fn` and `modify fn` accept `signature` in the same position. Because a
+`modify fn` restates the complete function, a signature it omits counts as
+removed and a supplied signature replaces the previous one. Inspection includes a signature only when one is declared.
 Ordinary `shp check` records the contract without invoking a TypeScript compiler.
 
 ### `relation`
@@ -433,7 +433,7 @@ A `change` block holds any number of entries:
 | Entry | Form | Notes |
 | --- | --- | --- |
 | `add fn` | `add fn Component.fn …` | The full function members, as in [`fn`](#fn). |
-| `modify fn` | `modify fn Component.fn [: Trait, …] [transform Label, …] …` | Restates the complete function. Shape traits or a description it omits count as removed. `transform` goes after the shape traits and before `source`. |
+| `modify fn` | `modify fn Component.fn [: Trait, …] [transform Label, …] …` | Restates the complete function. Shape traits, a signature or a description it omits count as removed. `transform` goes after the shape traits and before `source`. |
 | `remove fn` | `remove fn Component.fn` | |
 | `add` | `add DECLARATION` | A `resource`, `trait`, `component`, `relation`, `implementation`, `binding`, `attest`, or `rule` declaration. |
 | `modify` | `modify DECLARATION` | The same kinds. Replaces the declaration with the same name; `modify attest` adds the attestation, as `add` does. |

@@ -216,7 +216,7 @@ component ShapeModelLowerer {
     }
   fn lowerChange : RefactorSensitive
     source ts("packages/shp-checker/src/checker/lowering/changes.ts#lowerChange")
-    description "Stages changes atomically; an omitted modified-function signature preserves the previous signature, while an explicit signature replaces it and still triggers target-change guards."
+    description "Stages changes atomically; a modified function is restated in full, so an omitted signature is removed like an omitted description, while an explicit signature replaces it and still triggers target-change guards."
     effects complete {
       Append<ChangeEventSet>
         evidence ts("packages/shp-checker/src/checker/change-planning.ts")
@@ -1250,9 +1250,9 @@ reevaluation RuleLooseningDiagnosticOutputChecked {
 reevaluation SignatureChangeIsolationRechecked {
   satisfies memory AtomicChangePlanning
   outcome Confirmed
-  summary "Signature-only changes preserve isolated staging, target_changed events, and memory obligations. Omitted signatures survive modification; explicit replacements commit only through the existing change planner."
-  reviewer Codex
-  decided_on "2026-10-27"
+  summary "Signature-only changes preserve isolated staging, target_changed events, and memory obligations. A modify that omits a signature removes it, as it removes an omitted description, with no signature-specific path; explicit replacements commit only through the existing change planner."
+  reviewer ShapeMaintainers
+  decided_on "2026-10-29"
   evidence test("packages/shp-checker/src/checker/change-planning.test.ts")
   evidence test("packages/shp-checker/src/checker/function-signature-effective.test.ts")
   evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")

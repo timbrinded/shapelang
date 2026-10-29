@@ -13,7 +13,7 @@ resource ChangesModuleApplyChangeEntryAstAnchor : GeneratedAstAnchor {
 
 resource ChangesModuleApplyFunctionChangeEntryAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/changes.ts#applyFunctionChangeEntry")
-  fingerprint ast.semantic_subtree_v1("sha256:b0bc10bcec88989c4b62e2f2aaa2fb16317f8f2996b2e5e2c1b7bfda5bef3a6d")
+  fingerprint ast.semantic_subtree_v1("sha256:3b65223539256670d02b650239e10bf0f14ed51e3604e6c6b6fe54187dbf57e1")
 }
 
 resource ChangesModuleApplyRemoveFunctionChangeEntryAstAnchor : GeneratedAstAnchor {
@@ -141,7 +141,7 @@ relation ChangesModuleApplyFunctionChangeEntryGeneratedFromChangesModuleApplyFun
   kind generated_from
   connects ChangesModule -> ChangesModuleApplyFunctionChangeEntryAstAnchor
   roles { ChangesModule as generated, ChangesModuleApplyFunctionChangeEntryAstAnchor as syntax }
-  expects ChangesModuleApplyFunctionChangeEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b0bc10bcec88989c4b62e2f2aaa2fb16317f8f2996b2e5e2c1b7bfda5bef3a6d")
+  expects ChangesModuleApplyFunctionChangeEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3b65223539256670d02b650239e10bf0f14ed51e3604e6c6b6fe54187dbf57e1")
   summary "fn ChangesModule.applyFunctionChangeEntry generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/changes.ts#applyFunctionChangeEntry."
 }
 

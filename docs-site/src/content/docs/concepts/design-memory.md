@@ -273,7 +273,7 @@ Editing a declaration in place in the Shape model produces no change event, so a
 
 The checker applies `change` declarations after all other declarations and checks the result. The checked Shape model then contains the changed declarations, not the originals, so every other rule, including the grant check, sees the modified function. Nothing in the checker marks a `change` as pending or done: every `change` declaration in the loaded files is applied and checked on every run.
 
-A `modify fn` entry restates the complete function summary. Traits or a description that the entry omits count as removed. Without a guard, a `modify fn` that omits `RefactorSensitive` also drops that trait's required-context obligation, and the check reports nothing.
+A `modify fn` entry restates the complete function summary. Traits, a signature or a description that the entry omits count as removed. Without a guard, a `modify fn` that omits `RefactorSensitive` also drops that trait's required-context obligation, and the check reports nothing.
 
 A `remove` entry leaves every context on the removed target pointing at a declaration that no longer exists, which `shp check` reports as `invalid context target`.
 

@@ -45,7 +45,7 @@ describe("effective fn signatures", () => {
     });
   });
 
-  test("preserves the existing signature when modify omits one", () => {
+  test("a modify that omits the signature removes it, as it removes an omitted description", () => {
     expect(
       signatureFor("writeAudit", [
         BASE,
@@ -61,7 +61,7 @@ describe("effective fn signatures", () => {
           }
         `
       ])
-    ).toEqual({ language: "ts", value: "(entry: AuditEntry) => Promise<void>" });
+    ).toBeUndefined();
   });
 
   test("updates the signature when modify supplies one", () => {

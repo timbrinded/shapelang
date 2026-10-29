@@ -177,13 +177,7 @@ function applyFunctionChangeEntry(
 
   const target = functionTarget(componentName, functionName);
   const before = snapshotChangeTarget(model, target);
-  const lowered = lowerFunction(entry, componentName, context, model, `change ${change.name}`);
-  // A `modify fn` that omits `signature` keeps the recorded one; `add fn` never inherits.
-  const preserved =
-    isModifyFunctionChange(entry) && !entry.signature
-      ? component.functions.get(functionName)?.signature
-      : undefined;
-  const fn = preserved ? { ...lowered, signature: preserved } : lowered;
+  const fn = lowerFunction(entry, componentName, context, model, `change ${change.name}`);
   removeFunctionFacts(model, componentName, functionName);
   component.functions.set(fn.name, fn);
   emitFunctionFacts(fn, model);
