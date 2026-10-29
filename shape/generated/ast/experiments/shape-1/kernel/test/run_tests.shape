@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.shape_1.kernel.test.run_tests
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RunTestsModuleMatchObAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/run_tests.py#match_ob")
+  fingerprint ast.semantic_subtree_v1("sha256:d3e8d7e3b8a33d74c4fe2a89b1c0f6215cf785282e3e932de46f9754710e6e4e")
+}
+
+resource RunTestsModuleRunAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/run_tests.py#run")
+  fingerprint ast.semantic_subtree_v1("sha256:0a216e1d36add4a7f1f9ce6478942f67f5f058e0b71a9fe51c24a7fd0ecf2983")
+}
+
+resource RunTestsModuleShAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/run_tests.py#sh")
+  fingerprint ast.semantic_subtree_v1("sha256:33ffd5f9a2d5f7aae3dc0396b9686d0331d277a27e7258af55f61ecdb0d54c2f")
+}
+
+resource RunTestsModuleShuffleCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/run_tests.py#shuffle_case")
+  fingerprint ast.semantic_subtree_v1("sha256:70756903fa4173b3f750b26dfb1b8b44df8d1d776c0fcace280a1dcce4261234")
+}
+
+component RunTestsModule : GeneratedCandidate {
+  fn match_ob
+    source python("experiments/shape-1/kernel/test/run_tests.py#match_ob")
+    effects unknown
+  fn run
+    source python("experiments/shape-1/kernel/test/run_tests.py#run")
+    effects unknown
+  fn sh
+    source python("experiments/shape-1/kernel/test/run_tests.py#sh")
+    effects unknown
+  fn shuffle_case
+    source python("experiments/shape-1/kernel/test/run_tests.py#shuffle_case")
+    effects unknown
+}
+
+relation RunTestsModuleMatchObGeneratedFromRunTestsModuleMatchObAstAnchor {
+  kind generated_from
+  connects RunTestsModule -> RunTestsModuleMatchObAstAnchor
+  roles { RunTestsModule as generated, RunTestsModuleMatchObAstAnchor as syntax }
+  expects RunTestsModuleMatchObAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d3e8d7e3b8a33d74c4fe2a89b1c0f6215cf785282e3e932de46f9754710e6e4e")
+  summary "fn RunTestsModule.match_ob generated from python function_definition at experiments/shape-1/kernel/test/run_tests.py#match_ob."
+}
+
+relation RunTestsModuleRunGeneratedFromRunTestsModuleRunAstAnchor {
+  kind generated_from
+  connects RunTestsModule -> RunTestsModuleRunAstAnchor
+  roles { RunTestsModule as generated, RunTestsModuleRunAstAnchor as syntax }
+  expects RunTestsModuleRunAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0a216e1d36add4a7f1f9ce6478942f67f5f058e0b71a9fe51c24a7fd0ecf2983")
+  summary "fn RunTestsModule.run generated from python function_definition at experiments/shape-1/kernel/test/run_tests.py#run."
+}
+
+relation RunTestsModuleShGeneratedFromRunTestsModuleShAstAnchor {
+  kind generated_from
+  connects RunTestsModule -> RunTestsModuleShAstAnchor
+  roles { RunTestsModule as generated, RunTestsModuleShAstAnchor as syntax }
+  expects RunTestsModuleShAstAnchor fingerprint ast.semantic_subtree_v1("sha256:33ffd5f9a2d5f7aae3dc0396b9686d0331d277a27e7258af55f61ecdb0d54c2f")
+  summary "fn RunTestsModule.sh generated from python function_definition at experiments/shape-1/kernel/test/run_tests.py#sh."
+}
+
+relation RunTestsModuleShuffleCaseGeneratedFromRunTestsModuleShuffleCaseAstAnchor {
+  kind generated_from
+  connects RunTestsModule -> RunTestsModuleShuffleCaseAstAnchor
+  roles { RunTestsModule as generated, RunTestsModuleShuffleCaseAstAnchor as syntax }
+  expects RunTestsModuleShuffleCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:70756903fa4173b3f750b26dfb1b8b44df8d1d776c0fcace280a1dcce4261234")
+  summary "fn RunTestsModule.shuffle_case generated from python function_definition at experiments/shape-1/kernel/test/run_tests.py#shuffle_case."
+}
+
+implementation RunTestsModuleImpl {
+  paths {
+    "experiments/shape-1/kernel/test/run_tests.py"
+  }
+  conforms_to RunTestsModule
+}

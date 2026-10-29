@@ -74,7 +74,15 @@ interface Entry {
 }
 
 export const HATCH_REGISTRY: Record<string, string[]> = {
-  verus: ["external_body", "external", "assume", "admit", "assume_specification", "uninterp", "axiom"],
+  verus: [
+    "external_body",
+    "external",
+    "assume",
+    "admit",
+    "assume_specification",
+    "uninterp",
+    "axiom"
+  ],
   bend: ["unsafe"],
   ts: ["ts_ignore"]
 };
@@ -159,7 +167,9 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
     errors.push({ code, subject, message, causes: [], dischargers: [] });
   };
   const modules: SourceModule[] = [STD, ...(doc?.modules ?? [])];
-  for (const m of doc?.modules ?? []) if (m.module === "std") err("E-shadow", "module std", "a shape module reuses the pack name std");
+  for (const m of doc?.modules ?? [])
+    if (m.module === "std")
+      err("E-shadow", "module std", "a shape module reuses the pack name std");
 
   // ---- symbol table ---------------------------------------------------------
   const table = new Map<string, Entry>();
@@ -214,19 +224,25 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
     err(
       "E-unknown",
       where,
-      wrong ? `${name} is a ${wrong.sort}, expected ${sorts.join(" or ")}` : `unresolved reference ${name}`
+      wrong
+        ? `${name} is a ${wrong.sort}, expected ${sorts.join(" or ")}`
+        : `unresolved reference ${name}`
     );
     return null;
   };
 
   // ---- verbs, kinds, hatch kinds (one namespace, A.0.3) ------------------------
   const implies = new Map<string, Set<string>>();
-  const kinds = new Map<string, { name: string; from: "component" | "resource"; to: "component" | "resource" }>();
+  const kinds = new Map<
+    string,
+    { name: string; from: "component" | "resource"; to: "component" | "resource" }
+  >();
   const hatches: { kind: string; lang: string }[] = [];
   const nsOwner = new Map<string, string>();
   const claimNs = (name: string, what: string): void => {
     const prev = nsOwner.get(name);
-    if (prev && prev !== what) err("E-shadow", `${what} ${name}`, `${name} is declared as ${prev} and ${what}`);
+    if (prev && prev !== what)
+      err("E-shadow", `${what} ${name}`, `${name} is declared as ${prev} and ${what}`);
     else nsOwner.set(name, what);
   };
   for (const m of modules) {
@@ -254,11 +270,14 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
         const s = implies.get(h) ?? new Set<string>();
         s.add("Hatch");
         implies.set(h, s);
-        if (!hatches.some((x) => x.kind === h && x.lang === d.lang)) hatches.push({ kind: h, lang: d.lang });
+        if (!hatches.some((x) => x.kind === h && x.lang === d.lang))
+          hatches.push({ kind: h, lang: d.lang });
       }
     }
   }
-  for (const [v, s] of implies) for (const i of s) if (!implies.has(i)) err("E-unknown", `effect ${v}`, `${v} implies undeclared ${i}`);
+  for (const [v, s] of implies)
+    for (const i of s)
+      if (!implies.has(i)) err("E-unknown", `effect ${v}`, `${v} implies undeclared ${i}`);
   // acyclicity (E-effect-order)
   {
     const state = new Map<string, number>();
@@ -271,10 +290,11 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
       state.set(v, 2);
       return true;
     };
-    for (const v of [...implies.keys()].sort(cmpStr)) if (!visit(v)) {
-      err("E-effect-order", `effect ${v}`, `implies has a cycle through ${v}`);
-      break;
-    }
+    for (const v of [...implies.keys()].sort(cmpStr))
+      if (!visit(v)) {
+        err("E-effect-order", `effect ${v}`, `implies has a cycle through ${v}`);
+        break;
+      }
   }
 
   // ---- shape declaration, actors ---------------------------------------------
@@ -282,14 +302,19 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
     m.decls.flatMap((d) => (d.decl === "shape" ? [{ d, m }] : []))
   );
   if (shapeDecls.length !== 1)
-    err("E-parse", "shape", shapeDecls.length === 0 ? "no shape declaration" : "more than one shape declaration");
+    err(
+      "E-parse",
+      "shape",
+      shapeDecls.length === 0 ? "no shape declaration" : "more than one shape declaration"
+    );
   const shapeDecl = shapeDecls[0];
   const actors = new Map<string, Actor>();
   const resolveOwner = (o: string | undefined, mod: SourceModule, where: string): string | null => {
     if (o === undefined) return null;
     if (/^[A-Za-z_][\w-]*\(".*"\)$/.test(o.trim())) {
       const id = o.trim();
-      if (!actors.has(id)) actors.set(id, { q: id, kind: "person", operator: null, identities: [id], members: [] });
+      if (!actors.has(id))
+        actors.set(id, { q: id, kind: "person", operator: null, identities: [id], members: [] });
       return id;
     }
     const e = lookup(o, mod, ["actor"], where);
@@ -331,10 +356,16 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
   const param = (name: string, ctx: Ctx): ParamVal | null => ctx.params?.get(name.trim()) ?? null;
   const pv = (p: ParamVal, ctx: Ctx): string => (ctx.placeholder ? `$${p.index}` : String(p.value));
 
-  const resourceRef = (name: string, ctx: Ctx, where: string, allowTrust: boolean): string | null => {
+  const resourceRef = (
+    name: string,
+    ctx: Ctx,
+    where: string,
+    allowTrust: boolean
+  ): string | null => {
     const p = param(name, ctx);
     if (p) {
-      if (p.kind !== "resource") err("E-template", where, `${name} is a ${p.kind} parameter, expected resource`);
+      if (p.kind !== "resource")
+        err("E-template", where, `${name} is a ${p.kind} parameter, expected resource`);
       return pv(p, ctx);
     }
     const e = lookup(name, ctx.module, ["resource"], where);
@@ -363,7 +394,12 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
     const r = resourceRef(a.resource, ctx, where, allowTrust);
     return r === null ? null : `${verb}<${r}>`;
   };
-  const anyRef = (name: string, ctx: Ctx, sorts: Sort[], where: string): { q: string; sort: Sort } | null => {
+  const anyRef = (
+    name: string,
+    ctx: Ctx,
+    sorts: Sort[],
+    where: string
+  ): { q: string; sort: Sort } | null => {
     const p = param(name, ctx);
     if (p) {
       if (!(sorts as string[]).includes(p.kind)) {
@@ -383,7 +419,9 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
       err("E-unknown", where, `a resource is not a unit selector: ${t}`);
       return null;
     }
-    const r = m ? anyRef(m[2] ?? "", ctx, [m[1] as Sort], where) : anyRef(t, ctx, ["component", "unit"], where);
+    const r = m
+      ? anyRef(m[2] ?? "", ctx, [m[1] as Sort], where)
+      : anyRef(t, ctx, ["component", "unit"], where);
     return r ? `${r.sort} ${r.q}` : null;
   };
   const nodeSel = (s: string, ctx: Ctx, where: string): string | null => {
@@ -398,7 +436,9 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
       err("E-unknown", where, `a unit is not a node: ${t}`);
       return null;
     }
-    const r = m ? anyRef(m[2] ?? "", ctx, [m[1] as Sort], where) : anyRef(t, ctx, ["component", "resource"], where);
+    const r = m
+      ? anyRef(m[2] ?? "", ctx, [m[1] as Sort], where)
+      : anyRef(t, ctx, ["component", "resource"], where);
     return r ? `${r.sort} ${r.q}` : null;
   };
   const kindOk = (k: string, ctx: Ctx, where: string): string | null => {
@@ -445,7 +485,8 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
           if (!c) err("E-parse", `resource ${q}`, `bad resource code ${b}`);
           else {
             const prev = resourceCodeOwner.get(c);
-            if (prev && prev !== q) err("E-overlap", `resource ${q}`, `${c} is bound by ${prev} and ${q}`);
+            if (prev && prev !== q)
+              err("E-overlap", `resource ${q}`, `${c} is bound by ${prev} and ${q}`);
             resourceCodeOwner.set(c, q);
             bind.push(c);
           }
@@ -464,7 +505,8 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
         const tier = d.tier ?? "normal";
         let grants: string[] | null = null;
         if (d.grants === "none") grants = [];
-        else if (Array.isArray(d.grants)) grants = sortClean(d.grants.map((g) => atomRef(g, ctx, `component ${q}`, false)));
+        else if (Array.isArray(d.grants))
+          grants = sortClean(d.grants.map((g) => atomRef(g, ctx, `component ${q}`, false)));
         const comp: ComponentItem = {
           q,
           boundary: d.boundary ?? false,
@@ -474,12 +516,16 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
           grants,
           allows: sortedUniq(d.allows ?? []),
           assumes: [...(d.assumes ?? [])].sort((a, b) => cmpStr(a.id, b.id)),
-          complete: sortClean((d.relationsComplete ?? []).map((k) => kindOk(k, ctx, `component ${q}`))),
+          complete: sortClean(
+            (d.relationsComplete ?? []).map((k) => kindOk(k, ctx, `component ${q}`))
+          ),
           was: d.was ?? null,
           units: [],
           attach: (d.attach ?? []).map((a) => a.name)
         };
-        for (const h of comp.allows) if (!hatches.some((x) => x.kind === h) && h !== "Hatch") err("E-unknown", `component ${q}`, `undeclared hatch kind ${h}`);
+        for (const h of comp.allows)
+          if (!hatches.some((x) => x.kind === h) && h !== "Hatch")
+            err("E-unknown", `component ${q}`, `undeclared hatch kind ${h}`);
         if (!d.boundary && (comp.allows.length > 0 || comp.assumes.length > 0))
           err("E-parse", `component ${q}`, "allows and assumes are boundary fields");
         for (const u of d.units ?? []) {
@@ -528,16 +574,26 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
   const resByQ = new Map(resources.map((r) => [r.q, r]));
 
   // ---- templates -------------------------------------------------------------------
-  const templates = new Map<string, { item: TemplateItem; decl: Extract<Decl, { decl: "template" }>; module: SourceModule }>();
+  const templates = new Map<
+    string,
+    { item: TemplateItem; decl: Extract<Decl, { decl: "template" }>; module: SourceModule }
+  >();
   const drafts: Draft[] = [];
 
-  const clauseArgs = (c: Clause, ctx: Ctx, where: string): { op: Op; args: Args; final: boolean }[] => {
+  const clauseArgs = (
+    c: Clause,
+    ctx: Ctx,
+    where: string
+  ): { op: Op; args: Args; final: boolean }[] => {
     const final = c.final ?? false;
     switch (c.forbid) {
       case "effect": {
         const atom = atomRef(c.atom, ctx, where, true);
         if (!atom) return [];
-        const scope = c.within && c.within.length > 0 ? sortClean(c.within.map((s) => unitSel(s, ctx, where))) : ["*"];
+        const scope =
+          c.within && c.within.length > 0
+            ? sortClean(c.within.map((s) => unitSel(s, ctx, where)))
+            : ["*"];
         const except = sortClean((c.except ?? []).map((s) => unitSel(s, ctx, where)));
         return [{ op: "effect.forbid", args: { atom, scope, except }, final }];
       }
@@ -572,7 +628,13 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
         ];
       }
       case "cycle":
-        return [{ op: "cycle.forbid", args: { kinds: sortClean(c.over.map((k) => kindOk(k, ctx, where))) }, final }];
+        return [
+          {
+            op: "cycle.forbid",
+            args: { kinds: sortClean(c.over.map((k) => kindOk(k, ctx, where))) },
+            final
+          }
+        ];
       case "hatch": {
         // forbid hatch K outside boundaries: one effect.forbid(h<std::Trust>, [*], boundaries allowing h)
         // per hatch verb h ⇒ K, `*` reading as Hatch, itself included (A.4.2.4).
@@ -583,14 +645,18 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
             err("E-unknown", where, `undeclared hatch kind ${t}`);
             continue;
           }
-          for (const v of implies.keys()) if (impliesStar(implies, v, t) && impliesStar(implies, v, "Hatch")) verbs.add(v);
+          for (const v of implies.keys())
+            if (impliesStar(implies, v, t) && impliesStar(implies, v, "Hatch")) verbs.add(v);
         }
         return [...verbs].sort(cmpStr).map((h) => ({
           op: "effect.forbid" as Op,
           args: {
             atom: `${h}<${TRUST}>`,
             scope: ["*"],
-            except: components.filter((b) => b.boundary && b.allows.includes(h)).map((b) => `component ${b.q}`).sort(cmpStr)
+            except: components
+              .filter((b) => b.boundary && b.allows.includes(h))
+              .map((b) => `component ${b.q}`)
+              .sort(cmpStr)
           },
           final
         }));
@@ -611,8 +677,11 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
       const notes: string[] = [];
       for (const b of d.body) {
         if ("forbid" in b) {
-          if (b.forbid === "hatch") body.push({ op: "forbid.hatch", args: { kinds: [...b.kinds].sort(cmpStr) } });
-          else for (const c of clauseArgs(b, ctx, `template ${q}`)) body.push({ op: c.op, args: c.args });
+          if (b.forbid === "hatch")
+            body.push({ op: "forbid.hatch", args: { kinds: [...b.kinds].sort(cmpStr) } });
+          else
+            for (const c of clauseArgs(b, ctx, `template ${q}`))
+              body.push({ op: c.op, args: c.args });
         } else if ("grants" in b) {
           const a = atomRef(b.grants, ctx, `template ${q}`, false);
           if (a) body.push({ op: "grants", args: { atom: a } });
@@ -620,7 +689,9 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
           const on =
             b.law.on !== undefined
               ? sortClean(b.law.on.map((t) => target(t, ctx, `template ${q}`)))
-              : d.params.flatMap(([, k], i) => (k === "unit" || k === "component" || k === "code" ? [`$${i}`] : []));
+              : d.params.flatMap(([, k], i) =>
+                  k === "unit" || k === "component" || k === "code" ? [`$${i}`] : []
+                );
           const args: Record<string, unknown> = { on };
           if (b.law.informal !== undefined) args.statement = { text: collapseWs(b.law.informal) };
           body.push({ op: "law", args });
@@ -631,12 +702,21 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
         v: "shape.template.v1",
         name: q,
         params: d.params.map(([p, k]) => [p, k]),
-        body: body.map((x) => ({ x, k: jcs(x) })).sort((a, b) => cmpStr(a.k, b.k)).map((x) => x.x),
+        body: body
+          .map((x) => ({ x, k: jcs(x) }))
+          .sort((a, b) => cmpStr(a.k, b.k))
+          .map((x) => x.x),
         order: order.map(([p, o]) => [p, o]).sort((a, b) => cmpStr(jcs(a), jcs(b))),
         notes: [...notes].sort(cmpStr)
       };
       templates.set(q, {
-        item: { q, schemaFp: H(tnf), params: d.params, order: [...order].sort((a, b) => cmpStr(a[0], b[0])), notes: tnf.notes },
+        item: {
+          q,
+          schemaFp: H(tnf),
+          params: d.params,
+          order: [...order].sort((a, b) => cmpStr(a[0], b[0])),
+          notes: tnf.notes
+        },
         decl: d,
         module: m
       });
@@ -685,7 +765,12 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
     }
   };
 
-  const resolveArg = (kind: ParamKind, raw: string | number, ctx: Ctx, where: string): string | number | null => {
+  const resolveArg = (
+    kind: ParamKind,
+    raw: string | number,
+    ctx: Ctx,
+    where: string
+  ): string | number | null => {
     if (kind === "value") {
       if (typeof raw === "number" && !Number.isSafeInteger(raw)) {
         err("E-template", where, `value ${raw} is not a safe integer`);
@@ -725,15 +810,21 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
     if (!t) return;
     const raw: (string | number)[] = [...(bearer ? [bearer.q] : []), ...(app.args ?? [])];
     if (raw.length !== t.item.params.length) {
-      err("E-template", where, `${te.q} takes ${t.item.params.length} arguments, got ${raw.length}`);
+      err(
+        "E-template",
+        where,
+        `${te.q} takes ${t.item.params.length} arguments, got ${raw.length}`
+      );
       return;
     }
     const params = new Map<string, ParamVal>();
     let ok = true;
     t.item.params.forEach(([p, k], i) => {
       const r = raw[i] as string | number;
-      const v = bearer && i === 0 ? (bearer.sort === k ? bearer.q : null) : resolveArg(k, r, ctx, where);
-      if (bearer && i === 0 && bearer.sort !== k) err("E-template", where, `${te.q} attaches to a ${k}, not a ${bearer.sort}`);
+      const v =
+        bearer && i === 0 ? (bearer.sort === k ? bearer.q : null) : resolveArg(k, r, ctx, where);
+      if (bearer && i === 0 && bearer.sort !== k)
+        err("E-template", where, `${te.q} attaches to a ${k}, not a ${bearer.sort}`);
       if (v === null) ok = false;
       else params.set(p, { kind: k, value: v, index: i });
     });
@@ -772,13 +863,16 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
         let on: string[];
         const fromParams = t.item.params.flatMap(([p, k]) => {
           const v = params.get(p);
-          return v && (k === "unit" || k === "component" || k === "code") ? [String(encodeArg(v))] : [];
+          return v && (k === "unit" || k === "component" || k === "code")
+            ? [String(encodeArg(v))]
+            : [];
         });
         if (b.law.on !== undefined) on = sortClean(b.law.on.map((x) => target(x, tctx, where)));
         else if (fromParams.length > 0) on = sortedUniq(fromParams);
         else on = sortClean((instanceOn ?? []).map((x) => target(x, ctx, where)));
         if (on.length === 0) err("E-law-target", where, "a law needs a target (on)");
-        else if (on.every((x) => x.startsWith("resource "))) err("E-law-target", where, "a law on resources only");
+        else if (on.every((x) => x.startsWith("resource ")))
+          err("E-law-target", where, "a law on resources only");
         const informal = b.law.informal !== undefined;
         const statement: JsonValue = informal
           ? { text: collapseWs(b.law.informal ?? "") }
@@ -804,7 +898,8 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
     if (local.length > 1) {
       const ids = new Map<string, number>();
       for (const l of local) ids.set(l.id, (ids.get(l.id) ?? 0) + 1);
-      for (const l of local) if ((ids.get(l.id) ?? 0) > 1) l.id = `${l.id}/${claimNf(l.op, l.args).fp.slice(7, 19)}`;
+      for (const l of local)
+        if ((ids.get(l.id) ?? 0) > 1) l.id = `${l.id}/${claimNf(l.op, l.args).fp.slice(7, 19)}`;
     }
     drafts.push(...local);
   };
@@ -824,20 +919,25 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
     for (const d of m.decls) {
       if (d.decl === "resource") {
         const q = `${m.module}::${d.name}`;
-        for (const a of d.attach ?? []) expand(a, { q, sort: "resource" }, ctx, {}, q, false, undefined, `resource ${q}`);
+        for (const a of d.attach ?? [])
+          expand(a, { q, sort: "resource" }, ctx, {}, q, false, undefined, `resource ${q}`);
       } else if (d.decl === "component") {
         const q = `${m.module}::${d.name}`;
         const comp = compByQ.get(q) as ComponentItem;
-        for (const a of d.attach ?? []) expand(a, { q, sort: "component" }, ctx, {}, q, false, undefined, `component ${q}`);
+        for (const a of d.attach ?? [])
+          expand(a, { q, sort: "component" }, ctx, {}, q, false, undefined, `component ${q}`);
         for (const u of d.units ?? []) {
           const uq = `${q}.${u.name}`;
-          for (const a of u.attach ?? []) expand(a, { q: uq, sort: "unit" }, ctx, {}, uq, false, undefined, `unit ${uq}`);
+          for (const a of u.attach ?? [])
+            expand(a, { q: uq, sort: "unit" }, ctx, {}, uq, false, undefined, `unit ${uq}`);
         }
         void comp;
       } else if (d.decl === "relation") {
         const q = `${m.module}::${d.name}`;
         const kind = kindOk(d.kind, ctx, `relation ${q}`);
-        const ends = d.connects.map((c) => anyRef(c, ctx, ["component", "resource"], `relation ${q}`));
+        const ends = d.connects.map((c) =>
+          anyRef(c, ctx, ["component", "resource"], `relation ${q}`)
+        );
         if (!kind || ends.some((e) => e === null)) continue;
         const pairs: Draft[] = [];
         for (let i = 0; i + 1 < ends.length; i += 1) {
@@ -856,7 +956,8 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
             statementForm: null
           });
         }
-        if (pairs.length > 1) for (const p of pairs) p.id = `${q}/${claimNf(p.op, p.args).fp.slice(7, 19)}`;
+        if (pairs.length > 1)
+          for (const p of pairs) p.id = `${q}/${claimNf(p.op, p.args).fp.slice(7, 19)}`;
         drafts.push(...pairs);
       } else if (d.decl === "rule") {
         const q = `${m.module}::${d.name}`;
@@ -871,9 +972,24 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
           const te = lookup(w.has, m, ["template"], `rule ${q}`);
           if (te) {
             const bearers: { q: string; kind: ParamKind; attach: string[]; mod: string }[] = [
-              ...resources.map((r) => ({ q: r.q, kind: "resource" as ParamKind, attach: r.attach, mod: r.q.split("::")[0] ?? "" })),
-              ...components.map((c) => ({ q: c.q, kind: "component" as ParamKind, attach: c.attach, mod: c.q.split("::")[0] ?? "" })),
-              ...units.map((u) => ({ q: u.q, kind: "unit" as ParamKind, attach: u.attach, mod: u.q.split("::")[0] ?? "" }))
+              ...resources.map((r) => ({
+                q: r.q,
+                kind: "resource" as ParamKind,
+                attach: r.attach,
+                mod: r.q.split("::")[0] ?? ""
+              })),
+              ...components.map((c) => ({
+                q: c.q,
+                kind: "component" as ParamKind,
+                attach: c.attach,
+                mod: c.q.split("::")[0] ?? ""
+              })),
+              ...units.map((u) => ({
+                q: u.q,
+                kind: "unit" as ParamKind,
+                attach: u.attach,
+                mod: u.q.split("::")[0] ?? ""
+              }))
             ];
             for (const b of bearers) {
               const hit = b.attach.some((a) => {
@@ -885,7 +1001,11 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
           }
         } else instances.push(new Map());
         for (const params of instances) {
-          const ictx: Ctx = { module: m, params: params.size > 0 ? params : null, placeholder: false };
+          const ictx: Ctx = {
+            module: m,
+            params: params.size > 0 ? params : null,
+            placeholder: false
+          };
           for (const c of d.clauses ?? []) {
             for (const ca of clauseArgs(c, ictx, `rule ${q}`)) {
               local.push({
@@ -903,7 +1023,8 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
             }
           }
         }
-        if (local.length > 1) for (const l of local) l.id = `${q}/${claimNf(l.op, l.args).fp.slice(7, 19)}`;
+        if (local.length > 1)
+          for (const l of local) l.id = `${q}/${claimNf(l.op, l.args).fp.slice(7, 19)}`;
         drafts.push(...local);
       } else if (d.decl === "law") {
         const q = `${m.module}::${d.name}`;
@@ -912,7 +1033,8 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
           continue;
         }
         const on = sortClean((d.on ?? []).map((t) => target(t, ctx, `law ${q}`)));
-        if (on.every((x) => x.startsWith("resource "))) err("E-law-target", `law ${q}`, "a law needs a unit, component or code target");
+        if (on.every((x) => x.startsWith("resource ")))
+          err("E-law-target", `law ${q}`, "a law needs a unit, component or code target");
         let statement: JsonValue;
         let form: "hosted" | "informal";
         if (d.statement !== undefined) {
@@ -972,7 +1094,13 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
       drafts.push({
         id: `${c.q}/relations.complete-${k}`,
         op: "edge.forbid",
-        args: { from: [`component ${c.q}`], exceptFrom: [], kind: k, to: ["*"], exceptTo: sortedUniq(targets) },
+        args: {
+          from: [`component ${c.q}`],
+          exceptFrom: [],
+          kind: k,
+          to: ["*"],
+          exceptTo: sortedUniq(targets)
+        },
         owner: null,
         tier: null,
         requirement: null,
@@ -985,7 +1113,15 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
   }
   for (const u of units) {
     if (!u.summary) continue;
-    const base = { owner: null, tier: null, requirement: null, bearer: u.q, subject: u.component, template: null, statementForm: null };
+    const base = {
+      owner: null,
+      tier: null,
+      requirement: null,
+      bearer: u.q,
+      subject: u.component,
+      template: null,
+      statementForm: null
+    };
     if (u.summary.mode === "complete")
       drafts.push({
         ...base,
@@ -998,7 +1134,10 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
         ...base,
         id: `${u.q}/effects.lower`,
         op: "effects.lower",
-        args: { unit: u.q, atoms: sortedUniq(u.summary.atoms.map((a) => (a.via ? `${a.atom} via ${a.via}` : a.atom))) }
+        args: {
+          unit: u.q,
+          atoms: sortedUniq(u.summary.atoms.map((a) => (a.via ? `${a.atom} via ${a.via}` : a.atom)))
+        }
       });
   }
 
@@ -1047,7 +1186,12 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
           tier,
           requirement: d.requirement,
           family: FAMILY[d.op],
-          polarity: d.op === "law" ? "law" : d.op === "edge.exists" || d.op === "effects.lower" ? "lower" : "upper",
+          polarity:
+            d.op === "law"
+              ? "law"
+              : d.op === "edge.exists" || d.op === "effects.lower"
+                ? "lower"
+                : "upper",
           bearer: d.bearer,
           template: d.template,
           statementForm: d.statementForm
@@ -1059,7 +1203,10 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
     }
     const c = prev.claim;
     c.ids = sortedUniq([...c.ids, d.id]);
-    if (tierRank(tier) > tierRank(prev.ownerTier) || (tier === prev.ownerTier && cmpStr(d.id, prev.ownerId) < 0)) {
+    if (
+      tierRank(tier) > tierRank(prev.ownerTier) ||
+      (tier === prev.ownerTier && cmpStr(d.id, prev.ownerId) < 0)
+    ) {
       prev.ownerTier = tier;
       prev.ownerId = d.id;
       c.owner = owner;
@@ -1071,8 +1218,14 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
 
   // ---- policy -------------------------------------------------------------------------------
   const policyName = shapeDecl?.d.policy ?? "std::DefaultPolicy";
-  const policyEntry = shapeDecl ? lookup(policyName, shapeDecl.m, ["policy"], "shape") : table.get("std::DefaultPolicy") ?? null;
-  const policy = buildPolicy(policyEntry, (name, mod) => lookup(name, mod, ["actor"], "policy")?.q ?? null, err);
+  const policyEntry = shapeDecl
+    ? lookup(policyName, shapeDecl.m, ["policy"], "shape")
+    : (table.get("std::DefaultPolicy") ?? null);
+  const policy = buildPolicy(
+    policyEntry,
+    (name, mod) => lookup(name, mod, ["actor"], "policy")?.q ?? null,
+    err
+  );
 
   // ---- providers ---------------------------------------------------------------------------
   const providers: ProviderItem[] = [];
@@ -1100,11 +1253,21 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
         identity: d.identity?.trim() ?? null,
         trusts: [...(d.trusts ?? [])].sort((a, b) => cmpStr(a.join("@"), b.join("@"))),
         implementation: d.implementation
-          ? { paths: [...(d.implementation.paths ?? [])].sort(cmpStr), digest: d.implementation.digest ?? null }
+          ? {
+              paths: [...(d.implementation.paths ?? [])].sort(cmpStr),
+              digest: d.implementation.digest ?? null
+            }
           : null
       });
-      const needsImpl = d.produces.some((k) => k === "observation" || k === "test" || k === "proof");
-      if (needsImpl && !d.implementation) err("E-provider", `provider ${q}`, "observation, test and proof providers need an implementation");
+      const needsImpl = d.produces.some(
+        (k) => k === "observation" || k === "test" || k === "proof"
+      );
+      if (needsImpl && !d.implementation)
+        err(
+          "E-provider",
+          `provider ${q}`,
+          "observation, test and proof providers need an implementation"
+        );
     }
   }
   providers.sort((a, b) => cmpStr(a.q, b.q));
@@ -1138,21 +1301,30 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
         const e = lookup(cm[1] ?? "", m, ["component"], where);
         if (e) {
           target = { kind: "component", q: e.q };
-          if (compByQ.get(e.q)?.tier === "final") err("E-exception", where, "an exception never applies to tier final");
+          if (compByQ.get(e.q)?.tier === "final")
+            err("E-exception", where, "an exception never applies to tier final");
         }
       } else {
-        const fps = resolveClaimRef(t, m, claims, (name, sorts) => lookup(name, m, sorts as Sort[], where)?.q ?? null);
+        const fps = resolveClaimRef(
+          t,
+          m,
+          claims,
+          (name, sorts) => lookup(name, m, sorts as Sort[], where)?.q ?? null
+        );
         if (fps.length === 0) err("E-exception", where, `unknown target ${t}`);
         else {
           target = { kind: "claim", fps, ref: t };
           for (const fp of fps) {
             const c = claims.find((x) => x.fp === fp);
-            if (c?.tier === "final") err("E-exception", where, "an exception never applies to tier final");
-            if (c?.op === "law" && d.for && d.for.length > 0) err("E-exception", where, "a law exception is whole-claim (no for)");
+            if (c?.tier === "final")
+              err("E-exception", where, "an exception never applies to tier final");
+            if (c?.op === "law" && d.for && d.for.length > 0)
+              err("E-exception", where, "a law exception is whole-claim (no for)");
           }
         }
       }
-      if (expires > opts.now + 365 * 86400) err("E-exception", where, "expiry beyond now* + 365 days");
+      if (expires > opts.now + 365 * 86400)
+        err("E-exception", where, "expiry beyond now* + 365 days");
       if (!target) continue;
       const subjects: ExceptionSubject[] | null = d.for
         ? d.for.flatMap((s): ExceptionSubject[] => {
@@ -1174,7 +1346,10 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
         : null;
       exceptions.push({
         q,
-        waives: d.waives && d.waives.length > 0 ? [...new Set(d.waives)].sort(cmpStr) : ["contradiction", "unestablished"],
+        waives:
+          d.waives && d.waives.length > 0
+            ? [...new Set(d.waives)].sort(cmpStr)
+            : ["contradiction", "unestablished"],
         target,
         for: subjects,
         owner: resolveOwner(d.owner, m, where) ?? shapeOwner,
@@ -1218,7 +1393,11 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
         subjects.add(`law ${id}`);
       }
       if (!notes.some((n) => n.kind === k && n.about.some((a) => subjects.has(a))))
-        err("E-note-missing", `claim ${c.ids[0] ?? c.fp}`, `${c.template} requires a ${k} note about ${c.bearer ?? c.ids[0]}`);
+        err(
+          "E-note-missing",
+          `claim ${c.ids[0] ?? c.fp}`,
+          `${c.template} requires a ${k} note about ${c.bearer ?? c.ids[0]}`
+        );
     }
   }
 
@@ -1229,28 +1408,41 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
     const tp = c.tier === "final" ? policy.tiers.critical : policy.tiers[c.tier];
     const floor = tp.floor;
     const level: Level = levelRank(r.level) >= levelRank(floor) ? r.level : floor;
-    if (r.judged && tp.judges.length === 0) err("E-policy", `claim ${c.ids[0]}`, "or judged without judges");
+    if (r.judged && tp.judges.length === 0)
+      err("E-policy", `claim ${c.ids[0]}`, "or judged without judges");
     const routed =
       level === "declared" ||
       providers.some(
         (p) =>
           lawDecidedBy(c, p) &&
-          p.produces.some((k) => (k === "test" && levelRank(level) <= 1) || (k === "proof" && levelRank(level) <= 2))
+          p.produces.some(
+            (k) =>
+              (k === "test" && levelRank(level) <= 1) || (k === "proof" && levelRank(level) <= 2)
+          )
       ) ||
       (r.judged && tp.judges.length > 0);
-    if (!routed) err("E-route", `claim ${c.ids[0]}`, `no route establishes ${c.ids[0]} at ${level}`);
+    if (!routed)
+      err("E-route", `claim ${c.ids[0]}`, `no route establishes ${c.ids[0]} at ${level}`);
   }
-  for (const a of actors.values()) if (a.kind === "agent" && !a.operator) err("E-policy", `actor ${a.q}`, "an agent needs an operator");
+  for (const a of actors.values())
+    if (a.kind === "agent" && !a.operator)
+      err("E-policy", `actor ${a.q}`, "an agent needs an operator");
   {
     const persons = (q: string): Set<string> => personsOf(q, actors);
     const finalOwners = new Set<string>();
     for (const c of claims) if (c.tier === "final") finalOwners.add(c.owner);
-    for (const x of [...resources, ...components, ...units]) if (x.tier === "final") finalOwners.add(x.owner);
+    for (const x of [...resources, ...components, ...units])
+      if (x.tier === "final") finalOwners.add(x.owner);
     for (const o of finalOwners) {
       const a = persons(o);
       const b = persons(shapeOwner);
       const two = [...a].some((p) => [...b].some((s) => s !== p));
-      if (!two) err("E-policy", `owner ${o}`, "a final item needs two distinct persons across its owner and the shape owner");
+      if (!two)
+        err(
+          "E-policy",
+          `owner ${o}`,
+          "a final item needs two distinct persons across its owner and the shape owner"
+        );
     }
   }
 
@@ -1319,7 +1511,11 @@ export function lawDecidedBy(c: Claim, p: ProviderItem): boolean {
   return false;
 }
 
-export function personsOf(q: string, actors: Map<string, Actor> | Actor[], seen = new Set<string>()): Set<string> {
+export function personsOf(
+  q: string,
+  actors: Map<string, Actor> | Actor[],
+  seen = new Set<string>()
+): Set<string> {
   const map = actors instanceof Map ? actors : new Map(actors.map((a) => [a.q, a]));
   const out = new Set<string>();
   if (seen.has(q)) return out;
@@ -1327,19 +1523,25 @@ export function personsOf(q: string, actors: Map<string, Actor> | Actor[], seen 
   const a = map.get(q);
   if (!a) return out;
   if (a.kind === "person") out.add(a.q);
-  else if (a.kind === "team") for (const m of a.members) for (const p of personsOf(m, map, seen)) out.add(p);
+  else if (a.kind === "team")
+    for (const m of a.members) for (const p of personsOf(m, map, seen)) out.add(p);
   return out;
 }
 
 /** Members of an owner, one eligible actor per member: persons and agents (A.6.2.5). */
-export function membersOf(q: string, actors: Map<string, Actor> | Actor[], seen = new Set<string>()): Set<string> {
+export function membersOf(
+  q: string,
+  actors: Map<string, Actor> | Actor[],
+  seen = new Set<string>()
+): Set<string> {
   const map = actors instanceof Map ? actors : new Map(actors.map((a) => [a.q, a]));
   const out = new Set<string>();
   if (seen.has(q)) return out;
   seen.add(q);
   const a = map.get(q);
   if (!a) return out;
-  if (a.kind === "team") for (const m of a.members) for (const p of membersOf(m, map, seen)) out.add(p);
+  if (a.kind === "team")
+    for (const m of a.members) for (const p of membersOf(m, map, seen)) out.add(p);
   else out.add(a.q);
   return out;
 }
@@ -1356,7 +1558,8 @@ function resolveClaimRef(
   const name = (m[2] ?? "").trim();
   if (kind === "claim") {
     const n = name.replace(/^"|"$/g, "");
-    if (n.startsWith("c:")) return claims.filter((c) => c.fp.slice(7).startsWith(n.slice(2))).map((c) => c.fp);
+    if (n.startsWith("c:"))
+      return claims.filter((c) => c.fp.slice(7).startsWith(n.slice(2))).map((c) => c.fp);
     return claims.filter((c) => c.ids.includes(n)).map((c) => c.fp);
   }
   if (kind === "authority") {
@@ -1365,7 +1568,9 @@ function resolveClaimRef(
   }
   const q = lookupQ(name, [kind]);
   if (!q) return [];
-  return claims.filter((c) => c.ids.some((id) => id === q || id.startsWith(`${q}/`))).map((c) => c.fp);
+  return claims
+    .filter((c) => c.ids.some((id) => id === q || id.startsWith(`${q}/`)))
+    .map((c) => c.fp);
 }
 
 function buildPolicy(
@@ -1373,7 +1578,10 @@ function buildPolicy(
   resolveActor: (name: string, mod: SourceModule) => string | null,
   err: (code: string, subject: string, message: string) => void
 ): Policy {
-  const std = STD.decls.find((d) => d.decl === "policy" && d.name === "DefaultPolicy") as Extract<Decl, { decl: "policy" }>;
+  const std = STD.decls.find((d) => d.decl === "policy" && d.name === "DefaultPolicy") as Extract<
+    Decl,
+    { decl: "policy" }
+  >;
   const d = entry && entry.decl.decl === "policy" ? entry.decl : std;
   const mod = entry?.module ?? STD;
   const tier = (t: "low" | "normal" | "critical"): TierPolicy => {
@@ -1391,7 +1599,10 @@ function buildPolicy(
       judges: sortedUniq(judges)
     };
   };
-  return { tiers: { low: tier("low"), normal: tier("normal"), critical: tier("critical") }, budget: d.budget ?? null };
+  return {
+    tiers: { low: tier("low"), normal: tier("normal"), critical: tier("critical") },
+    budget: d.budget ?? null
+  };
 }
 
 function dedupeErrors(errors: ShapeError[]): ShapeError[] {
@@ -1403,5 +1614,9 @@ function dedupeErrors(errors: ShapeError[]): ShapeError[] {
     seen.add(k);
     out.push(e);
   }
-  return out.sort((a, b) => cmpStr(`${a.code}\u0000${a.subject}`, `${b.code}\u0000${b.subject}`) || cmpStr(a.message ?? "", b.message ?? ""));
+  return out.sort(
+    (a, b) =>
+      cmpStr(`${a.code}\u0000${a.subject}`, `${b.code}\u0000${b.subject}`) ||
+      cmpStr(a.message ?? "", b.message ?? "")
+  );
 }

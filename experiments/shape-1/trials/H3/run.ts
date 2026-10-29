@@ -25,7 +25,17 @@ import { buildGov } from "../../proto/src/governance.ts";
 import { computeCells } from "../../proto/src/globs.ts";
 import { mergeRecords, parseRecord } from "../../proto/src/records.ts";
 import { toSeconds } from "../../proto/src/util.ts";
-import { TASKS, checkInput, compact, lawRecords, manifestOf, movedIdentities, runDerive, runSuite, sourceFor } from "./lib.ts";
+import {
+  TASKS,
+  checkInput,
+  compact,
+  lawRecords,
+  manifestOf,
+  movedIdentities,
+  runDerive,
+  runSuite,
+  sourceFor
+} from "./lib.ts";
 import { buildVariant } from "./variant-checker.ts";
 import { variantsOf } from "./variants.ts";
 
@@ -60,7 +70,11 @@ function krecords(list) {
     const r = parseRecord(x);
     if (!r.error) parsed.push(r);
   }
-  return mergeRecords(parsed).map((r) => ({ id: r.id, predicate: { shape: r.shape }, authenticated: r.signers.length > 0 }));
+  return mergeRecords(parsed).map((r) => ({
+    id: r.id,
+    predicate: { shape: r.shape },
+    authenticated: r.signers.length > 0
+  }));
 }
 function kernelCase(input) {
   const now = toSeconds(input.now);
@@ -68,9 +82,13 @@ function kernelCase(input) {
   const base = elaborate(input.base.source, { lenient: true, now });
   const gv = buildGov(base, base.policy, input.authors ?? []);
   const owners = [];
-  for (const c of base.components) for (const g of c.paths) owners.push({ side: "b", glob: g, owner: `${c.q}.*` });
-  for (const c of head.components) for (const g of c.paths) owners.push({ side: "h", glob: g, owner: `${c.q}.*` });
-  const cells = computeCells(owners).cells.filter((c) => typeof c.b === "string" && typeof c.h === "string").map((c) => [c.b, c.h]);
+  for (const c of base.components)
+    for (const g of c.paths) owners.push({ side: "b", glob: g, owner: `${c.q}.*` });
+  for (const c of head.components)
+    for (const g of c.paths) owners.push({ side: "h", glob: g, owner: `${c.q}.*` });
+  const cells = computeCells(owners)
+    .cells.filter((c) => typeof c.b === "string" && typeof c.h === "string")
+    .map((c) => [c.b, c.h]);
   return {
     contract: "shape.kernel.case/v1",
     mode: input.mode,
@@ -90,9 +108,15 @@ function runKernel(input) {
   const r = spawnSync(KERNEL, [], { input: JSON.stringify(kernelCase(input)), maxBuffer: 1 << 28 });
   try {
     const out = JSON.parse(r.stdout.toString());
-    return { verdict: out.verdict, errors: (out.errors ?? []).map((e) => ({ code: e.code, subject: e.subject })), obligations: (out.obligations ?? []).map(compact) };
+    return {
+      verdict: out.verdict,
+      errors: (out.errors ?? []).map((e) => ({ code: e.code, subject: e.subject })),
+      obligations: (out.obligations ?? []).map(compact)
+    };
   } catch {
-    return { crash: `exit ${r.status}: ${r.stdout.toString().slice(0, 200)} ${r.stderr.toString().slice(0, 300)}` };
+    return {
+      crash: `exit ${r.status}: ${r.stdout.toString().slice(0, 200)} ${r.stderr.toString().slice(0, 300)}`
+    };
   }
 }
 
@@ -116,7 +140,14 @@ for (const tid of TASK_IDS) {
       const cache = new Map();
       const recs = (side, signed, mapping) => {
         const k = `${side}|${signed}|${mapping}`;
-        if (!cache.has(k)) cache.set(k, lawRecords(T, recSrc, side === "b" ? mb : mh, side === "b" ? sb : sh, { signed, mapping }));
+        if (!cache.has(k))
+          cache.set(
+            k,
+            lawRecords(T, recSrc, side === "b" ? mb : mh, side === "b" ? sb : sh, {
+              signed,
+              mapping
+            })
+          );
         return cache.get(k);
       };
       for (const tier of TIERS) {
@@ -125,8 +156,19 @@ for (const tid of TASK_IDS) {
           const baseRecs = recs("b", R.pv.identity, R.mapping);
           const headRecs = R.head ? recs("h", R.pv.identity, R.mapping) : [];
           const records = (R.head ? headRecs : baseRecs).map((r) => r.em.record);
-          const input = checkInput(T, `${v.id}-${arm}-${tier}-${R.id}`, { man: mb, source: src }, { man: mh, source: src }, records, baseRecs.map((r) => r.em.record));
-          if (DUMP && tier === "critical" && (R.id === "R1c" || R.id === "R2u")) writeFileSync(join(DUMP, `${tid}-${v.id}-${arm}-${R.id}.input.json`), JSON.stringify(input));
+          const input = checkInput(
+            T,
+            `${v.id}-${arm}-${tier}-${R.id}`,
+            { man: mb, source: src },
+            { man: mh, source: src },
+            records,
+            baseRecs.map((r) => r.em.record)
+          );
+          if (DUMP && tier === "critical" && (R.id === "R1c" || R.id === "R2u"))
+            writeFileSync(
+              join(DUMP, `${tid}-${v.id}-${arm}-${R.id}.input.json`),
+              JSON.stringify(input)
+            );
           const common = {
             task: tid,
             variant: v.id,
@@ -153,12 +195,15 @@ for (const tid of TASK_IDS) {
             rejected: vout.rejected.map((r) => ({ code: r.code, detail: r.detail })),
             obligations: vout.obligations.map(compact)
           });
-          if (KERNEL && tier === "critical" && (R.id === "R1c" || R.id === "R2u" || R.id === "R2a")) emitRow({ ...common, checker: "kernel", ...runKernel(input) });
+          if (KERNEL && tier === "critical" && (R.id === "R1c" || R.id === "R2u" || R.id === "R2a"))
+            emitRow({ ...common, checker: "kernel", ...runKernel(input) });
           n += 1;
         }
       }
     }
-    process.stderr.write(`${tid} ${v.kind.padEnd(8)} ${v.id.padEnd(34)} head suite ${JSON.stringify(suiteHead)} moved=${moved.filter((m) => m.id.includes("#")).length} (${((performance.now() - t0) / 1000).toFixed(0)} s)\n`);
+    process.stderr.write(
+      `${tid} ${v.kind.padEnd(8)} ${v.id.padEnd(34)} head suite ${JSON.stringify(suiteHead)} moved=${moved.filter((m) => m.id.includes("#")).length} (${((performance.now() - t0) / 1000).toFixed(0)} s)\n`
+    );
   }
 }
 process.stderr.write(`${n} configurations, ${((performance.now() - t0) / 1000).toFixed(1)} s\n`);

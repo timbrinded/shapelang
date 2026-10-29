@@ -3,7 +3,13 @@
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { cmpStr } from "../util.ts";
-import { type FpIdentity, codeDigest, encodePath, encodeSegment, isInertComment } from "./common.ts";
+import {
+  type FpIdentity,
+  codeDigest,
+  encodePath,
+  encodeSegment,
+  isInertComment
+} from "./common.ts";
 
 // ---- a minimal typed facade over the compiler API ------------------------------------------
 
@@ -45,8 +51,16 @@ export interface TsApi {
   ScriptTarget: Record<string, number>;
   ScriptKind: Record<string, number>;
   NewLineKind: Record<string, number>;
-  createSourceFile(name: string, text: string, target: number, setParents: boolean, kind?: number): TsSourceFile;
-  createPrinter(opts: { removeComments?: boolean; newLine?: number }): { printFile(sf: TsSourceFile): string };
+  createSourceFile(
+    name: string,
+    text: string,
+    target: number,
+    setParents: boolean,
+    kind?: number
+  ): TsSourceFile;
+  createPrinter(opts: { removeComments?: boolean; newLine?: number }): {
+    printFile(sf: TsSourceFile): string;
+  };
   forEachChild(node: TsNode, cb: (n: TsNode) => void): void;
   createScanner(target: number, skipTrivia: boolean, variant?: number, text?: string): TsScanner;
 }
@@ -64,7 +78,10 @@ export async function loadTypeScript(repoRoot: string): Promise<TsApi | null> {
   }
   const store = join(repoRoot, "node_modules", ".bun");
   if (existsSync(store)) {
-    for (const d of readdirSync(store).filter((x) => x.startsWith("typescript@")).sort(cmpStr).reverse()) {
+    for (const d of readdirSync(store)
+      .filter((x) => x.startsWith("typescript@"))
+      .sort(cmpStr)
+      .reverse()) {
       candidates.push(join(store, d, "node_modules", "typescript", "lib", "typescript.js"));
     }
   }
@@ -112,11 +129,21 @@ export interface TsFingerprintOptions {
 }
 
 /** Fingerprints one TS file: its file identity and its symbol identities. */
-export function fingerprintTs(path: string, text: string, ts: TsApi | null, opts: TsFingerprintOptions): FpIdentity[] {
+export function fingerprintTs(
+  path: string,
+  text: string,
+  ts: TsApi | null,
+  opts: TsFingerprintOptions
+): FpIdentity[] {
   return ts ? withCompiler(path, text, ts, opts) : lexicalFallback(path, text);
 }
 
-function withCompiler(path: string, text: string, ts: TsApi, opts: TsFingerprintOptions): FpIdentity[] {
+function withCompiler(
+  path: string,
+  text: string,
+  ts: TsApi,
+  opts: TsFingerprintOptions
+): FpIdentity[] {
   const K = ts.SyntaxKind;
   const fileId = `ts:${encodePath(path)}`;
   const kindOf = (p: string): number => {
@@ -135,8 +162,16 @@ function withCompiler(path: string, text: string, ts: TsApi, opts: TsFingerprint
         kind: "file",
         parent: null,
         digests: [
-          { projection: "file", scheme: "ts.file.raw.v1", digest: codeDigest("ts.file.raw.v1", text) },
-          { projection: "own", scheme: "ts.file.raw.v1", digest: codeDigest("ts.file.raw.v1", text) }
+          {
+            projection: "file",
+            scheme: "ts.file.raw.v1",
+            digest: codeDigest("ts.file.raw.v1", text)
+          },
+          {
+            projection: "own",
+            scheme: "ts.file.raw.v1",
+            digest: codeDigest("ts.file.raw.v1", text)
+          }
         ],
         markers: countMarkers(ts, text, []),
         hatchComplete: false,
@@ -149,12 +184,15 @@ function withCompiler(path: string, text: string, ts: TsApi, opts: TsFingerprint
   const idents: Ident[] = [];
   const nameText = (n: TsNode | undefined): string | null => {
     if (!n) return null;
-    if (n.kind === K.Identifier || n.kind === K.StringLiteral || n.kind === K.NumericLiteral) return n.text ?? n.escapedText ?? null;
+    if (n.kind === K.Identifier || n.kind === K.StringLiteral || n.kind === K.NumericLiteral)
+      return n.text ?? n.escapedText ?? null;
     if (n.kind === K.PrivateIdentifier) return n.text ?? null;
     return null;
   };
-  const isFn = (n: TsNode | undefined): boolean => !!n && (n.kind === K.ArrowFunction || n.kind === K.FunctionExpression);
-  const join2 = (prefix: string | null, name: string): string => (prefix ? `${prefix}.${encodeSegment(name, ".")}` : encodeSegment(name, "."));
+  const isFn = (n: TsNode | undefined): boolean =>
+    !!n && (n.kind === K.ArrowFunction || n.kind === K.FunctionExpression);
+  const join2 = (prefix: string | null, name: string): string =>
+    prefix ? `${prefix}.${encodeSegment(name, ".")}` : encodeSegment(name, ".");
   const visitStatements = (stmts: TsNode[], prefix: string | null): void => {
     for (const s of stmts) visitStatement(s, prefix);
   };
@@ -167,19 +205,43 @@ function withCompiler(path: string, text: string, ts: TsApi, opts: TsFingerprint
       const n = nameText(s.name);
       if (!n) return;
       const sym = join2(prefix, n);
-      idents.push({ symbol: sym, kind: "function", start: s.getStart(sf), end: s.end, node: s, context: "statement", parent: prefix });
+      idents.push({
+        symbol: sym,
+        kind: "function",
+        start: s.getStart(sf),
+        end: s.end,
+        node: s,
+        context: "statement",
+        parent: prefix
+      });
       visitBody(s.body, sym);
     } else if (s.kind === K.ClassDeclaration) {
       const n = nameText(s.name);
       if (!n) return;
       const sym = join2(prefix, n);
-      idents.push({ symbol: sym, kind: "class", start: s.getStart(sf), end: s.end, node: s, context: "statement", parent: prefix });
+      idents.push({
+        symbol: sym,
+        kind: "class",
+        start: s.getStart(sf),
+        end: s.end,
+        node: s,
+        context: "statement",
+        parent: prefix
+      });
       visitMembers(s.members ?? [], sym);
     } else if (s.kind === K.ModuleDeclaration) {
       const n = nameText(s.name);
       if (!n) return;
       const sym = join2(prefix, n);
-      idents.push({ symbol: sym, kind: "namespace", start: s.getStart(sf), end: s.end, node: s, context: "statement", parent: prefix });
+      idents.push({
+        symbol: sym,
+        kind: "namespace",
+        start: s.getStart(sf),
+        end: s.end,
+        node: s,
+        context: "statement",
+        parent: prefix
+      });
       let b = s.body;
       while (b && b.kind === K.ModuleDeclaration) b = b.body;
       if (b?.statements) visitStatements(b.statements, sym);
@@ -190,7 +252,9 @@ function withCompiler(path: string, text: string, ts: TsApi, opts: TsFingerprint
         if (!n || !d.initializer) continue;
         const init = d.initializer;
         const single = decls.length === 1;
-        const span = single ? { start: s.getStart(sf), end: s.end, context: "statement" as const } : { start: d.getStart(sf), end: d.end, context: "declarator" as const };
+        const span = single
+          ? { start: s.getStart(sf), end: s.end, context: "statement" as const }
+          : { start: d.getStart(sf), end: d.end, context: "declarator" as const };
         if (isFn(init)) {
           const sym = join2(prefix, n);
           idents.push({ symbol: sym, kind: "const", ...span, node: d, parent: prefix });
@@ -207,11 +271,23 @@ function withCompiler(path: string, text: string, ts: TsApi, opts: TsFingerprint
     for (const m of members) {
       let n = nameText(m.name);
       if (m.kind === K.Constructor) n = "constructor";
-      const isMethod = m.kind === K.MethodDeclaration || m.kind === K.Constructor || m.kind === K.GetAccessor || m.kind === K.SetAccessor;
+      const isMethod =
+        m.kind === K.MethodDeclaration ||
+        m.kind === K.Constructor ||
+        m.kind === K.GetAccessor ||
+        m.kind === K.SetAccessor;
       const isFnProp = m.kind === K.PropertyDeclaration && isFn(m.initializer);
       if (!n || !(isMethod || isFnProp)) continue;
       const sym = join2(prefix, n);
-      idents.push({ symbol: sym, kind: "method", start: m.getStart(sf), end: m.end, node: m, context: "member", parent: prefix });
+      idents.push({
+        symbol: sym,
+        kind: "method",
+        start: m.getStart(sf),
+        end: m.end,
+        node: m,
+        context: "member",
+        parent: prefix
+      });
       visitBody(isFnProp ? m.initializer?.body : m.body, sym);
     }
   };
@@ -219,9 +295,20 @@ function withCompiler(path: string, text: string, ts: TsApi, opts: TsFingerprint
     for (const p of props) {
       const n = nameText(p.name);
       if (!n) continue;
-      if (p.kind === K.MethodDeclaration || (p.kind === K.PropertyAssignment && isFn(p.initializer))) {
+      if (
+        p.kind === K.MethodDeclaration ||
+        (p.kind === K.PropertyAssignment && isFn(p.initializer))
+      ) {
         const sym = join2(prefix, n);
-        idents.push({ symbol: sym, kind: "method", start: p.getStart(sf), end: p.end, node: p, context: "property", parent: prefix });
+        idents.push({
+          symbol: sym,
+          kind: "method",
+          start: p.getStart(sf),
+          end: p.end,
+          node: p,
+          context: "property",
+          parent: prefix
+        });
         visitBody(p.kind === K.MethodDeclaration ? p.body : p.initializer?.body, sym);
       }
     }
@@ -261,7 +348,8 @@ function withCompiler(path: string, text: string, ts: TsApi, opts: TsFingerprint
     }
   }
 
-  const canon = (src: string, wrap: Ident["context"] | "file"): string => canonicalText(ts, src, wrap);
+  const canon = (src: string, wrap: Ident["context"] | "file"): string =>
+    canonicalText(ts, src, wrap);
   const spliceOwn = (start: number, end: number, parent: string | null): string => {
     const kids = directChildren(parent, { start, end }).sort((a, b) => a.start - b.start);
     let out = "";
@@ -287,7 +375,11 @@ function withCompiler(path: string, text: string, ts: TsApi, opts: TsFingerprint
     parent: null,
     digests: [
       { projection: "file", scheme: "ts.file.v1", digest: codeDigest("ts.file.v1", fileCanon) },
-      { projection: "own", scheme: "ts.own.v2", digest: codeDigest("ts.own.v2", canon(ownText, "file")) }
+      {
+        projection: "own",
+        scheme: "ts.own.v2",
+        digest: codeDigest("ts.own.v2", canon(ownText, "file"))
+      }
     ],
     markers: countMarkers(ts, text, markerSpans(0, text.length, null)),
     hatchComplete: true,
@@ -299,11 +391,17 @@ function withCompiler(path: string, text: string, ts: TsApi, opts: TsFingerprint
     const unitText = list.map((i) => text.slice(i.start, i.end)).join("\n");
     const own = list.map((i) => spliceOwn(i.start, i.end, sym)).join("\n");
     const env = list
-      .map((i) => (i.node ? envOf(ts, sf, i.node, topFns, topData, imports, `${fileId}#${sym}`) : ""))
+      .map((i) =>
+        i.node ? envOf(ts, sf, i.node, topFns, topData, imports, `${fileId}#${sym}`) : ""
+      )
       .join("\n");
     const markers: Record<string, number> = {};
     for (const i of list) {
-      const m = countMarkers(ts, text.slice(i.start, i.end), markerSpans(i.start, i.end, sym).map(([a, b]) => [a - i.start, b - i.start]));
+      const m = countMarkers(
+        ts,
+        text.slice(i.start, i.end),
+        markerSpans(i.start, i.end, sym).map(([a, b]) => [a - i.start, b - i.start])
+      );
       for (const [k, n] of Object.entries(m)) markers[k] = (markers[k] ?? 0) + n;
     }
     const id = `${fileId}#${sym}`;
@@ -312,8 +410,16 @@ function withCompiler(path: string, text: string, ts: TsApi, opts: TsFingerprint
       kind: first.kind,
       parent: first.parent ? `${fileId}#${first.parent}` : fileId,
       digests: [
-        { projection: "own", scheme: "ts.own.v2", digest: codeDigest("ts.own.v2", canon(own, ctx)) },
-        { projection: "unit", scheme: "ts.unit.v2", digest: codeDigest("ts.unit.v2", `${canon(unitText, ctx)}\n--env--\n${env}`) }
+        {
+          projection: "own",
+          scheme: "ts.own.v2",
+          digest: codeDigest("ts.own.v2", canon(own, ctx))
+        },
+        {
+          projection: "unit",
+          scheme: "ts.unit.v2",
+          digest: codeDigest("ts.unit.v2", `${canon(unitText, ctx)}\n--env--\n${env}`)
+        }
       ],
       markers,
       hatchComplete: true,
@@ -338,7 +444,11 @@ function placeholder(i: Ident): string {
   }
 }
 
-function collectImportNames(ts: TsApi, imp: TsNode, add: (local: string, imported: string) => void): void {
+function collectImportNames(
+  ts: TsApi,
+  imp: TsNode,
+  add: (local: string, imported: string) => void
+): void {
   const K = ts.SyntaxKind;
   const clause = imp.importClause;
   if (!clause) return;
@@ -400,7 +510,9 @@ function envOf(
       const data = topData.get(name);
       if (data && !seenData.has(name)) {
         seenData.add(name);
-        lines.add(`${name}=data ${canonicalText(ts, sf.text.slice(data.getStart(sf), data.end), "expression")}`);
+        lines.add(
+          `${name}=data ${canonicalText(ts, sf.text.slice(data.getStart(sf), data.end), "expression")}`
+        );
         visitFree(data);
       }
     }
@@ -414,7 +526,11 @@ function tokenStart(sc: TsScanner): number {
 }
 
 /** Blanks inert comments, prints canonically, canonicalises string literals, joins tokens. */
-export function canonicalText(ts: TsApi, src: string, wrap: Ident["context"] | "file" | "expression"): string {
+export function canonicalText(
+  ts: TsApi,
+  src: string,
+  wrap: Ident["context"] | "file" | "expression"
+): string {
   const K = ts.SyntaxKind;
   const target = ts.ScriptTarget.Latest as number;
   // 1. blank inert comments (hashbang never inert)
@@ -435,10 +551,32 @@ export function canonicalText(ts: TsApi, src: string, wrap: Ident["context"] | "
   }
   blanked += src.slice(cur);
   // 2. parse (wrapped for members, properties, declarators and expressions) and print
-  const pre = { file: "", statement: "", member: "class __W {\n", property: "const __W = {\n", declarator: "let ", expression: "(" }[wrap];
-  const post = { file: "", statement: "", member: "\n}", property: "\n};", declarator: ";", expression: ");" }[wrap];
-  const sf = ts.createSourceFile("canon.ts", pre + blanked + post, target, true, ts.ScriptKind.TSX as number);
-  const printed = ts.createPrinter({ removeComments: false, newLine: ts.NewLineKind.LineFeed as number }).printFile(sf);
+  const pre = {
+    file: "",
+    statement: "",
+    member: "class __W {\n",
+    property: "const __W = {\n",
+    declarator: "let ",
+    expression: "("
+  }[wrap];
+  const post = {
+    file: "",
+    statement: "",
+    member: "\n}",
+    property: "\n};",
+    declarator: ";",
+    expression: ");"
+  }[wrap];
+  const sf = ts.createSourceFile(
+    "canon.ts",
+    pre + blanked + post,
+    target,
+    true,
+    ts.ScriptKind.TSX as number
+  );
+  const printed = ts
+    .createPrinter({ removeComments: false, newLine: ts.NewLineKind.LineFeed as number })
+    .printFile(sf);
   // 3. token join with canonical string literals; trailing commas dropped
   const toks: string[] = [];
   const s2 = ts.createScanner(target, false, 1, printed);
@@ -509,7 +647,9 @@ function lex(src: string): LexTok[] {
       let t = raw;
       if (c !== "`") {
         try {
-          t = JSON.stringify(JSON.parse(`"${raw.slice(1, -1).replace(/\\'/g, "'").replace(/"/g, '\\"')}"`));
+          t = JSON.stringify(
+            JSON.parse(`"${raw.slice(1, -1).replace(/\\'/g, "'").replace(/"/g, '\\"')}"`)
+          );
         } catch {
           t = raw;
         }
@@ -547,7 +687,8 @@ function lexicalFallback(path: string, text: string): FpIdentity[] {
     if (depth !== 0) continue;
     const nx = toks[i + 1]?.t ?? "";
     let kind: string | null = null;
-    if ((t.t === "function" || t.t === "class") && /^[A-Za-z_$][\w$]*$/.test(nx)) kind = t.t === "class" ? "class" : "function";
+    if ((t.t === "function" || t.t === "class") && /^[A-Za-z_$][\w$]*$/.test(nx))
+      kind = t.t === "class" ? "class" : "function";
     if (t.t === "const" && toks[i + 2]?.t === "=" && /^[A-Za-z_$][\w$]*$/.test(nx)) {
       const after = toks.slice(i + 3, i + 12).map((x) => x.t);
       if (after.includes("=>") || after[0] === "function" || after[0] === "async") kind = "const";
@@ -569,7 +710,8 @@ function lexicalFallback(path: string, text: string): FpIdentity[] {
       j += 1;
     }
     let s = i;
-    while (s > 0 && ["export", "default", "async", "declare"].includes((toks[s - 1] as LexTok).t)) s -= 1;
+    while (s > 0 && ["export", "default", "async", "declare"].includes((toks[s - 1] as LexTok).t))
+      s -= 1;
     idents.push({ name: nx, kind, from: s, to: Math.min(j, toks.length - 1) });
     i = j;
   }
@@ -586,7 +728,11 @@ function lexicalFallback(path: string, text: string): FpIdentity[] {
       kind: "file",
       parent: null,
       digests: [
-        { projection: "file", scheme: "ts.file.lex1", digest: codeDigest("ts.file.lex1", lexCanon(toks)) },
+        {
+          projection: "file",
+          scheme: "ts.file.lex1",
+          digest: codeDigest("ts.file.lex1", lexCanon(toks))
+        },
         { projection: "own", scheme: "ts.own.lex1", digest: codeDigest("ts.own.lex1", ownCanon) }
       ],
       markers: markerCount(own),

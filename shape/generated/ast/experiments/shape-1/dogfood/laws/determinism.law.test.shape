@@ -1,0 +1,120 @@
+module shape.generated.ast.experiments.shape_1.dogfood.laws.determinism_law_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource DeterminismLawTestModuleAtClockAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/determinism.law.test.ts#atClock")
+  fingerprint ast.semantic_subtree_v1("sha256:cff41de91432ae7ef921ea06a42a094c6960e1b31baf6479a1c623981a6c6536")
+}
+
+resource DeterminismLawTestModuleGenSpecsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/determinism.law.test.ts#genSpecs")
+  fingerprint ast.semantic_subtree_v1("sha256:0c88de090d0777017e0157c9aa33fd7009cca16659ee0d8354ed292556ff5513")
+}
+
+resource DeterminismLawTestModuleInputsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/determinism.law.test.ts#inputs")
+  fingerprint ast.semantic_subtree_v1("sha256:4ee57993426b9b1b4472cfbf256f595efae089f47511a78625c8529ddcd984d0")
+}
+
+resource FrozenAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/determinism.law.test.ts#Frozen")
+  fingerprint ast.semantic_subtree_v1("sha256:3a2583b18728097d2294dc4ab15ec8e1180a64529ab34c0960d9f1a3a210fc3b")
+}
+
+resource FrozenConstructorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/determinism.law.test.ts#Frozen.constructor")
+  fingerprint ast.semantic_subtree_v1("sha256:13c06e0f977836623152d6f70f2bc336e5cd4bfd63cbae18cd70e37c4f2dba00")
+}
+
+resource FrozenNowAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/determinism.law.test.ts#Frozen.now")
+  fingerprint ast.semantic_subtree_v1("sha256:2eefda0150ba45bc2031187f064b80fd95c7580459ac578322ff80ca847807e3")
+}
+
+component DeterminismLawTestModule : GeneratedCandidate {
+  fn atClock
+    source ts("experiments/shape-1/dogfood/laws/determinism.law.test.ts#atClock")
+    effects unknown
+  fn genSpecs
+    source ts("experiments/shape-1/dogfood/laws/determinism.law.test.ts#genSpecs")
+    effects unknown
+  fn inputs
+    source ts("experiments/shape-1/dogfood/laws/determinism.law.test.ts#inputs")
+    effects unknown
+}
+
+component Frozen : GeneratedCandidate {
+  fn constructor
+    source ts("experiments/shape-1/dogfood/laws/determinism.law.test.ts#Frozen.constructor")
+    effects unknown
+  fn now
+    source ts("experiments/shape-1/dogfood/laws/determinism.law.test.ts#Frozen.now")
+    effects unknown
+}
+
+relation DeterminismLawTestModuleAtClockGeneratedFromDeterminismLawTestModuleAtClockAstAnchor {
+  kind generated_from
+  connects DeterminismLawTestModule -> DeterminismLawTestModuleAtClockAstAnchor
+  roles { DeterminismLawTestModule as generated, DeterminismLawTestModuleAtClockAstAnchor as syntax }
+  expects DeterminismLawTestModuleAtClockAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cff41de91432ae7ef921ea06a42a094c6960e1b31baf6479a1c623981a6c6536")
+  summary "fn DeterminismLawTestModule.atClock generated from typescript function_declaration at experiments/shape-1/dogfood/laws/determinism.law.test.ts#atClock."
+}
+
+relation DeterminismLawTestModuleGenSpecsGeneratedFromDeterminismLawTestModuleGenSpecsAstAnchor {
+  kind generated_from
+  connects DeterminismLawTestModule -> DeterminismLawTestModuleGenSpecsAstAnchor
+  roles { DeterminismLawTestModule as generated, DeterminismLawTestModuleGenSpecsAstAnchor as syntax }
+  expects DeterminismLawTestModuleGenSpecsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0c88de090d0777017e0157c9aa33fd7009cca16659ee0d8354ed292556ff5513")
+  summary "fn DeterminismLawTestModule.genSpecs generated from typescript function_declaration at experiments/shape-1/dogfood/laws/determinism.law.test.ts#genSpecs."
+}
+
+relation DeterminismLawTestModuleInputsGeneratedFromDeterminismLawTestModuleInputsAstAnchor {
+  kind generated_from
+  connects DeterminismLawTestModule -> DeterminismLawTestModuleInputsAstAnchor
+  roles { DeterminismLawTestModule as generated, DeterminismLawTestModuleInputsAstAnchor as syntax }
+  expects DeterminismLawTestModuleInputsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ee57993426b9b1b4472cfbf256f595efae089f47511a78625c8529ddcd984d0")
+  summary "fn DeterminismLawTestModule.inputs generated from typescript function_declaration at experiments/shape-1/dogfood/laws/determinism.law.test.ts#inputs."
+}
+
+relation FrozenConstructorGeneratedFromFrozenConstructorAstAnchor {
+  kind generated_from
+  connects Frozen -> FrozenConstructorAstAnchor
+  roles { Frozen as generated, FrozenConstructorAstAnchor as syntax }
+  expects FrozenConstructorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:13c06e0f977836623152d6f70f2bc336e5cd4bfd63cbae18cd70e37c4f2dba00")
+  summary "fn Frozen.constructor generated from typescript method_definition at experiments/shape-1/dogfood/laws/determinism.law.test.ts#Frozen.constructor."
+}
+
+relation FrozenGeneratedFromFrozenAstAnchor {
+  kind generated_from
+  connects Frozen -> FrozenAstAnchor
+  roles { Frozen as generated, FrozenAstAnchor as syntax }
+  expects FrozenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3a2583b18728097d2294dc4ab15ec8e1180a64529ab34c0960d9f1a3a210fc3b")
+  summary "component Frozen generated from typescript class_declaration at experiments/shape-1/dogfood/laws/determinism.law.test.ts#Frozen."
+}
+
+relation FrozenNowGeneratedFromFrozenNowAstAnchor {
+  kind generated_from
+  connects Frozen -> FrozenNowAstAnchor
+  roles { Frozen as generated, FrozenNowAstAnchor as syntax }
+  expects FrozenNowAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2eefda0150ba45bc2031187f064b80fd95c7580459ac578322ff80ca847807e3")
+  summary "fn Frozen.now generated from typescript method_definition at experiments/shape-1/dogfood/laws/determinism.law.test.ts#Frozen.now."
+}
+
+implementation DeterminismLawTestModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/laws/determinism.law.test.ts"
+  }
+  conforms_to DeterminismLawTestModule
+}
+
+implementation FrozenImpl {
+  paths {
+    "experiments/shape-1/dogfood/laws/determinism.law.test.ts"
+  }
+  conforms_to Frozen
+}

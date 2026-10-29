@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.shape_1.proto.src.jcs
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource JcsModuleHAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/jcs.ts#H")
+  fingerprint ast.semantic_subtree_v1("sha256:e62642e601feb39aafca96ccc8e437652eb81a83cfaa2bd2e26694949e647584")
+}
+
+resource JcsModuleHexhAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/jcs.ts#hexh")
+  fingerprint ast.semantic_subtree_v1("sha256:44e445f88c24fd5da19386fe0da47aba9c15786db033798b86ee672522abcfc4")
+}
+
+resource JcsModuleJcsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/jcs.ts#jcs")
+  fingerprint ast.semantic_subtree_v1("sha256:84c55193e7cefbecb3fa8d89e85a79d5b37d079aab0023dbe6cd7b628c4d439e")
+}
+
+resource JcsModuleLabelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/jcs.ts#label")
+  fingerprint ast.semantic_subtree_v1("sha256:d55e1f07ed62807f70112f9c819b2c9436babfc07792ad5bd51075d989e95470")
+}
+
+resource JcsModuleParseJsonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/jcs.ts#parseJson")
+  fingerprint ast.semantic_subtree_v1("sha256:c69092ca42f03a9ad4971cedcf4d5ca64524bf240d082225507079b4221dae22")
+}
+
+resource JcsModuleSerialiseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/jcs.ts#serialise")
+  fingerprint ast.semantic_subtree_v1("sha256:379fd4b930e73d90dc1dd48d4a39dbe470e22c36b97b75b3a4153faadea8b46e")
+}
+
+resource JcsModuleSha256HexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/jcs.ts#sha256Hex")
+  fingerprint ast.semantic_subtree_v1("sha256:0c6947bad2901a574f7fc2f59707abe92f1538460ed3dbf4e2bd1f0cfc5ed959")
+}
+
+component JcsModule : GeneratedCandidate {
+  fn H
+    source ts("experiments/shape-1/proto/src/jcs.ts#H")
+    effects unknown
+  fn hexh
+    source ts("experiments/shape-1/proto/src/jcs.ts#hexh")
+    effects unknown
+  fn jcs
+    source ts("experiments/shape-1/proto/src/jcs.ts#jcs")
+    effects unknown
+  fn label
+    source ts("experiments/shape-1/proto/src/jcs.ts#label")
+    effects unknown
+  fn parseJson
+    source ts("experiments/shape-1/proto/src/jcs.ts#parseJson")
+    effects unknown
+  fn serialise
+    source ts("experiments/shape-1/proto/src/jcs.ts#serialise")
+    effects unknown
+  fn sha256Hex
+    source ts("experiments/shape-1/proto/src/jcs.ts#sha256Hex")
+    effects unknown
+}
+
+relation JcsModuleHGeneratedFromJcsModuleHAstAnchor {
+  kind generated_from
+  connects JcsModule -> JcsModuleHAstAnchor
+  roles { JcsModule as generated, JcsModuleHAstAnchor as syntax }
+  expects JcsModuleHAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e62642e601feb39aafca96ccc8e437652eb81a83cfaa2bd2e26694949e647584")
+  summary "fn JcsModule.H generated from typescript function_declaration at experiments/shape-1/proto/src/jcs.ts#H."
+}
+
+relation JcsModuleHexhGeneratedFromJcsModuleHexhAstAnchor {
+  kind generated_from
+  connects JcsModule -> JcsModuleHexhAstAnchor
+  roles { JcsModule as generated, JcsModuleHexhAstAnchor as syntax }
+  expects JcsModuleHexhAstAnchor fingerprint ast.semantic_subtree_v1("sha256:44e445f88c24fd5da19386fe0da47aba9c15786db033798b86ee672522abcfc4")
+  summary "fn JcsModule.hexh generated from typescript function_declaration at experiments/shape-1/proto/src/jcs.ts#hexh."
+}
+
+relation JcsModuleJcsGeneratedFromJcsModuleJcsAstAnchor {
+  kind generated_from
+  connects JcsModule -> JcsModuleJcsAstAnchor
+  roles { JcsModule as generated, JcsModuleJcsAstAnchor as syntax }
+  expects JcsModuleJcsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:84c55193e7cefbecb3fa8d89e85a79d5b37d079aab0023dbe6cd7b628c4d439e")
+  summary "fn JcsModule.jcs generated from typescript function_declaration at experiments/shape-1/proto/src/jcs.ts#jcs."
+}
+
+relation JcsModuleLabelGeneratedFromJcsModuleLabelAstAnchor {
+  kind generated_from
+  connects JcsModule -> JcsModuleLabelAstAnchor
+  roles { JcsModule as generated, JcsModuleLabelAstAnchor as syntax }
+  expects JcsModuleLabelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d55e1f07ed62807f70112f9c819b2c9436babfc07792ad5bd51075d989e95470")
+  summary "fn JcsModule.label generated from typescript function_declaration at experiments/shape-1/proto/src/jcs.ts#label."
+}
+
+relation JcsModuleParseJsonGeneratedFromJcsModuleParseJsonAstAnchor {
+  kind generated_from
+  connects JcsModule -> JcsModuleParseJsonAstAnchor
+  roles { JcsModule as generated, JcsModuleParseJsonAstAnchor as syntax }
+  expects JcsModuleParseJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c69092ca42f03a9ad4971cedcf4d5ca64524bf240d082225507079b4221dae22")
+  summary "fn JcsModule.parseJson generated from typescript function_declaration at experiments/shape-1/proto/src/jcs.ts#parseJson."
+}
+
+relation JcsModuleSerialiseGeneratedFromJcsModuleSerialiseAstAnchor {
+  kind generated_from
+  connects JcsModule -> JcsModuleSerialiseAstAnchor
+  roles { JcsModule as generated, JcsModuleSerialiseAstAnchor as syntax }
+  expects JcsModuleSerialiseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:379fd4b930e73d90dc1dd48d4a39dbe470e22c36b97b75b3a4153faadea8b46e")
+  summary "fn JcsModule.serialise generated from typescript function_declaration at experiments/shape-1/proto/src/jcs.ts#serialise."
+}
+
+relation JcsModuleSha256HexGeneratedFromJcsModuleSha256HexAstAnchor {
+  kind generated_from
+  connects JcsModule -> JcsModuleSha256HexAstAnchor
+  roles { JcsModule as generated, JcsModuleSha256HexAstAnchor as syntax }
+  expects JcsModuleSha256HexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0c6947bad2901a574f7fc2f59707abe92f1538460ed3dbf4e2bd1f0cfc5ed959")
+  summary "fn JcsModule.sha256Hex generated from typescript function_declaration at experiments/shape-1/proto/src/jcs.ts#sha256Hex."
+}
+
+implementation JcsModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/jcs.ts"
+  }
+  conforms_to JcsModule
+}

@@ -1,0 +1,63 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:46c07bb4daa4e888abfa45388630ffdf0f78d8f3463bbb0f2dff8c922a6b2e99",
+ "verdict": "pass",
+ "errors": [],
+ "rejected": [],
+ "obligations": [],
+ "answered": [],
+ "loosening": [],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 1,
+   "den": 1
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [
+   "ret::Retention"
+  ],
+  "ungoverned": {
+   "num": 0,
+   "den": 2
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [],
+  "baseObservations": "present",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"ret::Retention.*\",\"ret::Retention.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 1,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

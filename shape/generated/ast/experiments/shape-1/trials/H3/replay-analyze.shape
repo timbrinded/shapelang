@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.replay_analyze
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ReplayAnalyzeModuleBlocksAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/replay-analyze.py#blocks")
+  fingerprint ast.semantic_subtree_v1("sha256:a6c902c7f661085ef93a87dd70dd4698aa523c555f6ab729e897318135abab0d")
+}
+
+resource ReplayAnalyzeModuleJlAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/replay-analyze.py#jl")
+  fingerprint ast.semantic_subtree_v1("sha256:7caa28ebdf56bffbf07522a9ae478c7cf2313a35fc8f755f81eb74f9a202f851")
+}
+
+resource ReplayAnalyzeModuleLawObsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/replay-analyze.py#law_obs")
+  fingerprint ast.semantic_subtree_v1("sha256:83827bcdc670d5164925905234788c4c96b61197e18ba5e1bc78689dfaec9efa")
+}
+
+resource ReplayAnalyzeModuleSigAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/replay-analyze.py#sig")
+  fingerprint ast.semantic_subtree_v1("sha256:1c39defa47a2df6e2b8b5a9758624f6c2357af490161363623d7ccbe0b44fc66")
+}
+
+component ReplayAnalyzeModule : GeneratedCandidate {
+  fn blocks
+    source python("experiments/shape-1/trials/H3/replay-analyze.py#blocks")
+    effects unknown
+  fn jl
+    source python("experiments/shape-1/trials/H3/replay-analyze.py#jl")
+    effects unknown
+  fn law_obs
+    source python("experiments/shape-1/trials/H3/replay-analyze.py#law_obs")
+    effects unknown
+  fn sig
+    source python("experiments/shape-1/trials/H3/replay-analyze.py#sig")
+    effects unknown
+}
+
+relation ReplayAnalyzeModuleBlocksGeneratedFromReplayAnalyzeModuleBlocksAstAnchor {
+  kind generated_from
+  connects ReplayAnalyzeModule -> ReplayAnalyzeModuleBlocksAstAnchor
+  roles { ReplayAnalyzeModule as generated, ReplayAnalyzeModuleBlocksAstAnchor as syntax }
+  expects ReplayAnalyzeModuleBlocksAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a6c902c7f661085ef93a87dd70dd4698aa523c555f6ab729e897318135abab0d")
+  summary "fn ReplayAnalyzeModule.blocks generated from python function_definition at experiments/shape-1/trials/H3/replay-analyze.py#blocks."
+}
+
+relation ReplayAnalyzeModuleJlGeneratedFromReplayAnalyzeModuleJlAstAnchor {
+  kind generated_from
+  connects ReplayAnalyzeModule -> ReplayAnalyzeModuleJlAstAnchor
+  roles { ReplayAnalyzeModule as generated, ReplayAnalyzeModuleJlAstAnchor as syntax }
+  expects ReplayAnalyzeModuleJlAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7caa28ebdf56bffbf07522a9ae478c7cf2313a35fc8f755f81eb74f9a202f851")
+  summary "fn ReplayAnalyzeModule.jl generated from python function_definition at experiments/shape-1/trials/H3/replay-analyze.py#jl."
+}
+
+relation ReplayAnalyzeModuleLawObsGeneratedFromReplayAnalyzeModuleLawObsAstAnchor {
+  kind generated_from
+  connects ReplayAnalyzeModule -> ReplayAnalyzeModuleLawObsAstAnchor
+  roles { ReplayAnalyzeModule as generated, ReplayAnalyzeModuleLawObsAstAnchor as syntax }
+  expects ReplayAnalyzeModuleLawObsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:83827bcdc670d5164925905234788c4c96b61197e18ba5e1bc78689dfaec9efa")
+  summary "fn ReplayAnalyzeModule.law_obs generated from python function_definition at experiments/shape-1/trials/H3/replay-analyze.py#law_obs."
+}
+
+relation ReplayAnalyzeModuleSigGeneratedFromReplayAnalyzeModuleSigAstAnchor {
+  kind generated_from
+  connects ReplayAnalyzeModule -> ReplayAnalyzeModuleSigAstAnchor
+  roles { ReplayAnalyzeModule as generated, ReplayAnalyzeModuleSigAstAnchor as syntax }
+  expects ReplayAnalyzeModuleSigAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1c39defa47a2df6e2b8b5a9758624f6c2357af490161363623d7ccbe0b44fc66")
+  summary "fn ReplayAnalyzeModule.sig generated from python function_definition at experiments/shape-1/trials/H3/replay-analyze.py#sig."
+}
+
+implementation ReplayAnalyzeModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/replay-analyze.py"
+  }
+  conforms_to ReplayAnalyzeModule
+}

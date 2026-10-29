@@ -1,0 +1,7 @@
+module shape.generated.ast.experiments.shape_1.trials.DRT.run_files
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

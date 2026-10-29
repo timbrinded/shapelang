@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.shape_1.proto.src.governance
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GovernanceModuleBuildGovAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/governance.ts#buildGov")
+  fingerprint ast.semantic_subtree_v1("sha256:6d054e32136077c727dfbbd7de06aa67a2c37496a1132b69b277bddffd3de534")
+}
+
+resource GovernanceModuleEligibleByRoleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/governance.ts#eligibleByRole")
+  fingerprint ast.semantic_subtree_v1("sha256:9c7e0c34cdacc594223e84737a09121b43ea039fb80fb643545889b2d3626d45")
+}
+
+resource GovernanceModuleEligibleNowAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/governance.ts#eligibleNow")
+  fingerprint ast.semantic_subtree_v1("sha256:4ad4a5fcf60e7e660243f2c135979b85ab7d6c8b2a40c355fab1db0ebd39d14d")
+}
+
+resource GovernanceModuleIsEligibleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/governance.ts#isEligible")
+  fingerprint ast.semantic_subtree_v1("sha256:3337cabd79a6e9302b2c4be670774afd3a8247063335148c94c7936a5355e105")
+}
+
+resource GovernanceModuleIsPersonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/governance.ts#isPerson")
+  fingerprint ast.semantic_subtree_v1("sha256:12a0c9f97f58c352288060688bae5b5edc191ab43e57e5daa7ae1e167ea77092")
+}
+
+resource GovernanceModulePolicyStarAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/governance.ts#policyStar")
+  fingerprint ast.semantic_subtree_v1("sha256:3aa5c9d24cc405987c208dce035031e832b9bd5cbb4b96298130dba6444d4b3c")
+}
+
+resource GovernanceModuleTierPolicyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/governance.ts#tierPolicy")
+  fingerprint ast.semantic_subtree_v1("sha256:9864f3d2ed8214487b3773efd3988abd3d35c604e8d9b1977905a564ac56cae6")
+}
+
+component GovernanceModule : GeneratedCandidate {
+  fn buildGov
+    source ts("experiments/shape-1/proto/src/governance.ts#buildGov")
+    effects unknown
+  fn eligibleByRole
+    source ts("experiments/shape-1/proto/src/governance.ts#eligibleByRole")
+    effects unknown
+  fn eligibleNow
+    source ts("experiments/shape-1/proto/src/governance.ts#eligibleNow")
+    effects unknown
+  fn isEligible
+    source ts("experiments/shape-1/proto/src/governance.ts#isEligible")
+    effects unknown
+  fn isPerson
+    source ts("experiments/shape-1/proto/src/governance.ts#isPerson")
+    effects unknown
+  fn policyStar
+    source ts("experiments/shape-1/proto/src/governance.ts#policyStar")
+    effects unknown
+  fn tierPolicy
+    source ts("experiments/shape-1/proto/src/governance.ts#tierPolicy")
+    effects unknown
+}
+
+relation GovernanceModuleBuildGovGeneratedFromGovernanceModuleBuildGovAstAnchor {
+  kind generated_from
+  connects GovernanceModule -> GovernanceModuleBuildGovAstAnchor
+  roles { GovernanceModule as generated, GovernanceModuleBuildGovAstAnchor as syntax }
+  expects GovernanceModuleBuildGovAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6d054e32136077c727dfbbd7de06aa67a2c37496a1132b69b277bddffd3de534")
+  summary "fn GovernanceModule.buildGov generated from typescript function_declaration at experiments/shape-1/proto/src/governance.ts#buildGov."
+}
+
+relation GovernanceModuleEligibleByRoleGeneratedFromGovernanceModuleEligibleByRoleAstAnchor {
+  kind generated_from
+  connects GovernanceModule -> GovernanceModuleEligibleByRoleAstAnchor
+  roles { GovernanceModule as generated, GovernanceModuleEligibleByRoleAstAnchor as syntax }
+  expects GovernanceModuleEligibleByRoleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9c7e0c34cdacc594223e84737a09121b43ea039fb80fb643545889b2d3626d45")
+  summary "fn GovernanceModule.eligibleByRole generated from typescript function_declaration at experiments/shape-1/proto/src/governance.ts#eligibleByRole."
+}
+
+relation GovernanceModuleEligibleNowGeneratedFromGovernanceModuleEligibleNowAstAnchor {
+  kind generated_from
+  connects GovernanceModule -> GovernanceModuleEligibleNowAstAnchor
+  roles { GovernanceModule as generated, GovernanceModuleEligibleNowAstAnchor as syntax }
+  expects GovernanceModuleEligibleNowAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ad4a5fcf60e7e660243f2c135979b85ab7d6c8b2a40c355fab1db0ebd39d14d")
+  summary "fn GovernanceModule.eligibleNow generated from typescript function_declaration at experiments/shape-1/proto/src/governance.ts#eligibleNow."
+}
+
+relation GovernanceModuleIsEligibleGeneratedFromGovernanceModuleIsEligibleAstAnchor {
+  kind generated_from
+  connects GovernanceModule -> GovernanceModuleIsEligibleAstAnchor
+  roles { GovernanceModule as generated, GovernanceModuleIsEligibleAstAnchor as syntax }
+  expects GovernanceModuleIsEligibleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3337cabd79a6e9302b2c4be670774afd3a8247063335148c94c7936a5355e105")
+  summary "fn GovernanceModule.isEligible generated from typescript function_declaration at experiments/shape-1/proto/src/governance.ts#isEligible."
+}
+
+relation GovernanceModuleIsPersonGeneratedFromGovernanceModuleIsPersonAstAnchor {
+  kind generated_from
+  connects GovernanceModule -> GovernanceModuleIsPersonAstAnchor
+  roles { GovernanceModule as generated, GovernanceModuleIsPersonAstAnchor as syntax }
+  expects GovernanceModuleIsPersonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:12a0c9f97f58c352288060688bae5b5edc191ab43e57e5daa7ae1e167ea77092")
+  summary "fn GovernanceModule.isPerson generated from typescript function_declaration at experiments/shape-1/proto/src/governance.ts#isPerson."
+}
+
+relation GovernanceModulePolicyStarGeneratedFromGovernanceModulePolicyStarAstAnchor {
+  kind generated_from
+  connects GovernanceModule -> GovernanceModulePolicyStarAstAnchor
+  roles { GovernanceModule as generated, GovernanceModulePolicyStarAstAnchor as syntax }
+  expects GovernanceModulePolicyStarAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3aa5c9d24cc405987c208dce035031e832b9bd5cbb4b96298130dba6444d4b3c")
+  summary "fn GovernanceModule.policyStar generated from typescript function_declaration at experiments/shape-1/proto/src/governance.ts#policyStar."
+}
+
+relation GovernanceModuleTierPolicyGeneratedFromGovernanceModuleTierPolicyAstAnchor {
+  kind generated_from
+  connects GovernanceModule -> GovernanceModuleTierPolicyAstAnchor
+  roles { GovernanceModule as generated, GovernanceModuleTierPolicyAstAnchor as syntax }
+  expects GovernanceModuleTierPolicyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9864f3d2ed8214487b3773efd3988abd3d35c604e8d9b1977905a564ac56cae6")
+  summary "fn GovernanceModule.tierPolicy generated from typescript function_declaration at experiments/shape-1/proto/src/governance.ts#tierPolicy."
+}
+
+implementation GovernanceModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/governance.ts"
+  }
+  conforms_to GovernanceModule
+}

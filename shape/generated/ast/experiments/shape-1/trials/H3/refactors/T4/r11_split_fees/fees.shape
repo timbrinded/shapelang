@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r11_split_fees.fees
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource FeesModuleScheduleFeeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/fees.ts#scheduleFee")
+  fingerprint ast.semantic_subtree_v1("sha256:732e71f89154beaa2e142648efeb371949c2a1654583de5c5563f3d4d688c15f")
+}
+
+component FeesModule : GeneratedCandidate {
+  fn scheduleFee
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/fees.ts#scheduleFee")
+    effects unknown
+}
+
+relation FeesModuleScheduleFeeGeneratedFromFeesModuleScheduleFeeAstAnchor {
+  kind generated_from
+  connects FeesModule -> FeesModuleScheduleFeeAstAnchor
+  roles { FeesModule as generated, FeesModuleScheduleFeeAstAnchor as syntax }
+  expects FeesModuleScheduleFeeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:732e71f89154beaa2e142648efeb371949c2a1654583de5c5563f3d4d688c15f")
+  summary "fn FeesModule.scheduleFee generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/fees.ts#scheduleFee."
+}
+
+implementation FeesModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/fees.ts"
+  }
+  conforms_to FeesModule
+}

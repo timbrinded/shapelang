@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.shape_1.dogfood.providers.common
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CommonModuleCiteAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/providers/common.ts#cite")
+  fingerprint ast.semantic_subtree_v1("sha256:4c188703234056e05e67e25ed2dcd3c4ee35853f5b1fade9e5bc26aeab8529e6")
+}
+
+resource CommonModuleEmitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/providers/common.ts#emit")
+  fingerprint ast.semantic_subtree_v1("sha256:1c9f2d5680fedd504e3cd17b1622b94c6190166d07239ad884f0135630769646")
+}
+
+resource CommonModuleFileCiteAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/providers/common.ts#fileCite")
+  fingerprint ast.semantic_subtree_v1("sha256:f5ef8545caeff4c5efb8a5e2cb2181986e90a0a3d319f9094a0fda9517ce41b3")
+}
+
+resource CommonModuleRecordTimeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/providers/common.ts#recordTime")
+  fingerprint ast.semantic_subtree_v1("sha256:932a0d7cd6ef3e55af4150137003d6ac39604c644b065a2783f688948f1e2106")
+}
+
+resource CommonModuleSortCitesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/providers/common.ts#sortCites")
+  fingerprint ast.semantic_subtree_v1("sha256:87b2913bd95462e6ea9f99ca5c3d8a7795579f320aea498b9dc130ac67c52925")
+}
+
+resource CommonModuleViewOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/providers/common.ts#viewOf")
+  fingerprint ast.semantic_subtree_v1("sha256:7c7f70a3b837860a8a1f4c7d98cc18d76cf2a744f9f342f39dcd812d2719d09c")
+}
+
+resource CommonModuleWriteJsonlAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/providers/common.ts#writeJsonl")
+  fingerprint ast.semantic_subtree_v1("sha256:465fa277df2fed82c77f0c70c86a69ad8ff16fa3edc4197d5aa67fe5de076e9d")
+}
+
+component CommonModule : GeneratedCandidate {
+  fn cite
+    source ts("experiments/shape-1/dogfood/providers/common.ts#cite")
+    effects unknown
+  fn emit
+    source ts("experiments/shape-1/dogfood/providers/common.ts#emit")
+    effects unknown
+  fn fileCite
+    source ts("experiments/shape-1/dogfood/providers/common.ts#fileCite")
+    effects unknown
+  fn recordTime
+    source ts("experiments/shape-1/dogfood/providers/common.ts#recordTime")
+    effects unknown
+  fn sortCites
+    source ts("experiments/shape-1/dogfood/providers/common.ts#sortCites")
+    effects unknown
+  fn viewOf
+    source ts("experiments/shape-1/dogfood/providers/common.ts#viewOf")
+    effects unknown
+  fn writeJsonl
+    source ts("experiments/shape-1/dogfood/providers/common.ts#writeJsonl")
+    effects unknown
+}
+
+relation CommonModuleCiteGeneratedFromCommonModuleCiteAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleCiteAstAnchor
+  roles { CommonModule as generated, CommonModuleCiteAstAnchor as syntax }
+  expects CommonModuleCiteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4c188703234056e05e67e25ed2dcd3c4ee35853f5b1fade9e5bc26aeab8529e6")
+  summary "fn CommonModule.cite generated from typescript function_declaration at experiments/shape-1/dogfood/providers/common.ts#cite."
+}
+
+relation CommonModuleEmitGeneratedFromCommonModuleEmitAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleEmitAstAnchor
+  roles { CommonModule as generated, CommonModuleEmitAstAnchor as syntax }
+  expects CommonModuleEmitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1c9f2d5680fedd504e3cd17b1622b94c6190166d07239ad884f0135630769646")
+  summary "fn CommonModule.emit generated from typescript function_declaration at experiments/shape-1/dogfood/providers/common.ts#emit."
+}
+
+relation CommonModuleFileCiteGeneratedFromCommonModuleFileCiteAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleFileCiteAstAnchor
+  roles { CommonModule as generated, CommonModuleFileCiteAstAnchor as syntax }
+  expects CommonModuleFileCiteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f5ef8545caeff4c5efb8a5e2cb2181986e90a0a3d319f9094a0fda9517ce41b3")
+  summary "fn CommonModule.fileCite generated from typescript function_declaration at experiments/shape-1/dogfood/providers/common.ts#fileCite."
+}
+
+relation CommonModuleRecordTimeGeneratedFromCommonModuleRecordTimeAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleRecordTimeAstAnchor
+  roles { CommonModule as generated, CommonModuleRecordTimeAstAnchor as syntax }
+  expects CommonModuleRecordTimeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:932a0d7cd6ef3e55af4150137003d6ac39604c644b065a2783f688948f1e2106")
+  summary "fn CommonModule.recordTime generated from typescript function_declaration at experiments/shape-1/dogfood/providers/common.ts#recordTime."
+}
+
+relation CommonModuleSortCitesGeneratedFromCommonModuleSortCitesAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleSortCitesAstAnchor
+  roles { CommonModule as generated, CommonModuleSortCitesAstAnchor as syntax }
+  expects CommonModuleSortCitesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:87b2913bd95462e6ea9f99ca5c3d8a7795579f320aea498b9dc130ac67c52925")
+  summary "fn CommonModule.sortCites generated from typescript function_declaration at experiments/shape-1/dogfood/providers/common.ts#sortCites."
+}
+
+relation CommonModuleViewOfGeneratedFromCommonModuleViewOfAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleViewOfAstAnchor
+  roles { CommonModule as generated, CommonModuleViewOfAstAnchor as syntax }
+  expects CommonModuleViewOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7c7f70a3b837860a8a1f4c7d98cc18d76cf2a744f9f342f39dcd812d2719d09c")
+  summary "fn CommonModule.viewOf generated from typescript function_declaration at experiments/shape-1/dogfood/providers/common.ts#viewOf."
+}
+
+relation CommonModuleWriteJsonlGeneratedFromCommonModuleWriteJsonlAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleWriteJsonlAstAnchor
+  roles { CommonModule as generated, CommonModuleWriteJsonlAstAnchor as syntax }
+  expects CommonModuleWriteJsonlAstAnchor fingerprint ast.semantic_subtree_v1("sha256:465fa277df2fed82c77f0c70c86a69ad8ff16fa3edc4197d5aa67fe5de076e9d")
+  summary "fn CommonModule.writeJsonl generated from typescript function_declaration at experiments/shape-1/dogfood/providers/common.ts#writeJsonl."
+}
+
+implementation CommonModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/providers/common.ts"
+  }
+  conforms_to CommonModule
+}

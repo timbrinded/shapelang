@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r10_step_table
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R10StepTableModuleIsWallAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts#isWall")
+  fingerprint ast.semantic_subtree_v1("sha256:563b7ae0d645b25b114fd9529b626e8e0fadc30de41fae4cffd35a1ddd00c17b")
+}
+
+resource R10StepTableModuleIsWonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts#isWon")
+  fingerprint ast.semantic_subtree_v1("sha256:1fc01820c39d249759ecb8e878dc2bbb42be54d5c3f09c70ccf2b161059bfb7e")
+}
+
+resource R10StepTableModuleReplayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts#replay")
+  fingerprint ast.semantic_subtree_v1("sha256:adee12aae531c70809824e54168b5f4dc5182d984699a428d3fa4da898e79518")
+}
+
+resource R10StepTableModuleStartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts#start")
+  fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+}
+
+resource R10StepTableModuleStepAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts#step")
+  fingerprint ast.semantic_subtree_v1("sha256:054a85718099917b794681757b2d6687525791dbd38e4da681ac6073b0076169")
+}
+
+component R10StepTableModule : GeneratedCandidate {
+  fn isWall
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts#isWall")
+    effects unknown
+  fn isWon
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts#isWon")
+    effects unknown
+  fn replay
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts#replay")
+    effects unknown
+  fn start
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts#start")
+    effects unknown
+  fn step
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts#step")
+    effects unknown
+}
+
+relation R10StepTableModuleIsWallGeneratedFromR10StepTableModuleIsWallAstAnchor {
+  kind generated_from
+  connects R10StepTableModule -> R10StepTableModuleIsWallAstAnchor
+  roles { R10StepTableModule as generated, R10StepTableModuleIsWallAstAnchor as syntax }
+  expects R10StepTableModuleIsWallAstAnchor fingerprint ast.semantic_subtree_v1("sha256:563b7ae0d645b25b114fd9529b626e8e0fadc30de41fae4cffd35a1ddd00c17b")
+  summary "fn R10StepTableModule.isWall generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts#isWall."
+}
+
+relation R10StepTableModuleIsWonGeneratedFromR10StepTableModuleIsWonAstAnchor {
+  kind generated_from
+  connects R10StepTableModule -> R10StepTableModuleIsWonAstAnchor
+  roles { R10StepTableModule as generated, R10StepTableModuleIsWonAstAnchor as syntax }
+  expects R10StepTableModuleIsWonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fc01820c39d249759ecb8e878dc2bbb42be54d5c3f09c70ccf2b161059bfb7e")
+  summary "fn R10StepTableModule.isWon generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts#isWon."
+}
+
+relation R10StepTableModuleReplayGeneratedFromR10StepTableModuleReplayAstAnchor {
+  kind generated_from
+  connects R10StepTableModule -> R10StepTableModuleReplayAstAnchor
+  roles { R10StepTableModule as generated, R10StepTableModuleReplayAstAnchor as syntax }
+  expects R10StepTableModuleReplayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:adee12aae531c70809824e54168b5f4dc5182d984699a428d3fa4da898e79518")
+  summary "fn R10StepTableModule.replay generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts#replay."
+}
+
+relation R10StepTableModuleStartGeneratedFromR10StepTableModuleStartAstAnchor {
+  kind generated_from
+  connects R10StepTableModule -> R10StepTableModuleStartAstAnchor
+  roles { R10StepTableModule as generated, R10StepTableModuleStartAstAnchor as syntax }
+  expects R10StepTableModuleStartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+  summary "fn R10StepTableModule.start generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts#start."
+}
+
+relation R10StepTableModuleStepGeneratedFromR10StepTableModuleStepAstAnchor {
+  kind generated_from
+  connects R10StepTableModule -> R10StepTableModuleStepAstAnchor
+  roles { R10StepTableModule as generated, R10StepTableModuleStepAstAnchor as syntax }
+  expects R10StepTableModuleStepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:054a85718099917b794681757b2d6687525791dbd38e4da681ac6073b0076169")
+  summary "fn R10StepTableModule.step generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts#step."
+}
+
+implementation R10StepTableModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts"
+  }
+  conforms_to R10StepTableModule
+}

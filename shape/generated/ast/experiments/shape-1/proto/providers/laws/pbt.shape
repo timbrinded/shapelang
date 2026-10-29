@@ -1,0 +1,337 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.laws.pbt
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource PbtModuleArrayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#array")
+  fingerprint ast.semantic_subtree_v1("sha256:a34c6bc67a22a6c9562e7b590d00e6b5f85f637745a9ec8a97dc3afed9e8d255")
+}
+
+resource PbtModuleBoolAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#bool")
+  fingerprint ast.semantic_subtree_v1("sha256:84be3d7b1ea5bd3feb0a92daa52f1529533f276be540003eb8cd85268eda3274")
+}
+
+resource PbtModuleCallerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#caller")
+  fingerprint ast.semantic_subtree_v1("sha256:97f1d14208c1177b4e92339247454a9b5ffe32bde742ecd63827f34818c3b754")
+}
+
+resource PbtModuleCheckPropertyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#checkProperty")
+  fingerprint ast.semantic_subtree_v1("sha256:7b5cbb5a61ec53d1633d52fa23c19a313e5844d1c9e383749feaeac102694742")
+}
+
+resource PbtModuleConstantAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#constant")
+  fingerprint ast.semantic_subtree_v1("sha256:d178adacd50d37ca34a6298b089f67a951043fd6413a0a0b7bdc600ba3f12a15")
+}
+
+resource PbtModuleDefaultSeedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#defaultSeed")
+  fingerprint ast.semantic_subtree_v1("sha256:f2c46e52be12c69b0aa4f2a4951c9074f2780766fec6e120782a7680f72c400c")
+}
+
+resource PbtModuleHoldsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#holds")
+  fingerprint ast.semantic_subtree_v1("sha256:83c3493b706b9a956e2d5b4e6c3f77898768eb2cf3ecd188df09756459d45e9a")
+}
+
+resource PbtModuleIntAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#int")
+  fingerprint ast.semantic_subtree_v1("sha256:8738372f01c8904d25b2de9068b6ad62ccae29169442006d50c6f74e16f944c0")
+}
+
+resource PbtModuleIntInAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#intIn")
+  fingerprint ast.semantic_subtree_v1("sha256:97f2cb7be537fe7be741cc05a0a087a42b77e0c9fd235e1e29bddda187f3843b")
+}
+
+resource PbtModuleJsonSafeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#jsonSafe")
+  fingerprint ast.semantic_subtree_v1("sha256:ce08d08cc0e9696039cf060c1d6e073c727843aecb211cff0cf6092a3ffb032c")
+}
+
+resource PbtModuleLawAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#law")
+  fingerprint ast.semantic_subtree_v1("sha256:35580610d59d928285941032d193c2cc08a4ba057b7f630c5ccee8b82ed7b327")
+}
+
+resource PbtModuleMapAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#map")
+  fingerprint ast.semantic_subtree_v1("sha256:b0deb2bf8aeffc18f3d11042c88370cad5998f833db2ae236bcb5f34d0c9b41a")
+}
+
+resource PbtModuleNatAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#nat")
+  fingerprint ast.semantic_subtree_v1("sha256:d336812521c87d83485e9c58623fa5df1cc8652b1e6be37add3f2f37c53532f2")
+}
+
+resource PbtModuleOneOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#oneOf")
+  fingerprint ast.semantic_subtree_v1("sha256:efd874684bf9135e071b17f6776836f0deae9f054ec551b14c216dde9deb58a3")
+}
+
+resource PbtModuleRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#record")
+  fingerprint ast.semantic_subtree_v1("sha256:baf875821478cbd3d7fa418374e77b00665304d19187d665da0f90c865c4a46e")
+}
+
+resource PbtModuleReportAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#report")
+  fingerprint ast.semantic_subtree_v1("sha256:1fbb0b96ac3a4257fbfd47e5a5b531679a7b569a5eb53876330c08e2859b86db")
+}
+
+resource PbtModuleRngAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#rng")
+  fingerprint ast.semantic_subtree_v1("sha256:0550550f01c2c59614f6c22d102880bfed14d553198873016e145c59e245a0b6")
+}
+
+resource PbtModuleShrinkIntAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#shrinkInt")
+  fingerprint ast.semantic_subtree_v1("sha256:7940f40f2f459ac2cff7997a355e7402aa8ac87f9fe408253611f13669a71e98")
+}
+
+resource PbtModuleStringAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#string")
+  fingerprint ast.semantic_subtree_v1("sha256:65ba392fae2080969df22313ca57e37bdf274d02329762b7de636a79b6d7340e")
+}
+
+resource PbtModuleTupleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/pbt.ts#tuple")
+  fingerprint ast.semantic_subtree_v1("sha256:d5c94f9badf3a8a2c77de62e1da124c672dbf8ef85701f2a9c1f520c14568c15")
+}
+
+component PbtModule : GeneratedCandidate {
+  fn array
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#array")
+    effects unknown
+  fn bool
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#bool")
+    effects unknown
+  fn caller
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#caller")
+    effects unknown
+  fn checkProperty
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#checkProperty")
+    effects unknown
+  fn constant
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#constant")
+    effects unknown
+  fn defaultSeed
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#defaultSeed")
+    effects unknown
+  fn holds
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#holds")
+    effects unknown
+  fn int
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#int")
+    effects unknown
+  fn intIn
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#intIn")
+    effects unknown
+  fn jsonSafe
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#jsonSafe")
+    effects unknown
+  fn law
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#law")
+    effects unknown
+  fn map
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#map")
+    effects unknown
+  fn nat
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#nat")
+    effects unknown
+  fn oneOf
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#oneOf")
+    effects unknown
+  fn record
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#record")
+    effects unknown
+  fn report
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#report")
+    effects unknown
+  fn rng
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#rng")
+    effects unknown
+  fn shrinkInt
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#shrinkInt")
+    effects unknown
+  fn string
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#string")
+    effects unknown
+  fn tuple
+    source ts("experiments/shape-1/proto/providers/laws/pbt.ts#tuple")
+    effects unknown
+}
+
+relation PbtModuleArrayGeneratedFromPbtModuleArrayAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleArrayAstAnchor
+  roles { PbtModule as generated, PbtModuleArrayAstAnchor as syntax }
+  expects PbtModuleArrayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a34c6bc67a22a6c9562e7b590d00e6b5f85f637745a9ec8a97dc3afed9e8d255")
+  summary "fn PbtModule.array generated from typescript method_definition at experiments/shape-1/proto/providers/laws/pbt.ts#array."
+}
+
+relation PbtModuleBoolGeneratedFromPbtModuleBoolAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleBoolAstAnchor
+  roles { PbtModule as generated, PbtModuleBoolAstAnchor as syntax }
+  expects PbtModuleBoolAstAnchor fingerprint ast.semantic_subtree_v1("sha256:84be3d7b1ea5bd3feb0a92daa52f1529533f276be540003eb8cd85268eda3274")
+  summary "fn PbtModule.bool generated from typescript method_definition at experiments/shape-1/proto/providers/laws/pbt.ts#bool."
+}
+
+relation PbtModuleCallerGeneratedFromPbtModuleCallerAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleCallerAstAnchor
+  roles { PbtModule as generated, PbtModuleCallerAstAnchor as syntax }
+  expects PbtModuleCallerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:97f1d14208c1177b4e92339247454a9b5ffe32bde742ecd63827f34818c3b754")
+  summary "fn PbtModule.caller generated from typescript function_declaration at experiments/shape-1/proto/providers/laws/pbt.ts#caller."
+}
+
+relation PbtModuleCheckPropertyGeneratedFromPbtModuleCheckPropertyAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleCheckPropertyAstAnchor
+  roles { PbtModule as generated, PbtModuleCheckPropertyAstAnchor as syntax }
+  expects PbtModuleCheckPropertyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7b5cbb5a61ec53d1633d52fa23c19a313e5844d1c9e383749feaeac102694742")
+  summary "fn PbtModule.checkProperty generated from typescript function_declaration at experiments/shape-1/proto/providers/laws/pbt.ts#checkProperty."
+}
+
+relation PbtModuleConstantGeneratedFromPbtModuleConstantAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleConstantAstAnchor
+  roles { PbtModule as generated, PbtModuleConstantAstAnchor as syntax }
+  expects PbtModuleConstantAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d178adacd50d37ca34a6298b089f67a951043fd6413a0a0b7bdc600ba3f12a15")
+  summary "fn PbtModule.constant generated from typescript method_definition at experiments/shape-1/proto/providers/laws/pbt.ts#constant."
+}
+
+relation PbtModuleDefaultSeedGeneratedFromPbtModuleDefaultSeedAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleDefaultSeedAstAnchor
+  roles { PbtModule as generated, PbtModuleDefaultSeedAstAnchor as syntax }
+  expects PbtModuleDefaultSeedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f2c46e52be12c69b0aa4f2a4951c9074f2780766fec6e120782a7680f72c400c")
+  summary "fn PbtModule.defaultSeed generated from typescript function_declaration at experiments/shape-1/proto/providers/laws/pbt.ts#defaultSeed."
+}
+
+relation PbtModuleHoldsGeneratedFromPbtModuleHoldsAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleHoldsAstAnchor
+  roles { PbtModule as generated, PbtModuleHoldsAstAnchor as syntax }
+  expects PbtModuleHoldsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:83c3493b706b9a956e2d5b4e6c3f77898768eb2cf3ecd188df09756459d45e9a")
+  summary "fn PbtModule.holds generated from typescript function_declaration at experiments/shape-1/proto/providers/laws/pbt.ts#holds."
+}
+
+relation PbtModuleIntGeneratedFromPbtModuleIntAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleIntAstAnchor
+  roles { PbtModule as generated, PbtModuleIntAstAnchor as syntax }
+  expects PbtModuleIntAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8738372f01c8904d25b2de9068b6ad62ccae29169442006d50c6f74e16f944c0")
+  summary "fn PbtModule.int generated from typescript method_definition at experiments/shape-1/proto/providers/laws/pbt.ts#int."
+}
+
+relation PbtModuleIntInGeneratedFromPbtModuleIntInAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleIntInAstAnchor
+  roles { PbtModule as generated, PbtModuleIntInAstAnchor as syntax }
+  expects PbtModuleIntInAstAnchor fingerprint ast.semantic_subtree_v1("sha256:97f2cb7be537fe7be741cc05a0a087a42b77e0c9fd235e1e29bddda187f3843b")
+  summary "fn PbtModule.intIn generated from typescript function_declaration at experiments/shape-1/proto/providers/laws/pbt.ts#intIn."
+}
+
+relation PbtModuleJsonSafeGeneratedFromPbtModuleJsonSafeAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleJsonSafeAstAnchor
+  roles { PbtModule as generated, PbtModuleJsonSafeAstAnchor as syntax }
+  expects PbtModuleJsonSafeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ce08d08cc0e9696039cf060c1d6e073c727843aecb211cff0cf6092a3ffb032c")
+  summary "fn PbtModule.jsonSafe generated from typescript function_declaration at experiments/shape-1/proto/providers/laws/pbt.ts#jsonSafe."
+}
+
+relation PbtModuleLawGeneratedFromPbtModuleLawAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleLawAstAnchor
+  roles { PbtModule as generated, PbtModuleLawAstAnchor as syntax }
+  expects PbtModuleLawAstAnchor fingerprint ast.semantic_subtree_v1("sha256:35580610d59d928285941032d193c2cc08a4ba057b7f630c5ccee8b82ed7b327")
+  summary "fn PbtModule.law generated from typescript function_declaration at experiments/shape-1/proto/providers/laws/pbt.ts#law."
+}
+
+relation PbtModuleMapGeneratedFromPbtModuleMapAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleMapAstAnchor
+  roles { PbtModule as generated, PbtModuleMapAstAnchor as syntax }
+  expects PbtModuleMapAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b0deb2bf8aeffc18f3d11042c88370cad5998f833db2ae236bcb5f34d0c9b41a")
+  summary "fn PbtModule.map generated from typescript method_definition at experiments/shape-1/proto/providers/laws/pbt.ts#map."
+}
+
+relation PbtModuleNatGeneratedFromPbtModuleNatAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleNatAstAnchor
+  roles { PbtModule as generated, PbtModuleNatAstAnchor as syntax }
+  expects PbtModuleNatAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d336812521c87d83485e9c58623fa5df1cc8652b1e6be37add3f2f37c53532f2")
+  summary "fn PbtModule.nat generated from typescript method_definition at experiments/shape-1/proto/providers/laws/pbt.ts#nat."
+}
+
+relation PbtModuleOneOfGeneratedFromPbtModuleOneOfAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleOneOfAstAnchor
+  roles { PbtModule as generated, PbtModuleOneOfAstAnchor as syntax }
+  expects PbtModuleOneOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:efd874684bf9135e071b17f6776836f0deae9f054ec551b14c216dde9deb58a3")
+  summary "fn PbtModule.oneOf generated from typescript method_definition at experiments/shape-1/proto/providers/laws/pbt.ts#oneOf."
+}
+
+relation PbtModuleRecordGeneratedFromPbtModuleRecordAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleRecordAstAnchor
+  roles { PbtModule as generated, PbtModuleRecordAstAnchor as syntax }
+  expects PbtModuleRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:baf875821478cbd3d7fa418374e77b00665304d19187d665da0f90c865c4a46e")
+  summary "fn PbtModule.record generated from typescript method_definition at experiments/shape-1/proto/providers/laws/pbt.ts#record."
+}
+
+relation PbtModuleReportGeneratedFromPbtModuleReportAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleReportAstAnchor
+  roles { PbtModule as generated, PbtModuleReportAstAnchor as syntax }
+  expects PbtModuleReportAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fbb0b96ac3a4257fbfd47e5a5b531679a7b569a5eb53876330c08e2859b86db")
+  summary "fn PbtModule.report generated from typescript function_declaration at experiments/shape-1/proto/providers/laws/pbt.ts#report."
+}
+
+relation PbtModuleRngGeneratedFromPbtModuleRngAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleRngAstAnchor
+  roles { PbtModule as generated, PbtModuleRngAstAnchor as syntax }
+  expects PbtModuleRngAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0550550f01c2c59614f6c22d102880bfed14d553198873016e145c59e245a0b6")
+  summary "fn PbtModule.rng generated from typescript function_declaration at experiments/shape-1/proto/providers/laws/pbt.ts#rng."
+}
+
+relation PbtModuleShrinkIntGeneratedFromPbtModuleShrinkIntAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleShrinkIntAstAnchor
+  roles { PbtModule as generated, PbtModuleShrinkIntAstAnchor as syntax }
+  expects PbtModuleShrinkIntAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7940f40f2f459ac2cff7997a355e7402aa8ac87f9fe408253611f13669a71e98")
+  summary "fn PbtModule.shrinkInt generated from typescript function_declaration at experiments/shape-1/proto/providers/laws/pbt.ts#shrinkInt."
+}
+
+relation PbtModuleStringGeneratedFromPbtModuleStringAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleStringAstAnchor
+  roles { PbtModule as generated, PbtModuleStringAstAnchor as syntax }
+  expects PbtModuleStringAstAnchor fingerprint ast.semantic_subtree_v1("sha256:65ba392fae2080969df22313ca57e37bdf274d02329762b7de636a79b6d7340e")
+  summary "fn PbtModule.string generated from typescript method_definition at experiments/shape-1/proto/providers/laws/pbt.ts#string."
+}
+
+relation PbtModuleTupleGeneratedFromPbtModuleTupleAstAnchor {
+  kind generated_from
+  connects PbtModule -> PbtModuleTupleAstAnchor
+  roles { PbtModule as generated, PbtModuleTupleAstAnchor as syntax }
+  expects PbtModuleTupleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d5c94f9badf3a8a2c77de62e1da124c672dbf8ef85701f2a9c1f520c14568c15")
+  summary "fn PbtModule.tuple generated from typescript method_definition at experiments/shape-1/proto/providers/laws/pbt.ts#tuple."
+}
+
+implementation PbtModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/laws/pbt.ts"
+  }
+  conforms_to PbtModule
+}

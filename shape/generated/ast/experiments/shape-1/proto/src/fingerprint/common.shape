@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.shape_1.proto.src.generated_fingerprint.common
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CommonModuleCodeDigestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/common.ts#codeDigest")
+  fingerprint ast.semantic_subtree_v1("sha256:09cf445ead8a7728bac13c2fcc6c7a04c739373053f76aa6527a31f9b58d0e96")
+}
+
+resource CommonModuleEncodePathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/common.ts#encodePath")
+  fingerprint ast.semantic_subtree_v1("sha256:cfa609072a32f7bc5b49cc07cc9c416fe768b8aaecb0928a1baac96e2b9e9d19")
+}
+
+resource CommonModuleEncodeSegmentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/common.ts#encodeSegment")
+  fingerprint ast.semantic_subtree_v1("sha256:ce7f39126b3a489ea7df25c416d9a66110b67d9c99573c42b37d46bd668e39dc")
+}
+
+resource CommonModuleIsInertCommentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/common.ts#isInertComment")
+  fingerprint ast.semantic_subtree_v1("sha256:73a8b391f177b3f4b30d4ac487d99c18480d33dabcdcdb1977b5e290c4f56860")
+}
+
+component CommonModule : GeneratedCandidate {
+  fn codeDigest
+    source ts("experiments/shape-1/proto/src/fingerprint/common.ts#codeDigest")
+    effects unknown
+  fn encodePath
+    source ts("experiments/shape-1/proto/src/fingerprint/common.ts#encodePath")
+    effects unknown
+  fn encodeSegment
+    source ts("experiments/shape-1/proto/src/fingerprint/common.ts#encodeSegment")
+    effects unknown
+  fn isInertComment
+    source ts("experiments/shape-1/proto/src/fingerprint/common.ts#isInertComment")
+    effects unknown
+}
+
+relation CommonModuleCodeDigestGeneratedFromCommonModuleCodeDigestAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleCodeDigestAstAnchor
+  roles { CommonModule as generated, CommonModuleCodeDigestAstAnchor as syntax }
+  expects CommonModuleCodeDigestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:09cf445ead8a7728bac13c2fcc6c7a04c739373053f76aa6527a31f9b58d0e96")
+  summary "fn CommonModule.codeDigest generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/common.ts#codeDigest."
+}
+
+relation CommonModuleEncodePathGeneratedFromCommonModuleEncodePathAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleEncodePathAstAnchor
+  roles { CommonModule as generated, CommonModuleEncodePathAstAnchor as syntax }
+  expects CommonModuleEncodePathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cfa609072a32f7bc5b49cc07cc9c416fe768b8aaecb0928a1baac96e2b9e9d19")
+  summary "fn CommonModule.encodePath generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/common.ts#encodePath."
+}
+
+relation CommonModuleEncodeSegmentGeneratedFromCommonModuleEncodeSegmentAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleEncodeSegmentAstAnchor
+  roles { CommonModule as generated, CommonModuleEncodeSegmentAstAnchor as syntax }
+  expects CommonModuleEncodeSegmentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ce7f39126b3a489ea7df25c416d9a66110b67d9c99573c42b37d46bd668e39dc")
+  summary "fn CommonModule.encodeSegment generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/common.ts#encodeSegment."
+}
+
+relation CommonModuleIsInertCommentGeneratedFromCommonModuleIsInertCommentAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleIsInertCommentAstAnchor
+  roles { CommonModule as generated, CommonModuleIsInertCommentAstAnchor as syntax }
+  expects CommonModuleIsInertCommentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:73a8b391f177b3f4b30d4ac487d99c18480d33dabcdcdb1977b5e290c4f56860")
+  summary "fn CommonModule.isInertComment generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/common.ts#isInertComment."
+}
+
+implementation CommonModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/fingerprint/common.ts"
+  }
+  conforms_to CommonModule
+}

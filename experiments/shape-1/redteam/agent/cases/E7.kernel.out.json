@@ -1,0 +1,61 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [
+  {
+   "code": "E-provider-missing",
+   "subject": "provider audit::fastCheck audit::EventsArePreserved"
+  }
+ ],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:e6933ddbc23975bedb750573f19cbbce194846526cb55bc25691a478e1f18dd7",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": null,
+   "final": true,
+   "force": null,
+   "group": "g:b727800dbf5603ed689e4e1371252e8c1ec8c2075954ea7df28612700d229b54",
+   "introduced": true,
+   "key": "ob:f99ad91d0fb961864cea647e6188ac9c56b6d243cb026fee5224db411dfce977",
+   "kind": "coverage",
+   "owner": "audit::AuditTeam",
+   "questions": null,
+   "reason": null,
+   "severity": "blocking",
+   "subject": "component audit::AuditStore",
+   "tier": "final",
+   "witness": []
+  },
+  {
+   "binding": "bd:6741ea493842927e5da404971e50c87e8d4586cf29d21c4fb8da33548eb23712",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3",
+    "ids": [
+     "audit::EventsArePreserved"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:b727800dbf5603ed689e4e1371252e8c1ec8c2075954ea7df28612700d229b54",
+   "introduced": true,
+   "key": "ob:e388df561228b690f4d7907a2c17a85038acbeeb1a82f08101c508e6322252cb",
+   "kind": "unestablished",
+   "owner": "audit::AuditTeam",
+   "questions": null,
+   "reason": "stale",
+   "severity": "blocking",
+   "subject": null,
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

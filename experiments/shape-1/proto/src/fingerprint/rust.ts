@@ -39,7 +39,10 @@ function lexRust(src: string): Tok[] {
         } else i += 1;
       }
       push(start, true);
-    } else if (c === "r" && (src[i + 1] === '"' || (src[i + 1] === "#" && /^#+"/.test(src.slice(i + 1))))) {
+    } else if (
+      c === "r" &&
+      (src[i + 1] === '"' || (src[i + 1] === "#" && /^#+"/.test(src.slice(i + 1))))
+    ) {
       let hashes = 0;
       i += 1;
       while (src[i] === "#") {
@@ -58,7 +61,10 @@ function lexRust(src: string): Tok[] {
       push(start);
     } else if (c === "'") {
       // char literal or lifetime
-      if (src[i + 2] === "'" || (src[i + 1] === "\\" && src.indexOf("'", i + 2) > 0 && src.indexOf("'", i + 2) - i <= 10)) {
+      if (
+        src[i + 2] === "'" ||
+        (src[i + 1] === "\\" && src.indexOf("'", i + 2) > 0 && src.indexOf("'", i + 2) - i <= 10)
+      ) {
         i = src.indexOf("'", src[i + 1] === "\\" ? i + 3 : i + 2) + 1;
         push(start);
       } else {
@@ -70,7 +76,12 @@ function lexRust(src: string): Tok[] {
       while (i < src.length && /\w/.test(src[i] as string)) i += 1;
       push(start);
     } else if (/[0-9]/.test(c)) {
-      while (i < src.length && /[\w.]/.test(src[i] as string) && !(src[i] === "." && src[i + 1] === ".")) i += 1;
+      while (
+        i < src.length &&
+        /[\w.]/.test(src[i] as string) &&
+        !(src[i] === "." && src[i + 1] === ".")
+      )
+        i += 1;
       push(start);
     } else {
       const two = src.slice(i, i + 2);
@@ -82,7 +93,8 @@ function lexRust(src: string): Tok[] {
 }
 
 function isInertRust(t: string): boolean {
-  if (t.startsWith("///") || t.startsWith("//!") || t.startsWith("/**") || t.startsWith("/*!")) return false;
+  if (t.startsWith("///") || t.startsWith("//!") || t.startsWith("/**") || t.startsWith("/*!"))
+    return false;
   return !t.includes("@");
 }
 
@@ -102,7 +114,24 @@ interface Item {
   parent: string | null;
 }
 
-const MODIFIERS = new Set(["pub", "spec", "proof", "exec", "open", "closed", "const", "async", "unsafe", "extern", "default", "tracked", "ghost", "uninterp", "axiom", "broadcast"]);
+const MODIFIERS = new Set([
+  "pub",
+  "spec",
+  "proof",
+  "exec",
+  "open",
+  "closed",
+  "const",
+  "async",
+  "unsafe",
+  "extern",
+  "default",
+  "tracked",
+  "ghost",
+  "uninterp",
+  "axiom",
+  "broadcast"
+]);
 
 export function isVerusText(text: string): boolean {
   return /\bverus!\s*\{/.test(text) || /\bvstd::/.test(text);
@@ -185,7 +214,7 @@ export function fingerprintRust(path: string, text: string): FpIdentity[] {
           s -= 1;
           continue;
         }
-        if (prev === ")" ) {
+        if (prev === ")") {
           let m = s - 1;
           while (m > 0 && code[m]?.t !== "(") m -= 1;
           if (code[m - 1]?.t === "pub") {
@@ -223,8 +252,17 @@ export function fingerprintRust(path: string, text: string): FpIdentity[] {
       }
       const end = code[j]?.t === "{" ? matchBrace(j) : j;
       const parentSegs = segs();
-      const symbol = [...parentSegs, name].map((x) => (x.startsWith("<") ? x : encodeSegment(x, "::"))).join("::");
-      items.push({ symbol, start: s, end, sigEnd: j, bodyStart: j, parent: parentSegs.length > 0 ? parentSegs.join("::") : null });
+      const symbol = [...parentSegs, name]
+        .map((x) => (x.startsWith("<") ? x : encodeSegment(x, "::")))
+        .join("::");
+      items.push({
+        symbol,
+        start: s,
+        end,
+        sigEnd: j,
+        bodyStart: j,
+        parent: parentSegs.length > 0 ? parentSegs.join("::") : null
+      });
       return end + 1;
     }
     return k + 1;
@@ -273,7 +311,9 @@ export function fingerprintRust(path: string, text: string): FpIdentity[] {
   };
 
   const out: FpIdentity[] = [];
-  const itemSpans = items.map((it) => [code[it.start]?.start ?? 0, code[it.end]?.end ?? 0] as [number, number]);
+  const itemSpans = items.map(
+    (it) => [code[it.start]?.start ?? 0, code[it.end]?.end ?? 0] as [number, number]
+  );
   const ownFile = toks.filter((t) => !itemSpans.some(([a, b]) => t.start >= a && t.end <= b));
   const fnNames = new Map<string, Item>();
   for (const it of items) fnNames.set(it.symbol.split("::").pop() ?? it.symbol, it);
@@ -282,11 +322,18 @@ export function fingerprintRust(path: string, text: string): FpIdentity[] {
     kind: "file",
     parent: null,
     digests: [
-      { projection: "file", scheme: scheme("file", "v1"), digest: codeDigest(scheme("file", "v1"), canonToks(toks)) },
+      {
+        projection: "file",
+        scheme: scheme("file", "v1"),
+        digest: codeDigest(scheme("file", "v1"), canonToks(toks))
+      },
       {
         projection: "own",
         scheme: scheme("own", "v2"),
-        digest: codeDigest(scheme("own", "v2"), `${canonToks(ownFile)} ${items.map((x) => `⟨${x.symbol}⟩`).join(" ")}`)
+        digest: codeDigest(
+          scheme("own", "v2"),
+          `${canonToks(ownFile)} ${items.map((x) => `⟨${x.symbol}⟩`).join(" ")}`
+        )
       }
     ],
     markers: markersOf(ownFile),
@@ -297,16 +344,27 @@ export function fingerprintRust(path: string, text: string): FpIdentity[] {
   for (const it of items) bySym.set(it.symbol, [...(bySym.get(it.symbol) ?? []), it]);
   for (const [sym, list] of [...bySym.entries()].sort((a, b) => cmpStr(a[0], b[0]))) {
     const unitToks = list.flatMap((it) => tokSlice(it.start, it.end));
-    const contractToks = list.flatMap((it) => tokSlice(it.start, Math.max(it.start, it.sigEnd - 1)));
+    const contractToks = list.flatMap((it) =>
+      tokSlice(it.start, Math.max(it.start, it.sigEnd - 1))
+    );
     const unitCanon = canonToks(unitToks);
     const digests: FpIdentity["digests"] = [
-      { projection: "own", scheme: scheme("own", "v2"), digest: codeDigest(scheme("own", "v2"), unitCanon) },
-      { projection: "unit", scheme: scheme("unit", "v2"), digest: codeDigest(scheme("unit", "v2"), unitCanon) }
+      {
+        projection: "own",
+        scheme: scheme("own", "v2"),
+        digest: codeDigest(scheme("own", "v2"), unitCanon)
+      },
+      {
+        projection: "unit",
+        scheme: scheme("unit", "v2"),
+        digest: codeDigest(scheme("unit", "v2"), unitCanon)
+      }
     ];
     if (lang === "verus") {
       const contract = canonToks(contractToks);
       const refs = new Set<string>();
-      for (const t of contractToks) if (!t.comment && fnNames.has(t.t) && t.t !== sym.split("::").pop()) refs.add(t.t);
+      for (const t of contractToks)
+        if (!t.comment && fnNames.has(t.t) && t.t !== sym.split("::").pop()) refs.add(t.t);
       const closure = [...refs]
         .sort(cmpStr)
         .map((r) => {
@@ -314,8 +372,16 @@ export function fingerprintRust(path: string, text: string): FpIdentity[] {
           return `${r}=${canonToks(tokSlice(it.start, it.end))}`;
         })
         .join("\n");
-      digests.push({ projection: "contract", scheme: "verus.contract.syn1", digest: codeDigest("verus.contract.syn1", contract) });
-      digests.push({ projection: "closure", scheme: "verus.closure.syn1", digest: codeDigest("verus.closure.syn1", `${contract}\n--closure--\n${closure}`) });
+      digests.push({
+        projection: "contract",
+        scheme: "verus.contract.syn1",
+        digest: codeDigest("verus.contract.syn1", contract)
+      });
+      digests.push({
+        projection: "closure",
+        scheme: "verus.closure.syn1",
+        digest: codeDigest("verus.closure.syn1", `${contract}\n--closure--\n${closure}`)
+      });
     }
     out.push({
       id: `${fileId}#${sym}`,
@@ -345,7 +411,8 @@ function implSegment(header: string[]): string {
   };
   const h = strip(header);
   const forIdx = h.indexOf("for");
-  const lastIdent = (xs: string[]): string => [...xs].reverse().find((x) => /^\w+$/.test(x) && x !== "where") ?? "_";
+  const lastIdent = (xs: string[]): string =>
+    [...xs].reverse().find((x) => /^\w+$/.test(x) && x !== "where") ?? "_";
   if (forIdx >= 0) {
     const whereIdx = h.indexOf("where");
     const ty = lastIdent(h.slice(forIdx + 1, whereIdx > forIdx ? whereIdx : undefined));

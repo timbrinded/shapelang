@@ -61,7 +61,7 @@ export function transfer(
   ledger: Ledger,
   from: AccountId,
   to: AccountId,
-  amount: number,
+  amount: number
 ): TransferResult {
   const positive = Number.isInteger(amount) && amount >= 1;
   if (positive && from === to && balance(ledger, from) >= amount) {

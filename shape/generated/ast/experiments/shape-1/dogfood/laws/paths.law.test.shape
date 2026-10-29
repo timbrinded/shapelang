@@ -1,0 +1,113 @@
+module shape.generated.ast.experiments.shape_1.dogfood.laws.paths_law_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource PathsLawTestModuleGenCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/paths.law.test.ts#genCase")
+  fingerprint ast.semantic_subtree_v1("sha256:38175114e2f12d51b72dad9e7206aaa5a985709d011aa694b2729e140c0e5aee")
+}
+
+resource PathsLawTestModuleGenPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/paths.law.test.ts#genPath")
+  fingerprint ast.semantic_subtree_v1("sha256:08fb2ea63f95b68a5198c6847422d01f347175f24e29c1fd60cadeb60c514539")
+}
+
+resource PathsLawTestModuleModelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/paths.law.test.ts#model")
+  fingerprint ast.semantic_subtree_v1("sha256:603d5fe0136dd4cc6a553d495f9867ef0b8af6bb2de6bb64d5a3acc0fa0c7c0f")
+}
+
+resource PathsLawTestModuleRunAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/paths.law.test.ts#run")
+  fingerprint ast.semantic_subtree_v1("sha256:3dae290d745f6d8784520649c85c0e0ebd47b7cc46433c5f18a72adbbead0a72")
+}
+
+resource PathsLawTestModuleSpellAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/paths.law.test.ts#spell")
+  fingerprint ast.semantic_subtree_v1("sha256:11bc6c61810e4a414553fee12a4bb9c190ecd82f8464f146c2c930820cc4cc70")
+}
+
+resource PathsLawTestModuleVerdictAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/paths.law.test.ts#verdict")
+  fingerprint ast.semantic_subtree_v1("sha256:87cc00eea9b63ada4d00316b508300a90124eded1bb7ac85cc257a2bf5d516ab")
+}
+
+component PathsLawTestModule : GeneratedCandidate {
+  fn genCase
+    source ts("experiments/shape-1/dogfood/laws/paths.law.test.ts#genCase")
+    effects unknown
+  fn genPath
+    source ts("experiments/shape-1/dogfood/laws/paths.law.test.ts#genPath")
+    effects unknown
+  fn model
+    source ts("experiments/shape-1/dogfood/laws/paths.law.test.ts#model")
+    effects unknown
+  fn run
+    source ts("experiments/shape-1/dogfood/laws/paths.law.test.ts#run")
+    effects unknown
+  fn spell
+    source ts("experiments/shape-1/dogfood/laws/paths.law.test.ts#spell")
+    effects unknown
+  fn verdict
+    source ts("experiments/shape-1/dogfood/laws/paths.law.test.ts#verdict")
+    effects unknown
+}
+
+relation PathsLawTestModuleGenCaseGeneratedFromPathsLawTestModuleGenCaseAstAnchor {
+  kind generated_from
+  connects PathsLawTestModule -> PathsLawTestModuleGenCaseAstAnchor
+  roles { PathsLawTestModule as generated, PathsLawTestModuleGenCaseAstAnchor as syntax }
+  expects PathsLawTestModuleGenCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:38175114e2f12d51b72dad9e7206aaa5a985709d011aa694b2729e140c0e5aee")
+  summary "fn PathsLawTestModule.genCase generated from typescript function_declaration at experiments/shape-1/dogfood/laws/paths.law.test.ts#genCase."
+}
+
+relation PathsLawTestModuleGenPathGeneratedFromPathsLawTestModuleGenPathAstAnchor {
+  kind generated_from
+  connects PathsLawTestModule -> PathsLawTestModuleGenPathAstAnchor
+  roles { PathsLawTestModule as generated, PathsLawTestModuleGenPathAstAnchor as syntax }
+  expects PathsLawTestModuleGenPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:08fb2ea63f95b68a5198c6847422d01f347175f24e29c1fd60cadeb60c514539")
+  summary "fn PathsLawTestModule.genPath generated from typescript function_declaration at experiments/shape-1/dogfood/laws/paths.law.test.ts#genPath."
+}
+
+relation PathsLawTestModuleModelGeneratedFromPathsLawTestModuleModelAstAnchor {
+  kind generated_from
+  connects PathsLawTestModule -> PathsLawTestModuleModelAstAnchor
+  roles { PathsLawTestModule as generated, PathsLawTestModuleModelAstAnchor as syntax }
+  expects PathsLawTestModuleModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:603d5fe0136dd4cc6a553d495f9867ef0b8af6bb2de6bb64d5a3acc0fa0c7c0f")
+  summary "fn PathsLawTestModule.model generated from typescript function_declaration at experiments/shape-1/dogfood/laws/paths.law.test.ts#model."
+}
+
+relation PathsLawTestModuleRunGeneratedFromPathsLawTestModuleRunAstAnchor {
+  kind generated_from
+  connects PathsLawTestModule -> PathsLawTestModuleRunAstAnchor
+  roles { PathsLawTestModule as generated, PathsLawTestModuleRunAstAnchor as syntax }
+  expects PathsLawTestModuleRunAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3dae290d745f6d8784520649c85c0e0ebd47b7cc46433c5f18a72adbbead0a72")
+  summary "fn PathsLawTestModule.run generated from typescript function_declaration at experiments/shape-1/dogfood/laws/paths.law.test.ts#run."
+}
+
+relation PathsLawTestModuleSpellGeneratedFromPathsLawTestModuleSpellAstAnchor {
+  kind generated_from
+  connects PathsLawTestModule -> PathsLawTestModuleSpellAstAnchor
+  roles { PathsLawTestModule as generated, PathsLawTestModuleSpellAstAnchor as syntax }
+  expects PathsLawTestModuleSpellAstAnchor fingerprint ast.semantic_subtree_v1("sha256:11bc6c61810e4a414553fee12a4bb9c190ecd82f8464f146c2c930820cc4cc70")
+  summary "fn PathsLawTestModule.spell generated from typescript function_declaration at experiments/shape-1/dogfood/laws/paths.law.test.ts#spell."
+}
+
+relation PathsLawTestModuleVerdictGeneratedFromPathsLawTestModuleVerdictAstAnchor {
+  kind generated_from
+  connects PathsLawTestModule -> PathsLawTestModuleVerdictAstAnchor
+  roles { PathsLawTestModule as generated, PathsLawTestModuleVerdictAstAnchor as syntax }
+  expects PathsLawTestModuleVerdictAstAnchor fingerprint ast.semantic_subtree_v1("sha256:87cc00eea9b63ada4d00316b508300a90124eded1bb7ac85cc257a2bf5d516ab")
+  summary "fn PathsLawTestModule.verdict generated from typescript function_declaration at experiments/shape-1/dogfood/laws/paths.law.test.ts#verdict."
+}
+
+implementation PathsLawTestModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/laws/paths.law.test.ts"
+  }
+  conforms_to PathsLawTestModule
+}

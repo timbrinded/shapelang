@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.validate
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ValidateModuleHiddenAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/validate.ts#hidden")
+  fingerprint ast.semantic_subtree_v1("sha256:4b29536a86d3d63f302ba5f072b1580e082608d8a8e07e8fb70439b5a0a3ed5f")
+}
+
+component ValidateModule : GeneratedCandidate {
+  fn hidden
+    source ts("experiments/shape-1/trials/H3/validate.ts#hidden")
+    effects unknown
+}
+
+relation ValidateModuleHiddenGeneratedFromValidateModuleHiddenAstAnchor {
+  kind generated_from
+  connects ValidateModule -> ValidateModuleHiddenAstAnchor
+  roles { ValidateModule as generated, ValidateModuleHiddenAstAnchor as syntax }
+  expects ValidateModuleHiddenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4b29536a86d3d63f302ba5f072b1580e082608d8a8e07e8fb70439b5a0a3ed5f")
+  summary "fn ValidateModule.hidden generated from typescript function_declaration at experiments/shape-1/trials/H3/validate.ts#hidden."
+}
+
+implementation ValidateModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/validate.ts"
+  }
+  conforms_to ValidateModule
+}

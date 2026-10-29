@@ -1,0 +1,95 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:0ee8731661d897e621efbd56e0875beecb7c4b7524920ad681fdc55c8ad187d6",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:ccfcbabf10265d643560fc2bcd0014f9bf15241ce35da1f5e0a269c349e617c0",
+    "ids": [
+     "audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+    ],
+    "tier": "final"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": true,
+   "force": "sound",
+   "group": "g:20d76f6c292529770a7097cff148b0079fc81145f96cf80978016095fb3434f7",
+   "introduced": true,
+   "key": "ob:bb51a88f52f5081e773dabf7f021b863325e003c20a47af0a4e2b8e133f59628",
+   "kind": "contradiction",
+   "owner": "audit::AuditTeam",
+   "questions": null,
+   "reason": null,
+   "severity": "blocking",
+   "subject": {
+    "atom": "HardDelete<audit::AuditEvent>",
+    "code": "ts:src/audit/purge.ts#purgeOldEvents"
+   },
+   "tier": "final",
+   "witness": [
+    "sha256:51ed979304abfea638295c5bec1e63db15cfa26c3425a552f31ae7ca312dc279"
+   ]
+  },
+  {
+   "binding": "bd:7d5a80f70d5e33a11a2f6c6f0769da6980e305a2144f0933d6e6d963f7e04a2c",
+   "budget": "judgment",
+   "claim": {
+    "fp": "sha256:044dcccefb48cbfb6103405fe69db6dd3ee5113aca2f49f836fda378cf7b1b84",
+    "ids": [
+     "audit::AuditRetained"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": false,
+   "final": false,
+   "force": null,
+   "group": "g:883d50b0fa264f9f7063af8cf9f373025ceed3bfcabb96d6e3c6cc3a635966f3",
+   "introduced": true,
+   "key": "ob:5b371c115039e4a69e6824a05b4a147b5a74589c6801ced735748d616436d5db",
+   "kind": "loosening",
+   "owner": "audit::AuditTeam",
+   "questions": [
+    "L7"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "sha256:044dcccefb48cbfb6103405fe69db6dd3ee5113aca2f49f836fda378cf7b1b84",
+   "tier": "critical",
+   "witness": []
+  },
+  {
+   "binding": "bd:d7e7e44c003ee22f1daf70a58a6b1007a7f630091050a379a30f8bc08b6322c3",
+   "budget": "judgment",
+   "claim": {
+    "fp": "sha256:044dcccefb48cbfb6103405fe69db6dd3ee5113aca2f49f836fda378cf7b1b84",
+    "ids": [
+     "audit::AuditRetained"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:20d76f6c292529770a7097cff148b0079fc81145f96cf80978016095fb3434f7",
+   "introduced": true,
+   "key": "ob:a4e6971880b1d853c4829e7c3b5c7c99de44d989c8d6ac268a769f7e685f3021",
+   "kind": "unestablished",
+   "owner": "audit::AuditTeam",
+   "questions": null,
+   "reason": "missing",
+   "severity": "blocking",
+   "subject": null,
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

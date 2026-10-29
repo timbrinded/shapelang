@@ -33,18 +33,26 @@ const ts = await loadTsFull(REPO);
 const source = readModel();
 const { claims } = claimIndex(source, Math.floor(Date.parse("2026-10-26T00:00:00Z") / 1000));
 const binds = unitBindings(source);
-const lawFiles = readdirSync(join(dir, LAWS_DIR)).filter((f) => f.endsWith(".law.test.ts")).sort();
+const lawFiles = readdirSync(join(dir, LAWS_DIR))
+  .filter((f) => f.endsWith(".law.test.ts"))
+  .sort();
 
 function lawVerdicts(file: string): { verdicts: Map<string, boolean>; exit: number; ms: number } {
   const tmp = mkdtempSync(join(WORK, "dog", "v-"));
   const res = join(tmp, "v.jsonl");
   const t0 = Date.now();
-  const r = spawnSync("bun", ["test", `${LAWS_DIR}/${file}`], { cwd: dir, env: { ...process.env, SHAPE_LAW_RESULTS: res }, timeout: 300_000, maxBuffer: 1 << 26 });
+  const r = spawnSync("bun", ["test", `${LAWS_DIR}/${file}`], {
+    cwd: dir,
+    env: { ...process.env, SHAPE_LAW_RESULTS: res },
+    timeout: 300_000,
+    maxBuffer: 1 << 26
+  });
   const verdicts = new Map();
-  if (existsSync(res)) for (const l of readFileSync(res, "utf8").split("\n").filter(Boolean)) {
-    const x = JSON.parse(l);
-    verdicts.set(x.law, x.holds);
-  }
+  if (existsSync(res))
+    for (const l of readFileSync(res, "utf8").split("\n").filter(Boolean)) {
+      const x = JSON.parse(l);
+      verdicts.set(x.law, x.holds);
+    }
   rmSync(tmp, { recursive: true, force: true });
   return { verdicts, exit: r.status ?? 124, ms: Date.now() - t0 };
 }
@@ -52,7 +60,10 @@ function lawVerdicts(file: string): { verdicts: Map<string, boolean>; exit: numb
 const out = [];
 for (const file of lawFiles) {
   const text = readFileSync(join(dir, LAWS_DIR, file), "utf8");
-  const ids = [...text.matchAll(/lawTest\("([^"]+)", "(holds|fails)"/g)].map((m) => ({ law: m[1], expect: m[2] }));
+  const ids = [...text.matchAll(/lawTest\("([^"]+)", "(holds|fails)"/g)].map((m) => ({
+    law: m[1],
+    expect: m[2]
+  }));
   const base = lawVerdicts(file);
   for (const { law, expect } of ids) {
     if (expect !== "holds" || base.verdicts.get(law) !== true) continue;
@@ -79,26 +90,62 @@ for (const file of lawFiles) {
     }
     // same-file top-level functions the unit calls (not nested in it, not itself)
     const body = src.slice(unit.start, unit.end);
-    const callees = spans.filter((s) => s.symbol && !s.symbol.includes(".") && s.id !== id && s.kind !== "file" && (s.start >= unit.end || s.end <= unit.start) && new RegExp(`\\b${s.symbol.replace(/[$]/g, "\\$")}\\s*[(<]`).test(body));
-    const inUnit = WHERE.has("unit") ? pickEven(mutantsOf(ts, path, src, unit), PER).map((m) => ({ where: "unit", at: id, path, src, m })) : [];
-    const inCallees = WHERE.has("callee") ? pickEven(callees.flatMap((s) => mutantsOf(ts, path, src, s).map((m) => ({ where: "callee", at: s.id, path, src, m }))), PER) : [];
+    const callees = spans.filter(
+      (s) =>
+        s.symbol &&
+        !s.symbol.includes(".") &&
+        s.id !== id &&
+        s.kind !== "file" &&
+        (s.start >= unit.end || s.end <= unit.start) &&
+        new RegExp(`\\b${s.symbol.replace(/[$]/g, "\\$")}\\s*[(<]`).test(body)
+    );
+    const inUnit = WHERE.has("unit")
+      ? pickEven(mutantsOf(ts, path, src, unit), PER).map((m) => ({
+          where: "unit",
+          at: id,
+          path,
+          src,
+          m
+        }))
+      : [];
+    const inCallees = WHERE.has("callee")
+      ? pickEven(
+          callees.flatMap((s) =>
+            mutantsOf(ts, path, src, s).map((m) => ({ where: "callee", at: s.id, path, src, m }))
+          ),
+          PER
+        )
+      : [];
     // cross-file callees: names the unit calls that the file imports from a relative module
     const imported = [];
     if (WHERE.has("import")) {
       for (const st of sf.statements) {
-        if (st.kind !== ts.SyntaxKind.ImportDeclaration || !st.moduleSpecifier?.text?.startsWith(".")) continue;
+        if (
+          st.kind !== ts.SyntaxKind.ImportDeclaration ||
+          !st.moduleSpecifier?.text?.startsWith(".")
+        )
+          continue;
         const spec = st.moduleSpecifier.text;
-        const cand = [spec, spec.replace(/\.js$/, ".ts"), `${spec}.ts`, `${spec}/index.ts`].map((x) => join(path, "..", x).replace(/\\/g, "/"));
+        const cand = [spec, spec.replace(/\.js$/, ".ts"), `${spec}.ts`, `${spec}/index.ts`].map(
+          (x) => join(path, "..", x).replace(/\\/g, "/")
+        );
         const target = cand.find((x) => existsSync(join(dir, x)) && x.endsWith(".ts"));
         if (!target) continue;
         const names = [];
         const visit = (n) => {
-          if (n.kind === ts.SyntaxKind.ImportSpecifier && !n.isTypeOnly) names.push({ local: n.name.text, orig: (n.propertyName ?? n.name).text });
+          if (n.kind === ts.SyntaxKind.ImportSpecifier && !n.isTypeOnly)
+            names.push({ local: n.name.text, orig: (n.propertyName ?? n.name).text });
           ts.forEachChild(n, visit);
         };
         if (st.importClause && !st.importClause.isTypeOnly) visit(st.importClause);
         const tsrc = readFileSync(join(dir, target), "utf8");
-        const tsf = ts.createSourceFile(target, tsrc, ts.ScriptTarget.Latest, true, scriptKindOf(ts, target));
+        const tsf = ts.createSourceFile(
+          target,
+          tsrc,
+          ts.ScriptTarget.Latest,
+          true,
+          scriptKindOf(ts, target)
+        );
         const tspans = identitySpans(ts, tsf, target);
         for (const nm of names) {
           if (!new RegExp(`\\b${nm.local}\\s*[(<]`).test(body)) continue;
@@ -107,17 +154,53 @@ for (const file of lawFiles) {
         }
       }
     }
-    const inImports = pickEven(imported.flatMap((x) => mutantsOf(ts, x.path, x.src, x.span).map((m) => ({ where: "import", at: x.span.id, path: x.path, src: x.src, m }))), PER);
+    const inImports = pickEven(
+      imported.flatMap((x) =>
+        mutantsOf(ts, x.path, x.src, x.span).map((m) => ({
+          where: "import",
+          at: x.span.id,
+          path: x.path,
+          src: x.src,
+          m
+        }))
+      ),
+      PER
+    );
     const cands = [];
     for (const k of [...inUnit, ...inCallees, ...inImports]) {
       writeFileSync(join(dir, k.path), applyMutant(k.src, k.m));
       const v = lawVerdicts(file);
       writeFileSync(join(dir, k.path), k.src);
       const holds = v.verdicts.get(law);
-      cands.push({ where: k.where, at: k.at, path: k.path, mutant: k.m, killed: holds !== true, verdict: holds ?? null, exit: v.exit, otherLawsFailing: [...v.verdicts.entries()].filter(([l, h]) => l !== law && h === false && ids.find((x) => x.law === l)?.expect === "holds").map(([l]) => l), ms: v.ms });
-      process.stderr.write(`${law} ${k.where} ${k.at.split("#")[1]} ${k.m.id} -> ${holds === true ? "survives" : "killed"} (${v.ms} ms)\n`);
+      cands.push({
+        where: k.where,
+        at: k.at,
+        path: k.path,
+        mutant: k.m,
+        killed: holds !== true,
+        verdict: holds ?? null,
+        exit: v.exit,
+        otherLawsFailing: [...v.verdicts.entries()]
+          .filter(
+            ([l, h]) => l !== law && h === false && ids.find((x) => x.law === l)?.expect === "holds"
+          )
+          .map(([l]) => l),
+        ms: v.ms
+      });
+      process.stderr.write(
+        `${law} ${k.where} ${k.at.split("#")[1]} ${k.m.id} -> ${holds === true ? "survives" : "killed"} (${v.ms} ms)\n`
+      );
     }
-    out.push({ law, file, unit: unitQ, id, path, callees: callees.map((s) => s.id), imported: imported.map((x) => x.span.id), candidates: cands });
+    out.push({
+      law,
+      file,
+      unit: unitQ,
+      id,
+      path,
+      callees: callees.map((s) => s.id),
+      imported: imported.map((x) => x.span.id),
+      candidates: cands
+    });
   }
 }
 writeFileSync(OUT, `${JSON.stringify(out, null, 1)}\n`);

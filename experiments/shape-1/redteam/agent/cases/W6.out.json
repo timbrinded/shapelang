@@ -1,0 +1,157 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:76837bb71b03ce11bd0716fe31d65fbf24c3f526de246d40a7b6de5f08493b94",
+ "verdict": "owed",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:220a9b307f0f3608a5573921a7884109fe00e95b64b0202e797e5fdc3faef2af",
+   "kind": "contradiction",
+   "reason": null,
+   "questions": null,
+   "introduced": false,
+   "severity": "owed",
+   "tier": "critical",
+   "budget": "mechanical",
+   "force": "sound",
+   "owner": "ironkv::IronKvTeam",
+   "assignee": null,
+   "group": "g:1773aa8cf684c1c60f847e64760ffdcd5c6bdbb88a490e1c24025571a0415e81",
+   "claim": {
+    "fp": "sha256:dc8454f26ba4a098a6681e766d63ddf9226954a5a5bf8ed9d8148c7b0996fac8",
+    "ids": [
+     "ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "tier": "critical"
+   },
+   "subject": {
+    "code": "verus:ironkv/src/host_t.rs#Host::send",
+    "atom": "external_body<std::Trust>"
+   },
+   "witness": [
+    "sha256:4d5288ce6d2ededfce2d79368c5fa934e9959d7005fdf1b8220baae6c65c2bcf"
+   ],
+   "facts": {
+    "sha256:4d5288ce6d2ededfce2d79368c5fa934e9959d7005fdf1b8220baae6c65c2bcf": {
+     "type": "hatch",
+     "at": "verus:ironkv/src/host_t.rs#Host::send",
+     "kind": "external_body",
+     "n": 1
+    }
+   },
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:48dec644b2c008e44a083bdc750a9ff9aa6bf8b186355f2225740ae47584d1d7",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "edit-code",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "exception",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "ironkv::dana"
+     ],
+     "creates": null
+    },
+    {
+     "act": "edit-shape",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "critical",
+      "answers": 1,
+      "owners": [
+       "ironkv::IronKvTeam"
+      ]
+     }
+    }
+   ],
+   "causes": [
+    {
+     "type": "fact",
+     "id": "sha256:4d5288ce6d2ededfce2d79368c5fa934e9959d7005fdf1b8220baae6c65c2bcf"
+    },
+    {
+     "type": "code",
+     "id": "verus:ironkv/src/host_t.rs#Host::send"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [],
+ "renames": [],
+ "debt": [],
+ "preexisting": [
+  {
+   "obligation": "ob:220a9b307f0f3608a5573921a7884109fe00e95b64b0202e797e5fdc3faef2af",
+   "owner": "ironkv::IronKvTeam"
+  }
+ ],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 1,
+   "den": 1
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [
+   "ironkv::DelegationMap",
+   "ironkv::HostTrusted"
+  ],
+  "ungoverned": {
+   "num": 2,
+   "den": 7
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [
+   "ironkv::verus",
+   "ironkv::verusRefines"
+  ],
+  "baseObservations": "present",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 1,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"ironkv::DelegationMap.*\",\"ironkv::DelegationMap.*\"]",
+   "cell:[\"ironkv::HostTrusted.*\",\"ironkv::HostTrusted.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 3,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

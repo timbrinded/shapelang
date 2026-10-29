@@ -7,7 +7,15 @@ import { type Gov, isEligible, tierPolicy } from "./governance.ts";
 import { descendantsOrSelf } from "./manifest.ts";
 import type { Claim, Requirement, ShapeError } from "./model.ts";
 import type { ParsedRecord, ShapeRecord } from "./records.ts";
-import { type Level, type Tier, cmpStr, levelRank, maxTier, sortedUniq, toSeconds } from "./util.ts";
+import {
+  type Level,
+  type Tier,
+  cmpStr,
+  levelRank,
+  maxTier,
+  sortedUniq,
+  toSeconds
+} from "./util.ts";
 import { compCode, posComp } from "./world.ts";
 
 export interface Pair {
@@ -73,7 +81,12 @@ export function lawTierStar(ctx: Ctx, c: Claim): Tier {
 }
 
 export function requirementStar(ctx: Ctx, c: Claim, tier: Tier): Requirement {
-  let r = c.requirement ?? { level: "declared" as Level, judged: false, pins: [], projection: "unit" as const };
+  let r = c.requirement ?? {
+    level: "declared" as Level,
+    judged: false,
+    pins: [],
+    projection: "unit" as const
+  };
   for (const b of ctx.heirOf.get(c.fp) ?? []) {
     const bc = ctx.baseClaims.get(b);
     if (bc?.requirement) r = strictest(r, bc.requirement);
@@ -83,12 +96,18 @@ export function requirementStar(ctx: Ctx, c: Claim, tier: Tier): Requirement {
 }
 
 /** Req(c, kind) from c and M_h (A.5.3.4). */
-export function reqOf(ctx: Ctx, c: Claim, kind: "test" | "judgment", projection: Requirement["projection"]): Pair[] {
+export function reqOf(
+  ctx: Ctx,
+  c: Claim,
+  kind: "test" | "judgment",
+  projection: Requirement["projection"]
+): Pair[] {
   const W = ctx.Wh;
   const M = ctx.Mh;
   const out: Pair[] = [];
   const has = (id: string, p: string): boolean => !!M.ids.get(id)?.digests.has(p);
-  const marked = (id: string): boolean => Object.values(M.ids.get(id)?.markers ?? {}).some((n) => n > 0);
+  const marked = (id: string): boolean =>
+    Object.values(M.ids.get(id)?.markers ?? {}).some((n) => n > 0);
   for (const t of (c.args.on as string[]) ?? []) {
     if (t.startsWith("unit ")) {
       const x = W.unitBind.get(t.slice(5)) ?? null;
@@ -117,9 +136,11 @@ export function reqOf(ctx: Ctx, c: Claim, kind: "test" | "judgment", projection:
         if (!info?.symbol || !has(x, pi)) continue;
         const parent = info.parent;
         const parentFile = !parent || !M.ids.get(parent)?.symbol;
-        if (parentFile || !has(parent, pi) || !codeSet.has(parent)) out.push({ id: x, projection: pi });
+        if (parentFile || !has(parent, pi) || !codeSet.has(parent))
+          out.push({ id: x, projection: pi });
       }
-      if (pi === "unit") for (const x of code) if (!M.ids.get(x)?.symbol) out.push({ id: x, projection: "own" });
+      if (pi === "unit")
+        for (const x of code) if (!M.ids.get(x)?.symbol) out.push({ id: x, projection: "own" });
     } else if (t.startsWith("code ")) {
       const x = t.slice(5);
       out.push({ id: x, projection: has(x, "unit") ? "unit" : "file" });
@@ -140,7 +161,8 @@ export function reqOf(ctx: Ctx, c: Claim, kind: "test" | "judgment", projection:
 
 function cites(r: ShapeRecord): Map<string, string> {
   const m = new Map<string, string>();
-  for (const c of [...(r.code ?? []), ...(r.deps ?? [])]) m.set(`${c.id}@${c.projection}`, c.digest);
+  for (const c of [...(r.code ?? []), ...(r.deps ?? [])])
+    m.set(`${c.id}@${c.projection}`, c.digest);
   return m;
 }
 
@@ -176,7 +198,9 @@ export function producerFinest(ctx: Ctx, r: ParsedRecord): string[] {
 }
 
 function cone(ctx: Ctx, r: ShapeRecord): Set<string> {
-  const start = [...(r.code ?? []), ...(r.deps ?? [])].map((c) => c.id).filter((x) => ctx.Mh.ids.has(x));
+  const start = [...(r.code ?? []), ...(r.deps ?? [])]
+    .map((c) => c.id)
+    .filter((x) => ctx.Mh.ids.has(x));
   const seen = new Set<string>();
   const stack = [...start];
   while (stack.length > 0) {
@@ -189,11 +213,19 @@ function cone(ctx: Ctx, r: ShapeRecord): Set<string> {
   return seen;
 }
 
-function assumptionUndeclared(ctx: Ctx, r: ParsedRecord, c: Claim, tier: Tier, req: Pair[]): boolean {
+function assumptionUndeclared(
+  ctx: Ctx,
+  r: ParsedRecord,
+  c: Claim,
+  tier: Tier,
+  req: Pair[]
+): boolean {
   const s = r.shape;
   const coneSet = cone(ctx, s);
   const hatch: { x: string; kind: string }[] = [];
-  for (const x of coneSet) for (const [k, n] of Object.entries(ctx.Mh.ids.get(x)?.markers ?? {})) if (n > 0) hatch.push({ x, kind: k });
+  for (const x of coneSet)
+    for (const [k, n] of Object.entries(ctx.Mh.ids.get(x)?.markers ?? {}))
+      if (n > 0) hatch.push({ x, kind: k });
   const named: string[] = [];
   const tools: string[] = [];
   for (const a of s.assumptions ?? []) {
@@ -220,7 +252,8 @@ function assumptionUndeclared(ctx: Ctx, r: ParsedRecord, c: Claim, tier: Tier, r
     const allowed = new Set<string>();
     for (const k of base?.esf.components ?? []) {
       if (!k.boundary || !base) continue;
-      if (compCode(base, k.q).some((x) => meets.has(x))) for (const a of k.assumes) allowed.add(a.id);
+      if (compCode(base, k.q).some((x) => meets.has(x)))
+        for (const a of k.assumes) allowed.add(a.id);
     }
     if (named.some((n) => !allowed.has(n))) return true;
   }
@@ -257,9 +290,15 @@ export function evaluateLaws(
     const pfinest = new Set<string>();
     for (const r of ctx.records) {
       const s = r.shape;
-      if (!(s.kind === "test" || s.kind === "proof" || (s.kind === "judgment" && s.claim))) continue;
+      if (!(s.kind === "test" || s.kind === "proof" || (s.kind === "judgment" && s.claim)))
+        continue;
       if (!s.claim) continue;
-      const direction = s.result === "supports" ? "supports" : s.result === "contradicts" ? "contradicts" : "inconclusive";
+      const direction =
+        s.result === "supports"
+          ? "supports"
+          : s.result === "contradicts"
+            ? "contradicts"
+            : "inconclusive";
       const related = direction === "contradicts" ? leq(s.claim, c) : geq(s.claim, c);
       if (!related) continue;
       const isJ = s.kind === "judgment";
@@ -283,7 +322,12 @@ export function evaluateLaws(
       let self = false;
       if (isJ) {
         const j = s.judge ?? "";
-        const e = isEligible(gov, j, { tier, owner: ownerStar(ctx, c), noAgent: false, final: tier === "final" });
+        const e = isEligible(gov, j, {
+          tier,
+          owner: ownerStar(ctx, c),
+          noAgent: false,
+          final: tier === "final"
+        });
         judgeOk = e.ok;
         self = e.self;
         const t = toSeconds(s.time) ?? 0;
@@ -295,7 +339,8 @@ export function evaluateLaws(
       if (!isJ && !reason && assumptionUndeclared(ctx, r, c, tier, req0)) reason = "assumption";
       if (!reason) {
         if (isJ) {
-          if (!req.judged || (req.pins.length > 0 && !req.pins.includes(s.judge ?? ""))) reason = "weak";
+          if (!req.judged || (req.pins.length > 0 && !req.pins.includes(s.judge ?? "")))
+            reason = "weak";
         } else {
           const lvl = g?.establishes ? levelOfKind(s.kind) : "declared";
           const pinned = req.pins.length > 0 && !req.pins.includes(s.provider?.id ?? "");
@@ -307,16 +352,37 @@ export function evaluateLaws(
         for (const x of producerFinest(ctx, r)) pfinest.add(x);
       }
       let force: RecEval["force"] = null;
-      if (direction === "contradicts" && !partial && judgeOk && reason !== "stale" && reason !== "expired") {
+      if (
+        direction === "contradicts" &&
+        !partial &&
+        judgeOk &&
+        reason !== "stale" &&
+        reason !== "expired"
+      ) {
         if (isJ) force = "sound";
-        else if (s.counterexample !== undefined && s.counterexample !== null) force = g?.presenceA ? "sound" : "heuristic";
+        else if (s.counterexample !== undefined && s.counterexample !== null)
+          force = g?.presenceA ? "sound" : "heuristic";
       }
-      evals.push({ record: r, review: null, judge: s.judge ?? null, direction, applicable: !partial && judgeOk, reason, force, self });
+      evals.push({
+        record: r,
+        review: null,
+        judge: s.judge ?? null,
+        direction,
+        applicable: !partial && judgeOk,
+        reason,
+        force,
+        self
+      });
     }
     // claim judgments from review lines without a relay: this run only, head Req
     for (const rv of reviews) {
       if (!claimMatches(rv.claimSel, c)) continue;
-      const e = isEligible(gov, rv.actor, { tier, owner: ownerStar(ctx, c), noAgent: false, final: tier === "final" });
+      const e = isEligible(gov, rv.actor, {
+        tier,
+        owner: ownerStar(ctx, c),
+        noAgent: false,
+        final: tier === "final"
+      });
       let reason: UseReason | null = null;
       if (!req.judged || (req.pins.length > 0 && !req.pins.includes(rv.actor))) reason = "weak";
       evals.push({
@@ -354,9 +420,11 @@ export function evaluateLaws(
         }
       }
     }
-    const bindingReq = levelRank(req.level) >= 1 && req.level !== "none" ? reqTest : req.judged ? reqJudg : reqTest;
+    const bindingReq =
+      levelRank(req.level) >= 1 && req.level !== "none" ? reqTest : req.judged ? reqJudg : reqTest;
     const changed = new Set([...ctx.delta, ...ctx.deleted]);
-    const introduced = ctx.hasBase && (bindingReq.some((p) => changed.has(p.id)) || reason === "producer-changed");
+    const introduced =
+      ctx.hasBase && (bindingReq.some((p) => changed.has(p.id)) || reason === "producer-changed");
     out.push({
       claim: c,
       tierStar: tier,
@@ -385,7 +453,9 @@ export function claimMatches(sel: string, c: Claim): boolean {
 
 /** owner*(c_h): the base owners of what it inherits, else its head owner (A.6.2.5). */
 export function ownerStar(ctx: Ctx, c: Claim): string {
-  const bases = (ctx.heirOf.get(c.fp) ?? []).map((b) => ctx.baseClaims.get(b)).filter((x): x is Claim => !!x);
+  const bases = (ctx.heirOf.get(c.fp) ?? [])
+    .map((b) => ctx.baseClaims.get(b))
+    .filter((x): x is Claim => !!x);
   if (bases.length > 0) {
     const best = [...bases].sort((a, b) => cmpStr(a.fp, b.fp))[0] as Claim;
     return best.owner;
@@ -399,9 +469,15 @@ export function providerMissing(ctx: Ctx, laws: LawEval[]): ShapeError[] {
   if (!ctx.hasBase) return errors;
   for (const g of [...ctx.provs.values()].sort((a, b) => cmpStr(a.q, b.q))) {
     if (!g.authenticated || !g.base) continue;
-    const fromIt = ctx.records.filter((r) => r.shape.provider?.id === g.q && r.signers.includes(g.identity ?? ""));
+    const fromIt = ctx.records.filter(
+      (r) => r.shape.provider?.id === g.q && r.signers.includes(g.identity ?? "")
+    );
     if (g.base.produces.includes("observation") && g.channelsB.length > 0) {
-      const ok = fromIt.some((r) => r.shape.kind === "observation" && (r.shape.revision === ctx.Mh.revision || g.depsCompleteB));
+      const ok = fromIt.some(
+        (r) =>
+          r.shape.kind === "observation" &&
+          (r.shape.revision === ctx.Mh.revision || g.depsCompleteB)
+      );
       if (!ok)
         errors.push({
           code: "E-provider-missing",
@@ -415,14 +491,22 @@ export function providerMissing(ctx: Ctx, laws: LawEval[]): ShapeError[] {
       for (const l of laws) {
         if (!g.base || !lawDecidedBy(l.claim, g.base)) continue;
         const ok = l.evals.some(
-          (e) => e.record && e.record.shape.provider?.id === g.q && e.record.signers.includes(g.identity ?? "") && e.applicable && (e.reason !== "stale" || false)
+          (e) =>
+            e.record &&
+            e.record.shape.provider?.id === g.q &&
+            e.record.signers.includes(g.identity ?? "") &&
+            e.applicable &&
+            (e.reason !== "stale" || false)
         );
         if (!ok)
           errors.push({
             code: "E-provider-missing",
             subject: `provider ${g.q} claim ${l.claim.ids[0] ?? l.claim.fp}`,
             message: `authenticated ${g.q} supplied no applicable record for ${l.claim.ids[0] ?? l.claim.fp} at head`,
-            causes: [{ type: "provider", id: g.q }, { type: "claim", id: l.claim.fp }],
+            causes: [
+              { type: "provider", id: g.q },
+              { type: "claim", id: l.claim.fp }
+            ],
             dischargers: [{ act: "rerun", by: "ci", agentSafe: true, eligible: [], creates: null }]
           });
       }

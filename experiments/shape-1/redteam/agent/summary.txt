@@ -1,0 +1,224 @@
+A1   blocked   kernel=blocked   test record cites a superseded digest of the changed unit (revision = head)
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(missing) blocking critical audit::EventsArePreserved
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(stale) blocking critical audit::EventsArePreserved
+      control (no EventsArePreserved obligation): blocked grade=succeeded | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete
+A2   blocked   kernel=blocked   test record cites a superseded digest, revision is a third commit (RJ13 cannot check it)
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(stale) blocking critical audit::EventsArePreserved
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(stale) blocking critical audit::EventsArePreserved
+A3   blocked   kernel=partial   observation scope entry for the violating unit cites a wrong digest (revision = head)
+      proto: blocked | E-provider-missing provider audit::sqlEffects ; coverage blocking final "component audit::AuditStore"
+      lean : blocked | coverage blocking final "component audit::AuditStore"
+A4   partial   kernel=partial   observation from a third commit whose entries for the violating file and unit cite other digests (deps complete)
+      proto: blocked | coverage blocking final "component audit::AuditStore"
+      lean : blocked | coverage blocking final "component audit::AuditStore"
+A5   blocked   kernel=blocked   in-toto subject digest and predicate digest disagree (subject = head digest, predicate = old)
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(missing) blocking critical audit::EventsArePreserved
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(missing) blocking critical audit::EventsArePreserved
+A6   blocked   kernel=blocked   in-toto subject digest wrong, predicate digest right
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(missing) blocking critical audit::EventsArePreserved
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(missing) blocking critical audit::EventsArePreserved
+B1   blocked   kernel=blocked   test record names the law's id but carries another claim's fingerprint
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(missing) blocking critical audit::EventsArePreserved
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(missing) blocking critical audit::EventsArePreserved
+B2   succeeded kernel=blocked   record for a weaker template instance establishes a stronger one through string order
+      proto: pass | 
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::AppendFast ; unestablished(missing) blocking critical audit::AppendFast
+      control (AppendFast unestablished (300ms is weaker in both orders)): blocked grade=blocked | unestablished(missing) blocking critical audit::AppendFast
+B3   blocked   kernel=blocked   record for the base instance of a law the head tightened
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::AppendBounded ; unestablished(missing) blocking critical audit::AppendBounded
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::AppendBounded ; loosening[L4] blocking critical audit::AppendBounded ; unestablished(missing) blocking critical audit::AppendBounded
+B4   blocked   kernel=blocked   a fresh supporting record alongside a fresh contradicting one for the same law
+      proto: blocked | contradiction blocking critical sound audit::AppendDeterministic
+      lean : blocked | contradiction blocking critical sound audit::AppendDeterministic
+      control (pass (baseline of the clean world)): pass grade=succeeded | 
+C1   blocked   kernel=blocked   base-revision test record replaces the fresh one
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(stale) blocking critical audit::EventsArePreserved
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(stale) blocking critical audit::EventsArePreserved
+C2   blocked   kernel=blocked   deps-complete provider reuses a base record whose citations no longer cover Req
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(stale) blocking critical audit::EventsArePreserved
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(stale) blocking critical audit::EventsArePreserved
+C3   succeeded kernel=blocked   deps-complete base record reused although an observed callee of the law's unit changed (deps: [])
+      proto: pass | 
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::AppendDeterministic ; unestablished(stale) owed critical preexisting audit::AppendDeterministic
+C3b  blocked   kernel=blocked   as C3, but the base record honestly lists the callee in deps
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::AppendDeterministic ; unestablished(stale) owed critical preexisting audit::AppendDeterministic
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::AppendDeterministic ; unestablished(stale) owed critical preexisting audit::AppendDeterministic
+C4   partial   kernel=partial   base-revision observation from a deps-complete observer replaces the head one (normal tier)
+      proto: owed | coverage owed normal "component checker::ShapeRuleEngine"
+      lean : owed | coverage owed normal "component checker::ShapeRuleEngine"
+      control (blocking sound contradiction): blocked grade=blocked | contradiction blocking normal sound tooling::CheckerNeverReadsClock
+C5   blocked   kernel=blocked   answers from before a push that edits the purge
+      proto: blocked | coverage blocking critical "component audit::AuditStore" ; loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L1] blocking critical exploited "component audit::AuditStore"
+      lean : blocked | coverage blocking critical "component audit::AuditStore" ; loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L1] blocking critical exploited "component audit::AuditStore"
+      control (both loosenings answered (pass)): blocked grade=succeeded | coverage blocking critical "component audit::AuditStore"
+C6   blocked   kernel=blocked   answers given on another change id
+      proto: blocked | coverage blocking critical "component audit::AuditStore" ; loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L1] blocking critical exploited "component audit::AuditStore"
+      lean : blocked | coverage blocking critical "component audit::AuditStore" ; loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L1] blocking critical exploited "component audit::AuditStore"
+C7   partial   kernel=partial   base record of a preexisting violation masks a second violation in the same function (no n)
+      proto: owed | contradiction owed critical sound preexisting tooling::CheckerNeverReadsClock
+      lean : owed | contradiction owed critical sound preexisting tooling::CheckerNeverReadsClock
+      control (introduced blocking contradiction (n 2 > 1)): blocked grade=blocked | contradiction blocking critical sound tooling::CheckerNeverReadsClock
+D1   partial   kernel=partial   head manifest keeps base digests for an edited file (blob changed)
+      proto: owed | contradiction owed critical sound preexisting tooling::CheckerNeverReadsClock
+      lean : owed | contradiction owed critical sound preexisting tooling::CheckerNeverReadsClock
+D2   succeeded kernel=succeeded guarded unit reads a const imported from another file; the const changes
+      proto: pass | 
+      lean : pass | 
+D3   succeeded kernel=succeeded guarded unit reads an imported JSON file; the JSON changes
+      proto: pass | 
+      lean : pass | 
+D4   succeeded kernel=succeeded guarded unit passes a same-file const as `{ days: days }`; the const changes
+      proto: pass | 
+      lean : pass | 
+D5   succeeded kernel=succeeded guarded unit uses a same-file enum; the enum value changes
+      proto: pass | 
+      lean : pass | 
+D6   blocked   kernel=blocked   control: the guarded unit's own body changes
+      proto: blocked | unestablished(stale) blocking critical ret::Retention.purgeOld/RefactorSensitive/law
+      lean : blocked | unestablished(stale) blocking critical ret::Retention.purgeOld/RefactorSensitive/law
+D7   partial   kernel=partial   an optimisation in a callee breaks a unit law; the law's unit fingerprint is unchanged
+      proto: owed | contradiction owed critical sound preexisting audit::AppendDeterministic
+      lean : owed | contradiction owed critical sound preexisting audit::AppendDeterministic
+      control (blocking sound law contradiction (appendEvent itself edited)): blocked grade=blocked | contradiction blocking critical sound audit::AppendDeterministic
+E1   succeeded kernel=succeeded guarded unit's logic lives in a same-file helper; the helper changes
+      proto: pass | 
+      lean : pass | 
+E2   blocked   kernel=blocked   component split moves the violating code out of a component-scoped forbid
+      proto: blocked | loosening[L1] blocking critical exploited audit::NoDeleteInStore
+      lean : blocked | loosening[L1] blocking critical exploited audit::NoDeleteInStore
+      control (blocking sound contradiction of NoDeleteInStore): blocked grade=blocked | contradiction blocking critical sound audit::NoDeleteInStore
+E3   blocked   kernel=blocked   rule renamed and narrowed in the same change that violates it
+      proto: blocked | loosening[L1] blocking critical exploited tooling::CheckerNeverReadsClock
+      lean : blocked | loosening[L1] blocking critical exploited tooling::CheckerNeverReadsClock
+      control (blocking sound contradiction): blocked grade=blocked | contradiction blocking critical sound tooling::CheckerNeverReadsClock
+E4   blocked   kernel=blocked   resource renamed (same bindings, no `was`) in the same change that violates its forbid
+      proto: blocked | contradiction blocking critical sound tooling::CheckerNeverReadsClock
+      lean : blocked | contradiction blocking critical sound tooling::CheckerNeverReadsClock ; loosening[L1] blocking critical tooling::CheckerNeverReadsClock ; loosening[L2] blocking normal tooling::ShpCli.isoToday/effects.upper
+E5   blocked   kernel=succeeded resource binding narrowed so the new read's resource code is unmapped
+      proto: blocked | coverage blocking critical "resourceCode ts.call(\"performance.now\")" ; loosening[L1] blocking normal "component checker::ShapeChecker" ; loosening[L1] blocking normal "component checker::ShapeRuleEngine" ; loosening[L1] blocking critical tooling::CheckerNeverReadsClock
+      lean : pass | 
+E6   succeeded kernel=succeeded append-only log rewritten (UPDATE … SET payload = NULL) from code outside the law's component
+      proto: pass | 
+      lean : pass | 
+      control (blocking final contradiction (HardDelete)): blocked grade=blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete
+E7   blocked   kernel=partial   unit law re-bound to a decoy while the real function is broken
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; loosening[L6] blocking critical audit::AppendDeterministic ; loosening[L6] blocking critical audit::AuditStore.appendEvent/effects.upper ; unestablished(stale) blocking critical audit::EventsArePreserved ; contradiction owed critical sound preexisting audit::AuditStore.appendEvent/effects.lower
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; coverage blocking final "component audit::AuditStore" ; unestablished(stale) blocking critical audit::EventsArePreserved
+F1   blocked   kernel=blocked   exception names the final forbid by claim id, with an exception answer
+      proto: blocked | E-exception exception audit::PurgeAccepted ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete
+      lean : blocked | E-exception exception audit::PurgeAccepted ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete
+F2   blocked   kernel=blocked   component exception on AuditStore (non-final target) covering the purge, with an exception answer
+      proto: blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete
+      lean : blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete
+F3   blocked   kernel=blocked   exception names the final forbid by fingerprint prefix
+      proto: blocked | E-exception exception audit::PurgeAccepted ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete
+      lean : blocked | E-exception exception audit::PurgeAccepted ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete
+F4   blocked   kernel=blocked   head lowers AuditEvent from final to critical and adds a component exception, with an exception answer
+      proto: blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L1,L7] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking final "resource audit::AuditEvent"
+      lean : blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L1,L7] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking final "resource audit::AuditEvent"
+F5   blocked   kernel=blocked   head restates the final forbid at tier low and drops AppendOnly
+      proto: blocked | contradiction blocking final sound audit::Cleanup ; loosening[L1,L7] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete
+      lean : blocked | contradiction blocking final sound audit::Cleanup ; loosening[L1,L7] blocking final exploited audit::Cleanup
+F6   blocked   kernel=blocked   head policy stops blocking unestablished at critical while dropping the law's evidence
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking normal "policy normal" ; loosening[L7] blocking critical "policy critical" ; unestablished(missing) blocking critical audit::EventsArePreserved
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking normal "policy normal" ; loosening[L7] blocking critical "policy critical" ; unestablished(missing) blocking critical audit::EventsArePreserved
+F7   blocked   kernel=blocked   head policy admits agents as critical judges; a non-author agent approves Variant C's final loosening
+      proto: blocked | coverage blocking critical "component audit::AuditStore" ; loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking critical "policy critical" ; loosening[L1] blocking critical exploited "component audit::AuditStore"
+      lean : blocked | coverage blocking critical "component audit::AuditStore" ; loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking critical "policy critical" ; loosening[L1] blocking critical exploited "component audit::AuditStore"
+F8   blocked   kernel=blocked   preexisting final violation under a whole-component exception declared in base and head
+      proto: blocked | contradiction blocking final sound preexisting audit::AuditEvent/AppendOnly/effect.forbid-HardDelete
+      lean : blocked | contradiction blocking final sound preexisting audit::AuditEvent/AppendOnly/effect.forbid-HardDelete
+G1   blocked   kernel=blocked   `shape judge` line for a law that requires tested evidence
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(weak) blocking critical audit::EventsArePreserved
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(weak) blocking critical audit::EventsArePreserved
+G2   blocked   kernel=blocked   signed judgment record for a law that requires tested evidence
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(weak) blocking critical audit::EventsArePreserved
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(weak) blocking critical audit::EventsArePreserved
+G3   blocked   kernel=blocked   head adds `or judged` to the law, then judges it
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking critical audit::EventsArePreserved ; unestablished(weak) blocking critical audit::EventsArePreserved
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking critical audit::EventsArePreserved ; unestablished(weak) blocking critical audit::EventsArePreserved
+G4   blocked   kernel=blocked   `shape approve` of the unestablished law's binding
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(missing) blocking critical audit::EventsArePreserved
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(missing) blocking critical audit::EventsArePreserved
+G5   blocked   kernel=blocked   judgment and approval offered against the final forbid's contradiction
+      proto: blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete
+      lean : blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete
+G6   succeeded kernel=blocked   a failing (inconclusive) test plus a harness edit turns the law into an answerable producer-changed obligation
+      proto: pass | 
+      lean : blocked | unestablished(missing) blocking critical checker::CheckIsDeterministic
+      control (producer-changed, discharged by ann's answer (designed path)): pass grade=succeeded | 
+G7   succeeded kernel=succeeded producer change masks an undeclared assume (an answer substitutes for removing or declaring it)
+      proto: blocked | contradiction blocking critical sound ironkv::NoHatchesOutsideBoundaries/1584bb88c66c ; contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4
+      lean : blocked | contradiction blocking critical sound ironkv::NoHatchesOutsideBoundaries/1584bb88c66c ; contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4
+G8   succeeded kernel=succeeded producer change masks an undeclared named assumption (no hatch involved)
+      proto: owed | contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4
+      lean : owed | contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4
+      control (SetRefinesSpec unestablished (assumption), blocking): blocked grade=blocked | unestablished(assumption) blocking critical ironkv::SetRefinesSpec ; contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4
+W1   blocked   kernel=blocked   integer bound widened in the change that supplies a test of the widened law
+      proto: blocked | loosening[L4] blocking critical audit::AppendBounded
+      lean : blocked | loosening[L4] blocking critical audit::AppendBounded
+W2   succeeded kernel=blocked   string budget widened ("250ms" to "1000ms") in the change that supplies a test of the widened law
+      proto: pass | 
+      lean : blocked | loosening[L4] blocking critical audit::AppendFast
+      control (L4 loosening (300ms is weaker in both orders)): blocked grade=blocked | loosening[L4] blocking critical audit::AppendFast
+W3   blocked   kernel=blocked   law requirement lowered from tested to declared while its evidence is dropped (normal tier)
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::AppendBounded ; loosening[L7] blocking normal audit::AppendBounded ; unestablished(missing) owed normal audit::AppendBounded
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::AppendBounded ; loosening[L7] blocking normal audit::AppendBounded ; unestablished(missing) owed normal audit::AppendBounded
+W4   blocked   kernel=blocked   law re-pinned to a head-only provider that supplies the only record
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::AppendBounded ; loosening[L7] blocking critical audit::AppendBounded ; unestablished(weak) blocking critical audit::AppendBounded
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::AppendBounded ; loosening[L7] blocking critical audit::AppendBounded ; unestablished(weak) blocking critical audit::AppendBounded
+W5   blocked   kernel=blocked   law target narrowed from the component to one unit so the old record covers it again
+      proto: blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L4] blocking critical audit::EventsArePreserved
+      lean : blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L4] blocking critical audit::EventsArePreserved
+W6   succeeded kernel=succeeded hosted statement's specification weakened in the change that re-proves it
+      proto: owed | contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4
+      lean : owed | contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4
+W7   blocked   kernel=blocked   law tier lowered to low while its evidence is dropped
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking critical audit::EventsArePreserved ; unestablished(missing) blocking critical audit::EventsArePreserved
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking critical audit::EventsArePreserved ; unestablished(missing) blocking critical audit::EventsArePreserved
+W8   blocked   kernel=blocked   user template's law body lowered from tested to declared while the evidence is dropped
+      proto: blocked | E-route claim audit::AuditRetained ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking critical audit::AuditRetained ; unestablished(missing) blocking critical audit::AuditRetained
+      lean : blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking critical audit::AuditRetained ; unestablished(missing) blocking critical audit::AuditRetained
+H1   blocked   kernel=blocked   head drops presence soundness from the observer
+      proto: blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking final "provider audit::sqlEffects"
+      lean : blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking final "provider audit::sqlEffects"
+H2   blocked   kernel=blocked   head drops absence soundness from the observer
+      proto: blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; coverage blocking final "component audit::AuditStore" ; loosening[L7] blocking final "provider audit::sqlEffects"
+      lean : blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; coverage blocking final "component audit::AuditStore" ; loosening[L7] blocking final "provider audit::sqlEffects"
+H3   partial   kernel=blocked   head deletes the authenticated observer's declaration and its record
+      proto: blocked | coverage blocking final "component audit::AuditStore" ; loosening[L7] blocking final "provider audit::sqlEffects"
+      lean : blocked | E-provider-missing provider audit::sqlEffects ; coverage blocking final "component audit::AuditStore" ; loosening[L7] blocking final "provider audit::sqlEffects"
+H4   partial   kernel=blocked   head narrows the observer's channel to another table and its record is dropped
+      proto: blocked | coverage blocking final "component audit::AuditStore" ; loosening[L7] blocking final "provider audit::sqlEffects"
+      lean : blocked | E-provider-missing provider audit::sqlEffects ; coverage blocking final "component audit::AuditStore" ; loosening[L7] blocking final "provider audit::sqlEffects"
+H5   blocked   kernel=blocked   head narrows the observer's channel but its record still reports the violation
+      proto: blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; coverage blocking final "component audit::AuditStore" ; loosening[L7] blocking final "provider audit::sqlEffects"
+      lean : blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; coverage blocking final "component audit::AuditStore" ; loosening[L7] blocking final "provider audit::sqlEffects"
+H6   blocked   kernel=blocked   head bumps the observer's implementation digest (new version)
+      proto: blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; coverage blocking final "component audit::AuditStore" ; loosening[L7] blocking final "provider audit::sqlEffects"
+      lean : blocked | contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking final "provider audit::sqlEffects"
+H7   blocked   kernel=blocked   head swaps the observer's signing identity and supplies a clean record signed by the new key
+      proto: blocked | E-provider-missing provider audit::sqlEffects ; coverage blocking final "component audit::AuditStore" ; loosening[L7] blocking final "provider audit::sqlEffects"
+      lean : blocked | E-provider-missing provider audit::sqlEffects ; coverage blocking final "component audit::AuditStore" ; loosening[L7] blocking final "provider audit::sqlEffects"
+H8   blocked   kernel=blocked   head changes the prover's trusted solver version to match a proof run on it
+      proto: blocked | loosening[L7] blocking critical "provider ironkv::verus" ; unestablished(assumption) blocking critical ironkv::SetRefinesSpec ; contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4
+      lean : blocked | loosening[L7] blocking critical "provider ironkv::verus" ; unestablished(assumption) blocking critical ironkv::SetRefinesSpec ; contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4
+      control (SetRefinesSpec established): owed grade=succeeded | contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4
+H9   blocked   kernel=blocked   head makes the tester deps-complete and reuses a base-revision record
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking critical "provider audit::fastCheck" ; unestablished(stale) blocking critical audit::EventsArePreserved
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; loosening[L7] blocking critical "provider audit::fastCheck" ; unestablished(stale) blocking critical audit::EventsArePreserved
+H10  blocked   kernel=blocked   head-only provider decides the law and supplies the only supporting record
+      proto: blocked | E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(weak) blocking critical audit::EventsArePreserved
+      lean : blocked | E-provider-missing provider audit::fastCheck audit::EventsArePreserved ; contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete ; unestablished(weak) blocking critical audit::EventsArePreserved
+H11  blocked   kernel=blocked   head drops bun.lock from the tester's implementation paths in the change that edits bun.lock
+      proto: blocked | loosening[L7] blocking critical "provider checker::bunTest" ; unestablished(producer-changed) blocking critical checker::CheckIsDeterministic
+      lean : blocked | loosening[L7] blocking critical "provider checker::bunTest" ; unestablished(producer-changed) blocking critical checker::CheckIsDeterministic
+X1   partial   kernel=succeeded observer reports the violation at a nested identity the manifest does not list (relocated fact)
+      proto: owed | contradiction owed final heuristic audit::AuditEvent/AppendOnly/effect.forbid-HardDelete
+      lean : pass | 
+X2   partial   kernel=partial   observer reports the violation but its scope omits the violating file (unanchored fact), normal tier
+      proto: owed | coverage owed normal "component checker::ShapeRuleEngine"
+      lean : owed | coverage owed normal "component checker::ShapeRuleEngine"
+
+prototype: {"blocked":47,"partial":9,"succeeded":13}
+kernel:    {"blocked":50,"partial":8,"succeeded":11}

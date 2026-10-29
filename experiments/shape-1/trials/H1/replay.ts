@@ -11,7 +11,14 @@
 // an obligation that a rerun discharges cannot remain open.
 //
 // Per commit it writes the full output to <work>/out/<C>.out.json.gz and one compact row to --rows.
-import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  appendFileSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync
+} from "node:fs";
 import { join, resolve } from "node:path";
 import { gzipSync } from "node:zlib";
 import { derive } from "../../proto/src/derive.ts";
@@ -30,14 +37,19 @@ const work = resolve(opt("work") ?? "/tmp/h1-replay");
 const rowsPath = resolve(opt("rows") ?? join(work, "rows.jsonl"));
 const now = opt("now") ?? "2026-10-26T00:00:00Z";
 const keepTrees = argv.includes("--keep-trees");
-const commits = readFileSync(opt("commits") ?? "", "utf8").split("\n").map((s) => s.trim()).filter(Boolean);
+const commits = readFileSync(opt("commits") ?? "", "utf8")
+  .split("\n")
+  .map((s) => s.trim())
+  .filter(Boolean);
 const AUTHORS: CheckInput["authors"] = [
   { identity: 'github("timbrinded")', verified: true, bot: false },
   { identity: 'github("claude[bot]")', verified: true, bot: true }
 ];
 mkdirSync(join(work, "out"), { recursive: true });
 const done = new Set<string>();
-if (existsSync(rowsPath)) for (const l of readFileSync(rowsPath, "utf8").split("\n").filter(Boolean)) done.add((JSON.parse(l) as { commit: string }).commit);
+if (existsSync(rowsPath))
+  for (const l of readFileSync(rowsPath, "utf8").split("\n").filter(Boolean))
+    done.add((JSON.parse(l) as { commit: string }).commit);
 
 /** Compact view of one obligation (what the H1 analysis reads). */
 function compact(o: ObligationOut): Record<string, unknown> {
@@ -53,7 +65,7 @@ function compact(o: ObligationOut): Record<string, unknown> {
     force: o.force,
     owner: o.owner,
     group: o.group,
-    claim: o.claim ? o.claim.ids[0] ?? o.claim.fp : null,
+    claim: o.claim ? (o.claim.ids[0] ?? o.claim.fp) : null,
     subject: o.subject,
     acts: o.dischargers.map((d) => `${d.act}/${d.by}`),
     witness: o.witness.length,
@@ -77,8 +89,16 @@ for (const c of commits) {
     const hm = await manifestFor(treeFiles(headDir));
     const baseComp = composeModel(bm.statement, undefined, baseDir);
     const headComp = composeModel(hm.statement, undefined, headDir);
-    const baseRecords = [(await clockScan({ root: baseDir, manifest: bm.statement, now })).envelope, (await callScan({ root: baseDir, manifest: bm.statement, now })).envelope];
-    const laws = await runLaws({ root: headDir, manifest: hm.statement, source: headComp.source, now });
+    const baseRecords = [
+      (await clockScan({ root: baseDir, manifest: bm.statement, now })).envelope,
+      (await callScan({ root: baseDir, manifest: bm.statement, now })).envelope
+    ];
+    const laws = await runLaws({
+      root: headDir,
+      manifest: hm.statement,
+      source: headComp.source,
+      now
+    });
     const records = [
       (await clockScan({ root: headDir, manifest: hm.statement, now })).envelope,
       (await callScan({ root: headDir, manifest: hm.statement, now })).envelope,
@@ -103,10 +123,18 @@ for (const c of commits) {
     const deriveSeconds = (performance.now() - t1) / 1000;
     writeFileSync(join(work, "out", `${c}.out.json.gz`), gzipSync(JSON.stringify(out)));
     type E = { id: string; projection: string; digest: string };
-    const own = (m: typeof bm): Map<string, string> => new Map((m.statement.predicate.shape as unknown as { entries: E[] }).entries.filter((e) => e.projection === "own").map((e) => [e.id, e.digest]));
+    const own = (m: typeof bm): Map<string, string> =>
+      new Map(
+        (m.statement.predicate.shape as unknown as { entries: E[] }).entries
+          .filter((e) => e.projection === "own")
+          .map((e) => [e.id, e.digest])
+      );
     const bo = own(bm);
     const ho = own(hm);
-    const finest = [...ho].filter(([id, d]) => bo.get(id) !== d).map(([id]) => id).sort();
+    const finest = [...ho]
+      .filter(([id, d]) => bo.get(id) !== d)
+      .map(([id]) => id)
+      .sort();
     const removed = [...bo.keys()].filter((id) => !ho.has(id)).sort();
     row = {
       commit: c,
@@ -115,22 +143,49 @@ for (const c of commits) {
       errors: out.errors.map((e) => ({ code: e.code, subject: e.subject })),
       rejected: out.rejected.length,
       obligations: out.obligations.filter((o) => o.introduced).map(compact),
-      preexisting: out.obligations.filter((o) => !o.introduced).map((o) => ({ kind: o.kind, reason: o.reason, budget: o.budget, severity: o.severity, key: o.key })),
+      preexisting: out.obligations
+        .filter((o) => !o.introduced)
+        .map((o) => ({
+          kind: o.kind,
+          reason: o.reason,
+          budget: o.budget,
+          severity: o.severity,
+          key: o.key
+        })),
       groups: out.obligations.length,
-      laws: laws.records.reduce<Record<string, number>>((m, r) => ({ ...m, [r.result]: (m[r.result] ?? 0) + 1 }), {}),
+      laws: laws.records.reduce<Record<string, number>>(
+        (m, r) => ({ ...m, [r.result]: (m[r.result] ?? 0) + 1 }),
+        {}
+      ),
       lawExit: laws.exitCode,
       finest,
       removed,
-      health: { coverage: (out.health as Record<string, unknown>).coverage ?? null, cells: (out.health as Record<string, unknown>).cells ?? null },
+      health: {
+        coverage: (out.health as Record<string, unknown>).coverage ?? null,
+        cells: (out.health as Record<string, unknown>).cells ?? null
+      },
       seconds: Number(((performance.now() - t0) / 1000).toFixed(1)),
       deriveSeconds: Number(deriveSeconds.toFixed(1))
     };
   } catch (e) {
-    row = { commit: c, ok: false, error: String(e instanceof Error ? (e.stack ?? e.message) : e).slice(0, 4000), seconds: Number(((performance.now() - t0) / 1000).toFixed(1)) };
+    row = {
+      commit: c,
+      ok: false,
+      error: String(e instanceof Error ? (e.stack ?? e.message) : e).slice(0, 4000),
+      seconds: Number(((performance.now() - t0) / 1000).toFixed(1))
+    };
   }
   appendFileSync(rowsPath, `${JSON.stringify(row)}\n`);
-  const r = row as { ok: boolean; verdict?: string; obligations?: unknown[]; errors?: unknown[]; seconds: number };
-  process.stderr.write(`${c.slice(0, 7)} ${r.ok ? `${r.verdict} introduced=${r.obligations?.length} errors=${r.errors?.length}` : "FAILED"} ${r.seconds}s\n`);
+  const r = row as {
+    ok: boolean;
+    verdict?: string;
+    obligations?: unknown[];
+    errors?: unknown[];
+    seconds: number;
+  };
+  process.stderr.write(
+    `${c.slice(0, 7)} ${r.ok ? `${r.verdict} introduced=${r.obligations?.length} errors=${r.errors?.length}` : "FAILED"} ${r.seconds}s\n`
+  );
   if (!keepTrees) {
     rmSync(baseDir, { recursive: true, force: true });
     rmSync(headDir, { recursive: true, force: true });

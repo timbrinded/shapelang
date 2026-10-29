@@ -1,0 +1,138 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:fbcf22d83074288d2b5494a636bb005b98bd026d413ccf348b3f953811900065",
+ "verdict": "owed",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:7642d481777e851e51960181f4382a4315722ede5b069cb50ca36cbf2be86481",
+   "kind": "contradiction",
+   "reason": null,
+   "questions": null,
+   "introduced": false,
+   "severity": "owed",
+   "tier": "critical",
+   "budget": "mechanical",
+   "force": "sound",
+   "owner": "audit::AuditTeam",
+   "assignee": null,
+   "group": "g:07c92ec36c271c276a0c214ebe83360f59db3999be5bb0baf980d25048f12a08",
+   "claim": {
+    "fp": "sha256:2b6108a7ae494a9461386abe37d959058c6555016ec11efa9fe4efda628cbfca",
+    "ids": [
+     "audit::AppendDeterministic"
+    ],
+    "tier": "critical"
+   },
+   "subject": null,
+   "witness": [
+    "sha256:74f778d3151200e722b69c12f4c9872b7a13bb876eb1b3e21fde1416144f5a44"
+   ],
+   "facts": {},
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:c919124b0faea7f132286222d240eaf065808c8e378773935ef10581da5b9124",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "edit-code",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "rerun",
+     "by": "ci",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "exception",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "audit::bob"
+     ],
+     "creates": null
+    },
+    {
+     "act": "edit-shape",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "record",
+     "id": "sha256:74f778d3151200e722b69c12f4c9872b7a13bb876eb1b3e21fde1416144f5a44"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [],
+ "renames": [],
+ "debt": [],
+ "preexisting": [
+  {
+   "obligation": "ob:7642d481777e851e51960181f4382a4315722ede5b069cb50ca36cbf2be86481",
+   "owner": "audit::AuditTeam"
+  }
+ ],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 1,
+   "den": 1
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [],
+  "ungoverned": {
+   "num": 4,
+   "den": 7
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [
+   "audit::fastCheck"
+  ],
+  "baseObservations": "missing",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 1,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"audit::AuditStore.*\",\"audit::AuditStore.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 4,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

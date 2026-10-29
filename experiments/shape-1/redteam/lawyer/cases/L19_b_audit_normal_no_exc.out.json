@@ -1,0 +1,36 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "audit",
+ "obligations": [
+  {
+   "binding": "bd:947151562f795ed001ef445f0825062b332cecb7c4bcf07833b63f5bc779e6db",
+   "budget": "judgment",
+   "claim": {
+    "fp": "sha256:e3a2e9f928122b6d06e8faf0f30b6de6470bd8548f99708ef5bd5081d5fbf257",
+    "ids": [
+     "tooling::EmptyDocumented"
+    ],
+    "tier": "normal"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:5c3e042466fa0584aacd4c73eb60e950cc544d715a508e8640e3a574700cf87e",
+   "introduced": false,
+   "key": "ob:84b8ade724a4286fd02a101d0d688fa8fe9316e1dbe226ff470a7ced07b80106",
+   "kind": "unestablished",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": null,
+   "reason": "missing",
+   "severity": "owed",
+   "subject": null,
+   "tier": "normal",
+   "witness": []
+  }
+ ],
+ "verdict": "owed"
+}

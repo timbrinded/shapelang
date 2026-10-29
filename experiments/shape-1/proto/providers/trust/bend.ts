@@ -94,7 +94,13 @@ export function scanBend(path: string, text: string): BendScan {
         const kind = m[1] as BendDecl["kind"];
         const markers: Record<string, number> = {};
         if (kind === "def" && (pendingUnsafe || m[3] === "?")) markers.unsafe = 1;
-        cur = { kind, name: m[2] as string, start: pendingAttrStart ?? i, end: lines.length, markers };
+        cur = {
+          kind,
+          name: m[2] as string,
+          start: pendingAttrStart ?? i,
+          end: lines.length,
+          markers
+        };
         pendingAttrStart = null;
         pendingUnsafe = false;
         // holes on the header line after the name
@@ -132,8 +138,12 @@ export function markOpenLaws(scans: BendScan[]): void {
   }
   for (const group of byDir.values()) {
     const defs = new Set<string>();
-    for (const s of group) for (const d of s.decls) if (d.kind === "def") defs.add(d.name.split(".").pop() ?? d.name);
-    for (const s of group) for (const d of s.decls) if (d.kind === "law" && !defs.has(d.name.split(".").pop() ?? d.name)) d.markers.open_law = 1;
+    for (const s of group)
+      for (const d of s.decls) if (d.kind === "def") defs.add(d.name.split(".").pop() ?? d.name);
+    for (const s of group)
+      for (const d of s.decls)
+        if (d.kind === "law" && !defs.has(d.name.split(".").pop() ?? d.name))
+          d.markers.open_law = 1;
   }
 }
 
@@ -162,7 +172,11 @@ export function bendIdentities(scan: BendScan): FpIdentity[] {
       kind: "file",
       parent: null,
       digests: [
-        { projection: "file", scheme: "bend.file.syn1", digest: codeDigest("bend.file.syn1", canon(scan.lines)) },
+        {
+          projection: "file",
+          scheme: "bend.file.syn1",
+          digest: codeDigest("bend.file.syn1", canon(scan.lines))
+        },
         { projection: "own", scheme: "bend.own.syn1", digest: codeDigest("bend.own.syn1", ownText) }
       ],
       markers: {},
@@ -185,7 +199,8 @@ export function bendIdentities(scan: BendScan): FpIdentity[] {
     }
     const text = list.map((d) => canon(scan.lines.slice(d.start, d.end))).join("\n");
     const markers: Record<string, number> = {};
-    for (const d of list) for (const [k, n] of Object.entries(d.markers)) markers[k] = (markers[k] ?? 0) + n;
+    for (const d of list)
+      for (const [k, n] of Object.entries(d.markers)) markers[k] = (markers[k] ?? 0) + n;
     out.push({
       id: `${fileId}#${encodeBendSymbol(name)}`,
       kind: list[0]?.kind ?? "def",

@@ -1,0 +1,392 @@
+module shape.generated.ast.experiments.shape_1.trials.H2.harness
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource HarnessModuleCodeFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#codeFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:d843ca95392e27cdb3af47cdd2c1682c68cf72b4335c4e7a133bfed8500a04d8")
+}
+
+resource HarnessModuleCompactAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#compact")
+  fingerprint ast.semantic_subtree_v1("sha256:751c485dbb64c7407f073467b1969c5d5427fa366c99edf3b2873450d122268b")
+}
+
+resource HarnessModuleCompleteCallsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#completeCalls")
+  fingerprint ast.semantic_subtree_v1("sha256:2d1692eed16f66cb26aca5eb3be388f866bb42d5fcc799684d566816c4af8474")
+}
+
+resource HarnessModuleComponentsOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#componentsOf")
+  fingerprint ast.semantic_subtree_v1("sha256:96261641a977b15e50733290cdf152f861c9be5cd569d2e41bd747d7f36db2cc")
+}
+
+resource HarnessModuleJudgmentReqAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#judgmentReq")
+  fingerprint ast.semantic_subtree_v1("sha256:7f91d1634241d34fb0d7a713d0648cd44dcdee7165a1afcfec0630ecd49cc3d9")
+}
+
+resource HarnessModuleJudgmentsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#judgments")
+  fingerprint ast.semantic_subtree_v1("sha256:d8fbfe3383eec9a36e711e46abc6334de7bfb9c0341f75bd68ad34fd5f56554f")
+}
+
+resource HarnessModuleLoadBaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#loadBase")
+  fingerprint ast.semantic_subtree_v1("sha256:f600401c574ec7bbfa7485ac7444e5ab0e0abbec7829b0a247455008cf4fde0d")
+}
+
+resource HarnessModuleOverlayForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#overlayFor")
+  fingerprint ast.semantic_subtree_v1("sha256:129e3518d3891d499b0806eef8d2c32135d7b7656730d0127205761c8a662373")
+}
+
+resource HarnessModuleParseCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#parseCheck")
+  fingerprint ast.semantic_subtree_v1("sha256:850ab0e17e17a6d16647050d580893e8b929671894b215a7efc2abef6c80c056")
+}
+
+resource HarnessModulePrepareBaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#prepareBase")
+  fingerprint ast.semantic_subtree_v1("sha256:47c6c051f81285051106ed572bbe15cfc3db5ede4203068c74e6ccaaf5d4eb78")
+}
+
+resource HarnessModuleRunSeedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#runSeed")
+  fingerprint ast.semantic_subtree_v1("sha256:99f7da181fadb85bbf8a756df19421237f43d0104a7ecfd4411e5ce3f396d414")
+}
+
+resource TreeAppendAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#Tree.append")
+  fingerprint ast.semantic_subtree_v1("sha256:475387ba1abebf835a706fa4fc8fa0e69985486790c24cfb8e88eedcdfc64a7d")
+}
+
+resource TreeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#Tree")
+  fingerprint ast.semantic_subtree_v1("sha256:637de1a36f5661abc8a6b726ce442633133bbded072174b5721b5f1fada09d4d")
+}
+
+resource TreeConstructorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#Tree.constructor")
+  fingerprint ast.semantic_subtree_v1("sha256:22f22710f96fcc37a8c9f0b825b3883878eabbdc10839240a07b4af812b687a6")
+}
+
+resource TreeCutFunctionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#Tree.cutFunction")
+  fingerprint ast.semantic_subtree_v1("sha256:df47604506b7601e60d2848900093df1bd7904a16bdf409936e0e34fc7316715")
+}
+
+resource TreeGeneratedFunctionPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#Tree.path")
+  fingerprint ast.semantic_subtree_v1("sha256:2c52d037b39f71a8135389827f79141d4a62a20d1f75a17ae947e83ced1a67e3")
+}
+
+resource TreeInsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#Tree.ins")
+  fingerprint ast.semantic_subtree_v1("sha256:914ca555a936f196fa12240a13bc9582349fbad0f0f884e98484593e61006d96")
+}
+
+resource TreeMvAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#Tree.mv")
+  fingerprint ast.semantic_subtree_v1("sha256:aa903dad7b4c91ad74e9d1757700e9a0e1a8f947f5a97f0e868fe2e7cde515a3")
+}
+
+resource TreePreAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#Tree.pre")
+  fingerprint ast.semantic_subtree_v1("sha256:c96a0d49b84b05f1dd1b358bba31e52e487912f433a18c65fb0acb7fdaeda5c4")
+}
+
+resource TreeReadAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#Tree.read")
+  fingerprint ast.semantic_subtree_v1("sha256:4fb573f6ba2a6982c6bec038ea3906a5bdf56be78c5b1bf650f33550cab3f821")
+}
+
+resource TreeRenameWordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#Tree.renameWord")
+  fingerprint ast.semantic_subtree_v1("sha256:2eccf83b35e25147adc85f804f6494fcf9ce881ee5a97614d65c30de9fda4e89")
+}
+
+resource TreeRepAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#Tree.rep")
+  fingerprint ast.semantic_subtree_v1("sha256:1248cd59f9800fc5979dc513b5236625099ffd1f627348d078bc713449982390")
+}
+
+resource TreeWriteAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/harness.ts#Tree.write")
+  fingerprint ast.semantic_subtree_v1("sha256:8c9458358c11e529474972aa6ba1f83222739a608bf66d136a5200cade01fd0d")
+}
+
+component HarnessModule : GeneratedCandidate {
+  fn codeFiles
+    source ts("experiments/shape-1/trials/H2/harness.ts#codeFiles")
+    effects unknown
+  fn compact
+    source ts("experiments/shape-1/trials/H2/harness.ts#compact")
+    effects unknown
+  fn completeCalls
+    source ts("experiments/shape-1/trials/H2/harness.ts#completeCalls")
+    effects unknown
+  fn componentsOf
+    source ts("experiments/shape-1/trials/H2/harness.ts#componentsOf")
+    effects unknown
+  fn judgmentReq
+    source ts("experiments/shape-1/trials/H2/harness.ts#judgmentReq")
+    effects unknown
+  fn judgments
+    source ts("experiments/shape-1/trials/H2/harness.ts#judgments")
+    effects unknown
+  fn loadBase
+    source ts("experiments/shape-1/trials/H2/harness.ts#loadBase")
+    effects unknown
+  fn overlayFor
+    source ts("experiments/shape-1/trials/H2/harness.ts#overlayFor")
+    effects unknown
+  fn parseCheck
+    source ts("experiments/shape-1/trials/H2/harness.ts#parseCheck")
+    effects unknown
+  fn prepareBase
+    source ts("experiments/shape-1/trials/H2/harness.ts#prepareBase")
+    effects unknown
+  fn runSeed
+    source ts("experiments/shape-1/trials/H2/harness.ts#runSeed")
+    effects unknown
+}
+
+component Tree : GeneratedCandidate {
+  fn append
+    source ts("experiments/shape-1/trials/H2/harness.ts#Tree.append")
+    effects unknown
+  fn constructor
+    source ts("experiments/shape-1/trials/H2/harness.ts#Tree.constructor")
+    effects unknown
+  fn cutFunction
+    source ts("experiments/shape-1/trials/H2/harness.ts#Tree.cutFunction")
+    effects unknown
+  fn generatedFunction_path
+    source ts("experiments/shape-1/trials/H2/harness.ts#Tree.path")
+    effects unknown
+  fn ins
+    source ts("experiments/shape-1/trials/H2/harness.ts#Tree.ins")
+    effects unknown
+  fn mv
+    source ts("experiments/shape-1/trials/H2/harness.ts#Tree.mv")
+    effects unknown
+  fn pre
+    source ts("experiments/shape-1/trials/H2/harness.ts#Tree.pre")
+    effects unknown
+  fn read
+    source ts("experiments/shape-1/trials/H2/harness.ts#Tree.read")
+    effects unknown
+  fn renameWord
+    source ts("experiments/shape-1/trials/H2/harness.ts#Tree.renameWord")
+    effects unknown
+  fn rep
+    source ts("experiments/shape-1/trials/H2/harness.ts#Tree.rep")
+    effects unknown
+  fn write
+    source ts("experiments/shape-1/trials/H2/harness.ts#Tree.write")
+    effects unknown
+}
+
+relation HarnessModuleCodeFilesGeneratedFromHarnessModuleCodeFilesAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleCodeFilesAstAnchor
+  roles { HarnessModule as generated, HarnessModuleCodeFilesAstAnchor as syntax }
+  expects HarnessModuleCodeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d843ca95392e27cdb3af47cdd2c1682c68cf72b4335c4e7a133bfed8500a04d8")
+  summary "fn HarnessModule.codeFiles generated from typescript function_declaration at experiments/shape-1/trials/H2/harness.ts#codeFiles."
+}
+
+relation HarnessModuleCompactGeneratedFromHarnessModuleCompactAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleCompactAstAnchor
+  roles { HarnessModule as generated, HarnessModuleCompactAstAnchor as syntax }
+  expects HarnessModuleCompactAstAnchor fingerprint ast.semantic_subtree_v1("sha256:751c485dbb64c7407f073467b1969c5d5427fa366c99edf3b2873450d122268b")
+  summary "fn HarnessModule.compact generated from typescript function_declaration at experiments/shape-1/trials/H2/harness.ts#compact."
+}
+
+relation HarnessModuleCompleteCallsGeneratedFromHarnessModuleCompleteCallsAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleCompleteCallsAstAnchor
+  roles { HarnessModule as generated, HarnessModuleCompleteCallsAstAnchor as syntax }
+  expects HarnessModuleCompleteCallsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2d1692eed16f66cb26aca5eb3be388f866bb42d5fcc799684d566816c4af8474")
+  summary "fn HarnessModule.completeCalls generated from typescript function_declaration at experiments/shape-1/trials/H2/harness.ts#completeCalls."
+}
+
+relation HarnessModuleComponentsOfGeneratedFromHarnessModuleComponentsOfAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleComponentsOfAstAnchor
+  roles { HarnessModule as generated, HarnessModuleComponentsOfAstAnchor as syntax }
+  expects HarnessModuleComponentsOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:96261641a977b15e50733290cdf152f861c9be5cd569d2e41bd747d7f36db2cc")
+  summary "fn HarnessModule.componentsOf generated from typescript function_declaration at experiments/shape-1/trials/H2/harness.ts#componentsOf."
+}
+
+relation HarnessModuleJudgmentReqGeneratedFromHarnessModuleJudgmentReqAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleJudgmentReqAstAnchor
+  roles { HarnessModule as generated, HarnessModuleJudgmentReqAstAnchor as syntax }
+  expects HarnessModuleJudgmentReqAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7f91d1634241d34fb0d7a713d0648cd44dcdee7165a1afcfec0630ecd49cc3d9")
+  summary "fn HarnessModule.judgmentReq generated from typescript function_declaration at experiments/shape-1/trials/H2/harness.ts#judgmentReq."
+}
+
+relation HarnessModuleJudgmentsGeneratedFromHarnessModuleJudgmentsAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleJudgmentsAstAnchor
+  roles { HarnessModule as generated, HarnessModuleJudgmentsAstAnchor as syntax }
+  expects HarnessModuleJudgmentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d8fbfe3383eec9a36e711e46abc6334de7bfb9c0341f75bd68ad34fd5f56554f")
+  summary "fn HarnessModule.judgments generated from typescript function_declaration at experiments/shape-1/trials/H2/harness.ts#judgments."
+}
+
+relation HarnessModuleLoadBaseGeneratedFromHarnessModuleLoadBaseAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleLoadBaseAstAnchor
+  roles { HarnessModule as generated, HarnessModuleLoadBaseAstAnchor as syntax }
+  expects HarnessModuleLoadBaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f600401c574ec7bbfa7485ac7444e5ab0e0abbec7829b0a247455008cf4fde0d")
+  summary "fn HarnessModule.loadBase generated from typescript function_declaration at experiments/shape-1/trials/H2/harness.ts#loadBase."
+}
+
+relation HarnessModuleOverlayForGeneratedFromHarnessModuleOverlayForAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleOverlayForAstAnchor
+  roles { HarnessModule as generated, HarnessModuleOverlayForAstAnchor as syntax }
+  expects HarnessModuleOverlayForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:129e3518d3891d499b0806eef8d2c32135d7b7656730d0127205761c8a662373")
+  summary "fn HarnessModule.overlayFor generated from typescript function_declaration at experiments/shape-1/trials/H2/harness.ts#overlayFor."
+}
+
+relation HarnessModuleParseCheckGeneratedFromHarnessModuleParseCheckAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleParseCheckAstAnchor
+  roles { HarnessModule as generated, HarnessModuleParseCheckAstAnchor as syntax }
+  expects HarnessModuleParseCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:850ab0e17e17a6d16647050d580893e8b929671894b215a7efc2abef6c80c056")
+  summary "fn HarnessModule.parseCheck generated from typescript function_declaration at experiments/shape-1/trials/H2/harness.ts#parseCheck."
+}
+
+relation HarnessModulePrepareBaseGeneratedFromHarnessModulePrepareBaseAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModulePrepareBaseAstAnchor
+  roles { HarnessModule as generated, HarnessModulePrepareBaseAstAnchor as syntax }
+  expects HarnessModulePrepareBaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:47c6c051f81285051106ed572bbe15cfc3db5ede4203068c74e6ccaaf5d4eb78")
+  summary "fn HarnessModule.prepareBase generated from typescript function_declaration at experiments/shape-1/trials/H2/harness.ts#prepareBase."
+}
+
+relation HarnessModuleRunSeedGeneratedFromHarnessModuleRunSeedAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleRunSeedAstAnchor
+  roles { HarnessModule as generated, HarnessModuleRunSeedAstAnchor as syntax }
+  expects HarnessModuleRunSeedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:99f7da181fadb85bbf8a756df19421237f43d0104a7ecfd4411e5ce3f396d414")
+  summary "fn HarnessModule.runSeed generated from typescript function_declaration at experiments/shape-1/trials/H2/harness.ts#runSeed."
+}
+
+relation TreeAppendGeneratedFromTreeAppendAstAnchor {
+  kind generated_from
+  connects Tree -> TreeAppendAstAnchor
+  roles { Tree as generated, TreeAppendAstAnchor as syntax }
+  expects TreeAppendAstAnchor fingerprint ast.semantic_subtree_v1("sha256:475387ba1abebf835a706fa4fc8fa0e69985486790c24cfb8e88eedcdfc64a7d")
+  summary "fn Tree.append generated from typescript method_definition at experiments/shape-1/trials/H2/harness.ts#Tree.append."
+}
+
+relation TreeConstructorGeneratedFromTreeConstructorAstAnchor {
+  kind generated_from
+  connects Tree -> TreeConstructorAstAnchor
+  roles { Tree as generated, TreeConstructorAstAnchor as syntax }
+  expects TreeConstructorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:22f22710f96fcc37a8c9f0b825b3883878eabbdc10839240a07b4af812b687a6")
+  summary "fn Tree.constructor generated from typescript method_definition at experiments/shape-1/trials/H2/harness.ts#Tree.constructor."
+}
+
+relation TreeCutFunctionGeneratedFromTreeCutFunctionAstAnchor {
+  kind generated_from
+  connects Tree -> TreeCutFunctionAstAnchor
+  roles { Tree as generated, TreeCutFunctionAstAnchor as syntax }
+  expects TreeCutFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:df47604506b7601e60d2848900093df1bd7904a16bdf409936e0e34fc7316715")
+  summary "fn Tree.cutFunction generated from typescript method_definition at experiments/shape-1/trials/H2/harness.ts#Tree.cutFunction."
+}
+
+relation TreeGeneratedFromTreeAstAnchor {
+  kind generated_from
+  connects Tree -> TreeAstAnchor
+  roles { Tree as generated, TreeAstAnchor as syntax }
+  expects TreeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:637de1a36f5661abc8a6b726ce442633133bbded072174b5721b5f1fada09d4d")
+  summary "component Tree generated from typescript class_declaration at experiments/shape-1/trials/H2/harness.ts#Tree."
+}
+
+relation TreeGeneratedFunctionPathGeneratedFromTreeGeneratedFunctionPathAstAnchor {
+  kind generated_from
+  connects Tree -> TreeGeneratedFunctionPathAstAnchor
+  roles { Tree as generated, TreeGeneratedFunctionPathAstAnchor as syntax }
+  expects TreeGeneratedFunctionPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2c52d037b39f71a8135389827f79141d4a62a20d1f75a17ae947e83ced1a67e3")
+  summary "fn Tree.generatedFunction_path generated from typescript method_definition at experiments/shape-1/trials/H2/harness.ts#Tree.path."
+}
+
+relation TreeInsGeneratedFromTreeInsAstAnchor {
+  kind generated_from
+  connects Tree -> TreeInsAstAnchor
+  roles { Tree as generated, TreeInsAstAnchor as syntax }
+  expects TreeInsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:914ca555a936f196fa12240a13bc9582349fbad0f0f884e98484593e61006d96")
+  summary "fn Tree.ins generated from typescript method_definition at experiments/shape-1/trials/H2/harness.ts#Tree.ins."
+}
+
+relation TreeMvGeneratedFromTreeMvAstAnchor {
+  kind generated_from
+  connects Tree -> TreeMvAstAnchor
+  roles { Tree as generated, TreeMvAstAnchor as syntax }
+  expects TreeMvAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aa903dad7b4c91ad74e9d1757700e9a0e1a8f947f5a97f0e868fe2e7cde515a3")
+  summary "fn Tree.mv generated from typescript method_definition at experiments/shape-1/trials/H2/harness.ts#Tree.mv."
+}
+
+relation TreePreGeneratedFromTreePreAstAnchor {
+  kind generated_from
+  connects Tree -> TreePreAstAnchor
+  roles { Tree as generated, TreePreAstAnchor as syntax }
+  expects TreePreAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c96a0d49b84b05f1dd1b358bba31e52e487912f433a18c65fb0acb7fdaeda5c4")
+  summary "fn Tree.pre generated from typescript method_definition at experiments/shape-1/trials/H2/harness.ts#Tree.pre."
+}
+
+relation TreeReadGeneratedFromTreeReadAstAnchor {
+  kind generated_from
+  connects Tree -> TreeReadAstAnchor
+  roles { Tree as generated, TreeReadAstAnchor as syntax }
+  expects TreeReadAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4fb573f6ba2a6982c6bec038ea3906a5bdf56be78c5b1bf650f33550cab3f821")
+  summary "fn Tree.read generated from typescript method_definition at experiments/shape-1/trials/H2/harness.ts#Tree.read."
+}
+
+relation TreeRenameWordGeneratedFromTreeRenameWordAstAnchor {
+  kind generated_from
+  connects Tree -> TreeRenameWordAstAnchor
+  roles { Tree as generated, TreeRenameWordAstAnchor as syntax }
+  expects TreeRenameWordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2eccf83b35e25147adc85f804f6494fcf9ce881ee5a97614d65c30de9fda4e89")
+  summary "fn Tree.renameWord generated from typescript method_definition at experiments/shape-1/trials/H2/harness.ts#Tree.renameWord."
+}
+
+relation TreeRepGeneratedFromTreeRepAstAnchor {
+  kind generated_from
+  connects Tree -> TreeRepAstAnchor
+  roles { Tree as generated, TreeRepAstAnchor as syntax }
+  expects TreeRepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1248cd59f9800fc5979dc513b5236625099ffd1f627348d078bc713449982390")
+  summary "fn Tree.rep generated from typescript method_definition at experiments/shape-1/trials/H2/harness.ts#Tree.rep."
+}
+
+relation TreeWriteGeneratedFromTreeWriteAstAnchor {
+  kind generated_from
+  connects Tree -> TreeWriteAstAnchor
+  roles { Tree as generated, TreeWriteAstAnchor as syntax }
+  expects TreeWriteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8c9458358c11e529474972aa6ba1f83222739a608bf66d136a5200cade01fd0d")
+  summary "fn Tree.write generated from typescript method_definition at experiments/shape-1/trials/H2/harness.ts#Tree.write."
+}
+
+implementation HarnessModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H2/harness.ts"
+  }
+  conforms_to HarnessModule
+}
+
+implementation TreeImpl {
+  paths {
+    "experiments/shape-1/trials/H2/harness.ts"
+  }
+  conforms_to Tree
+}

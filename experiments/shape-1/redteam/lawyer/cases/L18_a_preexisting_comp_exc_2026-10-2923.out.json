@@ -1,0 +1,48 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [
+  {
+   "exception": "tooling::MmmComponentWaiver",
+   "expiresInDays": 1,
+   "obligation": "ob:d98055745547389f83971693def7cf3d1e3dd6850821637f736b8867dbc95226",
+   "owner": "tooling::ShapeMaintainers"
+  }
+ ],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:d097f68eb32b3049e3a2ffaa37e8c7c85c88b8da5958e356b254268b8b05717a",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:cf369f77ee17e87abf8598b5489f3b483cc1b4efe348610cee5fe703c0ac7110",
+    "ids": [
+     "tooling::CheckerNeverReadsClock"
+    ],
+    "tier": "critical"
+   },
+   "exception": "tooling::MmmComponentWaiver",
+   "exploited": null,
+   "final": false,
+   "force": "sound",
+   "group": "g:affa13099568e6d4429294671a29c7617098da8373375a82e29e9b2d368f3c8b",
+   "introduced": false,
+   "key": "ob:d98055745547389f83971693def7cf3d1e3dd6850821637f736b8867dbc95226",
+   "kind": "contradiction",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": null,
+   "reason": null,
+   "severity": "owed",
+   "subject": {
+    "atom": "Read<tooling::SystemClock>",
+    "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+   },
+   "tier": "critical",
+   "witness": [
+    "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e"
+   ]
+  }
+ ],
+ "verdict": "owed"
+}

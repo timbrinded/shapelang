@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.dogfood.tools.runs
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RunsModuleEditAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/runs.ts#edit")
+  fingerprint ast.semantic_subtree_v1("sha256:5115b83fc99b2a2237bb5b6f02caf9e2e5ab76229eaf30e1f1b528c5987d4dea")
+}
+
+resource RunsModuleRunChangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/runs.ts#runChange")
+  fingerprint ast.semantic_subtree_v1("sha256:744ae44ed5630c85a0b7ab9124f13b6567f2c73873549d3b8289e585313a0d26")
+}
+
+component RunsModule : GeneratedCandidate {
+  fn edit
+    source ts("experiments/shape-1/dogfood/tools/runs.ts#edit")
+    effects unknown
+  fn runChange
+    source ts("experiments/shape-1/dogfood/tools/runs.ts#runChange")
+    effects unknown
+}
+
+relation RunsModuleEditGeneratedFromRunsModuleEditAstAnchor {
+  kind generated_from
+  connects RunsModule -> RunsModuleEditAstAnchor
+  roles { RunsModule as generated, RunsModuleEditAstAnchor as syntax }
+  expects RunsModuleEditAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5115b83fc99b2a2237bb5b6f02caf9e2e5ab76229eaf30e1f1b528c5987d4dea")
+  summary "fn RunsModule.edit generated from typescript function_declaration at experiments/shape-1/dogfood/tools/runs.ts#edit."
+}
+
+relation RunsModuleRunChangeGeneratedFromRunsModuleRunChangeAstAnchor {
+  kind generated_from
+  connects RunsModule -> RunsModuleRunChangeAstAnchor
+  roles { RunsModule as generated, RunsModuleRunChangeAstAnchor as syntax }
+  expects RunsModuleRunChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:744ae44ed5630c85a0b7ab9124f13b6567f2c73873549d3b8289e585313a0d26")
+  summary "fn RunsModule.runChange generated from typescript function_declaration at experiments/shape-1/dogfood/tools/runs.ts#runChange."
+}
+
+implementation RunsModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/tools/runs.ts"
+  }
+  conforms_to RunsModule
+}

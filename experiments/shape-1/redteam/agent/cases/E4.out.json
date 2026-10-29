@@ -1,0 +1,172 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:7ad7aa709e316eb958af57929087c0802ebc5297c999c8f3c142a21bdaf6f28b",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:be999366aeac4c30e0c9956652062390c3a2d229d399549edf61f83b8a75400d",
+   "kind": "contradiction",
+   "reason": null,
+   "questions": null,
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "mechanical",
+   "force": "sound",
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": null,
+   "group": "g:932323e5c8ccad1148d4765c3e98f00a76f1f79b381a7d50788cef3f7530dbb1",
+   "claim": {
+    "fp": "sha256:c4d86210faece9b17577753baa7e931db05b83da09efbd3fb1202cc8c4264e92",
+    "ids": [
+     "tooling::CheckerNeverReadsClock"
+    ],
+    "tier": "critical"
+   },
+   "subject": {
+    "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+    "atom": "Read<tooling::WallClock>"
+   },
+   "witness": [
+    "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e"
+   ],
+   "facts": {
+    "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e": {
+     "at": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+     "resource": "ts.call(\"Date.now\")",
+     "type": "effect",
+     "verb": "Read"
+    }
+   },
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:df247f3819d039026fc2060d31c91e9312e6490f23ff266e47c71d548ad26799",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "edit-code",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "exception",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::ann"
+     ],
+     "creates": null
+    },
+    {
+     "act": "edit-shape",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "critical",
+      "answers": 1,
+      "owners": [
+       "tooling::ShapeMaintainers"
+      ]
+     }
+    }
+   ],
+   "causes": [
+    {
+     "type": "fact",
+     "id": "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e"
+    },
+    {
+     "type": "binding",
+     "id": "resource tooling::WallClock"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "claim",
+     "id": "sha256:215f7e3f8c7bab0e3328df7fd52abb5ede66440a460f89e8a02a9789f9c62441"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [],
+ "renames": [
+  {
+   "base": "tooling::SystemClock",
+   "head": "tooling::WallClock",
+   "rule": "binding"
+  }
+ ],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 2,
+   "den": 2
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [
+   "checker.incremental::ShapeIncrementalChecker",
+   "checker::ShapeBindings",
+   "checker::ShapeDiagnostics",
+   "checker::ShapeModelLowerer",
+   "checker::ShapeModuleResolver",
+   "checker::ShapePreludeRegistry",
+   "checker::ShapeStringHelpers",
+   "tooling::ShpCli"
+  ],
+  "ungoverned": {
+   "num": 2,
+   "den": 8
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [
+   "checker::bunTest"
+  ],
+  "baseObservations": "missing",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 1,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"checker::ShapeChecker.*\",\"checker::ShapeChecker.*\"]",
+   "cell:[\"checker::ShapeRuleEngine.*\",\"checker::ShapeRuleEngine.*\"]",
+   "cell:[\"tooling::ShpCli.*\",\"tooling::ShpCli.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 3,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

@@ -37,7 +37,7 @@ export function append(log: AuditLog, entry: NewEntry): AuditLog {
     id: log.entries.length,
     timestamp: entry.timestamp,
     actor: entry.actor,
-    payload: entry.payload,
+    payload: entry.payload
   };
   return { entries: [...log.entries, stored] };
 }
@@ -66,6 +66,8 @@ function isExpired(e: Entry, now: number, retention: number): boolean {
 /** Retention purge: redacts the payload of every expired entry. */
 export function purge(log: AuditLog, now: number, retention: number): AuditLog {
   return {
-    entries: log.entries.map((e) => (isExpired(e, now, retention) ? { ...e, payload: REDACTED } : e)),
+    entries: log.entries.map((e) =>
+      isExpired(e, now, retention) ? { ...e, payload: REDACTED } : e
+    )
   };
 }

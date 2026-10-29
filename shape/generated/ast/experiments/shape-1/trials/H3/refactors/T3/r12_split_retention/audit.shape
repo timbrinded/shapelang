@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r12_split_retention.audit
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AuditModuleAppendAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts#append")
+  fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+}
+
+resource AuditModuleEmptyLogAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts#emptyLog")
+  fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+}
+
+resource AuditModuleGetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts#get")
+  fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+}
+
+resource AuditModuleListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts#list")
+  fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+}
+
+resource AuditModulePurgeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts#purge")
+  fingerprint ast.semantic_subtree_v1("sha256:ec4788ff16c9171024b10b077a8bfd16e555ae8a9f424b8af208189fc1c75851")
+}
+
+component AuditModule : GeneratedCandidate {
+  fn append
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts#append")
+    effects unknown
+  fn emptyLog
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts#emptyLog")
+    effects unknown
+  fn get
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts#get")
+    effects unknown
+  fn list
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts#list")
+    effects unknown
+  fn purge
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts#purge")
+    effects unknown
+}
+
+relation AuditModuleAppendGeneratedFromAuditModuleAppendAstAnchor {
+  kind generated_from
+  connects AuditModule -> AuditModuleAppendAstAnchor
+  roles { AuditModule as generated, AuditModuleAppendAstAnchor as syntax }
+  expects AuditModuleAppendAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+  summary "fn AuditModule.append generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts#append."
+}
+
+relation AuditModuleEmptyLogGeneratedFromAuditModuleEmptyLogAstAnchor {
+  kind generated_from
+  connects AuditModule -> AuditModuleEmptyLogAstAnchor
+  roles { AuditModule as generated, AuditModuleEmptyLogAstAnchor as syntax }
+  expects AuditModuleEmptyLogAstAnchor fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+  summary "fn AuditModule.emptyLog generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts#emptyLog."
+}
+
+relation AuditModuleGetGeneratedFromAuditModuleGetAstAnchor {
+  kind generated_from
+  connects AuditModule -> AuditModuleGetAstAnchor
+  roles { AuditModule as generated, AuditModuleGetAstAnchor as syntax }
+  expects AuditModuleGetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+  summary "fn AuditModule.get generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts#get."
+}
+
+relation AuditModuleListGeneratedFromAuditModuleListAstAnchor {
+  kind generated_from
+  connects AuditModule -> AuditModuleListAstAnchor
+  roles { AuditModule as generated, AuditModuleListAstAnchor as syntax }
+  expects AuditModuleListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+  summary "fn AuditModule.list generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts#list."
+}
+
+relation AuditModulePurgeGeneratedFromAuditModulePurgeAstAnchor {
+  kind generated_from
+  connects AuditModule -> AuditModulePurgeAstAnchor
+  roles { AuditModule as generated, AuditModulePurgeAstAnchor as syntax }
+  expects AuditModulePurgeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ec4788ff16c9171024b10b077a8bfd16e555ae8a9f424b8af208189fc1c75851")
+  summary "fn AuditModule.purge generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts#purge."
+}
+
+implementation AuditModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts"
+  }
+  conforms_to AuditModule
+}

@@ -1,0 +1,145 @@
+module shape.generated.ast.experiments.shape_1.proto.src.loader
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LoaderModuleFindShapeFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loader.ts#findShapeFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:2c41ff5aedbed084eb4788151d49565c286cb3897d02f64f0bed0ef4d05a5760")
+}
+
+resource LoaderModuleLoadModelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loader.ts#loadModel")
+  fingerprint ast.semantic_subtree_v1("sha256:6e5a57f5eb7066bd512e51b7549dec045fbe1e4c93a628c473d540a7a089e706")
+}
+
+resource LoaderModuleMaterialiseShapeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loader.ts#materialiseShape")
+  fingerprint ast.semantic_subtree_v1("sha256:f9e39f824eff90f0380248408390de8d11906ddc3fa934eb7e057d1b125620a8")
+}
+
+resource LoaderModuleReadEvidenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loader.ts#readEvidence")
+  fingerprint ast.semantic_subtree_v1("sha256:bc980fde7e56c838d8ae2cffc6930b14b674430cb2d016d0d899453f4cb1a4a9")
+}
+
+resource LoaderModuleReadPersistedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loader.ts#readPersisted")
+  fingerprint ast.semantic_subtree_v1("sha256:9a34452007647f07c31d84e118e5917081faefb1c318c6c597f83cade3bb0e53")
+}
+
+resource LoaderModuleReadSidecarAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loader.ts#readSidecar")
+  fingerprint ast.semantic_subtree_v1("sha256:f8acdf58b922ef125e7f1a883b9c1348219314faed5169d848e1ba8a3c13cddd")
+}
+
+resource LoaderModuleRewriteAgainstAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loader.ts#rewriteAgainst")
+  fingerprint ast.semantic_subtree_v1("sha256:8768678406e0ecc0f3d7386f7a1d3365e3dc59e7697a611e3fea4a8046d7db03")
+}
+
+resource LoaderModuleRunInspectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loader.ts#runInspect")
+  fingerprint ast.semantic_subtree_v1("sha256:80bdb57b17fc733406a34a74c50bedf70150312be198ee49e3c3896013736e79")
+}
+
+component LoaderModule : GeneratedCandidate {
+  fn findShapeFiles
+    source ts("experiments/shape-1/proto/src/loader.ts#findShapeFiles")
+    effects unknown
+  fn loadModel
+    source ts("experiments/shape-1/proto/src/loader.ts#loadModel")
+    effects unknown
+  fn materialiseShape
+    source ts("experiments/shape-1/proto/src/loader.ts#materialiseShape")
+    effects unknown
+  fn readEvidence
+    source ts("experiments/shape-1/proto/src/loader.ts#readEvidence")
+    effects unknown
+  fn readPersisted
+    source ts("experiments/shape-1/proto/src/loader.ts#readPersisted")
+    effects unknown
+  fn readSidecar
+    source ts("experiments/shape-1/proto/src/loader.ts#readSidecar")
+    effects unknown
+  fn rewriteAgainst
+    source ts("experiments/shape-1/proto/src/loader.ts#rewriteAgainst")
+    effects unknown
+  fn runInspect
+    source ts("experiments/shape-1/proto/src/loader.ts#runInspect")
+    effects unknown
+}
+
+relation LoaderModuleFindShapeFilesGeneratedFromLoaderModuleFindShapeFilesAstAnchor {
+  kind generated_from
+  connects LoaderModule -> LoaderModuleFindShapeFilesAstAnchor
+  roles { LoaderModule as generated, LoaderModuleFindShapeFilesAstAnchor as syntax }
+  expects LoaderModuleFindShapeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2c41ff5aedbed084eb4788151d49565c286cb3897d02f64f0bed0ef4d05a5760")
+  summary "fn LoaderModule.findShapeFiles generated from typescript function_declaration at experiments/shape-1/proto/src/loader.ts#findShapeFiles."
+}
+
+relation LoaderModuleLoadModelGeneratedFromLoaderModuleLoadModelAstAnchor {
+  kind generated_from
+  connects LoaderModule -> LoaderModuleLoadModelAstAnchor
+  roles { LoaderModule as generated, LoaderModuleLoadModelAstAnchor as syntax }
+  expects LoaderModuleLoadModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6e5a57f5eb7066bd512e51b7549dec045fbe1e4c93a628c473d540a7a089e706")
+  summary "fn LoaderModule.loadModel generated from typescript function_declaration at experiments/shape-1/proto/src/loader.ts#loadModel."
+}
+
+relation LoaderModuleMaterialiseShapeGeneratedFromLoaderModuleMaterialiseShapeAstAnchor {
+  kind generated_from
+  connects LoaderModule -> LoaderModuleMaterialiseShapeAstAnchor
+  roles { LoaderModule as generated, LoaderModuleMaterialiseShapeAstAnchor as syntax }
+  expects LoaderModuleMaterialiseShapeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f9e39f824eff90f0380248408390de8d11906ddc3fa934eb7e057d1b125620a8")
+  summary "fn LoaderModule.materialiseShape generated from typescript function_declaration at experiments/shape-1/proto/src/loader.ts#materialiseShape."
+}
+
+relation LoaderModuleReadEvidenceGeneratedFromLoaderModuleReadEvidenceAstAnchor {
+  kind generated_from
+  connects LoaderModule -> LoaderModuleReadEvidenceAstAnchor
+  roles { LoaderModule as generated, LoaderModuleReadEvidenceAstAnchor as syntax }
+  expects LoaderModuleReadEvidenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bc980fde7e56c838d8ae2cffc6930b14b674430cb2d016d0d899453f4cb1a4a9")
+  summary "fn LoaderModule.readEvidence generated from typescript function_declaration at experiments/shape-1/proto/src/loader.ts#readEvidence."
+}
+
+relation LoaderModuleReadPersistedGeneratedFromLoaderModuleReadPersistedAstAnchor {
+  kind generated_from
+  connects LoaderModule -> LoaderModuleReadPersistedAstAnchor
+  roles { LoaderModule as generated, LoaderModuleReadPersistedAstAnchor as syntax }
+  expects LoaderModuleReadPersistedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9a34452007647f07c31d84e118e5917081faefb1c318c6c597f83cade3bb0e53")
+  summary "fn LoaderModule.readPersisted generated from typescript function_declaration at experiments/shape-1/proto/src/loader.ts#readPersisted."
+}
+
+relation LoaderModuleReadSidecarGeneratedFromLoaderModuleReadSidecarAstAnchor {
+  kind generated_from
+  connects LoaderModule -> LoaderModuleReadSidecarAstAnchor
+  roles { LoaderModule as generated, LoaderModuleReadSidecarAstAnchor as syntax }
+  expects LoaderModuleReadSidecarAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f8acdf58b922ef125e7f1a883b9c1348219314faed5169d848e1ba8a3c13cddd")
+  summary "fn LoaderModule.readSidecar generated from typescript function_declaration at experiments/shape-1/proto/src/loader.ts#readSidecar."
+}
+
+relation LoaderModuleRewriteAgainstGeneratedFromLoaderModuleRewriteAgainstAstAnchor {
+  kind generated_from
+  connects LoaderModule -> LoaderModuleRewriteAgainstAstAnchor
+  roles { LoaderModule as generated, LoaderModuleRewriteAgainstAstAnchor as syntax }
+  expects LoaderModuleRewriteAgainstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8768678406e0ecc0f3d7386f7a1d3365e3dc59e7697a611e3fea4a8046d7db03")
+  summary "fn LoaderModule.rewriteAgainst generated from typescript function_declaration at experiments/shape-1/proto/src/loader.ts#rewriteAgainst."
+}
+
+relation LoaderModuleRunInspectGeneratedFromLoaderModuleRunInspectAstAnchor {
+  kind generated_from
+  connects LoaderModule -> LoaderModuleRunInspectAstAnchor
+  roles { LoaderModule as generated, LoaderModuleRunInspectAstAnchor as syntax }
+  expects LoaderModuleRunInspectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:80bdb57b17fc733406a34a74c50bedf70150312be198ee49e3c3896013736e79")
+  summary "fn LoaderModule.runInspect generated from typescript function_declaration at experiments/shape-1/proto/src/loader.ts#runInspect."
+}
+
+implementation LoaderModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/loader.ts"
+  }
+  conforms_to LoaderModule
+}

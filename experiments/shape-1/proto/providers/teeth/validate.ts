@@ -31,10 +31,14 @@ function splitQ(q: string): { module: string; name: string } {
 function findDecl(src: SourceDoc, kind: Decl["decl"], q: string): Decl | null {
   const { module, name } = splitQ(q);
   const m = src.modules.find((x) => x.module === module);
-  return (m?.decls.find((d) => d.decl === kind && "name" in d && d.name === name) as Decl | undefined) ?? null;
+  return (
+    (m?.decls.find((d) => d.decl === kind && "name" in d && d.name === name) as Decl | undefined) ??
+    null
+  );
 }
 
-const probeCode = (r: string): string => `ts.call(${JSON.stringify(`teeth.${r.replace(/::/g, ".")}`)})`;
+const probeCode = (r: string): string =>
+  `ts.call(${JSON.stringify(`teeth.${r.replace(/::/g, ".")}`)})`;
 
 /** The baseline source: every non-std resource gains a synthetic ts.call binding, and a
  *  presence-sound observer of them is declared, so W1 facts lift to atoms. */
@@ -60,10 +64,31 @@ export function probeSource(src: SourceDoc, esf: ESF): SourceDoc {
   return s;
 }
 
-function observation(revision: string, man: Statement, at: string, verb: string, resource: string): unknown {
-  const pred = man.predicate.shape as { entries: { id: string; projection: string; scheme: string; digest: string }[] };
-  const e = pred.entries.find((x) => x.id === at && (x.projection === "unit" || x.projection === "file")) ?? pred.entries.find((x) => x.id === at);
-  const entries = e ? [{ id: e.id, projection: e.projection, scheme: e.scheme, digest: e.digest, complete: false, deps: [] }] : [];
+function observation(
+  revision: string,
+  man: Statement,
+  at: string,
+  verb: string,
+  resource: string
+): unknown {
+  const pred = man.predicate.shape as {
+    entries: { id: string; projection: string; scheme: string; digest: string }[];
+  };
+  const e =
+    pred.entries.find((x) => x.id === at && (x.projection === "unit" || x.projection === "file")) ??
+    pred.entries.find((x) => x.id === at);
+  const entries = e
+    ? [
+        {
+          id: e.id,
+          projection: e.projection,
+          scheme: e.scheme,
+          digest: e.digest,
+          complete: false,
+          deps: []
+        }
+      ]
+    : [];
   const rec: ShapeRecord = {
     v: "shape.evidence.v1",
     kind: "observation",
@@ -89,7 +114,9 @@ export interface ValidateResult {
 
 function keysOf(out: ReturnType<typeof derive>): Set<string> {
   const s = new Set<string>();
-  for (const e of out.errors) if (e.code === "E-conduct" || e.code === "E-structure") s.add(`${e.code} ${e.subject} ${e.message ?? ""}`);
+  for (const e of out.errors)
+    if (e.code === "E-conduct" || e.code === "E-structure")
+      s.add(`${e.code} ${e.subject} ${e.message ?? ""}`);
   for (const o of out.obligations) if (o.kind === "contradiction") s.add(o.key);
   return s;
 }
@@ -100,13 +127,22 @@ function sample<T>(xs: T[], n: number): T[] {
   return Array.from({ length: n }, (_, i) => xs[Math.floor((i * xs.length) / n)] as T);
 }
 
-export function validateTeeth(o: { source: SourceDoc; esf: ESF; world: World; manifest: Statement; revision: string; now: string; perOp: number }): ValidateResult {
+export function validateTeeth(o: {
+  source: SourceDoc;
+  esf: ESF;
+  world: World;
+  manifest: Statement;
+  revision: string;
+  now: string;
+  perOp: number;
+}): ValidateResult {
   const t0 = Date.now();
   const W = o.world;
   const base = probeSource(o.source, o.esf);
   // the probe provider lives in the first module
   const probeQ = `${base.modules[0]?.module ?? "teeth"}::probe`;
-  const fix = (rec: unknown): unknown => JSON.parse(JSON.stringify(rec).replaceAll(PROVIDER, probeQ));
+  const fix = (rec: unknown): unknown =>
+    JSON.parse(JSON.stringify(rec).replaceAll(PROVIDER, probeQ));
   const input = (src: SourceDoc, records: unknown[]): CheckInput => ({
     contract: "shape.check.input/v1",
     mode: "audit",
@@ -123,7 +159,12 @@ export function validateTeeth(o: { source: SourceDoc; esf: ESF; world: World; ma
   });
   const baseline = keysOf(derive(input(base, [])));
   const res: ValidateResult = { sampled: 0, agree: 0, disagreements: [], byOp: {}, ms: 0 };
-  const record = (op: string, mutant: string, closed: boolean, out: ReturnType<typeof derive>): void => {
+  const record = (
+    op: string,
+    mutant: string,
+    closed: boolean,
+    out: ReturnType<typeof derive>
+  ): void => {
     const now = keysOf(out);
     const killed = [...now].some((k) => !baseline.has(k));
     res.sampled += 1;
@@ -136,11 +177,18 @@ export function validateTeeth(o: { source: SourceDoc; esf: ESF; world: World; ma
     res.byOp[op] = b;
   };
   const resources = o.esf.resources.filter((r) => !r.q.startsWith("std::")).map((r) => r.q);
-  const verbs = o.esf.effects.map((e) => e.verb).filter((v) => v !== "Hatch" && !impl(W, v, "Hatch"));
+  const verbs = o.esf.effects
+    .map((e) => e.verb)
+    .filter((v) => v !== "Hatch" && !impl(W, v, "Hatch"));
   // W1: positions with at least one identity
   const w1: { pos: string; at: string; verb: string; res: string }[] = [];
   for (const pos of W.positions) {
-    const at = (W.codeOfPos.get(pos) ?? []).find((x) => W.man.ids.get(x)?.lang === "ts" || W.man.ids.get(x)?.lang === "rust" || W.man.ids.get(x)?.lang === "verus");
+    const at = (W.codeOfPos.get(pos) ?? []).find(
+      (x) =>
+        W.man.ids.get(x)?.lang === "ts" ||
+        W.man.ids.get(x)?.lang === "rust" ||
+        W.man.ids.get(x)?.lang === "verus"
+    );
     if (!at) continue;
     for (const r of resources) for (const v of verbs) w1.push({ pos, at, verb: v, res: r });
   }
@@ -149,24 +197,44 @@ export function validateTeeth(o: { source: SourceDoc; esf: ESF; world: World; ma
   for (const m of sample(w1, o.perOp)) {
     const atom = `${m.verb}<${m.res}>`;
     const closed = w1Killers(W, uppers, reachOf, m.pos, atom).length > 0;
-    record("W1", `${m.pos} ${atom}`, closed, derive(input(base, [fix(observation(o.revision, o.manifest, m.at, m.verb, m.res))])));
+    record(
+      "W1",
+      `${m.pos} ${atom}`,
+      closed,
+      derive(input(base, [fix(observation(o.revision, o.manifest, m.at, m.verb, m.res))]))
+    );
   }
   // W2: declared relations between components (closed form from the teeth module's rules)
   const comps = W.nodes.filter((n) => W.compByQ.has(n)).sort(cmpStr);
   const w2: { a: string; b: string; kind: string }[] = [];
-  for (const k of o.esf.kinds.filter((x) => x.to === "component")) for (const a of comps) for (const b of comps) if (a !== b) w2.push({ a, b, kind: k.name });
+  for (const k of o.esf.kinds.filter((x) => x.to === "component"))
+    for (const a of comps) for (const b of comps) if (a !== b) w2.push({ a, b, kind: k.name });
   for (const m of sample(w2, o.perOp)) {
     const src = clone(base);
     const mod = src.modules.find((x) => x.module === splitQ(m.a).module) ?? src.modules[0];
     if (!mod) continue;
-    mod.decls.push({ decl: "relation", name: `TeethProbe_${res.sampled}`, kind: m.kind, connects: [m.a, m.b] });
-    record("W2", `${m.a} -${m.kind}-> ${m.b}`, closedW2(o.esf, W, m.a, m.kind, m.b), derive(input(src, [])));
+    mod.decls.push({
+      decl: "relation",
+      name: `TeethProbe_${res.sampled}`,
+      kind: m.kind,
+      connects: [m.a, m.b]
+    });
+    record(
+      "W2",
+      `${m.a} -${m.kind}-> ${m.b}`,
+      closedW2(o.esf, W, m.a, m.kind, m.b),
+      derive(input(src, []))
+    );
   }
   // P1: grant + fact at K.*
   const p1: { comp: string; at: string; verb: string; res: string }[] = [];
   const p1Verbs = o.esf.effects.map((e) => e.verb).filter((v) => impl(W, v, "HardDelete"));
-  for (const c of [...W.compByQ.values()].filter((x) => !x.q.startsWith("std::") && x.grants !== null)) {
-    const at = (W.codeOfPos.get(`${c.q}.*`) ?? []).find((x) => ["ts", "rust", "verus"].includes(W.man.ids.get(x)?.lang ?? ""));
+  for (const c of [...W.compByQ.values()].filter(
+    (x) => !x.q.startsWith("std::") && x.grants !== null
+  )) {
+    const at = (W.codeOfPos.get(`${c.q}.*`) ?? []).find((x) =>
+      ["ts", "rust", "verus"].includes(W.man.ids.get(x)?.lang ?? "")
+    );
     if (!at) continue;
     for (const r of resources) for (const v of p1Verbs) p1.push({ comp: c.q, at, verb: v, res: r });
   }
@@ -177,7 +245,12 @@ export function validateTeeth(o: { source: SourceDoc; esf: ESF; world: World; ma
     const atom = `${m.verb}<${m.res}>`;
     d.grants = [...(Array.isArray(d.grants) ? d.grants : []), atom];
     const closed = protectingForbids(W, `${m.comp}.*`, atom).length > 0;
-    record("P1", `${m.comp} +${atom}`, closed, derive(input(src, [fix(observation(o.revision, o.manifest, m.at, m.verb, m.res))])));
+    record(
+      "P1",
+      `${m.comp} +${atom}`,
+      closed,
+      derive(input(src, [fix(observation(o.revision, o.manifest, m.at, m.verb, m.res))]))
+    );
   }
   res.ms = Date.now() - t0;
   return res;
@@ -192,7 +265,8 @@ export function closedW2(esf: ESF, W: World, a: string, kind: string, b: string)
     s.add(y);
     edges.set(key, s);
   };
-  for (const c of esf.claims) if (c.op === "edge.exists") add(String(c.args.kind), String(c.args.from), String(c.args.to));
+  for (const c of esf.claims)
+    if (c.op === "edge.exists") add(String(c.args.kind), String(c.args.from), String(c.args.to));
   const nodes = (sels: string[]): Set<string> => {
     const out = new Set<string>();
     for (const s of sels) {
@@ -207,11 +281,12 @@ export function closedW2(esf: ESF, W: World, a: string, kind: string, b: string)
     const stack = [from];
     while (stack.length > 0) {
       const x = stack.pop() as string;
-      for (const k of ks) for (const y of edges.get(`${k}\u0000${x}`) ?? []) {
-        if (seen.has(y)) continue;
-        seen.add(y);
-        if (allow(y)) stack.push(y);
-      }
+      for (const k of ks)
+        for (const y of edges.get(`${k}\u0000${x}`) ?? []) {
+          if (seen.has(y)) continue;
+          seen.add(y);
+          if (allow(y)) stack.push(y);
+        }
     }
     return seen;
   };
@@ -230,7 +305,8 @@ export function closedW2(esf: ESF, W: World, a: string, kind: string, b: string)
       const S = [...nodes(c.args.from as string[])].filter((s) => !V.has(s));
       const T = nodes(c.args.to as string[]);
       const aOk = S.some((s) => s === a || (!V.has(a) && reach(ks, s, (n) => !V.has(n)).has(a)));
-      const bOk = T.has(b) || (!V.has(b) && [...T].some((t) => reach(ks, b, (n) => !V.has(n)).has(t)));
+      const bOk =
+        T.has(b) || (!V.has(b) && [...T].some((t) => reach(ks, b, (n) => !V.has(n)).has(t)));
       if (aOk && bOk) return true;
     }
   }

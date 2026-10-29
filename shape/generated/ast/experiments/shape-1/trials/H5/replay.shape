@@ -1,0 +1,193 @@
+module shape.generated.ast.experiments.shape_1.trials.H5.replay
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ReplayModuleAllowsAtAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/replay.ts#allowsAt")
+  fingerprint ast.semantic_subtree_v1("sha256:34d120f69ea10b380f6e0e9d932f72ab8e2ed7ec1bb7acb873ee36a9a74b059e")
+}
+
+resource ReplayModuleChangedIdsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/replay.ts#changedIds")
+  fingerprint ast.semantic_subtree_v1("sha256:8216ae14204a0bddfbe0115faf8ae459b7afac76c5d75ebb4139f071054a8190")
+}
+
+resource ReplayModuleCompactAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/replay.ts#compact")
+  fingerprint ast.semantic_subtree_v1("sha256:7bb281f1bfa2f31cc101ca7383d6fe2659c538b3dac77b9a3849cb9de87900fb")
+}
+
+resource ReplayModuleEntriesAAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/replay.ts#entriesA")
+  fingerprint ast.semantic_subtree_v1("sha256:6853394067b4b3241d3af57e9edf0679b93075989931a14d3b99646bc4664a6f")
+}
+
+resource ReplayModuleEntriesBAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/replay.ts#entriesB")
+  fingerprint ast.semantic_subtree_v1("sha256:961abbdc6d900aa30f89d4f6faaa679659c4b0beb785c6b580614e68317b1c82")
+}
+
+resource ReplayModuleGlobsAtAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/replay.ts#globsAt")
+  fingerprint ast.semantic_subtree_v1("sha256:f386b35b7d97e66721d9be8b3a1ee26a9d9cef56fd8f0676529e4516957e9c11")
+}
+
+resource ReplayModuleInputForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/replay.ts#inputFor")
+  fingerprint ast.semantic_subtree_v1("sha256:0c9298eae90b9bb6ce5ea214aa6fd500b517745b0f5363e90664da1d36bdf80e")
+}
+
+resource ReplayModuleJudgmentForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/replay.ts#judgmentFor")
+  fingerprint ast.semantic_subtree_v1("sha256:4a501df135ae04cc075a44fcc594c336c203456c10d6a004eda69ec4c0ad187c")
+}
+
+resource ReplayModuleManifestForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/replay.ts#manifestFor")
+  fingerprint ast.semantic_subtree_v1("sha256:2c8b42ca818934dc69e61263985878ea596989611cbb02e00b983dbcad3c13c8")
+}
+
+resource ReplayModuleMarkedFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/replay.ts#markedFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:9815533a4afe7ac47bfa10781e7f5e46e5d0c2c4fa5cc1105c3e98cd43c4770f")
+}
+
+resource ReplayModuleSourceForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/replay.ts#sourceFor")
+  fingerprint ast.semantic_subtree_v1("sha256:00c94804a1ff1614048398f458324250d4a4e3d97a17cc51939af3575685d511")
+}
+
+component ReplayModule : GeneratedCandidate {
+  fn allowsAt
+    source ts("experiments/shape-1/trials/H5/replay.ts#allowsAt")
+    effects unknown
+  fn changedIds
+    source ts("experiments/shape-1/trials/H5/replay.ts#changedIds")
+    effects unknown
+  fn compact
+    source ts("experiments/shape-1/trials/H5/replay.ts#compact")
+    effects unknown
+  fn entriesA
+    source ts("experiments/shape-1/trials/H5/replay.ts#entriesA")
+    effects unknown
+  fn entriesB
+    source ts("experiments/shape-1/trials/H5/replay.ts#entriesB")
+    effects unknown
+  fn globsAt
+    source ts("experiments/shape-1/trials/H5/replay.ts#globsAt")
+    effects unknown
+  fn inputFor
+    source ts("experiments/shape-1/trials/H5/replay.ts#inputFor")
+    effects unknown
+  fn judgmentFor
+    source ts("experiments/shape-1/trials/H5/replay.ts#judgmentFor")
+    effects unknown
+  fn manifestFor
+    source ts("experiments/shape-1/trials/H5/replay.ts#manifestFor")
+    effects unknown
+  fn markedFiles
+    source ts("experiments/shape-1/trials/H5/replay.ts#markedFiles")
+    effects unknown
+  fn sourceFor
+    source ts("experiments/shape-1/trials/H5/replay.ts#sourceFor")
+    effects unknown
+}
+
+relation ReplayModuleAllowsAtGeneratedFromReplayModuleAllowsAtAstAnchor {
+  kind generated_from
+  connects ReplayModule -> ReplayModuleAllowsAtAstAnchor
+  roles { ReplayModule as generated, ReplayModuleAllowsAtAstAnchor as syntax }
+  expects ReplayModuleAllowsAtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:34d120f69ea10b380f6e0e9d932f72ab8e2ed7ec1bb7acb873ee36a9a74b059e")
+  summary "fn ReplayModule.allowsAt generated from typescript function_declaration at experiments/shape-1/trials/H5/replay.ts#allowsAt."
+}
+
+relation ReplayModuleChangedIdsGeneratedFromReplayModuleChangedIdsAstAnchor {
+  kind generated_from
+  connects ReplayModule -> ReplayModuleChangedIdsAstAnchor
+  roles { ReplayModule as generated, ReplayModuleChangedIdsAstAnchor as syntax }
+  expects ReplayModuleChangedIdsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8216ae14204a0bddfbe0115faf8ae459b7afac76c5d75ebb4139f071054a8190")
+  summary "fn ReplayModule.changedIds generated from typescript function_declaration at experiments/shape-1/trials/H5/replay.ts#changedIds."
+}
+
+relation ReplayModuleCompactGeneratedFromReplayModuleCompactAstAnchor {
+  kind generated_from
+  connects ReplayModule -> ReplayModuleCompactAstAnchor
+  roles { ReplayModule as generated, ReplayModuleCompactAstAnchor as syntax }
+  expects ReplayModuleCompactAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7bb281f1bfa2f31cc101ca7383d6fe2659c538b3dac77b9a3849cb9de87900fb")
+  summary "fn ReplayModule.compact generated from typescript function_declaration at experiments/shape-1/trials/H5/replay.ts#compact."
+}
+
+relation ReplayModuleEntriesAGeneratedFromReplayModuleEntriesAAstAnchor {
+  kind generated_from
+  connects ReplayModule -> ReplayModuleEntriesAAstAnchor
+  roles { ReplayModule as generated, ReplayModuleEntriesAAstAnchor as syntax }
+  expects ReplayModuleEntriesAAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6853394067b4b3241d3af57e9edf0679b93075989931a14d3b99646bc4664a6f")
+  summary "fn ReplayModule.entriesA generated from typescript function_declaration at experiments/shape-1/trials/H5/replay.ts#entriesA."
+}
+
+relation ReplayModuleEntriesBGeneratedFromReplayModuleEntriesBAstAnchor {
+  kind generated_from
+  connects ReplayModule -> ReplayModuleEntriesBAstAnchor
+  roles { ReplayModule as generated, ReplayModuleEntriesBAstAnchor as syntax }
+  expects ReplayModuleEntriesBAstAnchor fingerprint ast.semantic_subtree_v1("sha256:961abbdc6d900aa30f89d4f6faaa679659c4b0beb785c6b580614e68317b1c82")
+  summary "fn ReplayModule.entriesB generated from typescript function_declaration at experiments/shape-1/trials/H5/replay.ts#entriesB."
+}
+
+relation ReplayModuleGlobsAtGeneratedFromReplayModuleGlobsAtAstAnchor {
+  kind generated_from
+  connects ReplayModule -> ReplayModuleGlobsAtAstAnchor
+  roles { ReplayModule as generated, ReplayModuleGlobsAtAstAnchor as syntax }
+  expects ReplayModuleGlobsAtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f386b35b7d97e66721d9be8b3a1ee26a9d9cef56fd8f0676529e4516957e9c11")
+  summary "fn ReplayModule.globsAt generated from typescript function_declaration at experiments/shape-1/trials/H5/replay.ts#globsAt."
+}
+
+relation ReplayModuleInputForGeneratedFromReplayModuleInputForAstAnchor {
+  kind generated_from
+  connects ReplayModule -> ReplayModuleInputForAstAnchor
+  roles { ReplayModule as generated, ReplayModuleInputForAstAnchor as syntax }
+  expects ReplayModuleInputForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0c9298eae90b9bb6ce5ea214aa6fd500b517745b0f5363e90664da1d36bdf80e")
+  summary "fn ReplayModule.inputFor generated from typescript function_declaration at experiments/shape-1/trials/H5/replay.ts#inputFor."
+}
+
+relation ReplayModuleJudgmentForGeneratedFromReplayModuleJudgmentForAstAnchor {
+  kind generated_from
+  connects ReplayModule -> ReplayModuleJudgmentForAstAnchor
+  roles { ReplayModule as generated, ReplayModuleJudgmentForAstAnchor as syntax }
+  expects ReplayModuleJudgmentForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4a501df135ae04cc075a44fcc594c336c203456c10d6a004eda69ec4c0ad187c")
+  summary "fn ReplayModule.judgmentFor generated from typescript function_declaration at experiments/shape-1/trials/H5/replay.ts#judgmentFor."
+}
+
+relation ReplayModuleManifestForGeneratedFromReplayModuleManifestForAstAnchor {
+  kind generated_from
+  connects ReplayModule -> ReplayModuleManifestForAstAnchor
+  roles { ReplayModule as generated, ReplayModuleManifestForAstAnchor as syntax }
+  expects ReplayModuleManifestForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2c8b42ca818934dc69e61263985878ea596989611cbb02e00b983dbcad3c13c8")
+  summary "fn ReplayModule.manifestFor generated from typescript function_declaration at experiments/shape-1/trials/H5/replay.ts#manifestFor."
+}
+
+relation ReplayModuleMarkedFilesGeneratedFromReplayModuleMarkedFilesAstAnchor {
+  kind generated_from
+  connects ReplayModule -> ReplayModuleMarkedFilesAstAnchor
+  roles { ReplayModule as generated, ReplayModuleMarkedFilesAstAnchor as syntax }
+  expects ReplayModuleMarkedFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9815533a4afe7ac47bfa10781e7f5e46e5d0c2c4fa5cc1105c3e98cd43c4770f")
+  summary "fn ReplayModule.markedFiles generated from typescript function_declaration at experiments/shape-1/trials/H5/replay.ts#markedFiles."
+}
+
+relation ReplayModuleSourceForGeneratedFromReplayModuleSourceForAstAnchor {
+  kind generated_from
+  connects ReplayModule -> ReplayModuleSourceForAstAnchor
+  roles { ReplayModule as generated, ReplayModuleSourceForAstAnchor as syntax }
+  expects ReplayModuleSourceForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:00c94804a1ff1614048398f458324250d4a4e3d97a17cc51939af3575685d511")
+  summary "fn ReplayModule.sourceFor generated from typescript function_declaration at experiments/shape-1/trials/H5/replay.ts#sourceFor."
+}
+
+implementation ReplayModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H5/replay.ts"
+  }
+  conforms_to ReplayModule
+}

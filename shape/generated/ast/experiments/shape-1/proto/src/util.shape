@@ -1,0 +1,369 @@
+module shape.generated.ast.experiments.shape_1.proto.src.util
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource UtilModuleAsArrayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#asArray")
+  fingerprint ast.semantic_subtree_v1("sha256:c7dad5862ddd2b0834809d88feeaf161b8a8f3e47e6cb0df8b3584c958ec2fee")
+}
+
+resource UtilModuleAssertNeverAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#assertNever")
+  fingerprint ast.semantic_subtree_v1("sha256:9498a4a0846a31de7474a3096e99061c8fe5560858507e96212491a1a30591ce")
+}
+
+resource UtilModuleCmpKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#cmpKey")
+  fingerprint ast.semantic_subtree_v1("sha256:a0850d4aa112e06853796cef302b7947c6ee329395acccad8223e7128f5ad0e7")
+}
+
+resource UtilModuleCmpStrAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#cmpStr")
+  fingerprint ast.semantic_subtree_v1("sha256:1216cfea61cce33f4f18a4e50b29130d71a8a1b0a2364ec6f92afe5eeb581e63")
+}
+
+resource UtilModuleCmpTupleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#cmpTuple")
+  fingerprint ast.semantic_subtree_v1("sha256:43b18ccb84ee5cabe3e2d632dc43ffa4ccd4a90c224950b5de888f2c850f3fd7")
+}
+
+resource UtilModuleCollapseWsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#collapseWs")
+  fingerprint ast.semantic_subtree_v1("sha256:a2eebbf3f2dca4be6c0ddc1e0f48da322ca7a4f3c0d8cc1ee5d27844203a97ef")
+}
+
+resource UtilModuleFromSecondsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#fromSeconds")
+  fingerprint ast.semantic_subtree_v1("sha256:87bd6d51bbc02344572a7a85bf23b73a40c99469b712c09a7d9850fa66e595ca")
+}
+
+resource UtilModuleGroupByAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#groupBy")
+  fingerprint ast.semantic_subtree_v1("sha256:c104f0af9e30eeb5741c41656a6d13121ada1f7943377fd65feb1ab542c8b13a")
+}
+
+resource UtilModuleIsSubsetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#isSubset")
+  fingerprint ast.semantic_subtree_v1("sha256:e31dbb162535f0ff73d5a78910aa016cd5a4e8cf91c85b1ab5615018381e192a")
+}
+
+resource UtilModuleIsTierAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#isTier")
+  fingerprint ast.semantic_subtree_v1("sha256:53ddb59a141adb45df969f3ef41f7499334292f6ad7519a992458639bba0b476")
+}
+
+resource UtilModuleLevelRankAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#levelRank")
+  fingerprint ast.semantic_subtree_v1("sha256:cb23e12cfdedea51f7abbefaa341db6cf9835669e20526a740ecdc9916038c36")
+}
+
+resource UtilModuleMaxTierAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#maxTier")
+  fingerprint ast.semantic_subtree_v1("sha256:bb404a735e4b214d036b38777e41cbbeeb392e5884bfe3fdfeccbe5a6bb7cf69")
+}
+
+resource UtilModuleMinByAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#minBy")
+  fingerprint ast.semantic_subtree_v1("sha256:e319009c23b071f94e12fb0a9098571ed6962948a863dfd1b0c4973c0f9c5ba0")
+}
+
+resource UtilModuleNfcAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#nfc")
+  fingerprint ast.semantic_subtree_v1("sha256:cef7a1c35c3eeef5762d540aa8f6041c7f54d9afa30b87ecf7e56726cc240dd7")
+}
+
+resource UtilModulePushMapAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#pushMap")
+  fingerprint ast.semantic_subtree_v1("sha256:b622a2c183e093c962ad59d82c444e0c4e6a982cf8e105ea9da92760435e9ff3")
+}
+
+resource UtilModuleSetUnionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#setUnion")
+  fingerprint ast.semantic_subtree_v1("sha256:091b40580d3ef903d9fbaf444dd57bbf036871e2ba60e5577b52bf5a7a2b45e6")
+}
+
+resource UtilModuleSortByAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#sortBy")
+  fingerprint ast.semantic_subtree_v1("sha256:dffead622a9726cb04b72a61e0a070169c12dd48ee61614511d6b7a1634ec71b")
+}
+
+resource UtilModuleSortStringsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#sortStrings")
+  fingerprint ast.semantic_subtree_v1("sha256:45c2906a95a65866463a53991be67310920b7df08dd121bb1f662d19589cad59")
+}
+
+resource UtilModuleSortedUniqAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#sortedUniq")
+  fingerprint ast.semantic_subtree_v1("sha256:aed76926e64292965b679eebd71a87fd527d7590aa1a345ed8ff11b6637ec27d")
+}
+
+resource UtilModuleTierRankAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#tierRank")
+  fingerprint ast.semantic_subtree_v1("sha256:0d5e4f1ceed23ae0f9836246641330dc19189717d98f6dbecd2f08c44c4a1f0e")
+}
+
+resource UtilModuleToSecondsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#toSeconds")
+  fingerprint ast.semantic_subtree_v1("sha256:5cea3497748de4c6e45feef6c1f40d499af660caffb860de50e46fcea51ede2a")
+}
+
+resource UtilModuleUnitKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/util.ts#unitKey")
+  fingerprint ast.semantic_subtree_v1("sha256:4f1fabc8c43b3745a39cc3fc50b709f426fcdfbc0777badc96cf282c72c3ea41")
+}
+
+component UtilModule : GeneratedCandidate {
+  fn asArray
+    source ts("experiments/shape-1/proto/src/util.ts#asArray")
+    effects unknown
+  fn assertNever
+    source ts("experiments/shape-1/proto/src/util.ts#assertNever")
+    effects unknown
+  fn cmpKey
+    source ts("experiments/shape-1/proto/src/util.ts#cmpKey")
+    effects unknown
+  fn cmpStr
+    source ts("experiments/shape-1/proto/src/util.ts#cmpStr")
+    effects unknown
+  fn cmpTuple
+    source ts("experiments/shape-1/proto/src/util.ts#cmpTuple")
+    effects unknown
+  fn collapseWs
+    source ts("experiments/shape-1/proto/src/util.ts#collapseWs")
+    effects unknown
+  fn fromSeconds
+    source ts("experiments/shape-1/proto/src/util.ts#fromSeconds")
+    effects unknown
+  fn groupBy
+    source ts("experiments/shape-1/proto/src/util.ts#groupBy")
+    effects unknown
+  fn isSubset
+    source ts("experiments/shape-1/proto/src/util.ts#isSubset")
+    effects unknown
+  fn isTier
+    source ts("experiments/shape-1/proto/src/util.ts#isTier")
+    effects unknown
+  fn levelRank
+    source ts("experiments/shape-1/proto/src/util.ts#levelRank")
+    effects unknown
+  fn maxTier
+    source ts("experiments/shape-1/proto/src/util.ts#maxTier")
+    effects unknown
+  fn minBy
+    source ts("experiments/shape-1/proto/src/util.ts#minBy")
+    effects unknown
+  fn nfc
+    source ts("experiments/shape-1/proto/src/util.ts#nfc")
+    effects unknown
+  fn pushMap
+    source ts("experiments/shape-1/proto/src/util.ts#pushMap")
+    effects unknown
+  fn setUnion
+    source ts("experiments/shape-1/proto/src/util.ts#setUnion")
+    effects unknown
+  fn sortBy
+    source ts("experiments/shape-1/proto/src/util.ts#sortBy")
+    effects unknown
+  fn sortStrings
+    source ts("experiments/shape-1/proto/src/util.ts#sortStrings")
+    effects unknown
+  fn sortedUniq
+    source ts("experiments/shape-1/proto/src/util.ts#sortedUniq")
+    effects unknown
+  fn tierRank
+    source ts("experiments/shape-1/proto/src/util.ts#tierRank")
+    effects unknown
+  fn toSeconds
+    source ts("experiments/shape-1/proto/src/util.ts#toSeconds")
+    effects unknown
+  fn unitKey
+    source ts("experiments/shape-1/proto/src/util.ts#unitKey")
+    effects unknown
+}
+
+relation UtilModuleAsArrayGeneratedFromUtilModuleAsArrayAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleAsArrayAstAnchor
+  roles { UtilModule as generated, UtilModuleAsArrayAstAnchor as syntax }
+  expects UtilModuleAsArrayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c7dad5862ddd2b0834809d88feeaf161b8a8f3e47e6cb0df8b3584c958ec2fee")
+  summary "fn UtilModule.asArray generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#asArray."
+}
+
+relation UtilModuleAssertNeverGeneratedFromUtilModuleAssertNeverAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleAssertNeverAstAnchor
+  roles { UtilModule as generated, UtilModuleAssertNeverAstAnchor as syntax }
+  expects UtilModuleAssertNeverAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9498a4a0846a31de7474a3096e99061c8fe5560858507e96212491a1a30591ce")
+  summary "fn UtilModule.assertNever generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#assertNever."
+}
+
+relation UtilModuleCmpKeyGeneratedFromUtilModuleCmpKeyAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleCmpKeyAstAnchor
+  roles { UtilModule as generated, UtilModuleCmpKeyAstAnchor as syntax }
+  expects UtilModuleCmpKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a0850d4aa112e06853796cef302b7947c6ee329395acccad8223e7128f5ad0e7")
+  summary "fn UtilModule.cmpKey generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#cmpKey."
+}
+
+relation UtilModuleCmpStrGeneratedFromUtilModuleCmpStrAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleCmpStrAstAnchor
+  roles { UtilModule as generated, UtilModuleCmpStrAstAnchor as syntax }
+  expects UtilModuleCmpStrAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1216cfea61cce33f4f18a4e50b29130d71a8a1b0a2364ec6f92afe5eeb581e63")
+  summary "fn UtilModule.cmpStr generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#cmpStr."
+}
+
+relation UtilModuleCmpTupleGeneratedFromUtilModuleCmpTupleAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleCmpTupleAstAnchor
+  roles { UtilModule as generated, UtilModuleCmpTupleAstAnchor as syntax }
+  expects UtilModuleCmpTupleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:43b18ccb84ee5cabe3e2d632dc43ffa4ccd4a90c224950b5de888f2c850f3fd7")
+  summary "fn UtilModule.cmpTuple generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#cmpTuple."
+}
+
+relation UtilModuleCollapseWsGeneratedFromUtilModuleCollapseWsAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleCollapseWsAstAnchor
+  roles { UtilModule as generated, UtilModuleCollapseWsAstAnchor as syntax }
+  expects UtilModuleCollapseWsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a2eebbf3f2dca4be6c0ddc1e0f48da322ca7a4f3c0d8cc1ee5d27844203a97ef")
+  summary "fn UtilModule.collapseWs generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#collapseWs."
+}
+
+relation UtilModuleFromSecondsGeneratedFromUtilModuleFromSecondsAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleFromSecondsAstAnchor
+  roles { UtilModule as generated, UtilModuleFromSecondsAstAnchor as syntax }
+  expects UtilModuleFromSecondsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:87bd6d51bbc02344572a7a85bf23b73a40c99469b712c09a7d9850fa66e595ca")
+  summary "fn UtilModule.fromSeconds generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#fromSeconds."
+}
+
+relation UtilModuleGroupByGeneratedFromUtilModuleGroupByAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleGroupByAstAnchor
+  roles { UtilModule as generated, UtilModuleGroupByAstAnchor as syntax }
+  expects UtilModuleGroupByAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c104f0af9e30eeb5741c41656a6d13121ada1f7943377fd65feb1ab542c8b13a")
+  summary "fn UtilModule.groupBy generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#groupBy."
+}
+
+relation UtilModuleIsSubsetGeneratedFromUtilModuleIsSubsetAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleIsSubsetAstAnchor
+  roles { UtilModule as generated, UtilModuleIsSubsetAstAnchor as syntax }
+  expects UtilModuleIsSubsetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e31dbb162535f0ff73d5a78910aa016cd5a4e8cf91c85b1ab5615018381e192a")
+  summary "fn UtilModule.isSubset generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#isSubset."
+}
+
+relation UtilModuleIsTierGeneratedFromUtilModuleIsTierAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleIsTierAstAnchor
+  roles { UtilModule as generated, UtilModuleIsTierAstAnchor as syntax }
+  expects UtilModuleIsTierAstAnchor fingerprint ast.semantic_subtree_v1("sha256:53ddb59a141adb45df969f3ef41f7499334292f6ad7519a992458639bba0b476")
+  summary "fn UtilModule.isTier generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#isTier."
+}
+
+relation UtilModuleLevelRankGeneratedFromUtilModuleLevelRankAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleLevelRankAstAnchor
+  roles { UtilModule as generated, UtilModuleLevelRankAstAnchor as syntax }
+  expects UtilModuleLevelRankAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cb23e12cfdedea51f7abbefaa341db6cf9835669e20526a740ecdc9916038c36")
+  summary "fn UtilModule.levelRank generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#levelRank."
+}
+
+relation UtilModuleMaxTierGeneratedFromUtilModuleMaxTierAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleMaxTierAstAnchor
+  roles { UtilModule as generated, UtilModuleMaxTierAstAnchor as syntax }
+  expects UtilModuleMaxTierAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bb404a735e4b214d036b38777e41cbbeeb392e5884bfe3fdfeccbe5a6bb7cf69")
+  summary "fn UtilModule.maxTier generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#maxTier."
+}
+
+relation UtilModuleMinByGeneratedFromUtilModuleMinByAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleMinByAstAnchor
+  roles { UtilModule as generated, UtilModuleMinByAstAnchor as syntax }
+  expects UtilModuleMinByAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e319009c23b071f94e12fb0a9098571ed6962948a863dfd1b0c4973c0f9c5ba0")
+  summary "fn UtilModule.minBy generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#minBy."
+}
+
+relation UtilModuleNfcGeneratedFromUtilModuleNfcAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleNfcAstAnchor
+  roles { UtilModule as generated, UtilModuleNfcAstAnchor as syntax }
+  expects UtilModuleNfcAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cef7a1c35c3eeef5762d540aa8f6041c7f54d9afa30b87ecf7e56726cc240dd7")
+  summary "fn UtilModule.nfc generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#nfc."
+}
+
+relation UtilModulePushMapGeneratedFromUtilModulePushMapAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModulePushMapAstAnchor
+  roles { UtilModule as generated, UtilModulePushMapAstAnchor as syntax }
+  expects UtilModulePushMapAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b622a2c183e093c962ad59d82c444e0c4e6a982cf8e105ea9da92760435e9ff3")
+  summary "fn UtilModule.pushMap generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#pushMap."
+}
+
+relation UtilModuleSetUnionGeneratedFromUtilModuleSetUnionAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleSetUnionAstAnchor
+  roles { UtilModule as generated, UtilModuleSetUnionAstAnchor as syntax }
+  expects UtilModuleSetUnionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:091b40580d3ef903d9fbaf444dd57bbf036871e2ba60e5577b52bf5a7a2b45e6")
+  summary "fn UtilModule.setUnion generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#setUnion."
+}
+
+relation UtilModuleSortByGeneratedFromUtilModuleSortByAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleSortByAstAnchor
+  roles { UtilModule as generated, UtilModuleSortByAstAnchor as syntax }
+  expects UtilModuleSortByAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dffead622a9726cb04b72a61e0a070169c12dd48ee61614511d6b7a1634ec71b")
+  summary "fn UtilModule.sortBy generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#sortBy."
+}
+
+relation UtilModuleSortStringsGeneratedFromUtilModuleSortStringsAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleSortStringsAstAnchor
+  roles { UtilModule as generated, UtilModuleSortStringsAstAnchor as syntax }
+  expects UtilModuleSortStringsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:45c2906a95a65866463a53991be67310920b7df08dd121bb1f662d19589cad59")
+  summary "fn UtilModule.sortStrings generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#sortStrings."
+}
+
+relation UtilModuleSortedUniqGeneratedFromUtilModuleSortedUniqAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleSortedUniqAstAnchor
+  roles { UtilModule as generated, UtilModuleSortedUniqAstAnchor as syntax }
+  expects UtilModuleSortedUniqAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aed76926e64292965b679eebd71a87fd527d7590aa1a345ed8ff11b6637ec27d")
+  summary "fn UtilModule.sortedUniq generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#sortedUniq."
+}
+
+relation UtilModuleTierRankGeneratedFromUtilModuleTierRankAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleTierRankAstAnchor
+  roles { UtilModule as generated, UtilModuleTierRankAstAnchor as syntax }
+  expects UtilModuleTierRankAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0d5e4f1ceed23ae0f9836246641330dc19189717d98f6dbecd2f08c44c4a1f0e")
+  summary "fn UtilModule.tierRank generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#tierRank."
+}
+
+relation UtilModuleToSecondsGeneratedFromUtilModuleToSecondsAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleToSecondsAstAnchor
+  roles { UtilModule as generated, UtilModuleToSecondsAstAnchor as syntax }
+  expects UtilModuleToSecondsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5cea3497748de4c6e45feef6c1f40d499af660caffb860de50e46fcea51ede2a")
+  summary "fn UtilModule.toSeconds generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#toSeconds."
+}
+
+relation UtilModuleUnitKeyGeneratedFromUtilModuleUnitKeyAstAnchor {
+  kind generated_from
+  connects UtilModule -> UtilModuleUnitKeyAstAnchor
+  roles { UtilModule as generated, UtilModuleUnitKeyAstAnchor as syntax }
+  expects UtilModuleUnitKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4f1fabc8c43b3745a39cc3fc50b709f426fcdfbc0777badc96cf282c72c3ea41")
+  summary "fn UtilModule.unitKey generated from typescript function_declaration at experiments/shape-1/proto/src/util.ts#unitKey."
+}
+
+implementation UtilModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/util.ts"
+  }
+  conforms_to UtilModule
+}

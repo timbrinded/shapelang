@@ -12,26 +12,61 @@ import type { Ctx } from "../../src/context.ts";
 import type { FpIdentity } from "../../src/fingerprint/common.ts";
 import type { CheckInput } from "../../src/io-types.ts";
 import { reqOf } from "../../src/laws.ts";
-import { type ManifestEntry, type ManifestPredicate, type Statement, indexManifest, manifestStatement } from "../../src/manifest.ts";
+import {
+  type ManifestEntry,
+  type ManifestPredicate,
+  type Statement,
+  indexManifest,
+  manifestStatement
+} from "../../src/manifest.ts";
 import type { CodeCite, ShapeRecord, Signer } from "../../src/records.ts";
 import type { SourceDoc } from "../../src/source.ts";
 import { cmpStr } from "../../src/util.ts";
 import { buildWorld } from "../../src/world.ts";
-import { type Emitted, type Manifested, type ProviderInfo, cite, elaborateAt, emit, fileIdentity, providerName, selfValidate, sortCites } from "../common.ts";
+import {
+  type Emitted,
+  type Manifested,
+  type ProviderInfo,
+  cite,
+  elaborateAt,
+  emit,
+  fileIdentity,
+  providerName,
+  selfValidate,
+  sortCites
+} from "../common.ts";
 import { bendIdentities, markOpenLaws, scanBend } from "./bend.ts";
-import { type LeanProject, leanAssumptions, leanIdentities, leanProject, nameCone, parsePrintAxioms, scanLean } from "./lean.ts";
+import {
+  type LeanProject,
+  leanAssumptions,
+  leanIdentities,
+  leanProject,
+  nameCone,
+  parsePrintAxioms,
+  scanLean
+} from "./lean.ts";
 import { type RustAuditRow, auditRust } from "./rust.ts";
 
 export const TRUST_VERSION = "0.1.0";
 
 /** What the overlay's markers are sound for (the manifest's soundness, A.3.4.4). */
-export const TRUST_SOUNDNESS = { sound: ["presence", "absence"] as const, at: "hatch-complete identities" };
+export const TRUST_SOUNDNESS = {
+  sound: ["presence", "absence"] as const,
+  at: "hatch-complete identities"
+};
 
 function toEntries(ids: FpIdentity[]): ManifestEntry[] {
   const out: ManifestEntry[] = [];
   for (const id of ids) {
     for (const d of id.digests) {
-      const e: ManifestEntry = { id: id.id, projection: d.projection, scheme: d.scheme, digest: d.digest, kind: id.kind, parent: id.parent };
+      const e: ManifestEntry = {
+        id: id.id,
+        projection: d.projection,
+        scheme: d.scheme,
+        digest: d.digest,
+        kind: id.kind,
+        parent: id.parent
+      };
       if (Object.keys(id.markers).length > 0) e.markers = id.markers;
       if (id.merged) e.merged = id.merged;
       if (!id.hatchComplete) e.hatchComplete = false;
@@ -43,8 +78,18 @@ function toEntries(ids: FpIdentity[]): ManifestEntry[] {
 
 export interface OverlayResult {
   statement: Statement;
-  bend: { files: number; identities: number; markers: Record<string, number>; notHatchComplete: number };
-  lean: { files: number; identities: number; markers: Record<string, number>; notHatchComplete: number };
+  bend: {
+    files: number;
+    identities: number;
+    markers: Record<string, number>;
+    notHatchComplete: number;
+  };
+  lean: {
+    files: number;
+    identities: number;
+    markers: Record<string, number>;
+    notHatchComplete: number;
+  };
   project: LeanProject;
 }
 
@@ -55,7 +100,11 @@ function tally(ids: FpIdentity[]): Record<string, number> {
 }
 
 /** Replaces raw .bend and .lean file identities with registered ones (identities, markers). */
-export function overlayManifest(statement: Statement, read: (p: string) => string | null, opts: { bend?: boolean; lean?: boolean } = {}): OverlayResult {
+export function overlayManifest(
+  statement: Statement,
+  read: (p: string) => string | null,
+  opts: { bend?: boolean; lean?: boolean } = {}
+): OverlayResult {
   const pred = statement.predicate.shape as ManifestPredicate;
   const doBend = opts.bend ?? true;
   const doLean = opts.lean ?? true;
@@ -67,23 +116,50 @@ export function overlayManifest(statement: Statement, read: (p: string) => strin
   const bendIds = bendScans.flatMap(bendIdentities);
   const project = leanProject(leanPaths.map((p) => scanLean(p, read(p) ?? "")));
   const leanIds = leanIdentities(project);
-  const replaced = new Set([...bendPaths, ...leanPaths].map((p) => `raw:${p.replace(/%/g, "%25").replace(/#/g, "%23")}`));
-  const entries = [...pred.entries.filter((e) => !replaced.has(e.id)), ...toEntries(bendIds), ...toEntries(leanIds)];
+  const replaced = new Set(
+    [...bendPaths, ...leanPaths].map((p) => `raw:${p.replace(/%/g, "%25").replace(/#/g, "%23")}`)
+  );
+  const entries = [
+    ...pred.entries.filter((e) => !replaced.has(e.id)),
+    ...toEntries(bendIds),
+    ...toEntries(leanIds)
+  ];
   const next = manifestStatement({ ...pred, entries });
   const { problems } = indexManifest(next);
-  if (problems.length > 0) throw new Error(`overlay: ${problems.map((p) => `${p.code} ${p.detail}`).join("; ")}`);
+  if (problems.length > 0)
+    throw new Error(`overlay: ${problems.map((p) => `${p.code} ${p.detail}`).join("; ")}`);
   return {
     statement: next,
-    bend: { files: bendScans.length, identities: bendIds.length, markers: tally(bendIds), notHatchComplete: bendScans.filter((s) => s.unknown > 0).length },
-    lean: { files: project.scans.length, identities: leanIds.length, markers: tally(leanIds), notHatchComplete: project.scans.filter((s) => !s.hatchComplete).length },
+    bend: {
+      files: bendScans.length,
+      identities: bendIds.length,
+      markers: tally(bendIds),
+      notHatchComplete: bendScans.filter((s) => s.unknown > 0).length
+    },
+    lean: {
+      files: project.scans.length,
+      identities: leanIds.length,
+      markers: tally(leanIds),
+      notHatchComplete: project.scans.filter((s) => !s.hatchComplete).length
+    },
     project
   };
 }
 
 /** Applies the overlay to a ready CheckInput's head and base manifests (for `shape1 check --input`). */
-export function overlayInput(input: CheckInput, readHead: (p: string) => string | null, readBase?: (p: string) => string | null): CheckInput {
-  const head = { ...input.head, manifest: overlayManifest(input.head.manifest, readHead).statement };
-  const base = input.base && readBase ? { ...input.base, manifest: overlayManifest(input.base.manifest, readBase).statement } : input.base;
+export function overlayInput(
+  input: CheckInput,
+  readHead: (p: string) => string | null,
+  readBase?: (p: string) => string | null
+): CheckInput {
+  const head = {
+    ...input.head,
+    manifest: overlayManifest(input.head.manifest, readHead).statement
+  };
+  const base =
+    input.base && readBase
+      ? { ...input.base, manifest: overlayManifest(input.base.manifest, readBase).statement }
+      : input.base;
   return { ...input, head, base };
 }
 
@@ -93,10 +169,22 @@ export interface TrustReport {
   v: "shape.trust.report.v1";
   revision: string;
   soundness: typeof TRUST_SOUNDNESS;
-  rust: { files: number; agree: number; vprobe: Record<string, number>; manifest: Record<string, number>; disagreements: RustAuditRow[] };
+  rust: {
+    files: number;
+    agree: number;
+    vprobe: Record<string, number>;
+    manifest: Record<string, number>;
+    disagreements: RustAuditRow[];
+  };
   bend: OverlayResult["bend"];
   lean: OverlayResult["lean"] & {
-    theorems: { name: string; identity: string | null; axioms: string[]; assumptions: { id: string; kind: string }[]; inherited: string[] }[];
+    theorems: {
+      name: string;
+      identity: string | null;
+      axioms: string[];
+      assumptions: { id: string; kind: string }[];
+      inherited: string[];
+    }[];
     unresolved: string[];
     byAxiom: Record<string, number>;
   };
@@ -109,7 +197,10 @@ function sumKinds(rows: RustAuditRow[], key: "vprobe" | "manifest"): Record<stri
   return Object.fromEntries(Object.entries(m).sort((a, b) => cmpStr(a[0], b[0])));
 }
 
-export function trustReport(man: Manifested, opts: { printAxioms?: string; leanVersion?: string } = {}): { report: TrustReport; overlay: OverlayResult } {
+export function trustReport(
+  man: Manifested,
+  opts: { printAxioms?: string; leanVersion?: string } = {}
+): { report: TrustReport; overlay: OverlayResult } {
   const overlay = overlayManifest(man.statement, man.read);
   const rows = auditRust(man.index, man.read);
   const ax = opts.printAxioms ? parsePrintAxioms(opts.printAxioms) : new Map<string, string[]>();
@@ -120,7 +211,12 @@ export function trustReport(man: Manifested, opts: { printAxioms?: string; leanV
     for (const a of axioms) byAxiom[a] = (byAxiom[a] ?? 0) + 1;
     const identity = overlay.project.identity.get(name) ?? null;
     if (!identity) unresolved.push(name);
-    const { assumptions, inherited } = leanAssumptions(overlay.project, name, axioms, opts.leanVersion ?? "4.34.0");
+    const { assumptions, inherited } = leanAssumptions(
+      overlay.project,
+      name,
+      axioms,
+      opts.leanVersion ?? "4.34.0"
+    );
     theorems.push({ name, identity, axioms, assumptions, inherited });
   }
   const idx = indexManifest(overlay.statement).index;
@@ -136,9 +232,20 @@ export function trustReport(man: Manifested, opts: { printAxioms?: string; leanV
       v: "shape.trust.report.v1",
       revision: man.revision,
       soundness: TRUST_SOUNDNESS,
-      rust: { files: rows.length, agree: rows.filter((r) => Object.keys(r.delta).length === 0).length, vprobe: sumKinds(rows, "vprobe"), manifest: sumKinds(rows, "manifest"), disagreements: rows.filter((r) => Object.keys(r.delta).length > 0) },
+      rust: {
+        files: rows.length,
+        agree: rows.filter((r) => Object.keys(r.delta).length === 0).length,
+        vprobe: sumKinds(rows, "vprobe"),
+        manifest: sumKinds(rows, "manifest"),
+        disagreements: rows.filter((r) => Object.keys(r.delta).length > 0)
+      },
       bend: overlay.bend,
-      lean: { ...overlay.lean, theorems, unresolved, byAxiom: Object.fromEntries(Object.entries(byAxiom).sort((a, b) => cmpStr(a[0], b[0]))) },
+      lean: {
+        ...overlay.lean,
+        theorems,
+        unresolved,
+        byAxiom: Object.fromEntries(Object.entries(byAxiom).sort((a, b) => cmpStr(a[0], b[0])))
+      },
       markedIdentities: marked
     }
   };
@@ -146,7 +253,13 @@ export function trustReport(man: Manifested, opts: { printAxioms?: string; leanV
 
 // ---- Lean proof records ---------------------------------------------------------------------------------
 
-export function leanProofProvider(o: { q: string; leanVersion?: string; identity?: string; implementation?: string[]; depsComplete?: boolean }): ProviderInfo {
+export function leanProofProvider(o: {
+  q: string;
+  leanVersion?: string;
+  identity?: string;
+  implementation?: string[];
+  depsComplete?: boolean;
+}): ProviderInfo {
   const v = o.leanVersion ?? "4.34.0";
   return {
     q: o.q,
@@ -160,7 +273,11 @@ export function leanProofProvider(o: { q: string; leanVersion?: string; identity
       trusts: [["lean", v]],
       ...(o.depsComplete ? { depsComplete: true } : {}),
       ...(o.identity ? { identity: o.identity } : {}),
-      implementation: { paths: [...(o.implementation ?? ["lakefile.toml", "lean-toolchain", "lake-manifest.json"])].sort(cmpStr) }
+      implementation: {
+        paths: [
+          ...(o.implementation ?? ["lakefile.toml", "lean-toolchain", "lake-manifest.json"])
+        ].sort(cmpStr)
+      }
     }
   };
 }
@@ -180,7 +297,11 @@ export function leanProofRecords(o: {
   time: string;
   leanVersion?: string;
   harness?: string[];
-}): { records: Emitted[]; skipped: { claim: string; why: string }[]; rejected: { record: string; code: string; detail: string }[] } {
+}): {
+  records: Emitted[];
+  skipped: { claim: string; why: string }[];
+  rejected: { record: string; code: string; detail: string }[];
+} {
   const esf = elaborateAt(o.source, o.time);
   const world = buildWorld(esf, o.man.index, { side: "h" });
   const ctx = { Wh: world, Mh: o.man.index } as unknown as Ctx;
@@ -216,7 +337,9 @@ export function leanProofRecords(o: {
       continue;
     }
     const e = o.project.byName.get(name);
-    const coneNames = e ? nameCone(o.project, name, e.scan.bare.slice(e.decl.start, e.decl.end), () => true) : [];
+    const coneNames = e
+      ? nameCone(o.project, name, e.scan.bare.slice(e.decl.start, e.decl.end), () => true)
+      : [];
     const reqKeys = new Set(code.map((x) => `${x.id}@${x.projection}`));
     const deps = coneNames
       .map((n) => o.project.identity.get(n))

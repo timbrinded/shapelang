@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.dogfood_analyze
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource DogfoodAnalyzeModuleLawObsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/dogfood-analyze.py#law_obs")
+  fingerprint ast.semantic_subtree_v1("sha256:ec1ac42e8d2b3c3a452af64033e1ccef3c1906319fe6c9c016aad193e1302aa0")
+}
+
+component DogfoodAnalyzeModule : GeneratedCandidate {
+  fn law_obs
+    source python("experiments/shape-1/trials/H3/dogfood-analyze.py#law_obs")
+    effects unknown
+}
+
+relation DogfoodAnalyzeModuleLawObsGeneratedFromDogfoodAnalyzeModuleLawObsAstAnchor {
+  kind generated_from
+  connects DogfoodAnalyzeModule -> DogfoodAnalyzeModuleLawObsAstAnchor
+  roles { DogfoodAnalyzeModule as generated, DogfoodAnalyzeModuleLawObsAstAnchor as syntax }
+  expects DogfoodAnalyzeModuleLawObsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ec1ac42e8d2b3c3a452af64033e1ccef3c1906319fe6c9c016aad193e1302aa0")
+  summary "fn DogfoodAnalyzeModule.law_obs generated from python function_definition at experiments/shape-1/trials/H3/dogfood-analyze.py#law_obs."
+}
+
+implementation DogfoodAnalyzeModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/dogfood-analyze.py"
+  }
+  conforms_to DogfoodAnalyzeModule
+}

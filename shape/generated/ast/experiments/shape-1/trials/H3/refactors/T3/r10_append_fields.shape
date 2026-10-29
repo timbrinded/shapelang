@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r10_append_fields
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R10AppendFieldsModuleAppendAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts#append")
+  fingerprint ast.semantic_subtree_v1("sha256:40c4d123acbee1b7daacfd8d9c0b9309d335241cbfdb3b1bc746263c8b0906d5")
+}
+
+resource R10AppendFieldsModuleEmptyLogAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts#emptyLog")
+  fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+}
+
+resource R10AppendFieldsModuleGetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts#get")
+  fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+}
+
+resource R10AppendFieldsModuleListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts#list")
+  fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+}
+
+resource R10AppendFieldsModulePurgeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts#purge")
+  fingerprint ast.semantic_subtree_v1("sha256:8b12a4a10086337a3191358ff9a5dfb3a345a47ffbce86f8833626ad5689e06b")
+}
+
+component R10AppendFieldsModule : GeneratedCandidate {
+  fn append
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts#append")
+    effects unknown
+  fn emptyLog
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts#emptyLog")
+    effects unknown
+  fn get
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts#get")
+    effects unknown
+  fn list
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts#list")
+    effects unknown
+  fn purge
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts#purge")
+    effects unknown
+}
+
+relation R10AppendFieldsModuleAppendGeneratedFromR10AppendFieldsModuleAppendAstAnchor {
+  kind generated_from
+  connects R10AppendFieldsModule -> R10AppendFieldsModuleAppendAstAnchor
+  roles { R10AppendFieldsModule as generated, R10AppendFieldsModuleAppendAstAnchor as syntax }
+  expects R10AppendFieldsModuleAppendAstAnchor fingerprint ast.semantic_subtree_v1("sha256:40c4d123acbee1b7daacfd8d9c0b9309d335241cbfdb3b1bc746263c8b0906d5")
+  summary "fn R10AppendFieldsModule.append generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts#append."
+}
+
+relation R10AppendFieldsModuleEmptyLogGeneratedFromR10AppendFieldsModuleEmptyLogAstAnchor {
+  kind generated_from
+  connects R10AppendFieldsModule -> R10AppendFieldsModuleEmptyLogAstAnchor
+  roles { R10AppendFieldsModule as generated, R10AppendFieldsModuleEmptyLogAstAnchor as syntax }
+  expects R10AppendFieldsModuleEmptyLogAstAnchor fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+  summary "fn R10AppendFieldsModule.emptyLog generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts#emptyLog."
+}
+
+relation R10AppendFieldsModuleGetGeneratedFromR10AppendFieldsModuleGetAstAnchor {
+  kind generated_from
+  connects R10AppendFieldsModule -> R10AppendFieldsModuleGetAstAnchor
+  roles { R10AppendFieldsModule as generated, R10AppendFieldsModuleGetAstAnchor as syntax }
+  expects R10AppendFieldsModuleGetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+  summary "fn R10AppendFieldsModule.get generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts#get."
+}
+
+relation R10AppendFieldsModuleListGeneratedFromR10AppendFieldsModuleListAstAnchor {
+  kind generated_from
+  connects R10AppendFieldsModule -> R10AppendFieldsModuleListAstAnchor
+  roles { R10AppendFieldsModule as generated, R10AppendFieldsModuleListAstAnchor as syntax }
+  expects R10AppendFieldsModuleListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+  summary "fn R10AppendFieldsModule.list generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts#list."
+}
+
+relation R10AppendFieldsModulePurgeGeneratedFromR10AppendFieldsModulePurgeAstAnchor {
+  kind generated_from
+  connects R10AppendFieldsModule -> R10AppendFieldsModulePurgeAstAnchor
+  roles { R10AppendFieldsModule as generated, R10AppendFieldsModulePurgeAstAnchor as syntax }
+  expects R10AppendFieldsModulePurgeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b12a4a10086337a3191358ff9a5dfb3a345a47ffbce86f8833626ad5689e06b")
+  summary "fn R10AppendFieldsModule.purge generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts#purge."
+}
+
+implementation R10AppendFieldsModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts"
+  }
+  conforms_to R10AppendFieldsModule
+}

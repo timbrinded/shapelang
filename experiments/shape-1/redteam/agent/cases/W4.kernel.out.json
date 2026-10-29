@@ -1,0 +1,69 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [
+  {
+   "code": "E-provider-missing",
+   "subject": "provider audit::fastCheck audit::AppendBounded"
+  }
+ ],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:88eb80691ae45977068da83e18b797d3823014818049f45c6a7c11ba025afc49",
+   "budget": "judgment",
+   "claim": {
+    "fp": "sha256:921d2dbe0beebb10fa77f6fdd588f11b1fb973f9e716c6be2b8eedc7a9cfcd09",
+    "ids": [
+     "audit::AppendBounded"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": false,
+   "final": false,
+   "force": null,
+   "group": "g:a4877330122978909f59afb3984121d817b918a207ede06d258f528da36a463e",
+   "introduced": true,
+   "key": "ob:de845a292c19497a7878ea04006653ef450411ce40b8914e97f85b86ad465194",
+   "kind": "loosening",
+   "owner": "audit::AuditTeam",
+   "questions": [
+    "L7"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "sha256:921d2dbe0beebb10fa77f6fdd588f11b1fb973f9e716c6be2b8eedc7a9cfcd09",
+   "tier": "critical",
+   "witness": []
+  },
+  {
+   "binding": "bd:7b638d11a00a3aee4d98936be4474f3e2ef906e064b88ecb3b9843c2f5b609e8",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:921d2dbe0beebb10fa77f6fdd588f11b1fb973f9e716c6be2b8eedc7a9cfcd09",
+    "ids": [
+     "audit::AppendBounded"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:6850027e15fb518cdd4fcb24a2161ca9879cf00cf3e8aa5b8520ed5aaf3f2e22",
+   "introduced": true,
+   "key": "ob:c058fc6289645c423036370a4b745e286418bc7dace0ba5b3760065c403c6154",
+   "kind": "unestablished",
+   "owner": "audit::AuditTeam",
+   "questions": null,
+   "reason": "weak",
+   "severity": "blocking",
+   "subject": null,
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

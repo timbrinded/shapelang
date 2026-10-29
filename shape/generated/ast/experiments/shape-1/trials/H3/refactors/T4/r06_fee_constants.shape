@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r06_fee_constants
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R06FeeConstantsModuleAdjustAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#adjust")
+  fingerprint ast.semantic_subtree_v1("sha256:78554a6fb0bd4909cb4253cb158f7b059a205f3f68c316191e2658ec5426a8d2")
+}
+
+resource R06FeeConstantsModuleBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#balance")
+  fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+}
+
+resource R06FeeConstantsModuleFeeForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#feeFor")
+  fingerprint ast.semantic_subtree_v1("sha256:75927ac2da7a9432eaa80528978d25e9bff83189045da5be17e746ed142e5f4c")
+}
+
+resource R06FeeConstantsModuleRejectedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#rejected")
+  fingerprint ast.semantic_subtree_v1("sha256:1c2540dd3edb4b3686d319860967bcdb3cca397b1d9966a7b60a8577b14f4f18")
+}
+
+resource R06FeeConstantsModuleSetBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#setBalance")
+  fingerprint ast.semantic_subtree_v1("sha256:f1f9de177693b3dd73cad9c920b7b219458daaa494194b9357f78a57e964adfc")
+}
+
+resource R06FeeConstantsModuleTotalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#total")
+  fingerprint ast.semantic_subtree_v1("sha256:d9a6a3d298fbcc063cb0a8e5ce994c2de1789a71d0d2b076c40b54531ce92cba")
+}
+
+resource R06FeeConstantsModuleTransferAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#transfer")
+  fingerprint ast.semantic_subtree_v1("sha256:4ec302cab35074f269f2f1a0d1a4327578f3f44c64856c14018b5b9c3adc1ca5")
+}
+
+component R06FeeConstantsModule : GeneratedCandidate {
+  fn adjust
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#adjust")
+    effects unknown
+  fn balance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#balance")
+    effects unknown
+  fn feeFor
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#feeFor")
+    effects unknown
+  fn rejected
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#rejected")
+    effects unknown
+  fn setBalance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#setBalance")
+    effects unknown
+  fn total
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#total")
+    effects unknown
+  fn transfer
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#transfer")
+    effects unknown
+}
+
+relation R06FeeConstantsModuleAdjustGeneratedFromR06FeeConstantsModuleAdjustAstAnchor {
+  kind generated_from
+  connects R06FeeConstantsModule -> R06FeeConstantsModuleAdjustAstAnchor
+  roles { R06FeeConstantsModule as generated, R06FeeConstantsModuleAdjustAstAnchor as syntax }
+  expects R06FeeConstantsModuleAdjustAstAnchor fingerprint ast.semantic_subtree_v1("sha256:78554a6fb0bd4909cb4253cb158f7b059a205f3f68c316191e2658ec5426a8d2")
+  summary "fn R06FeeConstantsModule.adjust generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#adjust."
+}
+
+relation R06FeeConstantsModuleBalanceGeneratedFromR06FeeConstantsModuleBalanceAstAnchor {
+  kind generated_from
+  connects R06FeeConstantsModule -> R06FeeConstantsModuleBalanceAstAnchor
+  roles { R06FeeConstantsModule as generated, R06FeeConstantsModuleBalanceAstAnchor as syntax }
+  expects R06FeeConstantsModuleBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+  summary "fn R06FeeConstantsModule.balance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#balance."
+}
+
+relation R06FeeConstantsModuleFeeForGeneratedFromR06FeeConstantsModuleFeeForAstAnchor {
+  kind generated_from
+  connects R06FeeConstantsModule -> R06FeeConstantsModuleFeeForAstAnchor
+  roles { R06FeeConstantsModule as generated, R06FeeConstantsModuleFeeForAstAnchor as syntax }
+  expects R06FeeConstantsModuleFeeForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:75927ac2da7a9432eaa80528978d25e9bff83189045da5be17e746ed142e5f4c")
+  summary "fn R06FeeConstantsModule.feeFor generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#feeFor."
+}
+
+relation R06FeeConstantsModuleRejectedGeneratedFromR06FeeConstantsModuleRejectedAstAnchor {
+  kind generated_from
+  connects R06FeeConstantsModule -> R06FeeConstantsModuleRejectedAstAnchor
+  roles { R06FeeConstantsModule as generated, R06FeeConstantsModuleRejectedAstAnchor as syntax }
+  expects R06FeeConstantsModuleRejectedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1c2540dd3edb4b3686d319860967bcdb3cca397b1d9966a7b60a8577b14f4f18")
+  summary "fn R06FeeConstantsModule.rejected generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#rejected."
+}
+
+relation R06FeeConstantsModuleSetBalanceGeneratedFromR06FeeConstantsModuleSetBalanceAstAnchor {
+  kind generated_from
+  connects R06FeeConstantsModule -> R06FeeConstantsModuleSetBalanceAstAnchor
+  roles { R06FeeConstantsModule as generated, R06FeeConstantsModuleSetBalanceAstAnchor as syntax }
+  expects R06FeeConstantsModuleSetBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f1f9de177693b3dd73cad9c920b7b219458daaa494194b9357f78a57e964adfc")
+  summary "fn R06FeeConstantsModule.setBalance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#setBalance."
+}
+
+relation R06FeeConstantsModuleTotalGeneratedFromR06FeeConstantsModuleTotalAstAnchor {
+  kind generated_from
+  connects R06FeeConstantsModule -> R06FeeConstantsModuleTotalAstAnchor
+  roles { R06FeeConstantsModule as generated, R06FeeConstantsModuleTotalAstAnchor as syntax }
+  expects R06FeeConstantsModuleTotalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d9a6a3d298fbcc063cb0a8e5ce994c2de1789a71d0d2b076c40b54531ce92cba")
+  summary "fn R06FeeConstantsModule.total generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#total."
+}
+
+relation R06FeeConstantsModuleTransferGeneratedFromR06FeeConstantsModuleTransferAstAnchor {
+  kind generated_from
+  connects R06FeeConstantsModule -> R06FeeConstantsModuleTransferAstAnchor
+  roles { R06FeeConstantsModule as generated, R06FeeConstantsModuleTransferAstAnchor as syntax }
+  expects R06FeeConstantsModuleTransferAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ec302cab35074f269f2f1a0d1a4327578f3f44c64856c14018b5b9c3adc1ca5")
+  summary "fn R06FeeConstantsModule.transfer generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts#transfer."
+}
+
+implementation R06FeeConstantsModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts"
+  }
+  conforms_to R06FeeConstantsModule
+}

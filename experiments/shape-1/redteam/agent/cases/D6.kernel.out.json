@@ -1,0 +1,36 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:f5fe9cae60651aaa2d7761aca5a2a04595287fe7d6e23b5b9e0ac33216d6ea78",
+   "budget": "judgment",
+   "claim": {
+    "fp": "sha256:f03e7bc475cd0d5690c3c5809a2bc742547eb791e89a72be6bf5c26ea47f777f",
+    "ids": [
+     "ret::Retention.purgeOld/RefactorSensitive/law"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:21a2eea0a36e3c335ef2cc8e24261e649b0bc060a4201834dfe24acf086a97ef",
+   "introduced": true,
+   "key": "ob:c360345d611cba747d9a138b5c0e14ccb4bf5e61360559e97f4d8d471c49824f",
+   "kind": "unestablished",
+   "owner": "ret::Maint",
+   "questions": null,
+   "reason": "stale",
+   "severity": "blocking",
+   "subject": null,
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

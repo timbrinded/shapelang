@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.trials.H1.replay
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ReplayModuleCompactAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H1/replay.ts#compact")
+  fingerprint ast.semantic_subtree_v1("sha256:f0d0c68fd1d0868b1a4c93a46f356d10ab5360a47735a8ed7c3dc70c8f1637c1")
+}
+
+component ReplayModule : GeneratedCandidate {
+  fn compact
+    source ts("experiments/shape-1/trials/H1/replay.ts#compact")
+    effects unknown
+}
+
+relation ReplayModuleCompactGeneratedFromReplayModuleCompactAstAnchor {
+  kind generated_from
+  connects ReplayModule -> ReplayModuleCompactAstAnchor
+  roles { ReplayModule as generated, ReplayModuleCompactAstAnchor as syntax }
+  expects ReplayModuleCompactAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f0d0c68fd1d0868b1a4c93a46f356d10ab5360a47735a8ed7c3dc70c8f1637c1")
+  summary "fn ReplayModule.compact generated from typescript function_declaration at experiments/shape-1/trials/H1/replay.ts#compact."
+}
+
+implementation ReplayModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H1/replay.ts"
+  }
+  conforms_to ReplayModule
+}

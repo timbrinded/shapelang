@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.test.cli_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CliTestModuleRunAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/test/cli.test.ts#run")
+  fingerprint ast.semantic_subtree_v1("sha256:25f86084b200899a42214752a914d820a2e98ce524b11dcce1d8dbd041c661aa")
+}
+
+component CliTestModule : GeneratedCandidate {
+  fn run
+    source ts("experiments/shape-1/proto/providers/test/cli.test.ts#run")
+    effects unknown
+}
+
+relation CliTestModuleRunGeneratedFromCliTestModuleRunAstAnchor {
+  kind generated_from
+  connects CliTestModule -> CliTestModuleRunAstAnchor
+  roles { CliTestModule as generated, CliTestModuleRunAstAnchor as syntax }
+  expects CliTestModuleRunAstAnchor fingerprint ast.semantic_subtree_v1("sha256:25f86084b200899a42214752a914d820a2e98ce524b11dcce1d8dbd041c661aa")
+  summary "fn CliTestModule.run generated from typescript function_declaration at experiments/shape-1/proto/providers/test/cli.test.ts#run."
+}
+
+implementation CliTestModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/test/cli.test.ts"
+  }
+  conforms_to CliTestModule
+}

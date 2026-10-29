@@ -1,0 +1,819 @@
+{
+ "authors": [
+  "tooling::claude",
+  "tooling::tim"
+ ],
+ "base": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "tooling::tim",
+      "tooling::ann"
+     ],
+     "operator": null,
+     "q": "tooling::ShapeMaintainers"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::ann"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::tim"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "tooling::tim",
+     "q": "tooling::claude"
+    },
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "tooling::bob"
+     ],
+     "operator": null,
+     "q": "tooling::OtherTeam"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::bob"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "component": "tooling::Other",
+      "grants": [
+       "Read<tooling::ShapeSource>"
+      ]
+     },
+     "ids": [
+      "tooling::Other/authority"
+     ],
+     "op": "authority",
+     "owner": "tooling::OtherTeam",
+     "requirement": null,
+     "tier": "normal"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-cli/src/**/*.ts"
+     ],
+     "q": "tooling::ShpCli",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": [
+      "Read<tooling::ShapeSource>"
+     ],
+     "owner": "tooling::OtherTeam",
+     "paths": [
+      "packages/other/**/*.ts"
+     ],
+     "q": "tooling::Other",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "policy": {
+    "tiers": {
+     "critical": {
+      "blocks": [
+       "unestablished",
+       "coverage",
+       "latent-loosening"
+      ],
+      "floor": "tested",
+      "judges": [
+       "owner"
+      ],
+      "maxAge": 90
+     },
+     "low": {
+      "blocks": [],
+      "floor": "declared",
+      "judges": [
+       "owner",
+       "agents"
+      ],
+      "maxAge": 365
+     },
+     "normal": {
+      "blocks": [
+       "latent-loosening"
+      ],
+      "floor": "declared",
+      "judges": [
+       "tooling::ann"
+      ],
+      "maxAge": 365
+     }
+    }
+   },
+   "providers": [
+    {
+     "absence": false,
+     "decides": [],
+     "depsComplete": false,
+     "identity": "sigstore(\"relay\")",
+     "implementation": {
+      "digest": "sha256:relay",
+      "paths": []
+     },
+     "observes": [],
+     "persist": false,
+     "presence": false,
+     "produces": [
+      "judgment"
+     ],
+     "q": "tooling::reviews",
+     "trusts": []
+    }
+   ],
+   "resources": [
+    {
+     "attach": [],
+     "bind": [],
+     "owner": "tooling::ShapeMaintainers",
+     "q": "tooling::ShapeSource",
+     "tier": "normal",
+     "was": null
+    }
+   ],
+   "shape": {
+    "owner": "tooling::ShapeMaintainers",
+    "policy": "std::DefaultPolicy",
+    "q": "tooling::Shape"
+   },
+   "templates": [],
+   "units": [
+    {
+     "attach": [],
+     "bind": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+     "component": "tooling::ShpCli",
+     "name": "isoToday",
+     "owner": "tooling::ShapeMaintainers",
+     "q": "tooling::ShpCli.isoToday",
+     "summary": null,
+     "tier": "normal",
+     "was": null
+    }
+   ],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:33fd59fbb1bba86947e6f4d8d0648dd9c1650122803e16f6e9ead11594e5ce9e",
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:057bee987f7981337054903a181d5d7bd9982bfdf240afa6c06df0e91dad323f",
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:c98259e04dda9d4941b828b8b6554e2e7b3aa41080e4b80ac1ef12691b9221d0",
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:08a09a67e6413e59e842fb32a3f4e9d56de9e8cb9fcff7246789736ce1c77845",
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:a308234dfaef7171b30cfa5ccb0686539ea74bd3753db3b82a58d3067ff7f86a",
+       "id": "ts:packages/other/a.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:b29aa6cdef2caaa0b8bbdb88aa3908ad66bf0e6ae36840c27ba31ee5f5cb5c51",
+       "id": "ts:packages/other/a.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      }
+     ],
+     "revision": "b3",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "b3"
+ },
+ "baseRecords": [],
+ "cells": [
+  [
+   "tooling::Other.*",
+   "tooling::Other.*"
+  ],
+  [
+   "tooling::ShpCli.*",
+   "tooling::ShpCli.*"
+  ],
+  [
+   "ungoverned",
+   "ungoverned"
+  ]
+ ],
+ "change": {
+  "ids": [
+   "github:acme/x#1"
+  ]
+ },
+ "contract": "shape.kernel.case/v1",
+ "head": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "tooling::tim",
+      "tooling::ann"
+     ],
+     "operator": null,
+     "q": "tooling::ShapeMaintainers"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::ann"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::tim"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "tooling::tim",
+     "q": "tooling::claude"
+    },
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "tooling::bob"
+     ],
+     "operator": null,
+     "q": "tooling::OtherTeam"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::bob"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "component": "tooling::Other",
+      "grants": [
+       "Read<tooling::ShapeSource>",
+       "Write<tooling::ShapeSource>"
+      ]
+     },
+     "ids": [
+      "tooling::Other/authority"
+     ],
+     "op": "authority",
+     "owner": "tooling::OtherTeam",
+     "requirement": null,
+     "tier": "normal"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-cli/src/**/*.ts"
+     ],
+     "q": "tooling::ShpCli",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": [
+      "Read<tooling::ShapeSource>",
+      "Write<tooling::ShapeSource>"
+     ],
+     "owner": "tooling::OtherTeam",
+     "paths": [
+      "packages/other/**/*.ts"
+     ],
+     "q": "tooling::Other",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "policy": {
+    "tiers": {
+     "critical": {
+      "blocks": [
+       "unestablished",
+       "coverage",
+       "latent-loosening"
+      ],
+      "floor": "tested",
+      "judges": [
+       "owner"
+      ],
+      "maxAge": 90
+     },
+     "low": {
+      "blocks": [],
+      "floor": "declared",
+      "judges": [
+       "owner",
+       "agents"
+      ],
+      "maxAge": 365
+     },
+     "normal": {
+      "blocks": [
+       "latent-loosening"
+      ],
+      "floor": "declared",
+      "judges": [
+       "tooling::ann"
+      ],
+      "maxAge": 365
+     }
+    }
+   },
+   "providers": [
+    {
+     "absence": false,
+     "decides": [],
+     "depsComplete": false,
+     "identity": "sigstore(\"relay\")",
+     "implementation": {
+      "digest": "sha256:relay",
+      "paths": []
+     },
+     "observes": [],
+     "persist": false,
+     "presence": false,
+     "produces": [
+      "judgment"
+     ],
+     "q": "tooling::reviews",
+     "trusts": []
+    }
+   ],
+   "resources": [
+    {
+     "attach": [],
+     "bind": [],
+     "owner": "tooling::ShapeMaintainers",
+     "q": "tooling::ShapeSource",
+     "tier": "normal",
+     "was": null
+    }
+   ],
+   "shape": {
+    "owner": "tooling::ShapeMaintainers",
+    "policy": "std::DefaultPolicy",
+    "q": "tooling::Shape"
+   },
+   "templates": [],
+   "units": [
+    {
+     "attach": [],
+     "bind": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+     "component": "tooling::ShpCli",
+     "name": "isoToday",
+     "owner": "tooling::ShapeMaintainers",
+     "q": "tooling::ShpCli.isoToday",
+     "summary": null,
+     "tier": "normal",
+     "was": null
+    }
+   ],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:33fd59fbb1bba86947e6f4d8d0648dd9c1650122803e16f6e9ead11594e5ce9e",
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:057bee987f7981337054903a181d5d7bd9982bfdf240afa6c06df0e91dad323f",
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:c98259e04dda9d4941b828b8b6554e2e7b3aa41080e4b80ac1ef12691b9221d0",
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:08a09a67e6413e59e842fb32a3f4e9d56de9e8cb9fcff7246789736ce1c77845",
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:a308234dfaef7171b30cfa5ccb0686539ea74bd3753db3b82a58d3067ff7f86a",
+       "id": "ts:packages/other/a.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:b29aa6cdef2caaa0b8bbdb88aa3908ad66bf0e6ae36840c27ba31ee5f5cb5c51",
+       "id": "ts:packages/other/a.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      }
+     ],
+     "revision": "b3",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "b3"
+ },
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "records": [],
+ "reviews": [
+  {
+   "actor": "tooling::ann",
+   "change": "github:acme/x#1",
+   "line": "shape approve bd:54ae4532bdfa1bfc"
+  }
+ ]
+}

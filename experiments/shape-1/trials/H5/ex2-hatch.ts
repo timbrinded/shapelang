@@ -11,5 +11,7 @@ import { derive } from "../../proto/src/derive.ts";
 const out = derive(ex2({}));
 process.stdout.write(`verdict ${out.verdict}\n`);
 for (const o of out.obligations) {
-  process.stdout.write(`${o.kind} ${o.reason ?? "-"} introduced=${o.introduced} ${o.severity} ${o.claim?.ids[0] ?? "-"} ${JSON.stringify(o.subject)}\n`);
+  process.stdout.write(
+    `${o.kind} ${o.reason ?? "-"} introduced=${o.introduced} ${o.severity} ${o.claim?.ids[0] ?? "-"} ${JSON.stringify(o.subject)}\n`
+  );
 }

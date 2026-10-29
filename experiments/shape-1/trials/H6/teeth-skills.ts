@@ -6,7 +6,16 @@
 // files (repository-relative paths when the shape cites `fixtures/skills/...`, else relative to the
 // fixture root, as unix-system-visualiser/connected does). Unit sources are rewritten against it.
 // Writes <work>/teeth-skills.json.
-import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  statSync,
+  writeFileSync
+} from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { manifestFor } from "../../proto/providers/common.ts";
 import { runTeeth } from "../../proto/providers/teeth/provider.ts";
@@ -57,8 +66,14 @@ for (const [name, rel, shapeSub] of CASES) {
   for (const f of shapeFiles) cpSync(f, join(modelDir, "shape", relative(join(root, shapeSub), f)));
   const text = shapeFiles.map((f) => readFileSync(f, "utf8")).join("\n");
   const repoRel = text.includes('ts("fixtures/skills/');
-  const codeFiles = walk(root).filter((f) => !f.endsWith(".shape") && !f.includes("/.research/") && !f.endsWith(".gitignore"));
-  const files = codeFiles.map((f) => ({ path: relative(repoRel ? REPO : root, f).replace(/\\/g, "/"), mode: "100644", bytes: new Uint8Array(readFileSync(f)) }));
+  const codeFiles = walk(root).filter(
+    (f) => !f.endsWith(".shape") && !f.includes("/.research/") && !f.endsWith(".gitignore")
+  );
+  const files = codeFiles.map((f) => ({
+    path: relative(repoRel ? REPO : root, f).replace(/\\/g, "/"),
+    mode: "100644",
+    bytes: new Uint8Array(readFileSync(f))
+  }));
   const row = { case: name, shapeFiles: shapeFiles.length, codeFiles: files.length };
   try {
     const man = await manifestFor({ files, revision: "0".repeat(40) });
@@ -73,18 +88,26 @@ for (const [name, rel, shapeSub] of CASES) {
       notAssessed: r.notAssessed.length,
       operators: r.operators,
       vacuous: r.vacuous,
-      redundant: r.claims.filter((c) => c.redundantWith.length > 0).map((c) => `${c.id} <= ${c.redundantWith.join(",")}`),
+      redundant: r.claims
+        .filter((c) => c.redundantWith.length > 0)
+        .map((c) => `${c.id} <= ${c.redundantWith.join(",")}`),
       unusedGrants: r.unusedGrants,
       gapsW1: r.gaps.W1,
       gapsW2: r.gaps.W2.filter((g) => g.killed < g.total),
-      P1: { resources: r.gaps.P1.resources, uncaught: r.gaps.P1.uncaught, caught: r.gaps.P1.caught },
+      P1: {
+        resources: r.gaps.P1.resources,
+        uncaught: r.gaps.P1.uncaught,
+        caught: r.gaps.P1.caught
+      },
       laws: r.laws.map((l) => `${l.id}:${l.verdict}`)
     });
   } catch (e) {
     row.crash = String(e).slice(0, 400);
   }
   rows.push(row);
-  process.stderr.write(`${name}: ${row.crash ? `CRASH ${row.crash.slice(0, 120)}` : `claims ${row.claims}, vacuous ${row.vacuous.length}, redundant ${row.redundant.length}, unused ${row.unusedGrants.length}, errors ${row.errors.length}`}\n`);
+  process.stderr.write(
+    `${name}: ${row.crash ? `CRASH ${row.crash.slice(0, 120)}` : `claims ${row.claims}, vacuous ${row.vacuous.length}, redundant ${row.redundant.length}, unused ${row.unusedGrants.length}, errors ${row.errors.length}`}\n`
+  );
 }
 writeFileSync(join(WORK, "teeth-skills.json"), JSON.stringify(rows, null, 1));
 void existsSync;

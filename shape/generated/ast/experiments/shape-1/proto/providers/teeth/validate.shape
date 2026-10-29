@@ -1,0 +1,161 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.teeth.validate
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ValidateModuleCloneAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/teeth/validate.ts#clone")
+  fingerprint ast.semantic_subtree_v1("sha256:8a0f4d1e5b14fc14728153b6e6f83a57865055732923df3df19dfdc6d65049d0")
+}
+
+resource ValidateModuleClosedW2AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/teeth/validate.ts#closedW2")
+  fingerprint ast.semantic_subtree_v1("sha256:b10c4c98ea8e71617eec930d14e0a8190bcf845beaf46dc219b099b7b901119b")
+}
+
+resource ValidateModuleFindDeclAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/teeth/validate.ts#findDecl")
+  fingerprint ast.semantic_subtree_v1("sha256:da36ed9b0300c59681d5da2c960bd85268a8bf0526c3a36292bf2b461f0b50c8")
+}
+
+resource ValidateModuleKeysOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/teeth/validate.ts#keysOf")
+  fingerprint ast.semantic_subtree_v1("sha256:113f3fc907c78f89623e9d9e4356080f6b25562380fa1d1db8321abab2520851")
+}
+
+resource ValidateModuleObservationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/teeth/validate.ts#observation")
+  fingerprint ast.semantic_subtree_v1("sha256:6f8f47b7eab7b55e13f42d11da4dbfc8fc51d5c05d528de6129138ee5b28df1b")
+}
+
+resource ValidateModuleProbeSourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/teeth/validate.ts#probeSource")
+  fingerprint ast.semantic_subtree_v1("sha256:599c86f9e67b428e11757877080c4ee955137bd111ffd78134b1d6fe97746dec")
+}
+
+resource ValidateModuleSampleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/teeth/validate.ts#sample")
+  fingerprint ast.semantic_subtree_v1("sha256:df91ac98a0281443031d5d705a0ec1dd1c7ab868a10102724c30010cab1e47f1")
+}
+
+resource ValidateModuleSplitQAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/teeth/validate.ts#splitQ")
+  fingerprint ast.semantic_subtree_v1("sha256:aacba3a5328acc05241c2490ce146ab6c3d5c82e5d7dad5fe375d7a0061bf4c0")
+}
+
+resource ValidateModuleValidateTeethAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/teeth/validate.ts#validateTeeth")
+  fingerprint ast.semantic_subtree_v1("sha256:f5a3f85bc2fb04eeaa5a45c6ef0e49dfc23fef078246791eb7f44bd8dd2948fb")
+}
+
+component ValidateModule : GeneratedCandidate {
+  fn clone
+    source ts("experiments/shape-1/proto/providers/teeth/validate.ts#clone")
+    effects unknown
+  fn closedW2
+    source ts("experiments/shape-1/proto/providers/teeth/validate.ts#closedW2")
+    effects unknown
+  fn findDecl
+    source ts("experiments/shape-1/proto/providers/teeth/validate.ts#findDecl")
+    effects unknown
+  fn keysOf
+    source ts("experiments/shape-1/proto/providers/teeth/validate.ts#keysOf")
+    effects unknown
+  fn observation
+    source ts("experiments/shape-1/proto/providers/teeth/validate.ts#observation")
+    effects unknown
+  fn probeSource
+    source ts("experiments/shape-1/proto/providers/teeth/validate.ts#probeSource")
+    effects unknown
+  fn sample
+    source ts("experiments/shape-1/proto/providers/teeth/validate.ts#sample")
+    effects unknown
+  fn splitQ
+    source ts("experiments/shape-1/proto/providers/teeth/validate.ts#splitQ")
+    effects unknown
+  fn validateTeeth
+    source ts("experiments/shape-1/proto/providers/teeth/validate.ts#validateTeeth")
+    effects unknown
+}
+
+relation ValidateModuleCloneGeneratedFromValidateModuleCloneAstAnchor {
+  kind generated_from
+  connects ValidateModule -> ValidateModuleCloneAstAnchor
+  roles { ValidateModule as generated, ValidateModuleCloneAstAnchor as syntax }
+  expects ValidateModuleCloneAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8a0f4d1e5b14fc14728153b6e6f83a57865055732923df3df19dfdc6d65049d0")
+  summary "fn ValidateModule.clone generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/validate.ts#clone."
+}
+
+relation ValidateModuleClosedW2GeneratedFromValidateModuleClosedW2AstAnchor {
+  kind generated_from
+  connects ValidateModule -> ValidateModuleClosedW2AstAnchor
+  roles { ValidateModule as generated, ValidateModuleClosedW2AstAnchor as syntax }
+  expects ValidateModuleClosedW2AstAnchor fingerprint ast.semantic_subtree_v1("sha256:b10c4c98ea8e71617eec930d14e0a8190bcf845beaf46dc219b099b7b901119b")
+  summary "fn ValidateModule.closedW2 generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/validate.ts#closedW2."
+}
+
+relation ValidateModuleFindDeclGeneratedFromValidateModuleFindDeclAstAnchor {
+  kind generated_from
+  connects ValidateModule -> ValidateModuleFindDeclAstAnchor
+  roles { ValidateModule as generated, ValidateModuleFindDeclAstAnchor as syntax }
+  expects ValidateModuleFindDeclAstAnchor fingerprint ast.semantic_subtree_v1("sha256:da36ed9b0300c59681d5da2c960bd85268a8bf0526c3a36292bf2b461f0b50c8")
+  summary "fn ValidateModule.findDecl generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/validate.ts#findDecl."
+}
+
+relation ValidateModuleKeysOfGeneratedFromValidateModuleKeysOfAstAnchor {
+  kind generated_from
+  connects ValidateModule -> ValidateModuleKeysOfAstAnchor
+  roles { ValidateModule as generated, ValidateModuleKeysOfAstAnchor as syntax }
+  expects ValidateModuleKeysOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:113f3fc907c78f89623e9d9e4356080f6b25562380fa1d1db8321abab2520851")
+  summary "fn ValidateModule.keysOf generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/validate.ts#keysOf."
+}
+
+relation ValidateModuleObservationGeneratedFromValidateModuleObservationAstAnchor {
+  kind generated_from
+  connects ValidateModule -> ValidateModuleObservationAstAnchor
+  roles { ValidateModule as generated, ValidateModuleObservationAstAnchor as syntax }
+  expects ValidateModuleObservationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6f8f47b7eab7b55e13f42d11da4dbfc8fc51d5c05d528de6129138ee5b28df1b")
+  summary "fn ValidateModule.observation generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/validate.ts#observation."
+}
+
+relation ValidateModuleProbeSourceGeneratedFromValidateModuleProbeSourceAstAnchor {
+  kind generated_from
+  connects ValidateModule -> ValidateModuleProbeSourceAstAnchor
+  roles { ValidateModule as generated, ValidateModuleProbeSourceAstAnchor as syntax }
+  expects ValidateModuleProbeSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:599c86f9e67b428e11757877080c4ee955137bd111ffd78134b1d6fe97746dec")
+  summary "fn ValidateModule.probeSource generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/validate.ts#probeSource."
+}
+
+relation ValidateModuleSampleGeneratedFromValidateModuleSampleAstAnchor {
+  kind generated_from
+  connects ValidateModule -> ValidateModuleSampleAstAnchor
+  roles { ValidateModule as generated, ValidateModuleSampleAstAnchor as syntax }
+  expects ValidateModuleSampleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:df91ac98a0281443031d5d705a0ec1dd1c7ab868a10102724c30010cab1e47f1")
+  summary "fn ValidateModule.sample generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/validate.ts#sample."
+}
+
+relation ValidateModuleSplitQGeneratedFromValidateModuleSplitQAstAnchor {
+  kind generated_from
+  connects ValidateModule -> ValidateModuleSplitQAstAnchor
+  roles { ValidateModule as generated, ValidateModuleSplitQAstAnchor as syntax }
+  expects ValidateModuleSplitQAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aacba3a5328acc05241c2490ce146ab6c3d5c82e5d7dad5fe375d7a0061bf4c0")
+  summary "fn ValidateModule.splitQ generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/validate.ts#splitQ."
+}
+
+relation ValidateModuleValidateTeethGeneratedFromValidateModuleValidateTeethAstAnchor {
+  kind generated_from
+  connects ValidateModule -> ValidateModuleValidateTeethAstAnchor
+  roles { ValidateModule as generated, ValidateModuleValidateTeethAstAnchor as syntax }
+  expects ValidateModuleValidateTeethAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f5a3f85bc2fb04eeaa5a45c6ef0e49dfc23fef078246791eb7f44bd8dd2948fb")
+  summary "fn ValidateModule.validateTeeth generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/validate.ts#validateTeeth."
+}
+
+implementation ValidateModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/teeth/validate.ts"
+  }
+  conforms_to ValidateModule
+}

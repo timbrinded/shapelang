@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.shape_1.trials.H1.zerox
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ZeroxModuleGitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H1/zerox.ts#git")
+  fingerprint ast.semantic_subtree_v1("sha256:d2bbaf6bb540ec2d2ceac1fbcaa88a908bb923fd85739c8633e8de1d7d646168")
+}
+
+resource ZeroxModuleMaterializeShapeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H1/zerox.ts#materializeShape")
+  fingerprint ast.semantic_subtree_v1("sha256:4a609b65fec592bb582f0010e6f862d775688bc999c232d9a1206808393708ed")
+}
+
+resource ZeroxModuleParseAllAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H1/zerox.ts#parseAll")
+  fingerprint ast.semantic_subtree_v1("sha256:1cad1998643a80967fc22f429372b2d02e30848e2999b07e5e58b6ef41d7e21a")
+}
+
+resource ZeroxModuleShapeFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H1/zerox.ts#shapeFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:4507dec1597a761be59f30c9eb991f7f8ad168bc0a7fe23230326ed92eda4ef0")
+}
+
+component ZeroxModule : GeneratedCandidate {
+  fn git
+    source ts("experiments/shape-1/trials/H1/zerox.ts#git")
+    effects unknown
+  fn materializeShape
+    source ts("experiments/shape-1/trials/H1/zerox.ts#materializeShape")
+    effects unknown
+  fn parseAll
+    source ts("experiments/shape-1/trials/H1/zerox.ts#parseAll")
+    effects unknown
+  fn shapeFiles
+    source ts("experiments/shape-1/trials/H1/zerox.ts#shapeFiles")
+    effects unknown
+}
+
+relation ZeroxModuleGitGeneratedFromZeroxModuleGitAstAnchor {
+  kind generated_from
+  connects ZeroxModule -> ZeroxModuleGitAstAnchor
+  roles { ZeroxModule as generated, ZeroxModuleGitAstAnchor as syntax }
+  expects ZeroxModuleGitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d2bbaf6bb540ec2d2ceac1fbcaa88a908bb923fd85739c8633e8de1d7d646168")
+  summary "fn ZeroxModule.git generated from typescript function_declaration at experiments/shape-1/trials/H1/zerox.ts#git."
+}
+
+relation ZeroxModuleMaterializeShapeGeneratedFromZeroxModuleMaterializeShapeAstAnchor {
+  kind generated_from
+  connects ZeroxModule -> ZeroxModuleMaterializeShapeAstAnchor
+  roles { ZeroxModule as generated, ZeroxModuleMaterializeShapeAstAnchor as syntax }
+  expects ZeroxModuleMaterializeShapeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4a609b65fec592bb582f0010e6f862d775688bc999c232d9a1206808393708ed")
+  summary "fn ZeroxModule.materializeShape generated from typescript function_declaration at experiments/shape-1/trials/H1/zerox.ts#materializeShape."
+}
+
+relation ZeroxModuleParseAllGeneratedFromZeroxModuleParseAllAstAnchor {
+  kind generated_from
+  connects ZeroxModule -> ZeroxModuleParseAllAstAnchor
+  roles { ZeroxModule as generated, ZeroxModuleParseAllAstAnchor as syntax }
+  expects ZeroxModuleParseAllAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1cad1998643a80967fc22f429372b2d02e30848e2999b07e5e58b6ef41d7e21a")
+  summary "fn ZeroxModule.parseAll generated from typescript function_declaration at experiments/shape-1/trials/H1/zerox.ts#parseAll."
+}
+
+relation ZeroxModuleShapeFilesGeneratedFromZeroxModuleShapeFilesAstAnchor {
+  kind generated_from
+  connects ZeroxModule -> ZeroxModuleShapeFilesAstAnchor
+  roles { ZeroxModule as generated, ZeroxModuleShapeFilesAstAnchor as syntax }
+  expects ZeroxModuleShapeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4507dec1597a761be59f30c9eb991f7f8ad168bc0a7fe23230326ed92eda4ef0")
+  summary "fn ZeroxModule.shapeFiles generated from typescript function_declaration at experiments/shape-1/trials/H1/zerox.ts#shapeFiles."
+}
+
+implementation ZeroxModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H1/zerox.ts"
+  }
+  conforms_to ZeroxModule
+}

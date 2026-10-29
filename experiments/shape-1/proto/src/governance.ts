@@ -19,14 +19,25 @@ export function policyStar(base: Policy, head: Policy): Policy {
     const b = base.tiers[t];
     const h = head.tiers[t];
     return {
-      floor: (levelRank(b.floor) >= levelRank(h.floor) ? b.floor : h.floor) as Exclude<Level, "none">,
+      floor: (levelRank(b.floor) >= levelRank(h.floor) ? b.floor : h.floor) as Exclude<
+        Level,
+        "none"
+      >,
       blocks: sortedUniq([...b.blocks, ...h.blocks]) as TierPolicy["blocks"],
       maxAge: Math.min(b.maxAge, h.maxAge),
       judges: b.judges.filter((j) => h.judges.includes(j)).sort(cmpStr)
     };
   };
-  const budget = base.budget === null ? head.budget : head.budget === null ? base.budget : Math.min(base.budget, head.budget);
-  return { tiers: { low: tier("low"), normal: tier("normal"), critical: tier("critical") }, budget };
+  const budget =
+    base.budget === null
+      ? head.budget
+      : head.budget === null
+        ? base.budget
+        : Math.min(base.budget, head.budget);
+  return {
+    tiers: { low: tier("low"), normal: tier("normal"), critical: tier("critical") },
+    budget
+  };
 }
 
 export function tierPolicy(p: Policy, t: Tier): TierPolicy {
@@ -36,7 +47,8 @@ export function tierPolicy(p: Policy, t: Tier): TierPolicy {
 export function buildGov(govBase: ESF, policy: Policy, authors: Author[]): Gov {
   const actors = new Map(govBase.actors.map((a) => [a.q, a]));
   const byIdentity = new Map<string, string>();
-  for (const a of govBase.actors) for (const i of a.identities) if (!byIdentity.has(i)) byIdentity.set(i, a.q);
+  for (const a of govBase.actors)
+    for (const i of a.identities) if (!byIdentity.has(i)) byIdentity.set(i, a.q);
   const set = new Set<string>();
   let unmappedBot = false;
   for (const au of authors) {
@@ -57,11 +69,13 @@ export function buildGov(govBase: ESF, policy: Policy, authors: Author[]): Gov {
         if (op?.kind === "team") add.push(...personsOf(op.q, actors));
         else add.push(a.operator);
       }
-      if (a.kind === "person") for (const b of actors.values()) if (b.kind === "agent" && b.operator === q) add.push(b.q);
-      for (const x of add) if (!set.has(x)) {
-        set.add(x);
-        grew = true;
-      }
+      if (a.kind === "person")
+        for (const b of actors.values()) if (b.kind === "agent" && b.operator === q) add.push(b.q);
+      for (const x of add)
+        if (!set.has(x)) {
+          set.add(x);
+          grew = true;
+        }
     }
   }
   return { actors, byIdentity, authors: set, unmappedBot, policy, shapeOwner: govBase.shape.owner };
@@ -84,8 +98,10 @@ export function eligibleByRole(gov: Gov, q: EligibilityQuery): string[] {
   const owners = membersOf(q.owner, gov.actors);
   for (const j of judges) {
     if (j === "owner") for (const m of owners) out.add(m);
-    else if (j === "agents") for (const a of gov.actors.values()) if (a.kind === "agent") out.add(a.q);
-    else for (const m of membersOf(j, gov.actors)) out.add(m);
+    else if (j === "agents")
+      for (const a of gov.actors.values())
+        if (a.kind === "agent") out.add(a.q);
+        else for (const m of membersOf(j, gov.actors)) out.add(m);
   }
   return [...out]
     .filter((a) => gov.actors.has(a))
@@ -93,14 +109,25 @@ export function eligibleByRole(gov: Gov, q: EligibilityQuery): string[] {
     .sort(cmpStr);
 }
 
-export function isEligible(gov: Gov, j: string, q: EligibilityQuery): { ok: boolean; self: boolean } {
+export function isEligible(
+  gov: Gov,
+  j: string,
+  q: EligibilityQuery
+): { ok: boolean; self: boolean } {
   const role = eligibleByRole(gov, q);
   if (!role.includes(j)) return { ok: false, self: false };
   if (!gov.authors.has(j)) return { ok: true, self: false };
   // self fallback (A.6.3.3)
   const a = gov.actors.get(j);
   const persons = role.filter((x) => gov.actors.get(x)?.kind === "person");
-  if (a?.kind === "person" && !q.final && persons.length === 1 && persons[0] === j && !gov.unmappedBot) return { ok: true, self: true };
+  if (
+    a?.kind === "person" &&
+    !q.final &&
+    persons.length === 1 &&
+    persons[0] === j &&
+    !gov.unmappedBot
+  )
+    return { ok: true, self: true };
   return { ok: false, self: false };
 }
 

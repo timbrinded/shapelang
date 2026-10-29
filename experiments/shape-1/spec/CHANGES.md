@@ -1,0 +1,48 @@
+# Changes in the final revision
+
+What the crystallize step changed against the critic-hardened draft, and why. The decision numbers match [RFC.md](../RFC.md).
+
+- D1: `forbid hatch K outside boundaries` expands to one forbid per declared hatch verb plus one on the reserved `Undeclared`, to which undeclared registry kinds lift; `Hatch` is never a clause, so `allows hatch` takes effect (Example 2's spurious contradiction; H6: 9/9 kind clauses redundant).
+- D2: summaries are direct over a unit's own code, have no call channel, enter P and Lvl and are decided by L1; question L2 is retired (dogfood: 336 of 337 effects.upper contradictions came only through call hops).
+- D3: coverage is needed only on observable channels or under final claims; lower bounds need none; unregistered resource-code kinds have no carriers (H2: coverage fired on 7/7 behaviour-preserving controls).
+- D3: observability for coverage need, exploitation and the declared-only listing is read from the base alone, while meeting a need still requires base and head soundness (completeness review: a head dropping absence removed blocking coverage, against T2′).
+- D3: a checker-decided claim with no observable channel is declared-only by construction, listed with its tier and route (contradiction-only or declared-only) and counted per tier; invariant 3 is amended to 'policy or the checker marks it declared-only'.
+- D4: a law obligation is introduced when Req, or the cone of a record that contradicts the law or holds the obligation's reason, meets the code delta (H3: unit-bound arms 33 and 29 of 43 to 43/43; without reruns 33 and 31 of 43).
+- D4: a law contradiction that a usable base-revision record of the same provider already made with an equal counterexample stays preexisting (H3 D10 and H2 C04 false blocks).
+- D4: judgment Req for a unit adds the functions of its component it references, including this and super methods and module object members; identities without the cited projection are cited at file (agent/E1; 3 of 37 dogfood laws unjudgeable).
+- D5: a structure contradiction is introduced only when its witness needs a new lifted edge (H2: 41 flipped cycle obligations in S06; control C13 blocked).
+- D6: the own projection replaces nested identities by path-free names and resolves nothing; a new identity uniquely matching a deleted one by kind and own digest is relocated, is no finest change and compares its observed and hatch facts with its source (H5: 291 contradictions from one directory move).
+- D6: a hatch fact at a finest change is new even with unchanged marker counts (H5: recall over trust events 66.6% to 87.8%).
+- D7: a refutation is introduced when its footprint changed or a base record had reported the now missing fact (H2 arm X: 7/7 refutations stayed preexisting).
+- D8: the code delta is per (identity, projection); file digests ignore formatting and the comment scanner re-scans template literals (H3 inert-comment case; H2 C02).
+- D9: per-record reasons run stale, expired, assumption, weak, producer-changed and per-law reasons assumption, weak, producer-changed, expired, stale, so a producer change masks nothing (agent/G7, G8; lawyer/L02).
+- D9: producer change is reported only on otherwise usable, forceful records of base-declared providers, never on inconclusive ones; a producer-changed answer re-evaluates the law; a moved harness digest is stale; implementations may bind identities such as pkgjson scripts (H1: 494 of 851 obligations; lawyer/L03, L26).
+- D10: groups also join obligations sharing a changed implementation or harness identity or a removed or changed base item, and the per-change judgment budget counts groups (H1: groups 0.31 on all 82 commits, 0.73 on the 22 clean heads).
+- D11: rule 2 blocks only introduced final sound contradictions; preexisting final drift is owed and listed (lawyer/L05).
+- D11: tier* of an effect, summary or authority contradiction is the higher of the head tier and the base protection level at the fact's base position; version 6's witness condition is dropped (DRT: implemented by neither checker).
+- D11: authority's tier enters Lvl, so moving code to a lower-tier component with equal grants is an L1 loosening (lawyer/L04).
+- D11: claim judgments, producer-changed answers and heuristic dismissals on final claims need two persons and no agent, and final coverage needs two persons who together cover every owner involved (lawyer/L06; completeness review).
+- D11: a final law is never satisfied through any hatch fact in its cone (lawyer/L08).
+- D12: the self fallback reads the base judges only, and authorship excludes only acts of this change (lawyer/L01; build/core #12, #13).
+- D13: leq and geq order safe integers only; std AppendOnly forbids Update; hosted heirs need equal closure digests (agent/B2, W2, E6, W6).
+- D14: a law with an empty Req is vacuous and never attributed to a component (lawyer/L19; H5: 18/18 kernel-prototype differences).
+- D15: a fact without n is new, and presence-sound observers must report n (agent/C7).
+- D16: audit mode reads the head as governance base and treats every obligation as preexisting (build/core #3).
+- D17: L1 authority parts need atoms newly in both A and P; counterexamples are admitted by the head and print the fact; the order class is output; undecided renames suggest was (H4: 8 of 31 counterexamples outside the head).
+- D18: L7 reports an inherited field once, compares no owners against an empty base, and actors take was (dogfood: 558 L7 items from one owner move).
+- D19: migrate maps owns to the resource's owner, 0.x complete summaries to direct summaries and guardless RefactorSensitive markers to notes, and skips generated_ast documents (dogfood: Owns caused 35 of 43 baseline errors).
+- D19: migrate maps unsafe to a decision note, the 0.x prelude AppendOnly to std NoHardDelete, forbid final to critical where two persons are lacking, and gives shape traits, descriptions, require_context, guards, memory fields, free and untargeted effects, custom relation kinds, vendored packs and the 0.x CLI a mapping or a reported drop (completeness review).
+- D20: hatch-completeness counts macros in every position, attribute and derive included, and include! only with a literal in-tree path to a hatch-complete file (lawyer/L36 and its residual).
+- D20: std declares unsafe in rust and ts_expect_error and ts_nocheck in ts, and Verus files keep vprobe's kinds (dogfood: 19 TS markers invisible; H5: 3,172 plain-Rust markers).
+- D21: test providers report deterministic failures as contradicts with counterexamples; inconclusive records satisfy E-provider-missing; supplied roots are reported at the supplier; unresolved injected calls make entries incomplete; ts.call invocation forms and the Lean axiom mapping are fixed (H3: 43/43 test-killed bugs merged under the stock mapping).
+- D22: the DRT ambiguities are settled in A.15, coverage bindings carry their (claim, channel) pairs, and the representative, base-overlap and answer-item readings are fixed (DRT N1: 2,495 cases; lawyer/L38, L41).
+- D22: a debt row lists every matching exception and takes owner and expiry from the earliest-expiring one (lawyer/L38 point 6).
+- D23: the annex text is the reference until a zero-residual differential gate guards both checkers; the kernel computes cells and rejects out-of-fragment input (DRT: 2,212 of 4,000 cases had implementation bugs).
+- D24: teeth reports kills over shape edits and over observable changes, and ungoverned code is its own gap class (H6: 33 of 154 claims observably vacuous).
+- D25: component paths take except globs, gha workflows get job identities, and actors take was (build/dogfood).
+- D27: manifest entries carry executable and hatchComplete; an optional base manifest identity must sign both manifests (else E-provider-missing); shape.kernel.case/v1 is the shared wire format (H5: scanner and vprobe agree on 87.7% of marked blobs).
+- D28: without a relay, shape judge and shape reject lines make no judgment and are counted unrecorded, while approve lines still answer for the run (invariant 5).
+- Exceptions that match nothing are listed inert; exception-answered obligations appear in both obligations and answered; obligation.exception is set only once the exception takes effect (build/kernel).
+- requires note accepts several note kinds; std gains NoHardDelete, the 0.x markers and the 0.x shape-trait templates, and Bounded moves to A.13.2.
+- vectors.py goes from 111 to 113 values (AppendOnly's Update atom, the Undeclared and new TS hatch clauses, the Variant C L1 deltas, the coverage delta pair); every other example value is unchanged.
+- The four core documents are compressed to 59,816 characters, procedures moving to the annex, which gains A.5.2.17 and A.15.

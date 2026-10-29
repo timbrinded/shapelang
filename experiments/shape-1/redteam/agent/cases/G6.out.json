@@ -1,0 +1,86 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:c40bd07e0de9c371c92d74404a8ddbd9a0325062216a2ee3522958fb1487ae08",
+ "verdict": "pass",
+ "errors": [],
+ "rejected": [],
+ "obligations": [],
+ "answered": [
+  {
+   "obligation": "ob:79b18d16e2bc560c6c28f3722f151421320a80116886e10f80d3b5e0cab8e4fc",
+   "records": [
+    "review:b9ed4316b8eb744d"
+   ],
+   "self": false,
+   "exploited": null,
+   "as": "discharge"
+  }
+ ],
+ "loosening": [],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 2,
+   "den": 2
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [
+   "checker.incremental::ShapeIncrementalChecker",
+   "checker::ShapeBindings",
+   "checker::ShapeDiagnostics",
+   "checker::ShapeModelLowerer",
+   "checker::ShapeModuleResolver",
+   "checker::ShapePreludeRegistry",
+   "checker::ShapeStringHelpers",
+   "tooling::ShpCli"
+  ],
+  "ungoverned": {
+   "num": 2,
+   "den": 8
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [
+   "review tooling::ann: shape approve bd:f66cb68766e424c2"
+  ],
+  "executesHead": [
+   "checker::bunTest"
+  ],
+  "baseObservations": "missing",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"checker::ShapeChecker.*\",\"checker::ShapeChecker.*\"]",
+   "cell:[\"checker::ShapeRuleEngine.*\",\"checker::ShapeRuleEngine.*\"]",
+   "cell:[\"tooling::ShpCli.*\",\"tooling::ShpCli.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 3,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

@@ -1,0 +1,65 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.laws.mutate
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource MutateModuleApplyMutantAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/mutate.ts#applyMutant")
+  fingerprint ast.semantic_subtree_v1("sha256:6e43816b9ade7dc25f59899ae2915554e85f3170100f6f0f19f31f82bac4d73f")
+}
+
+resource MutateModuleMutantsOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/mutate.ts#mutantsOf")
+  fingerprint ast.semantic_subtree_v1("sha256:458c5e4acf5760925b887762f7fb5db3c921cc123e1f3b97efe0e9ea5ecf6945")
+}
+
+resource MutateModulePickEvenAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/laws/mutate.ts#pickEven")
+  fingerprint ast.semantic_subtree_v1("sha256:044401a5ca435ab2318440232e69ea9495923da966395264df0496db145e6fb9")
+}
+
+component MutateModule : GeneratedCandidate {
+  fn applyMutant
+    source ts("experiments/shape-1/proto/providers/laws/mutate.ts#applyMutant")
+    effects unknown
+  fn mutantsOf
+    source ts("experiments/shape-1/proto/providers/laws/mutate.ts#mutantsOf")
+    effects unknown
+  fn pickEven
+    source ts("experiments/shape-1/proto/providers/laws/mutate.ts#pickEven")
+    effects unknown
+}
+
+relation MutateModuleApplyMutantGeneratedFromMutateModuleApplyMutantAstAnchor {
+  kind generated_from
+  connects MutateModule -> MutateModuleApplyMutantAstAnchor
+  roles { MutateModule as generated, MutateModuleApplyMutantAstAnchor as syntax }
+  expects MutateModuleApplyMutantAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6e43816b9ade7dc25f59899ae2915554e85f3170100f6f0f19f31f82bac4d73f")
+  summary "fn MutateModule.applyMutant generated from typescript function_declaration at experiments/shape-1/proto/providers/laws/mutate.ts#applyMutant."
+}
+
+relation MutateModuleMutantsOfGeneratedFromMutateModuleMutantsOfAstAnchor {
+  kind generated_from
+  connects MutateModule -> MutateModuleMutantsOfAstAnchor
+  roles { MutateModule as generated, MutateModuleMutantsOfAstAnchor as syntax }
+  expects MutateModuleMutantsOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:458c5e4acf5760925b887762f7fb5db3c921cc123e1f3b97efe0e9ea5ecf6945")
+  summary "fn MutateModule.mutantsOf generated from typescript function_declaration at experiments/shape-1/proto/providers/laws/mutate.ts#mutantsOf."
+}
+
+relation MutateModulePickEvenGeneratedFromMutateModulePickEvenAstAnchor {
+  kind generated_from
+  connects MutateModule -> MutateModulePickEvenAstAnchor
+  roles { MutateModule as generated, MutateModulePickEvenAstAnchor as syntax }
+  expects MutateModulePickEvenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:044401a5ca435ab2318440232e69ea9495923da966395264df0496db145e6fb9")
+  summary "fn MutateModule.pickEven generated from typescript function_declaration at experiments/shape-1/proto/providers/laws/mutate.ts#pickEven."
+}
+
+implementation MutateModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/laws/mutate.ts"
+  }
+  conforms_to MutateModule
+}

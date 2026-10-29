@@ -2,9 +2,22 @@
 // shape1work/model-v4/vectors.py so derived keys, bindings and groups can be compared exactly.
 import type { CheckInput } from "../src/io-types.ts";
 import { label } from "../src/jcs.ts";
-import { type ManifestEntry, type TreeEntry, gitBlobId, manifestStatement } from "../src/manifest.ts";
+import {
+  type ManifestEntry,
+  type TreeEntry,
+  gitBlobId,
+  manifestStatement
+} from "../src/manifest.ts";
 import type { Statement } from "../src/manifest.ts";
-import { type CodeCite, type ShapeRecord, type Signer, makeStatement, scopeRoot, signStatement, signerFromSeed } from "../src/records.ts";
+import {
+  type CodeCite,
+  type ShapeRecord,
+  type Signer,
+  makeStatement,
+  scopeRoot,
+  signStatement,
+  signerFromSeed
+} from "../src/records.ts";
 import type { Decl, SourceDoc } from "../src/source.ts";
 import { auditSource, ironkvSource } from "./sources.ts";
 
@@ -36,22 +49,46 @@ export interface IdSpec {
 
 const SCHEME: Record<string, Record<string, string>> = {
   ts: { file: "ts.file.v1", own: "ts.own.v2", unit: "ts.unit.v2" },
-  verus: { file: "verus.file.v1", own: "verus.own.v2", unit: "verus.unit.v2", contract: "verus.contract.vir.v2", closure: "verus.closure.vir.v2" },
+  verus: {
+    file: "verus.file.v1",
+    own: "verus.own.v2",
+    unit: "verus.unit.v2",
+    contract: "verus.contract.vir.v2",
+    closure: "verus.closure.vir.v2"
+  },
   raw: { file: "raw.file.v1", own: "raw.own.v1" },
   pkgjson: { file: "pkgjson.file.v1", own: "pkgjson.own.v1", unit: "pkgjson.unit.v1" }
 };
 
-export function manifest(revision: string, ids: IdSpec[], shapeFiles: string[] = ["shape.lock", "shape/audit.shape"]): Statement {
+export function manifest(
+  revision: string,
+  ids: IdSpec[],
+  shapeFiles: string[] = ["shape.lock", "shape/audit.shape"]
+): Statement {
   const entries: ManifestEntry[] = [];
   const tree: TreeEntry[] = [];
   for (const s of ids) {
     const lang = s.id.split(":")[0] as string;
     const symbol = s.id.includes("#");
-    const parent = s.parent !== undefined ? s.parent : symbol ? (s.id.split("#")[0] as string) : null;
+    const parent =
+      s.parent !== undefined ? s.parent : symbol ? (s.id.split("#")[0] as string) : null;
     for (const p of ["file", "own", "unit", "contract", "closure"] as const) {
-      const d = s[p] ?? (p === "file" && !symbol ? label(`${s.id} file`) : p === "own" ? label(`${s.id} own`) : undefined);
+      const d =
+        s[p] ??
+        (p === "file" && !symbol
+          ? label(`${s.id} file`)
+          : p === "own"
+            ? label(`${s.id} own`)
+            : undefined);
       if (!d) continue;
-      const e: ManifestEntry = { id: s.id, projection: p, scheme: SCHEME[lang]?.[p] ?? `${lang}.${p}.v1`, digest: d, kind: s.kind ?? (symbol ? "function" : "file"), parent };
+      const e: ManifestEntry = {
+        id: s.id,
+        projection: p,
+        scheme: SCHEME[lang]?.[p] ?? `${lang}.${p}.v1`,
+        digest: d,
+        kind: s.kind ?? (symbol ? "function" : "file"),
+        parent
+      };
       if (s.markers) e.markers = s.markers;
       if (s.executable) e.executable = true;
       if (s.hatchComplete === false) e.hatchComplete = false;
@@ -59,10 +96,15 @@ export function manifest(revision: string, ids: IdSpec[], shapeFiles: string[] =
     }
     if (!symbol) {
       const path = s.id.slice(lang.length + 1);
-      tree.push({ path, mode: s.executable && lang === "raw" ? "100755" : "100644", blob: gitBlobId(Buffer.from(s.file ?? `${path}`)) });
+      tree.push({
+        path,
+        mode: s.executable && lang === "raw" ? "100755" : "100644",
+        blob: gitBlobId(Buffer.from(s.file ?? `${path}`))
+      });
     }
   }
-  for (const f of shapeFiles) tree.push({ path: f, mode: "100644", blob: gitBlobId(Buffer.from(f)) });
+  for (const f of shapeFiles)
+    tree.push({ path: f, mode: "100644", blob: gitBlobId(Buffer.from(f)) });
   return manifestStatement({ v: "shape.manifest.v1", revision, tree, entries });
 }
 
@@ -72,7 +114,12 @@ export function signed(r: ShapeRecord, signers: Signer[]): unknown {
 
 export function cite(id: string, projection: string, digest: string): CodeCite {
   const lang = id.split(":")[0] as string;
-  return { id, projection, scheme: SCHEME[lang]?.[projection] ?? `${lang}.${projection}.v1`, digest };
+  return {
+    id,
+    projection,
+    scheme: SCHEME[lang]?.[projection] ?? `${lang}.${projection}.v1`,
+    digest
+  };
 }
 
 export function baseInput(o: Partial<CheckInput> & Pick<CheckInput, "head">): CheckInput {
@@ -104,19 +151,36 @@ export const EX1 = {
   STORE_UNIT: "sha256:df38d45acb53c51e2faaca77f1229602ab595acdd158a52f2a526d1fa3408f08"
 };
 
-export const IDS = { sqlEffects: KEYS.sqlEffects.identity, fastCheck: KEYS.fastCheck.identity, reviews: KEYS.reviews.identity };
+export const IDS = {
+  sqlEffects: KEYS.sqlEffects.identity,
+  fastCheck: KEYS.fastCheck.identity,
+  reviews: KEYS.reviews.identity
+};
 
 function ex1BaseIds(): IdSpec[] {
   return [
     { id: "pkgjson:package.json" },
     { id: "raw:bun.lock" },
     { id: "ts:src/audit/store.ts", file: EX1.STORE_FILE, own: label("ts:src/audit/store.ts own") },
-    { id: "ts:src/audit/store.ts#appendEvent", own: label("appendEvent own"), unit: EX1.STORE_UNIT },
+    {
+      id: "ts:src/audit/store.ts#appendEvent",
+      own: label("appendEvent own"),
+      unit: EX1.STORE_UNIT
+    },
     { id: "ts:test/audit/history.test.ts", own: label("history.test.ts own") }
   ];
 }
 
-export type Ex1Variant = "audit" | "empty-base" | "A" | "B" | "B-weak" | "Bprime" | "Bsecond" | "C" | "C-answered";
+export type Ex1Variant =
+  | "audit"
+  | "empty-base"
+  | "A"
+  | "B"
+  | "B-weak"
+  | "Bprime"
+  | "Bsecond"
+  | "C"
+  | "C-answered";
 
 export function ex1(variant: Ex1Variant, extra: Partial<CheckInput> = {}): CheckInput {
   const baseShape = auditSource({ ids: IDS });
@@ -131,7 +195,10 @@ export function ex1(variant: Ex1Variant, extra: Partial<CheckInput> = {}): Check
         provider: { id: "audit::fastCheck", version: "3.23.0" },
         revision: rev,
         time: t,
-        claim: { id: "audit::EventsArePreserved", fp: "sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3" },
+        claim: {
+          id: "audit::EventsArePreserved",
+          fp: "sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3"
+        },
         code,
         harness: [cite("ts:test/audit/history.test.ts", "own", label("history.test.ts own"))],
         assumptions: [],
@@ -139,8 +206,16 @@ export function ex1(variant: Ex1Variant, extra: Partial<CheckInput> = {}): Check
       },
       [KEYS.fastCheck]
     );
-  const obs = (rev: string, entries: { id: string; projection: string; digest: string }[], facts: ShapeRecord["facts"]): unknown => {
-    const es = entries.map((e) => ({ ...cite(e.id, e.projection, e.digest), complete: true, deps: [] }));
+  const obs = (
+    rev: string,
+    entries: { id: string; projection: string; digest: string }[],
+    facts: ShapeRecord["facts"]
+  ): unknown => {
+    const es = entries.map((e) => ({
+      ...cite(e.id, e.projection, e.digest),
+      complete: true,
+      deps: []
+    }));
     return signed(
       {
         v: "shape.evidence.v1",
@@ -157,7 +232,12 @@ export function ex1(variant: Ex1Variant, extra: Partial<CheckInput> = {}): Check
       [KEYS.sqlEffects]
     );
   };
-  const appendFact = { type: "effect" as const, at: "ts:src/audit/store.ts#appendEvent", verb: "Append", resource: 'pg.table("public.audit_events")' };
+  const appendFact = {
+    type: "effect" as const,
+    at: "ts:src/audit/store.ts#appendEvent",
+    verb: "Append",
+    resource: 'pg.table("public.audit_events")'
+  };
   const storeEntries = [
     { id: "ts:src/audit/store.ts", projection: "file", digest: EX1.STORE_FILE },
     { id: "ts:src/audit/store.ts#appendEvent", projection: "unit", digest: EX1.STORE_UNIT }
@@ -170,7 +250,10 @@ export function ex1(variant: Ex1Variant, extra: Partial<CheckInput> = {}): Check
       base: null,
       records: [
         obs(EX1.base, storeEntries, [appendFact]),
-        fastCheckRecord(EX1.base, [cite("ts:src/audit/store.ts#appendEvent", "unit", EX1.STORE_UNIT), cite("ts:src/audit/store.ts", "own", label("ts:src/audit/store.ts own"))])
+        fastCheckRecord(EX1.base, [
+          cite("ts:src/audit/store.ts#appendEvent", "unit", EX1.STORE_UNIT),
+          cite("ts:src/audit/store.ts", "own", label("ts:src/audit/store.ts own"))
+        ])
       ],
       ...extra
     });
@@ -178,10 +261,17 @@ export function ex1(variant: Ex1Variant, extra: Partial<CheckInput> = {}): Check
   if (variant === "empty-base") {
     return baseInput({
       head: { revision: EX1.head, source: baseShape, manifest: manifest(EX1.head, ex1BaseIds()) },
-      base: { revision: EX1.base, source: { v: "shape.source.v1", modules: [] }, manifest: baseMan },
+      base: {
+        revision: EX1.base,
+        source: { v: "shape.source.v1", modules: [] },
+        manifest: baseMan
+      },
       records: [
         obs(EX1.head, storeEntries, [appendFact]),
-        fastCheckRecord(EX1.head, [cite("ts:src/audit/store.ts#appendEvent", "unit", EX1.STORE_UNIT), cite("ts:src/audit/store.ts", "own", label("ts:src/audit/store.ts own"))])
+        fastCheckRecord(EX1.head, [
+          cite("ts:src/audit/store.ts#appendEvent", "unit", EX1.STORE_UNIT),
+          cite("ts:src/audit/store.ts", "own", label("ts:src/audit/store.ts own"))
+        ])
       ],
       authors,
       ...extra
@@ -203,18 +293,43 @@ export function ex1(variant: Ex1Variant, extra: Partial<CheckInput> = {}): Check
     purgeAt = "ts:scripts/purge-audit.ts#purgeOldEvents";
     headIds = [
       ...ex1BaseIds(),
-      { id: "ts:scripts/purge-audit.ts", file: label("purge-audit file"), own: label("purge-audit own") },
-      { id: "ts:scripts/purge-audit.ts#purgeOldEvents", own: label("purge-audit fn own"), unit: label("purge-audit fn unit") }
+      {
+        id: "ts:scripts/purge-audit.ts",
+        file: label("purge-audit file"),
+        own: label("purge-audit own")
+      },
+      {
+        id: "ts:scripts/purge-audit.ts#purgeOldEvents",
+        own: label("purge-audit fn own"),
+        unit: label("purge-audit fn unit")
+      }
     ];
     purgeEntries = [
       { id: "ts:scripts/purge-audit.ts", projection: "file", digest: label("purge-audit file") },
-      { id: "ts:scripts/purge-audit.ts#purgeOldEvents", projection: "unit", digest: label("purge-audit fn unit") }
+      {
+        id: "ts:scripts/purge-audit.ts#purgeOldEvents",
+        projection: "unit",
+        digest: label("purge-audit fn unit")
+      }
     ];
   }
   if (variant === "Bsecond") {
-    headIds = [...ex1BaseIds(), { id: "raw:src/audit/purge.sh", file: label("purge.sh file"), own: label("raw:src/audit/purge.sh own, head"), executable: true }];
+    headIds = [
+      ...ex1BaseIds(),
+      {
+        id: "raw:src/audit/purge.sh",
+        file: label("purge.sh file"),
+        own: label("raw:src/audit/purge.sh own, head"),
+        executable: true
+      }
+    ];
   }
-  const purgeFact = { type: "effect" as const, at: purgeAt, verb: "HardDelete", resource: 'pg.table("public.audit_events")' };
+  const purgeFact = {
+    type: "effect" as const,
+    at: purgeAt,
+    verb: "HardDelete",
+    resource: 'pg.table("public.audit_events")'
+  };
   const headMan = manifest(EX1.head, headIds);
   const variantShape =
     variant === "A"
@@ -226,7 +341,10 @@ export function ex1(variant: Ex1Variant, extra: Partial<CheckInput> = {}): Check
           : baseShape;
   const lawReq: CodeCite[] =
     variant === "Bprime" || variant === "Bsecond"
-      ? [cite("ts:src/audit/store.ts#appendEvent", "unit", EX1.STORE_UNIT), cite("ts:src/audit/store.ts", "own", label("ts:src/audit/store.ts own"))]
+      ? [
+          cite("ts:src/audit/store.ts#appendEvent", "unit", EX1.STORE_UNIT),
+          cite("ts:src/audit/store.ts", "own", label("ts:src/audit/store.ts own"))
+        ]
       : [
           cite("ts:src/audit/store.ts#appendEvent", "unit", EX1.STORE_UNIT),
           cite("ts:src/audit/store.ts", "own", label("ts:src/audit/store.ts own")),
@@ -234,13 +352,25 @@ export function ex1(variant: Ex1Variant, extra: Partial<CheckInput> = {}): Check
           cite("ts:src/audit/purge.ts", "own", purgeOwnFile)
         ];
   const records: unknown[] = [
-    obs(EX1.head, variant === "Bsecond" ? storeEntries : [...purgeEntries, ...storeEntries], variant === "Bsecond" ? [appendFact] : [purgeFact, appendFact]),
+    obs(
+      EX1.head,
+      variant === "Bsecond" ? storeEntries : [...purgeEntries, ...storeEntries],
+      variant === "Bsecond" ? [appendFact] : [purgeFact, appendFact]
+    ),
     fastCheckRecord(EX1.head, lawReq)
   ];
   const reviews: CheckInput["reviews"] = [];
   if (variant === "C-answered") {
-    reviews.push({ identity: 'github("bob")', line: "shape approve bd:8d771e08d86d43b2 bd:2785f31d20281bdd", change: EX1.change });
-    reviews.push({ identity: 'github("carol")', line: "shape approve bd:8d771e08d86d43b2", change: EX1.change });
+    reviews.push({
+      identity: 'github("bob")',
+      line: "shape approve bd:8d771e08d86d43b2 bd:2785f31d20281bdd",
+      change: EX1.change
+    });
+    reviews.push({
+      identity: 'github("carol")',
+      line: "shape approve bd:8d771e08d86d43b2",
+      change: EX1.change
+    });
   }
   return baseInput({
     head: { revision: EX1.head, source: variantShape, manifest: headMan },
@@ -267,12 +397,27 @@ export const EX2 = {
   INSERT: "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert"
 };
 
-export function ex2(o: { exception?: boolean; approve?: boolean; hostMarkers?: boolean } = {}): CheckInput {
-  const src = ironkvSource({ verus: KEYS.verus.identity, verusRefines: KEYS.verusRefines.identity, danaKey: KEYS.dana.identity, exception: o.exception });
-  const baseSrc = ironkvSource({ verus: KEYS.verus.identity, verusRefines: KEYS.verusRefines.identity, danaKey: KEYS.dana.identity });
+export function ex2(
+  o: { exception?: boolean; approve?: boolean; hostMarkers?: boolean } = {}
+): CheckInput {
+  const src = ironkvSource({
+    verus: KEYS.verus.identity,
+    verusRefines: KEYS.verusRefines.identity,
+    danaKey: KEYS.dana.identity,
+    exception: o.exception
+  });
+  const baseSrc = ironkvSource({
+    verus: KEYS.verus.identity,
+    verusRefines: KEYS.verusRefines.identity,
+    danaKey: KEYS.dana.identity
+  });
   const host = o.hostMarkers ?? true;
   const common = (side: "b" | "h"): IdSpec[] => [
-    { id: "verus:ironkv/src/delegation_map_v.rs", file: label(`dmap file ${side}`), own: label("dmap own") },
+    {
+      id: "verus:ironkv/src/delegation_map_v.rs",
+      file: label(`dmap file ${side}`),
+      own: label("dmap own")
+    },
     {
       id: EX2.SET,
       own: label(side === "b" ? "ironkv set own, base" : "ironkv set own, head"),
@@ -281,9 +426,22 @@ export function ex2(o: { exception?: boolean; approve?: boolean; hostMarkers?: b
       closure: EX2.SET_CLOSURE,
       ...(side === "h" ? { markers: { assume: 1 } } : {})
     },
-    { id: EX2.INSERT, own: label("insert own"), unit: label("insert unit"), contract: label("insert contract"), closure: label("insert closure") },
+    {
+      id: EX2.INSERT,
+      own: label("insert own"),
+      unit: label("insert unit"),
+      contract: label("insert contract"),
+      closure: label("insert closure")
+    },
     { id: "verus:ironkv/src/host_t.rs", file: label("host file"), own: label("host own") },
-    { id: EX2.HOST, own: label("host send own"), unit: label("host send unit"), contract: label("host send contract"), closure: label("host send closure"), ...(host ? { markers: { external_body: 1 } } : {}) },
+    {
+      id: EX2.HOST,
+      own: label("host send own"),
+      unit: label("host send unit"),
+      contract: label("host send contract"),
+      closure: label("host send closure"),
+      ...(host ? { markers: { external_body: 1 } } : {})
+    },
     { id: "raw:ironkv/Cargo.toml" },
     { id: "raw:ironkv/Cargo.lock" }
   ];
@@ -298,7 +456,10 @@ export function ex2(o: { exception?: boolean; approve?: boolean; hostMarkers?: b
       provider: { id: "ironkv::verus", version: "dccae1d" },
       revision: EX2.head,
       time: "2026-10-25T10:00:00Z",
-      claim: { id: "ironkv::SetRefinesSpec", fp: "sha256:60a867af53d80a7f7691530f9ae5869779c05abccd602cd75b2baad28a85db38" },
+      claim: {
+        id: "ironkv::SetRefinesSpec",
+        fp: "sha256:60a867af53d80a7f7691530f9ae5869779c05abccd602cd75b2baad28a85db38"
+      },
       code: [cite(EX2.SET, "unit", EX2.SET_UNIT_H), cite(EX2.SET, "closure", EX2.SET_CLOSURE)],
       deps: [cite(EX2.INSERT, "contract", label("insert contract"))],
       harness: [],
@@ -319,7 +480,10 @@ export function ex2(o: { exception?: boolean; approve?: boolean; hostMarkers?: b
       provider: null,
       revision: EX2.base,
       time: "2026-10-01T09:00:00Z",
-      claim: { id: "ironkv::SetContractFaithful", fp: "sha256:3d6b9e247facc73677afbf88e873548e4c05981cb24d158eee0bc01fb1ad7b68" },
+      claim: {
+        id: "ironkv::SetContractFaithful",
+        fp: "sha256:3d6b9e247facc73677afbf88e873548e4c05981cb24d158eee0bc01fb1ad7b68"
+      },
       code: [cite(EX2.SET, "contract", EX2.SET_CONTRACT)],
       judge: "ironkv::dana"
     },
@@ -333,13 +497,24 @@ export function ex2(o: { exception?: boolean; approve?: boolean; hostMarkers?: b
       provider: null,
       revision: EX2.base,
       time: "2026-10-01T09:00:00Z",
-      claim: { id: "ironkv::HostTrusted/ReviewedSurface/law", fp: "sha256:f3119983e55f6aae012d4804f39af9f73ecafb27fc5fdccc6040b906efb7b03a" },
+      claim: {
+        id: "ironkv::HostTrusted/ReviewedSurface/law",
+        fp: "sha256:f3119983e55f6aae012d4804f39af9f73ecafb27fc5fdccc6040b906efb7b03a"
+      },
       code: [cite(EX2.HOST, "unit", label("host send unit"))],
       judge: "ironkv::dana"
     },
     [KEYS.dana]
   );
-  const reviews: CheckInput["reviews"] = o.approve ? [{ identity: 'github("dana")', line: "shape approve bd:2ea660886d27e5e3 bd:1da36a42e325dc5a", change: EX2.change }] : [];
+  const reviews: CheckInput["reviews"] = o.approve
+    ? [
+        {
+          identity: 'github("dana")',
+          line: "shape approve bd:2ea660886d27e5e3 bd:1da36a42e325dc5a",
+          change: EX2.change
+        }
+      ]
+    : [];
   return baseInput({
     change: { ids: [EX2.change] },
     head: { revision: EX2.head, source: src, manifest: headMan },
@@ -366,7 +541,13 @@ export function ex3Source(): SourceDoc {
     { decl: "shape", name: "Shape", owner: "ShapeMaintainers" },
     { decl: "actor", name: "ShapeMaintainers", kind: "team", members: ["tim"] },
     { decl: "actor", name: "tim", kind: "person", identities: ['github("tim")'] },
-    { decl: "actor", name: "claude", kind: "agent", operator: "tim", identities: ['github("claude[bot]")'] },
+    {
+      decl: "actor",
+      name: "claude",
+      kind: "agent",
+      operator: "tim",
+      identities: ['github("claude[bot]")']
+    },
     { decl: "resource", name: "SystemClock" },
     {
       decl: "component",
@@ -397,7 +578,11 @@ export function ex3(o: { judgeLine?: boolean } = {}): CheckInput {
   const ids = (side: "b" | "h"): IdSpec[] => [
     { id: "ts:packages/shp-cli/src/freshness.ts", own: label(`freshness own ${side}`) },
     { id: EX3.ISO, own: label(`isoToday own ${side}`), unit: side === "b" ? EX3.ISO_B : EX3.ISO_H },
-    { id: "ts:packages/shp-cli/src/freshness.ts#checkWindow", own: label("checkWindow own"), unit: label("checkWindow unit") }
+    {
+      id: "ts:packages/shp-cli/src/freshness.ts#checkWindow",
+      own: label("checkWindow own"),
+      unit: label("checkWindow unit")
+    }
   ];
   const sf = ["shape.lock", "shape/tooling.shape"];
   const judgment = signed(
@@ -408,7 +593,10 @@ export function ex3(o: { judgeLine?: boolean } = {}): CheckInput {
       provider: null,
       revision: EX3.base,
       time: "2026-09-01T09:00:00Z",
-      claim: { id: "tooling::ShpCli.isoToday/RefactorSensitive/law", fp: "sha256:c414eadc238d87c4e004899e9f2fe5a2ecfe615dae7eb8a242714426a059a077" },
+      claim: {
+        id: "tooling::ShpCli.isoToday/RefactorSensitive/law",
+        fp: "sha256:c414eadc238d87c4e004899e9f2fe5a2ecfe615dae7eb8a242714426a059a077"
+      },
       code: [cite(EX3.ISO, "unit", EX3.ISO_B)],
       judge: "tooling::tim"
     },
@@ -420,7 +608,9 @@ export function ex3(o: { judgeLine?: boolean } = {}): CheckInput {
     ...s,
     modules: s.modules.map((m) => ({
       ...m,
-      decls: m.decls.map((d) => (d.decl === "actor" && d.name === "tim" ? { ...d, identities: ['github("tim")', timKey] } : d))
+      decls: m.decls.map((d) =>
+        d.decl === "actor" && d.name === "tim" ? { ...d, identities: ['github("tim")', timKey] } : d
+      )
     }))
   });
   return baseInput({
@@ -429,7 +619,15 @@ export function ex3(o: { judgeLine?: boolean } = {}): CheckInput {
     base: { revision: EX3.base, source: withKey(src), manifest: manifest(EX3.base, ids("b"), sf) },
     records: [judgment],
     authors: [{ identity: 'github("claude[bot]")', verified: true, bot: true }],
-    reviews: o.judgeLine ? [{ identity: 'github("tim")', line: "shape judge tooling::ShpCli.isoToday/RefactorSensitive/law", change: EX3.change }] : []
+    reviews: o.judgeLine
+      ? [
+          {
+            identity: 'github("tim")',
+            line: "shape judge tooling::ShpCli.isoToday/RefactorSensitive/law",
+            change: EX3.change
+          }
+        ]
+      : []
   });
 }
 
@@ -440,7 +638,9 @@ export const EX4 = {
   head: "6666666666666666666666666666666666666666"
 };
 
-export function ex4Source(o: { complete?: boolean; diagnosticsRelation?: boolean } = {}): SourceDoc {
+export function ex4Source(
+  o: { complete?: boolean; diagnosticsRelation?: boolean } = {}
+): SourceDoc {
   const decls: Decl[] = [
     { decl: "shape", name: "Checker", owner: "ShapeMaintainers" },
     { decl: "actor", name: "ShapeMaintainers", kind: "team", members: ["tim"] },
@@ -449,14 +649,43 @@ export function ex4Source(o: { complete?: boolean; diagnosticsRelation?: boolean
     {
       decl: "component",
       name: "ShapeRuleEngine",
-      paths: ["packages/shp-checker/src/checker/derivations.ts", "packages/shp-checker/src/checker/rules/**/*.ts"],
+      paths: [
+        "packages/shp-checker/src/checker/derivations.ts",
+        "packages/shp-checker/src/checker/rules/**/*.ts"
+      ],
       ...(o.complete ? { relationsComplete: ["calls"] } : {})
     },
-    { decl: "component", name: "ShapeModelLowerer", paths: ["packages/shp-checker/src/checker/lowering/**/*.ts"] },
-    { decl: "component", name: "ShapeDiagnostics", paths: ["packages/shp-checker/src/checker/diagnostics/**/*.ts"] },
-    { decl: "relation", name: "ShapeRuleEngineReadsLoweredFacts", kind: "calls", connects: ["ShapeRuleEngine", "ShapeModelLowerer"] },
-    ...(o.diagnosticsRelation ? [{ decl: "relation" as const, name: "ShapeRuleEngineReports", kind: "calls", connects: ["ShapeRuleEngine", "ShapeDiagnostics"] }] : []),
-    { decl: "rule", name: "no_runtime_dependency_cycles", clauses: [{ forbid: "cycle", over: ["calls"] }] },
+    {
+      decl: "component",
+      name: "ShapeModelLowerer",
+      paths: ["packages/shp-checker/src/checker/lowering/**/*.ts"]
+    },
+    {
+      decl: "component",
+      name: "ShapeDiagnostics",
+      paths: ["packages/shp-checker/src/checker/diagnostics/**/*.ts"]
+    },
+    {
+      decl: "relation",
+      name: "ShapeRuleEngineReadsLoweredFacts",
+      kind: "calls",
+      connects: ["ShapeRuleEngine", "ShapeModelLowerer"]
+    },
+    ...(o.diagnosticsRelation
+      ? [
+          {
+            decl: "relation" as const,
+            name: "ShapeRuleEngineReports",
+            kind: "calls",
+            connects: ["ShapeRuleEngine", "ShapeDiagnostics"]
+          }
+        ]
+      : []),
+    {
+      decl: "rule",
+      name: "no_runtime_dependency_cycles",
+      clauses: [{ forbid: "cycle", over: ["calls"] }]
+    },
     {
       decl: "provider",
       name: "tsCallGraph",
@@ -486,7 +715,11 @@ export function ex4(o: { complete?: boolean; headDiagnostics?: boolean } = {}): 
   ];
   const sf = ["shape.lock", "shape/checker.shape"];
   const man = manifest(EX4.head, ids, sf);
-  const entries = [F, C, D].map((id) => ({ ...cite(id, "file", label(`${id} file`)), complete: false, deps: [] }));
+  const entries = [F, C, D].map((id) => ({
+    ...cite(id, "file", label(`${id} file`)),
+    complete: false,
+    deps: []
+  }));
   const rec = signed(
     {
       v: "shape.evidence.v1",
@@ -508,7 +741,11 @@ export function ex4(o: { complete?: boolean; headDiagnostics?: boolean } = {}): 
   );
   return baseInput({
     change: { ids: ["github:smoothbrains/shapelang#201"] },
-    head: { revision: EX4.head, source: ex4Source({ complete: o.complete, diagnosticsRelation: o.headDiagnostics }), manifest: man },
+    head: {
+      revision: EX4.head,
+      source: ex4Source({ complete: o.complete, diagnosticsRelation: o.headDiagnostics }),
+      manifest: man
+    },
     base: { revision: EX4.base, source: ex4Source({ complete: o.complete }), manifest: man },
     records: [rec],
     authors: [{ identity: 'github("tim")', verified: true, bot: false }]
@@ -526,7 +763,16 @@ export const EX3S2 = {
   HARN: "ts:packages/shp-checker/src/behavioural/harness.ts"
 };
 
-const CHECKER9 = ["ShapeBindings", "ShapeChecker", "ShapeDiagnostics", "ShapeModelLowerer", "ShapeModuleResolver", "ShapePreludeRegistry", "ShapeRuleEngine", "ShapeStringHelpers"];
+const CHECKER9 = [
+  "ShapeBindings",
+  "ShapeChecker",
+  "ShapeDiagnostics",
+  "ShapeModelLowerer",
+  "ShapeModuleResolver",
+  "ShapePreludeRegistry",
+  "ShapeRuleEngine",
+  "ShapeStringHelpers"
+];
 
 export function ex3s2Source(o: { refactorSensitive?: boolean } = {}): SourceDoc {
   const keyOf = (k: Signer): string => k.identity;
@@ -539,8 +785,20 @@ export function ex3s2Source(o: { refactorSensitive?: boolean } = {}): SourceDoc 
         decls: [
           ...CHECKER9.map((n): Decl => {
             if (n === "ShapeChecker")
-              return { decl: "component", name: n, paths: ["packages/shp-checker/src/checker/api.ts"], grants: "none", units: [{ name: "checkShapeModules" }] };
-            if (n === "ShapeRuleEngine") return { decl: "component", name: n, paths: ["packages/shp-checker/src/checker/rules/**/*.ts"], grants: "none" };
+              return {
+                decl: "component",
+                name: n,
+                paths: ["packages/shp-checker/src/checker/api.ts"],
+                grants: "none",
+                units: [{ name: "checkShapeModules" }]
+              };
+            if (n === "ShapeRuleEngine")
+              return {
+                decl: "component",
+                name: n,
+                paths: ["packages/shp-checker/src/checker/rules/**/*.ts"],
+                grants: "none"
+              };
             return { decl: "component", name: n };
           }),
           {
@@ -561,7 +819,11 @@ export function ex3s2Source(o: { refactorSensitive?: boolean } = {}): SourceDoc 
           }
         ]
       },
-      { module: "checker.incremental", imports: ["std"], decls: [{ decl: "component", name: "ShapeIncrementalChecker" }] },
+      {
+        module: "checker.incremental",
+        imports: ["std"],
+        decls: [{ decl: "component", name: "ShapeIncrementalChecker" }]
+      },
       {
         module: "tooling",
         imports: ["std", "checker"],
@@ -570,11 +832,22 @@ export function ex3s2Source(o: { refactorSensitive?: boolean } = {}): SourceDoc 
           { decl: "actor", name: "ShapeMaintainers", kind: "team", members: ["tim", "ann"] },
           { decl: "actor", name: "tim", kind: "person", identities: ['github("tim")'] },
           { decl: "actor", name: "ann", kind: "person", identities: ['github("ann")'] },
-          { decl: "actor", name: "claude", kind: "agent", operator: "tim", identities: ['github("claude[bot]")'] },
+          {
+            decl: "actor",
+            name: "claude",
+            kind: "agent",
+            operator: "tim",
+            identities: ['github("claude[bot]")']
+          },
           {
             decl: "resource",
             name: "SystemClock",
-            bind: ['ts.call("Date.now")', 'ts.call("Date")', 'ts.call("performance.now")', 'ts.call("process.hrtime")']
+            bind: [
+              'ts.call("Date.now")',
+              'ts.call("Date")',
+              'ts.call("performance.now")',
+              'ts.call("process.hrtime")'
+            ]
           },
           {
             decl: "component",
@@ -583,7 +856,9 @@ export function ex3s2Source(o: { refactorSensitive?: boolean } = {}): SourceDoc 
             units: [
               {
                 name: "isoToday",
-                ...(o.refactorSensitive === false ? {} : { attach: [{ name: "RefactorSensitive" }] }),
+                ...(o.refactorSensitive === false
+                  ? {}
+                  : { attach: [{ name: "RefactorSensitive" }] }),
                 bind: 'ts("packages/shp-cli/src/freshness.ts#isoToday")',
                 effects: { mode: "complete", atoms: [{ atom: "Read<SystemClock>" }] }
               }
@@ -597,19 +872,34 @@ export function ex3s2Source(o: { refactorSensitive?: boolean } = {}): SourceDoc 
               {
                 forbid: "effect",
                 atom: "Read<SystemClock>",
-                within: [...CHECKER9.map((n) => `component checker::${n}`), "component checker.incremental::ShapeIncrementalChecker"]
+                within: [
+                  ...CHECKER9.map((n) => `component checker::${n}`),
+                  "component checker.incremental::ShapeIncrementalChecker"
+                ]
               }
             ]
           },
-          { decl: "note", name: "ClockReadAtCliBoundary", kind: "memory", about: ["unit ShpCli.isoToday", "law checker::CheckIsDeterministic"] },
+          {
+            decl: "note",
+            name: "ClockReadAtCliBoundary",
+            kind: "memory",
+            about: ["unit ShpCli.isoToday", "law checker::CheckIsDeterministic"]
+          },
           {
             decl: "provider",
             name: "tsClockScan",
             produces: ["observation"],
-            observes: ['effect(ts.call("Date.now"))', 'effect(ts.call("Date"))', 'effect(ts.call("performance.now"))', 'effect(ts.call("process.hrtime"))'],
+            observes: [
+              'effect(ts.call("Date.now"))',
+              'effect(ts.call("Date"))',
+              'effect(ts.call("performance.now"))',
+              'effect(ts.call("process.hrtime"))'
+            ],
             sound: ["presence", "absence"],
             identity: keyOf(KEYS.tsClockScan),
-            implementation: { paths: ["tools/clock-scan.ts", "tsconfig.json", "package.json", "bun.lock"] }
+            implementation: {
+              paths: ["tools/clock-scan.ts", "tsconfig.json", "package.json", "bun.lock"]
+            }
           }
         ]
       }
@@ -617,13 +907,34 @@ export function ex3s2Source(o: { refactorSensitive?: boolean } = {}): SourceDoc 
   };
 }
 
-export function ex3s2(o: { harnessEdited?: boolean; dropRecord?: boolean; seededClock?: boolean; removeRefactorSensitive?: boolean } = {}): CheckInput {
+export function ex3s2(
+  o: {
+    harnessEdited?: boolean;
+    dropRecord?: boolean;
+    seededClock?: boolean;
+    removeRefactorSensitive?: boolean;
+  } = {}
+): CheckInput {
   const ids = (side: "b" | "h"): IdSpec[] => [
     { id: "ts:packages/shp-checker/src/checker/api.ts", own: label("api own") },
     { id: EX3S2.CSM, own: label("csm own"), unit: label("csm unit") },
-    { id: "ts:packages/shp-checker/src/checker/rules/guards.ts", own: label(`guards own ${side === "h" && o.seededClock ? "h" : "b"}`) },
-    { id: EX3S2.FRESH, own: label(`fresh own ${side === "h" && o.seededClock ? "h" : "b"}`), unit: label(`fresh unit ${side === "h" && o.seededClock ? "h" : "b"}`) },
-    { id: EX3S2.DET, own: label(side === "h" && o.harnessEdited ? "determinism.test.ts own, edited" : "determinism.test.ts own") },
+    {
+      id: "ts:packages/shp-checker/src/checker/rules/guards.ts",
+      own: label(`guards own ${side === "h" && o.seededClock ? "h" : "b"}`)
+    },
+    {
+      id: EX3S2.FRESH,
+      own: label(`fresh own ${side === "h" && o.seededClock ? "h" : "b"}`),
+      unit: label(`fresh unit ${side === "h" && o.seededClock ? "h" : "b"}`)
+    },
+    {
+      id: EX3S2.DET,
+      own: label(
+        side === "h" && o.harnessEdited
+          ? "determinism.test.ts own, edited"
+          : "determinism.test.ts own"
+      )
+    },
     { id: EX3S2.HARN, own: label("behavioural/harness.ts own") },
     { id: "ts:packages/shp-cli/src/freshness.ts", own: label("freshness own") },
     { id: EX3.ISO, own: label("isoToday own"), unit: EX3.ISO_B }
@@ -631,7 +942,9 @@ export function ex3s2(o: { harnessEdited?: boolean; dropRecord?: boolean; seeded
   const sf = ["shape.lock", "shape/checker.shape", "shape/tooling.shape"];
   const baseMan = manifest(EX3S2.base, ids("b"), sf);
   const headMan = manifest(EX3S2.head, ids("h"), sf);
-  const detHead = label(o.harnessEdited ? "determinism.test.ts own, edited" : "determinism.test.ts own");
+  const detHead = label(
+    o.harnessEdited ? "determinism.test.ts own, edited" : "determinism.test.ts own"
+  );
   const test = signed(
     {
       v: "shape.evidence.v1",
@@ -640,9 +953,15 @@ export function ex3s2(o: { harnessEdited?: boolean; dropRecord?: boolean; seeded
       provider: { id: "checker::bunTest", version: "1.4.2" },
       revision: EX3S2.head,
       time: "2026-10-25T10:00:00Z",
-      claim: { id: "checker::CheckIsDeterministic", fp: "sha256:8620c3bead39262d509d30d813c84d79db4e1ce51b1dd92c904225082519b8c3" },
+      claim: {
+        id: "checker::CheckIsDeterministic",
+        fp: "sha256:8620c3bead39262d509d30d813c84d79db4e1ce51b1dd92c904225082519b8c3"
+      },
       code: [cite(EX3S2.CSM, "unit", label("csm unit"))],
-      harness: [cite(EX3S2.DET, "own", detHead), cite(EX3S2.HARN, "own", label("behavioural/harness.ts own"))],
+      harness: [
+        cite(EX3S2.DET, "own", detHead),
+        cite(EX3S2.HARN, "own", label("behavioural/harness.ts own"))
+      ],
       assumptions: [],
       bound: { runs: 720 }
     },
@@ -663,7 +982,16 @@ export function ex3s2(o: { harnessEdited?: boolean; dropRecord?: boolean; seeded
       scope: { root: scopeRoot(es), entries: es },
       facts: [
         { type: "effect", at: EX3.ISO, verb: "Read", resource: 'ts.call("Date")' },
-        ...(o.seededClock ? [{ type: "effect" as const, at: EX3S2.FRESH, verb: "Read", resource: 'ts.call("Date.now")' }] : [])
+        ...(o.seededClock
+          ? [
+              {
+                type: "effect" as const,
+                at: EX3S2.FRESH,
+                verb: "Read",
+                resource: 'ts.call("Date.now")'
+              }
+            ]
+          : [])
       ],
       harness: [],
       assumptions: []
@@ -678,7 +1006,10 @@ export function ex3s2(o: { harnessEdited?: boolean; dropRecord?: boolean; seeded
       provider: null,
       revision: EX3S2.base,
       time: "2026-09-01T09:00:00Z",
-      claim: { id: "tooling::ShpCli.isoToday/RefactorSensitive/law", fp: "sha256:c414eadc238d87c4e004899e9f2fe5a2ecfe615dae7eb8a242714426a059a077" },
+      claim: {
+        id: "tooling::ShpCli.isoToday/RefactorSensitive/law",
+        fp: "sha256:c414eadc238d87c4e004899e9f2fe5a2ecfe615dae7eb8a242714426a059a077"
+      },
       code: [cite(EX3.ISO, "unit", EX3.ISO_B)],
       judge: "tooling::ann"
     },
@@ -688,12 +1019,20 @@ export function ex3s2(o: { harnessEdited?: boolean; dropRecord?: boolean; seeded
     ...s,
     modules: s.modules.map((m) => ({
       ...m,
-      decls: m.decls.map((d) => (d.decl === "actor" && d.name === "ann" ? { ...d, identities: ['github("ann")', signerFromSeed("0b").identity] } : d))
+      decls: m.decls.map((d) =>
+        d.decl === "actor" && d.name === "ann"
+          ? { ...d, identities: ['github("ann")', signerFromSeed("0b").identity] }
+          : d
+      )
     }))
   });
   return baseInput({
     change: { ids: ["github:smoothbrains/shapelang#202"] },
-    head: { revision: EX3S2.head, source: withAnnKey(ex3s2Source({ refactorSensitive: !o.removeRefactorSensitive })), manifest: headMan },
+    head: {
+      revision: EX3S2.head,
+      source: withAnnKey(ex3s2Source({ refactorSensitive: !o.removeRefactorSensitive })),
+      manifest: headMan
+    },
     base: { revision: EX3S2.base, source: withAnnKey(ex3s2Source()), manifest: baseMan },
     records: [...(o.dropRecord ? [] : [test]), scan, refactorJudgment],
     authors: [{ identity: 'github("claude[bot]")', verified: true, bot: true }]

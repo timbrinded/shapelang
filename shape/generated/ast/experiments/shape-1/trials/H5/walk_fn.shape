@@ -1,0 +1,136 @@
+module shape.generated.ast.experiments.shape_1.trials.H5.walk_fn
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CatAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/walk_fn.py#Cat")
+  fingerprint ast.semantic_subtree_v1("sha256:e92b65a445a5cf108f7961ebb1c41fc9d71eb180185f82753b32b9370047ea54")
+}
+
+resource CatGetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/walk_fn.py#Cat.get")
+  fingerprint ast.semantic_subtree_v1("sha256:1c1f0461e7bcdce6328a76944f4a9c96ea5cee5ccba2df0b48090673a9f46d6e")
+}
+
+resource CatInitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/walk_fn.py#Cat.__init__")
+  fingerprint ast.semantic_subtree_v1("sha256:afe39a8ccbb87d29e7b7fcb38e7751262a588ba96e0e32ea8f0a951841abee10")
+}
+
+resource WalkFnModuleExtractAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/walk_fn.py#extract")
+  fingerprint ast.semantic_subtree_v1("sha256:c8c7162ac9a24ca872121414b641732d48df546807eaf9892969cc326ba0e5dd")
+}
+
+resource WalkFnModuleGitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/walk_fn.py#git")
+  fingerprint ast.semantic_subtree_v1("sha256:82e5c56a913b546981d916aa3a17b3ed56448494f95a6054919e282386becd84")
+}
+
+resource WalkFnModuleIsTrustedFnAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/walk_fn.py#is_trusted_fn")
+  fingerprint ast.semantic_subtree_v1("sha256:5954c68ecb03e626dfb47b7605f888f4218e2ca808f24dda1df7d2ccb68e6f72")
+}
+
+resource WalkFnModuleMinimalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/walk_fn.py#minimal")
+  fingerprint ast.semantic_subtree_v1("sha256:8eb6c5efceed371ce093a7aca2952c8551c87df95ba35050e1cc714d49526473")
+}
+
+component Cat : GeneratedCandidate {
+  fn __init__
+    source python("experiments/shape-1/trials/H5/walk_fn.py#Cat.__init__")
+    effects unknown
+  fn get
+    source python("experiments/shape-1/trials/H5/walk_fn.py#Cat.get")
+    effects unknown
+}
+
+component WalkFnModule : GeneratedCandidate {
+  fn extract
+    source python("experiments/shape-1/trials/H5/walk_fn.py#extract")
+    effects unknown
+  fn git
+    source python("experiments/shape-1/trials/H5/walk_fn.py#git")
+    effects unknown
+  fn is_trusted_fn
+    source python("experiments/shape-1/trials/H5/walk_fn.py#is_trusted_fn")
+    effects unknown
+  fn minimal
+    source python("experiments/shape-1/trials/H5/walk_fn.py#minimal")
+    effects unknown
+}
+
+relation CatGeneratedFromCatAstAnchor {
+  kind generated_from
+  connects Cat -> CatAstAnchor
+  roles { Cat as generated, CatAstAnchor as syntax }
+  expects CatAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e92b65a445a5cf108f7961ebb1c41fc9d71eb180185f82753b32b9370047ea54")
+  summary "component Cat generated from python class_definition at experiments/shape-1/trials/H5/walk_fn.py#Cat."
+}
+
+relation CatGetGeneratedFromCatGetAstAnchor {
+  kind generated_from
+  connects Cat -> CatGetAstAnchor
+  roles { Cat as generated, CatGetAstAnchor as syntax }
+  expects CatGetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1c1f0461e7bcdce6328a76944f4a9c96ea5cee5ccba2df0b48090673a9f46d6e")
+  summary "fn Cat.get generated from python function_definition at experiments/shape-1/trials/H5/walk_fn.py#Cat.get."
+}
+
+relation CatInitGeneratedFromCatInitAstAnchor {
+  kind generated_from
+  connects Cat -> CatInitAstAnchor
+  roles { Cat as generated, CatInitAstAnchor as syntax }
+  expects CatInitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afe39a8ccbb87d29e7b7fcb38e7751262a588ba96e0e32ea8f0a951841abee10")
+  summary "fn Cat.__init__ generated from python function_definition at experiments/shape-1/trials/H5/walk_fn.py#Cat.__init__."
+}
+
+relation WalkFnModuleExtractGeneratedFromWalkFnModuleExtractAstAnchor {
+  kind generated_from
+  connects WalkFnModule -> WalkFnModuleExtractAstAnchor
+  roles { WalkFnModule as generated, WalkFnModuleExtractAstAnchor as syntax }
+  expects WalkFnModuleExtractAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c8c7162ac9a24ca872121414b641732d48df546807eaf9892969cc326ba0e5dd")
+  summary "fn WalkFnModule.extract generated from python function_definition at experiments/shape-1/trials/H5/walk_fn.py#extract."
+}
+
+relation WalkFnModuleGitGeneratedFromWalkFnModuleGitAstAnchor {
+  kind generated_from
+  connects WalkFnModule -> WalkFnModuleGitAstAnchor
+  roles { WalkFnModule as generated, WalkFnModuleGitAstAnchor as syntax }
+  expects WalkFnModuleGitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:82e5c56a913b546981d916aa3a17b3ed56448494f95a6054919e282386becd84")
+  summary "fn WalkFnModule.git generated from python function_definition at experiments/shape-1/trials/H5/walk_fn.py#git."
+}
+
+relation WalkFnModuleIsTrustedFnGeneratedFromWalkFnModuleIsTrustedFnAstAnchor {
+  kind generated_from
+  connects WalkFnModule -> WalkFnModuleIsTrustedFnAstAnchor
+  roles { WalkFnModule as generated, WalkFnModuleIsTrustedFnAstAnchor as syntax }
+  expects WalkFnModuleIsTrustedFnAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5954c68ecb03e626dfb47b7605f888f4218e2ca808f24dda1df7d2ccb68e6f72")
+  summary "fn WalkFnModule.is_trusted_fn generated from python function_definition at experiments/shape-1/trials/H5/walk_fn.py#is_trusted_fn."
+}
+
+relation WalkFnModuleMinimalGeneratedFromWalkFnModuleMinimalAstAnchor {
+  kind generated_from
+  connects WalkFnModule -> WalkFnModuleMinimalAstAnchor
+  roles { WalkFnModule as generated, WalkFnModuleMinimalAstAnchor as syntax }
+  expects WalkFnModuleMinimalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8eb6c5efceed371ce093a7aca2952c8551c87df95ba35050e1cc714d49526473")
+  summary "fn WalkFnModule.minimal generated from python function_definition at experiments/shape-1/trials/H5/walk_fn.py#minimal."
+}
+
+implementation CatImpl {
+  paths {
+    "experiments/shape-1/trials/H5/walk_fn.py"
+  }
+  conforms_to Cat
+}
+
+implementation WalkFnModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H5/walk_fn.py"
+  }
+  conforms_to WalkFnModule
+}

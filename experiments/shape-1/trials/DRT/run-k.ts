@@ -8,7 +8,8 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 const argv = process.argv.slice(2);
 const [exe, listFile, kDir, outDir, fixes, timeoutStr] = argv;
 let shard = [0, 1];
-for (let i = 6; i < argv.length; i += 1) if (argv[i] === "--shard") shard = argv[++i].split("/").map(Number);
+for (let i = 6; i < argv.length; i += 1)
+  if (argv[i] === "--shard") shard = argv[++i].split("/").map(Number);
 const fixList = fixes === "-" ? null : fixes.split(",").filter(Boolean);
 mkdirSync(outDir, { recursive: true });
 const lines = readFileSync(listFile, "utf8").split("\n").filter(Boolean);
@@ -29,12 +30,27 @@ lines.forEach((line, j) => {
   const r = spawnSync(exe, [], { input: text, maxBuffer: 1 << 30, timeout: Number(timeoutStr) });
   const ms = Math.round(performance.now() - t0);
   if (r.error || r.signal) {
-    writeFileSync(out, JSON.stringify({ status: r.error?.code === "ETIMEDOUT" || r.signal === "SIGTERM" ? "timeout" : "error", error: String(r.error ?? r.signal), ms }));
+    writeFileSync(
+      out,
+      JSON.stringify({
+        status: r.error?.code === "ETIMEDOUT" || r.signal === "SIGTERM" ? "timeout" : "error",
+        error: String(r.error ?? r.signal),
+        ms
+      })
+    );
     return;
   }
   try {
     writeFileSync(out, JSON.stringify({ status: "ok", ms, ...JSON.parse(r.stdout.toString()) }));
   } catch {
-    writeFileSync(out, JSON.stringify({ status: "unparsable", ms, stdout: r.stdout.toString().slice(0, 300), stderr: r.stderr.toString().slice(0, 300) }));
+    writeFileSync(
+      out,
+      JSON.stringify({
+        status: "unparsable",
+        ms,
+        stdout: r.stdout.toString().slice(0, 300),
+        stderr: r.stderr.toString().slice(0, 300)
+      })
+    );
   }
 });

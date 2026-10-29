@@ -54,7 +54,8 @@ export function sortManifest(p: ManifestPredicate): ManifestPredicate {
     revision: p.revision,
     tree: [...p.tree].sort((a, b) => cmpStr(a.path, b.path)),
     entries: [...p.entries].sort(
-      (a, b) => cmpStr(a.id, b.id) || cmpStr(a.projection, b.projection) || cmpStr(a.scheme, b.scheme)
+      (a, b) =>
+        cmpStr(a.id, b.id) || cmpStr(a.projection, b.projection) || cmpStr(a.scheme, b.scheme)
     )
   };
 }
@@ -63,7 +64,9 @@ export function manifestStatement(p: ManifestPredicate): Statement {
   const s = sortManifest(p);
   return {
     _type: STATEMENT_TYPE,
-    subject: [{ name: `shape:manifest/${s.revision}`, digest: { sha256: manifestRoot(s).slice(7) } }],
+    subject: [
+      { name: `shape:manifest/${s.revision}`, digest: { sha256: manifestRoot(s).slice(7) } }
+    ],
     predicateType: SCAI_TYPE,
     predicate: { attributes: [{ attribute: "SHAPE_MANIFEST" }], shape: s }
   };
@@ -71,7 +74,9 @@ export function manifestStatement(p: ManifestPredicate): Statement {
 
 export function isShapeFile(path: string): boolean {
   if (path === "shape.lock") return true;
-  return path.startsWith("shape/") && path.endsWith(".shape") && !path.startsWith("shape/evidence/");
+  return (
+    path.startsWith("shape/") && path.endsWith(".shape") && !path.startsWith("shape/evidence/")
+  );
 }
 
 export function isRecordFile(path: string): boolean {
@@ -128,12 +133,18 @@ export interface ManifestProblem {
 }
 
 /** Validates and indexes a manifest statement; problems make the input invalid (A.12.7.5). */
-export function indexManifest(stmt: unknown): { index: ManifestIndex | null; problems: ManifestProblem[] } {
+export function indexManifest(stmt: unknown): {
+  index: ManifestIndex | null;
+  problems: ManifestProblem[];
+} {
   const problems: ManifestProblem[] = [];
   const s = stmt as Statement;
   const p = (s?.predicate?.shape ?? null) as ManifestPredicate | null;
   if (!s || s._type !== STATEMENT_TYPE || !p || p.v !== "shape.manifest.v1") {
-    return { index: null, problems: [{ code: "manifest-form", detail: "not a shape.manifest.v1 statement" }] };
+    return {
+      index: null,
+      problems: [{ code: "manifest-form", detail: "not a shape.manifest.v1 statement" }]
+    };
   }
   const tree = [...(p.tree ?? [])].sort((a, b) => cmpStr(a.path, b.path));
   const paths = new Set<string>();
@@ -142,7 +153,8 @@ export function indexManifest(stmt: unknown): { index: ManifestIndex | null; pro
     if (t.path.normalize("NFC") !== t.path) problems.push({ code: "nfc", detail: t.path });
     const f = t.path.toLowerCase();
     const prev = folded.get(f);
-    if (prev && prev !== t.path) problems.push({ code: "case-fold-collision", detail: `${prev} / ${t.path}` });
+    if (prev && prev !== t.path)
+      problems.push({ code: "case-fold-collision", detail: `${prev} / ${t.path}` });
     folded.set(f, t.path);
     if (paths.has(t.path)) problems.push({ code: "duplicate-path", detail: t.path });
     paths.add(t.path);
@@ -174,10 +186,13 @@ export function indexManifest(stmt: unknown): { index: ManifestIndex | null; pro
       info.digests.set(e.projection, e.digest);
       info.schemes.set(e.projection, e.scheme);
     }
-    if (e.markers) for (const [k, n] of Object.entries(e.markers)) info.markers[k] = Math.max(info.markers[k] ?? 0, n);
+    if (e.markers)
+      for (const [k, n] of Object.entries(e.markers))
+        info.markers[k] = Math.max(info.markers[k] ?? 0, n);
     if (e.hatchComplete === false) info.hatchComplete = false;
     if (e.executable) info.executable = true;
-    if (!/^sha256:[0-9a-f]{64}$/.test(e.digest)) problems.push({ code: "bad-digest", detail: `${e.id}@${e.projection}` });
+    if (!/^sha256:[0-9a-f]{64}$/.test(e.digest))
+      problems.push({ code: "bad-digest", detail: `${e.id}@${e.projection}` });
   }
   // one file identity per non-shape, non-record tracked path: no code can be omitted
   const fileIds = new Map<string, string>();
@@ -185,9 +200,11 @@ export function indexManifest(stmt: unknown): { index: ManifestIndex | null; pro
     if (info.symbol === null) {
       if (fileIds.has(info.path)) problems.push({ code: "two-file-identities", detail: info.path });
       fileIds.set(info.path, info.id);
-      if (tree.length > 0 && !paths.has(info.path)) problems.push({ code: "entry-outside-tree", detail: info.id });
+      if (tree.length > 0 && !paths.has(info.path))
+        problems.push({ code: "entry-outside-tree", detail: info.id });
     }
-    if (isShapeFile(info.path) || isRecordFile(info.path)) problems.push({ code: "shape-file-identity", detail: info.id });
+    if (isShapeFile(info.path) || isRecordFile(info.path))
+      problems.push({ code: "shape-file-identity", detail: info.id });
   }
   for (const t of tree) {
     if (isShapeFile(t.path) || isRecordFile(t.path)) continue;
@@ -264,8 +281,10 @@ export function gitTreeId(tree: TreeEntry[]): string {
   }
   const hashDir = (d: Dir): string => {
     const items: { name: string; sortKey: string; mode: string; id: string }[] = [];
-    for (const [name, f] of d.files) items.push({ name, sortKey: name, mode: f.mode.replace(/^0+/, ""), id: f.id });
-    for (const [name, sub] of d.dirs) items.push({ name, sortKey: `${name}/`, mode: "40000", id: hashDir(sub) });
+    for (const [name, f] of d.files)
+      items.push({ name, sortKey: name, mode: f.mode.replace(/^0+/, ""), id: f.id });
+    for (const [name, sub] of d.dirs)
+      items.push({ name, sortKey: `${name}/`, mode: "40000", id: hashDir(sub) });
     items.sort((a, b) => Buffer.compare(Buffer.from(a.sortKey), Buffer.from(b.sortKey)));
     const parts: Buffer[] = [];
     for (const it of items) {

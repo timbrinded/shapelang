@@ -1,0 +1,113 @@
+module shape.generated.ast.experiments.shape_1.trials.H4.build
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource BuildModuleCodeOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H4/build.ts#codeOf")
+  fingerprint ast.semantic_subtree_v1("sha256:85f448b8dcb5cfb897761303fd4173e5f6ea703a3b14cfbd818b7791faec3094")
+}
+
+resource BuildModuleNormaliseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H4/build.ts#normalise")
+  fingerprint ast.semantic_subtree_v1("sha256:89a6dfb8b4ffa23d7667d839aa8372e631bf643eac56b8c0d71c948032e06986")
+}
+
+resource BuildModuleReadSideAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H4/build.ts#readSide")
+  fingerprint ast.semantic_subtree_v1("sha256:ef14537f0f9e5be52737cc962fc0a6dc14cf826b4b0080c322f59384474e8dd6")
+}
+
+resource BuildModuleSynthSymbolsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H4/build.ts#synthSymbols")
+  fingerprint ast.semantic_subtree_v1("sha256:65e6e48c8665458de1b494b45cf0001b7e5a7925dcec5af8ab900be15b9f6d3f")
+}
+
+resource BuildModuleWalkAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H4/build.ts#walk")
+  fingerprint ast.semantic_subtree_v1("sha256:78265db4e4fc777faf6539dc19d88200a8678dfe660ab222577cf9c69700d7de")
+}
+
+resource BuildModuleWriteModelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H4/build.ts#writeModel")
+  fingerprint ast.semantic_subtree_v1("sha256:81b5132f87c3ca5794eac402da597d632d5ad71b86dd4dbf8b11207745f700ad")
+}
+
+component BuildModule : GeneratedCandidate {
+  fn codeOf
+    source ts("experiments/shape-1/trials/H4/build.ts#codeOf")
+    effects unknown
+  fn normalise
+    source ts("experiments/shape-1/trials/H4/build.ts#normalise")
+    effects unknown
+  fn readSide
+    source ts("experiments/shape-1/trials/H4/build.ts#readSide")
+    effects unknown
+  fn synthSymbols
+    source ts("experiments/shape-1/trials/H4/build.ts#synthSymbols")
+    effects unknown
+  fn walk
+    source ts("experiments/shape-1/trials/H4/build.ts#walk")
+    effects unknown
+  fn writeModel
+    source ts("experiments/shape-1/trials/H4/build.ts#writeModel")
+    effects unknown
+}
+
+relation BuildModuleCodeOfGeneratedFromBuildModuleCodeOfAstAnchor {
+  kind generated_from
+  connects BuildModule -> BuildModuleCodeOfAstAnchor
+  roles { BuildModule as generated, BuildModuleCodeOfAstAnchor as syntax }
+  expects BuildModuleCodeOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:85f448b8dcb5cfb897761303fd4173e5f6ea703a3b14cfbd818b7791faec3094")
+  summary "fn BuildModule.codeOf generated from typescript function_declaration at experiments/shape-1/trials/H4/build.ts#codeOf."
+}
+
+relation BuildModuleNormaliseGeneratedFromBuildModuleNormaliseAstAnchor {
+  kind generated_from
+  connects BuildModule -> BuildModuleNormaliseAstAnchor
+  roles { BuildModule as generated, BuildModuleNormaliseAstAnchor as syntax }
+  expects BuildModuleNormaliseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:89a6dfb8b4ffa23d7667d839aa8372e631bf643eac56b8c0d71c948032e06986")
+  summary "fn BuildModule.normalise generated from typescript function_declaration at experiments/shape-1/trials/H4/build.ts#normalise."
+}
+
+relation BuildModuleReadSideGeneratedFromBuildModuleReadSideAstAnchor {
+  kind generated_from
+  connects BuildModule -> BuildModuleReadSideAstAnchor
+  roles { BuildModule as generated, BuildModuleReadSideAstAnchor as syntax }
+  expects BuildModuleReadSideAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ef14537f0f9e5be52737cc962fc0a6dc14cf826b4b0080c322f59384474e8dd6")
+  summary "fn BuildModule.readSide generated from typescript function_declaration at experiments/shape-1/trials/H4/build.ts#readSide."
+}
+
+relation BuildModuleSynthSymbolsGeneratedFromBuildModuleSynthSymbolsAstAnchor {
+  kind generated_from
+  connects BuildModule -> BuildModuleSynthSymbolsAstAnchor
+  roles { BuildModule as generated, BuildModuleSynthSymbolsAstAnchor as syntax }
+  expects BuildModuleSynthSymbolsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:65e6e48c8665458de1b494b45cf0001b7e5a7925dcec5af8ab900be15b9f6d3f")
+  summary "fn BuildModule.synthSymbols generated from typescript function_declaration at experiments/shape-1/trials/H4/build.ts#synthSymbols."
+}
+
+relation BuildModuleWalkGeneratedFromBuildModuleWalkAstAnchor {
+  kind generated_from
+  connects BuildModule -> BuildModuleWalkAstAnchor
+  roles { BuildModule as generated, BuildModuleWalkAstAnchor as syntax }
+  expects BuildModuleWalkAstAnchor fingerprint ast.semantic_subtree_v1("sha256:78265db4e4fc777faf6539dc19d88200a8678dfe660ab222577cf9c69700d7de")
+  summary "fn BuildModule.walk generated from typescript function_declaration at experiments/shape-1/trials/H4/build.ts#walk."
+}
+
+relation BuildModuleWriteModelGeneratedFromBuildModuleWriteModelAstAnchor {
+  kind generated_from
+  connects BuildModule -> BuildModuleWriteModelAstAnchor
+  roles { BuildModule as generated, BuildModuleWriteModelAstAnchor as syntax }
+  expects BuildModuleWriteModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:81b5132f87c3ca5794eac402da597d632d5ad71b86dd4dbf8b11207745f700ad")
+  summary "fn BuildModule.writeModel generated from typescript function_declaration at experiments/shape-1/trials/H4/build.ts#writeModel."
+}
+
+implementation BuildModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H4/build.ts"
+  }
+  conforms_to BuildModule
+}

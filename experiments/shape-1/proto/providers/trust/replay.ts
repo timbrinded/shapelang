@@ -61,10 +61,28 @@ const nonEmpty = (m: Record<string, number>): boolean => Object.values(m).some((
 
 export function replayRepo(d: { repo: string; rows: CommitRow[] }): ReplayRow {
   const usesT = d.rows.some((r) => (r.trust_events ?? []).some((e) => e.t));
-  const rows = d.rows.filter((r) => r.verus_files > 0 && r.added_files < BULK && r.parse_fail === 0);
-  const out: ReplayRow = { repo: d.repo, usesT, commits: rows.length, withEvent: 0, b3: 0, s0: 0, s1: 0, s2: 0, bodyOnly: 0, grow: 0, growB3: 0, growS0: 0, growS1: 0 };
+  const rows = d.rows.filter(
+    (r) => r.verus_files > 0 && r.added_files < BULK && r.parse_fail === 0
+  );
+  const out: ReplayRow = {
+    repo: d.repo,
+    usesT,
+    commits: rows.length,
+    withEvent: 0,
+    b3: 0,
+    s0: 0,
+    s1: 0,
+    s2: 0,
+    bodyOnly: 0,
+    grow: 0,
+    growB3: 0,
+    growS0: 0,
+    growS1: 0
+  };
   for (const r of rows) {
-    const evs = (r.trust_events ?? []).filter((e) => nonEmpty(e.add) || nonEmpty(e.remove) || e.tbody > 0 || e.tcontract > 0);
+    const evs = (r.trust_events ?? []).filter(
+      (e) => nonEmpty(e.add) || nonEmpty(e.remove) || e.tbody > 0 || e.tcontract > 0
+    );
     if (evs.length === 0) continue;
     out.withEvent += 1;
     const b3 = evs.some((e) => nonEmpty(e.add) || nonEmpty(e.remove));
@@ -85,9 +103,28 @@ export function replayRepo(d: { repo: string; rows: CommitRow[] }): ReplayRow {
   return out;
 }
 
-export function replayAll(paths: string[]): { rows: ReplayRow[]; total: Omit<ReplayRow, "repo" | "usesT"> & { withEventT: number; s1T: number } } {
-  const rows = paths.map((p) => replayRepo(readPerCommit(p))).sort((a, b) => (a.repo < b.repo ? -1 : a.repo > b.repo ? 1 : 0));
-  const total = { commits: 0, withEvent: 0, b3: 0, s0: 0, s1: 0, s2: 0, bodyOnly: 0, grow: 0, growB3: 0, growS0: 0, growS1: 0, withEventT: 0, s1T: 0 };
+export function replayAll(paths: string[]): {
+  rows: ReplayRow[];
+  total: Omit<ReplayRow, "repo" | "usesT"> & { withEventT: number; s1T: number };
+} {
+  const rows = paths
+    .map((p) => replayRepo(readPerCommit(p)))
+    .sort((a, b) => (a.repo < b.repo ? -1 : a.repo > b.repo ? 1 : 0));
+  const total = {
+    commits: 0,
+    withEvent: 0,
+    b3: 0,
+    s0: 0,
+    s1: 0,
+    s2: 0,
+    bodyOnly: 0,
+    grow: 0,
+    growB3: 0,
+    growS0: 0,
+    growS1: 0,
+    withEventT: 0,
+    s1T: 0
+  };
   for (const r of rows) {
     total.commits += r.commits;
     total.withEvent += r.withEvent;

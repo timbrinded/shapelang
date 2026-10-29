@@ -26,7 +26,11 @@ export function coreOutput(out: CheckOutput): CheckOutput {
       void _a;
       void _r;
       void _x;
-      return { ...rest, causes: o.causes.map((c) => ({ type: c.type, id: c.id })), dischargers: o.dischargers.map(stripD) };
+      return {
+        ...rest,
+        causes: o.causes.map((c) => ({ type: c.type, id: c.id })),
+        dischargers: o.dischargers.map(stripD)
+      };
     }),
     summary: undefined
   };
@@ -39,18 +43,23 @@ function short(h: string): string {
 
 function where(o: ObligationOut): string | null {
   const s = o.subject as Record<string, unknown> | string | null;
-  if (s && typeof s === "object" && typeof s.code === "string") return s.code.startsWith("unit:") ? s.code.slice(5) : idToSourceRef(s.code);
+  if (s && typeof s === "object" && typeof s.code === "string")
+    return s.code.startsWith("unit:") ? s.code.slice(5) : idToSourceRef(s.code);
   if (s && typeof s === "object" && typeof s.unit === "string") return s.unit;
-  if (s && typeof s === "object" && typeof s.from === "string") return `${s.from} -> ${String(s.to)}`;
+  if (s && typeof s === "object" && typeof s.from === "string")
+    return `${s.from} -> ${String(s.to)}`;
   if (s && typeof s === "object" && Array.isArray(s.nodes)) return (s.nodes as string[]).join(", ");
   if (typeof s === "string") return s.startsWith("sha256:") ? `base claim c:${s.slice(7, 23)}` : s;
-  return o.claim ? o.claim.ids[0] ?? null : null;
+  return o.claim ? (o.claim.ids[0] ?? null) : null;
 }
 
 function renderDischarger(d: Discharger, i: number): string {
   const bits = [`${i + 1}. ${d.act}`, `(${d.by}${d.agentSafe ? ", agent-safe" : ""})`];
   if (d.eligible.length > 0) bits.push(`eligible: ${d.eligible.join(", ")}`);
-  if (d.creates) bits.push(`-> creates ${d.creates.tier} ${d.creates.kind} answered by ${d.creates.owners.join(" and ")}${d.creates.answers > 1 ? ` (${d.creates.answers} persons)` : ""}`);
+  if (d.creates)
+    bits.push(
+      `-> creates ${d.creates.tier} ${d.creates.kind} answered by ${d.creates.owners.join(" and ")}${d.creates.answers > 1 ? ` (${d.creates.answers} persons)` : ""}`
+    );
   if (d.command) bits.push(`\`${d.command}\``);
   if (d.snippet) bits.push(`[${d.snippet}]`);
   return bits.join(" ");
@@ -60,7 +69,9 @@ export function renderHuman(out: CheckOutput): string {
   const lines: string[] = [];
   const blocking = out.obligations.filter((o) => o.severity === "blocking").length;
   const owed = out.obligations.length - blocking;
-  lines.push(`verdict: ${out.verdict} (${out.errors.length} errors, ${blocking} blocking, ${owed} owed, ${out.answered.length} answered)`);
+  lines.push(
+    `verdict: ${out.verdict} (${out.errors.length} errors, ${blocking} blocking, ${owed} owed, ${out.answered.length} answered)`
+  );
   if (out.verdict === "invalid") {
     for (const e of out.errors) lines.push(`  invalid: ${e.message ?? e.subject}`);
     return `${lines.join("\n")}\n`;
@@ -71,28 +82,56 @@ export function renderHuman(out: CheckOutput): string {
     if (e.message) lines.push(`  ${e.message}`);
     if (e.causes.length > 0) {
       lines.push("  caused by:");
-      for (const c of e.causes) lines.push(`    ${c.type} ${short(c.id)}${c.text ? ` ${c.text}` : ""}`);
+      for (const c of e.causes)
+        lines.push(`    ${c.type} ${short(c.id)}${c.text ? ` ${c.text}` : ""}`);
     }
-    if (e.dischargers.length > 0) lines.push(`  discharge: ${e.dischargers.map((d, i) => renderDischarger(d, i)).join("; ")}`);
+    if (e.dischargers.length > 0)
+      lines.push(`  discharge: ${e.dischargers.map((d, i) => renderDischarger(d, i)).join("; ")}`);
   }
   for (const r of out.rejected) lines.push(`rejected ${short(r.record)} ${r.code}: ${r.detail}`);
   // obligations by (severity, group, location)
   const sorted = [...out.obligations].sort((a, b) =>
-    a.severity !== b.severity ? (a.severity < b.severity ? -1 : 1) : a.group !== b.group ? (a.group < b.group ? -1 : 1) : (where(a) ?? "") < (where(b) ?? "") ? -1 : 1
+    a.severity !== b.severity
+      ? a.severity < b.severity
+        ? -1
+        : 1
+      : a.group !== b.group
+        ? a.group < b.group
+          ? -1
+          : 1
+        : (where(a) ?? "") < (where(b) ?? "")
+          ? -1
+          : 1
   );
   for (const o of sorted) {
     lines.push("");
-    const tags = [o.tier, o.force, o.reason, o.introduced ? "introduced" : "preexisting", o.exploited === true ? "exploited" : o.exploited === false ? "latent" : null, o.budget].filter(Boolean);
-    lines.push(`${o.severity} ${o.kind} [${tags.join(", ")}] ${short(o.key)}${o.questions ? ` ${o.questions.join(",")}` : ""}`);
+    const tags = [
+      o.tier,
+      o.force,
+      o.reason,
+      o.introduced ? "introduced" : "preexisting",
+      o.exploited === true ? "exploited" : o.exploited === false ? "latent" : null,
+      o.budget
+    ].filter(Boolean);
+    lines.push(
+      `${o.severity} ${o.kind} [${tags.join(", ")}] ${short(o.key)}${o.questions ? ` ${o.questions.join(",")}` : ""}`
+    );
     const w = where(o);
     if (w) lines.push(`  --> ${w}`);
     if (o.message) lines.push(`  ${o.message}`);
-    if (o.claim) lines.push(`  claim: ${o.claim.ids.join(", ")} (c:${o.claim.fp.slice(7, 23)}, tier ${o.claim.tier})`);
-    lines.push(`  owner: ${o.owner}   group: ${short(o.group)}   binding: ${short(o.binding)}${o.exception ? `   debt under ${o.exception}` : ""}${o.assignee ? `   assignee: ${o.assignee}` : ""}`);
-    if (o.counterexample !== null && o.counterexample !== undefined) lines.push(`  counterexample: ${JSON.stringify(o.counterexample)}`);
+    if (o.claim)
+      lines.push(
+        `  claim: ${o.claim.ids.join(", ")} (c:${o.claim.fp.slice(7, 23)}, tier ${o.claim.tier})`
+      );
+    lines.push(
+      `  owner: ${o.owner}   group: ${short(o.group)}   binding: ${short(o.binding)}${o.exception ? `   debt under ${o.exception}` : ""}${o.assignee ? `   assignee: ${o.assignee}` : ""}`
+    );
+    if (o.counterexample !== null && o.counterexample !== undefined)
+      lines.push(`  counterexample: ${JSON.stringify(o.counterexample)}`);
     if (o.causes.length > 0) {
       lines.push("  caused by:");
-      for (const c of o.causes) lines.push(`    ${c.type} ${short(c.id)}${c.text ? `: ${c.text}` : ""}`);
+      for (const c of o.causes)
+        lines.push(`    ${c.type} ${short(c.id)}${c.text ? `: ${c.text}` : ""}`);
     }
     if (o.dischargers.length > 0) {
       lines.push("  dischargers:");
@@ -102,12 +141,18 @@ export function renderHuman(out: CheckOutput): string {
   if (out.answered.length > 0) {
     lines.push("");
     lines.push("answered:");
-    for (const a of out.answered) lines.push(`  ${short(a.obligation)} as ${a.as}${a.self ? " (self)" : ""} by ${a.records.map(short).join(", ")}`);
+    for (const a of out.answered)
+      lines.push(
+        `  ${short(a.obligation)} as ${a.as}${a.self ? " (self)" : ""} by ${a.records.map(short).join(", ")}`
+      );
   }
   if (out.debt.length > 0) {
     lines.push("");
     lines.push("debt:");
-    for (const d of out.debt) lines.push(`  ${short(d.obligation)} under ${d.exception}, owner ${d.owner}, expires in ${d.expiresInDays} days${d.flagged ? " (flagged)" : ""}`);
+    for (const d of out.debt)
+      lines.push(
+        `  ${short(d.obligation)} under ${d.exception}, owner ${d.owner}, expires in ${d.expiresInDays} days${d.flagged ? " (flagged)" : ""}`
+      );
   }
   if (out.summary && out.summary.length > 0) {
     lines.push("");
@@ -120,9 +165,14 @@ export function renderHuman(out: CheckOutput): string {
     }
   }
   lines.push("");
-  lines.push(`budget: limit ${out.budget.limit ?? "unlimited"}, used ${out.budget.used}, overflow ${out.budget.overflow.length}`);
+  lines.push(
+    `budget: limit ${out.budget.limit ?? "unlimited"}, used ${out.budget.used}, overflow ${out.budget.overflow.length}`
+  );
   const h = out.health as Record<string, unknown>;
   const cov = h.coverage as { num: number; den: number } | undefined;
-  if (cov) lines.push(`health: coverage ${cov.num}/${cov.den}; unobservable ${(h.unobservable as string[] | undefined)?.length ?? 0}; open authority ${(h.openAuthority as string[] | undefined)?.length ?? 0}; unanswered ${(h.unanswered as unknown[] | undefined)?.length ?? 0}; preexisting ${String(h.preexisting ?? 0)}`);
+  if (cov)
+    lines.push(
+      `health: coverage ${cov.num}/${cov.den}; unobservable ${(h.unobservable as string[] | undefined)?.length ?? 0}; open authority ${(h.openAuthority as string[] | undefined)?.length ?? 0}; unanswered ${(h.unanswered as unknown[] | undefined)?.length ?? 0}; preexisting ${String(h.preexisting ?? 0)}`
+    );
   return `${lines.join("\n")}\n`;
 }

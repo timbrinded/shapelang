@@ -1,0 +1,193 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.cli
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CliModuleLawsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/cli.ts#laws")
+  fingerprint ast.semantic_subtree_v1("sha256:8f4acacaaf0e93b39590199a36036795f67c397672c2e1cc1609fe6a6fbcad95")
+}
+
+resource CliModuleLawsInfoAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/cli.ts#lawsInfo")
+  fingerprint ast.semantic_subtree_v1("sha256:5e55fca283edf63de42a8bb48a588d454b721d6abc22b6c885db6c55289fb349")
+}
+
+resource CliModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/cli.ts#main")
+  fingerprint ast.semantic_subtree_v1("sha256:7c17bb1dd9f80c8fb040a87ce1a12ae98c9be9ab35dbfd5947fec672d18fc2e3")
+}
+
+resource CliModuleManifestOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/cli.ts#manifestOf")
+  fingerprint ast.semantic_subtree_v1("sha256:9479242e1243431b1b50574a45e98b96ecae934b9b8c51306e439249ccfcc8ae")
+}
+
+resource CliModuleObserveAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/cli.ts#observe")
+  fingerprint ast.semantic_subtree_v1("sha256:23c89dd5748114434652102ce1d8ac5ff6cde9dfafd51d17071d9db444914d9a")
+}
+
+resource CliModuleObserveInfosAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/cli.ts#observeInfos")
+  fingerprint ast.semantic_subtree_v1("sha256:75b56aa541c585a2eabf3ad412f9afa0e696621795850e9cb31b8e33dc930b65")
+}
+
+resource CliModulePerCommitDefaultsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/cli.ts#perCommitDefaults")
+  fingerprint ast.semantic_subtree_v1("sha256:e9d0c33f39b1c14d8c7adc7e6116772c1504d4461de06c8acbfcd0eec48901cd")
+}
+
+resource CliModuleSourceOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/cli.ts#sourceOf")
+  fingerprint ast.semantic_subtree_v1("sha256:230e1a7620df183fa9409c6d098def0e44616423fcffc980bed8822298f00f1d")
+}
+
+resource CliModuleSubcommandAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/cli.ts#subcommand")
+  fingerprint ast.semantic_subtree_v1("sha256:7889b3d98444e4fba3b98dc80d354aa7001f21a26f0e5c768f86e6aea99ab1dd")
+}
+
+resource CliModuleTeethCmdAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/cli.ts#teethCmd")
+  fingerprint ast.semantic_subtree_v1("sha256:29c2045b89e4932eeec43eb2400f4ff30074f83e937006f3b6c3b19cdb7ed10e")
+}
+
+resource CliModuleTrustAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/cli.ts#trust")
+  fingerprint ast.semantic_subtree_v1("sha256:1837aa20df2e3abb2a0f55928b1a649bf49821ec4a2e5dd46e469f9ce9b58231")
+}
+
+component CliModule : GeneratedCandidate {
+  fn laws
+    source ts("experiments/shape-1/proto/providers/cli.ts#laws")
+    effects unknown
+  fn lawsInfo
+    source ts("experiments/shape-1/proto/providers/cli.ts#lawsInfo")
+    effects unknown
+  fn main
+    source ts("experiments/shape-1/proto/providers/cli.ts#main")
+    effects unknown
+  fn manifestOf
+    source ts("experiments/shape-1/proto/providers/cli.ts#manifestOf")
+    effects unknown
+  fn observe
+    source ts("experiments/shape-1/proto/providers/cli.ts#observe")
+    effects unknown
+  fn observeInfos
+    source ts("experiments/shape-1/proto/providers/cli.ts#observeInfos")
+    effects unknown
+  fn perCommitDefaults
+    source ts("experiments/shape-1/proto/providers/cli.ts#perCommitDefaults")
+    effects unknown
+  fn sourceOf
+    source ts("experiments/shape-1/proto/providers/cli.ts#sourceOf")
+    effects unknown
+  fn subcommand
+    source ts("experiments/shape-1/proto/providers/cli.ts#subcommand")
+    effects unknown
+  fn teethCmd
+    source ts("experiments/shape-1/proto/providers/cli.ts#teethCmd")
+    effects unknown
+  fn trust
+    source ts("experiments/shape-1/proto/providers/cli.ts#trust")
+    effects unknown
+}
+
+relation CliModuleLawsGeneratedFromCliModuleLawsAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleLawsAstAnchor
+  roles { CliModule as generated, CliModuleLawsAstAnchor as syntax }
+  expects CliModuleLawsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8f4acacaaf0e93b39590199a36036795f67c397672c2e1cc1609fe6a6fbcad95")
+  summary "fn CliModule.laws generated from typescript function_declaration at experiments/shape-1/proto/providers/cli.ts#laws."
+}
+
+relation CliModuleLawsInfoGeneratedFromCliModuleLawsInfoAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleLawsInfoAstAnchor
+  roles { CliModule as generated, CliModuleLawsInfoAstAnchor as syntax }
+  expects CliModuleLawsInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e55fca283edf63de42a8bb48a588d454b721d6abc22b6c885db6c55289fb349")
+  summary "fn CliModule.lawsInfo generated from typescript function_declaration at experiments/shape-1/proto/providers/cli.ts#lawsInfo."
+}
+
+relation CliModuleMainGeneratedFromCliModuleMainAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleMainAstAnchor
+  roles { CliModule as generated, CliModuleMainAstAnchor as syntax }
+  expects CliModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7c17bb1dd9f80c8fb040a87ce1a12ae98c9be9ab35dbfd5947fec672d18fc2e3")
+  summary "fn CliModule.main generated from typescript function_declaration at experiments/shape-1/proto/providers/cli.ts#main."
+}
+
+relation CliModuleManifestOfGeneratedFromCliModuleManifestOfAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleManifestOfAstAnchor
+  roles { CliModule as generated, CliModuleManifestOfAstAnchor as syntax }
+  expects CliModuleManifestOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9479242e1243431b1b50574a45e98b96ecae934b9b8c51306e439249ccfcc8ae")
+  summary "fn CliModule.manifestOf generated from typescript function_declaration at experiments/shape-1/proto/providers/cli.ts#manifestOf."
+}
+
+relation CliModuleObserveGeneratedFromCliModuleObserveAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleObserveAstAnchor
+  roles { CliModule as generated, CliModuleObserveAstAnchor as syntax }
+  expects CliModuleObserveAstAnchor fingerprint ast.semantic_subtree_v1("sha256:23c89dd5748114434652102ce1d8ac5ff6cde9dfafd51d17071d9db444914d9a")
+  summary "fn CliModule.observe generated from typescript function_declaration at experiments/shape-1/proto/providers/cli.ts#observe."
+}
+
+relation CliModuleObserveInfosGeneratedFromCliModuleObserveInfosAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleObserveInfosAstAnchor
+  roles { CliModule as generated, CliModuleObserveInfosAstAnchor as syntax }
+  expects CliModuleObserveInfosAstAnchor fingerprint ast.semantic_subtree_v1("sha256:75b56aa541c585a2eabf3ad412f9afa0e696621795850e9cb31b8e33dc930b65")
+  summary "fn CliModule.observeInfos generated from typescript function_declaration at experiments/shape-1/proto/providers/cli.ts#observeInfos."
+}
+
+relation CliModulePerCommitDefaultsGeneratedFromCliModulePerCommitDefaultsAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModulePerCommitDefaultsAstAnchor
+  roles { CliModule as generated, CliModulePerCommitDefaultsAstAnchor as syntax }
+  expects CliModulePerCommitDefaultsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e9d0c33f39b1c14d8c7adc7e6116772c1504d4461de06c8acbfcd0eec48901cd")
+  summary "fn CliModule.perCommitDefaults generated from typescript function_declaration at experiments/shape-1/proto/providers/cli.ts#perCommitDefaults."
+}
+
+relation CliModuleSourceOfGeneratedFromCliModuleSourceOfAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleSourceOfAstAnchor
+  roles { CliModule as generated, CliModuleSourceOfAstAnchor as syntax }
+  expects CliModuleSourceOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:230e1a7620df183fa9409c6d098def0e44616423fcffc980bed8822298f00f1d")
+  summary "fn CliModule.sourceOf generated from typescript function_declaration at experiments/shape-1/proto/providers/cli.ts#sourceOf."
+}
+
+relation CliModuleSubcommandGeneratedFromCliModuleSubcommandAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleSubcommandAstAnchor
+  roles { CliModule as generated, CliModuleSubcommandAstAnchor as syntax }
+  expects CliModuleSubcommandAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7889b3d98444e4fba3b98dc80d354aa7001f21a26f0e5c768f86e6aea99ab1dd")
+  summary "fn CliModule.subcommand generated from typescript function_declaration at experiments/shape-1/proto/providers/cli.ts#subcommand."
+}
+
+relation CliModuleTeethCmdGeneratedFromCliModuleTeethCmdAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleTeethCmdAstAnchor
+  roles { CliModule as generated, CliModuleTeethCmdAstAnchor as syntax }
+  expects CliModuleTeethCmdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:29c2045b89e4932eeec43eb2400f4ff30074f83e937006f3b6c3b19cdb7ed10e")
+  summary "fn CliModule.teethCmd generated from typescript function_declaration at experiments/shape-1/proto/providers/cli.ts#teethCmd."
+}
+
+relation CliModuleTrustGeneratedFromCliModuleTrustAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleTrustAstAnchor
+  roles { CliModule as generated, CliModuleTrustAstAnchor as syntax }
+  expects CliModuleTrustAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1837aa20df2e3abb2a0f55928b1a649bf49821ec4a2e5dd46e469f9ce9b58231")
+  summary "fn CliModule.trust generated from typescript function_declaration at experiments/shape-1/proto/providers/cli.ts#trust."
+}
+
+implementation CliModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/cli.ts"
+  }
+  conforms_to CliModule
+}

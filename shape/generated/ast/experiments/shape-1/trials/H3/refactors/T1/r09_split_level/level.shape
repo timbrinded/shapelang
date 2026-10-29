@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r09_split_level.level
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LevelModuleWallAtAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/level.ts#wallAt")
+  fingerprint ast.semantic_subtree_v1("sha256:7a3b1f7ab29f5495cfbe3367f066a8407e9ce69ef223bf18d884128fed2e16fd")
+}
+
+component LevelModule : GeneratedCandidate {
+  fn wallAt
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/level.ts#wallAt")
+    effects unknown
+}
+
+relation LevelModuleWallAtGeneratedFromLevelModuleWallAtAstAnchor {
+  kind generated_from
+  connects LevelModule -> LevelModuleWallAtAstAnchor
+  roles { LevelModule as generated, LevelModuleWallAtAstAnchor as syntax }
+  expects LevelModuleWallAtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7a3b1f7ab29f5495cfbe3367f066a8407e9ce69ef223bf18d884128fed2e16fd")
+  summary "fn LevelModule.wallAt generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r09_split_level/level.ts#wallAt."
+}
+
+implementation LevelModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T1/r09_split_level/level.ts"
+  }
+  conforms_to LevelModule
+}

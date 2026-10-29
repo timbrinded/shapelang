@@ -23,7 +23,8 @@ export function buildVariant(mode: "vnew" | "vnew2" = "vnew"): string {
   const p = join(dst, "laws.ts");
   const s = readFileSync(p, "utf8");
   const from = `    const introduced = ctx.hasBase && (bindingReq.some((p) => changed.has(p.id)) || reason === "producer-changed");`;
-  if (!s.includes(from)) throw new Error("variant-checker: anchor not found in laws.ts (prototype changed?)");
+  if (!s.includes(from))
+    throw new Error("variant-checker: anchor not found in laws.ts (prototype changed?)");
   const to = `    const reqIn = bindingReq.some((p) => changed.has(p.id));
     let coneNew = false;
     if (soundContra?.record) {

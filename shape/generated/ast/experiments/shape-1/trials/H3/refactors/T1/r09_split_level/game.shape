@@ -1,0 +1,193 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r09_split_level.game
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GameModuleDownYAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#downY")
+  fingerprint ast.semantic_subtree_v1("sha256:f77ef532af83f2df9622e15ed01faac958830c66ae1c0cfa974bca63b10c28cf")
+}
+
+resource GameModuleIsWallAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#isWall")
+  fingerprint ast.semantic_subtree_v1("sha256:ff8d673af58959476d7b62c484234a52a199bfedd42b070d58f4d32bc3918b9a")
+}
+
+resource GameModuleIsWonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#isWon")
+  fingerprint ast.semantic_subtree_v1("sha256:1fc01820c39d249759ecb8e878dc2bbb42be54d5c3f09c70ccf2b161059bfb7e")
+}
+
+resource GameModuleLeftXAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#leftX")
+  fingerprint ast.semantic_subtree_v1("sha256:d1f1f7ea5db6cc61e2c24dabc031e0b89c2618a490370c8bb8161b243fcfc03d")
+}
+
+resource GameModuleMoveToAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#moveTo")
+  fingerprint ast.semantic_subtree_v1("sha256:5e156b6aa97426fb41763c6c9d7c868aea91f744c77f5d997e7af543b65c409d")
+}
+
+resource GameModuleOnFlagAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#onFlag")
+  fingerprint ast.semantic_subtree_v1("sha256:b066dc8af4580d22190525b31025c0cc0097e39bcc43ce71fb5d29ba38133402")
+}
+
+resource GameModuleReplayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#replay")
+  fingerprint ast.semantic_subtree_v1("sha256:adee12aae531c70809824e54168b5f4dc5182d984699a428d3fa4da898e79518")
+}
+
+resource GameModuleRightXAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#rightX")
+  fingerprint ast.semantic_subtree_v1("sha256:fc9f2edc31545f35af8834bc896d24399cafd2f351c24a0f1dd5c6b892ca5b07")
+}
+
+resource GameModuleStartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#start")
+  fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+}
+
+resource GameModuleStepAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#step")
+  fingerprint ast.semantic_subtree_v1("sha256:537cdc8f3f4447d62362d0989933f699a95eff1861ac6f116f9e411a5a61c54a")
+}
+
+resource GameModuleUpYAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#upY")
+  fingerprint ast.semantic_subtree_v1("sha256:1a418a2e1681a424426261475dfa10bbf435b2b0c9c14df56704c2e094b73ad8")
+}
+
+component GameModule : GeneratedCandidate {
+  fn downY
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#downY")
+    effects unknown
+  fn isWall
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#isWall")
+    effects unknown
+  fn isWon
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#isWon")
+    effects unknown
+  fn leftX
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#leftX")
+    effects unknown
+  fn moveTo
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#moveTo")
+    effects unknown
+  fn onFlag
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#onFlag")
+    effects unknown
+  fn replay
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#replay")
+    effects unknown
+  fn rightX
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#rightX")
+    effects unknown
+  fn start
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#start")
+    effects unknown
+  fn step
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#step")
+    effects unknown
+  fn upY
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#upY")
+    effects unknown
+}
+
+relation GameModuleDownYGeneratedFromGameModuleDownYAstAnchor {
+  kind generated_from
+  connects GameModule -> GameModuleDownYAstAnchor
+  roles { GameModule as generated, GameModuleDownYAstAnchor as syntax }
+  expects GameModuleDownYAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f77ef532af83f2df9622e15ed01faac958830c66ae1c0cfa974bca63b10c28cf")
+  summary "fn GameModule.downY generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#downY."
+}
+
+relation GameModuleIsWallGeneratedFromGameModuleIsWallAstAnchor {
+  kind generated_from
+  connects GameModule -> GameModuleIsWallAstAnchor
+  roles { GameModule as generated, GameModuleIsWallAstAnchor as syntax }
+  expects GameModuleIsWallAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ff8d673af58959476d7b62c484234a52a199bfedd42b070d58f4d32bc3918b9a")
+  summary "fn GameModule.isWall generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#isWall."
+}
+
+relation GameModuleIsWonGeneratedFromGameModuleIsWonAstAnchor {
+  kind generated_from
+  connects GameModule -> GameModuleIsWonAstAnchor
+  roles { GameModule as generated, GameModuleIsWonAstAnchor as syntax }
+  expects GameModuleIsWonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fc01820c39d249759ecb8e878dc2bbb42be54d5c3f09c70ccf2b161059bfb7e")
+  summary "fn GameModule.isWon generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#isWon."
+}
+
+relation GameModuleLeftXGeneratedFromGameModuleLeftXAstAnchor {
+  kind generated_from
+  connects GameModule -> GameModuleLeftXAstAnchor
+  roles { GameModule as generated, GameModuleLeftXAstAnchor as syntax }
+  expects GameModuleLeftXAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d1f1f7ea5db6cc61e2c24dabc031e0b89c2618a490370c8bb8161b243fcfc03d")
+  summary "fn GameModule.leftX generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#leftX."
+}
+
+relation GameModuleMoveToGeneratedFromGameModuleMoveToAstAnchor {
+  kind generated_from
+  connects GameModule -> GameModuleMoveToAstAnchor
+  roles { GameModule as generated, GameModuleMoveToAstAnchor as syntax }
+  expects GameModuleMoveToAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e156b6aa97426fb41763c6c9d7c868aea91f744c77f5d997e7af543b65c409d")
+  summary "fn GameModule.moveTo generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#moveTo."
+}
+
+relation GameModuleOnFlagGeneratedFromGameModuleOnFlagAstAnchor {
+  kind generated_from
+  connects GameModule -> GameModuleOnFlagAstAnchor
+  roles { GameModule as generated, GameModuleOnFlagAstAnchor as syntax }
+  expects GameModuleOnFlagAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b066dc8af4580d22190525b31025c0cc0097e39bcc43ce71fb5d29ba38133402")
+  summary "fn GameModule.onFlag generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#onFlag."
+}
+
+relation GameModuleReplayGeneratedFromGameModuleReplayAstAnchor {
+  kind generated_from
+  connects GameModule -> GameModuleReplayAstAnchor
+  roles { GameModule as generated, GameModuleReplayAstAnchor as syntax }
+  expects GameModuleReplayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:adee12aae531c70809824e54168b5f4dc5182d984699a428d3fa4da898e79518")
+  summary "fn GameModule.replay generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#replay."
+}
+
+relation GameModuleRightXGeneratedFromGameModuleRightXAstAnchor {
+  kind generated_from
+  connects GameModule -> GameModuleRightXAstAnchor
+  roles { GameModule as generated, GameModuleRightXAstAnchor as syntax }
+  expects GameModuleRightXAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fc9f2edc31545f35af8834bc896d24399cafd2f351c24a0f1dd5c6b892ca5b07")
+  summary "fn GameModule.rightX generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#rightX."
+}
+
+relation GameModuleStartGeneratedFromGameModuleStartAstAnchor {
+  kind generated_from
+  connects GameModule -> GameModuleStartAstAnchor
+  roles { GameModule as generated, GameModuleStartAstAnchor as syntax }
+  expects GameModuleStartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+  summary "fn GameModule.start generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#start."
+}
+
+relation GameModuleStepGeneratedFromGameModuleStepAstAnchor {
+  kind generated_from
+  connects GameModule -> GameModuleStepAstAnchor
+  roles { GameModule as generated, GameModuleStepAstAnchor as syntax }
+  expects GameModuleStepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:537cdc8f3f4447d62362d0989933f699a95eff1861ac6f116f9e411a5a61c54a")
+  summary "fn GameModule.step generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#step."
+}
+
+relation GameModuleUpYGeneratedFromGameModuleUpYAstAnchor {
+  kind generated_from
+  connects GameModule -> GameModuleUpYAstAnchor
+  roles { GameModule as generated, GameModuleUpYAstAnchor as syntax }
+  expects GameModuleUpYAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1a418a2e1681a424426261475dfa10bbf435b2b0c9c14df56704c2e094b73ad8")
+  summary "fn GameModule.upY generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts#upY."
+}
+
+implementation GameModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts"
+  }
+  conforms_to GameModule
+}

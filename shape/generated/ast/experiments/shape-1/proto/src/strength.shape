@@ -1,0 +1,113 @@
+module shape.generated.ast.experiments.shape_1.proto.src.strength
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource StrengthModuleCmpValueAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/strength.ts#cmpValue")
+  fingerprint ast.semantic_subtree_v1("sha256:bb48750ef0a98afc1e8bdeb70f3452cc07967695f6bb1ee9657b911fefcd6e45")
+}
+
+resource StrengthModuleNormaliseArraysAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/strength.ts#normaliseArrays")
+  fingerprint ast.semantic_subtree_v1("sha256:909ee80b1f4c238b763ecdb0f94887b2accaa62d403f281ccf3af56cb425c72e")
+}
+
+resource StrengthModuleOpOrderGeqAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/strength.ts#opOrderGeq")
+  fingerprint ast.semantic_subtree_v1("sha256:32c3984199032f25feb1db214fab6fca63f64cf086546e47b2984fc8bf29da04")
+}
+
+resource StrengthModuleRenameArgsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/strength.ts#renameArgs")
+  fingerprint ast.semantic_subtree_v1("sha256:8397aba285098ed8e03aff56c67ea4fdc162cccf5f1e1c57984aa19b2e0b7025")
+}
+
+resource StrengthModuleRenamedFpAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/strength.ts#renamedFp")
+  fingerprint ast.semantic_subtree_v1("sha256:ce2820afc505ff9b89e52ba3d9f590ad6e6ef4f55b7ca80494c5c8cd29fb44f2")
+}
+
+resource StrengthModuleSupsetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/strength.ts#supset")
+  fingerprint ast.semantic_subtree_v1("sha256:272290272cc33bec0e354d7e7a56f86ca63ea7a787a3a5b6f74f156160578423")
+}
+
+component StrengthModule : GeneratedCandidate {
+  fn cmpValue
+    source ts("experiments/shape-1/proto/src/strength.ts#cmpValue")
+    effects unknown
+  fn normaliseArrays
+    source ts("experiments/shape-1/proto/src/strength.ts#normaliseArrays")
+    effects unknown
+  fn opOrderGeq
+    source ts("experiments/shape-1/proto/src/strength.ts#opOrderGeq")
+    effects unknown
+  fn renameArgs
+    source ts("experiments/shape-1/proto/src/strength.ts#renameArgs")
+    effects unknown
+  fn renamedFp
+    source ts("experiments/shape-1/proto/src/strength.ts#renamedFp")
+    effects unknown
+  fn supset
+    source ts("experiments/shape-1/proto/src/strength.ts#supset")
+    effects unknown
+}
+
+relation StrengthModuleCmpValueGeneratedFromStrengthModuleCmpValueAstAnchor {
+  kind generated_from
+  connects StrengthModule -> StrengthModuleCmpValueAstAnchor
+  roles { StrengthModule as generated, StrengthModuleCmpValueAstAnchor as syntax }
+  expects StrengthModuleCmpValueAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bb48750ef0a98afc1e8bdeb70f3452cc07967695f6bb1ee9657b911fefcd6e45")
+  summary "fn StrengthModule.cmpValue generated from typescript function_declaration at experiments/shape-1/proto/src/strength.ts#cmpValue."
+}
+
+relation StrengthModuleNormaliseArraysGeneratedFromStrengthModuleNormaliseArraysAstAnchor {
+  kind generated_from
+  connects StrengthModule -> StrengthModuleNormaliseArraysAstAnchor
+  roles { StrengthModule as generated, StrengthModuleNormaliseArraysAstAnchor as syntax }
+  expects StrengthModuleNormaliseArraysAstAnchor fingerprint ast.semantic_subtree_v1("sha256:909ee80b1f4c238b763ecdb0f94887b2accaa62d403f281ccf3af56cb425c72e")
+  summary "fn StrengthModule.normaliseArrays generated from typescript function_declaration at experiments/shape-1/proto/src/strength.ts#normaliseArrays."
+}
+
+relation StrengthModuleOpOrderGeqGeneratedFromStrengthModuleOpOrderGeqAstAnchor {
+  kind generated_from
+  connects StrengthModule -> StrengthModuleOpOrderGeqAstAnchor
+  roles { StrengthModule as generated, StrengthModuleOpOrderGeqAstAnchor as syntax }
+  expects StrengthModuleOpOrderGeqAstAnchor fingerprint ast.semantic_subtree_v1("sha256:32c3984199032f25feb1db214fab6fca63f64cf086546e47b2984fc8bf29da04")
+  summary "fn StrengthModule.opOrderGeq generated from typescript function_declaration at experiments/shape-1/proto/src/strength.ts#opOrderGeq."
+}
+
+relation StrengthModuleRenameArgsGeneratedFromStrengthModuleRenameArgsAstAnchor {
+  kind generated_from
+  connects StrengthModule -> StrengthModuleRenameArgsAstAnchor
+  roles { StrengthModule as generated, StrengthModuleRenameArgsAstAnchor as syntax }
+  expects StrengthModuleRenameArgsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8397aba285098ed8e03aff56c67ea4fdc162cccf5f1e1c57984aa19b2e0b7025")
+  summary "fn StrengthModule.renameArgs generated from typescript function_declaration at experiments/shape-1/proto/src/strength.ts#renameArgs."
+}
+
+relation StrengthModuleRenamedFpGeneratedFromStrengthModuleRenamedFpAstAnchor {
+  kind generated_from
+  connects StrengthModule -> StrengthModuleRenamedFpAstAnchor
+  roles { StrengthModule as generated, StrengthModuleRenamedFpAstAnchor as syntax }
+  expects StrengthModuleRenamedFpAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ce2820afc505ff9b89e52ba3d9f590ad6e6ef4f55b7ca80494c5c8cd29fb44f2")
+  summary "fn StrengthModule.renamedFp generated from typescript function_declaration at experiments/shape-1/proto/src/strength.ts#renamedFp."
+}
+
+relation StrengthModuleSupsetGeneratedFromStrengthModuleSupsetAstAnchor {
+  kind generated_from
+  connects StrengthModule -> StrengthModuleSupsetAstAnchor
+  roles { StrengthModule as generated, StrengthModuleSupsetAstAnchor as syntax }
+  expects StrengthModuleSupsetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:272290272cc33bec0e354d7e7a56f86ca63ea7a787a3a5b6f74f156160578423")
+  summary "fn StrengthModule.supset generated from typescript function_declaration at experiments/shape-1/proto/src/strength.ts#supset."
+}
+
+implementation StrengthModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/strength.ts"
+  }
+  conforms_to StrengthModule
+}

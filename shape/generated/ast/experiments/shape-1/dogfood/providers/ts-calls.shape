@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.dogfood.providers.ts_calls
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource TsCallsModuleCallScanAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/providers/ts-calls.ts#callScan")
+  fingerprint ast.semantic_subtree_v1("sha256:9f6b3be1b6db7a6ea587f8b23f58d3ac0bd627899ad43dcd0e79a370228a7f00")
+}
+
+component TsCallsModule : GeneratedCandidate {
+  fn callScan
+    source ts("experiments/shape-1/dogfood/providers/ts-calls.ts#callScan")
+    effects unknown
+}
+
+relation TsCallsModuleCallScanGeneratedFromTsCallsModuleCallScanAstAnchor {
+  kind generated_from
+  connects TsCallsModule -> TsCallsModuleCallScanAstAnchor
+  roles { TsCallsModule as generated, TsCallsModuleCallScanAstAnchor as syntax }
+  expects TsCallsModuleCallScanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9f6b3be1b6db7a6ea587f8b23f58d3ac0bd627899ad43dcd0e79a370228a7f00")
+  summary "fn TsCallsModule.callScan generated from typescript function_declaration at experiments/shape-1/dogfood/providers/ts-calls.ts#callScan."
+}
+
+implementation TsCallsModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/providers/ts-calls.ts"
+  }
+  conforms_to TsCallsModule
+}

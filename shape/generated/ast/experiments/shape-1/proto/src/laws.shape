@@ -1,0 +1,241 @@
+module shape.generated.ast.experiments.shape_1.proto.src.laws
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LawsModuleAssumptionUndeclaredAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/laws.ts#assumptionUndeclared")
+  fingerprint ast.semantic_subtree_v1("sha256:f2ba17d194fe9df0d470d5ce6a839708eab4693d5736d4d36dee32df5bfad015")
+}
+
+resource LawsModuleCitesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/laws.ts#cites")
+  fingerprint ast.semantic_subtree_v1("sha256:5b828a824914023cc3205d0ea2b4c9e8c019a60678fa877ec8b7123d013d2301")
+}
+
+resource LawsModuleClaimMatchesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/laws.ts#claimMatches")
+  fingerprint ast.semantic_subtree_v1("sha256:cf7bbd348bb74cb04a11e36a02867319b6ccbe3d5ab77673c78b201e24cdba04")
+}
+
+resource LawsModuleConeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/laws.ts#cone")
+  fingerprint ast.semantic_subtree_v1("sha256:4820a5332cb885e1e1b0fc554527c4a6f80b9d28d7ef2a714b5f59b7c9ded174")
+}
+
+resource LawsModuleEvaluateLawsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/laws.ts#evaluateLaws")
+  fingerprint ast.semantic_subtree_v1("sha256:b9d7f67a35b7a623b311369ab95c7d567f68598de7b44a4b7383520d89a66ad2")
+}
+
+resource LawsModuleLawTierStarAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/laws.ts#lawTierStar")
+  fingerprint ast.semantic_subtree_v1("sha256:4579a1bdf70c7a9a26c1e71cc585b271748b9aad42beb16cfb287103697e72e6")
+}
+
+resource LawsModuleLevelOfKindAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/laws.ts#levelOfKind")
+  fingerprint ast.semantic_subtree_v1("sha256:8ee34a946dc6986d573dc5424a99470e54744682f52130b1242ecb92f03dd5cf")
+}
+
+resource LawsModuleOwnerStarAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/laws.ts#ownerStar")
+  fingerprint ast.semantic_subtree_v1("sha256:03c5aa19d610dfd4622c64cbe15a9b5540557334f92c7eac68615005bc0b4eb9")
+}
+
+resource LawsModuleProducerChangedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/laws.ts#producerChanged")
+  fingerprint ast.semantic_subtree_v1("sha256:27aa3cc87ae1c6cc49c9e8cb6315ed3b921d42b2d25af45e3213cd952b864361")
+}
+
+resource LawsModuleProducerFinestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/laws.ts#producerFinest")
+  fingerprint ast.semantic_subtree_v1("sha256:7a85e8815f6077873af5bbb9abd9ccd2b7638ab21397acfdf0be643f1bb4df16")
+}
+
+resource LawsModuleProviderMissingAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/laws.ts#providerMissing")
+  fingerprint ast.semantic_subtree_v1("sha256:790037a7659047058b9026b102610e551b55a95b99f7e4070d945374a4e9858b")
+}
+
+resource LawsModuleReqOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/laws.ts#reqOf")
+  fingerprint ast.semantic_subtree_v1("sha256:57fb6e8aaa517e02eaabb79d12e99bb07c334b4ba0263c4f574e2004d63c4d6c")
+}
+
+resource LawsModuleRequirementStarAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/laws.ts#requirementStar")
+  fingerprint ast.semantic_subtree_v1("sha256:0c2050545eec82704e4a2dafbf4fec44bad6718df17bc24f9630cf3d442900a0")
+}
+
+resource LawsModuleStrictestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/laws.ts#strictest")
+  fingerprint ast.semantic_subtree_v1("sha256:15b40313e19bf2146bc3afda8e1ff3463d449598375eb5c94ecf1a8653b09da8")
+}
+
+component LawsModule : GeneratedCandidate {
+  fn assumptionUndeclared
+    source ts("experiments/shape-1/proto/src/laws.ts#assumptionUndeclared")
+    effects unknown
+  fn cites
+    source ts("experiments/shape-1/proto/src/laws.ts#cites")
+    effects unknown
+  fn claimMatches
+    source ts("experiments/shape-1/proto/src/laws.ts#claimMatches")
+    effects unknown
+  fn cone
+    source ts("experiments/shape-1/proto/src/laws.ts#cone")
+    effects unknown
+  fn evaluateLaws
+    source ts("experiments/shape-1/proto/src/laws.ts#evaluateLaws")
+    effects unknown
+  fn lawTierStar
+    source ts("experiments/shape-1/proto/src/laws.ts#lawTierStar")
+    effects unknown
+  fn levelOfKind
+    source ts("experiments/shape-1/proto/src/laws.ts#levelOfKind")
+    effects unknown
+  fn ownerStar
+    source ts("experiments/shape-1/proto/src/laws.ts#ownerStar")
+    effects unknown
+  fn producerChanged
+    source ts("experiments/shape-1/proto/src/laws.ts#producerChanged")
+    effects unknown
+  fn producerFinest
+    source ts("experiments/shape-1/proto/src/laws.ts#producerFinest")
+    effects unknown
+  fn providerMissing
+    source ts("experiments/shape-1/proto/src/laws.ts#providerMissing")
+    effects unknown
+  fn reqOf
+    source ts("experiments/shape-1/proto/src/laws.ts#reqOf")
+    effects unknown
+  fn requirementStar
+    source ts("experiments/shape-1/proto/src/laws.ts#requirementStar")
+    effects unknown
+  fn strictest
+    source ts("experiments/shape-1/proto/src/laws.ts#strictest")
+    effects unknown
+}
+
+relation LawsModuleAssumptionUndeclaredGeneratedFromLawsModuleAssumptionUndeclaredAstAnchor {
+  kind generated_from
+  connects LawsModule -> LawsModuleAssumptionUndeclaredAstAnchor
+  roles { LawsModule as generated, LawsModuleAssumptionUndeclaredAstAnchor as syntax }
+  expects LawsModuleAssumptionUndeclaredAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f2ba17d194fe9df0d470d5ce6a839708eab4693d5736d4d36dee32df5bfad015")
+  summary "fn LawsModule.assumptionUndeclared generated from typescript function_declaration at experiments/shape-1/proto/src/laws.ts#assumptionUndeclared."
+}
+
+relation LawsModuleCitesGeneratedFromLawsModuleCitesAstAnchor {
+  kind generated_from
+  connects LawsModule -> LawsModuleCitesAstAnchor
+  roles { LawsModule as generated, LawsModuleCitesAstAnchor as syntax }
+  expects LawsModuleCitesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5b828a824914023cc3205d0ea2b4c9e8c019a60678fa877ec8b7123d013d2301")
+  summary "fn LawsModule.cites generated from typescript function_declaration at experiments/shape-1/proto/src/laws.ts#cites."
+}
+
+relation LawsModuleClaimMatchesGeneratedFromLawsModuleClaimMatchesAstAnchor {
+  kind generated_from
+  connects LawsModule -> LawsModuleClaimMatchesAstAnchor
+  roles { LawsModule as generated, LawsModuleClaimMatchesAstAnchor as syntax }
+  expects LawsModuleClaimMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cf7bbd348bb74cb04a11e36a02867319b6ccbe3d5ab77673c78b201e24cdba04")
+  summary "fn LawsModule.claimMatches generated from typescript function_declaration at experiments/shape-1/proto/src/laws.ts#claimMatches."
+}
+
+relation LawsModuleConeGeneratedFromLawsModuleConeAstAnchor {
+  kind generated_from
+  connects LawsModule -> LawsModuleConeAstAnchor
+  roles { LawsModule as generated, LawsModuleConeAstAnchor as syntax }
+  expects LawsModuleConeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4820a5332cb885e1e1b0fc554527c4a6f80b9d28d7ef2a714b5f59b7c9ded174")
+  summary "fn LawsModule.cone generated from typescript function_declaration at experiments/shape-1/proto/src/laws.ts#cone."
+}
+
+relation LawsModuleEvaluateLawsGeneratedFromLawsModuleEvaluateLawsAstAnchor {
+  kind generated_from
+  connects LawsModule -> LawsModuleEvaluateLawsAstAnchor
+  roles { LawsModule as generated, LawsModuleEvaluateLawsAstAnchor as syntax }
+  expects LawsModuleEvaluateLawsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b9d7f67a35b7a623b311369ab95c7d567f68598de7b44a4b7383520d89a66ad2")
+  summary "fn LawsModule.evaluateLaws generated from typescript function_declaration at experiments/shape-1/proto/src/laws.ts#evaluateLaws."
+}
+
+relation LawsModuleLawTierStarGeneratedFromLawsModuleLawTierStarAstAnchor {
+  kind generated_from
+  connects LawsModule -> LawsModuleLawTierStarAstAnchor
+  roles { LawsModule as generated, LawsModuleLawTierStarAstAnchor as syntax }
+  expects LawsModuleLawTierStarAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4579a1bdf70c7a9a26c1e71cc585b271748b9aad42beb16cfb287103697e72e6")
+  summary "fn LawsModule.lawTierStar generated from typescript function_declaration at experiments/shape-1/proto/src/laws.ts#lawTierStar."
+}
+
+relation LawsModuleLevelOfKindGeneratedFromLawsModuleLevelOfKindAstAnchor {
+  kind generated_from
+  connects LawsModule -> LawsModuleLevelOfKindAstAnchor
+  roles { LawsModule as generated, LawsModuleLevelOfKindAstAnchor as syntax }
+  expects LawsModuleLevelOfKindAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8ee34a946dc6986d573dc5424a99470e54744682f52130b1242ecb92f03dd5cf")
+  summary "fn LawsModule.levelOfKind generated from typescript function_declaration at experiments/shape-1/proto/src/laws.ts#levelOfKind."
+}
+
+relation LawsModuleOwnerStarGeneratedFromLawsModuleOwnerStarAstAnchor {
+  kind generated_from
+  connects LawsModule -> LawsModuleOwnerStarAstAnchor
+  roles { LawsModule as generated, LawsModuleOwnerStarAstAnchor as syntax }
+  expects LawsModuleOwnerStarAstAnchor fingerprint ast.semantic_subtree_v1("sha256:03c5aa19d610dfd4622c64cbe15a9b5540557334f92c7eac68615005bc0b4eb9")
+  summary "fn LawsModule.ownerStar generated from typescript function_declaration at experiments/shape-1/proto/src/laws.ts#ownerStar."
+}
+
+relation LawsModuleProducerChangedGeneratedFromLawsModuleProducerChangedAstAnchor {
+  kind generated_from
+  connects LawsModule -> LawsModuleProducerChangedAstAnchor
+  roles { LawsModule as generated, LawsModuleProducerChangedAstAnchor as syntax }
+  expects LawsModuleProducerChangedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:27aa3cc87ae1c6cc49c9e8cb6315ed3b921d42b2d25af45e3213cd952b864361")
+  summary "fn LawsModule.producerChanged generated from typescript function_declaration at experiments/shape-1/proto/src/laws.ts#producerChanged."
+}
+
+relation LawsModuleProducerFinestGeneratedFromLawsModuleProducerFinestAstAnchor {
+  kind generated_from
+  connects LawsModule -> LawsModuleProducerFinestAstAnchor
+  roles { LawsModule as generated, LawsModuleProducerFinestAstAnchor as syntax }
+  expects LawsModuleProducerFinestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7a85e8815f6077873af5bbb9abd9ccd2b7638ab21397acfdf0be643f1bb4df16")
+  summary "fn LawsModule.producerFinest generated from typescript function_declaration at experiments/shape-1/proto/src/laws.ts#producerFinest."
+}
+
+relation LawsModuleProviderMissingGeneratedFromLawsModuleProviderMissingAstAnchor {
+  kind generated_from
+  connects LawsModule -> LawsModuleProviderMissingAstAnchor
+  roles { LawsModule as generated, LawsModuleProviderMissingAstAnchor as syntax }
+  expects LawsModuleProviderMissingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:790037a7659047058b9026b102610e551b55a95b99f7e4070d945374a4e9858b")
+  summary "fn LawsModule.providerMissing generated from typescript function_declaration at experiments/shape-1/proto/src/laws.ts#providerMissing."
+}
+
+relation LawsModuleReqOfGeneratedFromLawsModuleReqOfAstAnchor {
+  kind generated_from
+  connects LawsModule -> LawsModuleReqOfAstAnchor
+  roles { LawsModule as generated, LawsModuleReqOfAstAnchor as syntax }
+  expects LawsModuleReqOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:57fb6e8aaa517e02eaabb79d12e99bb07c334b4ba0263c4f574e2004d63c4d6c")
+  summary "fn LawsModule.reqOf generated from typescript function_declaration at experiments/shape-1/proto/src/laws.ts#reqOf."
+}
+
+relation LawsModuleRequirementStarGeneratedFromLawsModuleRequirementStarAstAnchor {
+  kind generated_from
+  connects LawsModule -> LawsModuleRequirementStarAstAnchor
+  roles { LawsModule as generated, LawsModuleRequirementStarAstAnchor as syntax }
+  expects LawsModuleRequirementStarAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0c2050545eec82704e4a2dafbf4fec44bad6718df17bc24f9630cf3d442900a0")
+  summary "fn LawsModule.requirementStar generated from typescript function_declaration at experiments/shape-1/proto/src/laws.ts#requirementStar."
+}
+
+relation LawsModuleStrictestGeneratedFromLawsModuleStrictestAstAnchor {
+  kind generated_from
+  connects LawsModule -> LawsModuleStrictestAstAnchor
+  roles { LawsModule as generated, LawsModuleStrictestAstAnchor as syntax }
+  expects LawsModuleStrictestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:15b40313e19bf2146bc3afda8e1ff3463d449598375eb5c94ecf1a8653b09da8")
+  summary "fn LawsModule.strictest generated from typescript function_declaration at experiments/shape-1/proto/src/laws.ts#strictest."
+}
+
+implementation LawsModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/laws.ts"
+  }
+  conforms_to LawsModule
+}

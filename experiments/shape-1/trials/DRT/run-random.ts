@@ -26,7 +26,10 @@ for (let s = first; s < first + Number(countStr); s += 1) {
   try {
     g = genCase(s, profile);
   } catch (e) {
-    appendFileSync(outFile, `${JSON.stringify({ seed: s, status: "gen-error", error: String(e?.stack ?? e).slice(0, 400) })}\n`);
+    appendFileSync(
+      outFile,
+      `${JSON.stringify({ seed: s, status: "gen-error", error: String(e?.stack ?? e).slice(0, 400) })}\n`
+    );
     continue;
   }
   let input = g.input;

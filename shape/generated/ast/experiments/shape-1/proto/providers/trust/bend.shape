@@ -1,0 +1,145 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.trust.bend
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource BendModuleBendIdentitiesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/bend.ts#bendIdentities")
+  fingerprint ast.semantic_subtree_v1("sha256:26f6c88c509627c2d22cca3598cf2575b5f3f3a387badc1c4a7426673db97f99")
+}
+
+resource BendModuleCanonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/bend.ts#canon")
+  fingerprint ast.semantic_subtree_v1("sha256:cd06b67fe75a45b717f607e81da088e0f6b5f47e9c27e097fdbac9e50bced261")
+}
+
+resource BendModuleCountHolesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/bend.ts#countHoles")
+  fingerprint ast.semantic_subtree_v1("sha256:0754b2d7e516d5e513a29a7344c170f13cd9c3ede3c7bb9be8c16e6c8f2c1cab")
+}
+
+resource BendModuleEncodeBendSymbolAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/bend.ts#encodeBendSymbol")
+  fingerprint ast.semantic_subtree_v1("sha256:2add649ab03b49773853a8d66a4936a77d8f45141aabad0ee9d00224cd59cfc2")
+}
+
+resource BendModuleMarkOpenLawsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/bend.ts#markOpenLaws")
+  fingerprint ast.semantic_subtree_v1("sha256:6c19720910ecff3a9c2097e04069e1d339a1ea55c79733390d1dd9016b8b703c")
+}
+
+resource BendModuleScanBendAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/bend.ts#scanBend")
+  fingerprint ast.semantic_subtree_v1("sha256:520e9ad5c31882f8814f962f51f3ab6a3485d06164a925bcaa43154a91a553e4")
+}
+
+resource BendModuleStripBendCommentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/bend.ts#stripBendComment")
+  fingerprint ast.semantic_subtree_v1("sha256:f44cbffaf8a34904b83a2940137da14f64e29d651c29bc9ebff6b198e8a306de")
+}
+
+resource BendModuleStripStringsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/bend.ts#stripStrings")
+  fingerprint ast.semantic_subtree_v1("sha256:dc25837727f2d338a07fb45961afb72839abbcb49c35bf981cbe900375d54129")
+}
+
+component BendModule : GeneratedCandidate {
+  fn bendIdentities
+    source ts("experiments/shape-1/proto/providers/trust/bend.ts#bendIdentities")
+    effects unknown
+  fn canon
+    source ts("experiments/shape-1/proto/providers/trust/bend.ts#canon")
+    effects unknown
+  fn countHoles
+    source ts("experiments/shape-1/proto/providers/trust/bend.ts#countHoles")
+    effects unknown
+  fn encodeBendSymbol
+    source ts("experiments/shape-1/proto/providers/trust/bend.ts#encodeBendSymbol")
+    effects unknown
+  fn markOpenLaws
+    source ts("experiments/shape-1/proto/providers/trust/bend.ts#markOpenLaws")
+    effects unknown
+  fn scanBend
+    source ts("experiments/shape-1/proto/providers/trust/bend.ts#scanBend")
+    effects unknown
+  fn stripBendComment
+    source ts("experiments/shape-1/proto/providers/trust/bend.ts#stripBendComment")
+    effects unknown
+  fn stripStrings
+    source ts("experiments/shape-1/proto/providers/trust/bend.ts#stripStrings")
+    effects unknown
+}
+
+relation BendModuleBendIdentitiesGeneratedFromBendModuleBendIdentitiesAstAnchor {
+  kind generated_from
+  connects BendModule -> BendModuleBendIdentitiesAstAnchor
+  roles { BendModule as generated, BendModuleBendIdentitiesAstAnchor as syntax }
+  expects BendModuleBendIdentitiesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:26f6c88c509627c2d22cca3598cf2575b5f3f3a387badc1c4a7426673db97f99")
+  summary "fn BendModule.bendIdentities generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/bend.ts#bendIdentities."
+}
+
+relation BendModuleCanonGeneratedFromBendModuleCanonAstAnchor {
+  kind generated_from
+  connects BendModule -> BendModuleCanonAstAnchor
+  roles { BendModule as generated, BendModuleCanonAstAnchor as syntax }
+  expects BendModuleCanonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cd06b67fe75a45b717f607e81da088e0f6b5f47e9c27e097fdbac9e50bced261")
+  summary "fn BendModule.canon generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/bend.ts#canon."
+}
+
+relation BendModuleCountHolesGeneratedFromBendModuleCountHolesAstAnchor {
+  kind generated_from
+  connects BendModule -> BendModuleCountHolesAstAnchor
+  roles { BendModule as generated, BendModuleCountHolesAstAnchor as syntax }
+  expects BendModuleCountHolesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0754b2d7e516d5e513a29a7344c170f13cd9c3ede3c7bb9be8c16e6c8f2c1cab")
+  summary "fn BendModule.countHoles generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/bend.ts#countHoles."
+}
+
+relation BendModuleEncodeBendSymbolGeneratedFromBendModuleEncodeBendSymbolAstAnchor {
+  kind generated_from
+  connects BendModule -> BendModuleEncodeBendSymbolAstAnchor
+  roles { BendModule as generated, BendModuleEncodeBendSymbolAstAnchor as syntax }
+  expects BendModuleEncodeBendSymbolAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2add649ab03b49773853a8d66a4936a77d8f45141aabad0ee9d00224cd59cfc2")
+  summary "fn BendModule.encodeBendSymbol generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/bend.ts#encodeBendSymbol."
+}
+
+relation BendModuleMarkOpenLawsGeneratedFromBendModuleMarkOpenLawsAstAnchor {
+  kind generated_from
+  connects BendModule -> BendModuleMarkOpenLawsAstAnchor
+  roles { BendModule as generated, BendModuleMarkOpenLawsAstAnchor as syntax }
+  expects BendModuleMarkOpenLawsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6c19720910ecff3a9c2097e04069e1d339a1ea55c79733390d1dd9016b8b703c")
+  summary "fn BendModule.markOpenLaws generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/bend.ts#markOpenLaws."
+}
+
+relation BendModuleScanBendGeneratedFromBendModuleScanBendAstAnchor {
+  kind generated_from
+  connects BendModule -> BendModuleScanBendAstAnchor
+  roles { BendModule as generated, BendModuleScanBendAstAnchor as syntax }
+  expects BendModuleScanBendAstAnchor fingerprint ast.semantic_subtree_v1("sha256:520e9ad5c31882f8814f962f51f3ab6a3485d06164a925bcaa43154a91a553e4")
+  summary "fn BendModule.scanBend generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/bend.ts#scanBend."
+}
+
+relation BendModuleStripBendCommentGeneratedFromBendModuleStripBendCommentAstAnchor {
+  kind generated_from
+  connects BendModule -> BendModuleStripBendCommentAstAnchor
+  roles { BendModule as generated, BendModuleStripBendCommentAstAnchor as syntax }
+  expects BendModuleStripBendCommentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f44cbffaf8a34904b83a2940137da14f64e29d651c29bc9ebff6b198e8a306de")
+  summary "fn BendModule.stripBendComment generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/bend.ts#stripBendComment."
+}
+
+relation BendModuleStripStringsGeneratedFromBendModuleStripStringsAstAnchor {
+  kind generated_from
+  connects BendModule -> BendModuleStripStringsAstAnchor
+  roles { BendModule as generated, BendModuleStripStringsAstAnchor as syntax }
+  expects BendModuleStripStringsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dc25837727f2d338a07fb45961afb72839abbcb49c35bf981cbe900375d54129")
+  summary "fn BendModule.stripStrings generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/bend.ts#stripStrings."
+}
+
+implementation BendModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/trust/bend.ts"
+  }
+  conforms_to BendModule
+}

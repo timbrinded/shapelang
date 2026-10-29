@@ -1,0 +1,161 @@
+module shape.generated.ast.experiments.shape_1.proto.test.helpers
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource HelpersModuleCloneAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/test/helpers.ts#clone")
+  fingerprint ast.semantic_subtree_v1("sha256:471397bb83a6ecb959d8a3169e70bc8ae716ec98c007882ddfaaa318ceb7741e")
+}
+
+resource HelpersModuleObAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/test/helpers.ts#ob")
+  fingerprint ast.semantic_subtree_v1("sha256:086d0de497c1cdebd2f5cc42af911db59b8410cc36e6f14ba0f883ad75296f18")
+}
+
+resource HelpersModuleObsOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/test/helpers.ts#obsOf")
+  fingerprint ast.semantic_subtree_v1("sha256:803de6b5267cef8866ea167422f9d48f6a5270a1b35784adcaa31a3cc5a350ab")
+}
+
+resource HelpersModulePermuteAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/test/helpers.ts#permute")
+  fingerprint ast.semantic_subtree_v1("sha256:54803de42207f0e6915d1b76136b49fc933a3f2894afd4f8ad0f5ea00646fd7d")
+}
+
+resource HelpersModulePermuteManifestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/test/helpers.ts#permuteManifest")
+  fingerprint ast.semantic_subtree_v1("sha256:ae8b97356b8535c4bd5882702806c78a07862c5584c322467482ef635045b220")
+}
+
+resource HelpersModulePermuteSourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/test/helpers.ts#permuteSource")
+  fingerprint ast.semantic_subtree_v1("sha256:e2b12facdb818c8e894d7b9b42941cca468dd26397a7ada81bc7e35c1c892fd2")
+}
+
+resource HelpersModuleRngAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/test/helpers.ts#rng")
+  fingerprint ast.semantic_subtree_v1("sha256:4e8dfabad41c766de856bbce952f94cd29dff3ed242db9481b8ae9c3c553897d")
+}
+
+resource HelpersModuleRunAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/test/helpers.ts#run")
+  fingerprint ast.semantic_subtree_v1("sha256:49558c5cd31034630cfa5043ec0ded4b462c9958801729edf740c119b8c5eb92")
+}
+
+resource HelpersModuleShuffleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/test/helpers.ts#shuffle")
+  fingerprint ast.semantic_subtree_v1("sha256:70558f0c051054043b0fcbebcc497c80d64d10d860ddf3eebecf58ab31273978")
+}
+
+component HelpersModule : GeneratedCandidate {
+  fn clone
+    source ts("experiments/shape-1/proto/test/helpers.ts#clone")
+    effects unknown
+  fn ob
+    source ts("experiments/shape-1/proto/test/helpers.ts#ob")
+    effects unknown
+  fn obsOf
+    source ts("experiments/shape-1/proto/test/helpers.ts#obsOf")
+    effects unknown
+  fn permute
+    source ts("experiments/shape-1/proto/test/helpers.ts#permute")
+    effects unknown
+  fn permuteManifest
+    source ts("experiments/shape-1/proto/test/helpers.ts#permuteManifest")
+    effects unknown
+  fn permuteSource
+    source ts("experiments/shape-1/proto/test/helpers.ts#permuteSource")
+    effects unknown
+  fn rng
+    source ts("experiments/shape-1/proto/test/helpers.ts#rng")
+    effects unknown
+  fn run
+    source ts("experiments/shape-1/proto/test/helpers.ts#run")
+    effects unknown
+  fn shuffle
+    source ts("experiments/shape-1/proto/test/helpers.ts#shuffle")
+    effects unknown
+}
+
+relation HelpersModuleCloneGeneratedFromHelpersModuleCloneAstAnchor {
+  kind generated_from
+  connects HelpersModule -> HelpersModuleCloneAstAnchor
+  roles { HelpersModule as generated, HelpersModuleCloneAstAnchor as syntax }
+  expects HelpersModuleCloneAstAnchor fingerprint ast.semantic_subtree_v1("sha256:471397bb83a6ecb959d8a3169e70bc8ae716ec98c007882ddfaaa318ceb7741e")
+  summary "fn HelpersModule.clone generated from typescript function_declaration at experiments/shape-1/proto/test/helpers.ts#clone."
+}
+
+relation HelpersModuleObGeneratedFromHelpersModuleObAstAnchor {
+  kind generated_from
+  connects HelpersModule -> HelpersModuleObAstAnchor
+  roles { HelpersModule as generated, HelpersModuleObAstAnchor as syntax }
+  expects HelpersModuleObAstAnchor fingerprint ast.semantic_subtree_v1("sha256:086d0de497c1cdebd2f5cc42af911db59b8410cc36e6f14ba0f883ad75296f18")
+  summary "fn HelpersModule.ob generated from typescript function_declaration at experiments/shape-1/proto/test/helpers.ts#ob."
+}
+
+relation HelpersModuleObsOfGeneratedFromHelpersModuleObsOfAstAnchor {
+  kind generated_from
+  connects HelpersModule -> HelpersModuleObsOfAstAnchor
+  roles { HelpersModule as generated, HelpersModuleObsOfAstAnchor as syntax }
+  expects HelpersModuleObsOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:803de6b5267cef8866ea167422f9d48f6a5270a1b35784adcaa31a3cc5a350ab")
+  summary "fn HelpersModule.obsOf generated from typescript function_declaration at experiments/shape-1/proto/test/helpers.ts#obsOf."
+}
+
+relation HelpersModulePermuteGeneratedFromHelpersModulePermuteAstAnchor {
+  kind generated_from
+  connects HelpersModule -> HelpersModulePermuteAstAnchor
+  roles { HelpersModule as generated, HelpersModulePermuteAstAnchor as syntax }
+  expects HelpersModulePermuteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:54803de42207f0e6915d1b76136b49fc933a3f2894afd4f8ad0f5ea00646fd7d")
+  summary "fn HelpersModule.permute generated from typescript function_declaration at experiments/shape-1/proto/test/helpers.ts#permute."
+}
+
+relation HelpersModulePermuteManifestGeneratedFromHelpersModulePermuteManifestAstAnchor {
+  kind generated_from
+  connects HelpersModule -> HelpersModulePermuteManifestAstAnchor
+  roles { HelpersModule as generated, HelpersModulePermuteManifestAstAnchor as syntax }
+  expects HelpersModulePermuteManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ae8b97356b8535c4bd5882702806c78a07862c5584c322467482ef635045b220")
+  summary "fn HelpersModule.permuteManifest generated from typescript function_declaration at experiments/shape-1/proto/test/helpers.ts#permuteManifest."
+}
+
+relation HelpersModulePermuteSourceGeneratedFromHelpersModulePermuteSourceAstAnchor {
+  kind generated_from
+  connects HelpersModule -> HelpersModulePermuteSourceAstAnchor
+  roles { HelpersModule as generated, HelpersModulePermuteSourceAstAnchor as syntax }
+  expects HelpersModulePermuteSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e2b12facdb818c8e894d7b9b42941cca468dd26397a7ada81bc7e35c1c892fd2")
+  summary "fn HelpersModule.permuteSource generated from typescript function_declaration at experiments/shape-1/proto/test/helpers.ts#permuteSource."
+}
+
+relation HelpersModuleRngGeneratedFromHelpersModuleRngAstAnchor {
+  kind generated_from
+  connects HelpersModule -> HelpersModuleRngAstAnchor
+  roles { HelpersModule as generated, HelpersModuleRngAstAnchor as syntax }
+  expects HelpersModuleRngAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4e8dfabad41c766de856bbce952f94cd29dff3ed242db9481b8ae9c3c553897d")
+  summary "fn HelpersModule.rng generated from typescript function_declaration at experiments/shape-1/proto/test/helpers.ts#rng."
+}
+
+relation HelpersModuleRunGeneratedFromHelpersModuleRunAstAnchor {
+  kind generated_from
+  connects HelpersModule -> HelpersModuleRunAstAnchor
+  roles { HelpersModule as generated, HelpersModuleRunAstAnchor as syntax }
+  expects HelpersModuleRunAstAnchor fingerprint ast.semantic_subtree_v1("sha256:49558c5cd31034630cfa5043ec0ded4b462c9958801729edf740c119b8c5eb92")
+  summary "fn HelpersModule.run generated from typescript function_declaration at experiments/shape-1/proto/test/helpers.ts#run."
+}
+
+relation HelpersModuleShuffleGeneratedFromHelpersModuleShuffleAstAnchor {
+  kind generated_from
+  connects HelpersModule -> HelpersModuleShuffleAstAnchor
+  roles { HelpersModule as generated, HelpersModuleShuffleAstAnchor as syntax }
+  expects HelpersModuleShuffleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:70558f0c051054043b0fcbebcc497c80d64d10d860ddf3eebecf58ab31273978")
+  summary "fn HelpersModule.shuffle generated from typescript function_declaration at experiments/shape-1/proto/test/helpers.ts#shuffle."
+}
+
+implementation HelpersModuleImpl {
+  paths {
+    "experiments/shape-1/proto/test/helpers.ts"
+  }
+  conforms_to HelpersModule
+}

@@ -57,7 +57,13 @@ export interface Ts {
   ModuleKind: Record<string, number>;
   ModuleResolutionKind: Record<string, number>;
   SymbolFlags: Record<string, number>;
-  createSourceFile(name: string, text: string, target: number, setParents: boolean, kind?: number): SourceFile;
+  createSourceFile(
+    name: string,
+    text: string,
+    target: number,
+    setParents: boolean,
+    kind?: number
+  ): SourceFile;
   forEachChild(node: Node, cb: (n: Node) => void): void;
   createProgram(rootNames: string[], options: Record<string, unknown>): Program;
 }
@@ -73,7 +79,12 @@ export async function loadTs(repoRoot: string): Promise<Ts> {
     // not resolvable by name
   }
   const store = join(repoRoot, "node_modules", ".bun");
-  if (existsSync(store)) for (const d of readdirSync(store).filter((x) => x.startsWith("typescript@")).sort().reverse()) candidates.push(join(store, d, "node_modules", "typescript", "lib", "typescript.js"));
+  if (existsSync(store))
+    for (const d of readdirSync(store)
+      .filter((x) => x.startsWith("typescript@"))
+      .sort()
+      .reverse())
+      candidates.push(join(store, d, "node_modules", "typescript", "lib", "typescript.js"));
   for (const c of candidates) {
     if (!existsSync(c)) continue;
     const mod = (await import(c)) as { default?: Ts } & Ts;
@@ -111,11 +122,19 @@ export function identsOf(ts: Ts, sf: SourceFile, path: string): Ident[] {
   const out: Ident[] = [];
   const nameText = (n: Node | undefined): string | null => {
     if (!n) return null;
-    if (n.kind === K.Identifier || n.kind === K.StringLiteral || n.kind === K.NumericLiteral || n.kind === K.PrivateIdentifier) return n.text ?? n.escapedText ?? null;
+    if (
+      n.kind === K.Identifier ||
+      n.kind === K.StringLiteral ||
+      n.kind === K.NumericLiteral ||
+      n.kind === K.PrivateIdentifier
+    )
+      return n.text ?? n.escapedText ?? null;
     return null;
   };
-  const isFn = (n: Node | undefined): boolean => !!n && (n.kind === K.ArrowFunction || n.kind === K.FunctionExpression);
-  const join2 = (prefix: string | null, name: string): string => (prefix ? `${prefix}.${encodeSegment(name, ".")}` : encodeSegment(name, "."));
+  const isFn = (n: Node | undefined): boolean =>
+    !!n && (n.kind === K.ArrowFunction || n.kind === K.FunctionExpression);
+  const join2 = (prefix: string | null, name: string): string =>
+    prefix ? `${prefix}.${encodeSegment(name, ".")}` : encodeSegment(name, ".");
   const push = (sym: string, start: number, end: number, node: Node): void => {
     out.push({ id: `${fileId}#${sym}`, start, end, node });
   };
@@ -137,7 +156,11 @@ export function identsOf(ts: Ts, sf: SourceFile, path: string): Ident[] {
       for (const m of s.members ?? []) {
         let mn = nameText(m.name);
         if (m.kind === K.Constructor) mn = "constructor";
-        const isMethod = m.kind === K.MethodDeclaration || m.kind === K.Constructor || m.kind === K.GetAccessor || m.kind === K.SetAccessor;
+        const isMethod =
+          m.kind === K.MethodDeclaration ||
+          m.kind === K.Constructor ||
+          m.kind === K.GetAccessor ||
+          m.kind === K.SetAccessor;
         const isFnProp = m.kind === K.PropertyDeclaration && isFn(m.initializer);
         if (!mn || !(isMethod || isFnProp)) continue;
         const msym = join2(sym, mn);
@@ -157,7 +180,10 @@ export function identsOf(ts: Ts, sf: SourceFile, path: string): Ident[] {
       for (const d of decls) {
         const n = nameText(d.name);
         if (!n || !d.initializer) continue;
-        const span = decls.length === 1 ? { start: s.getStart(sf), end: s.end } : { start: d.getStart(sf), end: d.end };
+        const span =
+          decls.length === 1
+            ? { start: s.getStart(sf), end: s.end }
+            : { start: d.getStart(sf), end: d.end };
         if (isFn(d.initializer)) {
           const sym = join2(prefix, n);
           push(sym, span.start, span.end, d);
@@ -168,7 +194,10 @@ export function identsOf(ts: Ts, sf: SourceFile, path: string): Ident[] {
           for (const p of d.initializer.properties ?? []) {
             const pn = nameText(p.name);
             if (!pn) continue;
-            if (p.kind === K.MethodDeclaration || (p.kind === K.PropertyAssignment && isFn(p.initializer))) {
+            if (
+              p.kind === K.MethodDeclaration ||
+              (p.kind === K.PropertyAssignment && isFn(p.initializer))
+            ) {
               const psym = join2(sym, pn);
               push(psym, p.getStart(sf), p.end, p);
               visitBody(p.kind === K.MethodDeclaration ? p.body : p.initializer?.body, psym);
@@ -183,8 +212,20 @@ export function identsOf(ts: Ts, sf: SourceFile, path: string): Ident[] {
 }
 
 /** The innermost identity whose span contains pos, else the file identity. */
-export function attribute(idents: Ident[], pos: number, path: string, known: (id: string) => boolean): string {
+export function attribute(
+  idents: Ident[],
+  pos: number,
+  path: string,
+  known: (id: string) => boolean
+): string {
   let best: Ident | null = null;
-  for (const i of idents) if (i.start <= pos && pos < i.end && known(i.id) && (!best || i.end - i.start < best.end - best.start)) best = i;
+  for (const i of idents)
+    if (
+      i.start <= pos &&
+      pos < i.end &&
+      known(i.id) &&
+      (!best || i.end - i.start < best.end - best.start)
+    )
+      best = i;
   return best ? best.id : `ts:${encodePath(path)}`;
 }

@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r03_reorder
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R03ReorderModuleAppendAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts#append")
+  fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+}
+
+resource R03ReorderModuleEmptyLogAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts#emptyLog")
+  fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+}
+
+resource R03ReorderModuleGetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts#get")
+  fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+}
+
+resource R03ReorderModuleListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts#list")
+  fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+}
+
+resource R03ReorderModulePurgeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts#purge")
+  fingerprint ast.semantic_subtree_v1("sha256:8b12a4a10086337a3191358ff9a5dfb3a345a47ffbce86f8833626ad5689e06b")
+}
+
+component R03ReorderModule : GeneratedCandidate {
+  fn append
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts#append")
+    effects unknown
+  fn emptyLog
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts#emptyLog")
+    effects unknown
+  fn get
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts#get")
+    effects unknown
+  fn list
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts#list")
+    effects unknown
+  fn purge
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts#purge")
+    effects unknown
+}
+
+relation R03ReorderModuleAppendGeneratedFromR03ReorderModuleAppendAstAnchor {
+  kind generated_from
+  connects R03ReorderModule -> R03ReorderModuleAppendAstAnchor
+  roles { R03ReorderModule as generated, R03ReorderModuleAppendAstAnchor as syntax }
+  expects R03ReorderModuleAppendAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+  summary "fn R03ReorderModule.append generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts#append."
+}
+
+relation R03ReorderModuleEmptyLogGeneratedFromR03ReorderModuleEmptyLogAstAnchor {
+  kind generated_from
+  connects R03ReorderModule -> R03ReorderModuleEmptyLogAstAnchor
+  roles { R03ReorderModule as generated, R03ReorderModuleEmptyLogAstAnchor as syntax }
+  expects R03ReorderModuleEmptyLogAstAnchor fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+  summary "fn R03ReorderModule.emptyLog generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts#emptyLog."
+}
+
+relation R03ReorderModuleGetGeneratedFromR03ReorderModuleGetAstAnchor {
+  kind generated_from
+  connects R03ReorderModule -> R03ReorderModuleGetAstAnchor
+  roles { R03ReorderModule as generated, R03ReorderModuleGetAstAnchor as syntax }
+  expects R03ReorderModuleGetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+  summary "fn R03ReorderModule.get generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts#get."
+}
+
+relation R03ReorderModuleListGeneratedFromR03ReorderModuleListAstAnchor {
+  kind generated_from
+  connects R03ReorderModule -> R03ReorderModuleListAstAnchor
+  roles { R03ReorderModule as generated, R03ReorderModuleListAstAnchor as syntax }
+  expects R03ReorderModuleListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+  summary "fn R03ReorderModule.list generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts#list."
+}
+
+relation R03ReorderModulePurgeGeneratedFromR03ReorderModulePurgeAstAnchor {
+  kind generated_from
+  connects R03ReorderModule -> R03ReorderModulePurgeAstAnchor
+  roles { R03ReorderModule as generated, R03ReorderModulePurgeAstAnchor as syntax }
+  expects R03ReorderModulePurgeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b12a4a10086337a3191358ff9a5dfb3a345a47ffbce86f8833626ad5689e06b")
+  summary "fn R03ReorderModule.purge generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts#purge."
+}
+
+implementation R03ReorderModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts"
+  }
+  conforms_to R03ReorderModule
+}

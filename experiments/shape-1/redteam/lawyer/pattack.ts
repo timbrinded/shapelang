@@ -10,7 +10,20 @@ import { elaborate } from "../../proto/src/elaborate.ts";
 import { label } from "../../proto/src/jcs.ts";
 import { manifestStatement } from "../../proto/src/manifest.ts";
 import { scopeRoot, signerFromSeed } from "../../proto/src/records.ts";
-import { EX2, EX3, EX3S2, KEYS, baseInput, cite, ex1, ex2, ex3, ex3s2, manifest, signed } from "../../proto/examples/fixtures.ts";
+import {
+  EX2,
+  EX3,
+  EX3S2,
+  KEYS,
+  baseInput,
+  cite,
+  ex1,
+  ex2,
+  ex3,
+  ex3s2,
+  manifest,
+  signed
+} from "../../proto/examples/fixtures.ts";
 
 const OUT = join(import.meta.dir, "proto-cases");
 mkdirSync(OUT, { recursive: true });
@@ -43,7 +56,11 @@ function summary(out) {
       claim: o.claim?.ids ?? null,
       binding: o.binding?.slice(0, 19)
     })),
-    answered: out.answered.map((a) => ({ obligation: a.obligation.slice(0, 19), as: a.as, self: a.self })),
+    answered: out.answered.map((a) => ({
+      obligation: a.obligation.slice(0, 19),
+      as: a.as,
+      self: a.self
+    })),
     debt: out.debt.map((d) => ({ exception: d.exception, expiresInDays: d.expiresInDays }))
   };
 }
@@ -55,25 +72,37 @@ function rec(attack: string, variant: string, input: unknown) {
 }
 
 const find = (out, pred) => out.obligations.find(pred);
-const modDecls = (src, fn) => ({ ...src, modules: src.modules.map((m) => ({ ...m, decls: fn(m.decls, m.module) })) });
+const modDecls = (src, fn) => ({
+  ...src,
+  modules: src.modules.map((m) => ({ ...m, decls: fn(m.decls, m.module) }))
+});
 function remanifest(stmt, revision, fn = (e) => e) {
   const p = structuredClone(stmt.predicate.shape);
   p.revision = revision;
   p.entries = fn(p.entries);
   return manifestStatement(p);
 }
-const setDigest = (id, proj, digest) => (es) => es.map((e) => (e.id === id && e.projection === proj ? { ...e, digest } : e));
+const setDigest = (id, proj, digest) => (es) =>
+  es.map((e) => (e.id === id && e.projection === proj ? { ...e, digest } : e));
 
 // ---------------------------------------------------------------------------------------------
 // A1a: judges narrowing in the head enables the self fallback (L4 removal, normal tier).
 // ---------------------------------------------------------------------------------------------
 {
-  const pol = (judges) => ({ decl: "policy", name: "P", tiers: { normal: { floor: "declared", blocks: ["latent-loosening"], maxAge: 365, judges } } });
+  const pol = (judges) => ({
+    decl: "policy",
+    name: "P",
+    tiers: { normal: { floor: "declared", blocks: ["latent-loosening"], maxAge: 365, judges } }
+  });
   const withPolicy = (src, judges, dropGuard) =>
     modDecls(src, (ds) => [
-      ...ds.map((d) => (d.decl === "shape" ? { ...d, policy: "P" } : d)).map((d) =>
-        d.decl === "component" && dropGuard ? { ...d, units: d.units.map((u) => ({ ...u, attach: [] })) } : d
-      ),
+      ...ds
+        .map((d) => (d.decl === "shape" ? { ...d, policy: "P" } : d))
+        .map((d) =>
+          d.decl === "component" && dropGuard
+            ? { ...d, units: d.units.map((u) => ({ ...u, attach: [] })) }
+            : d
+        ),
       { decl: "actor", name: "bob", kind: "person", identities: ['github("bob")'] },
       pol(judges)
     ]);
@@ -89,7 +118,15 @@ const setDigest = (id, proj, digest) => (es) => es.map((e) => (e.id === id && e.
     i.records = [];
     const p1 = run(`A1a__${variant}__phase1`, i).out;
     const ob = find(p1, (o) => o.kind === "loosening");
-    i.reviews = ob ? [{ identity: 'github("tim")', line: `shape approve ${ob.binding.slice(0, 19)}`, change: EX3.change }] : [];
+    i.reviews = ob
+      ? [
+          {
+            identity: 'github("tim")',
+            line: `shape approve ${ob.binding.slice(0, 19)}`,
+            change: EX3.change
+          }
+        ]
+      : [];
     rec("A1a_judges_narrowing_L4", variant, i);
   }
 }
@@ -100,7 +137,9 @@ const setDigest = (id, proj, digest) => (es) => es.map((e) => (e.id === id && e.
 // ---------------------------------------------------------------------------------------------
 const noRule = (src, tier) =>
   modDecls(src, (ds) =>
-    ds.filter((d) => !(d.decl === "rule")).map((d) => (d.decl === "law" && d.name === "SetRefinesSpec" && tier ? { ...d, tier } : d))
+    ds
+      .filter((d) => !(d.decl === "rule"))
+      .map((d) => (d.decl === "law" && d.name === "SetRefinesSpec" && tier ? { ...d, tier } : d))
   );
 for (const tier of ["critical", "final"]) {
   for (const [variant, bump] of [
@@ -110,11 +149,32 @@ for (const tier of ["critical", "final"]) {
     const i = ex2();
     i.base.source = noRule(i.base.source, tier);
     i.head.source = noRule(i.head.source, tier);
-    if (bump) i.head.manifest = remanifest(i.head.manifest, EX2.head, setDigest("raw:ironkv/Cargo.lock", "own", label("Cargo.lock own, bumped")));
-    if (bump) i.head.manifest = remanifest(i.head.manifest, EX2.head, setDigest("raw:ironkv/Cargo.lock", "file", label("Cargo.lock file, bumped")));
+    if (bump)
+      i.head.manifest = remanifest(
+        i.head.manifest,
+        EX2.head,
+        setDigest("raw:ironkv/Cargo.lock", "own", label("Cargo.lock own, bumped"))
+      );
+    if (bump)
+      i.head.manifest = remanifest(
+        i.head.manifest,
+        EX2.head,
+        setDigest("raw:ironkv/Cargo.lock", "file", label("Cargo.lock file, bumped"))
+      );
     const p1 = run(`A2a_${tier}__${variant}__phase1`, i).out;
-    const ob = find(p1, (o) => o.kind === "unestablished" && (o.claim?.ids ?? []).includes("ironkv::SetRefinesSpec"));
-    i.reviews = ob ? [{ identity: 'github("dana")', line: `shape approve ${ob.binding.slice(0, 19)}`, change: EX2.change }] : [];
+    const ob = find(
+      p1,
+      (o) => o.kind === "unestablished" && (o.claim?.ids ?? []).includes("ironkv::SetRefinesSpec")
+    );
+    i.reviews = ob
+      ? [
+          {
+            identity: 'github("dana")',
+            line: `shape approve ${ob.binding.slice(0, 19)}`,
+            change: EX2.change
+          }
+        ]
+      : [];
     rec(`A2a_pc_masks_assumption_${tier}`, variant, i);
   }
 }
@@ -126,7 +186,10 @@ for (const tier of ["critical", "final"]) {
     const i = ex2();
     i.base.source = noRule(i.base.source);
     i.head.source = noRule(i.head.source);
-    if (!keepMarker) i.head.manifest = remanifest(i.head.manifest, EX2.head, (es) => es.map((e) => (e.id === EX2.SET ? { ...e, markers: undefined } : e)));
+    if (!keepMarker)
+      i.head.manifest = remanifest(i.head.manifest, EX2.head, (es) =>
+        es.map((e) => (e.id === EX2.SET ? { ...e, markers: undefined } : e))
+      );
     rec("A38_record_hatch_assumption_ignored", variant, i);
   }
 }
@@ -142,8 +205,16 @@ for (const tier of ["critical", "final"]) {
     const i = ex3s2({ seededClock: false });
     // the authenticated decider's run timed out: inconclusive (supplied, establishes nothing)
     const csmHead = label("csm unit, head");
-    i.head.manifest = remanifest(i.head.manifest, EX3S2.head, setDigest(EX3S2.CSM, "unit", csmHead));
-    i.head.manifest = remanifest(i.head.manifest, EX3S2.head, setDigest(EX3S2.CSM, "own", label("csm own, head")));
+    i.head.manifest = remanifest(
+      i.head.manifest,
+      EX3S2.head,
+      setDigest(EX3S2.CSM, "unit", csmHead)
+    );
+    i.head.manifest = remanifest(
+      i.head.manifest,
+      EX3S2.head,
+      setDigest(EX3S2.CSM, "own", label("csm own, head"))
+    );
     const t = (provider, result, signers) =>
       signed(
         {
@@ -153,7 +224,10 @@ for (const tier of ["critical", "final"]) {
           provider: { id: provider, version: "1" },
           revision: EX3S2.head,
           time: "2026-10-25T10:00:00Z",
-          claim: { id: "checker::CheckIsDeterministic", fp: "sha256:8620c3bead39262d509d30d813c84d79db4e1ce51b1dd92c904225082519b8c3" },
+          claim: {
+            id: "checker::CheckIsDeterministic",
+            fp: "sha256:8620c3bead39262d509d30d813c84d79db4e1ce51b1dd92c904225082519b8c3"
+          },
           code: [cite(EX3S2.CSM, "unit", csmHead)],
           harness: [],
           assumptions: []
@@ -164,7 +238,18 @@ for (const tier of ["critical", "final"]) {
       .filter((e) => e.projection === (e.id.includes("#") ? "unit" : "own"))
       .map((e) => ({ ...cite(e.id, e.projection, e.digest), complete: true, deps: [] }));
     const scanH = signed(
-      { v: "shape.evidence.v1", kind: "observation", result: "observes", provider: { id: "tooling::tsClockScan", version: "0.1.0" }, revision: EX3S2.head, time: "2026-10-25T10:00:00Z", scope: { root: scopeRoot(es), entries: es }, facts: [{ type: "effect", at: EX3.ISO, verb: "Read", resource: 'ts.call("Date")' }], harness: [], assumptions: [] },
+      {
+        v: "shape.evidence.v1",
+        kind: "observation",
+        result: "observes",
+        provider: { id: "tooling::tsClockScan", version: "0.1.0" },
+        revision: EX3S2.head,
+        time: "2026-10-25T10:00:00Z",
+        scope: { root: scopeRoot(es), entries: es },
+        facts: [{ type: "effect", at: EX3.ISO, verb: "Read", resource: 'ts.call("Date")' }],
+        harness: [],
+        assumptions: []
+      },
       [KEYS.tsClockScan]
     );
     i.records = [t("checker::bunTest", "inconclusive", [KEYS.bunTest]), scanH, i.records[2]];
@@ -173,15 +258,27 @@ for (const tier of ["critical", "final"]) {
         m === "checker"
           ? [
               ...ds,
-              { decl: "provider", name: "quickCheck", produces: ["test"], decides: ["template Deterministic"], implementation: { paths: ["packages/shp-checker/src/**"] } }
+              {
+                decl: "provider",
+                name: "quickCheck",
+                produces: ["test"],
+                decides: ["template Deterministic"],
+                implementation: { paths: ["packages/shp-checker/src/**"] }
+              }
             ]
           : ds
       );
       i.records.push(t("checker::quickCheck", "supports", []));
     }
     const p1 = run(`A2b__${variant}__phase1`, i).out;
-    const ob = find(p1, (o) => o.kind === "unestablished" && (o.claim?.ids ?? []).includes("checker::CheckIsDeterministic"));
-    i.reviews = ob ? [{ identity: 'github("ann")', line: `shape approve ${ob.binding.slice(0, 19)}` }] : [];
+    const ob = find(
+      p1,
+      (o) =>
+        o.kind === "unestablished" && (o.claim?.ids ?? []).includes("checker::CheckIsDeterministic")
+    );
+    i.reviews = ob
+      ? [{ identity: 'github("ann")', line: `shape approve ${ob.binding.slice(0, 19)}` }]
+      : [];
     rec("A2b_pc_masks_missing_fake_provider", variant, i);
   }
 }
@@ -204,17 +301,48 @@ for (const tier of ["critical", "final"]) {
           { decl: "actor", name: "kate", kind: "person", identities: ['github("kate")'] },
           { decl: "actor", name: "sam", kind: "person", identities: ['github("sam")'] },
           { decl: "actor", name: "alex", kind: "person", identities: ['github("alex")'] },
-          { decl: "actor", name: "bot", kind: "agent", operator: "alex", identities: ['github("bot[bot]")'] },
-          { decl: "resource", name: "Ledger", owner: "SecTeam", tier: "critical", bind: ['pg.table("ledger")'] },
+          {
+            decl: "actor",
+            name: "bot",
+            kind: "agent",
+            operator: "alex",
+            identities: ['github("bot[bot]")']
+          },
+          {
+            decl: "resource",
+            name: "Ledger",
+            owner: "SecTeam",
+            tier: "critical",
+            bind: ['pg.table("ledger")']
+          },
           { decl: "component", name: "Store", owner: "StoreTeam", paths: ["src/store/**/*.ts"] },
-          { decl: "rule", name: "LedgerIsAppendOnly", owner: "SecTeam", tier: "critical", clauses: [{ forbid: "effect", atom: "HardDelete<Ledger>" }] }
+          {
+            decl: "rule",
+            name: "LedgerIsAppendOnly",
+            owner: "SecTeam",
+            tier: "critical",
+            clauses: [{ forbid: "effect", atom: "HardDelete<Ledger>" }]
+          }
         ]
       }
     ]
   };
   const sf = ["shape.lock", "shape/x.shape"];
-  const bm = manifest("a4".padEnd(40, "0"), [{ id: "ts:src/store/a.ts" }, { id: "ts:src/store/a.ts#f", unit: label("f unit") }], sf);
-  const hm = manifest("a4".padEnd(40, "1"), [{ id: "ts:src/store/a.ts" }, { id: "ts:src/store/a.ts#f", unit: label("f unit") }, { id: "ts:src/store/purge.ts" }, { id: "ts:src/store/purge.ts#purge", unit: label("purge unit") }], sf);
+  const bm = manifest(
+    "a4".padEnd(40, "0"),
+    [{ id: "ts:src/store/a.ts" }, { id: "ts:src/store/a.ts#f", unit: label("f unit") }],
+    sf
+  );
+  const hm = manifest(
+    "a4".padEnd(40, "1"),
+    [
+      { id: "ts:src/store/a.ts" },
+      { id: "ts:src/store/a.ts#f", unit: label("f unit") },
+      { id: "ts:src/store/purge.ts" },
+      { id: "ts:src/store/purge.ts#purge", unit: label("purge unit") }
+    ],
+    sf
+  );
   for (const [variant, who] of [
     ["control_sam_only", ["sam"]],
     ["attack_kate_only", ["kate"]],
@@ -228,7 +356,12 @@ for (const tier of ["critical", "final"]) {
     });
     const p1 = run(`A4__${variant}__phase1`, i).out;
     const ob = find(p1, (o) => o.kind === "coverage");
-    i.reviews = ob ? who.map((w) => ({ identity: `github("${w}")`, line: `shape approve ${ob.binding.slice(0, 19)}` })) : [];
+    i.reviews = ob
+      ? who.map((w) => ({
+          identity: `github("${w}")`,
+          line: `shape approve ${ob.binding.slice(0, 19)}`
+        }))
+      : [];
     rec("A4_coverage_unmet_claim_owner", variant, i);
   }
 }
@@ -255,12 +388,37 @@ for (const tier of ["critical", "final"]) {
                 : d
         ),
         { decl: "actor", name: "ann", kind: "person", identities: ['github("ann")'] },
-        { decl: "actor", name: "reviewBot", kind: "agent", operator: "ann", identities: ['github("review-bot[bot]")'] },
-        { decl: "policy", name: "P", tiers: { critical: { floor: "tested", blocks: ["unestablished", "coverage", "latent-loosening"], maxAge: 90, judges: ["owner", "agents"] } } }
+        {
+          decl: "actor",
+          name: "reviewBot",
+          kind: "agent",
+          operator: "ann",
+          identities: ['github("review-bot[bot]")']
+        },
+        {
+          decl: "policy",
+          name: "P",
+          tiers: {
+            critical: {
+              floor: "tested",
+              blocks: ["unestablished", "coverage", "latent-loosening"],
+              maxAge: 90,
+              judges: ["owner", "agents"]
+            }
+          }
+        }
       ]);
     i.base.source = f(i.base.source);
     i.head.source = f(i.head.source);
-    i.reviews = who ? [{ identity: who, line: "shape judge tooling::ShpCli.isoToday/RefactorSensitive/law", change: EX3.change }] : [];
+    i.reviews = who
+      ? [
+          {
+            identity: who,
+            line: "shape judge tooling::ShpCli.isoToday/RefactorSensitive/law",
+            change: EX3.change
+          }
+        ]
+      : [];
     rec("A5a_final_informal_law_single_judge", variant, i);
   }
 }
@@ -273,7 +431,9 @@ for (const [variant, bind] of [
   ["attack_binding_moved", 'pg.table("audit_events_v2")']
 ]) {
   const i = ex1("B");
-  i.head.source = modDecls(i.head.source, (ds) => ds.map((d) => (d.decl === "resource" ? { ...d, bind: [bind] } : d)));
+  i.head.source = modDecls(i.head.source, (ds) =>
+    ds.map((d) => (d.decl === "resource" ? { ...d, bind: [bind] } : d))
+  );
   rec("A6_rebind_resource_code_final", variant, i);
 }
 
@@ -287,69 +447,195 @@ const actorsZ = [
   { decl: "actor", name: "quinn", kind: "person", identities: ['github("quinn")'] },
   { decl: "actor", name: "bot", kind: "agent", operator: "pat", identities: ['github("bot[bot]")'] }
 ];
-const mod = (name, decls) => ({ v: "shape.source.v1", modules: [{ module: name, imports: ["std"], decls }] });
+const mod = (name, decls) => ({
+  v: "shape.source.v1",
+  modules: [{ module: name, imports: ["std"], decls }]
+});
 {
   for (const [variant, lax, strict] of [
     ["lax_component_sorts_first", "Alpha", "Beta"],
     ["strict_component_sorts_first", "Beta", "Alpha"]
   ]) {
-    const R = { decl: "resource", name: "R", owner: "Team", tier: "critical", bind: ['pg.table("r")'] };
-    const laxC = { decl: "component", name: lax, owner: "Team", tier: "critical", paths: ["src/**/*.ts"], grants: ["Read<R>", "Write<R>"] };
-    const strictC = { decl: "component", name: strict, owner: "Team", tier: "critical", paths: ["src/**/*.ts"], grants: ["Read<R>"] };
+    const R = {
+      decl: "resource",
+      name: "R",
+      owner: "Team",
+      tier: "critical",
+      bind: ['pg.table("r")']
+    };
+    const laxC = {
+      decl: "component",
+      name: lax,
+      owner: "Team",
+      tier: "critical",
+      paths: ["src/**/*.ts"],
+      grants: ["Read<R>", "Write<R>"]
+    };
+    const strictC = {
+      decl: "component",
+      name: strict,
+      owner: "Team",
+      tier: "critical",
+      paths: ["src/**/*.ts"],
+      grants: ["Read<R>"]
+    };
     const sf = ["shape.lock", "shape/z.shape"];
-    const m = manifest("a8".padEnd(40, "0"), [{ id: "ts:src/m.ts" }, { id: "ts:src/m.ts#f", unit: label("f unit") }], sf);
+    const m = manifest(
+      "a8".padEnd(40, "0"),
+      [{ id: "ts:src/m.ts" }, { id: "ts:src/m.ts#f", unit: label("f unit") }],
+      sf
+    );
     const i = baseInput({
       change: { ids: ["github:acme/z#1"] },
-      head: { revision: "a8".padEnd(40, "0"), source: mod("z", [...actorsZ, R, laxC]), manifest: m },
-      base: { revision: "a8".padEnd(40, "0"), source: mod("z", [...actorsZ, R, laxC, strictC]), manifest: m },
+      head: {
+        revision: "a8".padEnd(40, "0"),
+        source: mod("z", [...actorsZ, R, laxC]),
+        manifest: m
+      },
+      base: {
+        revision: "a8".padEnd(40, "0"),
+        source: mod("z", [...actorsZ, R, laxC, strictC]),
+        manifest: m
+      },
       authors: [{ identity: 'github("bot[bot]")', verified: true, bot: true }]
     });
     rec("A8_base_glob_tie_name_dependence", variant, i);
   }
 }
 {
-  const R = { decl: "resource", name: "Ledger", owner: "Team", tier: "final", bind: ['pg.table("ledger")'] };
-  const vault = { decl: "component", name: "Vault", owner: "Team", tier: "final", paths: ["src/vault/**/*.ts"], grants: ["Read<Ledger>"] };
-  const scratch = (paths) => ({ decl: "component", name: "Scratch", owner: "Team", tier: "low", paths, grants: ["Read<Ledger>"] });
+  const R = {
+    decl: "resource",
+    name: "Ledger",
+    owner: "Team",
+    tier: "final",
+    bind: ['pg.table("ledger")']
+  };
+  const vault = {
+    decl: "component",
+    name: "Vault",
+    owner: "Team",
+    tier: "final",
+    paths: ["src/vault/**/*.ts"],
+    grants: ["Read<Ledger>"]
+  };
+  const scratch = (paths) => ({
+    decl: "component",
+    name: "Scratch",
+    owner: "Team",
+    tier: "low",
+    paths,
+    grants: ["Read<Ledger>"]
+  });
   const sf = ["shape.lock", "shape/w.shape"];
-  const bm = manifest("50".padEnd(40, "0"), [{ id: "ts:src/vault/v.ts" }, { id: "ts:src/vault/v.ts#read", unit: label("read unit") }], sf);
+  const bm = manifest(
+    "50".padEnd(40, "0"),
+    [{ id: "ts:src/vault/v.ts" }, { id: "ts:src/vault/v.ts#read", unit: label("read unit") }],
+    sf
+  );
   const hm = manifest(
     "50".padEnd(40, "1"),
-    [{ id: "ts:src/vault/v.ts" }, { id: "ts:src/vault/v.ts#read", unit: label("read unit") }, { id: "ts:src/vault/purge/p.ts" }, { id: "ts:src/vault/purge/p.ts#purge", unit: label("purge unit") }],
+    [
+      { id: "ts:src/vault/v.ts" },
+      { id: "ts:src/vault/v.ts#read", unit: label("read unit") },
+      { id: "ts:src/vault/purge/p.ts" },
+      { id: "ts:src/vault/purge/p.ts#purge", unit: label("purge unit") }
+    ],
     sf
   );
   for (const [variant, paths] of [
     ["control_new_code_stays_in_final_component", ["src/scratch/**/*.ts"]],
-    ["attack_glob_moves_new_code_to_low_component", ["src/scratch/**/*.ts", "src/vault/purge/**/*.ts"]]
+    [
+      "attack_glob_moves_new_code_to_low_component",
+      ["src/scratch/**/*.ts", "src/vault/purge/**/*.ts"]
+    ]
   ]) {
     const i = baseInput({
       change: { ids: ["github:acme/w#1"] },
-      head: { revision: "50".padEnd(40, "1"), source: mod("w", [...actorsZ, R, vault, scratch(paths)]), manifest: hm },
-      base: { revision: "50".padEnd(40, "0"), source: mod("w", [...actorsZ, R, vault, scratch(["src/scratch/**/*.ts"])]), manifest: bm },
+      head: {
+        revision: "50".padEnd(40, "1"),
+        source: mod("w", [...actorsZ, R, vault, scratch(paths)]),
+        manifest: hm
+      },
+      base: {
+        revision: "50".padEnd(40, "0"),
+        source: mod("w", [...actorsZ, R, vault, scratch(["src/scratch/**/*.ts"])]),
+        manifest: bm
+      },
       authors: [{ identity: 'github("bot[bot]")', verified: true, bot: true }]
     });
     rec("A50_move_code_out_of_final_authority", variant, i);
   }
 }
 {
-  const comps = ["A", "B", "C"].map((n) => ({ decl: "component", name: n, owner: "Team", tier: "low", paths: [`src/${n.toLowerCase()}/**/*.ts`] }));
-  const rule = { decl: "rule", name: "AdoesNotReachC", tier: "low", clauses: [{ forbid: "path", from: ["component A"], to: ["component C"], over: ["calls"] }] };
-  const calls = { decl: "provider", name: "calls", produces: ["observation"], observes: ["call(ts)"], sound: [], identity: KEYS.tsCallGraph.identity, implementation: { digest: "sha256:" + "c".repeat(64) } };
+  const comps = ["A", "B", "C"].map((n) => ({
+    decl: "component",
+    name: n,
+    owner: "Team",
+    tier: "low",
+    paths: [`src/${n.toLowerCase()}/**/*.ts`]
+  }));
+  const rule = {
+    decl: "rule",
+    name: "AdoesNotReachC",
+    tier: "low",
+    clauses: [{ forbid: "path", from: ["component A"], to: ["component C"], over: ["calls"] }]
+  };
+  const calls = {
+    decl: "provider",
+    name: "calls",
+    produces: ["observation"],
+    observes: ["call(ts)"],
+    sound: [],
+    identity: KEYS.tsCallGraph.identity,
+    implementation: { digest: "sha256:" + "c".repeat(64) }
+  };
   const sf = ["shape.lock", "shape/y.shape"];
-  const m = manifest("a7".padEnd(40, "0"), [{ id: "ts:src/a/a.ts" }, { id: "ts:src/a/a.ts#f", unit: label("f unit") }, { id: "ts:src/b/b.ts" }, { id: "ts:src/c/c.ts" }, { id: "ts:src/c/c.ts#g", unit: label("g unit") }], sf);
+  const m = manifest(
+    "a7".padEnd(40, "0"),
+    [
+      { id: "ts:src/a/a.ts" },
+      { id: "ts:src/a/a.ts#f", unit: label("f unit") },
+      { id: "ts:src/b/b.ts" },
+      { id: "ts:src/c/c.ts" },
+      { id: "ts:src/c/c.ts#g", unit: label("g unit") }
+    ],
+    sf
+  );
   for (const [variant, facts] of [
     ["control_no_observed_edge", []],
-    ["attack_observed_edge_A_to_C", [{ type: "call", at: "ts:src/a/a.ts#f", to: "ts:src/c/c.ts#g" }]]
+    [
+      "attack_observed_edge_A_to_C",
+      [{ type: "call", at: "ts:src/a/a.ts#f", to: "ts:src/c/c.ts#g" }]
+    ]
   ]) {
     const es = [{ ...cite("ts:src/a/a.ts#f", "unit", label("f unit")), complete: false, deps: [] }];
     const r = signed(
-      { v: "shape.evidence.v1", kind: "observation", result: "observes", provider: { id: "y::calls", version: "1" }, revision: "a7".padEnd(40, "0"), time: "2026-10-25T10:00:00Z", scope: { root: scopeRoot(es), entries: es }, facts, harness: [], assumptions: [] },
+      {
+        v: "shape.evidence.v1",
+        kind: "observation",
+        result: "observes",
+        provider: { id: "y::calls", version: "1" },
+        revision: "a7".padEnd(40, "0"),
+        time: "2026-10-25T10:00:00Z",
+        scope: { root: scopeRoot(es), entries: es },
+        facts,
+        harness: [],
+        assumptions: []
+      },
       [KEYS.tsCallGraph]
     );
     const i = baseInput({
       change: { ids: ["github:acme/y#1"] },
-      head: { revision: "a7".padEnd(40, "0"), source: mod("y", [...actorsZ, ...comps, calls]), manifest: m },
-      base: { revision: "a7".padEnd(40, "0"), source: mod("y", [...actorsZ, ...comps, rule, calls]), manifest: m },
+      head: {
+        revision: "a7".padEnd(40, "0"),
+        source: mod("y", [...actorsZ, ...comps, calls]),
+        manifest: m
+      },
+      base: {
+        revision: "a7".padEnd(40, "0"),
+        source: mod("y", [...actorsZ, ...comps, rule, calls]),
+        manifest: m
+      },
       records: [r],
       authors: [{ identity: 'github("bot[bot]")', verified: true, bot: true }]
     });
@@ -366,19 +652,36 @@ const mod = (name, decls) => ({ v: "shape.source.v1", modules: [{ module: name, 
       ...ds.map((d) => (d.decl === "shape" ? { ...d, policy: "P" } : d)),
       { decl: "actor", name: "dave", kind: "person", identities: ['github("dave")'] },
       { decl: "actor", name: "erin", kind: "person", identities: ['github("erin")'] },
-      { decl: "policy", name: "P", tiers: { critical: { floor: "tested", blocks: ["unestablished", "coverage", "latent-loosening"], maxAge: 90, judges: ["dave", "erin"] } } }
+      {
+        decl: "policy",
+        name: "P",
+        tiers: {
+          critical: {
+            floor: "tested",
+            blocks: ["unestablished", "coverage", "latent-loosening"],
+            maxAge: 90,
+            judges: ["dave", "erin"]
+          }
+        }
+      }
     ]);
   const i0 = ex1("C");
   i0.base.source = f(i0.base.source);
   i0.head.source = f(i0.head.source);
   const p1 = run("A13__phase1", i0).out;
-  const refs = p1.obligations.filter((o) => o.kind === "loosening").map((o) => o.binding.slice(0, 19));
+  const refs = p1.obligations
+    .filter((o) => o.kind === "loosening")
+    .map((o) => o.binding.slice(0, 19));
   for (const [variant, who] of [
     ["owners_bob_and_carol_answer", ["bob", "carol"]],
     ["outsiders_dave_and_erin_answer", ["dave", "erin"]]
   ]) {
     const i = structuredClone(i0);
-    i.reviews = who.map((w) => ({ identity: `github("${w}")`, line: `shape approve ${refs.join(" ")}`, change: "github:acme/audit#57" }));
+    i.reviews = who.map((w) => ({
+      identity: `github("${w}")`,
+      line: `shape approve ${refs.join(" ")}`,
+      change: "github:acme/audit#57"
+    }));
     rec("A13_named_judges_final_two_person", variant, i);
   }
 }
@@ -387,7 +690,10 @@ const mod = (name, decls) => ({ v: "shape.source.v1", modules: [{ module: name, 
 // A14: hosted-law closure change (spec weakened) with a fresh proof; A39: final law through admit.
 // ---------------------------------------------------------------------------------------------
 {
-  const strip = (src) => modDecls(src, (ds) => ds.filter((d) => d.decl !== "rule" && !(d.decl === "law" && d.name === "SetContractFaithful")));
+  const strip = (src) =>
+    modDecls(src, (ds) =>
+      ds.filter((d) => d.decl !== "rule" && !(d.decl === "law" && d.name === "SetContractFaithful"))
+    );
   for (const [variant, weaken] of [
     ["control_spec_unchanged", false],
     ["attack_spec_weakened", true]
@@ -397,7 +703,19 @@ const mod = (name, decls) => ({ v: "shape.source.v1", modules: [{ module: name, 
     i.head.source = strip(i.head.source);
     const clo = weaken ? label("set closure, weakened") : EX2.SET_CLOSURE;
     i.head.manifest = remanifest(i.head.manifest, EX2.head, (es) =>
-      es.map((e) => (e.id === EX2.SET ? { ...e, markers: undefined, ...(e.projection === "closure" ? { digest: clo } : e.projection === "contract" && weaken ? { digest: label("set contract, weakened") } : {}) } : e))
+      es.map((e) =>
+        e.id === EX2.SET
+          ? {
+              ...e,
+              markers: undefined,
+              ...(e.projection === "closure"
+                ? { digest: clo }
+                : e.projection === "contract" && weaken
+                  ? { digest: label("set contract, weakened") }
+                  : {})
+            }
+          : e
+      )
     );
     i.records = [
       signed(
@@ -408,7 +726,10 @@ const mod = (name, decls) => ({ v: "shape.source.v1", modules: [{ module: name, 
           provider: { id: "ironkv::verus", version: "dccae1d" },
           revision: EX2.head,
           time: "2026-10-25T10:00:00Z",
-          claim: { id: "ironkv::SetRefinesSpec", fp: "sha256:60a867af53d80a7f7691530f9ae5869779c05abccd602cd75b2baad28a85db38" },
+          claim: {
+            id: "ironkv::SetRefinesSpec",
+            fp: "sha256:60a867af53d80a7f7691530f9ae5869779c05abccd602cd75b2baad28a85db38"
+          },
           code: [cite(EX2.SET, "unit", EX2.SET_UNIT_H), cite(EX2.SET, "closure", clo)],
           deps: [cite(EX2.INSERT, "contract", label("insert contract"))],
           harness: [],
@@ -435,7 +756,11 @@ const mod = (name, decls) => ({ v: "shape.source.v1", modules: [{ module: name, 
         ds
           .filter((d) => d.decl !== "rule")
           .map((d) =>
-            d.decl === "component" && d.name === "DelegationMap" ? { ...d, boundary: true, allows: [kind] } : d.decl === "law" && d.name === "SetRefinesSpec" ? { ...d, tier: "final" } : d
+            d.decl === "component" && d.name === "DelegationMap"
+              ? { ...d, boundary: true, allows: [kind] }
+              : d.decl === "law" && d.name === "SetRefinesSpec"
+                ? { ...d, tier: "final" }
+                : d
           )
       );
     i.base.source = f(i.base.source);
@@ -451,7 +776,10 @@ const mod = (name, decls) => ({ v: "shape.source.v1", modules: [{ module: name, 
         provider: { id: "ironkv::verus", version: "dccae1d" },
         revision: EX2.head,
         time: "2026-10-25T10:00:00Z",
-        claim: { id: "ironkv::SetRefinesSpec", fp: "sha256:60a867af53d80a7f7691530f9ae5869779c05abccd602cd75b2baad28a85db38" },
+        claim: {
+          id: "ironkv::SetRefinesSpec",
+          fp: "sha256:60a867af53d80a7f7691530f9ae5869779c05abccd602cd75b2baad28a85db38"
+        },
         code: [cite(EX2.SET, "unit", EX2.SET_UNIT_H), cite(EX2.SET, "closure", EX2.SET_CLOSURE)],
         deps: [cite(EX2.INSERT, "contract", label("insert contract"))],
         harness: [],
@@ -494,28 +822,70 @@ function clockShape(rule, extra = []) {
     { decl: "actor", name: "tim", kind: "person", identities: ['github("tim")'] },
     { decl: "actor", name: "ann", kind: "person", identities: ['github("ann")'] },
     { decl: "actor", name: "bob", kind: "person", identities: ['github("bob")'] },
-    { decl: "actor", name: "claude", kind: "agent", operator: "tim", identities: ['github("claude[bot]")'] },
-    { decl: "resource", name: "SystemClock", bind: ['ts.call("Date.now")', 'ts.call("Date")', 'ts.call("performance.now")', 'ts.call("process.hrtime")'] },
+    {
+      decl: "actor",
+      name: "claude",
+      kind: "agent",
+      operator: "tim",
+      identities: ['github("claude[bot]")']
+    },
+    {
+      decl: "resource",
+      name: "SystemClock",
+      bind: [
+        'ts.call("Date.now")',
+        'ts.call("Date")',
+        'ts.call("performance.now")',
+        'ts.call("process.hrtime")'
+      ]
+    },
     { decl: "resource", name: "ShapeSource" },
     { decl: "component", name: "ShpCli", paths: ["packages/shp-cli/src/**/*.ts"] },
-    { decl: "component", name: "ShapeRuleEngine", paths: ["packages/shp-checker/src/checker/rules/**/*.ts"], grants: ["Read<ShapeSource>"] },
+    {
+      decl: "component",
+      name: "ShapeRuleEngine",
+      paths: ["packages/shp-checker/src/checker/rules/**/*.ts"],
+      grants: ["Read<ShapeSource>"]
+    },
     ...(rule ? [rule] : []),
     {
       decl: "provider",
       name: "tsClockScan",
       produces: ["observation"],
-      observes: ['effect(ts.call("Date.now"))', 'effect(ts.call("Date"))', 'effect(ts.call("performance.now"))', 'effect(ts.call("process.hrtime"))'],
+      observes: [
+        'effect(ts.call("Date.now"))',
+        'effect(ts.call("Date"))',
+        'effect(ts.call("performance.now"))',
+        'effect(ts.call("process.hrtime"))'
+      ],
       sound: ["presence", "absence"],
       identity: KEYS.tsClockScan.identity,
-      implementation: { paths: ["tools/clock-scan.ts", "tsconfig.json", "package.json", "bun.lock"] }
+      implementation: {
+        paths: ["tools/clock-scan.ts", "tsconfig.json", "package.json", "bun.lock"]
+      }
     },
     ...extra
   ]);
 }
-const clockRule = (tier, except) => ({ decl: "rule", name: "CheckerNeverReadsClock", tier, clauses: [{ forbid: "effect", atom: "Read<SystemClock>", within: ["component ShapeRuleEngine"], ...(except ? { except } : {}) }] });
+const clockRule = (tier, except) => ({
+  decl: "rule",
+  name: "CheckerNeverReadsClock",
+  tier,
+  clauses: [
+    {
+      forbid: "effect",
+      atom: "Read<SystemClock>",
+      within: ["component ShapeRuleEngine"],
+      ...(except ? { except } : {})
+    }
+  ]
+});
 const sfc = ["shape.lock", "shape/tooling.shape"];
 const clockIds = (side, o = {}) => [
-  { id: "ts:packages/shp-checker/src/checker/rules/guards.ts", own: label(`guards own ${o.cf ?? "b"}`) },
+  {
+    id: "ts:packages/shp-checker/src/checker/rules/guards.ts",
+    own: label(`guards own ${o.cf ?? "b"}`)
+  },
   { id: CF, own: label(`cf own ${o.cf ?? "b"}`), unit: label(`cf unit ${o.cf ?? "b"}`) },
   { id: "raw:README.md", own: label(`readme ${side}`), file: label(`readme file ${side}`) },
   { id: "ts:tools/clock-scan.ts", own: label(`scan own ${o.scan ?? "b"}`) }
@@ -523,7 +893,18 @@ const clockIds = (side, o = {}) => [
 function scan(rev, cfTag, facts) {
   const es = [{ ...cite(CF, "unit", label(`cf unit ${cfTag}`)), complete: true, deps: [] }];
   return signed(
-    { v: "shape.evidence.v1", kind: "observation", result: "observes", provider: { id: "tooling::tsClockScan", version: "1" }, revision: rev, time: "2026-10-25T10:00:00Z", scope: { root: scopeRoot(es), entries: es }, facts, harness: [], assumptions: [] },
+    {
+      v: "shape.evidence.v1",
+      kind: "observation",
+      result: "observes",
+      provider: { id: "tooling::tsClockScan", version: "1" },
+      revision: rev,
+      time: "2026-10-25T10:00:00Z",
+      scope: { root: scopeRoot(es), entries: es },
+      facts,
+      harness: [],
+      assumptions: []
+    },
     [KEYS.tsClockScan]
   );
 }
@@ -539,22 +920,50 @@ const RH = "c".repeat(40);
   ]) {
     const i = baseInput({
       change: { ids: ["github:acme/shape#9"] },
-      head: { revision: RH, source: clockShape(headRule), manifest: manifest(RH, clockIds("h"), sfc) },
-      base: { revision: RB, source: clockShape(clockRule("final")), manifest: manifest(RB, clockIds("b"), sfc) },
+      head: {
+        revision: RH,
+        source: clockShape(headRule),
+        manifest: manifest(RH, clockIds("h"), sfc)
+      },
+      base: {
+        revision: RB,
+        source: clockShape(clockRule("final")),
+        manifest: manifest(RB, clockIds("b"), sfc)
+      },
       records: [scan(RH, "b", [NOWF])],
       baseRecords: [scan(RB, "b", [NOWF])],
       authors: [{ identity: 'github("claude[bot]")', verified: true, bot: true }]
     });
     const p1 = run(`NM__${variant}__phase1`, i).out;
-    const refs = p1.obligations.filter((o) => o.kind === "loosening").map((o) => o.binding.slice(0, 19));
-    if (refs.length) i.reviews = ["ann", "bob"].map((w) => ({ identity: `github("${w}")`, line: `shape approve ${refs.join(" ")}` }));
+    const refs = p1.obligations
+      .filter((o) => o.kind === "loosening")
+      .map((o) => o.binding.slice(0, 19));
+    if (refs.length)
+      i.reviews = ["ann", "bob"].map((w) => ({
+        identity: `github("${w}")`,
+        line: `shape approve ${refs.join(" ")}`
+      }));
     rec("NM_final_drift_exit_non_monotone", variant, i);
   }
 }
 {
   const exc = [
-    { decl: "exception", name: "AaaRuleWaiver", waives: ["contradiction"], target: "rule CheckerNeverReadsClock", owner: "ShapeMaintainers", expires: "2027-09-01" },
-    { decl: "exception", name: "ZzzAuthorityWaiver", waives: ["contradiction"], target: "authority ShapeRuleEngine", owner: "ShapeMaintainers", expires: "2026-10-30" }
+    {
+      decl: "exception",
+      name: "AaaRuleWaiver",
+      waives: ["contradiction"],
+      target: "rule CheckerNeverReadsClock",
+      owner: "ShapeMaintainers",
+      expires: "2027-09-01"
+    },
+    {
+      decl: "exception",
+      name: "ZzzAuthorityWaiver",
+      waives: ["contradiction"],
+      target: "authority ShapeRuleEngine",
+      owner: "ShapeMaintainers",
+      expires: "2026-10-30"
+    }
   ];
   for (const [variant, now] of [
     ["now_2026-10-25", "2026-10-25T12:00:00Z"],
@@ -563,8 +972,16 @@ const RH = "c".repeat(40);
     const i = baseInput({
       now,
       change: { ids: ["github:acme/shape#10"] },
-      head: { revision: RH, source: clockShape(clockRule("critical"), exc), manifest: manifest(RH, clockIds("h"), sfc) },
-      base: { revision: RB, source: clockShape(clockRule("critical"), exc), manifest: manifest(RB, clockIds("b"), sfc) },
+      head: {
+        revision: RH,
+        source: clockShape(clockRule("critical"), exc),
+        manifest: manifest(RH, clockIds("h"), sfc)
+      },
+      base: {
+        revision: RB,
+        source: clockShape(clockRule("critical"), exc),
+        manifest: manifest(RB, clockIds("b"), sfc)
+      },
       records: [scan(RH, "b", [NOWF])],
       baseRecords: [scan(RB, "b", [NOWF])],
       authors: [{ identity: 'github("claude[bot]")', verified: true, bot: true }]
@@ -581,8 +998,16 @@ const RH = "c".repeat(40);
   ]) {
     const i = baseInput({
       change: { ids: ["github:acme/shape#11"] },
-      head: { revision: RH, source: clockShape(clockRule("normal")), manifest: manifest(RH, clockIds("h", { cf: "h", scan: scanTag }), sfc) },
-      base: { revision: RB, source: clockShape(clockRule("normal")), manifest: manifest(RB, clockIds("b"), sfc) },
+      head: {
+        revision: RH,
+        source: clockShape(clockRule("normal")),
+        manifest: manifest(RH, clockIds("h", { cf: "h", scan: scanTag }), sfc)
+      },
+      base: {
+        revision: RB,
+        source: clockShape(clockRule("normal")),
+        manifest: manifest(RB, clockIds("b"), sfc)
+      },
       records: recs(),
       authors: [{ identity: 'github("claude[bot]")', verified: true, bot: true }]
     });
@@ -596,9 +1021,19 @@ const RH = "c".repeat(40);
 {
   const f = (src, judges) =>
     modDecls(src, (ds) => [
-      ...ds.map((d) => (d.decl === "shape" ? { ...d, policy: "P" } : d.decl === "actor" && d.name === "ShapeMaintainers" ? { ...d, members: ["tim", "ann"] } : d)),
+      ...ds.map((d) =>
+        d.decl === "shape"
+          ? { ...d, policy: "P" }
+          : d.decl === "actor" && d.name === "ShapeMaintainers"
+            ? { ...d, members: ["tim", "ann"] }
+            : d
+      ),
       { decl: "actor", name: "ann", kind: "person", identities: ['github("ann")'] },
-      { decl: "policy", name: "P", tiers: { normal: { floor: "declared", blocks: ["latent-loosening"], maxAge: 365, judges } } }
+      {
+        decl: "policy",
+        name: "P",
+        tiers: { normal: { floor: "declared", blocks: ["latent-loosening"], maxAge: 365, judges } }
+      }
     ]);
   for (const [variant, hj] of [
     ["control_unchanged", ["owner"]],
@@ -611,7 +1046,14 @@ const RH = "c".repeat(40);
     i.head.revision = i.base.revision;
     const p1 = run(`A12__${variant}__phase1`, i).out;
     const ob = find(p1, (o) => o.kind === "loosening");
-    if (ob) i.reviews = [{ identity: 'github("ann")', line: `shape approve ${ob.binding.slice(0, 19)}`, change: EX3.change }];
+    if (ob)
+      i.reviews = [
+        {
+          identity: 'github("ann")',
+          line: `shape approve ${ob.binding.slice(0, 19)}`,
+          change: EX3.change
+        }
+      ];
     rec("A12_judges_string_intersection", variant, i);
   }
 }
@@ -619,7 +1061,11 @@ const RH = "c".repeat(40);
   const f = (src) =>
     modDecls(src, (ds) => [
       ...ds.map((d) =>
-        d.decl === "actor" && d.name === "ShapeMaintainers" ? { ...d, members: ["tim", "ann"] } : d.decl === "component" ? { ...d, units: d.units.map((u) => ({ ...u, tier: "critical", effects: undefined })) } : d
+        d.decl === "actor" && d.name === "ShapeMaintainers"
+          ? { ...d, members: ["tim", "ann"] }
+          : d.decl === "component"
+            ? { ...d, units: d.units.map((u) => ({ ...u, tier: "critical", effects: undefined })) }
+            : d
       ),
       { decl: "actor", name: "ann", kind: "person", identities: ['github("ann")'] }
     ]);
@@ -631,7 +1077,13 @@ const RH = "c".repeat(40);
     i.base.source = f(i.base.source);
     i.head.source = f(i.head.source);
     i.head.manifest = remanifest(i.head.manifest, EX3.head, setDigest(EX3.ISO, "unit", isoHead));
-    i.reviews = [{ identity: 'github("ann")', line: "shape judge tooling::ShpCli.isoToday/RefactorSensitive/law", change: EX3.change }];
+    i.reviews = [
+      {
+        identity: 'github("ann")',
+        line: "shape judge tooling::ShpCli.isoToday/RefactorSensitive/law",
+        change: EX3.change
+      }
+    ];
     rec("A10_judge_line_not_bound_to_revision", variant, i);
   }
 }
@@ -645,21 +1097,61 @@ const RH = "c".repeat(40);
 // ---------------------------------------------------------------------------------------------
 {
   const eqKey = signerFromSeed("0e");
-  const eqProv = { decl: "provider", name: "refines", produces: ["equivalence"], decides: ["equivalence"], sound: ["presence"], identity: eqKey.identity, implementation: { digest: "sha256:" + "e".repeat(64) } };
-  const comps = ["A", "B", "C"].map((n) => ({ decl: "component", name: n, owner: "Team", tier: "critical", paths: [`src/${n.toLowerCase()}/**/*.ts`] }));
-  const ruleB = { decl: "rule", name: "Isolation", tier: "critical", clauses: [{ forbid: "path", from: ["component A"], to: ["component C"], over: ["calls"] }] };
-  const ruleH = { decl: "rule", name: "Isolation", tier: "critical", clauses: [{ forbid: "path", from: ["component A"], to: ["component B"], over: ["calls"] }] };
+  const eqProv = {
+    decl: "provider",
+    name: "refines",
+    produces: ["equivalence"],
+    decides: ["equivalence"],
+    sound: ["presence"],
+    identity: eqKey.identity,
+    implementation: { digest: "sha256:" + "e".repeat(64) }
+  };
+  const comps = ["A", "B", "C"].map((n) => ({
+    decl: "component",
+    name: n,
+    owner: "Team",
+    tier: "critical",
+    paths: [`src/${n.toLowerCase()}/**/*.ts`]
+  }));
+  const ruleB = {
+    decl: "rule",
+    name: "Isolation",
+    tier: "critical",
+    clauses: [{ forbid: "path", from: ["component A"], to: ["component C"], over: ["calls"] }]
+  };
+  const ruleH = {
+    decl: "rule",
+    name: "Isolation",
+    tier: "critical",
+    clauses: [{ forbid: "path", from: ["component A"], to: ["component B"], over: ["calls"] }]
+  };
   const sf = ["shape.lock", "shape/q.shape"];
-  const m = manifest("e1".padEnd(40, "0"), [{ id: "ts:src/a/a.ts" }, { id: "ts:src/b/b.ts" }, { id: "ts:src/c/c.ts" }], sf);
+  const m = manifest(
+    "e1".padEnd(40, "0"),
+    [{ id: "ts:src/a/a.ts" }, { id: "ts:src/b/b.ts" }, { id: "ts:src/c/c.ts" }],
+    sf
+  );
   const bsrc = mod("q", [...actorsZ, ...comps, ruleB, eqProv]);
   const hsrc = mod("q", [...actorsZ, ...comps, ruleH, eqProv]);
-  const fpOf = (src) => elaborate(src, { now: "2026-10-25T12:00:00Z" }).claims.find((c) => c.op === "path.forbid").fp;
+  const fpOf = (src) =>
+    elaborate(src, { now: "2026-10-25T12:00:00Z" }).claims.find((c) => c.op === "path.forbid").fp;
   for (const [variant, withRec] of [
     ["control_no_implies_record", false],
     ["attack_implies_record_head_to_base", true]
   ]) {
     const r = signed(
-      { v: "shape.evidence.v1", kind: "equivalence", result: "implies", provider: { id: "q::refines", version: "1" }, revision: "e1".padEnd(40, "0"), time: "2026-10-25T10:00:00Z", pair: { space: "claim", from: fpOf(hsrc), to: fpOf(bsrc) }, code: [], harness: [], assumptions: [] },
+      {
+        v: "shape.evidence.v1",
+        kind: "equivalence",
+        result: "implies",
+        provider: { id: "q::refines", version: "1" },
+        revision: "e1".padEnd(40, "0"),
+        time: "2026-10-25T10:00:00Z",
+        pair: { space: "claim", from: fpOf(hsrc), to: fpOf(bsrc) },
+        code: [],
+        harness: [],
+        assumptions: []
+      },
       [eqKey]
     );
     const i = baseInput({
@@ -679,13 +1171,36 @@ const RH = "c".repeat(40);
     ["attack_code_equivalence_record", true]
   ]) {
     const i = ex3();
-    const f = (src) => modDecls(src, (ds) => [...ds, { decl: "provider", name: "verusRefines", produces: ["equivalence"], decides: ["equivalence"], sound: ["presence"], identity: eqKey.identity, implementation: { digest: "sha256:" + "f".repeat(64) } }]);
+    const f = (src) =>
+      modDecls(src, (ds) => [
+        ...ds,
+        {
+          decl: "provider",
+          name: "verusRefines",
+          produces: ["equivalence"],
+          decides: ["equivalence"],
+          sound: ["presence"],
+          identity: eqKey.identity,
+          implementation: { digest: "sha256:" + "f".repeat(64) }
+        }
+      ]);
     i.base.source = f(i.base.source);
     i.head.source = f(i.head.source);
     if (withRec)
       i.records.push(
         signed(
-          { v: "shape.evidence.v1", kind: "equivalence", result: "equivalent", provider: { id: "tooling::verusRefines", version: "1" }, revision: EX3.head, time: "2026-10-25T10:00:00Z", pair: { space: "code", from: EX3.ISO_B, to: EX3.ISO_H }, code: [], harness: [], assumptions: [] },
+          {
+            v: "shape.evidence.v1",
+            kind: "equivalence",
+            result: "equivalent",
+            provider: { id: "tooling::verusRefines", version: "1" },
+            revision: EX3.head,
+            time: "2026-10-25T10:00:00Z",
+            pair: { space: "code", from: EX3.ISO_B, to: EX3.ISO_H },
+            code: [],
+            harness: [],
+            assumptions: []
+          },
           [eqKey]
         )
       );
@@ -694,7 +1209,12 @@ const RH = "c".repeat(40);
 }
 {
   const i = ex3s2();
-  const dc = (src) => modDecls(src, (ds) => ds.map((d) => (d.decl === "provider" && d.name === "bunTest" ? { ...d, depsComplete: true } : d)));
+  const dc = (src) =>
+    modDecls(src, (ds) =>
+      ds.map((d) =>
+        d.decl === "provider" && d.name === "bunTest" ? { ...d, depsComplete: true } : d
+      )
+    );
   i.base.source = dc(i.base.source);
   i.head.source = dc(i.head.source);
   const old = signed(
@@ -705,10 +1225,16 @@ const RH = "c".repeat(40);
       provider: { id: "checker::bunTest", version: "1.4.2" },
       revision: "a".repeat(40),
       time: "2026-10-25T10:00:00Z",
-      claim: { id: "checker::CheckIsDeterministic", fp: "sha256:8620c3bead39262d509d30d813c84d79db4e1ce51b1dd92c904225082519b8c3" },
+      claim: {
+        id: "checker::CheckIsDeterministic",
+        fp: "sha256:8620c3bead39262d509d30d813c84d79db4e1ce51b1dd92c904225082519b8c3"
+      },
       code: [cite(EX3S2.CSM, "unit", label("csm unit"))],
       deps: [cite("ts:packages/shp-checker/src/checker/api.ts", "own", label("api own"))],
-      harness: [cite(EX3S2.DET, "own", label("determinism.test.ts own, older")), cite(EX3S2.HARN, "own", label("behavioural/harness.ts own"))],
+      harness: [
+        cite(EX3S2.DET, "own", label("determinism.test.ts own, older")),
+        cite(EX3S2.HARN, "own", label("behavioural/harness.ts own"))
+      ],
       assumptions: []
     },
     [KEYS.bunTest]
@@ -723,14 +1249,26 @@ const RH = "c".repeat(40);
 // ---------------------------------------------------------------------------------------------
 {
   for (const [variant, author] of [
-    ["control_mapped_agent", { identity: 'github("acme-code-agent[bot]")', verified: true, bot: true }],
-    ["attack_unmapped_machine_user", { identity: 'github("acme-helper")', verified: true, bot: false }]
+    [
+      "control_mapped_agent",
+      { identity: 'github("acme-code-agent[bot]")', verified: true, bot: true }
+    ],
+    [
+      "attack_unmapped_machine_user",
+      { identity: 'github("acme-helper")', verified: true, bot: false }
+    ]
   ]) {
     const i = ex1("C");
     i.authors = [author];
     const p1 = run(`UA__${variant}__phase1`, i).out;
-    const refs = p1.obligations.filter((o) => o.kind === "loosening" || o.kind === "coverage").map((o) => o.binding.slice(0, 19));
-    i.reviews = ["bob", "alice"].map((w) => ({ identity: `github("${w}")`, line: `shape approve ${refs.join(" ")}`, change: "github:acme/audit#57" }));
+    const refs = p1.obligations
+      .filter((o) => o.kind === "loosening" || o.kind === "coverage")
+      .map((o) => o.binding.slice(0, 19));
+    i.reviews = ["bob", "alice"].map((w) => ({
+      identity: `github("${w}")`,
+      line: `shape approve ${refs.join(" ")}`,
+      change: "github:acme/audit#57"
+    }));
     rec("UA_unmapped_human_author", variant, i);
   }
 }
@@ -740,8 +1278,13 @@ for (const [a, vs] of Object.entries(RESULTS).sort()) {
   console.log(`== ${a}`);
   for (const [v, r] of Object.entries(vs).sort()) {
     const obs = r.obligations
-      .map((o) => `${o.kind}/${o.reason ?? o.force ?? "-"}/${o.severity}/${o.tier}${o.exception ? `/exc=${o.exception}` : ""}${o.exploited ? "/expl" : ""}${o.questions ? `/${o.questions.join("+")}` : ""}`)
+      .map(
+        (o) =>
+          `${o.kind}/${o.reason ?? o.force ?? "-"}/${o.severity}/${o.tier}${o.exception ? `/exc=${o.exception}` : ""}${o.exploited ? "/expl" : ""}${o.questions ? `/${o.questions.join("+")}` : ""}`
+      )
       .join("; ");
-    console.log(`  ${v.padEnd(48)} ${String(r.verdict).padEnd(8)} errs=${JSON.stringify(r.errors)} rej=${JSON.stringify(r.rejected)} ans=${JSON.stringify(r.answered.map((x) => x.as + (x.self ? "(self)" : "")))} debt=${JSON.stringify(r.debt)} | ${obs}`);
+    console.log(
+      `  ${v.padEnd(48)} ${String(r.verdict).padEnd(8)} errs=${JSON.stringify(r.errors)} rej=${JSON.stringify(r.rejected)} ans=${JSON.stringify(r.answered.map((x) => x.as + (x.self ? "(self)" : "")))} debt=${JSON.stringify(r.debt)} | ${obs}`
+    );
   }
 }

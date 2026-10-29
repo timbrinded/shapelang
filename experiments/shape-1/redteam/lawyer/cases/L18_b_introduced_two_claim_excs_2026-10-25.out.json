@@ -1,0 +1,53 @@
+{
+ "answered": [
+  {
+   "as": "exception-answer",
+   "obligation": "ob:d98055745547389f83971693def7cf3d1e3dd6850821637f736b8867dbc95226"
+  }
+ ],
+ "contract": "shape.check.output/v1",
+ "debt": [
+  {
+   "exception": "tooling::AaaRuleWaiver",
+   "expiresInDays": 311,
+   "obligation": "ob:d98055745547389f83971693def7cf3d1e3dd6850821637f736b8867dbc95226",
+   "owner": "tooling::ShapeMaintainers"
+  }
+ ],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:26c1f8d79bf5d0941f1984bfea7f58fba10b86c0d25c0fd3709150f1155f1d61",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:cf369f77ee17e87abf8598b5489f3b483cc1b4efe348610cee5fe703c0ac7110",
+    "ids": [
+     "tooling::CheckerNeverReadsClock"
+    ],
+    "tier": "critical"
+   },
+   "exception": "tooling::AaaRuleWaiver",
+   "exploited": null,
+   "final": false,
+   "force": "sound",
+   "group": "g:affa13099568e6d4429294671a29c7617098da8373375a82e29e9b2d368f3c8b",
+   "introduced": true,
+   "key": "ob:d98055745547389f83971693def7cf3d1e3dd6850821637f736b8867dbc95226",
+   "kind": "contradiction",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": null,
+   "reason": null,
+   "severity": "owed",
+   "subject": {
+    "atom": "Read<tooling::SystemClock>",
+    "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+   },
+   "tier": "critical",
+   "witness": [
+    "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e"
+   ]
+  }
+ ],
+ "verdict": "owed"
+}

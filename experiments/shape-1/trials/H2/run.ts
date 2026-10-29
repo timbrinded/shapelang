@@ -24,7 +24,9 @@ const arm = (opt("arm") ?? "A") as "A" | "X";
 if (cmd === "prep") {
   const t0 = performance.now();
   const b = await prepareBase(arm, work);
-  process.stdout.write(`base ${arm} ${b.revision}: ${b.baseRecords.length} base records, ${b.judged.length} judgments (${b.judgmentSkipped.length} laws skipped: ${b.judgmentSkipped.join(", ")}), ${((performance.now() - t0) / 1000).toFixed(1)} s\n`);
+  process.stdout.write(
+    `base ${arm} ${b.revision}: ${b.baseRecords.length} base records, ${b.judged.length} judgments (${b.judgmentSkipped.length} laws skipped: ${b.judgmentSkipped.join(", ")}), ${((performance.now() - t0) / 1000).toFixed(1)} s\n`
+  );
 } else if (cmd === "dry") {
   const { loadTs } = await import("../../dogfood/providers/ts-ident.ts");
   const dir = materialize("HEAD", join(work, "trees", "dry-pristine"));
@@ -44,7 +46,9 @@ if (cmd === "prep") {
       const sf = ts.createSourceFile(f, t.read(f), ts.ScriptTarget.Latest, true);
       if ((sf.parseDiagnostics ?? []).length > 0) bad.push(f);
     }
-    process.stdout.write(`${s.id} ${err ? `APPLY-ERROR ${err}` : "ok"} touched=${[...t.touched].join(",")}${bad.length ? ` PARSE-ERRORS=${bad.join(",")}` : ""}\n`);
+    process.stdout.write(
+      `${s.id} ${err ? `APPLY-ERROR ${err}` : "ok"} touched=${[...t.touched].join(",")}${bad.length ? ` PARSE-ERRORS=${bad.join(",")}` : ""}\n`
+    );
     rmSync(d, { recursive: true, force: true });
   }
   rmSync(dir, { recursive: true, force: true });
@@ -59,7 +63,9 @@ if (cmd === "prep") {
       const row = await runSeed(arm, s, work, base);
       appendFileSync(out, `${JSON.stringify(row)}\n`);
       const intro = row.obligations.filter((o) => o.introduced);
-      process.stderr.write(`${arm} ${s.id} ${row.verdict} errors=${row.errors.length} introduced=${intro.length} [${intro.map((o) => `${o.kind}:${o.claim ?? (typeof o.subject === "string" ? o.subject : "")}`).join("; ")}] ${row.seconds.total}s\n`);
+      process.stderr.write(
+        `${arm} ${s.id} ${row.verdict} errors=${row.errors.length} introduced=${intro.length} [${intro.map((o) => `${o.kind}:${o.claim ?? (typeof o.subject === "string" ? o.subject : "")}`).join("; ")}] ${row.seconds.total}s\n`
+      );
     } catch (e) {
       appendFileSync(out, `${JSON.stringify({ arm, seed: s.id, crash: String(e?.stack ?? e) })}\n`);
       process.stderr.write(`${arm} ${s.id} CRASH ${String(e)}\n`);
@@ -67,6 +73,13 @@ if (cmd === "prep") {
   }
 } else if (cmd === "meta") {
   const { writeFileSync } = await import("node:fs");
-  writeFileSync(join(work, "seeds.json"), `${JSON.stringify(SEEDS.map(({ apply: _a, ...m }) => m), null, 1)}\n`);
+  writeFileSync(
+    join(work, "seeds.json"),
+    `${JSON.stringify(
+      SEEDS.map(({ apply: _a, ...m }) => m),
+      null,
+      1
+    )}\n`
+  );
   process.stdout.write(`${SEEDS.length} seeds\n`);
 } else throw new Error("usage: run.ts prep|dry|run|meta ...");

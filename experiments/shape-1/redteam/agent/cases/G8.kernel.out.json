@@ -1,0 +1,46 @@
+{
+ "answered": [
+  {
+   "as": "discharge",
+   "obligation": "ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d"
+  }
+ ],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:48dec644b2c008e44a083bdc750a9ff9aa6bf8b186355f2225740ae47584d1d7",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:dc8454f26ba4a098a6681e766d63ddf9226954a5a5bf8ed9d8148c7b0996fac8",
+    "ids": [
+     "ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": "sound",
+   "group": "g:1773aa8cf684c1c60f847e64760ffdcd5c6bdbb88a490e1c24025571a0415e81",
+   "introduced": false,
+   "key": "ob:220a9b307f0f3608a5573921a7884109fe00e95b64b0202e797e5fdc3faef2af",
+   "kind": "contradiction",
+   "owner": "ironkv::IronKvTeam",
+   "questions": null,
+   "reason": null,
+   "severity": "owed",
+   "subject": {
+    "atom": "external_body<std::Trust>",
+    "code": "verus:ironkv/src/host_t.rs#Host::send"
+   },
+   "tier": "critical",
+   "witness": [
+    "sha256:4d5288ce6d2ededfce2d79368c5fa934e9959d7005fdf1b8220baae6c65c2bcf"
+   ]
+  }
+ ],
+ "verdict": "owed"
+}

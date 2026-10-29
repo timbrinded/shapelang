@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r09_list_slice
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R09ListSliceModuleAppendAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts#append")
+  fingerprint ast.semantic_subtree_v1("sha256:b88bd958caf297a630e9fb056a41529ba6f69e04fb0c09303e488f27f05bd485")
+}
+
+resource R09ListSliceModuleEmptyLogAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts#emptyLog")
+  fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+}
+
+resource R09ListSliceModuleGetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts#get")
+  fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+}
+
+resource R09ListSliceModuleListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts#list")
+  fingerprint ast.semantic_subtree_v1("sha256:671fa8819b52807d45ed7334dbbbe599e1f9cffdbb97899610cb4f9b7b5ca5a6")
+}
+
+resource R09ListSliceModulePurgeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts#purge")
+  fingerprint ast.semantic_subtree_v1("sha256:8b12a4a10086337a3191358ff9a5dfb3a345a47ffbce86f8833626ad5689e06b")
+}
+
+component R09ListSliceModule : GeneratedCandidate {
+  fn append
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts#append")
+    effects unknown
+  fn emptyLog
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts#emptyLog")
+    effects unknown
+  fn get
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts#get")
+    effects unknown
+  fn list
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts#list")
+    effects unknown
+  fn purge
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts#purge")
+    effects unknown
+}
+
+relation R09ListSliceModuleAppendGeneratedFromR09ListSliceModuleAppendAstAnchor {
+  kind generated_from
+  connects R09ListSliceModule -> R09ListSliceModuleAppendAstAnchor
+  roles { R09ListSliceModule as generated, R09ListSliceModuleAppendAstAnchor as syntax }
+  expects R09ListSliceModuleAppendAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b88bd958caf297a630e9fb056a41529ba6f69e04fb0c09303e488f27f05bd485")
+  summary "fn R09ListSliceModule.append generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts#append."
+}
+
+relation R09ListSliceModuleEmptyLogGeneratedFromR09ListSliceModuleEmptyLogAstAnchor {
+  kind generated_from
+  connects R09ListSliceModule -> R09ListSliceModuleEmptyLogAstAnchor
+  roles { R09ListSliceModule as generated, R09ListSliceModuleEmptyLogAstAnchor as syntax }
+  expects R09ListSliceModuleEmptyLogAstAnchor fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+  summary "fn R09ListSliceModule.emptyLog generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts#emptyLog."
+}
+
+relation R09ListSliceModuleGetGeneratedFromR09ListSliceModuleGetAstAnchor {
+  kind generated_from
+  connects R09ListSliceModule -> R09ListSliceModuleGetAstAnchor
+  roles { R09ListSliceModule as generated, R09ListSliceModuleGetAstAnchor as syntax }
+  expects R09ListSliceModuleGetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+  summary "fn R09ListSliceModule.get generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts#get."
+}
+
+relation R09ListSliceModuleListGeneratedFromR09ListSliceModuleListAstAnchor {
+  kind generated_from
+  connects R09ListSliceModule -> R09ListSliceModuleListAstAnchor
+  roles { R09ListSliceModule as generated, R09ListSliceModuleListAstAnchor as syntax }
+  expects R09ListSliceModuleListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:671fa8819b52807d45ed7334dbbbe599e1f9cffdbb97899610cb4f9b7b5ca5a6")
+  summary "fn R09ListSliceModule.list generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts#list."
+}
+
+relation R09ListSliceModulePurgeGeneratedFromR09ListSliceModulePurgeAstAnchor {
+  kind generated_from
+  connects R09ListSliceModule -> R09ListSliceModulePurgeAstAnchor
+  roles { R09ListSliceModule as generated, R09ListSliceModulePurgeAstAnchor as syntax }
+  expects R09ListSliceModulePurgeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b12a4a10086337a3191358ff9a5dfb3a345a47ffbce86f8833626ad5689e06b")
+  summary "fn R09ListSliceModule.purge generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts#purge."
+}
+
+implementation R09ListSliceModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts"
+  }
+  conforms_to R09ListSliceModule
+}

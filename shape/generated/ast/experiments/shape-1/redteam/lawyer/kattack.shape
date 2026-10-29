@@ -1,0 +1,801 @@
+module shape.generated.ast.experiments.shape_1.redteam.lawyer.kattack
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource KattackModuleActorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#actor")
+  fingerprint ast.semantic_subtree_v1("sha256:64e39de1db0373b6c0c1636d297ea553901f7fdbbfed79a7fa540f3a32e9b3ef")
+}
+
+resource KattackModuleActors3AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#actors3")
+  fingerprint ast.semantic_subtree_v1("sha256:1b2f8c6bf8e8be3ca4f73aa5423bbad8162659a313b3fda52e75665ccdb3de81")
+}
+
+resource KattackModuleCallObsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#call_obs")
+  fingerprint ast.semantic_subtree_v1("sha256:f6694fef0668fa311d6ddea55039c427b386faa0a41b847f1289fc37ee7fb7fb")
+}
+
+resource KattackModuleCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#case")
+  fingerprint ast.semantic_subtree_v1("sha256:cc7c837f9f6e62d3cd1c871fd98b6268e79622f2fd0d61a2aafe36f040978bec")
+}
+
+resource KattackModuleCfManAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#cf_man")
+  fingerprint ast.semantic_subtree_v1("sha256:2f61454b7262039b507c1e0e1dc19fed2998a1327dbd2f7fa4d66b317efbdd30")
+}
+
+resource KattackModuleCheckMan2AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#check_man2")
+  fingerprint ast.semantic_subtree_v1("sha256:15da745847a2479be249c7c79943bdca9230f6e07c4bbfeebd3eab181a144176")
+}
+
+resource KattackModuleCheckManAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#check_man")
+  fingerprint ast.semantic_subtree_v1("sha256:217a9f3dc0ad53b4995aa81db83e4399541bb6392eefceab7d3d1faf95b1d66a")
+}
+
+resource KattackModuleCiteAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#cite")
+  fingerprint ast.semantic_subtree_v1("sha256:ac7c749aae06fb7e70e6f9b585a12be75ea1d02c094a5e34ccc27f292f446da4")
+}
+
+resource KattackModuleClaimAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#claim")
+  fingerprint ast.semantic_subtree_v1("sha256:ae5c8209d34341669f8c3649aba155dd404ba68a3d040701d53ba8f160793859")
+}
+
+resource KattackModuleClaimFpAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#claim_fp")
+  fingerprint ast.semantic_subtree_v1("sha256:42506b4483faf47b485c6865493d1241db64b933f4b1046a2aa1601abd55dc52")
+}
+
+resource KattackModuleClockObsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#clock_obs")
+  fingerprint ast.semantic_subtree_v1("sha256:64e767449d93e7f55138c9cdef440ed8f290b1ac0dbe138d4f88323b55f2445a")
+}
+
+resource KattackModuleClockProvAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#clock_prov")
+  fingerprint ast.semantic_subtree_v1("sha256:c4278fe1aad7f1845c7723935a8f8708e965373ddb05b4c6b550e1d298eb31ef")
+}
+
+resource KattackModuleClockRuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#clock_rule")
+  fingerprint ast.semantic_subtree_v1("sha256:5f32269f0bddc65c4d2bb9e4fbe06b991a148bf0887e7c51d5fb5f16f7775e9e")
+}
+
+resource KattackModuleComp1AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#comp1")
+  fingerprint ast.semantic_subtree_v1("sha256:8ffb5b5641ef1f5076aded425f3d64618d8153ee49c18c946f881121b589e955")
+}
+
+resource KattackModuleCompAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#comp")
+  fingerprint ast.semantic_subtree_v1("sha256:15c493726784108e833d41ba75a70b25afaea6d09fce4752c1e36c3c14b1e89f")
+}
+
+resource KattackModuleDigAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#dig")
+  fingerprint ast.semantic_subtree_v1("sha256:a1ae171306c40ee5f75712d730f4c14a82a74d63043b4a706581e70c9fb381ae")
+}
+
+resource KattackModuleDmapAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#dmap")
+  fingerprint ast.semantic_subtree_v1("sha256:0047626f80d85bb24c0d48c80158b9a9b3418a28c4d371825de5eddcede66d9e")
+}
+
+resource KattackModuleEntAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#ent")
+  fingerprint ast.semantic_subtree_v1("sha256:790c2eb1a9b8d4c399a42cd519f4c9a0dda404a78c4fc91a4fe01fa24759fe60")
+}
+
+resource KattackModuleEntryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#entry")
+  fingerprint ast.semantic_subtree_v1("sha256:746319c0d020c9c87f5d74c57536abc601c53fbc4719fd3f29be811918ec1ef1")
+}
+
+resource KattackModuleEsfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#esf")
+  fingerprint ast.semantic_subtree_v1("sha256:8004e3893365693c0267db8ced15d1114ce6094449f52ede73834c4c4ce76610")
+}
+
+resource KattackModuleFileEntriesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#file_entries")
+  fingerprint ast.semantic_subtree_v1("sha256:8b93ffc5a50b79878b27c0e81fae32d23c6be35dbfe88c964807bac0ca38f9c8")
+}
+
+resource KattackModuleFindObAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#find_ob")
+  fingerprint ast.semantic_subtree_v1("sha256:52800ebaecb726b00d9a1636322144c8a87da8da7b2d66865eb3542fed7ab19b")
+}
+
+resource KattackModuleFnEntriesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#fn_entries")
+  fingerprint ast.semantic_subtree_v1("sha256:76a9bf3b563ad94a907cc3cfbdb4a28e476adf4391aa05a72aa6d9d052ac6394")
+}
+
+resource KattackModuleGeneratedFunctionPolicyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#policy")
+  fingerprint ast.semantic_subtree_v1("sha256:51461d8d344902442e606a6b4b503ea3cc958bd3d7065750febc1e46a2ccf45d")
+}
+
+resource KattackModuleGuardLawAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#guard_law")
+  fingerprint ast.semantic_subtree_v1("sha256:01fbde1c3bb6dd807b5821fc7957d85615940d3c9b5c7f1a3094b9db9791f960")
+}
+
+resource KattackModuleHAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#H")
+  fingerprint ast.semantic_subtree_v1("sha256:509e08015776f7e704de7d1d98d8c15b03b4ade67eab4612b2e8b6de250495b0")
+}
+
+resource KattackModuleIsoManAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#iso_man")
+  fingerprint ast.semantic_subtree_v1("sha256:ed150b7b16bddabd344f36b49e5440e4ca1719fb02f7a8d82e311fb02e93e614")
+}
+
+resource KattackModuleJcsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#jcs")
+  fingerprint ast.semantic_subtree_v1("sha256:6b1b16155f55fedddabb2f008595c78479d4bbea2b646a800c04dfa8405df37c")
+}
+
+resource KattackModuleLabelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#label")
+  fingerprint ast.semantic_subtree_v1("sha256:4fe648b024c18c0f20d8d0dd0059338966483912db59d304bca1b037135f5f18")
+}
+
+resource KattackModuleLawSetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#law_set")
+  fingerprint ast.semantic_subtree_v1("sha256:43c0980407f32b7edce3cecfb489cb3326f781cff9ec639d3fd79cf28b071269")
+}
+
+resource KattackModuleMan2AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#man2")
+  fingerprint ast.semantic_subtree_v1("sha256:a9e2cf627cbe2970fe3cf8757f6783c20ac584722f1b32f2e92f6348c570d3c7")
+}
+
+resource KattackModuleManifestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#manifest")
+  fingerprint ast.semantic_subtree_v1("sha256:682bbc535933df4e1d51daa6854e24bfee5f4caeff16d3e3e80078f9a4d0fbaf")
+}
+
+resource KattackModuleProofRecAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#proof_rec")
+  fingerprint ast.semantic_subtree_v1("sha256:d7a1d3261cacb913f9f75cf7bcf61d88c8424b5616cff23c5094c0a2fdc83043")
+}
+
+resource KattackModuleProvAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#prov")
+  fingerprint ast.semantic_subtree_v1("sha256:28b4e18e3c97de56560cf92aefe15fb4af1b5f2ad54c0b3b89453da142a7fe42")
+}
+
+resource KattackModuleRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#record")
+  fingerprint ast.semantic_subtree_v1("sha256:16ff691d44bfc63ff37d4bd1482c99d7bc251662f6724197c01f59a80d70d537")
+}
+
+resource KattackModuleRecordResultAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#record_result")
+  fingerprint ast.semantic_subtree_v1("sha256:d334eb6d7a0d541e2389d76c620da61cd3a4c85f4518d8617b6ba40f6c286824")
+}
+
+resource KattackModuleReqAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#req")
+  fingerprint ast.semantic_subtree_v1("sha256:19b31996ddc44800a00cab39ea37f5dfcf4fc45e119f224b672662aa09cf55d8")
+}
+
+resource KattackModuleRes1AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#res1")
+  fingerprint ast.semantic_subtree_v1("sha256:ee0614897d083abb61143b4f64a7f0776d859ef3bf2dd8a0ca0671a5e42e6816")
+}
+
+resource KattackModuleResAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#res")
+  fingerprint ast.semantic_subtree_v1("sha256:c5fed2ea05a50e7091a98793e199b668bf3aa3ffd7e5426d5d16f3e570a42fc8")
+}
+
+resource KattackModuleReviewAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#review")
+  fingerprint ast.semantic_subtree_v1("sha256:7e31668b8a8dfa64edf7c0281e46f6187b3ea83da8a209b0239facc89974ac02")
+}
+
+resource KattackModuleRunAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#run")
+  fingerprint ast.semantic_subtree_v1("sha256:5c6bfd23f47ec344cfc0d6c2eb8419ec2ffbf73ddcf29efa58635db5698382b0")
+}
+
+resource KattackModuleSqlObsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#sql_obs")
+  fingerprint ast.semantic_subtree_v1("sha256:6d5451799adcdd51255558bd93a84f8bd53e894660708cd21017a548102922ed")
+}
+
+resource KattackModuleSummarizeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#summarize")
+  fingerprint ast.semantic_subtree_v1("sha256:1616645a05780c314624012b4d227a901ae30e4cb7e71e19cfc481182ce6e781")
+}
+
+resource KattackModuleTestRec2AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#test_rec2")
+  fingerprint ast.semantic_subtree_v1("sha256:13431e1ebed23d60eecd2ee914ad3cc86fb17676ce6edd276dd1153a91ab76c4")
+}
+
+resource KattackModuleTestRecAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#test_rec")
+  fingerprint ast.semantic_subtree_v1("sha256:af06e19615288e2a14e7cea18b880593fbaa64233084c76e7781222100db85e7")
+}
+
+resource KattackModuleTierpolAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#tierpol")
+  fingerprint ast.semantic_subtree_v1("sha256:0bab2dda9a8155be41690699cd7fe2d4d30ecba66cccab5e9b7cc0934cda4e1c")
+}
+
+resource KattackModuleTimJudgmentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#tim_judgment")
+  fingerprint ast.semantic_subtree_v1("sha256:610e7ef4d0769bd35c9ca22e5fbc5d371ee97aa81ba8d5266d2f861ba4d17ad3")
+}
+
+resource KattackModuleUnitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#unit")
+  fingerprint ast.semantic_subtree_v1("sha256:8c1c2aaf9d4133a874954448aa4cd37c55f7bdaa08b4feae25f71db963df5db1")
+}
+
+resource KattackModuleVerusProvAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/kattack.py#verus_prov")
+  fingerprint ast.semantic_subtree_v1("sha256:52378daebf6a45fb891c3cc021ce1bce8ce17855b595dff8da4150ddb8ed63ff")
+}
+
+component KattackModule : GeneratedCandidate {
+  fn H
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#H")
+    effects unknown
+  fn actor
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#actor")
+    effects unknown
+  fn actors3
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#actors3")
+    effects unknown
+  fn call_obs
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#call_obs")
+    effects unknown
+  fn case
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#case")
+    effects unknown
+  fn cf_man
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#cf_man")
+    effects unknown
+  fn check_man
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#check_man")
+    effects unknown
+  fn check_man2
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#check_man2")
+    effects unknown
+  fn cite
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#cite")
+    effects unknown
+  fn claim
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#claim")
+    effects unknown
+  fn claim_fp
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#claim_fp")
+    effects unknown
+  fn clock_obs
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#clock_obs")
+    effects unknown
+  fn clock_prov
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#clock_prov")
+    effects unknown
+  fn clock_rule
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#clock_rule")
+    effects unknown
+  fn comp
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#comp")
+    effects unknown
+  fn comp1
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#comp1")
+    effects unknown
+  fn dig
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#dig")
+    effects unknown
+  fn dmap
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#dmap")
+    effects unknown
+  fn ent
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#ent")
+    effects unknown
+  fn entry
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#entry")
+    effects unknown
+  fn esf
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#esf")
+    effects unknown
+  fn file_entries
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#file_entries")
+    effects unknown
+  fn find_ob
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#find_ob")
+    effects unknown
+  fn fn_entries
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#fn_entries")
+    effects unknown
+  fn generatedFunction_policy
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#policy")
+    effects unknown
+  fn guard_law
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#guard_law")
+    effects unknown
+  fn iso_man
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#iso_man")
+    effects unknown
+  fn jcs
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#jcs")
+    effects unknown
+  fn label
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#label")
+    effects unknown
+  fn law_set
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#law_set")
+    effects unknown
+  fn man2
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#man2")
+    effects unknown
+  fn manifest
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#manifest")
+    effects unknown
+  fn proof_rec
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#proof_rec")
+    effects unknown
+  fn prov
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#prov")
+    effects unknown
+  fn record
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#record")
+    effects unknown
+  fn record_result
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#record_result")
+    effects unknown
+  fn req
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#req")
+    effects unknown
+  fn res
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#res")
+    effects unknown
+  fn res1
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#res1")
+    effects unknown
+  fn review
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#review")
+    effects unknown
+  fn run
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#run")
+    effects unknown
+  fn sql_obs
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#sql_obs")
+    effects unknown
+  fn summarize
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#summarize")
+    effects unknown
+  fn test_rec
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#test_rec")
+    effects unknown
+  fn test_rec2
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#test_rec2")
+    effects unknown
+  fn tierpol
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#tierpol")
+    effects unknown
+  fn tim_judgment
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#tim_judgment")
+    effects unknown
+  fn unit
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#unit")
+    effects unknown
+  fn verus_prov
+    source python("experiments/shape-1/redteam/lawyer/kattack.py#verus_prov")
+    effects unknown
+}
+
+relation KattackModuleActorGeneratedFromKattackModuleActorAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleActorAstAnchor
+  roles { KattackModule as generated, KattackModuleActorAstAnchor as syntax }
+  expects KattackModuleActorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:64e39de1db0373b6c0c1636d297ea553901f7fdbbfed79a7fa540f3a32e9b3ef")
+  summary "fn KattackModule.actor generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#actor."
+}
+
+relation KattackModuleActors3GeneratedFromKattackModuleActors3AstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleActors3AstAnchor
+  roles { KattackModule as generated, KattackModuleActors3AstAnchor as syntax }
+  expects KattackModuleActors3AstAnchor fingerprint ast.semantic_subtree_v1("sha256:1b2f8c6bf8e8be3ca4f73aa5423bbad8162659a313b3fda52e75665ccdb3de81")
+  summary "fn KattackModule.actors3 generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#actors3."
+}
+
+relation KattackModuleCallObsGeneratedFromKattackModuleCallObsAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleCallObsAstAnchor
+  roles { KattackModule as generated, KattackModuleCallObsAstAnchor as syntax }
+  expects KattackModuleCallObsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f6694fef0668fa311d6ddea55039c427b386faa0a41b847f1289fc37ee7fb7fb")
+  summary "fn KattackModule.call_obs generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#call_obs."
+}
+
+relation KattackModuleCaseGeneratedFromKattackModuleCaseAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleCaseAstAnchor
+  roles { KattackModule as generated, KattackModuleCaseAstAnchor as syntax }
+  expects KattackModuleCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cc7c837f9f6e62d3cd1c871fd98b6268e79622f2fd0d61a2aafe36f040978bec")
+  summary "fn KattackModule.case generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#case."
+}
+
+relation KattackModuleCfManGeneratedFromKattackModuleCfManAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleCfManAstAnchor
+  roles { KattackModule as generated, KattackModuleCfManAstAnchor as syntax }
+  expects KattackModuleCfManAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2f61454b7262039b507c1e0e1dc19fed2998a1327dbd2f7fa4d66b317efbdd30")
+  summary "fn KattackModule.cf_man generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#cf_man."
+}
+
+relation KattackModuleCheckMan2GeneratedFromKattackModuleCheckMan2AstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleCheckMan2AstAnchor
+  roles { KattackModule as generated, KattackModuleCheckMan2AstAnchor as syntax }
+  expects KattackModuleCheckMan2AstAnchor fingerprint ast.semantic_subtree_v1("sha256:15da745847a2479be249c7c79943bdca9230f6e07c4bbfeebd3eab181a144176")
+  summary "fn KattackModule.check_man2 generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#check_man2."
+}
+
+relation KattackModuleCheckManGeneratedFromKattackModuleCheckManAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleCheckManAstAnchor
+  roles { KattackModule as generated, KattackModuleCheckManAstAnchor as syntax }
+  expects KattackModuleCheckManAstAnchor fingerprint ast.semantic_subtree_v1("sha256:217a9f3dc0ad53b4995aa81db83e4399541bb6392eefceab7d3d1faf95b1d66a")
+  summary "fn KattackModule.check_man generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#check_man."
+}
+
+relation KattackModuleCiteGeneratedFromKattackModuleCiteAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleCiteAstAnchor
+  roles { KattackModule as generated, KattackModuleCiteAstAnchor as syntax }
+  expects KattackModuleCiteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ac7c749aae06fb7e70e6f9b585a12be75ea1d02c094a5e34ccc27f292f446da4")
+  summary "fn KattackModule.cite generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#cite."
+}
+
+relation KattackModuleClaimFpGeneratedFromKattackModuleClaimFpAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleClaimFpAstAnchor
+  roles { KattackModule as generated, KattackModuleClaimFpAstAnchor as syntax }
+  expects KattackModuleClaimFpAstAnchor fingerprint ast.semantic_subtree_v1("sha256:42506b4483faf47b485c6865493d1241db64b933f4b1046a2aa1601abd55dc52")
+  summary "fn KattackModule.claim_fp generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#claim_fp."
+}
+
+relation KattackModuleClaimGeneratedFromKattackModuleClaimAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleClaimAstAnchor
+  roles { KattackModule as generated, KattackModuleClaimAstAnchor as syntax }
+  expects KattackModuleClaimAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ae5c8209d34341669f8c3649aba155dd404ba68a3d040701d53ba8f160793859")
+  summary "fn KattackModule.claim generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#claim."
+}
+
+relation KattackModuleClockObsGeneratedFromKattackModuleClockObsAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleClockObsAstAnchor
+  roles { KattackModule as generated, KattackModuleClockObsAstAnchor as syntax }
+  expects KattackModuleClockObsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:64e767449d93e7f55138c9cdef440ed8f290b1ac0dbe138d4f88323b55f2445a")
+  summary "fn KattackModule.clock_obs generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#clock_obs."
+}
+
+relation KattackModuleClockProvGeneratedFromKattackModuleClockProvAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleClockProvAstAnchor
+  roles { KattackModule as generated, KattackModuleClockProvAstAnchor as syntax }
+  expects KattackModuleClockProvAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c4278fe1aad7f1845c7723935a8f8708e965373ddb05b4c6b550e1d298eb31ef")
+  summary "fn KattackModule.clock_prov generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#clock_prov."
+}
+
+relation KattackModuleClockRuleGeneratedFromKattackModuleClockRuleAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleClockRuleAstAnchor
+  roles { KattackModule as generated, KattackModuleClockRuleAstAnchor as syntax }
+  expects KattackModuleClockRuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5f32269f0bddc65c4d2bb9e4fbe06b991a148bf0887e7c51d5fb5f16f7775e9e")
+  summary "fn KattackModule.clock_rule generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#clock_rule."
+}
+
+relation KattackModuleComp1GeneratedFromKattackModuleComp1AstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleComp1AstAnchor
+  roles { KattackModule as generated, KattackModuleComp1AstAnchor as syntax }
+  expects KattackModuleComp1AstAnchor fingerprint ast.semantic_subtree_v1("sha256:8ffb5b5641ef1f5076aded425f3d64618d8153ee49c18c946f881121b589e955")
+  summary "fn KattackModule.comp1 generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#comp1."
+}
+
+relation KattackModuleCompGeneratedFromKattackModuleCompAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleCompAstAnchor
+  roles { KattackModule as generated, KattackModuleCompAstAnchor as syntax }
+  expects KattackModuleCompAstAnchor fingerprint ast.semantic_subtree_v1("sha256:15c493726784108e833d41ba75a70b25afaea6d09fce4752c1e36c3c14b1e89f")
+  summary "fn KattackModule.comp generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#comp."
+}
+
+relation KattackModuleDigGeneratedFromKattackModuleDigAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleDigAstAnchor
+  roles { KattackModule as generated, KattackModuleDigAstAnchor as syntax }
+  expects KattackModuleDigAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a1ae171306c40ee5f75712d730f4c14a82a74d63043b4a706581e70c9fb381ae")
+  summary "fn KattackModule.dig generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#dig."
+}
+
+relation KattackModuleDmapGeneratedFromKattackModuleDmapAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleDmapAstAnchor
+  roles { KattackModule as generated, KattackModuleDmapAstAnchor as syntax }
+  expects KattackModuleDmapAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0047626f80d85bb24c0d48c80158b9a9b3418a28c4d371825de5eddcede66d9e")
+  summary "fn KattackModule.dmap generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#dmap."
+}
+
+relation KattackModuleEntGeneratedFromKattackModuleEntAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleEntAstAnchor
+  roles { KattackModule as generated, KattackModuleEntAstAnchor as syntax }
+  expects KattackModuleEntAstAnchor fingerprint ast.semantic_subtree_v1("sha256:790c2eb1a9b8d4c399a42cd519f4c9a0dda404a78c4fc91a4fe01fa24759fe60")
+  summary "fn KattackModule.ent generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#ent."
+}
+
+relation KattackModuleEntryGeneratedFromKattackModuleEntryAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleEntryAstAnchor
+  roles { KattackModule as generated, KattackModuleEntryAstAnchor as syntax }
+  expects KattackModuleEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:746319c0d020c9c87f5d74c57536abc601c53fbc4719fd3f29be811918ec1ef1")
+  summary "fn KattackModule.entry generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#entry."
+}
+
+relation KattackModuleEsfGeneratedFromKattackModuleEsfAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleEsfAstAnchor
+  roles { KattackModule as generated, KattackModuleEsfAstAnchor as syntax }
+  expects KattackModuleEsfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8004e3893365693c0267db8ced15d1114ce6094449f52ede73834c4c4ce76610")
+  summary "fn KattackModule.esf generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#esf."
+}
+
+relation KattackModuleFileEntriesGeneratedFromKattackModuleFileEntriesAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleFileEntriesAstAnchor
+  roles { KattackModule as generated, KattackModuleFileEntriesAstAnchor as syntax }
+  expects KattackModuleFileEntriesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b93ffc5a50b79878b27c0e81fae32d23c6be35dbfe88c964807bac0ca38f9c8")
+  summary "fn KattackModule.file_entries generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#file_entries."
+}
+
+relation KattackModuleFindObGeneratedFromKattackModuleFindObAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleFindObAstAnchor
+  roles { KattackModule as generated, KattackModuleFindObAstAnchor as syntax }
+  expects KattackModuleFindObAstAnchor fingerprint ast.semantic_subtree_v1("sha256:52800ebaecb726b00d9a1636322144c8a87da8da7b2d66865eb3542fed7ab19b")
+  summary "fn KattackModule.find_ob generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#find_ob."
+}
+
+relation KattackModuleFnEntriesGeneratedFromKattackModuleFnEntriesAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleFnEntriesAstAnchor
+  roles { KattackModule as generated, KattackModuleFnEntriesAstAnchor as syntax }
+  expects KattackModuleFnEntriesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:76a9bf3b563ad94a907cc3cfbdb4a28e476adf4391aa05a72aa6d9d052ac6394")
+  summary "fn KattackModule.fn_entries generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#fn_entries."
+}
+
+relation KattackModuleGeneratedFunctionPolicyGeneratedFromKattackModuleGeneratedFunctionPolicyAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleGeneratedFunctionPolicyAstAnchor
+  roles { KattackModule as generated, KattackModuleGeneratedFunctionPolicyAstAnchor as syntax }
+  expects KattackModuleGeneratedFunctionPolicyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:51461d8d344902442e606a6b4b503ea3cc958bd3d7065750febc1e46a2ccf45d")
+  summary "fn KattackModule.generatedFunction_policy generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#policy."
+}
+
+relation KattackModuleGuardLawGeneratedFromKattackModuleGuardLawAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleGuardLawAstAnchor
+  roles { KattackModule as generated, KattackModuleGuardLawAstAnchor as syntax }
+  expects KattackModuleGuardLawAstAnchor fingerprint ast.semantic_subtree_v1("sha256:01fbde1c3bb6dd807b5821fc7957d85615940d3c9b5c7f1a3094b9db9791f960")
+  summary "fn KattackModule.guard_law generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#guard_law."
+}
+
+relation KattackModuleHGeneratedFromKattackModuleHAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleHAstAnchor
+  roles { KattackModule as generated, KattackModuleHAstAnchor as syntax }
+  expects KattackModuleHAstAnchor fingerprint ast.semantic_subtree_v1("sha256:509e08015776f7e704de7d1d98d8c15b03b4ade67eab4612b2e8b6de250495b0")
+  summary "fn KattackModule.H generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#H."
+}
+
+relation KattackModuleIsoManGeneratedFromKattackModuleIsoManAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleIsoManAstAnchor
+  roles { KattackModule as generated, KattackModuleIsoManAstAnchor as syntax }
+  expects KattackModuleIsoManAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ed150b7b16bddabd344f36b49e5440e4ca1719fb02f7a8d82e311fb02e93e614")
+  summary "fn KattackModule.iso_man generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#iso_man."
+}
+
+relation KattackModuleJcsGeneratedFromKattackModuleJcsAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleJcsAstAnchor
+  roles { KattackModule as generated, KattackModuleJcsAstAnchor as syntax }
+  expects KattackModuleJcsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6b1b16155f55fedddabb2f008595c78479d4bbea2b646a800c04dfa8405df37c")
+  summary "fn KattackModule.jcs generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#jcs."
+}
+
+relation KattackModuleLabelGeneratedFromKattackModuleLabelAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleLabelAstAnchor
+  roles { KattackModule as generated, KattackModuleLabelAstAnchor as syntax }
+  expects KattackModuleLabelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4fe648b024c18c0f20d8d0dd0059338966483912db59d304bca1b037135f5f18")
+  summary "fn KattackModule.label generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#label."
+}
+
+relation KattackModuleLawSetGeneratedFromKattackModuleLawSetAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleLawSetAstAnchor
+  roles { KattackModule as generated, KattackModuleLawSetAstAnchor as syntax }
+  expects KattackModuleLawSetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:43c0980407f32b7edce3cecfb489cb3326f781cff9ec639d3fd79cf28b071269")
+  summary "fn KattackModule.law_set generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#law_set."
+}
+
+relation KattackModuleMan2GeneratedFromKattackModuleMan2AstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleMan2AstAnchor
+  roles { KattackModule as generated, KattackModuleMan2AstAnchor as syntax }
+  expects KattackModuleMan2AstAnchor fingerprint ast.semantic_subtree_v1("sha256:a9e2cf627cbe2970fe3cf8757f6783c20ac584722f1b32f2e92f6348c570d3c7")
+  summary "fn KattackModule.man2 generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#man2."
+}
+
+relation KattackModuleManifestGeneratedFromKattackModuleManifestAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleManifestAstAnchor
+  roles { KattackModule as generated, KattackModuleManifestAstAnchor as syntax }
+  expects KattackModuleManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:682bbc535933df4e1d51daa6854e24bfee5f4caeff16d3e3e80078f9a4d0fbaf")
+  summary "fn KattackModule.manifest generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#manifest."
+}
+
+relation KattackModuleProofRecGeneratedFromKattackModuleProofRecAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleProofRecAstAnchor
+  roles { KattackModule as generated, KattackModuleProofRecAstAnchor as syntax }
+  expects KattackModuleProofRecAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d7a1d3261cacb913f9f75cf7bcf61d88c8424b5616cff23c5094c0a2fdc83043")
+  summary "fn KattackModule.proof_rec generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#proof_rec."
+}
+
+relation KattackModuleProvGeneratedFromKattackModuleProvAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleProvAstAnchor
+  roles { KattackModule as generated, KattackModuleProvAstAnchor as syntax }
+  expects KattackModuleProvAstAnchor fingerprint ast.semantic_subtree_v1("sha256:28b4e18e3c97de56560cf92aefe15fb4af1b5f2ad54c0b3b89453da142a7fe42")
+  summary "fn KattackModule.prov generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#prov."
+}
+
+relation KattackModuleRecordGeneratedFromKattackModuleRecordAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleRecordAstAnchor
+  roles { KattackModule as generated, KattackModuleRecordAstAnchor as syntax }
+  expects KattackModuleRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:16ff691d44bfc63ff37d4bd1482c99d7bc251662f6724197c01f59a80d70d537")
+  summary "fn KattackModule.record generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#record."
+}
+
+relation KattackModuleRecordResultGeneratedFromKattackModuleRecordResultAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleRecordResultAstAnchor
+  roles { KattackModule as generated, KattackModuleRecordResultAstAnchor as syntax }
+  expects KattackModuleRecordResultAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d334eb6d7a0d541e2389d76c620da61cd3a4c85f4518d8617b6ba40f6c286824")
+  summary "fn KattackModule.record_result generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#record_result."
+}
+
+relation KattackModuleReqGeneratedFromKattackModuleReqAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleReqAstAnchor
+  roles { KattackModule as generated, KattackModuleReqAstAnchor as syntax }
+  expects KattackModuleReqAstAnchor fingerprint ast.semantic_subtree_v1("sha256:19b31996ddc44800a00cab39ea37f5dfcf4fc45e119f224b672662aa09cf55d8")
+  summary "fn KattackModule.req generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#req."
+}
+
+relation KattackModuleRes1GeneratedFromKattackModuleRes1AstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleRes1AstAnchor
+  roles { KattackModule as generated, KattackModuleRes1AstAnchor as syntax }
+  expects KattackModuleRes1AstAnchor fingerprint ast.semantic_subtree_v1("sha256:ee0614897d083abb61143b4f64a7f0776d859ef3bf2dd8a0ca0671a5e42e6816")
+  summary "fn KattackModule.res1 generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#res1."
+}
+
+relation KattackModuleResGeneratedFromKattackModuleResAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleResAstAnchor
+  roles { KattackModule as generated, KattackModuleResAstAnchor as syntax }
+  expects KattackModuleResAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c5fed2ea05a50e7091a98793e199b668bf3aa3ffd7e5426d5d16f3e570a42fc8")
+  summary "fn KattackModule.res generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#res."
+}
+
+relation KattackModuleReviewGeneratedFromKattackModuleReviewAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleReviewAstAnchor
+  roles { KattackModule as generated, KattackModuleReviewAstAnchor as syntax }
+  expects KattackModuleReviewAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7e31668b8a8dfa64edf7c0281e46f6187b3ea83da8a209b0239facc89974ac02")
+  summary "fn KattackModule.review generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#review."
+}
+
+relation KattackModuleRunGeneratedFromKattackModuleRunAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleRunAstAnchor
+  roles { KattackModule as generated, KattackModuleRunAstAnchor as syntax }
+  expects KattackModuleRunAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5c6bfd23f47ec344cfc0d6c2eb8419ec2ffbf73ddcf29efa58635db5698382b0")
+  summary "fn KattackModule.run generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#run."
+}
+
+relation KattackModuleSqlObsGeneratedFromKattackModuleSqlObsAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleSqlObsAstAnchor
+  roles { KattackModule as generated, KattackModuleSqlObsAstAnchor as syntax }
+  expects KattackModuleSqlObsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6d5451799adcdd51255558bd93a84f8bd53e894660708cd21017a548102922ed")
+  summary "fn KattackModule.sql_obs generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#sql_obs."
+}
+
+relation KattackModuleSummarizeGeneratedFromKattackModuleSummarizeAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleSummarizeAstAnchor
+  roles { KattackModule as generated, KattackModuleSummarizeAstAnchor as syntax }
+  expects KattackModuleSummarizeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1616645a05780c314624012b4d227a901ae30e4cb7e71e19cfc481182ce6e781")
+  summary "fn KattackModule.summarize generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#summarize."
+}
+
+relation KattackModuleTestRec2GeneratedFromKattackModuleTestRec2AstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleTestRec2AstAnchor
+  roles { KattackModule as generated, KattackModuleTestRec2AstAnchor as syntax }
+  expects KattackModuleTestRec2AstAnchor fingerprint ast.semantic_subtree_v1("sha256:13431e1ebed23d60eecd2ee914ad3cc86fb17676ce6edd276dd1153a91ab76c4")
+  summary "fn KattackModule.test_rec2 generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#test_rec2."
+}
+
+relation KattackModuleTestRecGeneratedFromKattackModuleTestRecAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleTestRecAstAnchor
+  roles { KattackModule as generated, KattackModuleTestRecAstAnchor as syntax }
+  expects KattackModuleTestRecAstAnchor fingerprint ast.semantic_subtree_v1("sha256:af06e19615288e2a14e7cea18b880593fbaa64233084c76e7781222100db85e7")
+  summary "fn KattackModule.test_rec generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#test_rec."
+}
+
+relation KattackModuleTierpolGeneratedFromKattackModuleTierpolAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleTierpolAstAnchor
+  roles { KattackModule as generated, KattackModuleTierpolAstAnchor as syntax }
+  expects KattackModuleTierpolAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0bab2dda9a8155be41690699cd7fe2d4d30ecba66cccab5e9b7cc0934cda4e1c")
+  summary "fn KattackModule.tierpol generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#tierpol."
+}
+
+relation KattackModuleTimJudgmentGeneratedFromKattackModuleTimJudgmentAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleTimJudgmentAstAnchor
+  roles { KattackModule as generated, KattackModuleTimJudgmentAstAnchor as syntax }
+  expects KattackModuleTimJudgmentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:610e7ef4d0769bd35c9ca22e5fbc5d371ee97aa81ba8d5266d2f861ba4d17ad3")
+  summary "fn KattackModule.tim_judgment generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#tim_judgment."
+}
+
+relation KattackModuleUnitGeneratedFromKattackModuleUnitAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleUnitAstAnchor
+  roles { KattackModule as generated, KattackModuleUnitAstAnchor as syntax }
+  expects KattackModuleUnitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8c1c2aaf9d4133a874954448aa4cd37c55f7bdaa08b4feae25f71db963df5db1")
+  summary "fn KattackModule.unit generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#unit."
+}
+
+relation KattackModuleVerusProvGeneratedFromKattackModuleVerusProvAstAnchor {
+  kind generated_from
+  connects KattackModule -> KattackModuleVerusProvAstAnchor
+  roles { KattackModule as generated, KattackModuleVerusProvAstAnchor as syntax }
+  expects KattackModuleVerusProvAstAnchor fingerprint ast.semantic_subtree_v1("sha256:52378daebf6a45fb891c3cc021ce1bce8ce17855b595dff8da4150ddb8ed63ff")
+  summary "fn KattackModule.verus_prov generated from python function_definition at experiments/shape-1/redteam/lawyer/kattack.py#verus_prov."
+}
+
+implementation KattackModuleImpl {
+  paths {
+    "experiments/shape-1/redteam/lawyer/kattack.py"
+  }
+  conforms_to KattackModule
+}

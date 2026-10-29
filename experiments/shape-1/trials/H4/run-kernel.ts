@@ -18,7 +18,10 @@ const KDUMP = join(REPO, "experiments/shape-1/trials/H4/KDump.lean");
 const LEAN_PATH = `${KERNEL}/.lake/build/lib/lean:${leanBin}/../lib/lean`;
 
 function kdump(file) {
-  const r = spawnSync(join(leanBin, "lean"), ["--run", KDUMP, file], { env: { ...process.env, LEAN_PATH }, maxBuffer: 1 << 26 });
+  const r = spawnSync(join(leanBin, "lean"), ["--run", KDUMP, file], {
+    env: { ...process.env, LEAN_PATH },
+    maxBuffer: 1 << 26
+  });
   try {
     return JSON.parse(r.stdout.toString());
   } catch {
@@ -46,7 +49,9 @@ function prebind(esf, man) {
   return { ...esf, units };
 }
 
-for (const f of readdirSync(outDir).filter((x) => x.endsWith(".kcase.json")).sort()) {
+for (const f of readdirSync(outDir)
+  .filter((x) => x.endsWith(".kcase.json"))
+  .sort()) {
   const stem = f.slice(0, -".kcase.json".length);
   const file = join(outDir, f);
   writeFileSync(join(outDir, `${stem}.kdump.json`), JSON.stringify(kdump(file), null, 1));

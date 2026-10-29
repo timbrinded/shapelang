@@ -1,0 +1,225 @@
+module shape.generated.ast.experiments.shape_1.proto.src.manifest
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ManifestModuleAncestorsOrSelfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#ancestorsOrSelf")
+  fingerprint ast.semantic_subtree_v1("sha256:fee006d22f29c85f353f3c492165fd4787dcd2da8405b08c73d2ebc6bdd9c752")
+}
+
+resource ManifestModuleDescendantsOrSelfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#descendantsOrSelf")
+  fingerprint ast.semantic_subtree_v1("sha256:9526b6491e5e1ffebd3bbe9e6fce1fd2d9f2e00d609223b0402ae3976f7e85ba")
+}
+
+resource ManifestModuleGitBlobIdAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#gitBlobId")
+  fingerprint ast.semantic_subtree_v1("sha256:d11b201da80efae699f24634e88d3c7bca2363e84f387e98fea6c6f8b91138d0")
+}
+
+resource ManifestModuleGitTreeIdAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#gitTreeId")
+  fingerprint ast.semantic_subtree_v1("sha256:5bb8389d0e7f98e22418dfa4bb9ed9d6fd5282d13c5ba4f4c6c2a74e22f74c4a")
+}
+
+resource ManifestModuleIdentityLangAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#identityLang")
+  fingerprint ast.semantic_subtree_v1("sha256:5232da06a300e1ffe68db1888917e96df5e52a7849008934d06309482be3e3a4")
+}
+
+resource ManifestModuleIdentityPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#identityPath")
+  fingerprint ast.semantic_subtree_v1("sha256:ed908ee19968e3dc7c39c7a84d06386842caba0e5c56f4212fd1fe08115a3c8c")
+}
+
+resource ManifestModuleIdentitySymbolAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#identitySymbol")
+  fingerprint ast.semantic_subtree_v1("sha256:feb578b0a6902eeb0f312c8fb32d5413e5b5dd69d5c1dcf42d019b518963159f")
+}
+
+resource ManifestModuleIndexManifestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#indexManifest")
+  fingerprint ast.semantic_subtree_v1("sha256:f0bddcd6c1fd1e13c7d8a3a26a5373bff6a56ba3a56fff2babb9aa2ac7fa663d")
+}
+
+resource ManifestModuleIsRecordFileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#isRecordFile")
+  fingerprint ast.semantic_subtree_v1("sha256:9b31abecf006e734d0448171e23d1f65213a1ae8c9a9773c6233c650b41669c9")
+}
+
+resource ManifestModuleIsShapeFileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#isShapeFile")
+  fingerprint ast.semantic_subtree_v1("sha256:a212d3736c25d4ca94f22fe2365bfac611ea71f269be646de0ec50c11caad236")
+}
+
+resource ManifestModuleManifestRootAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#manifestRoot")
+  fingerprint ast.semantic_subtree_v1("sha256:39abe46b449f4c5de2f3e34b7696438fe177f3adcbb6355282afdb4b05f16927")
+}
+
+resource ManifestModuleManifestStatementAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#manifestStatement")
+  fingerprint ast.semantic_subtree_v1("sha256:80df99d209ff8dcb6b0ea5f87243154fc19aaffae815077d4f927839ca641645")
+}
+
+resource ManifestModuleSortManifestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#sortManifest")
+  fingerprint ast.semantic_subtree_v1("sha256:34817858d11a73b4959f91be1bdf70ea253d7e20e46f778eb919b2098ef1e778")
+}
+
+component ManifestModule : GeneratedCandidate {
+  fn ancestorsOrSelf
+    source ts("experiments/shape-1/proto/src/manifest.ts#ancestorsOrSelf")
+    effects unknown
+  fn descendantsOrSelf
+    source ts("experiments/shape-1/proto/src/manifest.ts#descendantsOrSelf")
+    effects unknown
+  fn gitBlobId
+    source ts("experiments/shape-1/proto/src/manifest.ts#gitBlobId")
+    effects unknown
+  fn gitTreeId
+    source ts("experiments/shape-1/proto/src/manifest.ts#gitTreeId")
+    effects unknown
+  fn identityLang
+    source ts("experiments/shape-1/proto/src/manifest.ts#identityLang")
+    effects unknown
+  fn identityPath
+    source ts("experiments/shape-1/proto/src/manifest.ts#identityPath")
+    effects unknown
+  fn identitySymbol
+    source ts("experiments/shape-1/proto/src/manifest.ts#identitySymbol")
+    effects unknown
+  fn indexManifest
+    source ts("experiments/shape-1/proto/src/manifest.ts#indexManifest")
+    effects unknown
+  fn isRecordFile
+    source ts("experiments/shape-1/proto/src/manifest.ts#isRecordFile")
+    effects unknown
+  fn isShapeFile
+    source ts("experiments/shape-1/proto/src/manifest.ts#isShapeFile")
+    effects unknown
+  fn manifestRoot
+    source ts("experiments/shape-1/proto/src/manifest.ts#manifestRoot")
+    effects unknown
+  fn manifestStatement
+    source ts("experiments/shape-1/proto/src/manifest.ts#manifestStatement")
+    effects unknown
+  fn sortManifest
+    source ts("experiments/shape-1/proto/src/manifest.ts#sortManifest")
+    effects unknown
+}
+
+relation ManifestModuleAncestorsOrSelfGeneratedFromManifestModuleAncestorsOrSelfAstAnchor {
+  kind generated_from
+  connects ManifestModule -> ManifestModuleAncestorsOrSelfAstAnchor
+  roles { ManifestModule as generated, ManifestModuleAncestorsOrSelfAstAnchor as syntax }
+  expects ManifestModuleAncestorsOrSelfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fee006d22f29c85f353f3c492165fd4787dcd2da8405b08c73d2ebc6bdd9c752")
+  summary "fn ManifestModule.ancestorsOrSelf generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#ancestorsOrSelf."
+}
+
+relation ManifestModuleDescendantsOrSelfGeneratedFromManifestModuleDescendantsOrSelfAstAnchor {
+  kind generated_from
+  connects ManifestModule -> ManifestModuleDescendantsOrSelfAstAnchor
+  roles { ManifestModule as generated, ManifestModuleDescendantsOrSelfAstAnchor as syntax }
+  expects ManifestModuleDescendantsOrSelfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9526b6491e5e1ffebd3bbe9e6fce1fd2d9f2e00d609223b0402ae3976f7e85ba")
+  summary "fn ManifestModule.descendantsOrSelf generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#descendantsOrSelf."
+}
+
+relation ManifestModuleGitBlobIdGeneratedFromManifestModuleGitBlobIdAstAnchor {
+  kind generated_from
+  connects ManifestModule -> ManifestModuleGitBlobIdAstAnchor
+  roles { ManifestModule as generated, ManifestModuleGitBlobIdAstAnchor as syntax }
+  expects ManifestModuleGitBlobIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d11b201da80efae699f24634e88d3c7bca2363e84f387e98fea6c6f8b91138d0")
+  summary "fn ManifestModule.gitBlobId generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#gitBlobId."
+}
+
+relation ManifestModuleGitTreeIdGeneratedFromManifestModuleGitTreeIdAstAnchor {
+  kind generated_from
+  connects ManifestModule -> ManifestModuleGitTreeIdAstAnchor
+  roles { ManifestModule as generated, ManifestModuleGitTreeIdAstAnchor as syntax }
+  expects ManifestModuleGitTreeIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5bb8389d0e7f98e22418dfa4bb9ed9d6fd5282d13c5ba4f4c6c2a74e22f74c4a")
+  summary "fn ManifestModule.gitTreeId generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#gitTreeId."
+}
+
+relation ManifestModuleIdentityLangGeneratedFromManifestModuleIdentityLangAstAnchor {
+  kind generated_from
+  connects ManifestModule -> ManifestModuleIdentityLangAstAnchor
+  roles { ManifestModule as generated, ManifestModuleIdentityLangAstAnchor as syntax }
+  expects ManifestModuleIdentityLangAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5232da06a300e1ffe68db1888917e96df5e52a7849008934d06309482be3e3a4")
+  summary "fn ManifestModule.identityLang generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#identityLang."
+}
+
+relation ManifestModuleIdentityPathGeneratedFromManifestModuleIdentityPathAstAnchor {
+  kind generated_from
+  connects ManifestModule -> ManifestModuleIdentityPathAstAnchor
+  roles { ManifestModule as generated, ManifestModuleIdentityPathAstAnchor as syntax }
+  expects ManifestModuleIdentityPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ed908ee19968e3dc7c39c7a84d06386842caba0e5c56f4212fd1fe08115a3c8c")
+  summary "fn ManifestModule.identityPath generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#identityPath."
+}
+
+relation ManifestModuleIdentitySymbolGeneratedFromManifestModuleIdentitySymbolAstAnchor {
+  kind generated_from
+  connects ManifestModule -> ManifestModuleIdentitySymbolAstAnchor
+  roles { ManifestModule as generated, ManifestModuleIdentitySymbolAstAnchor as syntax }
+  expects ManifestModuleIdentitySymbolAstAnchor fingerprint ast.semantic_subtree_v1("sha256:feb578b0a6902eeb0f312c8fb32d5413e5b5dd69d5c1dcf42d019b518963159f")
+  summary "fn ManifestModule.identitySymbol generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#identitySymbol."
+}
+
+relation ManifestModuleIndexManifestGeneratedFromManifestModuleIndexManifestAstAnchor {
+  kind generated_from
+  connects ManifestModule -> ManifestModuleIndexManifestAstAnchor
+  roles { ManifestModule as generated, ManifestModuleIndexManifestAstAnchor as syntax }
+  expects ManifestModuleIndexManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f0bddcd6c1fd1e13c7d8a3a26a5373bff6a56ba3a56fff2babb9aa2ac7fa663d")
+  summary "fn ManifestModule.indexManifest generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#indexManifest."
+}
+
+relation ManifestModuleIsRecordFileGeneratedFromManifestModuleIsRecordFileAstAnchor {
+  kind generated_from
+  connects ManifestModule -> ManifestModuleIsRecordFileAstAnchor
+  roles { ManifestModule as generated, ManifestModuleIsRecordFileAstAnchor as syntax }
+  expects ManifestModuleIsRecordFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9b31abecf006e734d0448171e23d1f65213a1ae8c9a9773c6233c650b41669c9")
+  summary "fn ManifestModule.isRecordFile generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#isRecordFile."
+}
+
+relation ManifestModuleIsShapeFileGeneratedFromManifestModuleIsShapeFileAstAnchor {
+  kind generated_from
+  connects ManifestModule -> ManifestModuleIsShapeFileAstAnchor
+  roles { ManifestModule as generated, ManifestModuleIsShapeFileAstAnchor as syntax }
+  expects ManifestModuleIsShapeFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a212d3736c25d4ca94f22fe2365bfac611ea71f269be646de0ec50c11caad236")
+  summary "fn ManifestModule.isShapeFile generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#isShapeFile."
+}
+
+relation ManifestModuleManifestRootGeneratedFromManifestModuleManifestRootAstAnchor {
+  kind generated_from
+  connects ManifestModule -> ManifestModuleManifestRootAstAnchor
+  roles { ManifestModule as generated, ManifestModuleManifestRootAstAnchor as syntax }
+  expects ManifestModuleManifestRootAstAnchor fingerprint ast.semantic_subtree_v1("sha256:39abe46b449f4c5de2f3e34b7696438fe177f3adcbb6355282afdb4b05f16927")
+  summary "fn ManifestModule.manifestRoot generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#manifestRoot."
+}
+
+relation ManifestModuleManifestStatementGeneratedFromManifestModuleManifestStatementAstAnchor {
+  kind generated_from
+  connects ManifestModule -> ManifestModuleManifestStatementAstAnchor
+  roles { ManifestModule as generated, ManifestModuleManifestStatementAstAnchor as syntax }
+  expects ManifestModuleManifestStatementAstAnchor fingerprint ast.semantic_subtree_v1("sha256:80df99d209ff8dcb6b0ea5f87243154fc19aaffae815077d4f927839ca641645")
+  summary "fn ManifestModule.manifestStatement generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#manifestStatement."
+}
+
+relation ManifestModuleSortManifestGeneratedFromManifestModuleSortManifestAstAnchor {
+  kind generated_from
+  connects ManifestModule -> ManifestModuleSortManifestAstAnchor
+  roles { ManifestModule as generated, ManifestModuleSortManifestAstAnchor as syntax }
+  expects ManifestModuleSortManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:34817858d11a73b4959f91be1bdf70ea253d7e20e46f778eb919b2098ef1e778")
+  summary "fn ManifestModule.sortManifest generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#sortManifest."
+}
+
+implementation ManifestModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/manifest.ts"
+  }
+  conforms_to ManifestModule
+}

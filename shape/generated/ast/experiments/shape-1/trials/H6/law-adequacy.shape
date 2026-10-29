@@ -1,0 +1,65 @@
+module shape.generated.ast.experiments.shape_1.trials.H6.law_adequacy
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LawAdequacyModuleClosureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H6/law-adequacy.ts#closure")
+  fingerprint ast.semantic_subtree_v1("sha256:5f884d5ebc01f2eb2de2f035f97c3013dafd823fb31c5076c650cc8e60f87a10")
+}
+
+resource LawAdequacyModuleRunAllAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H6/law-adequacy.ts#runAll")
+  fingerprint ast.semantic_subtree_v1("sha256:3dc12dcfb8933148155b1e6bab3abf0280b3312712dc756b7222ef320bcb2579")
+}
+
+resource LawAdequacyModuleRunFileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H6/law-adequacy.ts#runFile")
+  fingerprint ast.semantic_subtree_v1("sha256:bea4ab9f0f5c2c5da6e60f1ab42f2f170792dfda36547ffc49a0fb2e4a87590a")
+}
+
+component LawAdequacyModule : GeneratedCandidate {
+  fn closure
+    source ts("experiments/shape-1/trials/H6/law-adequacy.ts#closure")
+    effects unknown
+  fn runAll
+    source ts("experiments/shape-1/trials/H6/law-adequacy.ts#runAll")
+    effects unknown
+  fn runFile
+    source ts("experiments/shape-1/trials/H6/law-adequacy.ts#runFile")
+    effects unknown
+}
+
+relation LawAdequacyModuleClosureGeneratedFromLawAdequacyModuleClosureAstAnchor {
+  kind generated_from
+  connects LawAdequacyModule -> LawAdequacyModuleClosureAstAnchor
+  roles { LawAdequacyModule as generated, LawAdequacyModuleClosureAstAnchor as syntax }
+  expects LawAdequacyModuleClosureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5f884d5ebc01f2eb2de2f035f97c3013dafd823fb31c5076c650cc8e60f87a10")
+  summary "fn LawAdequacyModule.closure generated from typescript function_declaration at experiments/shape-1/trials/H6/law-adequacy.ts#closure."
+}
+
+relation LawAdequacyModuleRunAllGeneratedFromLawAdequacyModuleRunAllAstAnchor {
+  kind generated_from
+  connects LawAdequacyModule -> LawAdequacyModuleRunAllAstAnchor
+  roles { LawAdequacyModule as generated, LawAdequacyModuleRunAllAstAnchor as syntax }
+  expects LawAdequacyModuleRunAllAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3dc12dcfb8933148155b1e6bab3abf0280b3312712dc756b7222ef320bcb2579")
+  summary "fn LawAdequacyModule.runAll generated from typescript function_declaration at experiments/shape-1/trials/H6/law-adequacy.ts#runAll."
+}
+
+relation LawAdequacyModuleRunFileGeneratedFromLawAdequacyModuleRunFileAstAnchor {
+  kind generated_from
+  connects LawAdequacyModule -> LawAdequacyModuleRunFileAstAnchor
+  roles { LawAdequacyModule as generated, LawAdequacyModuleRunFileAstAnchor as syntax }
+  expects LawAdequacyModuleRunFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bea4ab9f0f5c2c5da6e60f1ab42f2f170792dfda36547ffc49a0fb2e4a87590a")
+  summary "fn LawAdequacyModule.runFile generated from typescript function_declaration at experiments/shape-1/trials/H6/law-adequacy.ts#runFile."
+}
+
+implementation LawAdequacyModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H6/law-adequacy.ts"
+  }
+  conforms_to LawAdequacyModule
+}

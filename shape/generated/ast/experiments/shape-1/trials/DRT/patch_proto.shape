@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.trials.DRT.patch_proto
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource PatchProtoModuleAddimportAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/patch_proto.py#addimport")
+  fingerprint ast.semantic_subtree_v1("sha256:b8ef963ded66faf16652ab5a977112d69e7ebb903185efb871f93c1aa56695b5")
+}
+
+resource PatchProtoModulePatchAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/patch_proto.py#patch")
+  fingerprint ast.semantic_subtree_v1("sha256:277f6db22a3d5792507c05cbcdf739c52e22f84e3e50f9483cf162499e1669f2")
+}
+
+component PatchProtoModule : GeneratedCandidate {
+  fn addimport
+    source python("experiments/shape-1/trials/DRT/patch_proto.py#addimport")
+    effects unknown
+  fn patch
+    source python("experiments/shape-1/trials/DRT/patch_proto.py#patch")
+    effects unknown
+}
+
+relation PatchProtoModuleAddimportGeneratedFromPatchProtoModuleAddimportAstAnchor {
+  kind generated_from
+  connects PatchProtoModule -> PatchProtoModuleAddimportAstAnchor
+  roles { PatchProtoModule as generated, PatchProtoModuleAddimportAstAnchor as syntax }
+  expects PatchProtoModuleAddimportAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b8ef963ded66faf16652ab5a977112d69e7ebb903185efb871f93c1aa56695b5")
+  summary "fn PatchProtoModule.addimport generated from python function_definition at experiments/shape-1/trials/DRT/patch_proto.py#addimport."
+}
+
+relation PatchProtoModulePatchGeneratedFromPatchProtoModulePatchAstAnchor {
+  kind generated_from
+  connects PatchProtoModule -> PatchProtoModulePatchAstAnchor
+  roles { PatchProtoModule as generated, PatchProtoModulePatchAstAnchor as syntax }
+  expects PatchProtoModulePatchAstAnchor fingerprint ast.semantic_subtree_v1("sha256:277f6db22a3d5792507c05cbcdf739c52e22f84e3e50f9483cf162499e1669f2")
+  summary "fn PatchProtoModule.patch generated from python function_definition at experiments/shape-1/trials/DRT/patch_proto.py#patch."
+}
+
+implementation PatchProtoModuleImpl {
+  paths {
+    "experiments/shape-1/trials/DRT/patch_proto.py"
+  }
+  conforms_to PatchProtoModule
+}

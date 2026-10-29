@@ -1,0 +1,241 @@
+module shape.generated.ast.experiments.shape_1.proto.src.generated_fingerprint.ts
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource TsModuleCanonicalTextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/ts.ts#canonicalText")
+  fingerprint ast.semantic_subtree_v1("sha256:f8e345f8da0adb3f047ae86de31f60d0c392f2a322afa6b8b3b4a22e14c7185b")
+}
+
+resource TsModuleCollectImportNamesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/ts.ts#collectImportNames")
+  fingerprint ast.semantic_subtree_v1("sha256:4137f9e2b9c92dcacdf2ae64b84e88cf2fdf9ee87a4c113201308a1a9c0c7ecd")
+}
+
+resource TsModuleCountMarkersAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/ts.ts#countMarkers")
+  fingerprint ast.semantic_subtree_v1("sha256:e8e3f367d2e6c4c957520e1e18b1cc7d6a609d41804ef918a7ae3fdd9c972bd6")
+}
+
+resource TsModuleEnvOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/ts.ts#envOf")
+  fingerprint ast.semantic_subtree_v1("sha256:ff51c14208f766295ff8ebd9985779aec6d0dc43040878313248ce3cf6eefb3c")
+}
+
+resource TsModuleFingerprintTsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/ts.ts#fingerprintTs")
+  fingerprint ast.semantic_subtree_v1("sha256:2803ec263a00d5d98839b3d925436da85f911954ab6d7824ffa292cb986047a7")
+}
+
+resource TsModuleIsTsPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/ts.ts#isTsPath")
+  fingerprint ast.semantic_subtree_v1("sha256:6458b8f28b27df28fbe71689efba9e645604d31a0f09a30dd5d40b77b821eaeb")
+}
+
+resource TsModuleLexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/ts.ts#lex")
+  fingerprint ast.semantic_subtree_v1("sha256:77c1f6c554b39194e643d8174c5ce5afc9d50bba05131301c9beceddfa7fb6c0")
+}
+
+resource TsModuleLexCanonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/ts.ts#lexCanon")
+  fingerprint ast.semantic_subtree_v1("sha256:2816f9810c00dcb7d49177c0f548f556d388f981098f35141c0c9c3930837484")
+}
+
+resource TsModuleLexicalFallbackAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/ts.ts#lexicalFallback")
+  fingerprint ast.semantic_subtree_v1("sha256:08028eaca6886ff63fbc8b78c962841fb2272dc1419f3abf5923c07d0f65729a")
+}
+
+resource TsModuleLoadTypeScriptAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/ts.ts#loadTypeScript")
+  fingerprint ast.semantic_subtree_v1("sha256:ec6f22a16e2ee326e7664698618d13faee24d3d5ab51831819fa4536b1bebf4f")
+}
+
+resource TsModulePlaceholderAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/ts.ts#placeholder")
+  fingerprint ast.semantic_subtree_v1("sha256:675eaa35badcdf73fb3b80692527f50f1994bbc69d6bb417de7b5632aafb3e42")
+}
+
+resource TsModuleSetTypeScriptForTestsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/ts.ts#setTypeScriptForTests")
+  fingerprint ast.semantic_subtree_v1("sha256:4dcf49f1d01bea52bef53ecd59dcdfde2548bfbfe514fda5fd65197b785ea83e")
+}
+
+resource TsModuleTokenStartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/ts.ts#tokenStart")
+  fingerprint ast.semantic_subtree_v1("sha256:b488653ea9b6d1e2e8789affa0fc679a29bee682e7cb67f419bf2dc4605de5e9")
+}
+
+resource TsModuleWithCompilerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/ts.ts#withCompiler")
+  fingerprint ast.semantic_subtree_v1("sha256:2d3132699e640883f4dd2c5bff1e80c1053273ec3bad9daa482dc333c1b555ce")
+}
+
+component TsModule : GeneratedCandidate {
+  fn canonicalText
+    source ts("experiments/shape-1/proto/src/fingerprint/ts.ts#canonicalText")
+    effects unknown
+  fn collectImportNames
+    source ts("experiments/shape-1/proto/src/fingerprint/ts.ts#collectImportNames")
+    effects unknown
+  fn countMarkers
+    source ts("experiments/shape-1/proto/src/fingerprint/ts.ts#countMarkers")
+    effects unknown
+  fn envOf
+    source ts("experiments/shape-1/proto/src/fingerprint/ts.ts#envOf")
+    effects unknown
+  fn fingerprintTs
+    source ts("experiments/shape-1/proto/src/fingerprint/ts.ts#fingerprintTs")
+    effects unknown
+  fn isTsPath
+    source ts("experiments/shape-1/proto/src/fingerprint/ts.ts#isTsPath")
+    effects unknown
+  fn lex
+    source ts("experiments/shape-1/proto/src/fingerprint/ts.ts#lex")
+    effects unknown
+  fn lexCanon
+    source ts("experiments/shape-1/proto/src/fingerprint/ts.ts#lexCanon")
+    effects unknown
+  fn lexicalFallback
+    source ts("experiments/shape-1/proto/src/fingerprint/ts.ts#lexicalFallback")
+    effects unknown
+  fn loadTypeScript
+    source ts("experiments/shape-1/proto/src/fingerprint/ts.ts#loadTypeScript")
+    effects unknown
+  fn placeholder
+    source ts("experiments/shape-1/proto/src/fingerprint/ts.ts#placeholder")
+    effects unknown
+  fn setTypeScriptForTests
+    source ts("experiments/shape-1/proto/src/fingerprint/ts.ts#setTypeScriptForTests")
+    effects unknown
+  fn tokenStart
+    source ts("experiments/shape-1/proto/src/fingerprint/ts.ts#tokenStart")
+    effects unknown
+  fn withCompiler
+    source ts("experiments/shape-1/proto/src/fingerprint/ts.ts#withCompiler")
+    effects unknown
+}
+
+relation TsModuleCanonicalTextGeneratedFromTsModuleCanonicalTextAstAnchor {
+  kind generated_from
+  connects TsModule -> TsModuleCanonicalTextAstAnchor
+  roles { TsModule as generated, TsModuleCanonicalTextAstAnchor as syntax }
+  expects TsModuleCanonicalTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f8e345f8da0adb3f047ae86de31f60d0c392f2a322afa6b8b3b4a22e14c7185b")
+  summary "fn TsModule.canonicalText generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/ts.ts#canonicalText."
+}
+
+relation TsModuleCollectImportNamesGeneratedFromTsModuleCollectImportNamesAstAnchor {
+  kind generated_from
+  connects TsModule -> TsModuleCollectImportNamesAstAnchor
+  roles { TsModule as generated, TsModuleCollectImportNamesAstAnchor as syntax }
+  expects TsModuleCollectImportNamesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4137f9e2b9c92dcacdf2ae64b84e88cf2fdf9ee87a4c113201308a1a9c0c7ecd")
+  summary "fn TsModule.collectImportNames generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/ts.ts#collectImportNames."
+}
+
+relation TsModuleCountMarkersGeneratedFromTsModuleCountMarkersAstAnchor {
+  kind generated_from
+  connects TsModule -> TsModuleCountMarkersAstAnchor
+  roles { TsModule as generated, TsModuleCountMarkersAstAnchor as syntax }
+  expects TsModuleCountMarkersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e8e3f367d2e6c4c957520e1e18b1cc7d6a609d41804ef918a7ae3fdd9c972bd6")
+  summary "fn TsModule.countMarkers generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/ts.ts#countMarkers."
+}
+
+relation TsModuleEnvOfGeneratedFromTsModuleEnvOfAstAnchor {
+  kind generated_from
+  connects TsModule -> TsModuleEnvOfAstAnchor
+  roles { TsModule as generated, TsModuleEnvOfAstAnchor as syntax }
+  expects TsModuleEnvOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ff51c14208f766295ff8ebd9985779aec6d0dc43040878313248ce3cf6eefb3c")
+  summary "fn TsModule.envOf generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/ts.ts#envOf."
+}
+
+relation TsModuleFingerprintTsGeneratedFromTsModuleFingerprintTsAstAnchor {
+  kind generated_from
+  connects TsModule -> TsModuleFingerprintTsAstAnchor
+  roles { TsModule as generated, TsModuleFingerprintTsAstAnchor as syntax }
+  expects TsModuleFingerprintTsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2803ec263a00d5d98839b3d925436da85f911954ab6d7824ffa292cb986047a7")
+  summary "fn TsModule.fingerprintTs generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/ts.ts#fingerprintTs."
+}
+
+relation TsModuleIsTsPathGeneratedFromTsModuleIsTsPathAstAnchor {
+  kind generated_from
+  connects TsModule -> TsModuleIsTsPathAstAnchor
+  roles { TsModule as generated, TsModuleIsTsPathAstAnchor as syntax }
+  expects TsModuleIsTsPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6458b8f28b27df28fbe71689efba9e645604d31a0f09a30dd5d40b77b821eaeb")
+  summary "fn TsModule.isTsPath generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/ts.ts#isTsPath."
+}
+
+relation TsModuleLexCanonGeneratedFromTsModuleLexCanonAstAnchor {
+  kind generated_from
+  connects TsModule -> TsModuleLexCanonAstAnchor
+  roles { TsModule as generated, TsModuleLexCanonAstAnchor as syntax }
+  expects TsModuleLexCanonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2816f9810c00dcb7d49177c0f548f556d388f981098f35141c0c9c3930837484")
+  summary "fn TsModule.lexCanon generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/ts.ts#lexCanon."
+}
+
+relation TsModuleLexGeneratedFromTsModuleLexAstAnchor {
+  kind generated_from
+  connects TsModule -> TsModuleLexAstAnchor
+  roles { TsModule as generated, TsModuleLexAstAnchor as syntax }
+  expects TsModuleLexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:77c1f6c554b39194e643d8174c5ce5afc9d50bba05131301c9beceddfa7fb6c0")
+  summary "fn TsModule.lex generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/ts.ts#lex."
+}
+
+relation TsModuleLexicalFallbackGeneratedFromTsModuleLexicalFallbackAstAnchor {
+  kind generated_from
+  connects TsModule -> TsModuleLexicalFallbackAstAnchor
+  roles { TsModule as generated, TsModuleLexicalFallbackAstAnchor as syntax }
+  expects TsModuleLexicalFallbackAstAnchor fingerprint ast.semantic_subtree_v1("sha256:08028eaca6886ff63fbc8b78c962841fb2272dc1419f3abf5923c07d0f65729a")
+  summary "fn TsModule.lexicalFallback generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/ts.ts#lexicalFallback."
+}
+
+relation TsModuleLoadTypeScriptGeneratedFromTsModuleLoadTypeScriptAstAnchor {
+  kind generated_from
+  connects TsModule -> TsModuleLoadTypeScriptAstAnchor
+  roles { TsModule as generated, TsModuleLoadTypeScriptAstAnchor as syntax }
+  expects TsModuleLoadTypeScriptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ec6f22a16e2ee326e7664698618d13faee24d3d5ab51831819fa4536b1bebf4f")
+  summary "fn TsModule.loadTypeScript generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/ts.ts#loadTypeScript."
+}
+
+relation TsModulePlaceholderGeneratedFromTsModulePlaceholderAstAnchor {
+  kind generated_from
+  connects TsModule -> TsModulePlaceholderAstAnchor
+  roles { TsModule as generated, TsModulePlaceholderAstAnchor as syntax }
+  expects TsModulePlaceholderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:675eaa35badcdf73fb3b80692527f50f1994bbc69d6bb417de7b5632aafb3e42")
+  summary "fn TsModule.placeholder generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/ts.ts#placeholder."
+}
+
+relation TsModuleSetTypeScriptForTestsGeneratedFromTsModuleSetTypeScriptForTestsAstAnchor {
+  kind generated_from
+  connects TsModule -> TsModuleSetTypeScriptForTestsAstAnchor
+  roles { TsModule as generated, TsModuleSetTypeScriptForTestsAstAnchor as syntax }
+  expects TsModuleSetTypeScriptForTestsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4dcf49f1d01bea52bef53ecd59dcdfde2548bfbfe514fda5fd65197b785ea83e")
+  summary "fn TsModule.setTypeScriptForTests generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/ts.ts#setTypeScriptForTests."
+}
+
+relation TsModuleTokenStartGeneratedFromTsModuleTokenStartAstAnchor {
+  kind generated_from
+  connects TsModule -> TsModuleTokenStartAstAnchor
+  roles { TsModule as generated, TsModuleTokenStartAstAnchor as syntax }
+  expects TsModuleTokenStartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b488653ea9b6d1e2e8789affa0fc679a29bee682e7cb67f419bf2dc4605de5e9")
+  summary "fn TsModule.tokenStart generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/ts.ts#tokenStart."
+}
+
+relation TsModuleWithCompilerGeneratedFromTsModuleWithCompilerAstAnchor {
+  kind generated_from
+  connects TsModule -> TsModuleWithCompilerAstAnchor
+  roles { TsModule as generated, TsModuleWithCompilerAstAnchor as syntax }
+  expects TsModuleWithCompilerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2d3132699e640883f4dd2c5bff1e80c1053273ec3bad9daa482dc333c1b555ce")
+  summary "fn TsModule.withCompiler generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/ts.ts#withCompiler."
+}
+
+implementation TsModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/fingerprint/ts.ts"
+  }
+  conforms_to TsModule
+}

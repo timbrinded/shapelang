@@ -1,0 +1,256 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:3be0f1bdafe1ffbaf8d3e08177a32f92e129d7b6383f15fd0c1c47d536ffe9d7",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:815d7ebb9678dbead1b3bef2195fa49bbf807b46d53827e5a944e8009cfc4403",
+   "kind": "contradiction",
+   "reason": null,
+   "questions": null,
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "mechanical",
+   "force": "sound",
+   "owner": "ironkv::IronKvTeam",
+   "assignee": null,
+   "group": "g:f16ee5b2da967ed85fed5a5b7527502f641bd97d0d74292f7e9eaa67b0cda56a",
+   "claim": {
+    "fp": "sha256:1584bb88c66cbc8b0a51502299e8e8ca660d8cfeba2e7f93a99491072752a6d4",
+    "ids": [
+     "ironkv::NoHatchesOutsideBoundaries/1584bb88c66c"
+    ],
+    "tier": "critical"
+   },
+   "subject": {
+    "code": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+    "atom": "assume<std::Trust>"
+   },
+   "witness": [
+    "sha256:56e82502df98e91af9bce2036fe8e32c91062147e3d1f2773495aa3551b32a47"
+   ],
+   "facts": {
+    "sha256:56e82502df98e91af9bce2036fe8e32c91062147e3d1f2773495aa3551b32a47": {
+     "type": "hatch",
+     "at": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+     "kind": "assume",
+     "n": 1
+    }
+   },
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:2ea660886d27e5e3e377c2e500e48bcb542e347d272df45c3ca3a92e4491972a",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "edit-code",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "exception",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "ironkv::dana"
+     ],
+     "creates": null
+    },
+    {
+     "act": "edit-shape",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "critical",
+      "answers": 1,
+      "owners": [
+       "ironkv::IronKvTeam"
+      ]
+     }
+    }
+   ],
+   "causes": [
+    {
+     "type": "fact",
+     "id": "sha256:56e82502df98e91af9bce2036fe8e32c91062147e3d1f2773495aa3551b32a47"
+    },
+    {
+     "type": "code",
+     "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set"
+    },
+    {
+     "type": "claim",
+     "id": "sha256:dc8454f26ba4a098a6681e766d63ddf9226954a5a5bf8ed9d8148c7b0996fac8"
+    }
+   ]
+  },
+  {
+   "key": "ob:220a9b307f0f3608a5573921a7884109fe00e95b64b0202e797e5fdc3faef2af",
+   "kind": "contradiction",
+   "reason": null,
+   "questions": null,
+   "introduced": false,
+   "severity": "owed",
+   "tier": "critical",
+   "budget": "mechanical",
+   "force": "sound",
+   "owner": "ironkv::IronKvTeam",
+   "assignee": null,
+   "group": "g:1773aa8cf684c1c60f847e64760ffdcd5c6bdbb88a490e1c24025571a0415e81",
+   "claim": {
+    "fp": "sha256:dc8454f26ba4a098a6681e766d63ddf9226954a5a5bf8ed9d8148c7b0996fac8",
+    "ids": [
+     "ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "tier": "critical"
+   },
+   "subject": {
+    "code": "verus:ironkv/src/host_t.rs#Host::send",
+    "atom": "external_body<std::Trust>"
+   },
+   "witness": [
+    "sha256:4d5288ce6d2ededfce2d79368c5fa934e9959d7005fdf1b8220baae6c65c2bcf"
+   ],
+   "facts": {
+    "sha256:4d5288ce6d2ededfce2d79368c5fa934e9959d7005fdf1b8220baae6c65c2bcf": {
+     "type": "hatch",
+     "at": "verus:ironkv/src/host_t.rs#Host::send",
+     "kind": "external_body",
+     "n": 1
+    }
+   },
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:48dec644b2c008e44a083bdc750a9ff9aa6bf8b186355f2225740ae47584d1d7",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "edit-code",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "exception",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "ironkv::dana"
+     ],
+     "creates": null
+    },
+    {
+     "act": "edit-shape",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "critical",
+      "answers": 1,
+      "owners": [
+       "ironkv::IronKvTeam"
+      ]
+     }
+    }
+   ],
+   "causes": [
+    {
+     "type": "fact",
+     "id": "sha256:4d5288ce6d2ededfce2d79368c5fa934e9959d7005fdf1b8220baae6c65c2bcf"
+    },
+    {
+     "type": "code",
+     "id": "verus:ironkv/src/host_t.rs#Host::send"
+    }
+   ]
+  }
+ ],
+ "answered": [
+  {
+   "obligation": "ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d",
+   "records": [
+    "review:00b0cdfd9cf0fe69"
+   ],
+   "self": false,
+   "exploited": null,
+   "as": "discharge"
+  }
+ ],
+ "loosening": [],
+ "renames": [],
+ "debt": [],
+ "preexisting": [
+  {
+   "obligation": "ob:220a9b307f0f3608a5573921a7884109fe00e95b64b0202e797e5fdc3faef2af",
+   "owner": "ironkv::IronKvTeam"
+  }
+ ],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 2,
+   "den": 2
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [
+   "ironkv::DelegationMap",
+   "ironkv::HostTrusted"
+  ],
+  "ungoverned": {
+   "num": 2,
+   "den": 7
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [
+   "review ironkv::dana: shape approve bd:7dd75e8fb8b337a2"
+  ],
+  "executesHead": [
+   "ironkv::verus",
+   "ironkv::verusRefines"
+  ],
+  "baseObservations": "present",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 1,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"ironkv::DelegationMap.*\",\"ironkv::DelegationMap.*\"]",
+   "cell:[\"ironkv::HostTrusted.*\",\"ironkv::HostTrusted.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 3,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

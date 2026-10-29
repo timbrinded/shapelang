@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.shape_1.proto.test.obligations_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ObligationsTestModuleInputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/test/obligations.test.ts#input")
+  fingerprint ast.semantic_subtree_v1("sha256:3d431b08a72f8a968cc9c6bb199066f070e5a1c6f7bbc99665dc742c8bcab65f")
+}
+
+resource ObligationsTestModuleObsRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/test/obligations.test.ts#obsRecord")
+  fingerprint ast.semantic_subtree_v1("sha256:dc99089b48628daa217f0b49a51296ac3f51545456bdfe7cd5e3b5a694849f1d")
+}
+
+resource ObligationsTestModuleTestRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/test/obligations.test.ts#testRecord")
+  fingerprint ast.semantic_subtree_v1("sha256:d9247d9f8fa92a0c9dc6b69533de20b4b2ef481804f0a6c83db32c6d38e5608f")
+}
+
+resource ObligationsTestModuleWorldAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/test/obligations.test.ts#world")
+  fingerprint ast.semantic_subtree_v1("sha256:7372fdd7fbdf4d3902eb9186a3539252473b1604342e29d4509a26d0ead00cb1")
+}
+
+component ObligationsTestModule : GeneratedCandidate {
+  fn input
+    source ts("experiments/shape-1/proto/test/obligations.test.ts#input")
+    effects unknown
+  fn obsRecord
+    source ts("experiments/shape-1/proto/test/obligations.test.ts#obsRecord")
+    effects unknown
+  fn testRecord
+    source ts("experiments/shape-1/proto/test/obligations.test.ts#testRecord")
+    effects unknown
+  fn world
+    source ts("experiments/shape-1/proto/test/obligations.test.ts#world")
+    effects unknown
+}
+
+relation ObligationsTestModuleInputGeneratedFromObligationsTestModuleInputAstAnchor {
+  kind generated_from
+  connects ObligationsTestModule -> ObligationsTestModuleInputAstAnchor
+  roles { ObligationsTestModule as generated, ObligationsTestModuleInputAstAnchor as syntax }
+  expects ObligationsTestModuleInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3d431b08a72f8a968cc9c6bb199066f070e5a1c6f7bbc99665dc742c8bcab65f")
+  summary "fn ObligationsTestModule.input generated from typescript function_declaration at experiments/shape-1/proto/test/obligations.test.ts#input."
+}
+
+relation ObligationsTestModuleObsRecordGeneratedFromObligationsTestModuleObsRecordAstAnchor {
+  kind generated_from
+  connects ObligationsTestModule -> ObligationsTestModuleObsRecordAstAnchor
+  roles { ObligationsTestModule as generated, ObligationsTestModuleObsRecordAstAnchor as syntax }
+  expects ObligationsTestModuleObsRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dc99089b48628daa217f0b49a51296ac3f51545456bdfe7cd5e3b5a694849f1d")
+  summary "fn ObligationsTestModule.obsRecord generated from typescript function_declaration at experiments/shape-1/proto/test/obligations.test.ts#obsRecord."
+}
+
+relation ObligationsTestModuleTestRecordGeneratedFromObligationsTestModuleTestRecordAstAnchor {
+  kind generated_from
+  connects ObligationsTestModule -> ObligationsTestModuleTestRecordAstAnchor
+  roles { ObligationsTestModule as generated, ObligationsTestModuleTestRecordAstAnchor as syntax }
+  expects ObligationsTestModuleTestRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d9247d9f8fa92a0c9dc6b69533de20b4b2ef481804f0a6c83db32c6d38e5608f")
+  summary "fn ObligationsTestModule.testRecord generated from typescript function_declaration at experiments/shape-1/proto/test/obligations.test.ts#testRecord."
+}
+
+relation ObligationsTestModuleWorldGeneratedFromObligationsTestModuleWorldAstAnchor {
+  kind generated_from
+  connects ObligationsTestModule -> ObligationsTestModuleWorldAstAnchor
+  roles { ObligationsTestModule as generated, ObligationsTestModuleWorldAstAnchor as syntax }
+  expects ObligationsTestModuleWorldAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7372fdd7fbdf4d3902eb9186a3539252473b1604342e29d4509a26d0ead00cb1")
+  summary "fn ObligationsTestModule.world generated from typescript function_declaration at experiments/shape-1/proto/test/obligations.test.ts#world."
+}
+
+implementation ObligationsTestModuleImpl {
+  paths {
+    "experiments/shape-1/proto/test/obligations.test.ts"
+  }
+  conforms_to ObligationsTestModule
+}

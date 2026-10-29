@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.proto.src.coverage
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CoverageModuleComputeCoverageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/coverage.ts#computeCoverage")
+  fingerprint ast.semantic_subtree_v1("sha256:e13b4ac391dc223518477887202c2c8955b6937cc401ce832d169b5b3f8066cb")
+}
+
+component CoverageModule : GeneratedCandidate {
+  fn computeCoverage
+    source ts("experiments/shape-1/proto/src/coverage.ts#computeCoverage")
+    effects unknown
+}
+
+relation CoverageModuleComputeCoverageGeneratedFromCoverageModuleComputeCoverageAstAnchor {
+  kind generated_from
+  connects CoverageModule -> CoverageModuleComputeCoverageAstAnchor
+  roles { CoverageModule as generated, CoverageModuleComputeCoverageAstAnchor as syntax }
+  expects CoverageModuleComputeCoverageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e13b4ac391dc223518477887202c2c8955b6937cc401ce832d169b5b3f8066cb")
+  summary "fn CoverageModule.computeCoverage generated from typescript function_declaration at experiments/shape-1/proto/src/coverage.ts#computeCoverage."
+}
+
+implementation CoverageModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/coverage.ts"
+  }
+  conforms_to CoverageModule
+}

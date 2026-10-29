@@ -1,0 +1,957 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "base": {
+  "revision": "7777777777777777777777777777777777777777",
+  "source": {
+   "v": "shape.source.v1",
+   "modules": [
+    {
+     "module": "checker",
+     "imports": [
+      "std",
+      "tooling"
+     ],
+     "decls": [
+      {
+       "decl": "component",
+       "name": "ShapeBindings"
+      },
+      {
+       "decl": "component",
+       "name": "ShapeChecker",
+       "paths": [
+        "packages/shp-checker/src/checker/api.ts"
+       ],
+       "grants": "none",
+       "units": [
+        {
+         "name": "checkShapeModules"
+        }
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "ShapeDiagnostics"
+      },
+      {
+       "decl": "component",
+       "name": "ShapeModelLowerer"
+      },
+      {
+       "decl": "component",
+       "name": "ShapeModuleResolver"
+      },
+      {
+       "decl": "component",
+       "name": "ShapePreludeRegistry"
+      },
+      {
+       "decl": "component",
+       "name": "ShapeRuleEngine",
+       "paths": [
+        "packages/shp-checker/src/checker/rules/**/*.ts"
+       ],
+       "grants": "none"
+      },
+      {
+       "decl": "component",
+       "name": "ShapeStringHelpers"
+      },
+      {
+       "decl": "law",
+       "name": "CheckIsDeterministic",
+       "template": {
+        "name": "Deterministic",
+        "args": [
+         "ShapeChecker.checkShapeModules"
+        ]
+       },
+       "tier": "critical",
+       "evidence": {
+        "level": "tested",
+        "by": [
+         "bunTest"
+        ]
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "bunTest",
+       "produces": [
+        "test"
+       ],
+       "decides": [
+        "template Deterministic"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "identity": "ed25519(\"dd7e84d010aed28a416e928f50c4c09ac0f94a8f5b346548168bddb61cdb7263\")",
+       "implementation": {
+        "paths": [
+         "bunfig.toml",
+         "package.json",
+         "bun.lock"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "module": "checker.incremental",
+     "imports": [
+      "std"
+     ],
+     "decls": [
+      {
+       "decl": "component",
+       "name": "ShapeIncrementalChecker"
+      }
+     ]
+    },
+    {
+     "module": "tooling",
+     "imports": [
+      "std",
+      "checker"
+     ],
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Shape",
+       "owner": "ShapeMaintainers"
+      },
+      {
+       "decl": "actor",
+       "name": "ShapeMaintainers",
+       "kind": "team",
+       "members": [
+        "tim",
+        "ann"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "ann",
+       "kind": "person",
+       "identities": [
+        "github(\"ann\")",
+        "ed25519(\"43aae8ebbdedb969415d020b0121118022722a577758c5fa88dcd9d8a2116533\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "claude",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"claude[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "SystemClock",
+       "bind": [
+        "ts.call(\"Date.now\")",
+        "ts.call(\"Date\")",
+        "ts.call(\"performance.now\")",
+        "ts.call(\"process.hrtime\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "ShpCli",
+       "paths": [
+        "packages/shp-cli/src/**/*.ts"
+       ],
+       "units": [
+        {
+         "name": "isoToday",
+         "attach": [
+          {
+           "name": "RefactorSensitive"
+          }
+         ],
+         "bind": "ts(\"packages/shp-cli/src/freshness.ts#isoToday\")",
+         "effects": {
+          "mode": "complete",
+          "atoms": [
+           {
+            "atom": "Read<SystemClock>"
+           }
+          ]
+         }
+        }
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "CheckerNeverReadsClock",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "Read<SystemClock>",
+         "within": [
+          "component checker::ShapeBindings",
+          "component checker::ShapeChecker",
+          "component checker::ShapeDiagnostics",
+          "component checker::ShapeModelLowerer",
+          "component checker::ShapeModuleResolver",
+          "component checker::ShapePreludeRegistry",
+          "component checker::ShapeRuleEngine",
+          "component checker::ShapeStringHelpers",
+          "component checker.incremental::ShapeIncrementalChecker"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "note",
+       "name": "ClockReadAtCliBoundary",
+       "kind": "memory",
+       "about": [
+        "unit ShpCli.isoToday",
+        "law checker::CheckIsDeterministic"
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "tsClockScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(ts.call(\"Date.now\"))",
+        "effect(ts.call(\"Date\"))",
+        "effect(ts.call(\"performance.now\"))",
+        "effect(ts.call(\"process.hrtime\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "identity": "ed25519(\"be3b4f95d1d875d71dd2facf6c5e4da57c1a2c79dead9e1fc5c3b5c1de54c022\")",
+       "implementation": {
+        "paths": [
+         "tools/clock-scan.ts",
+         "tsconfig.json",
+         "package.json",
+         "bun.lock"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/7777777777777777777777777777777777777777",
+     "digest": {
+      "sha256": "f1e3a814fe0c97940d393b9cbdc29ded6f3489c9b0b14ced901ef39d2dfb8bea"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "7777777777777777777777777777777777777777",
+     "tree": [
+      {
+       "path": "packages/shp-checker/src/behavioural/determinism.test.ts",
+       "mode": "100644",
+       "blob": "efca417d80b8c3310505d2b25ea70fefd2bd93c7"
+      },
+      {
+       "path": "packages/shp-checker/src/behavioural/harness.ts",
+       "mode": "100644",
+       "blob": "5c33bccf58c5d30c21a80679eb550b194b1448f5"
+      },
+      {
+       "path": "packages/shp-checker/src/checker/api.ts",
+       "mode": "100644",
+       "blob": "72976653e6ebebec6bc3b3a5dc777883843e5dd9"
+      },
+      {
+       "path": "packages/shp-checker/src/checker/rules/guards.ts",
+       "mode": "100644",
+       "blob": "fdc688bbb4dde86e2175a7a2f2544fbea640f2bb"
+      },
+      {
+       "path": "packages/shp-cli/src/freshness.ts",
+       "mode": "100644",
+       "blob": "2aa918f024bd1032d212e51ab5d601d17d6e821b"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "83977260e3920505bd1bd2bb8cf4977969dbb729"
+      },
+      {
+       "path": "shape/checker.shape",
+       "mode": "100644",
+       "blob": "4d3c129f4465a94bab4d50ecbb345835ec2e150e"
+      },
+      {
+       "path": "shape/tooling.shape",
+       "mode": "100644",
+       "blob": "2dc8c9b0a975efbc582a998c29da03abb64d4d01"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:packages/shp-checker/src/behavioural/determinism.test.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:50669ab00f6b371af7de6363a9969ebe217699efb2dbf203ac9c12dfc961966f",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/behavioural/determinism.test.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:ea6b27021dda636c11d21582a12f58d31059204aeb368fa3b7127d11d119825b",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/behavioural/harness.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:e7cc588765611c695202b49d91a9ac6645d462b04cb20be8b6dfca46234f8cc2",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/behavioural/harness.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:ec493506bdbf41588cf91b37bd8ba8d1e6989f3bbdcdfa440344ead13baef508",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/api.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:88915e0de00c1cf2e0c80fecd659aafdb654f6d00bd840483d0d9ed51cb5faaf",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/api.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:97ae8d28c0ec8ade711bb3a29565a3fb31fd1cca3d8df87fea1501ab0acdd980",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:28136a5b96ec8ea9dba574c1819b72b99fe2b1aa16f244f919557015d39aa58d",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/api.ts"
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:e494e93653aa37b1127cabf7217d2d551528183dca59baed66b93adcccbdc5b5",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/api.ts"
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:6f66d2c80820721b3c49f279802f04936fe7d496e5765ef797ae65dac063f6ce",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:7fcb8986f0026c6392c5a6d429247631ca81dda738f8c8f5375f5932868bbc18",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:c9ddb77cf7bf5e19a045807de3c5409eddc9807913942ec0675eaa71f18e94bc",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:c6a6d135e4eb6ec0040fd0c90e8f1ea303fb923a242e0e66c171d478ae85290e",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:67f2d0b7379df47c3669ccef60cc2989725af56e3357ffe1bdcc1a7f2a92ec3d",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:4b62603a0d4a241049e00894ef564356df6664fb1ccb691681c86ed6ac9c1ad8",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:6db0cbc3b00df1070663c0923e5929a6ec50cb52abda98b42d74799a738e3a30",
+       "kind": "function",
+       "parent": "ts:packages/shp-cli/src/freshness.ts"
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:3018423164cf0d769cf3a0b13c4f5a70297ad51908b34467dcf8eb9ca4193703",
+       "kind": "function",
+       "parent": "ts:packages/shp-cli/src/freshness.ts"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:smoothbrains/shapelang#202"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"claude[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiY29uZmlndXJhdGlvbiI6W10sImZhaWxlZFRlc3RzIjpbXSwicGFzc2VkVGVzdHMiOltdLCJyZXN1bHQiOiJQQVNTRUQiLCJzaGFwZSI6eyJhc3N1bXB0aW9ucyI6W10sImJvdW5kIjp7InJ1bnMiOjcyMH0sImNsYWltIjp7ImZwIjoic2hhMjU2Ojg2MjBjM2JlYWQzOTI2MmQ1MDlkMzBkODEzYzg0ZDc5ZGI0ZTFjZTUxYjFkZDkyYzkwNDIyNTA4MjUxOWI4YzMiLCJpZCI6ImNoZWNrZXI6OkNoZWNrSXNEZXRlcm1pbmlzdGljIn0sImNvZGUiOlt7ImRpZ2VzdCI6InNoYTI1NjplNDk0ZTkzNjUzYWEzN2IxMTI3Y2FiZjcyMTdkMmQ1NTE1MjgxODNkY2E1OWJhZWQ2NmI5M2FkY2NjYmRjNWI1IiwiaWQiOiJ0czpwYWNrYWdlcy9zaHAtY2hlY2tlci9zcmMvY2hlY2tlci9hcGkudHMjY2hlY2tTaGFwZU1vZHVsZXMiLCJwcm9qZWN0aW9uIjoidW5pdCIsInNjaGVtZSI6InRzLnVuaXQudjIifV0sImhhcm5lc3MiOlt7ImRpZ2VzdCI6InNoYTI1NjplYTZiMjcwMjFkZGE2MzZjMTFkMjE1ODJhMTJmNThkMzEwNTkyMDRhZWIzNjhmYTNiNzEyN2QxMWQxMTk4MjViIiwiaWQiOiJ0czpwYWNrYWdlcy9zaHAtY2hlY2tlci9zcmMvYmVoYXZpb3VyYWwvZGV0ZXJtaW5pc20udGVzdC50cyIsInByb2plY3Rpb24iOiJvd24iLCJzY2hlbWUiOiJ0cy5vd24udjIifSx7ImRpZ2VzdCI6InNoYTI1NjplYzQ5MzUwNmJkYmY0MTU4OGNmOTFiMzdiZDhiYThkMWU2OTg5ZjNiYmRjZGZhNDQwMzQ0ZWFkMTNiYWVmNTA4IiwiaWQiOiJ0czpwYWNrYWdlcy9zaHAtY2hlY2tlci9zcmMvYmVoYXZpb3VyYWwvaGFybmVzcy50cyIsInByb2plY3Rpb24iOiJvd24iLCJzY2hlbWUiOiJ0cy5vd24udjIifV0sImtpbmQiOiJ0ZXN0IiwicHJvdmlkZXIiOnsiaWQiOiJjaGVja2VyOjpidW5UZXN0IiwidmVyc2lvbiI6IjEuNC4yIn0sInJlc3VsdCI6InN1cHBvcnRzIiwicmV2aXNpb24iOiI4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4IiwidGltZSI6IjIwMjYtMTAtMjVUMTA6MDA6MDBaIiwidiI6InNoYXBlLmV2aWRlbmNlLnYxIn0sInVybCI6IiIsIndhcm5lZFRlc3RzIjpbXX0sInByZWRpY2F0ZVR5cGUiOiJodHRwczovL2luLXRvdG8uaW8vYXR0ZXN0YXRpb24vdGVzdC1yZXN1bHQvdjAuMSIsInN1YmplY3QiOlt7ImRpZ2VzdCI6eyJzaGEyNTYiOiI4NjIwYzNiZWFkMzkyNjJkNTA5ZDMwZDgxM2M4NGQ3OWRiNGUxY2U1MWIxZGQ5MmM5MDQyMjUwODI1MTliOGMzIn0sIm5hbWUiOiJzaGFwZTpjbGFpbS9jaGVja2VyOjpDaGVja0lzRGV0ZXJtaW5pc3RpYyJ9LHsiYW5ub3RhdGlvbnMiOnsic2hhcGUuc2NoZW1lIjoidHMudW5pdC52MiJ9LCJkaWdlc3QiOnsic2hhMjU2IjoiZTQ5NGU5MzY1M2FhMzdiMTEyN2NhYmY3MjE3ZDJkNTUxNTI4MTgzZGNhNTliYWVkNjZiOTNhZGNjY2JkYzViNSJ9LCJuYW1lIjoic2hhcGU6Y29kZS90czpwYWNrYWdlcy9zaHAtY2hlY2tlci9zcmMvY2hlY2tlci9hcGkudHMjY2hlY2tTaGFwZU1vZHVsZXNAdW5pdCJ9XX0=",
+   "signatures": [
+    {
+     "keyid": "dd7e84d010aed28a416e928f50c4c09ac0f94a8f5b346548168bddb61cdb7263",
+     "sig": "zfeIg8BKGDH88SKt/gIYabDQPUENRUIzw4ep0YajnCe6z6N0mJ+JJOnW1iJA36pnbaGdTNFjLJSmi6k0cRNPDw=="
+    }
+   ]
+  },
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfT0JTRVJWRVMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJvYnNlcnZhdGlvbiJ9fV0sInByb2R1Y2VyIjp7ImFubm90YXRpb25zIjp7InNoYXBlLnByb3ZpZGVyIjoidG9vbGluZzo6dHNDbG9ja1NjYW4iLCJ2ZXJzaW9uIjoiMC4xLjAifSwidXJpIjoidG9vbGluZzo6dHNDbG9ja1NjYW4ifSwic2hhcGUiOnsiYXNzdW1wdGlvbnMiOltdLCJmYWN0cyI6W3siYXQiOiJ0czpwYWNrYWdlcy9zaHAtY2xpL3NyYy9mcmVzaG5lc3MudHMjaXNvVG9kYXkiLCJyZXNvdXJjZSI6InRzLmNhbGwoXCJEYXRlXCIpIiwidHlwZSI6ImVmZmVjdCIsInZlcmIiOiJSZWFkIn1dLCJoYXJuZXNzIjpbXSwia2luZCI6Im9ic2VydmF0aW9uIiwicHJvdmlkZXIiOnsiaWQiOiJ0b29saW5nOjp0c0Nsb2NrU2NhbiIsInZlcnNpb24iOiIwLjEuMCJ9LCJyZXN1bHQiOiJvYnNlcnZlcyIsInJldmlzaW9uIjoiODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4OCIsInNjb3BlIjp7ImVudHJpZXMiOlt7ImNvbXBsZXRlIjp0cnVlLCJkZXBzIjpbXSwiZGlnZXN0Ijoic2hhMjU2Ojk3YWU4ZDI4YzBlYzhhZGU3MTFiYjNhMjk1NjVhM2ZiMzFmZDFjY2EzZDhkZjg3ZmVhMTUwMWFiMGFjZGQ5ODAiLCJpZCI6InRzOnBhY2thZ2VzL3NocC1jaGVja2VyL3NyYy9jaGVja2VyL2FwaS50cyIsInByb2plY3Rpb24iOiJvd24iLCJzY2hlbWUiOiJ0cy5vd24udjIifSx7ImNvbXBsZXRlIjp0cnVlLCJkZXBzIjpbXSwiZGlnZXN0Ijoic2hhMjU2OmU0OTRlOTM2NTNhYTM3YjExMjdjYWJmNzIxN2QyZDU1MTUyODE4M2RjYTU5YmFlZDY2YjkzYWRjY2NiZGM1YjUiLCJpZCI6InRzOnBhY2thZ2VzL3NocC1jaGVja2VyL3NyYy9jaGVja2VyL2FwaS50cyNjaGVja1NoYXBlTW9kdWxlcyIsInByb2plY3Rpb24iOiJ1bml0Iiwic2NoZW1lIjoidHMudW5pdC52MiJ9LHsiY29tcGxldGUiOnRydWUsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6N2ZjYjg5ODZmMDAyNmM2MzkyYzVhNmQ0MjkyNDc2MzFjYTgxZGRhNzM4ZjhjOGY1Mzc1ZjU5MzI4NjhiYmMxOCIsImlkIjoidHM6cGFja2FnZXMvc2hwLWNoZWNrZXIvc3JjL2NoZWNrZXIvcnVsZXMvZ3VhcmRzLnRzIiwicHJvamVjdGlvbiI6Im93biIsInNjaGVtZSI6InRzLm93bi52MiJ9LHsiY29tcGxldGUiOnRydWUsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6YzZhNmQxMzVlNGViNmVjMDA0MGZkMGM5MGU4ZjFlYTMwM2ZiOTIzYTI0MmUwZTY2YzE3MWQ0NzhhZTg1MjkwZSIsImlkIjoidHM6cGFja2FnZXMvc2hwLWNoZWNrZXIvc3JjL2NoZWNrZXIvcnVsZXMvZ3VhcmRzLnRzI2NoZWNrRnJlc2huZXNzIiwicHJvamVjdGlvbiI6InVuaXQiLCJzY2hlbWUiOiJ0cy51bml0LnYyIn0seyJjb21wbGV0ZSI6dHJ1ZSwiZGVwcyI6W10sImRpZ2VzdCI6InNoYTI1NjplYTZiMjcwMjFkZGE2MzZjMTFkMjE1ODJhMTJmNThkMzEwNTkyMDRhZWIzNjhmYTNiNzEyN2QxMWQxMTk4MjViIiwiaWQiOiJ0czpwYWNrYWdlcy9zaHAtY2hlY2tlci9zcmMvYmVoYXZpb3VyYWwvZGV0ZXJtaW5pc20udGVzdC50cyIsInByb2plY3Rpb24iOiJvd24iLCJzY2hlbWUiOiJ0cy5vd24udjIifSx7ImNvbXBsZXRlIjp0cnVlLCJkZXBzIjpbXSwiZGlnZXN0Ijoic2hhMjU2OmVjNDkzNTA2YmRiZjQxNTg4Y2Y5MWIzN2JkOGJhOGQxZTY5ODlmM2JiZGNkZmE0NDAzNDRlYWQxM2JhZWY1MDgiLCJpZCI6InRzOnBhY2thZ2VzL3NocC1jaGVja2VyL3NyYy9iZWhhdmlvdXJhbC9oYXJuZXNzLnRzIiwicHJvamVjdGlvbiI6Im93biIsInNjaGVtZSI6InRzLm93bi52MiJ9LHsiY29tcGxldGUiOnRydWUsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6NGI2MjYwM2EwZDRhMjQxMDQ5ZTAwODk0ZWY1NjQzNTZkZjY2NjRmYjFjY2I2OTE2ODFjODZlZDZhYzljMWFkOCIsImlkIjoidHM6cGFja2FnZXMvc2hwLWNsaS9zcmMvZnJlc2huZXNzLnRzIiwicHJvamVjdGlvbiI6Im93biIsInNjaGVtZSI6InRzLm93bi52MiJ9LHsiY29tcGxldGUiOnRydWUsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6MzAxODQyMzE2NGNmMGQ3NjljZjNhMGIxM2M0ZjVhNzAyOTdhZDUxOTA4YjM0NDY3ZGNmOGViOWNhNDE5MzcwMyIsImlkIjoidHM6cGFja2FnZXMvc2hwLWNsaS9zcmMvZnJlc2huZXNzLnRzI2lzb1RvZGF5IiwicHJvamVjdGlvbiI6InVuaXQiLCJzY2hlbWUiOiJ0cy51bml0LnYyIn1dLCJyb290Ijoic2hhMjU2OjU1NGJkNTZmOGNmM2U4Y2I1MTZiMTI0YTg4YmQ4YWE4NjMyOTdmYTY0MWZhY2M1MzJhNmU2NWQ4MzkzNjBhYzkifSwidGltZSI6IjIwMjYtMTAtMjVUMTA6MDA6MDBaIiwidiI6InNoYXBlLmV2aWRlbmNlLnYxIn19LCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9pbi10b3RvLmlvL2F0dGVzdGF0aW9uL3NjYWkvYXR0cmlidXRlLXJlcG9ydC92MC4zIiwic3ViamVjdCI6W3siZGlnZXN0Ijp7InNoYTI1NiI6IjU1NGJkNTZmOGNmM2U4Y2I1MTZiMTI0YTg4YmQ4YWE4NjMyOTdmYTY0MWZhY2M1MzJhNmU2NWQ4MzkzNjBhYzkifSwibmFtZSI6InNoYXBlOnNjb3BlL3Rvb2xpbmc6OnRzQ2xvY2tTY2FuLzg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODgifV19",
+   "signatures": [
+    {
+     "keyid": "be3b4f95d1d875d71dd2facf6c5e4da57c1a2c79dead9e1fc5c3b5c1de54c022",
+     "sig": "AfI8OWBZAf8NAad1ll32wVMN6c0vehjXDfEELkXegYSRIL+qea3q+0B1fahq4ZxCSj6Riq0RwZTTD7O0Q9jhAg=="
+    }
+   ]
+  },
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfU1VQUE9SVFMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJqdWRnbWVudCJ9fV0sInNoYXBlIjp7ImNsYWltIjp7ImZwIjoic2hhMjU2OmM0MTRlYWRjMjM4ZDg3YzRlMDA0ODk5ZTlmMmZlNWEyZWNmZTYxNWRhZTdlYjhhMjQyNzE0NDI2YTA1OWEwNzciLCJpZCI6InRvb2xpbmc6OlNocENsaS5pc29Ub2RheS9SZWZhY3RvclNlbnNpdGl2ZS9sYXcifSwiY29kZSI6W3siZGlnZXN0Ijoic2hhMjU2OjMwMTg0MjMxNjRjZjBkNzY5Y2YzYTBiMTNjNGY1YTcwMjk3YWQ1MTkwOGIzNDQ2N2RjZjhlYjljYTQxOTM3MDMiLCJpZCI6InRzOnBhY2thZ2VzL3NocC1jbGkvc3JjL2ZyZXNobmVzcy50cyNpc29Ub2RheSIsInByb2plY3Rpb24iOiJ1bml0Iiwic2NoZW1lIjoidHMudW5pdC52MiJ9XSwianVkZ2UiOiJ0b29saW5nOjphbm4iLCJraW5kIjoianVkZ21lbnQiLCJwcm92aWRlciI6bnVsbCwicmVzdWx0Ijoic3VwcG9ydHMiLCJyZXZpc2lvbiI6Ijc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3NzciLCJ0aW1lIjoiMjAyNi0wOS0wMVQwOTowMDowMFoiLCJ2Ijoic2hhcGUuZXZpZGVuY2UudjEifX0sInByZWRpY2F0ZVR5cGUiOiJodHRwczovL2luLXRvdG8uaW8vYXR0ZXN0YXRpb24vc2NhaS9hdHRyaWJ1dGUtcmVwb3J0L3YwLjMiLCJzdWJqZWN0IjpbeyJkaWdlc3QiOnsic2hhMjU2IjoiYzQxNGVhZGMyMzhkODdjNGUwMDQ4OTllOWYyZmU1YTJlY2ZlNjE1ZGFlN2ViOGEyNDI3MTQ0MjZhMDU5YTA3NyJ9LCJuYW1lIjoic2hhcGU6Y2xhaW0vdG9vbGluZzo6U2hwQ2xpLmlzb1RvZGF5L1JlZmFjdG9yU2Vuc2l0aXZlL2xhdyJ9LHsiYW5ub3RhdGlvbnMiOnsic2hhcGUuc2NoZW1lIjoidHMudW5pdC52MiJ9LCJkaWdlc3QiOnsic2hhMjU2IjoiMzAxODQyMzE2NGNmMGQ3NjljZjNhMGIxM2M0ZjVhNzAyOTdhZDUxOTA4YjM0NDY3ZGNmOGViOWNhNDE5MzcwMyJ9LCJuYW1lIjoic2hhcGU6Y29kZS90czpwYWNrYWdlcy9zaHAtY2xpL3NyYy9mcmVzaG5lc3MudHMjaXNvVG9kYXlAdW5pdCJ9XX0=",
+   "signatures": [
+    {
+     "keyid": "43aae8ebbdedb969415d020b0121118022722a577758c5fa88dcd9d8a2116533",
+     "sig": "mQfYiau2mL3ijdIBS0uZdYOimm3afSW/NEA1WYdW1g7b5MhxUD1BHXOlk9b+svZuXMQATlBE67AMcRLRSOZDBQ=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ },
+ "head": {
+  "revision": "8888888888888888888888888888888888888888",
+  "source": {
+   "v": "shape.source.v1",
+   "modules": [
+    {
+     "module": "checker",
+     "imports": [
+      "std",
+      "tooling"
+     ],
+     "decls": [
+      {
+       "decl": "component",
+       "name": "ShapeBindings"
+      },
+      {
+       "decl": "component",
+       "name": "ShapeChecker",
+       "paths": [
+        "packages/shp-checker/src/checker/api.ts"
+       ],
+       "grants": "none",
+       "units": [
+        {
+         "name": "checkShapeModules"
+        }
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "ShapeDiagnostics"
+      },
+      {
+       "decl": "component",
+       "name": "ShapeModelLowerer"
+      },
+      {
+       "decl": "component",
+       "name": "ShapeModuleResolver"
+      },
+      {
+       "decl": "component",
+       "name": "ShapePreludeRegistry"
+      },
+      {
+       "decl": "component",
+       "name": "ShapeRuleEngine",
+       "paths": [
+        "packages/shp-checker/src/checker/rules/**/*.ts"
+       ],
+       "grants": "none"
+      },
+      {
+       "decl": "component",
+       "name": "ShapeStringHelpers"
+      },
+      {
+       "decl": "law",
+       "name": "CheckIsDeterministic",
+       "template": {
+        "name": "Deterministic",
+        "args": [
+         "ShapeChecker.checkShapeModules"
+        ]
+       },
+       "tier": "critical",
+       "evidence": {
+        "level": "tested",
+        "by": [
+         "bunTest"
+        ]
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "bunTest",
+       "produces": [
+        "test"
+       ],
+       "decides": [
+        "template Deterministic"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "identity": "ed25519(\"dd7e84d010aed28a416e928f50c4c09ac0f94a8f5b346548168bddb61cdb7263\")",
+       "implementation": {
+        "paths": [
+         "bunfig.toml",
+         "package.json",
+         "bun.lock"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "module": "checker.incremental",
+     "imports": [
+      "std"
+     ],
+     "decls": [
+      {
+       "decl": "component",
+       "name": "ShapeIncrementalChecker"
+      }
+     ]
+    },
+    {
+     "module": "tooling",
+     "imports": [
+      "std",
+      "checker"
+     ],
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Shape",
+       "owner": "ShapeMaintainers"
+      },
+      {
+       "decl": "actor",
+       "name": "ShapeMaintainers",
+       "kind": "team",
+       "members": [
+        "tim",
+        "ann"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "ann",
+       "kind": "person",
+       "identities": [
+        "github(\"ann\")",
+        "ed25519(\"43aae8ebbdedb969415d020b0121118022722a577758c5fa88dcd9d8a2116533\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "claude",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"claude[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "SystemClock",
+       "bind": [
+        "ts.call(\"Date.now\")",
+        "ts.call(\"Date\")",
+        "ts.call(\"performance.now\")",
+        "ts.call(\"process.hrtime\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "ShpCli",
+       "paths": [
+        "packages/shp-cli/src/**/*.ts"
+       ],
+       "units": [
+        {
+         "name": "isoToday",
+         "attach": [
+          {
+           "name": "RefactorSensitive"
+          }
+         ],
+         "bind": "ts(\"packages/shp-cli/src/freshness.ts#isoToday\")",
+         "effects": {
+          "mode": "complete",
+          "atoms": [
+           {
+            "atom": "Read<SystemClock>"
+           }
+          ]
+         }
+        }
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "CheckerNeverReadsClock",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "Read<SystemClock>",
+         "within": [
+          "component checker::ShapeBindings",
+          "component checker::ShapeChecker",
+          "component checker::ShapeDiagnostics",
+          "component checker::ShapeModelLowerer",
+          "component checker::ShapeModuleResolver",
+          "component checker::ShapePreludeRegistry",
+          "component checker::ShapeRuleEngine",
+          "component checker::ShapeStringHelpers",
+          "component checker.incremental::ShapeIncrementalChecker"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "note",
+       "name": "ClockReadAtCliBoundary",
+       "kind": "memory",
+       "about": [
+        "unit ShpCli.isoToday",
+        "law checker::CheckIsDeterministic"
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "tsClockScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(ts.call(\"Date.now\"))",
+        "effect(ts.call(\"Date\"))",
+        "effect(ts.call(\"performance.now\"))",
+        "effect(ts.call(\"process.hrtime\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "identity": "ed25519(\"be3b4f95d1d875d71dd2facf6c5e4da57c1a2c79dead9e1fc5c3b5c1de54c022\")",
+       "implementation": {
+        "paths": [
+         "tools/clock-scan.ts",
+         "tsconfig.json",
+         "package.json",
+         "bun.lock"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/8888888888888888888888888888888888888888",
+     "digest": {
+      "sha256": "f1e3a814fe0c97940d393b9cbdc29ded6f3489c9b0b14ced901ef39d2dfb8bea"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "8888888888888888888888888888888888888888",
+     "tree": [
+      {
+       "path": "packages/shp-checker/src/behavioural/determinism.test.ts",
+       "mode": "100644",
+       "blob": "efca417d80b8c3310505d2b25ea70fefd2bd93c7"
+      },
+      {
+       "path": "packages/shp-checker/src/behavioural/harness.ts",
+       "mode": "100644",
+       "blob": "5c33bccf58c5d30c21a80679eb550b194b1448f5"
+      },
+      {
+       "path": "packages/shp-checker/src/checker/api.ts",
+       "mode": "100644",
+       "blob": "72976653e6ebebec6bc3b3a5dc777883843e5dd9"
+      },
+      {
+       "path": "packages/shp-checker/src/checker/rules/guards.ts",
+       "mode": "100644",
+       "blob": "fdc688bbb4dde86e2175a7a2f2544fbea640f2bb"
+      },
+      {
+       "path": "packages/shp-cli/src/freshness.ts",
+       "mode": "100644",
+       "blob": "2aa918f024bd1032d212e51ab5d601d17d6e821b"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "83977260e3920505bd1bd2bb8cf4977969dbb729"
+      },
+      {
+       "path": "shape/checker.shape",
+       "mode": "100644",
+       "blob": "4d3c129f4465a94bab4d50ecbb345835ec2e150e"
+      },
+      {
+       "path": "shape/tooling.shape",
+       "mode": "100644",
+       "blob": "2dc8c9b0a975efbc582a998c29da03abb64d4d01"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:packages/shp-checker/src/behavioural/determinism.test.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:50669ab00f6b371af7de6363a9969ebe217699efb2dbf203ac9c12dfc961966f",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/behavioural/determinism.test.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:ea6b27021dda636c11d21582a12f58d31059204aeb368fa3b7127d11d119825b",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/behavioural/harness.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:e7cc588765611c695202b49d91a9ac6645d462b04cb20be8b6dfca46234f8cc2",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/behavioural/harness.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:ec493506bdbf41588cf91b37bd8ba8d1e6989f3bbdcdfa440344ead13baef508",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/api.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:88915e0de00c1cf2e0c80fecd659aafdb654f6d00bd840483d0d9ed51cb5faaf",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/api.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:97ae8d28c0ec8ade711bb3a29565a3fb31fd1cca3d8df87fea1501ab0acdd980",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:28136a5b96ec8ea9dba574c1819b72b99fe2b1aa16f244f919557015d39aa58d",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/api.ts"
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:e494e93653aa37b1127cabf7217d2d551528183dca59baed66b93adcccbdc5b5",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/api.ts"
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:6f66d2c80820721b3c49f279802f04936fe7d496e5765ef797ae65dac063f6ce",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:7fcb8986f0026c6392c5a6d429247631ca81dda738f8c8f5375f5932868bbc18",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:c9ddb77cf7bf5e19a045807de3c5409eddc9807913942ec0675eaa71f18e94bc",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:c6a6d135e4eb6ec0040fd0c90e8f1ea303fb923a242e0e66c171d478ae85290e",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:67f2d0b7379df47c3669ccef60cc2989725af56e3357ffe1bdcc1a7f2a92ec3d",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:4b62603a0d4a241049e00894ef564356df6664fb1ccb691681c86ed6ac9c1ad8",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:6db0cbc3b00df1070663c0923e5929a6ec50cb52abda98b42d74799a738e3a30",
+       "kind": "function",
+       "parent": "ts:packages/shp-cli/src/freshness.ts"
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:3018423164cf0d769cf3a0b13c4f5a70297ad51908b34467dcf8eb9ca4193703",
+       "kind": "function",
+       "parent": "ts:packages/shp-cli/src/freshness.ts"
+      }
+     ]
+    }
+   }
+  }
+ }
+}

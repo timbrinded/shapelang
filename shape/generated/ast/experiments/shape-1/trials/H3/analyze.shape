@@ -1,0 +1,177 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.analyze
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AnalyzeModuleContraRaisedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/analyze.py#contra_raised")
+  fingerprint ast.semantic_subtree_v1("sha256:0392262555f96ad778f723ff43d6343d41d757a560577dff09e2e5854cee7dd8")
+}
+
+resource AnalyzeModuleLawBlockAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/analyze.py#law_block")
+  fingerprint ast.semantic_subtree_v1("sha256:3f12caed2d426edd0872f8ae3152efcc4b03e1f2d1d693efae94b79017e4084f")
+}
+
+resource AnalyzeModuleLawFlagAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/analyze.py#law_flag")
+  fingerprint ast.semantic_subtree_v1("sha256:9a8e6080fab1898f506414f162069abc5794f6804148cfe7317e209530b0a528")
+}
+
+resource AnalyzeModuleLawObsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/analyze.py#law_obs")
+  fingerprint ast.semantic_subtree_v1("sha256:83827bcdc670d5164925905234788c4c96b61197e18ba5e1bc78689dfaec9efa")
+}
+
+resource AnalyzeModuleLawTaggedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/analyze.py#law_tagged")
+  fingerprint ast.semantic_subtree_v1("sha256:f90223002c99b6a2dbefab5e0c04d723967512e77f126810e848e5c64e24fa38")
+}
+
+resource AnalyzeModuleLawsigAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/analyze.py#lawsig")
+  fingerprint ast.semantic_subtree_v1("sha256:0bf18e2e84ecc864e9db2830ff881c6ffe60d47404876f6d218ed3ba8f3a52f0")
+}
+
+resource AnalyzeModulePctAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/analyze.py#pct")
+  fingerprint ast.semantic_subtree_v1("sha256:752ab62ab1ecd3cca4b97a6b218663d0ed84b96b585de7f0cd10762d2fa85d8e")
+}
+
+resource AnalyzeModulePmErrorsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/analyze.py#pm_errors")
+  fingerprint ast.semantic_subtree_v1("sha256:390c3ed33da890d2dea6c43ba3c1a4f854bfb747717a70988bb8ff133021e6fc")
+}
+
+resource AnalyzeModuleStaleRaisedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/analyze.py#stale_raised")
+  fingerprint ast.semantic_subtree_v1("sha256:c68e74ec85b864aab725bce1b1e060155849efef6d6974026548f2e755d402ed")
+}
+
+resource AnalyzeModuleSuiteKillAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/analyze.py#suite_kill")
+  fingerprint ast.semantic_subtree_v1("sha256:f5f5a4ab3eb208d496b0eafcde01e2c995752bb700a27e4f5740d7c340b3879c")
+}
+
+component AnalyzeModule : GeneratedCandidate {
+  fn contra_raised
+    source python("experiments/shape-1/trials/H3/analyze.py#contra_raised")
+    effects unknown
+  fn law_block
+    source python("experiments/shape-1/trials/H3/analyze.py#law_block")
+    effects unknown
+  fn law_flag
+    source python("experiments/shape-1/trials/H3/analyze.py#law_flag")
+    effects unknown
+  fn law_obs
+    source python("experiments/shape-1/trials/H3/analyze.py#law_obs")
+    effects unknown
+  fn law_tagged
+    source python("experiments/shape-1/trials/H3/analyze.py#law_tagged")
+    effects unknown
+  fn lawsig
+    source python("experiments/shape-1/trials/H3/analyze.py#lawsig")
+    effects unknown
+  fn pct
+    source python("experiments/shape-1/trials/H3/analyze.py#pct")
+    effects unknown
+  fn pm_errors
+    source python("experiments/shape-1/trials/H3/analyze.py#pm_errors")
+    effects unknown
+  fn stale_raised
+    source python("experiments/shape-1/trials/H3/analyze.py#stale_raised")
+    effects unknown
+  fn suite_kill
+    source python("experiments/shape-1/trials/H3/analyze.py#suite_kill")
+    effects unknown
+}
+
+relation AnalyzeModuleContraRaisedGeneratedFromAnalyzeModuleContraRaisedAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleContraRaisedAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleContraRaisedAstAnchor as syntax }
+  expects AnalyzeModuleContraRaisedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0392262555f96ad778f723ff43d6343d41d757a560577dff09e2e5854cee7dd8")
+  summary "fn AnalyzeModule.contra_raised generated from python function_definition at experiments/shape-1/trials/H3/analyze.py#contra_raised."
+}
+
+relation AnalyzeModuleLawBlockGeneratedFromAnalyzeModuleLawBlockAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleLawBlockAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleLawBlockAstAnchor as syntax }
+  expects AnalyzeModuleLawBlockAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3f12caed2d426edd0872f8ae3152efcc4b03e1f2d1d693efae94b79017e4084f")
+  summary "fn AnalyzeModule.law_block generated from python function_definition at experiments/shape-1/trials/H3/analyze.py#law_block."
+}
+
+relation AnalyzeModuleLawFlagGeneratedFromAnalyzeModuleLawFlagAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleLawFlagAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleLawFlagAstAnchor as syntax }
+  expects AnalyzeModuleLawFlagAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9a8e6080fab1898f506414f162069abc5794f6804148cfe7317e209530b0a528")
+  summary "fn AnalyzeModule.law_flag generated from python function_definition at experiments/shape-1/trials/H3/analyze.py#law_flag."
+}
+
+relation AnalyzeModuleLawObsGeneratedFromAnalyzeModuleLawObsAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleLawObsAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleLawObsAstAnchor as syntax }
+  expects AnalyzeModuleLawObsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:83827bcdc670d5164925905234788c4c96b61197e18ba5e1bc78689dfaec9efa")
+  summary "fn AnalyzeModule.law_obs generated from python function_definition at experiments/shape-1/trials/H3/analyze.py#law_obs."
+}
+
+relation AnalyzeModuleLawTaggedGeneratedFromAnalyzeModuleLawTaggedAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleLawTaggedAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleLawTaggedAstAnchor as syntax }
+  expects AnalyzeModuleLawTaggedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f90223002c99b6a2dbefab5e0c04d723967512e77f126810e848e5c64e24fa38")
+  summary "fn AnalyzeModule.law_tagged generated from python function_definition at experiments/shape-1/trials/H3/analyze.py#law_tagged."
+}
+
+relation AnalyzeModuleLawsigGeneratedFromAnalyzeModuleLawsigAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleLawsigAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleLawsigAstAnchor as syntax }
+  expects AnalyzeModuleLawsigAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0bf18e2e84ecc864e9db2830ff881c6ffe60d47404876f6d218ed3ba8f3a52f0")
+  summary "fn AnalyzeModule.lawsig generated from python function_definition at experiments/shape-1/trials/H3/analyze.py#lawsig."
+}
+
+relation AnalyzeModulePctGeneratedFromAnalyzeModulePctAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModulePctAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModulePctAstAnchor as syntax }
+  expects AnalyzeModulePctAstAnchor fingerprint ast.semantic_subtree_v1("sha256:752ab62ab1ecd3cca4b97a6b218663d0ed84b96b585de7f0cd10762d2fa85d8e")
+  summary "fn AnalyzeModule.pct generated from python function_definition at experiments/shape-1/trials/H3/analyze.py#pct."
+}
+
+relation AnalyzeModulePmErrorsGeneratedFromAnalyzeModulePmErrorsAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModulePmErrorsAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModulePmErrorsAstAnchor as syntax }
+  expects AnalyzeModulePmErrorsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:390c3ed33da890d2dea6c43ba3c1a4f854bfb747717a70988bb8ff133021e6fc")
+  summary "fn AnalyzeModule.pm_errors generated from python function_definition at experiments/shape-1/trials/H3/analyze.py#pm_errors."
+}
+
+relation AnalyzeModuleStaleRaisedGeneratedFromAnalyzeModuleStaleRaisedAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleStaleRaisedAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleStaleRaisedAstAnchor as syntax }
+  expects AnalyzeModuleStaleRaisedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c68e74ec85b864aab725bce1b1e060155849efef6d6974026548f2e755d402ed")
+  summary "fn AnalyzeModule.stale_raised generated from python function_definition at experiments/shape-1/trials/H3/analyze.py#stale_raised."
+}
+
+relation AnalyzeModuleSuiteKillGeneratedFromAnalyzeModuleSuiteKillAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleSuiteKillAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleSuiteKillAstAnchor as syntax }
+  expects AnalyzeModuleSuiteKillAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f5f5a4ab3eb208d496b0eafcde01e2c995752bb700a27e4f5740d7c340b3879c")
+  summary "fn AnalyzeModule.suite_kill generated from python function_definition at experiments/shape-1/trials/H3/analyze.py#suite_kill."
+}
+
+implementation AnalyzeModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/analyze.py"
+  }
+  conforms_to AnalyzeModule
+}

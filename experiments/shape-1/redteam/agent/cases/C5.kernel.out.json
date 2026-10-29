@@ -1,0 +1,80 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:037720d2ecbf37f190d5811ed169793be4766786ae144d53f29d63453a0d522b",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:8456e4786582a819f9cc049be0572db06a5ff6e61e4358795eaf79ca2cf41a44",
+   "introduced": true,
+   "key": "ob:f99ad91d0fb961864cea647e6188ac9c56b6d243cb026fee5224db411dfce977",
+   "kind": "coverage",
+   "owner": "audit::AuditTeam",
+   "questions": null,
+   "reason": null,
+   "severity": "blocking",
+   "subject": "component audit::AuditStore",
+   "tier": "critical",
+   "witness": []
+  },
+  {
+   "binding": "bd:6e9b34f011abf28ac420ebd5d229b47e8df87433d8cb9b1b3848c21f2330250a",
+   "budget": "judgment",
+   "claim": {
+    "fp": "sha256:ccfcbabf10265d643560fc2bcd0014f9bf15241ce35da1f5e0a269c349e617c0",
+    "ids": [
+     "audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+    ],
+    "tier": "final"
+   },
+   "exception": null,
+   "exploited": true,
+   "final": true,
+   "force": null,
+   "group": "g:8456e4786582a819f9cc049be0572db06a5ff6e61e4358795eaf79ca2cf41a44",
+   "introduced": true,
+   "key": "ob:031024b1dfd16fe266cf991b13b10ca3e58431846f44d3ae2c851d52644fd44a",
+   "kind": "loosening",
+   "owner": "audit::AuditTeam",
+   "questions": [
+    "L1"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "sha256:ccfcbabf10265d643560fc2bcd0014f9bf15241ce35da1f5e0a269c349e617c0",
+   "tier": "final",
+   "witness": []
+  },
+  {
+   "binding": "bd:b88f115508c025b8bc0e1a09836a213ea3adec9d7d9fcda7e82cf5245c5e0b35",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": true,
+   "final": false,
+   "force": null,
+   "group": "g:8456e4786582a819f9cc049be0572db06a5ff6e61e4358795eaf79ca2cf41a44",
+   "introduced": true,
+   "key": "ob:ca99c5461b8ff9a8410d4389337b30099a13b1a78bf99bd8f9cc107df9d04054",
+   "kind": "loosening",
+   "owner": "audit::AuditTeam",
+   "questions": [
+    "L1"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "component audit::AuditStore",
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

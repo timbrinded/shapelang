@@ -1,0 +1,113 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r07_transfer_cost
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R07TransferCostModuleAdjustAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#adjust")
+  fingerprint ast.semantic_subtree_v1("sha256:78554a6fb0bd4909cb4253cb158f7b059a205f3f68c316191e2658ec5426a8d2")
+}
+
+resource R07TransferCostModuleBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#balance")
+  fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+}
+
+resource R07TransferCostModuleFeeForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#feeFor")
+  fingerprint ast.semantic_subtree_v1("sha256:43932b3ec2d08e8620e6acb10f280ac62aa6fb2e45cf85c88b0c65f900f0ff2a")
+}
+
+resource R07TransferCostModuleSetBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#setBalance")
+  fingerprint ast.semantic_subtree_v1("sha256:f1f9de177693b3dd73cad9c920b7b219458daaa494194b9357f78a57e964adfc")
+}
+
+resource R07TransferCostModuleTotalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#total")
+  fingerprint ast.semantic_subtree_v1("sha256:d9a6a3d298fbcc063cb0a8e5ce994c2de1789a71d0d2b076c40b54531ce92cba")
+}
+
+resource R07TransferCostModuleTransferAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#transfer")
+  fingerprint ast.semantic_subtree_v1("sha256:16dfca714cadbd479cb9d91ced11665ea44cad8ab5fce99267791cf154f968ca")
+}
+
+component R07TransferCostModule : GeneratedCandidate {
+  fn adjust
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#adjust")
+    effects unknown
+  fn balance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#balance")
+    effects unknown
+  fn feeFor
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#feeFor")
+    effects unknown
+  fn setBalance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#setBalance")
+    effects unknown
+  fn total
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#total")
+    effects unknown
+  fn transfer
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#transfer")
+    effects unknown
+}
+
+relation R07TransferCostModuleAdjustGeneratedFromR07TransferCostModuleAdjustAstAnchor {
+  kind generated_from
+  connects R07TransferCostModule -> R07TransferCostModuleAdjustAstAnchor
+  roles { R07TransferCostModule as generated, R07TransferCostModuleAdjustAstAnchor as syntax }
+  expects R07TransferCostModuleAdjustAstAnchor fingerprint ast.semantic_subtree_v1("sha256:78554a6fb0bd4909cb4253cb158f7b059a205f3f68c316191e2658ec5426a8d2")
+  summary "fn R07TransferCostModule.adjust generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#adjust."
+}
+
+relation R07TransferCostModuleBalanceGeneratedFromR07TransferCostModuleBalanceAstAnchor {
+  kind generated_from
+  connects R07TransferCostModule -> R07TransferCostModuleBalanceAstAnchor
+  roles { R07TransferCostModule as generated, R07TransferCostModuleBalanceAstAnchor as syntax }
+  expects R07TransferCostModuleBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+  summary "fn R07TransferCostModule.balance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#balance."
+}
+
+relation R07TransferCostModuleFeeForGeneratedFromR07TransferCostModuleFeeForAstAnchor {
+  kind generated_from
+  connects R07TransferCostModule -> R07TransferCostModuleFeeForAstAnchor
+  roles { R07TransferCostModule as generated, R07TransferCostModuleFeeForAstAnchor as syntax }
+  expects R07TransferCostModuleFeeForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:43932b3ec2d08e8620e6acb10f280ac62aa6fb2e45cf85c88b0c65f900f0ff2a")
+  summary "fn R07TransferCostModule.feeFor generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#feeFor."
+}
+
+relation R07TransferCostModuleSetBalanceGeneratedFromR07TransferCostModuleSetBalanceAstAnchor {
+  kind generated_from
+  connects R07TransferCostModule -> R07TransferCostModuleSetBalanceAstAnchor
+  roles { R07TransferCostModule as generated, R07TransferCostModuleSetBalanceAstAnchor as syntax }
+  expects R07TransferCostModuleSetBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f1f9de177693b3dd73cad9c920b7b219458daaa494194b9357f78a57e964adfc")
+  summary "fn R07TransferCostModule.setBalance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#setBalance."
+}
+
+relation R07TransferCostModuleTotalGeneratedFromR07TransferCostModuleTotalAstAnchor {
+  kind generated_from
+  connects R07TransferCostModule -> R07TransferCostModuleTotalAstAnchor
+  roles { R07TransferCostModule as generated, R07TransferCostModuleTotalAstAnchor as syntax }
+  expects R07TransferCostModuleTotalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d9a6a3d298fbcc063cb0a8e5ce994c2de1789a71d0d2b076c40b54531ce92cba")
+  summary "fn R07TransferCostModule.total generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#total."
+}
+
+relation R07TransferCostModuleTransferGeneratedFromR07TransferCostModuleTransferAstAnchor {
+  kind generated_from
+  connects R07TransferCostModule -> R07TransferCostModuleTransferAstAnchor
+  roles { R07TransferCostModule as generated, R07TransferCostModuleTransferAstAnchor as syntax }
+  expects R07TransferCostModuleTransferAstAnchor fingerprint ast.semantic_subtree_v1("sha256:16dfca714cadbd479cb9d91ced11665ea44cad8ab5fce99267791cf154f968ca")
+  summary "fn R07TransferCostModule.transfer generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts#transfer."
+}
+
+implementation R07TransferCostModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts"
+  }
+  conforms_to R07TransferCostModule
+}

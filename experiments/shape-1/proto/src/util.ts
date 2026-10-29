@@ -104,10 +104,20 @@ export function collapseWs(s: string): string {
 
 /** Integer UTC seconds from an RFC 3339 string or a date (A.0.5). Returns null when unparsable. */
 export function toSeconds(s: string): number | null {
-  const m = /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(Z|[+-]\d{2}:\d{2})?)?$/.exec(s);
+  const m =
+    /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(Z|[+-]\d{2}:\d{2})?)?$/.exec(
+      s
+    );
   if (!m) return null;
   const [, y, mo, d, hh, mm, ss, tz] = m;
-  let t = Date.UTC(Number(y), Number(mo) - 1, Number(d), Number(hh ?? 0), Number(mm ?? 0), Number(ss ?? 0));
+  let t = Date.UTC(
+    Number(y),
+    Number(mo) - 1,
+    Number(d),
+    Number(hh ?? 0),
+    Number(mm ?? 0),
+    Number(ss ?? 0)
+  );
   if (tz && tz !== "Z") {
     const sign = tz.startsWith("-") ? -1 : 1;
     const [th, tm] = tz.slice(1).split(":");

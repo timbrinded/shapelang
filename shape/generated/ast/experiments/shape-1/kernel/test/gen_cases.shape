@@ -1,0 +1,449 @@
+module shape.generated.ast.experiments.shape_1.kernel.test.gen_cases
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GenCasesModuleActorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#actor")
+  fingerprint ast.semantic_subtree_v1("sha256:64e39de1db0373b6c0c1636d297ea553901f7fdbbfed79a7fa540f3a32e9b3ef")
+}
+
+resource GenCasesModuleAnswerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#answer")
+  fingerprint ast.semantic_subtree_v1("sha256:361f0c6e90ab8407e067994027573fbd86938e69cd90148de966418a706ad23d")
+}
+
+resource GenCasesModuleBaseEntries1AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#base_entries1")
+  fingerprint ast.semantic_subtree_v1("sha256:dbc2a6468f4086ad214adece95aa34235a86f710333e745f740bc3d3d93e6ea4")
+}
+
+resource GenCasesModuleBaseEsf1AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#base_esf1")
+  fingerprint ast.semantic_subtree_v1("sha256:68677f42b0333286b27b49b40148023b10963510157d9662da5e75c717148090")
+}
+
+resource GenCasesModuleCAuthorityAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#c_authority")
+  fingerprint ast.semantic_subtree_v1("sha256:27cd219e4c3aade54df3e327bef330190e2b4caf8c4b31013f737a1391c55c56")
+}
+
+resource GenCasesModuleCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#case")
+  fingerprint ast.semantic_subtree_v1("sha256:bfe417f673cdb205f33e96a8c3eea599cf6db0ded0a965303518ac6d3ad26e39")
+}
+
+resource GenCasesModuleCiteAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#cite")
+  fingerprint ast.semantic_subtree_v1("sha256:ac7c749aae06fb7e70e6f9b585a12be75ea1d02c094a5e34ccc27f292f446da4")
+}
+
+resource GenCasesModuleClaimAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#claim")
+  fingerprint ast.semantic_subtree_v1("sha256:ae5c8209d34341669f8c3649aba155dd404ba68a3d040701d53ba8f160793859")
+}
+
+resource GenCasesModuleComp1AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#comp1")
+  fingerprint ast.semantic_subtree_v1("sha256:99bf035b74d52c6b37c862d01d89d87bde78c6538d96e36dffcad81bb7188016")
+}
+
+resource GenCasesModuleCompAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#comp")
+  fingerprint ast.semantic_subtree_v1("sha256:9c7bf4c8b6306a21013a8af1826f09fa818a5e64b25fb8d5e879452d5ae12f0b")
+}
+
+resource GenCasesModuleEntAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#ent")
+  fingerprint ast.semantic_subtree_v1("sha256:790c2eb1a9b8d4c399a42cd519f4c9a0dda404a78c4fc91a4fe01fa24759fe60")
+}
+
+resource GenCasesModuleEntries2AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#entries2")
+  fingerprint ast.semantic_subtree_v1("sha256:7c80cdc97a4361327db78efdf4c59c4f9b9dbfc5acb2804e037e8ee43272f6a7")
+}
+
+resource GenCasesModuleEntries3AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#entries3")
+  fingerprint ast.semantic_subtree_v1("sha256:284b8e5f5a388783c4479d3993ce0a35d11b951d557fd749e70fbafed0c95fc7")
+}
+
+resource GenCasesModuleEntryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#entry")
+  fingerprint ast.semantic_subtree_v1("sha256:746319c0d020c9c87f5d74c57536abc601c53fbc4719fd3f29be811918ec1ef1")
+}
+
+resource GenCasesModuleEsf2AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#esf2")
+  fingerprint ast.semantic_subtree_v1("sha256:358a89700325ea92c73bf1c0ca017c437e21ffefe57b9a4d7d5387241d76d056")
+}
+
+resource GenCasesModuleEsf3AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#esf3")
+  fingerprint ast.semantic_subtree_v1("sha256:a1545fdfbf9048b7a466eda44caa31f604c57d792e1d50492b439af083bb8e2b")
+}
+
+resource GenCasesModuleEsfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#esf")
+  fingerprint ast.semantic_subtree_v1("sha256:d27d407253e909199e529b818760462c934bee7b72006d49e0a332474db4dd13")
+}
+
+resource GenCasesModuleFastRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#fast_record")
+  fingerprint ast.semantic_subtree_v1("sha256:3358973e954231815da1a8c7b70489a72aba6968b1fbe787851af2fe1dd5aef4")
+}
+
+resource GenCasesModuleFileEntriesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#file_entries")
+  fingerprint ast.semantic_subtree_v1("sha256:61b0382a02a2b327bd75b7bba03bb3df83b7f9bd44e9f7f492ebfc6cd7249a2d")
+}
+
+resource GenCasesModuleHeadEntries1AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#head_entries1")
+  fingerprint ast.semantic_subtree_v1("sha256:729d7276c3b4e33759851a927023ee003408a7bb0a4193bc8735853aeb7d715f")
+}
+
+resource GenCasesModuleLabelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#label")
+  fingerprint ast.semantic_subtree_v1("sha256:4fe648b024c18c0f20d8d0dd0059338966483912db59d304bca1b037135f5f18")
+}
+
+resource GenCasesModuleManifestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#manifest")
+  fingerprint ast.semantic_subtree_v1("sha256:682bbc535933df4e1d51daa6854e24bfee5f4caeff16d3e3e80078f9a4d0fbaf")
+}
+
+resource GenCasesModuleProvAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#prov")
+  fingerprint ast.semantic_subtree_v1("sha256:28b4e18e3c97de56560cf92aefe15fb4af1b5f2ad54c0b3b89453da142a7fe42")
+}
+
+resource GenCasesModuleRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#record")
+  fingerprint ast.semantic_subtree_v1("sha256:16ff691d44bfc63ff37d4bd1482c99d7bc251662f6724197c01f59a80d70d537")
+}
+
+resource GenCasesModuleReqAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#req")
+  fingerprint ast.semantic_subtree_v1("sha256:19b31996ddc44800a00cab39ea37f5dfcf4fc45e119f224b672662aa09cf55d8")
+}
+
+resource GenCasesModuleSqlObsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#sql_obs")
+  fingerprint ast.semantic_subtree_v1("sha256:5f417b36ad486147dc3cdda24c61bffc38416b48d2a3efa31d656699f9ce04de")
+}
+
+resource GenCasesModuleWriteAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#write")
+  fingerprint ast.semantic_subtree_v1("sha256:e647717291dcc004331f7a2f95a67bf491b26978b8031fa5f72dceb7c14c6842")
+}
+
+component GenCasesModule : GeneratedCandidate {
+  fn actor
+    source python("experiments/shape-1/kernel/test/gen_cases.py#actor")
+    effects unknown
+  fn answer
+    source python("experiments/shape-1/kernel/test/gen_cases.py#answer")
+    effects unknown
+  fn base_entries1
+    source python("experiments/shape-1/kernel/test/gen_cases.py#base_entries1")
+    effects unknown
+  fn base_esf1
+    source python("experiments/shape-1/kernel/test/gen_cases.py#base_esf1")
+    effects unknown
+  fn c_authority
+    source python("experiments/shape-1/kernel/test/gen_cases.py#c_authority")
+    effects unknown
+  fn case
+    source python("experiments/shape-1/kernel/test/gen_cases.py#case")
+    effects unknown
+  fn cite
+    source python("experiments/shape-1/kernel/test/gen_cases.py#cite")
+    effects unknown
+  fn claim
+    source python("experiments/shape-1/kernel/test/gen_cases.py#claim")
+    effects unknown
+  fn comp
+    source python("experiments/shape-1/kernel/test/gen_cases.py#comp")
+    effects unknown
+  fn comp1
+    source python("experiments/shape-1/kernel/test/gen_cases.py#comp1")
+    effects unknown
+  fn ent
+    source python("experiments/shape-1/kernel/test/gen_cases.py#ent")
+    effects unknown
+  fn entries2
+    source python("experiments/shape-1/kernel/test/gen_cases.py#entries2")
+    effects unknown
+  fn entries3
+    source python("experiments/shape-1/kernel/test/gen_cases.py#entries3")
+    effects unknown
+  fn entry
+    source python("experiments/shape-1/kernel/test/gen_cases.py#entry")
+    effects unknown
+  fn esf
+    source python("experiments/shape-1/kernel/test/gen_cases.py#esf")
+    effects unknown
+  fn esf2
+    source python("experiments/shape-1/kernel/test/gen_cases.py#esf2")
+    effects unknown
+  fn esf3
+    source python("experiments/shape-1/kernel/test/gen_cases.py#esf3")
+    effects unknown
+  fn fast_record
+    source python("experiments/shape-1/kernel/test/gen_cases.py#fast_record")
+    effects unknown
+  fn file_entries
+    source python("experiments/shape-1/kernel/test/gen_cases.py#file_entries")
+    effects unknown
+  fn head_entries1
+    source python("experiments/shape-1/kernel/test/gen_cases.py#head_entries1")
+    effects unknown
+  fn label
+    source python("experiments/shape-1/kernel/test/gen_cases.py#label")
+    effects unknown
+  fn manifest
+    source python("experiments/shape-1/kernel/test/gen_cases.py#manifest")
+    effects unknown
+  fn prov
+    source python("experiments/shape-1/kernel/test/gen_cases.py#prov")
+    effects unknown
+  fn record
+    source python("experiments/shape-1/kernel/test/gen_cases.py#record")
+    effects unknown
+  fn req
+    source python("experiments/shape-1/kernel/test/gen_cases.py#req")
+    effects unknown
+  fn sql_obs
+    source python("experiments/shape-1/kernel/test/gen_cases.py#sql_obs")
+    effects unknown
+  fn write
+    source python("experiments/shape-1/kernel/test/gen_cases.py#write")
+    effects unknown
+}
+
+relation GenCasesModuleActorGeneratedFromGenCasesModuleActorAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleActorAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleActorAstAnchor as syntax }
+  expects GenCasesModuleActorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:64e39de1db0373b6c0c1636d297ea553901f7fdbbfed79a7fa540f3a32e9b3ef")
+  summary "fn GenCasesModule.actor generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#actor."
+}
+
+relation GenCasesModuleAnswerGeneratedFromGenCasesModuleAnswerAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleAnswerAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleAnswerAstAnchor as syntax }
+  expects GenCasesModuleAnswerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:361f0c6e90ab8407e067994027573fbd86938e69cd90148de966418a706ad23d")
+  summary "fn GenCasesModule.answer generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#answer."
+}
+
+relation GenCasesModuleBaseEntries1GeneratedFromGenCasesModuleBaseEntries1AstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleBaseEntries1AstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleBaseEntries1AstAnchor as syntax }
+  expects GenCasesModuleBaseEntries1AstAnchor fingerprint ast.semantic_subtree_v1("sha256:dbc2a6468f4086ad214adece95aa34235a86f710333e745f740bc3d3d93e6ea4")
+  summary "fn GenCasesModule.base_entries1 generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#base_entries1."
+}
+
+relation GenCasesModuleBaseEsf1GeneratedFromGenCasesModuleBaseEsf1AstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleBaseEsf1AstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleBaseEsf1AstAnchor as syntax }
+  expects GenCasesModuleBaseEsf1AstAnchor fingerprint ast.semantic_subtree_v1("sha256:68677f42b0333286b27b49b40148023b10963510157d9662da5e75c717148090")
+  summary "fn GenCasesModule.base_esf1 generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#base_esf1."
+}
+
+relation GenCasesModuleCAuthorityGeneratedFromGenCasesModuleCAuthorityAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleCAuthorityAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleCAuthorityAstAnchor as syntax }
+  expects GenCasesModuleCAuthorityAstAnchor fingerprint ast.semantic_subtree_v1("sha256:27cd219e4c3aade54df3e327bef330190e2b4caf8c4b31013f737a1391c55c56")
+  summary "fn GenCasesModule.c_authority generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#c_authority."
+}
+
+relation GenCasesModuleCaseGeneratedFromGenCasesModuleCaseAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleCaseAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleCaseAstAnchor as syntax }
+  expects GenCasesModuleCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bfe417f673cdb205f33e96a8c3eea599cf6db0ded0a965303518ac6d3ad26e39")
+  summary "fn GenCasesModule.case generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#case."
+}
+
+relation GenCasesModuleCiteGeneratedFromGenCasesModuleCiteAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleCiteAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleCiteAstAnchor as syntax }
+  expects GenCasesModuleCiteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ac7c749aae06fb7e70e6f9b585a12be75ea1d02c094a5e34ccc27f292f446da4")
+  summary "fn GenCasesModule.cite generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#cite."
+}
+
+relation GenCasesModuleClaimGeneratedFromGenCasesModuleClaimAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleClaimAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleClaimAstAnchor as syntax }
+  expects GenCasesModuleClaimAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ae5c8209d34341669f8c3649aba155dd404ba68a3d040701d53ba8f160793859")
+  summary "fn GenCasesModule.claim generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#claim."
+}
+
+relation GenCasesModuleComp1GeneratedFromGenCasesModuleComp1AstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleComp1AstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleComp1AstAnchor as syntax }
+  expects GenCasesModuleComp1AstAnchor fingerprint ast.semantic_subtree_v1("sha256:99bf035b74d52c6b37c862d01d89d87bde78c6538d96e36dffcad81bb7188016")
+  summary "fn GenCasesModule.comp1 generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#comp1."
+}
+
+relation GenCasesModuleCompGeneratedFromGenCasesModuleCompAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleCompAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleCompAstAnchor as syntax }
+  expects GenCasesModuleCompAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9c7bf4c8b6306a21013a8af1826f09fa818a5e64b25fb8d5e879452d5ae12f0b")
+  summary "fn GenCasesModule.comp generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#comp."
+}
+
+relation GenCasesModuleEntGeneratedFromGenCasesModuleEntAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleEntAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleEntAstAnchor as syntax }
+  expects GenCasesModuleEntAstAnchor fingerprint ast.semantic_subtree_v1("sha256:790c2eb1a9b8d4c399a42cd519f4c9a0dda404a78c4fc91a4fe01fa24759fe60")
+  summary "fn GenCasesModule.ent generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#ent."
+}
+
+relation GenCasesModuleEntries2GeneratedFromGenCasesModuleEntries2AstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleEntries2AstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleEntries2AstAnchor as syntax }
+  expects GenCasesModuleEntries2AstAnchor fingerprint ast.semantic_subtree_v1("sha256:7c80cdc97a4361327db78efdf4c59c4f9b9dbfc5acb2804e037e8ee43272f6a7")
+  summary "fn GenCasesModule.entries2 generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#entries2."
+}
+
+relation GenCasesModuleEntries3GeneratedFromGenCasesModuleEntries3AstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleEntries3AstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleEntries3AstAnchor as syntax }
+  expects GenCasesModuleEntries3AstAnchor fingerprint ast.semantic_subtree_v1("sha256:284b8e5f5a388783c4479d3993ce0a35d11b951d557fd749e70fbafed0c95fc7")
+  summary "fn GenCasesModule.entries3 generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#entries3."
+}
+
+relation GenCasesModuleEntryGeneratedFromGenCasesModuleEntryAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleEntryAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleEntryAstAnchor as syntax }
+  expects GenCasesModuleEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:746319c0d020c9c87f5d74c57536abc601c53fbc4719fd3f29be811918ec1ef1")
+  summary "fn GenCasesModule.entry generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#entry."
+}
+
+relation GenCasesModuleEsf2GeneratedFromGenCasesModuleEsf2AstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleEsf2AstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleEsf2AstAnchor as syntax }
+  expects GenCasesModuleEsf2AstAnchor fingerprint ast.semantic_subtree_v1("sha256:358a89700325ea92c73bf1c0ca017c437e21ffefe57b9a4d7d5387241d76d056")
+  summary "fn GenCasesModule.esf2 generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#esf2."
+}
+
+relation GenCasesModuleEsf3GeneratedFromGenCasesModuleEsf3AstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleEsf3AstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleEsf3AstAnchor as syntax }
+  expects GenCasesModuleEsf3AstAnchor fingerprint ast.semantic_subtree_v1("sha256:a1545fdfbf9048b7a466eda44caa31f604c57d792e1d50492b439af083bb8e2b")
+  summary "fn GenCasesModule.esf3 generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#esf3."
+}
+
+relation GenCasesModuleEsfGeneratedFromGenCasesModuleEsfAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleEsfAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleEsfAstAnchor as syntax }
+  expects GenCasesModuleEsfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d27d407253e909199e529b818760462c934bee7b72006d49e0a332474db4dd13")
+  summary "fn GenCasesModule.esf generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#esf."
+}
+
+relation GenCasesModuleFastRecordGeneratedFromGenCasesModuleFastRecordAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleFastRecordAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleFastRecordAstAnchor as syntax }
+  expects GenCasesModuleFastRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3358973e954231815da1a8c7b70489a72aba6968b1fbe787851af2fe1dd5aef4")
+  summary "fn GenCasesModule.fast_record generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#fast_record."
+}
+
+relation GenCasesModuleFileEntriesGeneratedFromGenCasesModuleFileEntriesAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleFileEntriesAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleFileEntriesAstAnchor as syntax }
+  expects GenCasesModuleFileEntriesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:61b0382a02a2b327bd75b7bba03bb3df83b7f9bd44e9f7f492ebfc6cd7249a2d")
+  summary "fn GenCasesModule.file_entries generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#file_entries."
+}
+
+relation GenCasesModuleHeadEntries1GeneratedFromGenCasesModuleHeadEntries1AstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleHeadEntries1AstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleHeadEntries1AstAnchor as syntax }
+  expects GenCasesModuleHeadEntries1AstAnchor fingerprint ast.semantic_subtree_v1("sha256:729d7276c3b4e33759851a927023ee003408a7bb0a4193bc8735853aeb7d715f")
+  summary "fn GenCasesModule.head_entries1 generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#head_entries1."
+}
+
+relation GenCasesModuleLabelGeneratedFromGenCasesModuleLabelAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleLabelAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleLabelAstAnchor as syntax }
+  expects GenCasesModuleLabelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4fe648b024c18c0f20d8d0dd0059338966483912db59d304bca1b037135f5f18")
+  summary "fn GenCasesModule.label generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#label."
+}
+
+relation GenCasesModuleManifestGeneratedFromGenCasesModuleManifestAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleManifestAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleManifestAstAnchor as syntax }
+  expects GenCasesModuleManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:682bbc535933df4e1d51daa6854e24bfee5f4caeff16d3e3e80078f9a4d0fbaf")
+  summary "fn GenCasesModule.manifest generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#manifest."
+}
+
+relation GenCasesModuleProvGeneratedFromGenCasesModuleProvAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleProvAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleProvAstAnchor as syntax }
+  expects GenCasesModuleProvAstAnchor fingerprint ast.semantic_subtree_v1("sha256:28b4e18e3c97de56560cf92aefe15fb4af1b5f2ad54c0b3b89453da142a7fe42")
+  summary "fn GenCasesModule.prov generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#prov."
+}
+
+relation GenCasesModuleRecordGeneratedFromGenCasesModuleRecordAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleRecordAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleRecordAstAnchor as syntax }
+  expects GenCasesModuleRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:16ff691d44bfc63ff37d4bd1482c99d7bc251662f6724197c01f59a80d70d537")
+  summary "fn GenCasesModule.record generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#record."
+}
+
+relation GenCasesModuleReqGeneratedFromGenCasesModuleReqAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleReqAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleReqAstAnchor as syntax }
+  expects GenCasesModuleReqAstAnchor fingerprint ast.semantic_subtree_v1("sha256:19b31996ddc44800a00cab39ea37f5dfcf4fc45e119f224b672662aa09cf55d8")
+  summary "fn GenCasesModule.req generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#req."
+}
+
+relation GenCasesModuleSqlObsGeneratedFromGenCasesModuleSqlObsAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleSqlObsAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleSqlObsAstAnchor as syntax }
+  expects GenCasesModuleSqlObsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5f417b36ad486147dc3cdda24c61bffc38416b48d2a3efa31d656699f9ce04de")
+  summary "fn GenCasesModule.sql_obs generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#sql_obs."
+}
+
+relation GenCasesModuleWriteGeneratedFromGenCasesModuleWriteAstAnchor {
+  kind generated_from
+  connects GenCasesModule -> GenCasesModuleWriteAstAnchor
+  roles { GenCasesModule as generated, GenCasesModuleWriteAstAnchor as syntax }
+  expects GenCasesModuleWriteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e647717291dcc004331f7a2f95a67bf491b26978b8031fa5f72dceb7c14c6842")
+  summary "fn GenCasesModule.write generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#write."
+}
+
+implementation GenCasesModuleImpl {
+  paths {
+    "experiments/shape-1/kernel/test/gen_cases.py"
+  }
+  conforms_to GenCasesModule
+}

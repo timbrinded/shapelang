@@ -1,0 +1,113 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r07_extract_redact
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R07ExtractRedactModuleAppendAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#append")
+  fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+}
+
+resource R07ExtractRedactModuleEmptyLogAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#emptyLog")
+  fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+}
+
+resource R07ExtractRedactModuleGetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#get")
+  fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+}
+
+resource R07ExtractRedactModuleListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#list")
+  fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+}
+
+resource R07ExtractRedactModulePurgeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#purge")
+  fingerprint ast.semantic_subtree_v1("sha256:aa91d8d0fcdcdfe0dd8edfd5c6acf74b65b82cd904486aa8de5c9f5d91abf5e0")
+}
+
+resource R07ExtractRedactModuleRedactedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#redacted")
+  fingerprint ast.semantic_subtree_v1("sha256:d35a8796cc49317ee322b13cf4f3fea8db927192ff2cc06e997fcbd88022469b")
+}
+
+component R07ExtractRedactModule : GeneratedCandidate {
+  fn append
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#append")
+    effects unknown
+  fn emptyLog
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#emptyLog")
+    effects unknown
+  fn get
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#get")
+    effects unknown
+  fn list
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#list")
+    effects unknown
+  fn purge
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#purge")
+    effects unknown
+  fn redacted
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#redacted")
+    effects unknown
+}
+
+relation R07ExtractRedactModuleAppendGeneratedFromR07ExtractRedactModuleAppendAstAnchor {
+  kind generated_from
+  connects R07ExtractRedactModule -> R07ExtractRedactModuleAppendAstAnchor
+  roles { R07ExtractRedactModule as generated, R07ExtractRedactModuleAppendAstAnchor as syntax }
+  expects R07ExtractRedactModuleAppendAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+  summary "fn R07ExtractRedactModule.append generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#append."
+}
+
+relation R07ExtractRedactModuleEmptyLogGeneratedFromR07ExtractRedactModuleEmptyLogAstAnchor {
+  kind generated_from
+  connects R07ExtractRedactModule -> R07ExtractRedactModuleEmptyLogAstAnchor
+  roles { R07ExtractRedactModule as generated, R07ExtractRedactModuleEmptyLogAstAnchor as syntax }
+  expects R07ExtractRedactModuleEmptyLogAstAnchor fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+  summary "fn R07ExtractRedactModule.emptyLog generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#emptyLog."
+}
+
+relation R07ExtractRedactModuleGetGeneratedFromR07ExtractRedactModuleGetAstAnchor {
+  kind generated_from
+  connects R07ExtractRedactModule -> R07ExtractRedactModuleGetAstAnchor
+  roles { R07ExtractRedactModule as generated, R07ExtractRedactModuleGetAstAnchor as syntax }
+  expects R07ExtractRedactModuleGetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+  summary "fn R07ExtractRedactModule.get generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#get."
+}
+
+relation R07ExtractRedactModuleListGeneratedFromR07ExtractRedactModuleListAstAnchor {
+  kind generated_from
+  connects R07ExtractRedactModule -> R07ExtractRedactModuleListAstAnchor
+  roles { R07ExtractRedactModule as generated, R07ExtractRedactModuleListAstAnchor as syntax }
+  expects R07ExtractRedactModuleListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+  summary "fn R07ExtractRedactModule.list generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#list."
+}
+
+relation R07ExtractRedactModulePurgeGeneratedFromR07ExtractRedactModulePurgeAstAnchor {
+  kind generated_from
+  connects R07ExtractRedactModule -> R07ExtractRedactModulePurgeAstAnchor
+  roles { R07ExtractRedactModule as generated, R07ExtractRedactModulePurgeAstAnchor as syntax }
+  expects R07ExtractRedactModulePurgeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aa91d8d0fcdcdfe0dd8edfd5c6acf74b65b82cd904486aa8de5c9f5d91abf5e0")
+  summary "fn R07ExtractRedactModule.purge generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#purge."
+}
+
+relation R07ExtractRedactModuleRedactedGeneratedFromR07ExtractRedactModuleRedactedAstAnchor {
+  kind generated_from
+  connects R07ExtractRedactModule -> R07ExtractRedactModuleRedactedAstAnchor
+  roles { R07ExtractRedactModule as generated, R07ExtractRedactModuleRedactedAstAnchor as syntax }
+  expects R07ExtractRedactModuleRedactedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d35a8796cc49317ee322b13cf4f3fea8db927192ff2cc06e997fcbd88022469b")
+  summary "fn R07ExtractRedactModule.redacted generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts#redacted."
+}
+
+implementation R07ExtractRedactModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts"
+  }
+  conforms_to R07ExtractRedactModule
+}

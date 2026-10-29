@@ -1,0 +1,35 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [
+  {
+   "code": "E-provider-missing",
+   "subject": "provider tooling::tsClockScan"
+  }
+ ],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:4d6726f1cb82a21caae6d91377b1fa3cc6468f3c98dddfff986658249e28d1d6",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:54aec25938afe2cd3cdb88f3e5d500c646cfe901132a3855c4ced5a925b8e212",
+   "introduced": true,
+   "key": "ob:4e436759e4554b39d3af2a46cba1d3f8dec05f9b5359ff3f122d3c63c717f6ad",
+   "kind": "coverage",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": null,
+   "reason": null,
+   "severity": "owed",
+   "subject": "component checker::ShapeRuleEngine",
+   "tier": "normal",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

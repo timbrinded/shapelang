@@ -6,7 +6,12 @@ import { derive } from "../../src/derive.ts";
 import { signerFromSeed } from "../../src/records.ts";
 import type { Decl } from "../../src/source.ts";
 import { REPO_ROOT, manifestFor } from "../common.ts";
-import { callsProvider, channelsFromShape, effectsProvider, runObserveTs } from "../observe-ts/provider.ts";
+import {
+  callsProvider,
+  channelsFromShape,
+  effectsProvider,
+  runObserveTs
+} from "../observe-ts/provider.ts";
 import { sqlEffect } from "../observe-ts/scan.ts";
 import { cleanup, input, shape, tree } from "./fixture.ts";
 
@@ -72,7 +77,12 @@ export function ext(): unknown {
   "src/pure.ts": "export function add(a: number, b: number): number {\n  return a + b;\n}\n"
 };
 
-const CLOCK = ['ts.call("Date.now")', 'ts.call("Date")', 'ts.call("performance.now")', 'pg.table("*")'];
+const CLOCK = [
+  'ts.call("Date.now")',
+  'ts.call("Date")',
+  'ts.call("performance.now")',
+  'pg.table("*")'
+];
 const es = signerFromSeed("21");
 const cs = signerFromSeed("22");
 const effects = effectsProvider({ q: "demo::tsEffects", channels: CLOCK, identity: es.identity });
@@ -80,12 +90,27 @@ const calls = callsProvider({ q: "demo::tsCalls", identity: cs.identity });
 
 describe("sql", () => {
   test("literal statements give verbs and canonical tables; prose does not match", () => {
-    expect(sqlEffect("DELETE FROM public.AUDIT_EVENTS WHERE x")).toEqual({ verb: "HardDelete", table: 'pg.table("audit_events")' });
-    expect(sqlEffect('INSERT INTO "Audit" (a) VALUES (1)')).toEqual({ verb: "Append", table: 'pg.table("Audit")' });
+    expect(sqlEffect("DELETE FROM public.AUDIT_EVENTS WHERE x")).toEqual({
+      verb: "HardDelete",
+      table: 'pg.table("audit_events")'
+    });
+    expect(sqlEffect('INSERT INTO "Audit" (a) VALUES (1)')).toEqual({
+      verb: "Append",
+      table: 'pg.table("Audit")'
+    });
     expect(sqlEffect("UPDATE t SET a = 1")).toEqual({ verb: "Update", table: 'pg.table("t")' });
-    expect(sqlEffect("TRUNCATE TABLE logs")).toEqual({ verb: "Truncate", table: 'pg.table("logs")' });
+    expect(sqlEffect("TRUNCATE TABLE logs")).toEqual({
+      verb: "Truncate",
+      table: 'pg.table("logs")'
+    });
     expect(sqlEffect("SELECT a FROM t WHERE b")).toEqual({ verb: "Read", table: 'pg.table("t")' });
-    for (const prose of ["update the docs", "select one from the menu", "delete from the list please", "truncate the string"]) expect(sqlEffect(prose)).toBeNull();
+    for (const prose of [
+      "update the docs",
+      "select one from the menu",
+      "delete from the list please",
+      "truncate the string"
+    ])
+      expect(sqlEffect(prose)).toBeNull();
   });
 });
 
@@ -93,9 +118,17 @@ describe("observe-ts", () => {
   test("effect facts land on the nearest enclosing identity, with exact site counts", async () => {
     const root = tree(FILES);
     const man = await manifestFor({ root });
-    const { scan, report } = await runObserveTs({ man, root, time: "2026-10-25T10:00:00Z", effects: { info: effects, channels: CLOCK, signer: es }, calls: { info: calls, signer: cs } });
+    const { scan, report } = await runObserveTs({
+      man,
+      root,
+      time: "2026-10-25T10:00:00Z",
+      effects: { info: effects, channels: CLOCK, signer: es },
+      calls: { info: calls, signer: cs }
+    });
     expect(report.rejected).toEqual([]);
-    expect(scan.effects.map((f) => (f.type === "effect" ? `${f.at} ${f.verb} ${f.resource}` : ""))).toEqual([
+    expect(
+      scan.effects.map((f) => (f.type === "effect" ? `${f.at} ${f.verb} ${f.resource}` : ""))
+    ).toEqual([
       'ts:src/clock.ts#alias Read ts.call("Date.now")',
       'ts:src/clock.ts#nested.inner Read ts.call("performance.now")',
       'ts:src/clock.ts#now Read ts.call("Date.now")',
@@ -113,8 +146,13 @@ describe("observe-ts", () => {
     expect(inc("ts:src/clock.ts#check")).toEqual([]);
     expect(inc("ts:src/db.ts#prose")).toEqual([]);
     expect(inc("ts:src/clock.ts")).toEqual([]);
-    expect(scan.calls.map((f) => (f.type === "call" ? `${f.at} -> ${f.to}` : ""))).toEqual(["ts:src/use.ts#caller -> ts:src/clock.ts#now", "ts:src/use.ts#cb -> ts:src/use.ts#double"]);
-    expect(scan.identities.get("ts:src/use.ts#viaParam")?.callsIncomplete).toEqual(["unresolved:callback-or-local"]);
+    expect(scan.calls.map((f) => (f.type === "call" ? `${f.at} -> ${f.to}` : ""))).toEqual([
+      "ts:src/use.ts#caller -> ts:src/clock.ts#now",
+      "ts:src/use.ts#cb -> ts:src/use.ts#double"
+    ]);
+    expect(scan.identities.get("ts:src/use.ts#viaParam")?.callsIncomplete).toEqual([
+      "unresolved:callback-or-local"
+    ]);
   }, 60_000);
 
   test("presence: shadowed globals, parameters, members and type positions report nothing", async () => {
@@ -138,8 +176,24 @@ export function typeOnly(x: typeof globalThis.Date): string {
     });
     const man = await manifestFor({ root });
     const all = ['ts.call("*")'];
-    const { scan } = await runObserveTs({ man, root, time: "2026-10-25T10:00:00Z", effects: { info: effectsProvider({ q: "demo::all", channels: all }), channels: all, signer: null } });
-    expect(scan.effects).toEqual([{ type: "effect", at: "ts:src/real.ts#real", verb: "Read", resource: 'ts.call("performance.now")' }]);
+    const { scan } = await runObserveTs({
+      man,
+      root,
+      time: "2026-10-25T10:00:00Z",
+      effects: {
+        info: effectsProvider({ q: "demo::all", channels: all }),
+        channels: all,
+        signer: null
+      }
+    });
+    expect(scan.effects).toEqual([
+      {
+        type: "effect",
+        at: "ts:src/real.ts#real",
+        verb: "Read",
+        resource: 'ts.call("performance.now")'
+      }
+    ]);
     expect([...scan.identities.values()].filter((s) => s.effectsIncomplete.length > 0)).toEqual([]);
   }, 60_000);
 
@@ -147,20 +201,57 @@ export function typeOnly(x: typeof globalThis.Date): string {
     const root = tree(FILES);
     const man = await manifestFor({ root });
     const once = async (): Promise<string[]> =>
-      (await runObserveTs({ man, root, time: "2026-10-25T10:00:00Z", effects: { info: effects, channels: CLOCK, signer: es }, calls: { info: calls, signer: cs } })).records.map((r) => r.id);
+      (
+        await runObserveTs({
+          man,
+          root,
+          time: "2026-10-25T10:00:00Z",
+          effects: { info: effects, channels: CLOCK, signer: es },
+          calls: { info: calls, signer: cs }
+        })
+      ).records.map((r) => r.id);
     expect(await once()).toEqual(await once());
   }, 60_000);
 
   test("channels come from the shape's bindings", () => {
-    const src = shape("demo", [{ decl: "resource", name: "SystemClock", bind: ['ts.call("globalThis.Date.now")', 'ts.call("Date")', 'pg.table("public.Audit_Events")'] }]);
-    expect(channelsFromShape(src)).toEqual(['pg.table("audit_events")', 'ts.call("Date")', 'ts.call("Date.now")']);
+    const src = shape("demo", [
+      {
+        decl: "resource",
+        name: "SystemClock",
+        bind: [
+          'ts.call("globalThis.Date.now")',
+          'ts.call("Date")',
+          'pg.table("public.Audit_Events")'
+        ]
+      }
+    ]);
+    expect(channelsFromShape(src)).toEqual([
+      'pg.table("audit_events")',
+      'ts.call("Date")',
+      'ts.call("Date.now")'
+    ]);
   });
 
   const clockShape = (extra: Decl[] = []): Decl[] => [
-    { decl: "resource", name: "SystemClock", bind: ['ts.call("Date.now")', 'ts.call("Date")', 'ts.call("performance.now")'] },
-    { decl: "component", name: "Core", owner: "alice", tier: "critical", paths: ["src/clock.ts", "src/pure.ts"] },
+    {
+      decl: "resource",
+      name: "SystemClock",
+      bind: ['ts.call("Date.now")', 'ts.call("Date")', 'ts.call("performance.now")']
+    },
+    {
+      decl: "component",
+      name: "Core",
+      owner: "alice",
+      tier: "critical",
+      paths: ["src/clock.ts", "src/pure.ts"]
+    },
     { decl: "component", name: "Edge", owner: "bob", paths: ["src/use.ts", "src/db.ts"] },
-    { decl: "rule", name: "CoreNeverReadsClock", tier: "critical", clauses: [{ forbid: "effect", atom: "Read<SystemClock>", within: ["component Core"] }] },
+    {
+      decl: "rule",
+      name: "CoreNeverReadsClock",
+      tier: "critical",
+      clauses: [{ forbid: "effect", atom: "Read<SystemClock>", within: ["component Core"] }]
+    },
     { ...effects.decl },
     ...extra
   ];
@@ -168,9 +259,21 @@ export function typeOnly(x: typeof globalThis.Date): string {
   test("derive lifts the facts through bindings: sound contradictions per reading identity", async () => {
     const root = tree(FILES);
     const man = await manifestFor({ root });
-    const { records } = await runObserveTs({ man, root, time: "2026-10-25T10:00:00Z", effects: { info: effects, channels: CLOCK, signer: es } });
+    const { records } = await runObserveTs({
+      man,
+      root,
+      time: "2026-10-25T10:00:00Z",
+      effects: { info: effects, channels: CLOCK, signer: es }
+    });
     const src = shape("demo", clockShape());
-    const out = derive(input({ source: src, manifest: man.statement, revision: man.revision, records: records.map((r) => r.record) }));
+    const out = derive(
+      input({
+        source: src,
+        manifest: man.statement,
+        revision: man.revision,
+        records: records.map((r) => r.record)
+      })
+    );
     expect(out.rejected).toEqual([]);
     const contra = out.obligations.filter((o) => o.kind === "contradiction");
     expect(contra.map((o) => (o.subject as { code: string }).code).sort()).toEqual([
@@ -187,11 +290,21 @@ export function typeOnly(x: typeof globalThis.Date): string {
   }, 60_000);
 
   test("change mode: complete absence-sound entries cover new code; a supplied root leaves it uncovered", async () => {
-    const baseFiles = { ...FILES, "src/clock.ts": "export function now(): number {\n  return 1;\n}\n" };
+    const baseFiles = {
+      ...FILES,
+      "src/clock.ts": "export function now(): number {\n  return 1;\n}\n"
+    };
     const baseRoot = tree(baseFiles);
-    const headPure = { ...baseFiles, "src/pure.ts": "export function add(a: number, b: number): number {\n  return a + b + 0;\n}\n" };
+    const headPure = {
+      ...baseFiles,
+      "src/pure.ts": "export function add(a: number, b: number): number {\n  return a + b + 0;\n}\n"
+    };
     // Date handed on inside an array: a supply the scan does not follow (alias:Date)
-    const headAlias = { ...baseFiles, "src/pure.ts": "export function add(a: number, b: number): number {\n  const box = [Date];\n  return a + b + box.length;\n}\n" };
+    const headAlias = {
+      ...baseFiles,
+      "src/pure.ts":
+        "export function add(a: number, b: number): number {\n  const box = [Date];\n  return a + b + box.length;\n}\n"
+    };
     const bman = await manifestFor({ root: baseRoot });
     const src = shape("demo", clockShape());
     for (const [files, covered] of [
@@ -200,16 +313,37 @@ export function typeOnly(x: typeof globalThis.Date): string {
     ] as const) {
       const root = tree(files);
       const man = await manifestFor({ root });
-      const { records } = await runObserveTs({ man, root, time: "2026-10-25T10:00:00Z", effects: { info: effects, channels: CLOCK, signer: es } });
+      const { records } = await runObserveTs({
+        man,
+        root,
+        time: "2026-10-25T10:00:00Z",
+        effects: { info: effects, channels: CLOCK, signer: es }
+      });
       const out = derive(
-        input({ source: src, manifest: man.statement, revision: man.revision, records: records.map((r) => r.record), mode: "change", base: { revision: bman.revision, source: src, manifest: bman.statement } })
+        input({
+          source: src,
+          manifest: man.statement,
+          revision: man.revision,
+          records: records.map((r) => r.record),
+          mode: "change",
+          base: { revision: bman.revision, source: src, manifest: bman.statement }
+        })
       );
       expect(out.obligations.some((o) => o.kind === "coverage")).toBe(!covered);
     }
   }, 60_000);
 
   test("declarations: effects presence+absence on bound channels; calls sound none by default", () => {
-    expect(effects.decl).toMatchObject({ produces: ["observation"], sound: ["presence", "absence"], observes: ['effect(pg.table("*"))', 'effect(ts.call("Date"))', 'effect(ts.call("Date.now"))', 'effect(ts.call("performance.now"))'] });
+    expect(effects.decl).toMatchObject({
+      produces: ["observation"],
+      sound: ["presence", "absence"],
+      observes: [
+        'effect(pg.table("*"))',
+        'effect(ts.call("Date"))',
+        'effect(ts.call("Date.now"))',
+        'effect(ts.call("performance.now"))'
+      ]
+    });
     expect(calls.decl.sound).toBeUndefined();
     expect(calls.decl.observes).toEqual(["call(ts)"]);
   });
@@ -218,19 +352,55 @@ export function typeOnly(x: typeof globalThis.Date): string {
 // Regression (gate, repair pass): roots reached through the global object, aliases and modules.
 // An entry may be complete only if every route to a watched API in its span yields a fact.
 describe("observe-ts: every route to a root", () => {
-  const TS_PLAIN = JSON.stringify({ compilerOptions: { target: "ES2022", module: "ESNext", moduleResolution: "Bundler", strict: true, types: [] }, include: ["src/**/*.ts"] });
-  // the repository's own settings (lib ESNext, types ["bun"]): `global` is Node's typeof globalThis
-  const TS_REPO = JSON.stringify({
-    compilerOptions: { lib: ["ESNext"], target: "ESNext", module: "Preserve", moduleResolution: "bundler", strict: true, types: ["bun"], typeRoots: [join(REPO_ROOT, "node_modules/@types")], allowImportingTsExtensions: true, noEmit: true },
+  const TS_PLAIN = JSON.stringify({
+    compilerOptions: {
+      target: "ES2022",
+      module: "ESNext",
+      moduleResolution: "Bundler",
+      strict: true,
+      types: []
+    },
     include: ["src/**/*.ts"]
   });
-  const scanOf = async (files: Record<string, string>, channels: string[]): Promise<{ facts: string[]; inc: Record<string, string[]> }> => {
+  // the repository's own settings (lib ESNext, types ["bun"]): `global` is Node's typeof globalThis
+  const TS_REPO = JSON.stringify({
+    compilerOptions: {
+      lib: ["ESNext"],
+      target: "ESNext",
+      module: "Preserve",
+      moduleResolution: "bundler",
+      strict: true,
+      types: ["bun"],
+      typeRoots: [join(REPO_ROOT, "node_modules/@types")],
+      allowImportingTsExtensions: true,
+      noEmit: true
+    },
+    include: ["src/**/*.ts"]
+  });
+  const scanOf = async (
+    files: Record<string, string>,
+    channels: string[]
+  ): Promise<{ facts: string[]; inc: Record<string, string[]> }> => {
     const root = tree(files);
     const man = await manifestFor({ root });
-    const { scan } = await runObserveTs({ man, root, time: "2026-10-25T10:00:00Z", effects: { info: effectsProvider({ q: "demo::e", channels }), channels, signer: null } });
-    const facts = scan.effects.map((f) => (f.type === "effect" ? `${f.at.replace(/^ts:src\//, "")} ${f.verb} ${f.resource}` : ""));
+    const { scan } = await runObserveTs({
+      man,
+      root,
+      time: "2026-10-25T10:00:00Z",
+      effects: { info: effectsProvider({ q: "demo::e", channels }), channels, signer: null }
+    });
+    const facts = scan.effects.map((f) =>
+      f.type === "effect" ? `${f.at.replace(/^ts:src\//, "")} ${f.verb} ${f.resource}` : ""
+    );
     const inc: Record<string, string[]> = {};
-    for (const x of scan.identities.values()) if (x.effectsIncomplete.length > 0 && !x.effectsIncomplete.every((r) => r.startsWith("child:"))) inc[x.id.replace(/^ts:src\//, "")] = x.effectsIncomplete.filter((r) => !r.startsWith("child:"));
+    for (const x of scan.identities.values())
+      if (
+        x.effectsIncomplete.length > 0 &&
+        !x.effectsIncomplete.every((r) => r.startsWith("child:"))
+      )
+        inc[x.id.replace(/^ts:src\//, "")] = x.effectsIncomplete.filter(
+          (r) => !r.startsWith("child:")
+        );
     return { facts, inc };
   };
   const CLOCK3 = ['ts.call("Date.now")', 'ts.call("Date")', 'ts.call("performance.now")'];
@@ -270,7 +440,10 @@ export function reflect(): number { return Reflect.get(globalThis, "Date").now()
         'g.ts#viaSelf Read ts.call("performance.now")'
       ]);
       // Reflect.get(globalThis, "Date") supplies globalThis, and its result is typed DateConstructor
-      expect(inc).toEqual({ "g.ts#key": ["dynamic:globalThis[]"], "g.ts#reflect": ["alias-type:Date", "alias:globalThis"] });
+      expect(inc).toEqual({
+        "g.ts#key": ["dynamic:globalThis[]"],
+        "g.ts#reflect": ["alias-type:Date", "alias:globalThis"]
+      });
     }, 60_000);
   }
 
@@ -341,7 +514,11 @@ export async function bound(): Promise<void> { const m = await import("node:fs")
       },
       ['ts.call("fs.rmSync")']
     );
-    expect(facts).toEqual(["alias", "awaited", "barrel", "bound", "importEquals", "required"].map((f) => `m.ts#${f} HardDelete ts.call("fs.rmSync")`));
+    expect(facts).toEqual(
+      ["alias", "awaited", "barrel", "bound", "importEquals", "required"].map(
+        (f) => `m.ts#${f} HardDelete ts.call("fs.rmSync")`
+      )
+    );
     expect(inc).toEqual({});
   }, 60_000);
 
@@ -360,7 +537,9 @@ export function classCtor(o: Map<string, number>): string { return o.constructor
       },
       CLOCK3
     );
-    expect(facts).toEqual(["instCtor", "paramCtor", "protoCtor"].map((f) => `c.ts#${f} Read ts.call("Date.now")`));
+    expect(facts).toEqual(
+      ["instCtor", "paramCtor", "protoCtor"].map((f) => `c.ts#${f} Read ts.call("Date.now")`)
+    );
     // calling what Function returns (any) is an untyped callee besides
     expect(inc).toEqual({
       "c.ts#anyCtor": ["unresolved:untyped-receiver"],
@@ -540,10 +719,14 @@ export function json(): string { return JSON.stringify(globalThis.JSON.parse("1"
     }
   }, 120_000);
 
-  test("derive: Date(), Date.call(null) and globalThis[\"Date\"]() are each a sound contradiction under sound absence", async () => {
+  test('derive: Date(), Date.call(null) and globalThis["Date"]() are each a sound contradiction under sound absence', async () => {
     const ch = ['ts.call("Date")'];
     const signer = signerFromSeed("24");
-    const info = effectsProvider({ q: "demo::clockEffects", channels: ch, identity: signer.identity });
+    const info = effectsProvider({
+      q: "demo::clockEffects",
+      channels: ch,
+      identity: signer.identity
+    });
     const root = tree({
       "tsconfig.json": TS_PLAIN,
       "src/a/stamp.ts": "export function stampA(): string {\n  return Date();\n}\n",
@@ -551,18 +734,50 @@ export function json(): string { return JSON.stringify(globalThis.JSON.parse("1"
       "src/c/stamp.ts": 'export function stampC(): string {\n  return globalThis["Date"]();\n}\n'
     });
     const man = await manifestFor({ root });
-    const { records, scan } = await runObserveTs({ man, root, time: "2026-10-25T10:00:00Z", effects: { info, channels: ch, signer } });
+    const { records, scan } = await runObserveTs({
+      man,
+      root,
+      time: "2026-10-25T10:00:00Z",
+      effects: { info, channels: ch, signer }
+    });
     // every scope entry is complete, and each reading identity carries its fact
     expect([...scan.identities.values()].every((x) => x.effectsIncomplete.length === 0)).toBe(true);
-    expect(scan.effects.map((f) => f.at).sort()).toEqual(["ts:src/a/stamp.ts#stampA", "ts:src/b/stamp.ts#stampB", "ts:src/c/stamp.ts#stampC"]);
+    expect(scan.effects.map((f) => f.at).sort()).toEqual([
+      "ts:src/a/stamp.ts#stampA",
+      "ts:src/b/stamp.ts#stampB",
+      "ts:src/c/stamp.ts#stampC"
+    ]);
     const decls: Decl[] = [
       { decl: "resource", name: "SystemClock", bind: ch },
-      ...["A", "B", "C"].map((c): Decl => ({ decl: "component", name: c, owner: "alice", tier: "critical", paths: [`src/${c.toLowerCase()}/**`], grants: [] })),
+      ...["A", "B", "C"].map(
+        (c): Decl => ({
+          decl: "component",
+          name: c,
+          owner: "alice",
+          tier: "critical",
+          paths: [`src/${c.toLowerCase()}/**`],
+          grants: []
+        })
+      ),
       info.decl
     ];
-    const out = derive(input({ source: shape("demo", decls), manifest: man.statement, revision: man.revision, records: records.map((r) => r.record) }));
+    const out = derive(
+      input({
+        source: shape("demo", decls),
+        manifest: man.statement,
+        revision: man.revision,
+        records: records.map((r) => r.record)
+      })
+    );
     expect(out.rejected).toEqual([]);
-    expect(out.obligations.map((o) => `${o.kind} ${o.claim?.ids.join(",")} ${(o.subject as { code: string }).code} ${o.force} ${o.severity}`).sort()).toEqual([
+    expect(
+      out.obligations
+        .map(
+          (o) =>
+            `${o.kind} ${o.claim?.ids.join(",")} ${(o.subject as { code: string }).code} ${o.force} ${o.severity}`
+        )
+        .sort()
+    ).toEqual([
       "contradiction demo::A/authority ts:src/a/stamp.ts#stampA sound blocking",
       "contradiction demo::B/authority ts:src/b/stamp.ts#stampB sound blocking",
       "contradiction demo::C/authority ts:src/c/stamp.ts#stampC sound blocking"
@@ -572,25 +787,69 @@ export function json(): string { return JSON.stringify(globalThis.JSON.parse("1"
   // the gate's end-to-end case: no grants, SystemClock bound to ts.call("Date.now")
   const fxShape = (identity: string): Decl[] => [
     { decl: "resource", name: "SystemClock", bind: ['ts.call("Date.now")'] },
-    { decl: "component", name: "A", owner: "alice", tier: "critical", paths: ["src/a/**"], grants: [] },
-    { decl: "component", name: "B", owner: "alice", tier: "critical", paths: ["src/b/**"], grants: [] },
+    {
+      decl: "component",
+      name: "A",
+      owner: "alice",
+      tier: "critical",
+      paths: ["src/a/**"],
+      grants: []
+    },
+    {
+      decl: "component",
+      name: "B",
+      owner: "alice",
+      tier: "critical",
+      paths: ["src/b/**"],
+      grants: []
+    },
     effectsProvider({ q: "demo::fxEffects", channels: ['ts.call("Date.now")'], identity }).decl
   ];
   const fxSigner = signerFromSeed("23");
-  const fxInfo = effectsProvider({ q: "demo::fxEffects", channels: ['ts.call("Date.now")'], identity: fxSigner.identity });
-  const recordsOf = async (root: string): Promise<{ man: Awaited<ReturnType<typeof manifestFor>>; records: unknown[] }> => {
+  const fxInfo = effectsProvider({
+    q: "demo::fxEffects",
+    channels: ['ts.call("Date.now")'],
+    identity: fxSigner.identity
+  });
+  const recordsOf = async (
+    root: string
+  ): Promise<{ man: Awaited<ReturnType<typeof manifestFor>>; records: unknown[] }> => {
     const man = await manifestFor({ root });
-    const { records } = await runObserveTs({ man, root, time: "2026-10-25T10:00:00Z", effects: { info: fxInfo, channels: ['ts.call("Date.now")'], signer: fxSigner } });
+    const { records } = await runObserveTs({
+      man,
+      root,
+      time: "2026-10-25T10:00:00Z",
+      effects: { info: fxInfo, channels: ['ts.call("Date.now")'], signer: fxSigner }
+    });
     return { man, records: records.map((r) => r.record) };
   };
 
   test('derive: globalThis["Date"].now() is a sound authority contradiction, like globalThis.Date.now()', async () => {
-    const root = tree({ "tsconfig.json": TS_PLAIN, "src/a/stamp.ts": "export function stampA(): number {\n  return globalThis.Date.now();\n}\n", "src/b/stamp.ts": 'export function stampB(): number {\n  return globalThis["Date"].now();\n}\n' });
+    const root = tree({
+      "tsconfig.json": TS_PLAIN,
+      "src/a/stamp.ts": "export function stampA(): number {\n  return globalThis.Date.now();\n}\n",
+      "src/b/stamp.ts":
+        'export function stampB(): number {\n  return globalThis["Date"].now();\n}\n'
+    });
     const { man, records } = await recordsOf(root);
-    const out = derive(input({ source: shape("demo", fxShape(fxSigner.identity)), manifest: man.statement, revision: man.revision, records }));
+    const out = derive(
+      input({
+        source: shape("demo", fxShape(fxSigner.identity)),
+        manifest: man.statement,
+        revision: man.revision,
+        records
+      })
+    );
     expect(out.rejected).toEqual([]);
     const contra = out.obligations.filter((o) => o.kind === "contradiction");
-    expect(contra.map((o) => `${o.claim?.ids.join(",")} ${(o.subject as { code: string }).code} ${o.force} ${o.severity}`).sort()).toEqual([
+    expect(
+      contra
+        .map(
+          (o) =>
+            `${o.claim?.ids.join(",")} ${(o.subject as { code: string }).code} ${o.force} ${o.severity}`
+        )
+        .sort()
+    ).toEqual([
       "demo::A/authority ts:src/a/stamp.ts#stampA sound blocking",
       "demo::B/authority ts:src/b/stamp.ts#stampB sound blocking"
     ]);
@@ -598,11 +857,29 @@ export function json(): string { return JSON.stringify(globalThis.JSON.parse("1"
   }, 60_000);
 
   test("derive (change): globalThis[k].now() in new code is uncovered, never silently complete", async () => {
-    const files = { "tsconfig.json": TS_PLAIN, "src/a/stamp.ts": "export function stampA(): number {\n  return 1;\n}\n" };
+    const files = {
+      "tsconfig.json": TS_PLAIN,
+      "src/a/stamp.ts": "export function stampA(): number {\n  return 1;\n}\n"
+    };
     const base = await recordsOf(tree(files));
-    const head = await recordsOf(tree({ ...files, "src/b/stamp.ts": 'export function stampB(k: "Date"): number {\n  return globalThis[k].now();\n}\n' }));
+    const head = await recordsOf(
+      tree({
+        ...files,
+        "src/b/stamp.ts":
+          'export function stampB(k: "Date"): number {\n  return globalThis[k].now();\n}\n'
+      })
+    );
     const src = shape("demo", fxShape(fxSigner.identity));
-    const out = derive(input({ source: src, manifest: head.man.statement, revision: head.man.revision, records: head.records, mode: "change", base: { revision: base.man.revision, source: src, manifest: base.man.statement } }));
+    const out = derive(
+      input({
+        source: src,
+        manifest: head.man.statement,
+        revision: head.man.revision,
+        records: head.records,
+        mode: "change",
+        base: { revision: base.man.revision, source: src, manifest: base.man.statement }
+      })
+    );
     expect(out.rejected).toEqual([]);
     const coverage = out.obligations.filter((o) => o.kind === "coverage");
     expect(coverage.length).toBe(1);

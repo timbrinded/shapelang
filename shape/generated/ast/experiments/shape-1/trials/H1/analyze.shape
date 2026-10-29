@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.shape_1.trials.H1.analyze
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AnalyzeModuleArgAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H1/analyze.py#arg")
+  fingerprint ast.semantic_subtree_v1("sha256:329a41290f818a0219e5f571ad4c55fee882493738306c47bfa487b8158d8c9d")
+}
+
+resource AnalyzeModuleBootAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H1/analyze.py#boot")
+  fingerprint ast.semantic_subtree_v1("sha256:b257dbd9591995f8a21215df3a6f177e6e91c5234524e73d04b770a59869fc29")
+}
+
+resource AnalyzeModuleGeneratedFunctionKindAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H1/analyze.py#kind")
+  fingerprint ast.semantic_subtree_v1("sha256:05af8a06338e19839bbabb76f420d45fd23f5bda58200e0720dc26da9e3f81d8")
+}
+
+resource AnalyzeModuleGeneratedFunctionPathsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H1/analyze.py#paths")
+  fingerprint ast.semantic_subtree_v1("sha256:53cb86d0ce80b6227cf7f9ae2865736b7196ae19d00792a90360962abf589e4d")
+}
+
+resource AnalyzeModuleJudgesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H1/analyze.py#judges")
+  fingerprint ast.semantic_subtree_v1("sha256:379f800f5f3302ba4457706ad2660f6cc4b9f1f30a3de5fa749603d8b655d63a")
+}
+
+resource AnalyzeModuleRatioAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H1/analyze.py#ratio")
+  fingerprint ast.semantic_subtree_v1("sha256:79277aa2d50eb80b160e1eccb5238dc0f3961619dc5f78dca683d9d975bd29d0")
+}
+
+resource AnalyzeModuleSummarizeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H1/analyze.py#summarize")
+  fingerprint ast.semantic_subtree_v1("sha256:a5b63769fa12f1cef478e2184f16baa1ba84ef6a9237e5b0ffe9dacdeb9fbeee")
+}
+
+component AnalyzeModule : GeneratedCandidate {
+  fn arg
+    source python("experiments/shape-1/trials/H1/analyze.py#arg")
+    effects unknown
+  fn boot
+    source python("experiments/shape-1/trials/H1/analyze.py#boot")
+    effects unknown
+  fn generatedFunction_kind
+    source python("experiments/shape-1/trials/H1/analyze.py#kind")
+    effects unknown
+  fn generatedFunction_paths
+    source python("experiments/shape-1/trials/H1/analyze.py#paths")
+    effects unknown
+  fn judges
+    source python("experiments/shape-1/trials/H1/analyze.py#judges")
+    effects unknown
+  fn ratio
+    source python("experiments/shape-1/trials/H1/analyze.py#ratio")
+    effects unknown
+  fn summarize
+    source python("experiments/shape-1/trials/H1/analyze.py#summarize")
+    effects unknown
+}
+
+relation AnalyzeModuleArgGeneratedFromAnalyzeModuleArgAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleArgAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleArgAstAnchor as syntax }
+  expects AnalyzeModuleArgAstAnchor fingerprint ast.semantic_subtree_v1("sha256:329a41290f818a0219e5f571ad4c55fee882493738306c47bfa487b8158d8c9d")
+  summary "fn AnalyzeModule.arg generated from python function_definition at experiments/shape-1/trials/H1/analyze.py#arg."
+}
+
+relation AnalyzeModuleBootGeneratedFromAnalyzeModuleBootAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleBootAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleBootAstAnchor as syntax }
+  expects AnalyzeModuleBootAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b257dbd9591995f8a21215df3a6f177e6e91c5234524e73d04b770a59869fc29")
+  summary "fn AnalyzeModule.boot generated from python function_definition at experiments/shape-1/trials/H1/analyze.py#boot."
+}
+
+relation AnalyzeModuleGeneratedFunctionKindGeneratedFromAnalyzeModuleGeneratedFunctionKindAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleGeneratedFunctionKindAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleGeneratedFunctionKindAstAnchor as syntax }
+  expects AnalyzeModuleGeneratedFunctionKindAstAnchor fingerprint ast.semantic_subtree_v1("sha256:05af8a06338e19839bbabb76f420d45fd23f5bda58200e0720dc26da9e3f81d8")
+  summary "fn AnalyzeModule.generatedFunction_kind generated from python function_definition at experiments/shape-1/trials/H1/analyze.py#kind."
+}
+
+relation AnalyzeModuleGeneratedFunctionPathsGeneratedFromAnalyzeModuleGeneratedFunctionPathsAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleGeneratedFunctionPathsAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleGeneratedFunctionPathsAstAnchor as syntax }
+  expects AnalyzeModuleGeneratedFunctionPathsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:53cb86d0ce80b6227cf7f9ae2865736b7196ae19d00792a90360962abf589e4d")
+  summary "fn AnalyzeModule.generatedFunction_paths generated from python function_definition at experiments/shape-1/trials/H1/analyze.py#paths."
+}
+
+relation AnalyzeModuleJudgesGeneratedFromAnalyzeModuleJudgesAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleJudgesAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleJudgesAstAnchor as syntax }
+  expects AnalyzeModuleJudgesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:379f800f5f3302ba4457706ad2660f6cc4b9f1f30a3de5fa749603d8b655d63a")
+  summary "fn AnalyzeModule.judges generated from python function_definition at experiments/shape-1/trials/H1/analyze.py#judges."
+}
+
+relation AnalyzeModuleRatioGeneratedFromAnalyzeModuleRatioAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleRatioAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleRatioAstAnchor as syntax }
+  expects AnalyzeModuleRatioAstAnchor fingerprint ast.semantic_subtree_v1("sha256:79277aa2d50eb80b160e1eccb5238dc0f3961619dc5f78dca683d9d975bd29d0")
+  summary "fn AnalyzeModule.ratio generated from python function_definition at experiments/shape-1/trials/H1/analyze.py#ratio."
+}
+
+relation AnalyzeModuleSummarizeGeneratedFromAnalyzeModuleSummarizeAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleSummarizeAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleSummarizeAstAnchor as syntax }
+  expects AnalyzeModuleSummarizeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a5b63769fa12f1cef478e2184f16baa1ba84ef6a9237e5b0ffe9dacdeb9fbeee")
+  summary "fn AnalyzeModule.summarize generated from python function_definition at experiments/shape-1/trials/H1/analyze.py#summarize."
+}
+
+implementation AnalyzeModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H1/analyze.py"
+  }
+  conforms_to AnalyzeModule
+}

@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.proto.examples.sources
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SourcesModuleAuditSourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/examples/sources.ts#auditSource")
+  fingerprint ast.semantic_subtree_v1("sha256:e0cbcfe4fa8fda0a54606c32adbc3137e97f01e575b5727f0764627bc4ece27c")
+}
+
+resource SourcesModuleIronkvSourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/examples/sources.ts#ironkvSource")
+  fingerprint ast.semantic_subtree_v1("sha256:130cd50e08ae01b6b1f2bdc8a448bc211ec9df91681b0af5b72a2c7f58395e06")
+}
+
+component SourcesModule : GeneratedCandidate {
+  fn auditSource
+    source ts("experiments/shape-1/proto/examples/sources.ts#auditSource")
+    effects unknown
+  fn ironkvSource
+    source ts("experiments/shape-1/proto/examples/sources.ts#ironkvSource")
+    effects unknown
+}
+
+relation SourcesModuleAuditSourceGeneratedFromSourcesModuleAuditSourceAstAnchor {
+  kind generated_from
+  connects SourcesModule -> SourcesModuleAuditSourceAstAnchor
+  roles { SourcesModule as generated, SourcesModuleAuditSourceAstAnchor as syntax }
+  expects SourcesModuleAuditSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e0cbcfe4fa8fda0a54606c32adbc3137e97f01e575b5727f0764627bc4ece27c")
+  summary "fn SourcesModule.auditSource generated from typescript function_declaration at experiments/shape-1/proto/examples/sources.ts#auditSource."
+}
+
+relation SourcesModuleIronkvSourceGeneratedFromSourcesModuleIronkvSourceAstAnchor {
+  kind generated_from
+  connects SourcesModule -> SourcesModuleIronkvSourceAstAnchor
+  roles { SourcesModule as generated, SourcesModuleIronkvSourceAstAnchor as syntax }
+  expects SourcesModuleIronkvSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:130cd50e08ae01b6b1f2bdc8a448bc211ec9df91681b0af5b72a2c7f58395e06")
+  summary "fn SourcesModule.ironkvSource generated from typescript function_declaration at experiments/shape-1/proto/examples/sources.ts#ironkvSource."
+}
+
+implementation SourcesModuleImpl {
+  paths {
+    "experiments/shape-1/proto/examples/sources.ts"
+  }
+  conforms_to SourcesModule
+}

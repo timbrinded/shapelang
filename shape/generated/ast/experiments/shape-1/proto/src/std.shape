@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.proto.src.std
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource StdModuleStdPackDigestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/std.ts#stdPackDigest")
+  fingerprint ast.semantic_subtree_v1("sha256:eede53556352aaf4d7b52208f6c156a35ad0b3168da0bb418508912da53e235a")
+}
+
+component StdModule : GeneratedCandidate {
+  fn stdPackDigest
+    source ts("experiments/shape-1/proto/src/std.ts#stdPackDigest")
+    effects unknown
+}
+
+relation StdModuleStdPackDigestGeneratedFromStdModuleStdPackDigestAstAnchor {
+  kind generated_from
+  connects StdModule -> StdModuleStdPackDigestAstAnchor
+  roles { StdModule as generated, StdModuleStdPackDigestAstAnchor as syntax }
+  expects StdModuleStdPackDigestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eede53556352aaf4d7b52208f6c156a35ad0b3168da0bb418508912da53e235a")
+  summary "fn StdModule.stdPackDigest generated from typescript function_declaration at experiments/shape-1/proto/src/std.ts#stdPackDigest."
+}
+
+implementation StdModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/std.ts"
+  }
+  conforms_to StdModule
+}

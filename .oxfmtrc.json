@@ -9,6 +9,8 @@
     "docs-site/.astro/**",
     "docs-site/dist/**",
     "docs-site/src/assets/**",
+    "experiments/shape-1/**/*.json",
+    "experiments/shape-1/**/*.yaml",
     "fixtures/**",
     "node_modules/**",
     "packages/shp-checker/src/language/generated/**",

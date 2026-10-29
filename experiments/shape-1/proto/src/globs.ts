@@ -128,7 +128,8 @@ function predHolds(p: Pred, c: string): boolean {
 
 function step(nfa: Nfa, states: number[], c: string): number[] {
   const next: number[] = [];
-  for (const s of states) for (const tr of nfa.trans[s] ?? []) if (predHolds(tr.p, c)) next.push(tr.to);
+  for (const s of states)
+    for (const tr of nfa.trans[s] ?? []) if (predHolds(tr.p, c)) next.push(tr.to);
   return closure(nfa, next);
 }
 

@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.trials.H4.summary_bound
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SummaryBoundModuleClosureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H4/summary_bound.py#closure")
+  fingerprint ast.semantic_subtree_v1("sha256:25d980f86d6d7a6eba4912cdec46d3d824630c003a1c65f80156544c6de78e97")
+}
+
+resource SummaryBoundModuleUpAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H4/summary_bound.py#up")
+  fingerprint ast.semantic_subtree_v1("sha256:111a3406b29709633e4ec26856a5f3f4d1d6a48fe9986c658acca74be5cbaec0")
+}
+
+component SummaryBoundModule : GeneratedCandidate {
+  fn closure
+    source python("experiments/shape-1/trials/H4/summary_bound.py#closure")
+    effects unknown
+  fn up
+    source python("experiments/shape-1/trials/H4/summary_bound.py#up")
+    effects unknown
+}
+
+relation SummaryBoundModuleClosureGeneratedFromSummaryBoundModuleClosureAstAnchor {
+  kind generated_from
+  connects SummaryBoundModule -> SummaryBoundModuleClosureAstAnchor
+  roles { SummaryBoundModule as generated, SummaryBoundModuleClosureAstAnchor as syntax }
+  expects SummaryBoundModuleClosureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:25d980f86d6d7a6eba4912cdec46d3d824630c003a1c65f80156544c6de78e97")
+  summary "fn SummaryBoundModule.closure generated from python function_definition at experiments/shape-1/trials/H4/summary_bound.py#closure."
+}
+
+relation SummaryBoundModuleUpGeneratedFromSummaryBoundModuleUpAstAnchor {
+  kind generated_from
+  connects SummaryBoundModule -> SummaryBoundModuleUpAstAnchor
+  roles { SummaryBoundModule as generated, SummaryBoundModuleUpAstAnchor as syntax }
+  expects SummaryBoundModuleUpAstAnchor fingerprint ast.semantic_subtree_v1("sha256:111a3406b29709633e4ec26856a5f3f4d1d6a48fe9986c658acca74be5cbaec0")
+  summary "fn SummaryBoundModule.up generated from python function_definition at experiments/shape-1/trials/H4/summary_bound.py#up."
+}
+
+implementation SummaryBoundModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H4/summary_bound.py"
+  }
+  conforms_to SummaryBoundModule
+}

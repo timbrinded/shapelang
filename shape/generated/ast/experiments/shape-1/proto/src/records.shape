@@ -1,0 +1,283 @@
+module shape.generated.ast.experiments.shape_1.proto.src.records
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ParsedRecord : GeneratedCandidate {
+  storage ts.type("experiments/shape-1/proto/src/records.ts#ParsedRecord")
+}
+
+resource ParsedRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/records.ts#ParsedRecord")
+  fingerprint ast.semantic_subtree_v1("sha256:6f673691c419787d64457bde2c8423375b42749ad68c14966bb8cc64ad9960fd")
+}
+
+resource RecordsModuleFactPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/records.ts#factPath")
+  fingerprint ast.semantic_subtree_v1("sha256:0ff1a9eb81f64fd91bac1cf88032d5409e6eeb78036bd34355b22669ff426298")
+}
+
+resource RecordsModuleMakeStatementAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/records.ts#makeStatement")
+  fingerprint ast.semantic_subtree_v1("sha256:7be8837ace63b5501a2b063b2116aef746d9d7618d63971112925432aa53ac67")
+}
+
+resource RecordsModuleMergeRecordsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/records.ts#mergeRecords")
+  fingerprint ast.semantic_subtree_v1("sha256:f2e4852a02451943111a5ee3ccacd9bd0ff7aa9d5600df3166aacf48c9bc68c1")
+}
+
+resource RecordsModulePaeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/records.ts#pae")
+  fingerprint ast.semantic_subtree_v1("sha256:9e57a37e66fd3f3cd20d219d1946a033d513146e53fd651477ea217473f1dc8e")
+}
+
+resource RecordsModuleParseRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/records.ts#parseRecord")
+  fingerprint ast.semantic_subtree_v1("sha256:2a210295e9ac089ea0504748ce0a8f81ea89127f14ef1f98d862edf991186a22")
+}
+
+resource RecordsModulePersistedPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/records.ts#persistedPath")
+  fingerprint ast.semantic_subtree_v1("sha256:18d557b30dca219cfce9ea7bada02ac5817fb3345616f708491ba4072064fcc4")
+}
+
+resource RecordsModuleRecordIdAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/records.ts#recordId")
+  fingerprint ast.semantic_subtree_v1("sha256:2cec522f86d8ecda45b6b95ae5b8dd8005395a378af1c869cb5cd0fbe00f3912")
+}
+
+resource RecordsModuleScopeRootAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/records.ts#scopeRoot")
+  fingerprint ast.semantic_subtree_v1("sha256:a3ecf32491d2e731e03be6a906ac87a1929158a90f9a99ee666e496588b35db1")
+}
+
+resource RecordsModuleSignStatementAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/records.ts#signStatement")
+  fingerprint ast.semantic_subtree_v1("sha256:c5d03f2334ad4e9165f5eba1841680e8d62aa20fc31738def843fc58cb8a96c6")
+}
+
+resource RecordsModuleSignerFromSeedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/records.ts#signerFromSeed")
+  fingerprint ast.semantic_subtree_v1("sha256:7f68a5f2eb05a6dc490ae6a31fcb5cd3b86c99d28739e3654f6212737d20e513")
+}
+
+resource RecordsModuleValidateRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/records.ts#validateRecord")
+  fingerprint ast.semantic_subtree_v1("sha256:e250aeb7117e7c00286e67c87f4d8a7ac4f00e39257cd97c8e60ad33c455fb66")
+}
+
+resource RecordsModuleVerifyEd25519AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/records.ts#verifyEd25519")
+  fingerprint ast.semantic_subtree_v1("sha256:fb9066f756353e5bafb8b7e0ec4421453b63c025188e9e18016d00cb9eb0abe8")
+}
+
+resource ShapeRecord : GeneratedCandidate {
+  storage ts.type("experiments/shape-1/proto/src/records.ts#ShapeRecord")
+}
+
+resource ShapeRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/records.ts#ShapeRecord")
+  fingerprint ast.semantic_subtree_v1("sha256:319e658bde0c56da00ba30a09c5d8749d3422578e511c32728a3fc619eb2b1df")
+}
+
+component RecordsModule : GeneratedCandidate {
+  fn factPath
+    source ts("experiments/shape-1/proto/src/records.ts#factPath")
+    effects unknown
+  fn makeStatement
+    source ts("experiments/shape-1/proto/src/records.ts#makeStatement")
+    effects unknown
+  fn mergeRecords
+    source ts("experiments/shape-1/proto/src/records.ts#mergeRecords")
+    effects unknown
+  fn pae
+    source ts("experiments/shape-1/proto/src/records.ts#pae")
+    effects unknown
+  fn parseRecord
+    source ts("experiments/shape-1/proto/src/records.ts#parseRecord")
+    effects unknown
+  fn persistedPath
+    source ts("experiments/shape-1/proto/src/records.ts#persistedPath")
+    effects unknown
+  fn recordId
+    source ts("experiments/shape-1/proto/src/records.ts#recordId")
+    effects unknown
+  fn scopeRoot
+    source ts("experiments/shape-1/proto/src/records.ts#scopeRoot")
+    effects unknown
+  fn signStatement
+    source ts("experiments/shape-1/proto/src/records.ts#signStatement")
+    effects unknown
+  fn signerFromSeed
+    source ts("experiments/shape-1/proto/src/records.ts#signerFromSeed")
+    effects unknown
+  fn validateRecord
+    source ts("experiments/shape-1/proto/src/records.ts#validateRecord")
+    effects unknown
+  fn verifyEd25519
+    source ts("experiments/shape-1/proto/src/records.ts#verifyEd25519")
+    effects unknown
+}
+
+relation ParsedRecordGeneratedFromParsedRecordAstAnchor {
+  kind generated_from
+  connects ParsedRecord -> ParsedRecordAstAnchor
+  roles { ParsedRecord as generated, ParsedRecordAstAnchor as syntax }
+  expects ParsedRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6f673691c419787d64457bde2c8423375b42749ad68c14966bb8cc64ad9960fd")
+  summary "resource ParsedRecord generated from typescript interface_declaration at experiments/shape-1/proto/src/records.ts#ParsedRecord."
+}
+
+relation RecordsModuleFactPathGeneratedFromRecordsModuleFactPathAstAnchor {
+  kind generated_from
+  connects RecordsModule -> RecordsModuleFactPathAstAnchor
+  roles { RecordsModule as generated, RecordsModuleFactPathAstAnchor as syntax }
+  expects RecordsModuleFactPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0ff1a9eb81f64fd91bac1cf88032d5409e6eeb78036bd34355b22669ff426298")
+  summary "fn RecordsModule.factPath generated from typescript function_declaration at experiments/shape-1/proto/src/records.ts#factPath."
+}
+
+relation RecordsModuleMakeStatementGeneratedFromRecordsModuleMakeStatementAstAnchor {
+  kind generated_from
+  connects RecordsModule -> RecordsModuleMakeStatementAstAnchor
+  roles { RecordsModule as generated, RecordsModuleMakeStatementAstAnchor as syntax }
+  expects RecordsModuleMakeStatementAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7be8837ace63b5501a2b063b2116aef746d9d7618d63971112925432aa53ac67")
+  summary "fn RecordsModule.makeStatement generated from typescript function_declaration at experiments/shape-1/proto/src/records.ts#makeStatement."
+}
+
+relation RecordsModuleMergeRecordsGeneratedFromRecordsModuleMergeRecordsAstAnchor {
+  kind generated_from
+  connects RecordsModule -> RecordsModuleMergeRecordsAstAnchor
+  roles { RecordsModule as generated, RecordsModuleMergeRecordsAstAnchor as syntax }
+  expects RecordsModuleMergeRecordsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f2e4852a02451943111a5ee3ccacd9bd0ff7aa9d5600df3166aacf48c9bc68c1")
+  summary "fn RecordsModule.mergeRecords generated from typescript function_declaration at experiments/shape-1/proto/src/records.ts#mergeRecords."
+}
+
+relation RecordsModulePaeGeneratedFromRecordsModulePaeAstAnchor {
+  kind generated_from
+  connects RecordsModule -> RecordsModulePaeAstAnchor
+  roles { RecordsModule as generated, RecordsModulePaeAstAnchor as syntax }
+  expects RecordsModulePaeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9e57a37e66fd3f3cd20d219d1946a033d513146e53fd651477ea217473f1dc8e")
+  summary "fn RecordsModule.pae generated from typescript function_declaration at experiments/shape-1/proto/src/records.ts#pae."
+}
+
+relation RecordsModuleParseRecordGeneratedFromRecordsModuleParseRecordAstAnchor {
+  kind generated_from
+  connects RecordsModule -> RecordsModuleParseRecordAstAnchor
+  roles { RecordsModule as generated, RecordsModuleParseRecordAstAnchor as syntax }
+  expects RecordsModuleParseRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2a210295e9ac089ea0504748ce0a8f81ea89127f14ef1f98d862edf991186a22")
+  summary "fn RecordsModule.parseRecord generated from typescript function_declaration at experiments/shape-1/proto/src/records.ts#parseRecord."
+}
+
+relation RecordsModulePersistedPathGeneratedFromRecordsModulePersistedPathAstAnchor {
+  kind generated_from
+  connects RecordsModule -> RecordsModulePersistedPathAstAnchor
+  roles { RecordsModule as generated, RecordsModulePersistedPathAstAnchor as syntax }
+  expects RecordsModulePersistedPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:18d557b30dca219cfce9ea7bada02ac5817fb3345616f708491ba4072064fcc4")
+  summary "fn RecordsModule.persistedPath generated from typescript function_declaration at experiments/shape-1/proto/src/records.ts#persistedPath."
+}
+
+relation RecordsModuleRecordIdGeneratedFromRecordsModuleRecordIdAstAnchor {
+  kind generated_from
+  connects RecordsModule -> RecordsModuleRecordIdAstAnchor
+  roles { RecordsModule as generated, RecordsModuleRecordIdAstAnchor as syntax }
+  expects RecordsModuleRecordIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2cec522f86d8ecda45b6b95ae5b8dd8005395a378af1c869cb5cd0fbe00f3912")
+  summary "fn RecordsModule.recordId generated from typescript function_declaration at experiments/shape-1/proto/src/records.ts#recordId."
+}
+
+relation RecordsModuleScopeRootGeneratedFromRecordsModuleScopeRootAstAnchor {
+  kind generated_from
+  connects RecordsModule -> RecordsModuleScopeRootAstAnchor
+  roles { RecordsModule as generated, RecordsModuleScopeRootAstAnchor as syntax }
+  expects RecordsModuleScopeRootAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a3ecf32491d2e731e03be6a906ac87a1929158a90f9a99ee666e496588b35db1")
+  summary "fn RecordsModule.scopeRoot generated from typescript function_declaration at experiments/shape-1/proto/src/records.ts#scopeRoot."
+}
+
+relation RecordsModuleSignStatementGeneratedFromRecordsModuleSignStatementAstAnchor {
+  kind generated_from
+  connects RecordsModule -> RecordsModuleSignStatementAstAnchor
+  roles { RecordsModule as generated, RecordsModuleSignStatementAstAnchor as syntax }
+  expects RecordsModuleSignStatementAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c5d03f2334ad4e9165f5eba1841680e8d62aa20fc31738def843fc58cb8a96c6")
+  summary "fn RecordsModule.signStatement generated from typescript function_declaration at experiments/shape-1/proto/src/records.ts#signStatement."
+}
+
+relation RecordsModuleSignerFromSeedGeneratedFromRecordsModuleSignerFromSeedAstAnchor {
+  kind generated_from
+  connects RecordsModule -> RecordsModuleSignerFromSeedAstAnchor
+  roles { RecordsModule as generated, RecordsModuleSignerFromSeedAstAnchor as syntax }
+  expects RecordsModuleSignerFromSeedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7f68a5f2eb05a6dc490ae6a31fcb5cd3b86c99d28739e3654f6212737d20e513")
+  summary "fn RecordsModule.signerFromSeed generated from typescript function_declaration at experiments/shape-1/proto/src/records.ts#signerFromSeed."
+}
+
+relation RecordsModuleValidateRecordGeneratedFromRecordsModuleValidateRecordAstAnchor {
+  kind generated_from
+  connects RecordsModule -> RecordsModuleValidateRecordAstAnchor
+  roles { RecordsModule as generated, RecordsModuleValidateRecordAstAnchor as syntax }
+  expects RecordsModuleValidateRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e250aeb7117e7c00286e67c87f4d8a7ac4f00e39257cd97c8e60ad33c455fb66")
+  summary "fn RecordsModule.validateRecord generated from typescript function_declaration at experiments/shape-1/proto/src/records.ts#validateRecord."
+}
+
+relation RecordsModuleVerifyEd25519GeneratedFromRecordsModuleVerifyEd25519AstAnchor {
+  kind generated_from
+  connects RecordsModule -> RecordsModuleVerifyEd25519AstAnchor
+  roles { RecordsModule as generated, RecordsModuleVerifyEd25519AstAnchor as syntax }
+  expects RecordsModuleVerifyEd25519AstAnchor fingerprint ast.semantic_subtree_v1("sha256:fb9066f756353e5bafb8b7e0ec4421453b63c025188e9e18016d00cb9eb0abe8")
+  summary "fn RecordsModule.verifyEd25519 generated from typescript function_declaration at experiments/shape-1/proto/src/records.ts#verifyEd25519."
+}
+
+relation ShapeRecordGeneratedFromShapeRecordAstAnchor {
+  kind generated_from
+  connects ShapeRecord -> ShapeRecordAstAnchor
+  roles { ShapeRecord as generated, ShapeRecordAstAnchor as syntax }
+  expects ShapeRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:319e658bde0c56da00ba30a09c5d8749d3422578e511c32728a3fc619eb2b1df")
+  summary "resource ShapeRecord generated from typescript interface_declaration at experiments/shape-1/proto/src/records.ts#ShapeRecord."
+}
+
+effect candidate MakeStatementAppendShapeRecordCandidateEffect {
+  fn RecordsModule.makeStatement
+  effect Append<ShapeRecord>
+  source ts("experiments/shape-1/proto/src/records.ts#makeStatement")
+  confidence low
+  pin RecordsModuleMakeStatementAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7be8837ace63b5501a2b063b2116aef746d9d7618d63971112925432aa53ac67")
+}
+
+effect candidate MergeRecordsUpdateParsedRecordCandidateEffect {
+  fn RecordsModule.mergeRecords
+  effect Update<ParsedRecord>
+  source ts("experiments/shape-1/proto/src/records.ts#mergeRecords")
+  confidence low
+  pin RecordsModuleMergeRecordsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f2e4852a02451943111a5ee3ccacd9bd0ff7aa9d5600df3166aacf48c9bc68c1")
+}
+
+effect candidate ParseRecordAppendParsedRecordCandidateEffect {
+  fn RecordsModule.parseRecord
+  effect Append<ParsedRecord>
+  source ts("experiments/shape-1/proto/src/records.ts#parseRecord")
+  confidence low
+  pin RecordsModuleParseRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2a210295e9ac089ea0504748ce0a8f81ea89127f14ef1f98d862edf991186a22")
+}
+
+effect candidate ParseRecordAppendShapeRecordCandidateEffect {
+  fn RecordsModule.parseRecord
+  effect Append<ShapeRecord>
+  source ts("experiments/shape-1/proto/src/records.ts#parseRecord")
+  confidence low
+  pin RecordsModuleParseRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2a210295e9ac089ea0504748ce0a8f81ea89127f14ef1f98d862edf991186a22")
+}
+
+effect candidate ValidateRecordAppendParsedRecordCandidateEffect {
+  fn RecordsModule.validateRecord
+  effect Append<ParsedRecord>
+  source ts("experiments/shape-1/proto/src/records.ts#validateRecord")
+  confidence low
+  pin RecordsModuleValidateRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e250aeb7117e7c00286e67c87f4d8a7ac4f00e39257cd97c8e60ad33c455fb66")
+}
+
+implementation RecordsModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/records.ts"
+  }
+  conforms_to RecordsModule
+}

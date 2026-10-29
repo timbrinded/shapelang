@@ -13,7 +13,13 @@ export const AUDIT_ACTORS: Decl[] = [
   { decl: "actor", name: "alice", kind: "person", identities: ['github("alice")'] },
   { decl: "actor", name: "carol", kind: "person", identities: ['github("carol")'] },
   { decl: "actor", name: "bob", kind: "person", identities: ['github("bob")'] },
-  { decl: "actor", name: "codeAgent", kind: "agent", operator: "alice", identities: ['github("acme-code-agent[bot]")'] }
+  {
+    decl: "actor",
+    name: "codeAgent",
+    kind: "agent",
+    operator: "alice",
+    identities: ['github("acme-code-agent[bot]")']
+  }
 ];
 
 export interface AuditOptions {
@@ -30,11 +36,23 @@ export interface AuditOptions {
 }
 
 export function auditSource(o: AuditOptions): SourceDoc {
-  const grants = ["Append<AuditEvent>", "Read<AuditEvent>", ...(o.grantHardDelete ? ["HardDelete<AuditEvent>"] : [])];
+  const grants = [
+    "Append<AuditEvent>",
+    "Read<AuditEvent>",
+    ...(o.grantHardDelete ? ["HardDelete<AuditEvent>"] : [])
+  ];
   const units = [
-    { name: "appendEvent", effects: { mode: "complete" as const, atoms: [{ atom: "Append<AuditEvent>" }] } },
+    {
+      name: "appendEvent",
+      effects: { mode: "complete" as const, atoms: [{ atom: "Append<AuditEvent>" }] }
+    },
     ...(o.declarePurge
-      ? [{ name: "purgeOldEvents", effects: { mode: "complete" as const, atoms: [{ atom: "HardDelete<AuditEvent>" }] } }]
+      ? [
+          {
+            name: "purgeOldEvents",
+            effects: { mode: "complete" as const, atoms: [{ atom: "HardDelete<AuditEvent>" }] }
+          }
+        ]
       : [])
   ];
   return {
@@ -80,7 +98,9 @@ export function auditSource(o: AuditOptions): SourceDoc {
             sound: o.dropPresence ? ["absence"] : ["presence", "absence"],
             depsComplete: true,
             identity: o.ids.sqlEffects,
-            implementation: { digest: "sha256:5a1e0f00c0ffee00000000000000000000000000000000000000000000000231" }
+            implementation: {
+              digest: "sha256:5a1e0f00c0ffee00000000000000000000000000000000000000000000000231"
+            }
           },
           {
             decl: "provider",
@@ -96,7 +116,9 @@ export function auditSource(o: AuditOptions): SourceDoc {
             name: "reviews",
             produces: ["judgment"],
             identity: o.ids.reviews,
-            implementation: { digest: "sha256:4e1a7000c0ffee00000000000000000000000000000000000000000000000100" }
+            implementation: {
+              digest: "sha256:4e1a7000c0ffee00000000000000000000000000000000000000000000000100"
+            }
           },
           ...(o.exceptions ?? [])
         ]
@@ -124,10 +146,21 @@ export function ironkvSource(o: IronKvOptions): SourceDoc {
           { decl: "shape", name: "IronKv", owner: "Maintainers" },
           { decl: "actor", name: "Maintainers", kind: "team", members: ["erin", "dana"] },
           { decl: "actor", name: "IronKvTeam", kind: "team", members: ["dana", "frank"] },
-          { decl: "actor", name: "dana", kind: "person", identities: ['github("dana")', o.danaKey] },
+          {
+            decl: "actor",
+            name: "dana",
+            kind: "person",
+            identities: ['github("dana")', o.danaKey]
+          },
           { decl: "actor", name: "erin", kind: "person", identities: ['github("erin")'] },
           { decl: "actor", name: "frank", kind: "person", identities: ['github("frank")'] },
-          { decl: "actor", name: "kvAgent", kind: "agent", operator: "frank", identities: ['github("kv-agent[bot]")'] },
+          {
+            decl: "actor",
+            name: "kvAgent",
+            kind: "agent",
+            operator: "frank",
+            identities: ['github("kv-agent[bot]")']
+          },
           {
             decl: "component",
             name: "HostTrusted",
@@ -144,7 +177,9 @@ export function ironkvSource(o: IronKvOptions): SourceDoc {
             owner: "IronKvTeam",
             tier: "critical",
             paths: ["ironkv/src/delegation_map_v.rs"],
-            units: [{ name: "set", bind: 'verus("ironkv/src/delegation_map_v.rs#DelegationMap::set")' }]
+            units: [
+              { name: "set", bind: 'verus("ironkv/src/delegation_map_v.rs#DelegationMap::set")' }
+            ]
           },
           {
             decl: "rule",
@@ -164,7 +199,8 @@ export function ironkvSource(o: IronKvOptions): SourceDoc {
             decl: "law",
             name: "SetContractFaithful",
             on: ["unit DelegationMap.set"],
-            informal: "The ensures clause of set states the map update the protocol layer relies on.",
+            informal:
+              "The ensures clause of set states the map update the protocol layer relies on.",
             evidence: { judged: true, at: "contract" }
           },
           {

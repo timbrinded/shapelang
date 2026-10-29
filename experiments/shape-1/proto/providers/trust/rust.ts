@@ -15,7 +15,8 @@ const CLOSE: Record<string, "(" | "[" | "{"> = { ")": "(", "]": "[", "}": "{" };
 export function lexRustTree(src: string): TT[] {
   const root: TT[] = [];
   const stack: { delim: "(" | "[" | "{"; items: TT[] }[] = [];
-  const cur = (): TT[] => (stack.length > 0 ? (stack[stack.length - 1] as { items: TT[] }).items : root);
+  const cur = (): TT[] =>
+    stack.length > 0 ? (stack[stack.length - 1] as { items: TT[] }).items : root;
   let i = 0;
   const n = src.length;
   while (i < n) {
@@ -76,7 +77,9 @@ export function lexRustTree(src: string): TT[] {
     }
     if (c === "'") {
       // char literal, else a lifetime (punct ' then ident)
-      const m = /^'(?:\\(?:x[0-9a-fA-F]{2}|u\{[0-9a-fA-F]+\}|.)|[^\\'\n])'/.exec(src.slice(i, i + 16));
+      const m = /^'(?:\\(?:x[0-9a-fA-F]{2}|u\{[0-9a-fA-F]+\}|.)|[^\\'\n])'/.exec(
+        src.slice(i, i + 16)
+      );
       if (m) {
         i += m[0].length;
         cur().push({ kind: "lit", text: m[0] });
@@ -87,12 +90,17 @@ export function lexRustTree(src: string): TT[] {
       continue;
     }
     if (/[A-Za-z_]/.test(c) || c.charCodeAt(0) > 127) {
-      while (i < n && (/[\w]/.test(src[i] as string) || (src[i] as string).charCodeAt(0) > 127)) i += 1;
+      while (i < n && (/[\w]/.test(src[i] as string) || (src[i] as string).charCodeAt(0) > 127))
+        i += 1;
       cur().push({ kind: "ident", text: src.slice(start, i) });
       continue;
     }
     if (/[0-9]/.test(c)) {
-      while (i < n && (/[\w]/.test(src[i] as string) || (src[i] === "." && /[0-9]/.test(src[i + 1] ?? "")))) i += 1;
+      while (
+        i < n &&
+        (/[\w]/.test(src[i] as string) || (src[i] === "." && /[0-9]/.test(src[i + 1] ?? "")))
+      )
+        i += 1;
       cur().push({ kind: "lit", text: src.slice(start, i) });
       continue;
     }
@@ -125,7 +133,12 @@ export function vprobeTcb(src: string): Record<string, number> {
       const nextIsFn = next?.kind === "ident" && next.text === "fn";
       const p1 = toks[i - 1];
       const p3 = toks[i - 3];
-      const prevVerifierPath = i >= 3 && p1?.kind === "punct" && p1.text === ":" && p3?.kind === "ident" && p3.text === "verifier";
+      const prevVerifierPath =
+        i >= 3 &&
+        p1?.kind === "punct" &&
+        p1.text === ":" &&
+        p3?.kind === "ident" &&
+        p3.text === "verifier";
       switch (t.text) {
         case "external_body":
         case "external_fn_specification":
@@ -179,7 +192,10 @@ export function asHatchKinds(tcb: Record<string, number>): Record<string, number
 }
 
 /** The manifest's markers for a file: its file identity's own markers plus every symbol's. */
-export function manifestFileMarkers(index: ManifestIndex, path: string): { lang: string; markers: Record<string, number>; hatchComplete: boolean } | null {
+export function manifestFileMarkers(
+  index: ManifestIndex,
+  path: string
+): { lang: string; markers: Record<string, number>; hatchComplete: boolean } | null {
   let lang = "";
   const out: Record<string, number> = {};
   let found = false;
@@ -192,7 +208,11 @@ export function manifestFileMarkers(index: ManifestIndex, path: string): { lang:
     for (const [k, n] of Object.entries(info.markers)) out[k] = (out[k] ?? 0) + n;
   }
   if (!found) return null;
-  return { lang, markers: Object.fromEntries(Object.entries(out).sort((a, b) => cmpStr(a[0], b[0]))), hatchComplete: complete };
+  return {
+    lang,
+    markers: Object.fromEntries(Object.entries(out).sort((a, b) => cmpStr(a[0], b[0]))),
+    hatchComplete: complete
+  };
 }
 
 export interface RustAuditRow {
@@ -206,7 +226,11 @@ export interface RustAuditRow {
 }
 
 /** Per .rs file: vprobe-semantics counts (as std hatch kinds) against the manifest's markers. */
-export function auditRust(index: ManifestIndex, read: (p: string) => string | null, paths?: string[]): RustAuditRow[] {
+export function auditRust(
+  index: ManifestIndex,
+  read: (p: string) => string | null,
+  paths?: string[]
+): RustAuditRow[] {
   const rows: RustAuditRow[] = [];
   const files = paths ?? [...index.paths].filter((p) => p.endsWith(".rs")).sort(cmpStr);
   for (const p of files) {
@@ -220,7 +244,14 @@ export function auditRust(index: ManifestIndex, read: (p: string) => string | nu
       const d = (man[k] ?? 0) - (v[k] ?? 0);
       if (d !== 0) delta[k] = d;
     }
-    rows.push({ path: p, lang: m?.lang ?? "", vprobe: v, manifest: man, delta: Object.fromEntries(Object.entries(delta).sort((a, b) => cmpStr(a[0], b[0]))), hatchComplete: m?.hatchComplete ?? false });
+    rows.push({
+      path: p,
+      lang: m?.lang ?? "",
+      vprobe: v,
+      manifest: man,
+      delta: Object.fromEntries(Object.entries(delta).sort((a, b) => cmpStr(a[0], b[0]))),
+      hatchComplete: m?.hatchComplete ?? false
+    });
   }
   return rows;
 }

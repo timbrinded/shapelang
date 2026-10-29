@@ -10,7 +10,13 @@ import type { Decl } from "../../src/source.ts";
 import { REPO_ROOT, manifestFor } from "../common.ts";
 import { bendIdentities, markOpenLaws, scanBend } from "../trust/bend.ts";
 import { leanAssumptions, leanProject, parsePrintAxioms, scanLean } from "../trust/lean.ts";
-import { leanProofProvider, leanProofRecords, overlayInput, overlayManifest, trustReport } from "../trust/provider.ts";
+import {
+  leanProofProvider,
+  leanProofRecords,
+  overlayInput,
+  overlayManifest,
+  trustReport
+} from "../trust/provider.ts";
 import { replayAll } from "../trust/replay.ts";
 import { asHatchKinds, auditRust, vprobeTcb } from "../trust/rust.ts";
 import { cleanup, input, shape, tree } from "./fixture.ts";
@@ -34,15 +40,34 @@ pub struct ExVec(Vec<u8>);
 
 describe("rust/verus (vprobe semantics)", () => {
   test("tcb_scan counts markers from the token tree only", () => {
-    expect(vprobeTcb(VERUS)).toEqual({ admit: 1, assume: 1, assume_specification: 1, axiom_fn: 1, external: 1, external_body: 1, external_type_specification: 1 });
-    expect(asHatchKinds({ external_fn_specification: 2, external: 1, axiom_fn: 1 })).toEqual({ axiom: 1, external: 3 });
+    expect(vprobeTcb(VERUS)).toEqual({
+      admit: 1,
+      assume: 1,
+      assume_specification: 1,
+      axiom_fn: 1,
+      external: 1,
+      external_body: 1,
+      external_type_specification: 1
+    });
+    expect(asHatchKinds({ external_fn_specification: 2, external: 1, axiom_fn: 1 })).toEqual({
+      axiom: 1,
+      external: 3
+    });
   });
   test("audit compares the manifest's markers with vprobe's per file", async () => {
     const root = tree({ "src/lib.rs": VERUS });
     const man = await manifestFor({ root, noTypeScript: true });
     const [row] = auditRust(man.index, man.read);
     expect(row?.lang).toBe("verus");
-    expect(row?.vprobe).toEqual({ admit: 1, assume: 1, assume_specification: 1, axiom: 1, external: 1, external_body: 1, external_type_specification: 1 });
+    expect(row?.vprobe).toEqual({
+      admit: 1,
+      assume: 1,
+      assume_specification: 1,
+      axiom: 1,
+      external: 1,
+      external_body: 1,
+      external_type_specification: 1
+    });
     // the core manifest has no std kind for external_type_specification
     expect(row?.delta).toEqual({ external_type_specification: -1 });
   });
@@ -124,7 +149,10 @@ describe("lean", () => {
       ["theorem", "Demo.viaAxiom", {}]
     ]);
     expect(s.hatchComplete).toBe(true);
-    expect(scanLean("M.lean", 'macro "trustme" : term => `(sorry)\ntheorem t : True := trustme\n').hatchComplete).toBe(false);
+    expect(
+      scanLean("M.lean", 'macro "trustme" : term => `(sorry)\ntheorem t : True := trustme\n')
+        .hatchComplete
+    ).toBe(false);
   });
   test("#print axioms → assumptions: standard axioms are the toolchain, sorry is located in the cone", () => {
     const out = `'Demo.clean' does not depend on any axioms
@@ -145,7 +173,9 @@ describe("lean", () => {
       ],
       inherited: ["Demo.helper"]
     });
-    expect(leanAssumptions(p, "Demo.viaAxiom", ["Demo.magic"], "4.34.0").assumptions).toEqual([{ id: "lean:Demo/Lib.lean#Demo.magic/axiom", kind: "hatch" }]);
+    expect(leanAssumptions(p, "Demo.viaAxiom", ["Demo.magic"], "4.34.0").assumptions).toEqual([
+      { id: "lean:Demo/Lib.lean#Demo.magic/axiom", kind: "hatch" }
+    ]);
   });
 });
 
@@ -175,15 +205,43 @@ describe("overlay and derive", () => {
     const man = await manifestFor({ root, noTypeScript: true });
     const o = overlayManifest(man.statement, man.read);
     const revision = man.revision;
-    const rule: Decl = { decl: "rule", name: "NoHatches", template: { name: "HatchesStayAtBoundaries", args: [] }, tier: "critical" };
-    const outside = derive(input({ source: shape("demo", [{ decl: "component", name: "Game", owner: "alice", paths: ["bend/**"] }, rule]), manifest: o.statement, revision }));
-    const hatchSubjects = outside.obligations.filter((x) => x.kind === "contradiction").map((x) => `${(x.subject as { code: string }).code} ${(x.subject as { atom: string }).atom}`);
+    const rule: Decl = {
+      decl: "rule",
+      name: "NoHatches",
+      template: { name: "HatchesStayAtBoundaries", args: [] },
+      tier: "critical"
+    };
+    const outside = derive(
+      input({
+        source: shape("demo", [
+          { decl: "component", name: "Game", owner: "alice", paths: ["bend/**"] },
+          rule
+        ]),
+        manifest: o.statement,
+        revision
+      })
+    );
+    const hatchSubjects = outside.obligations
+      .filter((x) => x.kind === "contradiction")
+      .map(
+        (x) => `${(x.subject as { code: string }).code} ${(x.subject as { atom: string }).atom}`
+      );
     expect(hatchSubjects).toContain("bend:bend/main.bend#halve unsafe<std::Trust>");
     expect(hatchSubjects).toContain("bend:bend/main.bend#Clock.now Hatch<std::Trust>");
     expect(hatchSubjects).toContain("lean:Demo/Lib.lean#Demo.helper Hatch<std::Trust>");
     const inside = derive(
       input({
-        source: shape("demo", [{ decl: "component", name: "Game", boundary: true, owner: "alice", paths: ["bend/**"], allows: ["unsafe"] }, rule]),
+        source: shape("demo", [
+          {
+            decl: "component",
+            name: "Game",
+            boundary: true,
+            owner: "alice",
+            paths: ["bend/**"],
+            allows: ["unsafe"]
+          },
+          rule
+        ]),
         manifest: o.statement,
         revision
       })
@@ -191,7 +249,9 @@ describe("overlay and derive", () => {
     // The boundary excepts itself from the unsafe clause, but the `Hatch` catch-all clause
     // (effect.forbid(Hatch<Trust>, [*], [])) protects ↓Hatch, which holds every declared hatch verb,
     // so allowed hatches inside boundaries are still contradicted (spec defect, A.4.2.4 vs A.3.4.3).
-    const halve = inside.obligations.filter((x) => (x.subject as { code?: string }).code === "bend:bend/main.bend#halve");
+    const halve = inside.obligations.filter(
+      (x) => (x.subject as { code?: string }).code === "bend:bend/main.bend#halve"
+    );
     expect(halve.map((x) => x.claim?.ids[0])).toEqual(["demo::NoHatches/dc8454f26ba4"]);
     expect(halve.some((x) => x.claim?.ids[0]?.endsWith("/e73e76608d8a"))).toBe(false);
   });
@@ -204,20 +264,58 @@ describe("overlay and derive", () => {
     if (!index) throw new Error("no index");
     const om = { ...man, statement: o.statement, index };
     const signer = signerFromSeed("31");
-    const info = leanProofProvider({ q: "demo::lean", identity: signer.identity, implementation: ["lakefile.toml", "lean-toolchain"] });
+    const info = leanProofProvider({
+      q: "demo::lean",
+      identity: signer.identity,
+      implementation: ["lakefile.toml", "lean-toolchain"]
+    });
     const src = shape("demo", [
       { decl: "component", name: "Proofs", owner: "alice", tier: "critical", paths: ["Demo/**"] },
-      { decl: "law", name: "DoubleSpec", on: ['code lean("Demo/Lib.lean#Demo.clean")'], statement: 'lean("Demo/Lib.lean#Demo.clean")', evidence: { level: "proven" }, tier: "critical" },
-      { decl: "law", name: "UsesSpec", on: ['code lean("Demo/Lib.lean#Demo.uses")'], statement: 'lean("Demo/Lib.lean#Demo.uses")', evidence: { level: "proven" }, tier: "critical" },
+      {
+        decl: "law",
+        name: "DoubleSpec",
+        on: ['code lean("Demo/Lib.lean#Demo.clean")'],
+        statement: 'lean("Demo/Lib.lean#Demo.clean")',
+        evidence: { level: "proven" },
+        tier: "critical"
+      },
+      {
+        decl: "law",
+        name: "UsesSpec",
+        on: ['code lean("Demo/Lib.lean#Demo.uses")'],
+        statement: 'lean("Demo/Lib.lean#Demo.uses")',
+        evidence: { level: "proven" },
+        tier: "critical"
+      },
       info.decl
     ]);
-    const axioms = "'Demo.clean' does not depend on any axioms\n'Demo.uses' depends on axioms: [propext, sorryAx]\n";
-    const r = leanProofRecords({ info, source: src, man: om, project: o.project, printAxioms: axioms, built: true, signer, time: "2026-10-25T10:00:00Z" });
+    const axioms =
+      "'Demo.clean' does not depend on any axioms\n'Demo.uses' depends on axioms: [propext, sorryAx]\n";
+    const r = leanProofRecords({
+      info,
+      source: src,
+      man: om,
+      project: o.project,
+      printAxioms: axioms,
+      built: true,
+      signer,
+      time: "2026-10-25T10:00:00Z"
+    });
     expect(r.rejected).toEqual([]);
     expect(r.records.map((x) => x.shape.claim?.id)).toEqual(["demo::DoubleSpec", "demo::UsesSpec"]);
-    expect(r.records[1]?.shape.code?.map((c) => `${c.id}@${c.projection}`)).toEqual(["lean:Demo/Lib.lean#Demo.uses@closure", "lean:Demo/Lib.lean#Demo.uses@unit"]);
+    expect(r.records[1]?.shape.code?.map((c) => `${c.id}@${c.projection}`)).toEqual([
+      "lean:Demo/Lib.lean#Demo.uses@closure",
+      "lean:Demo/Lib.lean#Demo.uses@unit"
+    ]);
     expect(r.records[1]?.shape.deps?.map((c) => c.id)).toEqual(["lean:Demo/Lib.lean#Demo.helper"]);
-    const out = derive(input({ source: src, manifest: o.statement, revision: man.revision, records: r.records.map((x) => x.record) }));
+    const out = derive(
+      input({
+        source: src,
+        manifest: o.statement,
+        revision: man.revision,
+        records: r.records.map((x) => x.record)
+      })
+    );
     expect(out.rejected).toEqual([]);
     const obs = out.obligations.map((x) => [x.kind, x.reason, x.claim?.ids[0]]);
     expect(obs).toEqual([["unestablished", "assumption", "demo::UsesSpec"]]);
@@ -226,7 +324,11 @@ describe("overlay and derive", () => {
   test("overlayInput rewrites a ready CheckInput's manifests", async () => {
     const root = tree(files);
     const man = await manifestFor({ root, noTypeScript: true });
-    const inp = input({ source: shape("demo", []), manifest: man.statement, revision: man.revision });
+    const inp = input({
+      source: shape("demo", []),
+      manifest: man.statement,
+      revision: man.revision
+    });
     const out = overlayInput(inp, man.read);
     expect(indexManifest(out.head.manifest).index?.ids.has("bend:bend/main.bend#halve")).toBe(true);
     expect(derive(out).verdict).not.toBe("invalid");
@@ -235,11 +337,16 @@ describe("overlay and derive", () => {
   test("the trust report audits Rust, inventories Bend and Lean, and maps axioms", async () => {
     const root = tree({ ...files, "src/lib.rs": VERUS });
     const man = await manifestFor({ root, noTypeScript: true });
-    const { report } = trustReport(man, { printAxioms: "'Demo.uses' depends on axioms: [sorryAx]\n'Nope.x' does not depend on any axioms\n" });
+    const { report } = trustReport(man, {
+      printAxioms:
+        "'Demo.uses' depends on axioms: [sorryAx]\n'Nope.x' does not depend on any axioms\n"
+    });
     expect(report.rust.files).toBe(1);
     expect(report.bend.identities).toBe(7);
     expect(report.lean.unresolved).toEqual(["Nope.x"]);
-    expect(report.lean.theorems.find((t) => t.name === "Demo.uses")?.inherited).toEqual(["Demo.helper"]);
+    expect(report.lean.theorems.find((t) => t.name === "Demo.uses")?.inherited).toEqual([
+      "Demo.helper"
+    ]);
     expect(report.soundness.sound).toEqual(["presence", "absence"]);
   });
 });
@@ -247,9 +354,21 @@ describe("overlay and derive", () => {
 describe("H5 replay", () => {
   test("reproduces E9's per-file count-diff baseline on the recorded per-commit data", () => {
     const dir = join(REPO_ROOT, "experiments/verus-probes/results/per-commit");
-    const files = readdirSync(dir).filter((f) => f.endsWith(".json.gz")).sort().map((f) => join(dir, f));
+    const files = readdirSync(dir)
+      .filter((f) => f.endsWith(".json.gz"))
+      .sort()
+      .map((f) => join(dir, f));
     const { total } = replayAll(files);
-    expect(total).toMatchObject({ commits: 2202, withEvent: 1073, b3: 909, bodyOnly: 164, grow: 586, growB3: 586, growS1: 586, s2: 1073 });
+    expect(total).toMatchObject({
+      commits: 2202,
+      withEvent: 1073,
+      b3: 909,
+      bodyOnly: 164,
+      grow: 586,
+      growB3: 586,
+      growS1: 586,
+      s2: 1073
+    });
     expect(total.s1).toBeLessThan(total.b3);
   });
 });

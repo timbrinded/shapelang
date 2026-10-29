@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.trials.H5.surface_drift
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SurfaceDriftModuleShareAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/surface_drift.py#share")
+  fingerprint ast.semantic_subtree_v1("sha256:6c8284f23a195085ede0fa01c1d5c046cf3d27fa28b328f7b782f98c45252b80")
+}
+
+component SurfaceDriftModule : GeneratedCandidate {
+  fn share
+    source python("experiments/shape-1/trials/H5/surface_drift.py#share")
+    effects unknown
+}
+
+relation SurfaceDriftModuleShareGeneratedFromSurfaceDriftModuleShareAstAnchor {
+  kind generated_from
+  connects SurfaceDriftModule -> SurfaceDriftModuleShareAstAnchor
+  roles { SurfaceDriftModule as generated, SurfaceDriftModuleShareAstAnchor as syntax }
+  expects SurfaceDriftModuleShareAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6c8284f23a195085ede0fa01c1d5c046cf3d27fa28b328f7b782f98c45252b80")
+  summary "fn SurfaceDriftModule.share generated from python function_definition at experiments/shape-1/trials/H5/surface_drift.py#share."
+}
+
+implementation SurfaceDriftModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H5/surface_drift.py"
+  }
+  conforms_to SurfaceDriftModule
+}

@@ -1,0 +1,38 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:ae8c494c1736a57e0bbc748806097ee8ee880f9133b32ac6f8f56c98206defdc",
+   "budget": "judgment",
+   "claim": {
+    "fp": "sha256:921d2dbe0beebb10fa77f6fdd588f11b1fb973f9e716c6be2b8eedc7a9cfcd09",
+    "ids": [
+     "audit::AppendBounded"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": false,
+   "final": false,
+   "force": null,
+   "group": "g:a4877330122978909f59afb3984121d817b918a207ede06d258f528da36a463e",
+   "introduced": true,
+   "key": "ob:de845a292c19497a7878ea04006653ef450411ce40b8914e97f85b86ad465194",
+   "kind": "loosening",
+   "owner": "audit::AuditTeam",
+   "questions": [
+    "L4"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "sha256:921d2dbe0beebb10fa77f6fdd588f11b1fb973f9e716c6be2b8eedc7a9cfcd09",
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

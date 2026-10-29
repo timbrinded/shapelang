@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r02_format
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R02FormatModuleAppendAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r02_format.ts#append")
+  fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+}
+
+resource R02FormatModuleEmptyLogAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r02_format.ts#emptyLog")
+  fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+}
+
+resource R02FormatModuleGetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r02_format.ts#get")
+  fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+}
+
+resource R02FormatModuleListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r02_format.ts#list")
+  fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+}
+
+resource R02FormatModulePurgeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r02_format.ts#purge")
+  fingerprint ast.semantic_subtree_v1("sha256:8b12a4a10086337a3191358ff9a5dfb3a345a47ffbce86f8833626ad5689e06b")
+}
+
+component R02FormatModule : GeneratedCandidate {
+  fn append
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r02_format.ts#append")
+    effects unknown
+  fn emptyLog
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r02_format.ts#emptyLog")
+    effects unknown
+  fn get
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r02_format.ts#get")
+    effects unknown
+  fn list
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r02_format.ts#list")
+    effects unknown
+  fn purge
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r02_format.ts#purge")
+    effects unknown
+}
+
+relation R02FormatModuleAppendGeneratedFromR02FormatModuleAppendAstAnchor {
+  kind generated_from
+  connects R02FormatModule -> R02FormatModuleAppendAstAnchor
+  roles { R02FormatModule as generated, R02FormatModuleAppendAstAnchor as syntax }
+  expects R02FormatModuleAppendAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+  summary "fn R02FormatModule.append generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r02_format.ts#append."
+}
+
+relation R02FormatModuleEmptyLogGeneratedFromR02FormatModuleEmptyLogAstAnchor {
+  kind generated_from
+  connects R02FormatModule -> R02FormatModuleEmptyLogAstAnchor
+  roles { R02FormatModule as generated, R02FormatModuleEmptyLogAstAnchor as syntax }
+  expects R02FormatModuleEmptyLogAstAnchor fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+  summary "fn R02FormatModule.emptyLog generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r02_format.ts#emptyLog."
+}
+
+relation R02FormatModuleGetGeneratedFromR02FormatModuleGetAstAnchor {
+  kind generated_from
+  connects R02FormatModule -> R02FormatModuleGetAstAnchor
+  roles { R02FormatModule as generated, R02FormatModuleGetAstAnchor as syntax }
+  expects R02FormatModuleGetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+  summary "fn R02FormatModule.get generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r02_format.ts#get."
+}
+
+relation R02FormatModuleListGeneratedFromR02FormatModuleListAstAnchor {
+  kind generated_from
+  connects R02FormatModule -> R02FormatModuleListAstAnchor
+  roles { R02FormatModule as generated, R02FormatModuleListAstAnchor as syntax }
+  expects R02FormatModuleListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+  summary "fn R02FormatModule.list generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r02_format.ts#list."
+}
+
+relation R02FormatModulePurgeGeneratedFromR02FormatModulePurgeAstAnchor {
+  kind generated_from
+  connects R02FormatModule -> R02FormatModulePurgeAstAnchor
+  roles { R02FormatModule as generated, R02FormatModulePurgeAstAnchor as syntax }
+  expects R02FormatModulePurgeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b12a4a10086337a3191358ff9a5dfb3a345a47ffbce86f8833626ad5689e06b")
+  summary "fn R02FormatModule.purge generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r02_format.ts#purge."
+}
+
+implementation R02FormatModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T3/r02_format.ts"
+  }
+  conforms_to R02FormatModule
+}

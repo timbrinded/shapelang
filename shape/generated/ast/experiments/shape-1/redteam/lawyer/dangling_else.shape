@@ -1,0 +1,7 @@
+module shape.generated.ast.experiments.shape_1.redteam.lawyer.dangling_else
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

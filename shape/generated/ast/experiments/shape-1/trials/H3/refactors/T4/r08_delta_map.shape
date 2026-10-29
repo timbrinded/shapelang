@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r08_delta_map
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R08DeltaMapModuleApplyDeltasAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts#applyDeltas")
+  fingerprint ast.semantic_subtree_v1("sha256:5b723af0412f5d5a8ac4ef9374a90c29b68fcf004ec90ccb7f2a5c7ec79a0cd2")
+}
+
+resource R08DeltaMapModuleBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts#balance")
+  fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+}
+
+resource R08DeltaMapModuleFeeForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts#feeFor")
+  fingerprint ast.semantic_subtree_v1("sha256:43932b3ec2d08e8620e6acb10f280ac62aa6fb2e45cf85c88b0c65f900f0ff2a")
+}
+
+resource R08DeltaMapModuleTotalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts#total")
+  fingerprint ast.semantic_subtree_v1("sha256:d9a6a3d298fbcc063cb0a8e5ce994c2de1789a71d0d2b076c40b54531ce92cba")
+}
+
+resource R08DeltaMapModuleTransferAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts#transfer")
+  fingerprint ast.semantic_subtree_v1("sha256:773c89d72c3a8ca3c5390aa1477d29fd4f50e5f5c2421838981b4705b6c0b585")
+}
+
+component R08DeltaMapModule : GeneratedCandidate {
+  fn applyDeltas
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts#applyDeltas")
+    effects unknown
+  fn balance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts#balance")
+    effects unknown
+  fn feeFor
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts#feeFor")
+    effects unknown
+  fn total
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts#total")
+    effects unknown
+  fn transfer
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts#transfer")
+    effects unknown
+}
+
+relation R08DeltaMapModuleApplyDeltasGeneratedFromR08DeltaMapModuleApplyDeltasAstAnchor {
+  kind generated_from
+  connects R08DeltaMapModule -> R08DeltaMapModuleApplyDeltasAstAnchor
+  roles { R08DeltaMapModule as generated, R08DeltaMapModuleApplyDeltasAstAnchor as syntax }
+  expects R08DeltaMapModuleApplyDeltasAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5b723af0412f5d5a8ac4ef9374a90c29b68fcf004ec90ccb7f2a5c7ec79a0cd2")
+  summary "fn R08DeltaMapModule.applyDeltas generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts#applyDeltas."
+}
+
+relation R08DeltaMapModuleBalanceGeneratedFromR08DeltaMapModuleBalanceAstAnchor {
+  kind generated_from
+  connects R08DeltaMapModule -> R08DeltaMapModuleBalanceAstAnchor
+  roles { R08DeltaMapModule as generated, R08DeltaMapModuleBalanceAstAnchor as syntax }
+  expects R08DeltaMapModuleBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+  summary "fn R08DeltaMapModule.balance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts#balance."
+}
+
+relation R08DeltaMapModuleFeeForGeneratedFromR08DeltaMapModuleFeeForAstAnchor {
+  kind generated_from
+  connects R08DeltaMapModule -> R08DeltaMapModuleFeeForAstAnchor
+  roles { R08DeltaMapModule as generated, R08DeltaMapModuleFeeForAstAnchor as syntax }
+  expects R08DeltaMapModuleFeeForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:43932b3ec2d08e8620e6acb10f280ac62aa6fb2e45cf85c88b0c65f900f0ff2a")
+  summary "fn R08DeltaMapModule.feeFor generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts#feeFor."
+}
+
+relation R08DeltaMapModuleTotalGeneratedFromR08DeltaMapModuleTotalAstAnchor {
+  kind generated_from
+  connects R08DeltaMapModule -> R08DeltaMapModuleTotalAstAnchor
+  roles { R08DeltaMapModule as generated, R08DeltaMapModuleTotalAstAnchor as syntax }
+  expects R08DeltaMapModuleTotalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d9a6a3d298fbcc063cb0a8e5ce994c2de1789a71d0d2b076c40b54531ce92cba")
+  summary "fn R08DeltaMapModule.total generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts#total."
+}
+
+relation R08DeltaMapModuleTransferGeneratedFromR08DeltaMapModuleTransferAstAnchor {
+  kind generated_from
+  connects R08DeltaMapModule -> R08DeltaMapModuleTransferAstAnchor
+  roles { R08DeltaMapModule as generated, R08DeltaMapModuleTransferAstAnchor as syntax }
+  expects R08DeltaMapModuleTransferAstAnchor fingerprint ast.semantic_subtree_v1("sha256:773c89d72c3a8ca3c5390aa1477d29fd4f50e5f5c2421838981b4705b6c0b585")
+  summary "fn R08DeltaMapModule.transfer generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts#transfer."
+}
+
+implementation R08DeltaMapModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts"
+  }
+  conforms_to R08DeltaMapModule
+}

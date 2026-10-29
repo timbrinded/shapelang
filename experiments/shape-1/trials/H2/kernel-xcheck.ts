@@ -30,7 +30,11 @@ function records(list) {
     const r = parseRecord(x);
     if (!r.error) parsed.push(r);
   }
-  return mergeRecords(parsed).map((r) => ({ id: r.id, predicate: { shape: r.shape }, authenticated: r.signers.length > 0 }));
+  return mergeRecords(parsed).map((r) => ({
+    id: r.id,
+    predicate: { shape: r.shape },
+    authenticated: r.signers.length > 0
+  }));
 }
 
 /** copied from kernel/test/bridge.ts (not exported there) */
@@ -42,10 +46,16 @@ function kernelCase(input) {
   const gv = buildGov(gov, gov.policy, input.authors ?? []);
   const owners = [];
   if (base && input.mode !== "audit") {
-    for (const c of base.components) for (const g of c.paths) owners.push({ side: "b", glob: g, owner: `${c.q}.*` });
-    for (const c of head.components) for (const g of c.paths) owners.push({ side: "h", glob: g, owner: `${c.q}.*` });
+    for (const c of base.components)
+      for (const g of c.paths) owners.push({ side: "b", glob: g, owner: `${c.q}.*` });
+    for (const c of head.components)
+      for (const g of c.paths) owners.push({ side: "h", glob: g, owner: `${c.q}.*` });
   }
-  const cells = owners.length ? computeCells(owners).cells.filter((c) => typeof c.b === "string" && typeof c.h === "string").map((c) => [c.b, c.h]) : [];
+  const cells = owners.length
+    ? computeCells(owners)
+        .cells.filter((c) => typeof c.b === "string" && typeof c.h === "string")
+        .map((c) => [c.b, c.h])
+    : [];
   return {
     contract: "shape.kernel.case/v1",
     mode: input.mode,
@@ -54,7 +64,14 @@ function kernelCase(input) {
     authors: [...gv.authors],
     unmappedBot: gv.unmappedBot,
     head: { revision: input.head.revision, esf: head, manifest: input.head.manifest },
-    base: input.mode === "audit" || !input.base ? null : { revision: input.base.revision, esf: base ?? { shape: { q: "", owner: "" } }, manifest: input.base.manifest },
+    base:
+      input.mode === "audit" || !input.base
+        ? null
+        : {
+            revision: input.base.revision,
+            esf: base ?? { shape: { q: "", owner: "" } },
+            manifest: input.base.manifest
+          },
     cells,
     records: records(input.records),
     reviews: [],
@@ -74,21 +91,48 @@ for (const f of files) {
   try {
     lean = JSON.parse(run.stdout.toString());
   } catch {
-    process.stdout.write(`${basename(f)}: kernel output unparsable (exit ${run.status}) ${run.stdout.toString().slice(0, 200)} ${run.stderr.toString().slice(0, 300)}\n`);
+    process.stdout.write(
+      `${basename(f)}: kernel output unparsable (exit ${run.status}) ${run.stdout.toString().slice(0, 200)} ${run.stderr.toString().slice(0, 300)}\n`
+    );
     continue;
   }
   const tsI = new Map(ts.obligations.filter((o) => o.introduced).map((o) => [o.key, o]));
-  const leanI = new Map((lean.obligations ?? []).filter((o) => o.introduced).map((o) => [o.key, o]));
+  const leanI = new Map(
+    (lean.obligations ?? []).filter((o) => o.introduced).map((o) => [o.key, o])
+  );
   const onlyTs = [...tsI.keys()].filter((k) => !leanI.has(k));
   const onlyLean = [...leanI.keys()].filter((k) => !tsI.has(k));
-  const fieldDiff = [...tsI.keys()].filter((k) => leanI.has(k) && sig(tsI.get(k)) !== sig(leanI.get(k)));
-  const errTs = ts.errors.map((e) => e.code).sort().join(",");
-  const errLean = (lean.errors ?? []).map((e) => e.code).sort().join(",");
+  const fieldDiff = [...tsI.keys()].filter(
+    (k) => leanI.has(k) && sig(tsI.get(k)) !== sig(leanI.get(k))
+  );
+  const errTs = ts.errors
+    .map((e) => e.code)
+    .sort()
+    .join(",");
+  const errLean = (lean.errors ?? [])
+    .map((e) => e.code)
+    .sort()
+    .join(",");
   process.stdout.write(
     `${basename(f)}: verdict ts=${ts.verdict} lean=${lean.verdict}; errors ts=[${errTs}] lean=[${errLean}]; introduced ts=${tsI.size} lean=${leanI.size} shared=${tsI.size - onlyTs.length} fieldDiffs=${fieldDiff.length}; ` +
       `all obligations ts=${ts.obligations.length} lean=${(lean.obligations ?? []).length}; derive ${((t1 - t0) / 1000).toFixed(1)} s, shapek ${((t2 - t1) / 1000).toFixed(1)} s\n` +
-      onlyTs.map((k) => `   only-ts  ${tsI.get(k).kind} ${tsI.get(k).claim?.ids?.[0] ?? JSON.stringify(tsI.get(k).subject)}\n`).join("") +
-      onlyLean.map((k) => `   only-lean ${leanI.get(k).kind} ${leanI.get(k).claim?.ids?.[0] ?? JSON.stringify(leanI.get(k).subject)}\n`).join("") +
-      fieldDiff.map((k) => `   field ${tsI.get(k).claim?.ids?.[0]}: ts ${sig(tsI.get(k))} lean ${sig(leanI.get(k))}\n`).join("")
+      onlyTs
+        .map(
+          (k) =>
+            `   only-ts  ${tsI.get(k).kind} ${tsI.get(k).claim?.ids?.[0] ?? JSON.stringify(tsI.get(k).subject)}\n`
+        )
+        .join("") +
+      onlyLean
+        .map(
+          (k) =>
+            `   only-lean ${leanI.get(k).kind} ${leanI.get(k).claim?.ids?.[0] ?? JSON.stringify(leanI.get(k).subject)}\n`
+        )
+        .join("") +
+      fieldDiff
+        .map(
+          (k) =>
+            `   field ${tsI.get(k).claim?.ids?.[0]}: ts ${sig(tsI.get(k))} lean ${sig(leanI.get(k))}\n`
+        )
+        .join("")
   );
 }

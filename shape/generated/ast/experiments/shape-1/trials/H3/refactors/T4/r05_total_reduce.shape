@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r05_total_reduce
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R05TotalReduceModuleAdjustAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#adjust")
+  fingerprint ast.semantic_subtree_v1("sha256:78554a6fb0bd4909cb4253cb158f7b059a205f3f68c316191e2658ec5426a8d2")
+}
+
+resource R05TotalReduceModuleBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#balance")
+  fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+}
+
+resource R05TotalReduceModuleFeeForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#feeFor")
+  fingerprint ast.semantic_subtree_v1("sha256:43932b3ec2d08e8620e6acb10f280ac62aa6fb2e45cf85c88b0c65f900f0ff2a")
+}
+
+resource R05TotalReduceModuleRejectedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#rejected")
+  fingerprint ast.semantic_subtree_v1("sha256:1c2540dd3edb4b3686d319860967bcdb3cca397b1d9966a7b60a8577b14f4f18")
+}
+
+resource R05TotalReduceModuleSetBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#setBalance")
+  fingerprint ast.semantic_subtree_v1("sha256:f1f9de177693b3dd73cad9c920b7b219458daaa494194b9357f78a57e964adfc")
+}
+
+resource R05TotalReduceModuleTotalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#total")
+  fingerprint ast.semantic_subtree_v1("sha256:ba5de50848990ef83131c47d0d4a35276cd3bf8bedcaa0404bb4b4f7f1514298")
+}
+
+resource R05TotalReduceModuleTransferAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#transfer")
+  fingerprint ast.semantic_subtree_v1("sha256:4ec302cab35074f269f2f1a0d1a4327578f3f44c64856c14018b5b9c3adc1ca5")
+}
+
+component R05TotalReduceModule : GeneratedCandidate {
+  fn adjust
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#adjust")
+    effects unknown
+  fn balance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#balance")
+    effects unknown
+  fn feeFor
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#feeFor")
+    effects unknown
+  fn rejected
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#rejected")
+    effects unknown
+  fn setBalance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#setBalance")
+    effects unknown
+  fn total
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#total")
+    effects unknown
+  fn transfer
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#transfer")
+    effects unknown
+}
+
+relation R05TotalReduceModuleAdjustGeneratedFromR05TotalReduceModuleAdjustAstAnchor {
+  kind generated_from
+  connects R05TotalReduceModule -> R05TotalReduceModuleAdjustAstAnchor
+  roles { R05TotalReduceModule as generated, R05TotalReduceModuleAdjustAstAnchor as syntax }
+  expects R05TotalReduceModuleAdjustAstAnchor fingerprint ast.semantic_subtree_v1("sha256:78554a6fb0bd4909cb4253cb158f7b059a205f3f68c316191e2658ec5426a8d2")
+  summary "fn R05TotalReduceModule.adjust generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#adjust."
+}
+
+relation R05TotalReduceModuleBalanceGeneratedFromR05TotalReduceModuleBalanceAstAnchor {
+  kind generated_from
+  connects R05TotalReduceModule -> R05TotalReduceModuleBalanceAstAnchor
+  roles { R05TotalReduceModule as generated, R05TotalReduceModuleBalanceAstAnchor as syntax }
+  expects R05TotalReduceModuleBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+  summary "fn R05TotalReduceModule.balance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#balance."
+}
+
+relation R05TotalReduceModuleFeeForGeneratedFromR05TotalReduceModuleFeeForAstAnchor {
+  kind generated_from
+  connects R05TotalReduceModule -> R05TotalReduceModuleFeeForAstAnchor
+  roles { R05TotalReduceModule as generated, R05TotalReduceModuleFeeForAstAnchor as syntax }
+  expects R05TotalReduceModuleFeeForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:43932b3ec2d08e8620e6acb10f280ac62aa6fb2e45cf85c88b0c65f900f0ff2a")
+  summary "fn R05TotalReduceModule.feeFor generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#feeFor."
+}
+
+relation R05TotalReduceModuleRejectedGeneratedFromR05TotalReduceModuleRejectedAstAnchor {
+  kind generated_from
+  connects R05TotalReduceModule -> R05TotalReduceModuleRejectedAstAnchor
+  roles { R05TotalReduceModule as generated, R05TotalReduceModuleRejectedAstAnchor as syntax }
+  expects R05TotalReduceModuleRejectedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1c2540dd3edb4b3686d319860967bcdb3cca397b1d9966a7b60a8577b14f4f18")
+  summary "fn R05TotalReduceModule.rejected generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#rejected."
+}
+
+relation R05TotalReduceModuleSetBalanceGeneratedFromR05TotalReduceModuleSetBalanceAstAnchor {
+  kind generated_from
+  connects R05TotalReduceModule -> R05TotalReduceModuleSetBalanceAstAnchor
+  roles { R05TotalReduceModule as generated, R05TotalReduceModuleSetBalanceAstAnchor as syntax }
+  expects R05TotalReduceModuleSetBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f1f9de177693b3dd73cad9c920b7b219458daaa494194b9357f78a57e964adfc")
+  summary "fn R05TotalReduceModule.setBalance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#setBalance."
+}
+
+relation R05TotalReduceModuleTotalGeneratedFromR05TotalReduceModuleTotalAstAnchor {
+  kind generated_from
+  connects R05TotalReduceModule -> R05TotalReduceModuleTotalAstAnchor
+  roles { R05TotalReduceModule as generated, R05TotalReduceModuleTotalAstAnchor as syntax }
+  expects R05TotalReduceModuleTotalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba5de50848990ef83131c47d0d4a35276cd3bf8bedcaa0404bb4b4f7f1514298")
+  summary "fn R05TotalReduceModule.total generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#total."
+}
+
+relation R05TotalReduceModuleTransferGeneratedFromR05TotalReduceModuleTransferAstAnchor {
+  kind generated_from
+  connects R05TotalReduceModule -> R05TotalReduceModuleTransferAstAnchor
+  roles { R05TotalReduceModule as generated, R05TotalReduceModuleTransferAstAnchor as syntax }
+  expects R05TotalReduceModuleTransferAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ec302cab35074f269f2f1a0d1a4327578f3f44c64856c14018b5b9c3adc1ca5")
+  summary "fn R05TotalReduceModule.transfer generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts#transfer."
+}
+
+implementation R05TotalReduceModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts"
+  }
+  conforms_to R05TotalReduceModule
+}

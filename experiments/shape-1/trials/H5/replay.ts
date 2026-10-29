@@ -51,7 +51,8 @@ import { indexManifest, manifestStatement } from "../../proto/src/manifest.ts";
 import { makeStatement, signStatement, signerFromSeed } from "../../proto/src/records.ts";
 import { buildWorld } from "../../proto/src/world.ts";
 
-const SCRATCH = "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad";
+const SCRATCH =
+  "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad";
 const arg = (k: string, d: string | null = null): string | null => {
   const i = process.argv.indexOf(`--${k}`);
   return i >= 0 ? (process.argv[i + 1] ?? null) : d;
@@ -72,7 +73,17 @@ const DUMP = arg("dump-inputs"); // write each commit's CheckInput as <dir>/<rep
 // adds effect.forbid(Hatch<Trust>, [*], boundaries allowing Hatch); every declared kind implies Hatch,
 // so that forbid also covers every marker inside every boundary (a spec defect, reported).
 const HATCH_RULE = arg("hatch-rule", "kinds");
-const STD_HATCH_KINDS = ["admit", "assume", "assume_specification", "axiom", "external", "external_body", "ts_ignore", "uninterp", "unsafe"];
+const STD_HATCH_KINDS = [
+  "admit",
+  "assume",
+  "assume_specification",
+  "axiom",
+  "external",
+  "external_body",
+  "ts_ignore",
+  "uninterp",
+  "unsafe"
+];
 if (!REPO || !OUT) throw new Error("usage: --repo <name> --out <file>");
 
 export const NOW = "2026-10-26T00:00:00Z";
@@ -85,7 +96,8 @@ const BULK = 10;
 const sha = (s: string): string => createHash("sha256").update(s).digest("hex");
 const dg = (s: string): string => `sha256:${sha(s)}`;
 const encPath = (p: string): string => p.normalize("NFC").replace(/%/g, "%25").replace(/#/g, "%23");
-const encSym = (s: string): string => s.replace(/%/g, "%25").replace(/#/g, "%23").replace(/ /g, "%20");
+const encSym = (s: string): string =>
+  s.replace(/%/g, "%25").replace(/#/g, "%23").replace(/ /g, "%20");
 const cmp = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
 
 // vprobe marker kinds -> std hatch kinds (std::Trust verbs; syntax §4)
@@ -113,10 +125,12 @@ for (const line of readFileSync(join(WALK, `${REPO}.blobs.jsonl`), "utf8").split
 const gt = JSON.parse(gunzipSync(readFileSync(join(PC, `${REPO}.json.gz`))).toString("utf8"));
 const gtRow = new Map(gt.rows.map((r) => [r.commit, r]));
 
-const markerTotal = (rec): number => Object.values(rec?.tcb ?? {}).reduce((a: number, b: number) => a + b, 0) as number;
+const markerTotal = (rec): number =>
+  Object.values(rec?.tcb ?? {}).reduce((a: number, b: number) => a + b, 0) as number;
 const stdKinds = (tcb: Record<string, number>): Record<string, number> => {
   const m: Record<string, number> = {};
-  for (const [k, n] of Object.entries(tcb ?? {})) if (n > 0) m[KIND[k] ?? "Hatch"] = (m[KIND[k] ?? "Hatch"] ?? 0) + n;
+  for (const [k, n] of Object.entries(tcb ?? {}))
+    if (n > 0) m[KIND[k] ?? "Hatch"] = (m[KIND[k] ?? "Hatch"] ?? 0) + n;
   return m;
 };
 
@@ -148,17 +162,32 @@ function entriesA(path: string, blob: string): Ent[] {
   const sch = (p: string): string => `${lang}.${p}.vprobe1`;
   for (const f of rec.fns) {
     const m: Record<string, number> = {};
-    for (const fl of f.flags) if (KIND[fl] && fl !== "assume" && fl !== "admit") m[KIND[fl]] = (m[KIND[fl]] ?? 0) + 1;
+    for (const fl of f.flags)
+      if (KIND[fl] && fl !== "assume" && fl !== "admit") m[KIND[fl]] = (m[KIND[fl]] ?? 0) + 1;
     if (f.assume > 0) m.assume = (m.assume ?? 0) + f.assume;
     if (f.admit > 0) m.admit = (m.admit ?? 0) + f.admit;
     if (f.mode === "axiom") m.axiom = (m.axiom ?? 0) + 1;
     for (const [k, n] of Object.entries(m)) fnSum[k] = (fnSum[k] ?? 0) + n;
     const id = `${fileId}#${encSym(f.key)}`;
-    const unit = dg(JSON.stringify(["vprobe.unit", f.contract_h, f.body_h, f.flags, f.assume, f.admit, f.mode]));
-    const base = { id, kind: "function", parent: fileId, hatchComplete: hc, executable: true, ...(Object.keys(m).length ? { markers: m } : {}) };
+    const unit = dg(
+      JSON.stringify(["vprobe.unit", f.contract_h, f.body_h, f.flags, f.assume, f.admit, f.mode])
+    );
+    const base = {
+      id,
+      kind: "function",
+      parent: fileId,
+      hatchComplete: hc,
+      executable: true,
+      ...(Object.keys(m).length ? { markers: m } : {})
+    };
     out.push({ ...base, projection: "own", scheme: sch("own"), digest: unit });
     out.push({ ...base, projection: "unit", scheme: sch("unit"), digest: unit });
-    out.push({ ...base, projection: "contract", scheme: sch("contract"), digest: dg(JSON.stringify(["vprobe.contract", f.contract_h])) });
+    out.push({
+      ...base,
+      projection: "contract",
+      scheme: sch("contract"),
+      digest: dg(JSON.stringify(["vprobe.contract", f.contract_h]))
+    });
   }
   // markers outside functions (attributes on impls, types, assume_specification items, …)
   const residual: Record<string, number> = {};
@@ -166,9 +195,21 @@ function entriesA(path: string, blob: string): Ent[] {
     const r = n - (fnSum[k] ?? 0);
     if (r > 0) residual[k] = r;
   }
-  const fileBase = { id: fileId, kind: "file", parent: null, hatchComplete: hc, executable: true, ...(Object.keys(residual).length ? { markers: residual } : {}) };
+  const fileBase = {
+    id: fileId,
+    kind: "file",
+    parent: null,
+    hatchComplete: hc,
+    executable: true,
+    ...(Object.keys(residual).length ? { markers: residual } : {})
+  };
   out.push({ ...fileBase, projection: "file", scheme: sch("file"), digest: dg(`blob ${blob}`) });
-  out.push({ ...fileBase, projection: "own", scheme: sch("own"), digest: dg(JSON.stringify(["vprobe.fileown", rec.fns.map((f) => f.key).sort(cmp), residual])) });
+  out.push({
+    ...fileBase,
+    projection: "own",
+    scheme: sch("own"),
+    digest: dg(JSON.stringify(["vprobe.fileown", rec.fns.map((f) => f.key).sort(cmp), residual]))
+  });
   idCacheA.set(key, out);
   return out;
 }
@@ -178,11 +219,20 @@ function entriesB(path: string, blob: string): Ent[] {
   const key = `${path}\u0000${blob}`;
   const hit = idCacheB.get(key);
   if (hit) return hit;
-  const text = execFileSync("git", ["-C", join(REPOS, REPO), "cat-file", "blob", blob], { maxBuffer: 1 << 28 }).toString("utf8");
+  const text = execFileSync("git", ["-C", join(REPOS, REPO), "cat-file", "blob", blob], {
+    maxBuffer: 1 << 28
+  }).toString("utf8");
   const out: Ent[] = [];
   for (const id of fingerprintRust(path, text)) {
     for (const d of id.digests) {
-      const e: Ent = { id: id.id, projection: d.projection, scheme: d.scheme, digest: d.digest, kind: id.kind, parent: id.parent };
+      const e: Ent = {
+        id: id.id,
+        projection: d.projection,
+        scheme: d.scheme,
+        digest: d.digest,
+        kind: id.kind,
+        parent: id.parent
+      };
       if (Object.keys(id.markers).length > 0) e.markers = id.markers;
       if (!id.hatchComplete) e.hatchComplete = false;
       if (id.executable) e.executable = true;
@@ -193,7 +243,8 @@ function entriesB(path: string, blob: string): Ent[] {
   return out;
 }
 const entriesOf = PIPE === "B" ? entriesB : entriesA;
-const fileMarked = (path: string, blob: string): boolean => entriesOf(path, blob).some((e) => e.markers && Object.values(e.markers).some((n) => n > 0));
+const fileMarked = (path: string, blob: string): boolean =>
+  entriesOf(path, blob).some((e) => e.markers && Object.values(e.markers).some((n) => n > 0));
 
 function manifestFor(rev: string, snap: Map<string, string>, files: string[]) {
   const entries: Ent[] = [];
@@ -220,7 +271,12 @@ function sourceFor(paths: string[], allows: string[]) {
         decls: [
           { decl: "shape", name: "Repo", owner: "Maintainers" },
           { decl: "actor", name: "Maintainers", kind: "team", members: ["reviewer"] },
-          { decl: "actor", name: "reviewer", kind: "person", identities: ['github("reviewer")', JUDGE.identity] },
+          {
+            decl: "actor",
+            name: "reviewer",
+            kind: "person",
+            identities: ['github("reviewer")', JUDGE.identity]
+          },
           { decl: "actor", name: "dev", kind: "person", identities: ['github("dev")'] },
           {
             decl: "component",
@@ -233,8 +289,20 @@ function sourceFor(paths: string[], allows: string[]) {
             allows: [...new Set(allows)].sort(cmp)
           },
           HATCH_RULE === "star"
-            ? { decl: "rule", name: "NoHatches", template: { name: "HatchesStayAtBoundaries", args: [] }, owner: "Maintainers", tier: "critical" }
-            : { decl: "rule", name: "NoHatches", clauses: [{ forbid: "hatch", kinds: STD_HATCH_KINDS }], owner: "Maintainers", tier: "critical" }
+            ? {
+                decl: "rule",
+                name: "NoHatches",
+                template: { name: "HatchesStayAtBoundaries", args: [] },
+                owner: "Maintainers",
+                tier: "critical"
+              }
+            : {
+                decl: "rule",
+                name: "NoHatches",
+                clauses: [{ forbid: "hatch", kinds: STD_HATCH_KINDS }],
+                owner: "Maintainers",
+                tier: "critical"
+              }
         ]
       }
     ]
@@ -284,11 +352,27 @@ function judgmentFor(source, baseMan, baseRev) {
     .map((p) => {
       const info = idx.ids.get(p.id);
       const d = info?.digests.get(p.projection);
-      return d ? { id: p.id, projection: p.projection, scheme: info.schemes.get(p.projection), digest: d } : null;
+      return d
+        ? { id: p.id, projection: p.projection, scheme: info.schemes.get(p.projection), digest: d }
+        : null;
     })
     .filter(Boolean);
-  const rec = { v: "shape.evidence.v1", kind: "judgment", result: "supports", provider: null, revision: baseRev, time: JTIME, claim: { id: LAW_ID, fp: c.fp, nf: c.nf }, code, judge: `${MOD}::reviewer` };
-  return { envelope: signStatement(makeStatement(rec), [JUDGE]), cited: code.map((x) => x.id), errors: esf.errors.length };
+  const rec = {
+    v: "shape.evidence.v1",
+    kind: "judgment",
+    result: "supports",
+    provider: null,
+    revision: baseRev,
+    time: JTIME,
+    claim: { id: LAW_ID, fp: c.fp, nf: c.nf },
+    code,
+    judge: `${MOD}::reviewer`
+  };
+  return {
+    envelope: signStatement(makeStatement(rec), [JUDGE]),
+    cited: code.map((x) => x.id),
+    errors: esf.errors.length
+  };
 }
 
 function inputFor(o) {
@@ -332,8 +416,10 @@ function changedIds(bm, hm): Set<string> {
 
 function compact(o, changed: Set<string>, cited: string[], bIdx, hIdx) {
   let ids: string[] = [];
-  if (o.kind === "contradiction" && o.subject && typeof o.subject === "object" && o.subject.code) ids = [o.subject.code];
-  else if (o.kind === "unestablished") ids = [...new Set([...(o.affected ?? []), ...cited])].filter((x) => changed.has(x));
+  if (o.kind === "contradiction" && o.subject && typeof o.subject === "object" && o.subject.code)
+    ids = [o.subject.code];
+  else if (o.kind === "unestablished")
+    ids = [...new Set([...(o.affected ?? []), ...cited])].filter((x) => changed.has(x));
   else ids = (o.affected ?? []).filter((x) => !x.startsWith("cell:"));
   return {
     key: o.key,
@@ -352,7 +438,10 @@ function compact(o, changed: Set<string>, cited: string[], bIdx, hIdx) {
     files: [...new Set(ids.map(pathOf))].sort(cmp),
     ids: ids.slice(0, 50),
     // a contradiction whose identity's own digests moved in this commit (counterfactual rule, report)
-    codeChanged: o.kind === "contradiction" && o.subject && typeof o.subject === "object" && o.subject.code ? changed.has(o.subject.code) : null,
+    codeChanged:
+      o.kind === "contradiction" && o.subject && typeof o.subject === "object" && o.subject.code
+        ? changed.has(o.subject.code)
+        : null,
     // what moved under each identity (markers at base and head; absent = null)
     moved: ids.slice(0, 50).map((x) => ({
       id: x,
@@ -381,7 +470,10 @@ let c0snap = c0 ? cur : null;
 writeFileSync(OUT, "");
 if (c0) {
   const g = globsAt(c0snap, VARIANT === "F-dir" ? "F-dir" : "F-conv");
-  appendFileSync(OUT, `${JSON.stringify({ type: "adoption", repo: REPO, variant: VARIANT, pipeline: PIPE, hatchRule: HATCH_RULE, c0, globs: g, allows: allowsAt(c0snap, g) })}\n`);
+  appendFileSync(
+    OUT,
+    `${JSON.stringify({ type: "adoption", repo: REPO, variant: VARIANT, pipeline: PIPE, hatchRule: HATCH_RULE, c0, globs: g, allows: allowsAt(c0snap, g) })}\n`
+  );
 }
 let done = 0;
 const t0 = performance.now();
@@ -394,7 +486,10 @@ for (const st of walk.steps) {
       c0 = st.commit;
       c0snap = after;
       const g = globsAt(c0snap, VARIANT === "F-dir" ? "F-dir" : "F-conv");
-      appendFileSync(OUT, `${JSON.stringify({ type: "adoption", repo: REPO, variant: VARIANT, pipeline: PIPE, hatchRule: HATCH_RULE, c0, globs: g, allows: allowsAt(c0snap, g) })}\n`);
+      appendFileSync(
+        OUT,
+        `${JSON.stringify({ type: "adoption", repo: REPO, variant: VARIANT, pipeline: PIPE, hatchRule: HATCH_RULE, c0, globs: g, allows: allowsAt(c0snap, g) })}\n`
+      );
     }
     continue;
   }
@@ -419,16 +514,46 @@ for (const st of walk.steps) {
   }
   const files = FULL
     ? [...new Set([...before.keys(), ...after.keys()])].sort(cmp)
-    : [...new Set([...changedPaths, ...[...before].filter(([p, b]) => fileMarked(p, b)).map(([p]) => p), ...[...after].filter(([p, b]) => fileMarked(p, b)).map(([p]) => p)])].sort(cmp);
+    : [
+        ...new Set([
+          ...changedPaths,
+          ...[...before].filter(([p, b]) => fileMarked(p, b)).map(([p]) => p),
+          ...[...after].filter(([p, b]) => fileMarked(p, b)).map(([p]) => p)
+        ])
+      ].sort(cmp);
   const baseMan = manifestFor(st.parent, before, files);
   const headMan = manifestFor(st.commit, after, files);
   const j = judgmentFor(src, baseMan, st.parent);
-  if (DUMP) writeFileSync(join(DUMP, `${REPO}-${st.commit.slice(0, 12)}.input.json`), JSON.stringify(inputFor({ headRev: st.commit, baseRev: st.parent, headSrc: src, baseSrc: src, headMan, baseMan, judgment: j.envelope })));
+  if (DUMP)
+    writeFileSync(
+      join(DUMP, `${REPO}-${st.commit.slice(0, 12)}.input.json`),
+      JSON.stringify(
+        inputFor({
+          headRev: st.commit,
+          baseRev: st.parent,
+          headSrc: src,
+          baseSrc: src,
+          headMan,
+          baseMan,
+          judgment: j.envelope
+        })
+      )
+    );
   const ta = performance.now();
   let out;
   let err = null;
   try {
-    out = derive(inputFor({ headRev: st.commit, baseRev: st.parent, headSrc: src, baseSrc: src, headMan, baseMan, judgment: j.envelope }));
+    out = derive(
+      inputFor({
+        headRev: st.commit,
+        baseRev: st.parent,
+        headSrc: src,
+        baseSrc: src,
+        headMan,
+        baseMan,
+        judgment: j.envelope
+      })
+    );
   } catch (e) {
     err = String(e?.stack ?? e).slice(0, 400);
   }
@@ -439,10 +564,22 @@ for (const st of walk.steps) {
   let o0 = null;
   if (out && out.obligations.some((o) => !o.introduced && o.kind !== "contradiction")) {
     // was the same obligation open with no change at all? (derive base -> base)
-    const z = derive(inputFor({ headRev: st.parent, baseRev: st.parent, headSrc: src, baseSrc: src, headMan: baseMan, baseMan, judgment: j.envelope }));
+    const z = derive(
+      inputFor({
+        headRev: st.parent,
+        baseRev: st.parent,
+        headSrc: src,
+        baseSrc: src,
+        headMan: baseMan,
+        baseMan,
+        judgment: j.envelope
+      })
+    );
     o0 = z.obligations.map((o) => o.key);
   }
-  const evs = (row.trust_events ?? []).filter((e) => Object.keys(e.add).length || Object.keys(e.remove).length || e.tbody || e.tcontract);
+  const evs = (row.trust_events ?? []).filter(
+    (e) => Object.keys(e.add).length || Object.keys(e.remove).length || e.tbody || e.tcontract
+  );
   const rec = {
     type: "commit",
     repo: REPO,
@@ -469,6 +606,11 @@ for (const st of walk.steps) {
   };
   appendFileSync(OUT, `${JSON.stringify(rec)}\n`);
   done += 1;
-  if (done % 50 === 0) process.stderr.write(`${REPO} ${VARIANT}/${PIPE}: ${done} commits, ${((performance.now() - t0) / 1000).toFixed(0)} s\n`);
+  if (done % 50 === 0)
+    process.stderr.write(
+      `${REPO} ${VARIANT}/${PIPE}: ${done} commits, ${((performance.now() - t0) / 1000).toFixed(0)} s\n`
+    );
 }
-process.stderr.write(`${REPO} ${VARIANT}/${PIPE}: done ${done} commits in ${((performance.now() - t0) / 1000).toFixed(1)} s\n`);
+process.stderr.write(
+  `${REPO} ${VARIANT}/${PIPE}: done ${done} commits in ${((performance.now() - t0) / 1000).toFixed(1)} s\n`
+);

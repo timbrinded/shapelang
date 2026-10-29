@@ -3,7 +3,16 @@
 // module closure as deps, the tested bound {runs, seed, domain, mutants} and, for failures, the
 // shrunk counterexample. Soundness: presence (a counterexample is a replayable input on which the
 // property fails at the cited code); never absence (tests sample).
-import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  symlinkSync,
+  writeFileSync
+} from "node:fs";
 import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
@@ -34,7 +43,11 @@ import { applyMutant, mutantsOf, pickEven } from "./mutate.ts";
 import type { LawLine } from "./pbt.ts";
 
 export const LAWS_VERSION = "0.1.0";
-export const DEFAULT_LAWS_IMPLEMENTATION = ["experiments/shape-1/proto/providers/laws/**", "package.json", "bun.lock"];
+export const DEFAULT_LAWS_IMPLEMENTATION = [
+  "experiments/shape-1/proto/providers/laws/**",
+  "package.json",
+  "bun.lock"
+];
 
 /** The provider declaration the shape carries for a laws runner. */
 export function lawsProvider(o: {
@@ -125,7 +138,11 @@ function tmpBase(o: { tmp?: string }): string {
 }
 
 /** Runs one law file under bun test with SHAPE_LAWS_OUT and returns its JSON lines. */
-export function runLawFile(root: string, file: string, opts: { timeoutMs?: number; seed?: number; tmp?: string }): FileRun {
+export function runLawFile(
+  root: string,
+  file: string,
+  opts: { timeoutMs?: number; seed?: number; tmp?: string }
+): FileRun {
   const dir = mkdtempSync(join(tmpBase(opts), "shape-laws-out-"));
   const out = join(dir, "lines.jsonl");
   writeFileSync(out, "");
@@ -143,7 +160,13 @@ export function runLawFile(root: string, file: string, opts: { timeoutMs?: numbe
     .map((l) => JSON.parse(l) as LawLine);
   rmSync(dir, { recursive: true, force: true });
   const timedOut = r.error !== undefined && /ETIMEDOUT|timed out/i.test(String(r.error));
-  return { exit: r.status ?? (timedOut ? 124 : 1), lines, ms, timedOut, stderr: (r.stderr?.toString() ?? "").slice(-2000) };
+  return {
+    exit: r.status ?? (timedOut ? 124 : 1),
+    lines,
+    ms,
+    timedOut,
+    stderr: (r.stderr?.toString() ?? "").slice(-2000)
+  };
 }
 
 function minimalCtx(world: ReturnType<typeof buildWorld>, man: Manifested): Ctx {
@@ -158,18 +181,38 @@ export async function runLaws(o: LawsOptions): Promise<{ records: Emitted[]; rep
   const laws = esf.claims.filter((c) => c.op === "law");
   const implGlobs = o.info.decl.implementation?.paths ?? [];
   const isImpl = (p: string): boolean => implGlobs.some((g) => globMatches(g, p));
-  const report: LawsReport = { v: "shape.laws.report.v1", provider: o.info.q, revision: o.man.revision, files: [], claims: [], unknown: [], rejected: [] };
+  const report: LawsReport = {
+    v: "shape.laws.report.v1",
+    provider: o.info.q,
+    revision: o.man.revision,
+    files: [],
+    claims: [],
+    unknown: [],
+    rejected: []
+  };
 
   // 1. run every law file once
-  const byClaim = new Map<string, { claim: Claim; lines: LawLine[]; files: Set<string>; failedFiles: Set<string> }>();
-  const touch = (c: Claim): { claim: Claim; lines: LawLine[]; files: Set<string>; failedFiles: Set<string> } => {
-    const e = byClaim.get(c.fp) ?? { claim: c, lines: [], files: new Set<string>(), failedFiles: new Set<string>() };
+  const byClaim = new Map<
+    string,
+    { claim: Claim; lines: LawLine[]; files: Set<string>; failedFiles: Set<string> }
+  >();
+  const touch = (
+    c: Claim
+  ): { claim: Claim; lines: LawLine[]; files: Set<string>; failedFiles: Set<string> } => {
+    const e = byClaim.get(c.fp) ?? {
+      claim: c,
+      lines: [],
+      files: new Set<string>(),
+      failedFiles: new Set<string>()
+    };
     byClaim.set(c.fp, e);
     return e;
   };
   const resolveClaim = (sel: string): Claim | undefined => laws.find((c) => claimMatches(sel, c));
   const runs = new Map<string, FileRun>();
-  const allFiles = [...new Set([...o.lawFiles, ...(o.binds ?? []).map((b) => b.file)])].sort(cmpStr);
+  const allFiles = [...new Set([...o.lawFiles, ...(o.binds ?? []).map((b) => b.file)])].sort(
+    cmpStr
+  );
   for (const f of allFiles) {
     const run = runLawFile(o.root, f, { timeoutMs: o.timeoutMs, seed: o.seed, tmp: o.tmp });
     runs.set(f, run);
@@ -195,15 +238,31 @@ export async function runLaws(o: LawsOptions): Promise<{ records: Emitted[]; rep
     const e = touch(c);
     e.files.add(b.file);
     if (run.exit !== 0) e.failedFiles.add(b.file);
-    else if (!e.lines.some((l) => l.file === b.file)) e.lines.push({ claim: b.claim, name: "", file: b.file, result: "supports", runs: 1, seed: 0 });
+    else if (!e.lines.some((l) => l.file === b.file))
+      e.lines.push({
+        claim: b.claim,
+        name: "",
+        file: b.file,
+        result: "supports",
+        runs: 1,
+        seed: 0
+      });
   }
   // a law file that crashed before reporting leaves its claims inconclusive
-  for (const e of byClaim.values()) for (const f of e.files) if ((runs.get(f)?.exit ?? 0) !== 0 && !e.lines.some((l) => l.file === f && l.result === "contradicts")) e.failedFiles.add(f);
+  for (const e of byClaim.values())
+    for (const f of e.files)
+      if (
+        (runs.get(f)?.exit ?? 0) !== 0 &&
+        !e.lines.some((l) => l.file === f && l.result === "contradicts")
+      )
+        e.failedFiles.add(f);
 
   // 2. one record per claim
   const ts = await loadTsFull(REPO_ROOT);
   const records: Emitted[] = [];
-  for (const e of [...byClaim.values()].sort((a, b) => cmpStr(a.claim.ids[0] ?? a.claim.fp, b.claim.ids[0] ?? b.claim.fp))) {
+  for (const e of [...byClaim.values()].sort((a, b) =>
+    cmpStr(a.claim.ids[0] ?? a.claim.fp, b.claim.ids[0] ?? b.claim.fp)
+  )) {
     const c = e.claim;
     const id = c.ids[0] ?? c.fp;
     const req = reqOf(ctx, c, "test", "unit");
@@ -216,10 +275,24 @@ export async function runLaws(o: LawsOptions): Promise<{ records: Emitted[]; rep
     }
     if (code.length === 0) error = error ?? "empty Req";
     const lines = [...e.lines].sort((a, b) => cmpStr(a.file, b.file) || cmpStr(a.name, b.name));
-    const contra = lines.find((l) => l.result === "contradicts" && l.counterexample !== undefined && l.counterexample !== null);
-    const result: ClaimResult["result"] = contra ? "contradicts" : e.failedFiles.size > 0 || lines.length === 0 || lines.some((l) => l.result !== "supports") ? "inconclusive" : "supports";
+    const contra = lines.find(
+      (l) =>
+        l.result === "contradicts" && l.counterexample !== undefined && l.counterexample !== null
+    );
+    const result: ClaimResult["result"] = contra
+      ? "contradicts"
+      : e.failedFiles.size > 0 || lines.length === 0 || lines.some((l) => l.result !== "supports")
+        ? "inconclusive"
+        : "supports";
     const runsTotal = lines.reduce((s, l) => s + (Number.isSafeInteger(l.runs) ? l.runs : 0), 0);
-    const cr: ClaimResult = { id, fp: c.fp, result, runs: runsTotal, laws: lines.length, record: null };
+    const cr: ClaimResult = {
+      id,
+      fp: c.fp,
+      result,
+      runs: runsTotal,
+      laws: lines.length,
+      record: null
+    };
     if (contra) cr.counterexample = contra.counterexample as JsonValue;
     if (error) {
       cr.error = error;
@@ -227,7 +300,9 @@ export async function runLaws(o: LawsOptions): Promise<{ records: Emitted[]; rep
       continue;
     }
     // harness: law files and their local imports beyond the code under test and the runner
-    const codeFiles = [...new Set(code.map((x) => o.man.index.ids.get(x.id)?.path).filter((p): p is string => !!p))];
+    const codeFiles = [
+      ...new Set(code.map((x) => o.man.index.ids.get(x.id)?.path).filter((p): p is string => !!p))
+    ];
     const depPaths = moduleClosure(codeFiles, o.man.index.paths, o.man.read);
     const lawClosure = moduleClosure([...e.files], o.man.index.paths, o.man.read);
     const harness: CodeCite[] = [];
@@ -246,13 +321,22 @@ export async function runLaws(o: LawsOptions): Promise<{ records: Emitted[]; rep
     }
     // mutants of the cited code (law teeth)
     if ((o.mutants ?? 0) > 0 && result === "supports") {
-      cr.mutants = ts ? mutationRun(o, ts, code, [...e.files].sort(cmpStr), c, lawClosure, depPaths) : { error: "no TypeScript compiler found" };
+      cr.mutants = ts
+        ? mutationRun(o, ts, code, [...e.files].sort(cmpStr), c, lawClosure, depPaths)
+        : { error: "no TypeScript compiler found" };
     }
     const seeds = lines.map((l) => l.seed).filter((s) => Number.isSafeInteger(s));
-    const domains = [...new Set(lines.map((l) => l.domain).filter((d): d is string => typeof d === "string"))].sort(cmpStr);
-    const bound: Record<string, JsonValue> = { runs: runsTotal, seed: seeds.length > 0 ? Math.min(...seeds) : 0, laws: lines.length };
+    const domains = [
+      ...new Set(lines.map((l) => l.domain).filter((d): d is string => typeof d === "string"))
+    ].sort(cmpStr);
+    const bound: Record<string, JsonValue> = {
+      runs: runsTotal,
+      seed: seeds.length > 0 ? Math.min(...seeds) : 0,
+      laws: lines.length
+    };
     if (domains.length > 0) bound.domain = domains;
-    if (cr.mutants && !("error" in cr.mutants)) bound.mutants = { total: cr.mutants.total, killed: cr.mutants.killed };
+    if (cr.mutants && !("error" in cr.mutants))
+      bound.mutants = { total: cr.mutants.total, killed: cr.mutants.killed };
     const rec: ShapeRecord = {
       v: "shape.evidence.v1",
       kind: "test",
@@ -266,7 +350,15 @@ export async function runLaws(o: LawsOptions): Promise<{ records: Emitted[]; rep
       harness: sortCites(harness),
       assumptions: [{ id: `bun@${Bun.version}`, kind: "tool" }],
       bound,
-      ...(contra ? { counterexample: { law: contra.name || null, input: contra.counterexample as JsonValue, ...(contra.error ? { error: contra.error } : {}) } } : {})
+      ...(contra
+        ? {
+            counterexample: {
+              law: contra.name || null,
+              input: contra.counterexample as JsonValue,
+              ...(contra.error ? { error: contra.error } : {})
+            }
+          }
+        : {})
     };
     const em = emit(rec, o.signer);
     const rej = selfValidate(em, o.info, o.man.index, o.time);
@@ -296,7 +388,13 @@ function mutationRun(
     if (!info || info.lang !== "ts" || !info.symbol) continue;
     const text = o.man.read(info.path);
     if (text === null) continue;
-    const sf = ts.createSourceFile(info.path, text, ts.ScriptTarget.Latest as number, true, scriptKindOf(ts, info.path));
+    const sf = ts.createSourceFile(
+      info.path,
+      text,
+      ts.ScriptTarget.Latest as number,
+      true,
+      scriptKindOf(ts, info.path)
+    );
     const span = identitySpans(ts, sf, info.path).find((s) => s.id === ci.id);
     if (span) targets.push({ path: info.path, text, start: span.start, end: span.end, id: ci.id });
   }
@@ -307,7 +405,13 @@ function mutationRun(
   const box = mkdtempSync(join(tmpBase(o), "shape-laws-mut-"));
   try {
     // tracked closures from the manifest's view, plus untracked law files and helpers from disk
-    const files = [...new Set([...lawClosure, ...depPaths, ...diskClosure(o.root, [...lawFiles, ...targets.map((t) => t.path)])])];
+    const files = [
+      ...new Set([
+        ...lawClosure,
+        ...depPaths,
+        ...diskClosure(o.root, [...lawFiles, ...targets.map((t) => t.path)])
+      ])
+    ];
     for (const p of files) {
       const text = o.man.read(p) ?? readTextOrNull(join(o.root, p));
       if (text === null) continue;
@@ -318,11 +422,16 @@ function mutationRun(
       const src = join(o.root, cfg);
       if (existsSync(src) && !existsSync(join(box, cfg))) copyFileSync(src, join(box, cfg));
     }
-    if (existsSync(join(o.root, "node_modules"))) symlinkSync(join(o.root, "node_modules"), join(box, "node_modules"));
+    if (existsSync(join(o.root, "node_modules")))
+      symlinkSync(join(o.root, "node_modules"), join(box, "node_modules"));
     const supportsOnly = (): boolean => {
       let any = false;
       for (const f of lawFiles) {
-        const r = runLawFile(box, f, { timeoutMs: Math.min(o.timeoutMs ?? 30_000, 30_000), seed: o.seed, tmp: o.tmp });
+        const r = runLawFile(box, f, {
+          timeoutMs: Math.min(o.timeoutMs ?? 30_000, 30_000),
+          seed: o.seed,
+          tmp: o.tmp
+        });
         const mine = r.lines.filter((l) => claimMatches(l.claim, c));
         if (r.timedOut) return false;
         if (mine.some((l) => l.result !== "supports")) return false;

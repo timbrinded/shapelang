@@ -1,1 +1,3 @@
-export function appendEvent() { /* edited */ }
+export function appendEvent() {
+  /* edited */
+}

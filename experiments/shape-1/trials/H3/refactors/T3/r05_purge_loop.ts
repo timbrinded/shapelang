@@ -37,7 +37,7 @@ export function append(log: AuditLog, entry: NewEntry): AuditLog {
     id: log.entries.length,
     timestamp: entry.timestamp,
     actor: entry.actor,
-    payload: entry.payload,
+    payload: entry.payload
   };
   return { entries: [...log.entries, stored] };
 }

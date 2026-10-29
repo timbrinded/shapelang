@@ -1,0 +1,193 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r01_comments
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R01CommentsModuleDownYAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#downY")
+  fingerprint ast.semantic_subtree_v1("sha256:f77ef532af83f2df9622e15ed01faac958830c66ae1c0cfa974bca63b10c28cf")
+}
+
+resource R01CommentsModuleIsWallAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#isWall")
+  fingerprint ast.semantic_subtree_v1("sha256:563b7ae0d645b25b114fd9529b626e8e0fadc30de41fae4cffd35a1ddd00c17b")
+}
+
+resource R01CommentsModuleIsWonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#isWon")
+  fingerprint ast.semantic_subtree_v1("sha256:1fc01820c39d249759ecb8e878dc2bbb42be54d5c3f09c70ccf2b161059bfb7e")
+}
+
+resource R01CommentsModuleLeftXAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#leftX")
+  fingerprint ast.semantic_subtree_v1("sha256:d1f1f7ea5db6cc61e2c24dabc031e0b89c2618a490370c8bb8161b243fcfc03d")
+}
+
+resource R01CommentsModuleMoveToAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#moveTo")
+  fingerprint ast.semantic_subtree_v1("sha256:5e156b6aa97426fb41763c6c9d7c868aea91f744c77f5d997e7af543b65c409d")
+}
+
+resource R01CommentsModuleOnFlagAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#onFlag")
+  fingerprint ast.semantic_subtree_v1("sha256:b066dc8af4580d22190525b31025c0cc0097e39bcc43ce71fb5d29ba38133402")
+}
+
+resource R01CommentsModuleReplayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#replay")
+  fingerprint ast.semantic_subtree_v1("sha256:adee12aae531c70809824e54168b5f4dc5182d984699a428d3fa4da898e79518")
+}
+
+resource R01CommentsModuleRightXAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#rightX")
+  fingerprint ast.semantic_subtree_v1("sha256:fc9f2edc31545f35af8834bc896d24399cafd2f351c24a0f1dd5c6b892ca5b07")
+}
+
+resource R01CommentsModuleStartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#start")
+  fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+}
+
+resource R01CommentsModuleStepAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#step")
+  fingerprint ast.semantic_subtree_v1("sha256:537cdc8f3f4447d62362d0989933f699a95eff1861ac6f116f9e411a5a61c54a")
+}
+
+resource R01CommentsModuleUpYAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#upY")
+  fingerprint ast.semantic_subtree_v1("sha256:1a418a2e1681a424426261475dfa10bbf435b2b0c9c14df56704c2e094b73ad8")
+}
+
+component R01CommentsModule : GeneratedCandidate {
+  fn downY
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#downY")
+    effects unknown
+  fn isWall
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#isWall")
+    effects unknown
+  fn isWon
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#isWon")
+    effects unknown
+  fn leftX
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#leftX")
+    effects unknown
+  fn moveTo
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#moveTo")
+    effects unknown
+  fn onFlag
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#onFlag")
+    effects unknown
+  fn replay
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#replay")
+    effects unknown
+  fn rightX
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#rightX")
+    effects unknown
+  fn start
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#start")
+    effects unknown
+  fn step
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#step")
+    effects unknown
+  fn upY
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#upY")
+    effects unknown
+}
+
+relation R01CommentsModuleDownYGeneratedFromR01CommentsModuleDownYAstAnchor {
+  kind generated_from
+  connects R01CommentsModule -> R01CommentsModuleDownYAstAnchor
+  roles { R01CommentsModule as generated, R01CommentsModuleDownYAstAnchor as syntax }
+  expects R01CommentsModuleDownYAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f77ef532af83f2df9622e15ed01faac958830c66ae1c0cfa974bca63b10c28cf")
+  summary "fn R01CommentsModule.downY generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#downY."
+}
+
+relation R01CommentsModuleIsWallGeneratedFromR01CommentsModuleIsWallAstAnchor {
+  kind generated_from
+  connects R01CommentsModule -> R01CommentsModuleIsWallAstAnchor
+  roles { R01CommentsModule as generated, R01CommentsModuleIsWallAstAnchor as syntax }
+  expects R01CommentsModuleIsWallAstAnchor fingerprint ast.semantic_subtree_v1("sha256:563b7ae0d645b25b114fd9529b626e8e0fadc30de41fae4cffd35a1ddd00c17b")
+  summary "fn R01CommentsModule.isWall generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#isWall."
+}
+
+relation R01CommentsModuleIsWonGeneratedFromR01CommentsModuleIsWonAstAnchor {
+  kind generated_from
+  connects R01CommentsModule -> R01CommentsModuleIsWonAstAnchor
+  roles { R01CommentsModule as generated, R01CommentsModuleIsWonAstAnchor as syntax }
+  expects R01CommentsModuleIsWonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fc01820c39d249759ecb8e878dc2bbb42be54d5c3f09c70ccf2b161059bfb7e")
+  summary "fn R01CommentsModule.isWon generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#isWon."
+}
+
+relation R01CommentsModuleLeftXGeneratedFromR01CommentsModuleLeftXAstAnchor {
+  kind generated_from
+  connects R01CommentsModule -> R01CommentsModuleLeftXAstAnchor
+  roles { R01CommentsModule as generated, R01CommentsModuleLeftXAstAnchor as syntax }
+  expects R01CommentsModuleLeftXAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d1f1f7ea5db6cc61e2c24dabc031e0b89c2618a490370c8bb8161b243fcfc03d")
+  summary "fn R01CommentsModule.leftX generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#leftX."
+}
+
+relation R01CommentsModuleMoveToGeneratedFromR01CommentsModuleMoveToAstAnchor {
+  kind generated_from
+  connects R01CommentsModule -> R01CommentsModuleMoveToAstAnchor
+  roles { R01CommentsModule as generated, R01CommentsModuleMoveToAstAnchor as syntax }
+  expects R01CommentsModuleMoveToAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e156b6aa97426fb41763c6c9d7c868aea91f744c77f5d997e7af543b65c409d")
+  summary "fn R01CommentsModule.moveTo generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#moveTo."
+}
+
+relation R01CommentsModuleOnFlagGeneratedFromR01CommentsModuleOnFlagAstAnchor {
+  kind generated_from
+  connects R01CommentsModule -> R01CommentsModuleOnFlagAstAnchor
+  roles { R01CommentsModule as generated, R01CommentsModuleOnFlagAstAnchor as syntax }
+  expects R01CommentsModuleOnFlagAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b066dc8af4580d22190525b31025c0cc0097e39bcc43ce71fb5d29ba38133402")
+  summary "fn R01CommentsModule.onFlag generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#onFlag."
+}
+
+relation R01CommentsModuleReplayGeneratedFromR01CommentsModuleReplayAstAnchor {
+  kind generated_from
+  connects R01CommentsModule -> R01CommentsModuleReplayAstAnchor
+  roles { R01CommentsModule as generated, R01CommentsModuleReplayAstAnchor as syntax }
+  expects R01CommentsModuleReplayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:adee12aae531c70809824e54168b5f4dc5182d984699a428d3fa4da898e79518")
+  summary "fn R01CommentsModule.replay generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#replay."
+}
+
+relation R01CommentsModuleRightXGeneratedFromR01CommentsModuleRightXAstAnchor {
+  kind generated_from
+  connects R01CommentsModule -> R01CommentsModuleRightXAstAnchor
+  roles { R01CommentsModule as generated, R01CommentsModuleRightXAstAnchor as syntax }
+  expects R01CommentsModuleRightXAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fc9f2edc31545f35af8834bc896d24399cafd2f351c24a0f1dd5c6b892ca5b07")
+  summary "fn R01CommentsModule.rightX generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#rightX."
+}
+
+relation R01CommentsModuleStartGeneratedFromR01CommentsModuleStartAstAnchor {
+  kind generated_from
+  connects R01CommentsModule -> R01CommentsModuleStartAstAnchor
+  roles { R01CommentsModule as generated, R01CommentsModuleStartAstAnchor as syntax }
+  expects R01CommentsModuleStartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+  summary "fn R01CommentsModule.start generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#start."
+}
+
+relation R01CommentsModuleStepGeneratedFromR01CommentsModuleStepAstAnchor {
+  kind generated_from
+  connects R01CommentsModule -> R01CommentsModuleStepAstAnchor
+  roles { R01CommentsModule as generated, R01CommentsModuleStepAstAnchor as syntax }
+  expects R01CommentsModuleStepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:537cdc8f3f4447d62362d0989933f699a95eff1861ac6f116f9e411a5a61c54a")
+  summary "fn R01CommentsModule.step generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#step."
+}
+
+relation R01CommentsModuleUpYGeneratedFromR01CommentsModuleUpYAstAnchor {
+  kind generated_from
+  connects R01CommentsModule -> R01CommentsModuleUpYAstAnchor
+  roles { R01CommentsModule as generated, R01CommentsModuleUpYAstAnchor as syntax }
+  expects R01CommentsModuleUpYAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1a418a2e1681a424426261475dfa10bbf435b2b0c9c14df56704c2e094b73ad8")
+  summary "fn R01CommentsModule.upY generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts#upY."
+}
+
+implementation R01CommentsModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts"
+  }
+  conforms_to R01CommentsModule
+}

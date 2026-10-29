@@ -1,0 +1,145 @@
+module shape.generated.ast.experiments.shape_1.dogfood.tools.print
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource PrintModuleBlockAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/print.ts#block")
+  fingerprint ast.semantic_subtree_v1("sha256:3a9fba72d6e858df9ad053bcf3d87218f20185c368b4b7a295b889e11503bf93")
+}
+
+resource PrintModuleClauseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/print.ts#clause")
+  fingerprint ast.semantic_subtree_v1("sha256:75e6f107d2de4744238dca9cc882b51761dd8119919d78218c483644e01ddbb8")
+}
+
+resource PrintModuleGeneratedFunctionEvidenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/print.ts#evidence")
+  fingerprint ast.semantic_subtree_v1("sha256:d9a30a141a1b0f15a90f26b9e4654ca95458f305025f40c690d6e75925d5b7ce")
+}
+
+resource PrintModuleMetaAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/print.ts#meta")
+  fingerprint ast.semantic_subtree_v1("sha256:f2b874fd7b2c6e40c5f7bb3263e45dc23bb6b8d81f4ee57a526037b9e8a4f8a3")
+}
+
+resource PrintModulePrintDeclAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/print.ts#printDecl")
+  fingerprint ast.semantic_subtree_v1("sha256:4db792ad950ca20521263def21b0d1c7d644eb0edce7cfd9f21d6e846cb36ecd")
+}
+
+resource PrintModulePrintModelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/print.ts#printModel")
+  fingerprint ast.semantic_subtree_v1("sha256:039c5cb2fa93ae6d542e49d32997fcec88860c047b564cf4eff46ce8ab215194")
+}
+
+resource PrintModuleTbodyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/print.ts#tbody")
+  fingerprint ast.semantic_subtree_v1("sha256:4a5e12e9809b64a600863e7db58cb72aa455ac34ae0c09fd06c3bb1743bb5289")
+}
+
+resource PrintModuleUnitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/print.ts#unit")
+  fingerprint ast.semantic_subtree_v1("sha256:b597e9646f149f7d2a5a0e137eea2188d48f04495752bdc1abeee57eac571793")
+}
+
+component PrintModule : GeneratedCandidate {
+  fn block
+    source ts("experiments/shape-1/dogfood/tools/print.ts#block")
+    effects unknown
+  fn clause
+    source ts("experiments/shape-1/dogfood/tools/print.ts#clause")
+    effects unknown
+  fn generatedFunction_evidence
+    source ts("experiments/shape-1/dogfood/tools/print.ts#evidence")
+    effects unknown
+  fn meta
+    source ts("experiments/shape-1/dogfood/tools/print.ts#meta")
+    effects unknown
+  fn printDecl
+    source ts("experiments/shape-1/dogfood/tools/print.ts#printDecl")
+    effects unknown
+  fn printModel
+    source ts("experiments/shape-1/dogfood/tools/print.ts#printModel")
+    effects unknown
+  fn tbody
+    source ts("experiments/shape-1/dogfood/tools/print.ts#tbody")
+    effects unknown
+  fn unit
+    source ts("experiments/shape-1/dogfood/tools/print.ts#unit")
+    effects unknown
+}
+
+relation PrintModuleBlockGeneratedFromPrintModuleBlockAstAnchor {
+  kind generated_from
+  connects PrintModule -> PrintModuleBlockAstAnchor
+  roles { PrintModule as generated, PrintModuleBlockAstAnchor as syntax }
+  expects PrintModuleBlockAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3a9fba72d6e858df9ad053bcf3d87218f20185c368b4b7a295b889e11503bf93")
+  summary "fn PrintModule.block generated from typescript function_declaration at experiments/shape-1/dogfood/tools/print.ts#block."
+}
+
+relation PrintModuleClauseGeneratedFromPrintModuleClauseAstAnchor {
+  kind generated_from
+  connects PrintModule -> PrintModuleClauseAstAnchor
+  roles { PrintModule as generated, PrintModuleClauseAstAnchor as syntax }
+  expects PrintModuleClauseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:75e6f107d2de4744238dca9cc882b51761dd8119919d78218c483644e01ddbb8")
+  summary "fn PrintModule.clause generated from typescript function_declaration at experiments/shape-1/dogfood/tools/print.ts#clause."
+}
+
+relation PrintModuleGeneratedFunctionEvidenceGeneratedFromPrintModuleGeneratedFunctionEvidenceAstAnchor {
+  kind generated_from
+  connects PrintModule -> PrintModuleGeneratedFunctionEvidenceAstAnchor
+  roles { PrintModule as generated, PrintModuleGeneratedFunctionEvidenceAstAnchor as syntax }
+  expects PrintModuleGeneratedFunctionEvidenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d9a30a141a1b0f15a90f26b9e4654ca95458f305025f40c690d6e75925d5b7ce")
+  summary "fn PrintModule.generatedFunction_evidence generated from typescript function_declaration at experiments/shape-1/dogfood/tools/print.ts#evidence."
+}
+
+relation PrintModuleMetaGeneratedFromPrintModuleMetaAstAnchor {
+  kind generated_from
+  connects PrintModule -> PrintModuleMetaAstAnchor
+  roles { PrintModule as generated, PrintModuleMetaAstAnchor as syntax }
+  expects PrintModuleMetaAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f2b874fd7b2c6e40c5f7bb3263e45dc23bb6b8d81f4ee57a526037b9e8a4f8a3")
+  summary "fn PrintModule.meta generated from typescript function_declaration at experiments/shape-1/dogfood/tools/print.ts#meta."
+}
+
+relation PrintModulePrintDeclGeneratedFromPrintModulePrintDeclAstAnchor {
+  kind generated_from
+  connects PrintModule -> PrintModulePrintDeclAstAnchor
+  roles { PrintModule as generated, PrintModulePrintDeclAstAnchor as syntax }
+  expects PrintModulePrintDeclAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4db792ad950ca20521263def21b0d1c7d644eb0edce7cfd9f21d6e846cb36ecd")
+  summary "fn PrintModule.printDecl generated from typescript function_declaration at experiments/shape-1/dogfood/tools/print.ts#printDecl."
+}
+
+relation PrintModulePrintModelGeneratedFromPrintModulePrintModelAstAnchor {
+  kind generated_from
+  connects PrintModule -> PrintModulePrintModelAstAnchor
+  roles { PrintModule as generated, PrintModulePrintModelAstAnchor as syntax }
+  expects PrintModulePrintModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:039c5cb2fa93ae6d542e49d32997fcec88860c047b564cf4eff46ce8ab215194")
+  summary "fn PrintModule.printModel generated from typescript function_declaration at experiments/shape-1/dogfood/tools/print.ts#printModel."
+}
+
+relation PrintModuleTbodyGeneratedFromPrintModuleTbodyAstAnchor {
+  kind generated_from
+  connects PrintModule -> PrintModuleTbodyAstAnchor
+  roles { PrintModule as generated, PrintModuleTbodyAstAnchor as syntax }
+  expects PrintModuleTbodyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4a5e12e9809b64a600863e7db58cb72aa455ac34ae0c09fd06c3bb1743bb5289")
+  summary "fn PrintModule.tbody generated from typescript function_declaration at experiments/shape-1/dogfood/tools/print.ts#tbody."
+}
+
+relation PrintModuleUnitGeneratedFromPrintModuleUnitAstAnchor {
+  kind generated_from
+  connects PrintModule -> PrintModuleUnitAstAnchor
+  roles { PrintModule as generated, PrintModuleUnitAstAnchor as syntax }
+  expects PrintModuleUnitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b597e9646f149f7d2a5a0e137eea2188d48f04495752bdc1abeee57eac571793")
+  summary "fn PrintModule.unit generated from typescript function_declaration at experiments/shape-1/dogfood/tools/print.ts#unit."
+}
+
+implementation PrintModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/tools/print.ts"
+  }
+  conforms_to PrintModule
+}

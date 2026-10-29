@@ -11,7 +11,15 @@ export interface InspectRef {
 export interface Inspect {
   documents: { file: string; module: string; imports: string[]; origin: string }[];
   resources: { id: string; name: string; module: string; file: string; traits: string[] }[];
-  components: { id: string; name: string; module: string; classifiers: string[]; grants: InspectRef[]; owns: string[]; functions: string[] }[];
+  components: {
+    id: string;
+    name: string;
+    module: string;
+    classifiers: string[];
+    grants: InspectRef[];
+    owns: string[];
+    functions: string[];
+  }[];
   functions: {
     id: string;
     name: string;
@@ -23,8 +31,22 @@ export interface Inspect {
     effects: { name: string; target: string }[];
     shapeTraits?: string[];
   }[];
-  relations: { id: string; name: string; module: string; kind: string; endpoints?: { id: string; index: number }[]; from?: string; to?: string }[];
-  implementations: { id: string; name: string; module: string; paths: string[]; conformsTo: string }[];
+  relations: {
+    id: string;
+    name: string;
+    module: string;
+    kind: string;
+    endpoints?: { id: string; index: number }[];
+    from?: string;
+    to?: string;
+  }[];
+  implementations: {
+    id: string;
+    name: string;
+    module: string;
+    paths: string[];
+    conformsTo: string;
+  }[];
   bindings: { id: string; name: string }[];
   rules: {
     id: string;
@@ -55,9 +77,29 @@ export interface TraitBody {
   forbids: { effect: string; target: string; final: boolean }[];
 }
 
-const STD_EFFECTS = new Set(["Read", "Write", "Export", "Append", "Import", "Update", "Redact", "LogicalDelete", "HardDelete", "Truncate", "DropStorage", "Hatch"]);
+const STD_EFFECTS = new Set([
+  "Read",
+  "Write",
+  "Export",
+  "Append",
+  "Import",
+  "Update",
+  "Redact",
+  "LogicalDelete",
+  "HardDelete",
+  "Truncate",
+  "DropStorage",
+  "Hatch"
+]);
 const STD_KINDS = new Set(["calls", "callbacks", "provides", "data_flow", "coordinated_call"]);
-const PRELUDE_RESOURCE_MARKERS = ["Persistent", "Ephemeral", "Secret", "Public", "External", "Internal"];
+const PRELUDE_RESOURCE_MARKERS = [
+  "Persistent",
+  "Ephemeral",
+  "Secret",
+  "Public",
+  "External",
+  "Internal"
+];
 
 /** Reads `trait Name<T: Kind> { forbid [final] Effect<T> … }` bodies from 0.x text. */
 export function extractTraits(file: string, module: string, text: string): TraitBody[] {
@@ -113,14 +155,20 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
   const ins = opts.includeGenerated ? insAll : withoutGenerated(insAll);
   if (ins !== insAll) {
     const n = insAll.documents.length - ins.documents.length;
-    if (n > 0) notes.push(`skipped ${n} generated_ast documents (mapper output, not authored claims)`);
+    if (n > 0)
+      notes.push(`skipped ${n} generated_ast documents (mapper output, not authored claims)`);
   }
   const modules = new Map<string, SourceModule>();
   const mod = (name: string): SourceModule => {
     let m = modules.get(name);
     if (!m) {
       const doc = ins.documents.find((d) => d.module === name);
-      m = { module: name, imports: sortedUniq(["std", ...(doc?.imports ?? [])]), decls: [], file: doc?.file };
+      m = {
+        module: name,
+        imports: sortedUniq(["std", ...(doc?.imports ?? [])]),
+        decls: [],
+        file: doc?.file
+      };
       modules.set(name, m);
     }
     return m;
@@ -159,12 +207,18 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
         if (traitsByQ.get(t)?.forbids.some((f) => f.final)) tier = "final";
       }
     }
-    mod(r.module).decls.push({ decl: "resource", name: r.name, ...(attach.length > 0 ? { attach } : {}), ...(tier ? { tier } : {}) });
+    mod(r.module).decls.push({
+      decl: "resource",
+      name: r.name,
+      ...(attach.length > 0 ? { attach } : {}),
+      ...(tier ? { tier } : {})
+    });
   }
 
   // components, units, implementations → paths
   const pathsOf = new Map<string, string[]>();
-  for (const i of ins.implementations) pathsOf.set(i.conformsTo, sortedUniq([...(pathsOf.get(i.conformsTo) ?? []), ...i.paths]));
+  for (const i of ins.implementations)
+    pathsOf.set(i.conformsTo, sortedUniq([...(pathsOf.get(i.conformsTo) ?? []), ...i.paths]));
   for (const c of [...ins.components].sort((a, b) => cmpStr(a.id, b.id))) {
     const units: UnitDecl[] = [];
     for (const fq of [...c.functions].sort(cmpStr)) {
@@ -172,13 +226,22 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
       if (!f) continue;
       const attach: TemplateApp[] = [];
       for (const st of f.shapeTraits ?? []) {
-        if (st === "RefactorSensitive" || st.endsWith("::RefactorSensitive")) attach.push({ name: "std::RefactorSensitive" });
+        if (st === "RefactorSensitive" || st.endsWith("::RefactorSensitive"))
+          attach.push({ name: "std::RefactorSensitive" });
         else notes.push(`dropped shape trait ${st} on ${f.id}`);
       }
       const u: UnitDecl = { name: f.name };
       if (f.source?.path) u.bind = `${f.source.language}(${JSON.stringify(f.source.path)})`;
-      if (f.effectsComplete) u.effects = { mode: "complete", atoms: f.effects.map((e) => ({ atom: atom(e.name, e.target, c.module) })) };
-      else if (f.effects.length > 0) u.effects = { mode: "partial", atoms: f.effects.map((e) => ({ atom: atom(e.name, e.target, c.module) })) };
+      if (f.effectsComplete)
+        u.effects = {
+          mode: "complete",
+          atoms: f.effects.map((e) => ({ atom: atom(e.name, e.target, c.module) }))
+        };
+      else if (f.effects.length > 0)
+        u.effects = {
+          mode: "partial",
+          atoms: f.effects.map((e) => ({ atom: atom(e.name, e.target, c.module) }))
+        };
       if (attach.length > 0) u.attach = attach;
       if (f.unsafe) notes.push(`unsafe on ${f.id} needs an exception (owner, expiry) — not minted`);
       units.push(u);
@@ -192,7 +255,9 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
       name: c.name,
       ...(attach.length > 0 ? { attach } : {}),
       ...(pathsOf.has(c.id) ? { paths: pathsOf.get(c.id) } : {}),
-      ...(c.grants.length > 0 ? { grants: sortedUniq(c.grants.map((g) => atom(g.name, g.target, c.module))) } : {}),
+      ...(c.grants.length > 0
+        ? { grants: sortedUniq(c.grants.map((g) => atom(g.name, g.target, c.module))) }
+        : {}),
       ...(units.length > 0 ? { units } : {})
     };
     // Owns<R, K> is attached to the resource side by argument order: Owns<R, K>; we apply it as a named rule
@@ -209,9 +274,15 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
 
   // relations
   for (const r of [...ins.relations].sort((a, b) => cmpStr(a.id, b.id))) {
-    const ends = r.endpoints && r.endpoints.length > 0 ? [...r.endpoints].sort((a, b) => a.index - b.index).map((e) => e.id) : [r.from ?? "", r.to ?? ""];
+    const ends =
+      r.endpoints && r.endpoints.length > 0
+        ? [...r.endpoints].sort((a, b) => a.index - b.index).map((e) => e.id)
+        : [r.from ?? "", r.to ?? ""];
     if (!STD_KINDS.has(r.kind) && !kinds.has(r.kind)) {
-      kinds.set(r.kind, { from: "component", to: resourceIds.has(ends[ends.length - 1] ?? "") ? "resource" : "component" });
+      kinds.set(r.kind, {
+        from: "component",
+        to: resourceIds.has(ends[ends.length - 1] ?? "") ? "resource" : "component"
+      });
     }
     mod(r.module).decls.push({ decl: "relation", name: r.name, kind: r.kind, connects: ends });
   }
@@ -219,21 +290,48 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
   // rules
   for (const r of [...ins.rules].sort((a, b) => cmpStr(a.id, b.id))) {
     const clauses: Clause[] = [];
-    for (const f of r.forbidEffects) clauses.push({ forbid: "effect", final: f.final, atom: atom(f.effect, f.target, r.module) });
-    for (const p of r.forbidProvides) clauses.push({ forbid: "edge", kind: "provides", from: ["*"], to: [p.target], ...(p.except ? { exceptFrom: [p.except] } : {}) });
-    for (const h of r.forbidHypercycles) clauses.push({ forbid: "cycle", over: [...h.kinds].sort(cmpStr) });
+    for (const f of r.forbidEffects)
+      clauses.push({ forbid: "effect", final: f.final, atom: atom(f.effect, f.target, r.module) });
+    for (const p of r.forbidProvides)
+      clauses.push({
+        forbid: "edge",
+        kind: "provides",
+        from: ["*"],
+        to: [p.target],
+        ...(p.except ? { exceptFrom: [p.except] } : {})
+      });
+    for (const h of r.forbidHypercycles)
+      clauses.push({ forbid: "cycle", over: [...h.kinds].sort(cmpStr) });
     // forbid paths with the same target and kinds are one multi-source clause (A.13.4)
     const byTarget = new Map<string, { target: string; kinds: string[]; sources: string[] }>();
     for (const p of r.forbidPaths) {
       const k = `${p.target}|${[...p.kinds].sort(cmpStr).join(",")}`;
-      const e = byTarget.get(k) ?? { target: p.target, kinds: [...p.kinds].sort(cmpStr), sources: [] };
+      const e = byTarget.get(k) ?? {
+        target: p.target,
+        kinds: [...p.kinds].sort(cmpStr),
+        sources: []
+      };
       e.sources.push(p.source);
       byTarget.set(k, e);
     }
-    for (const e of [...byTarget.values()].sort((a, b) => cmpStr(a.target, b.target))) clauses.push({ forbid: "path", from: sortedUniq(e.sources), to: [e.target], over: e.kinds });
-    const when = r.whenHas.map((w) => ({ param: w.subject, has: w.trait.includes("::") || ["AppendOnly", "PII"].includes(w.trait) ? (w.trait.includes("::") ? w.trait : `std::${w.trait}`) : w.trait }));
+    for (const e of [...byTarget.values()].sort((a, b) => cmpStr(a.target, b.target)))
+      clauses.push({ forbid: "path", from: sortedUniq(e.sources), to: [e.target], over: e.kinds });
+    const when = r.whenHas.map((w) => ({
+      param: w.subject,
+      has:
+        w.trait.includes("::") || ["AppendOnly", "PII"].includes(w.trait)
+          ? w.trait.includes("::")
+            ? w.trait
+            : `std::${w.trait}`
+          : w.trait
+    }));
     for (const w of when) if (!usedTemplates.has(w.has)) usedTemplates.set(w.has, "resource");
-    mod(r.module).decls.push({ decl: "rule", name: r.name, clauses, ...(when.length > 0 ? { when } : {}) });
+    mod(r.module).decls.push({
+      decl: "rule",
+      name: r.name,
+      clauses,
+      ...(when.length > 0 ? { when } : {})
+    });
   }
 
   // memories → notes; guards → RefactorSensitive on the unit (informal law)
@@ -248,48 +346,95 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
       about: [`${tkind} ${m.target.id}`],
       ...(owner ? { owner } : {}),
       text: m.summary,
-      ...(m.confidence ? { confidence: m.confidence.toLowerCase() as "low" | "medium" | "high" } : {})
+      ...(m.confidence
+        ? { confidence: m.confidence.toLowerCase() as "low" | "medium" | "high" }
+        : {})
     });
     if ((m.guards ?? []).length > 0 && m.target.kind === "fn") {
       const comp = m.target.id.slice(0, m.target.id.lastIndexOf("."));
       const unitName = m.target.id.slice(m.target.id.lastIndexOf(".") + 1);
-      const cm = [...modules.values()].flatMap((x) => x.decls.map((d) => ({ x, d }))).find(({ x, d }) => d.decl === "component" && `${x.module}::${d.name}` === comp);
+      const cm = [...modules.values()]
+        .flatMap((x) => x.decls.map((d) => ({ x, d })))
+        .find(({ x, d }) => d.decl === "component" && `${x.module}::${d.name}` === comp);
       if (cm && cm.d.decl === "component") {
         const u = (cm.d.units ?? []).find((y) => y.name === unitName);
-        if (u && !(u.attach ?? []).some((a) => a.name.endsWith("RefactorSensitive"))) u.attach = [...(u.attach ?? []), { name: "std::RefactorSensitive" }];
+        if (u && !(u.attach ?? []).some((a) => a.name.endsWith("RefactorSensitive")))
+          u.attach = [...(u.attach ?? []), { name: "std::RefactorSensitive" }];
       }
     }
   }
-  for (const b of ins.bindings) notes.push(`binding ${b.id} (when changed → require changed) maps to DocumentedBy; not migrated`);
+  for (const b of ins.bindings)
+    notes.push(
+      `binding ${b.id} (when changed → require changed) maps to DocumentedBy; not migrated`
+    );
 
   // the migration module: shape declaration, owners, undeclared effects, kinds, marker templates
   const migDecls: Decl[] = [];
   const ownerName = opts.owner ?? "Maintainers";
-  migDecls.push({ decl: "shape", name: opts.shapeName ?? "Migrated", owner: `${MIG}::${ownerName}` });
+  migDecls.push({
+    decl: "shape",
+    name: opts.shapeName ?? "Migrated",
+    owner: `${MIG}::${ownerName}`
+  });
   const maint = sortedUniq(opts.maintainers ?? []);
-  for (const o of sortedUniq([ownerName, ...owners])) migDecls.push({ decl: "actor", name: o, kind: "team", members: o === ownerName ? maint.map((m) => `person_${m.replace(/\W/g, "_")}`) : [] });
-  for (const m of maint) migDecls.push({ decl: "actor", name: `person_${m.replace(/\W/g, "_")}`, kind: "person", identities: [`github(${JSON.stringify(m)})`] });
+  for (const o of sortedUniq([ownerName, ...owners]))
+    migDecls.push({
+      decl: "actor",
+      name: o,
+      kind: "team",
+      members: o === ownerName ? maint.map((m) => `person_${m.replace(/\W/g, "_")}`) : []
+    });
+  for (const m of maint)
+    migDecls.push({
+      decl: "actor",
+      name: `person_${m.replace(/\W/g, "_")}`,
+      kind: "person",
+      identities: [`github(${JSON.stringify(m)})`]
+    });
   for (const e of [...effects].sort(cmpStr)) migDecls.push({ decl: "effect", name: e });
-  for (const [k, v] of [...kinds.entries()].sort((a, b) => cmpStr(a[0], b[0]))) migDecls.push({ decl: "kind", name: k, from: v.from, to: v.to });
+  for (const [k, v] of [...kinds.entries()].sort((a, b) => cmpStr(a[0], b[0])))
+    migDecls.push({ decl: "kind", name: k, from: v.from, to: v.to });
   for (const [t, bearer] of [...usedTemplates.entries()].sort((a, b) => cmpStr(a[0], b[0]))) {
     if (t.startsWith("std::")) continue;
     if (t.startsWith(`${MIG}::`)) {
-      migDecls.push({ decl: "template", name: t.slice(MIG.length + 2), params: [["T", bearer]], body: [] });
+      migDecls.push({
+        decl: "template",
+        name: t.slice(MIG.length + 2),
+        params: [["T", bearer]],
+        body: []
+      });
       continue;
     }
     const tb = traitsByQ.get(t);
-    const [m, n] = t.includes("::") ? [t.slice(0, t.lastIndexOf("::")), t.slice(t.lastIndexOf("::") + 2)] : [MIG, t];
-    const params = (tb?.params ?? [{ name: "T", kind: bearer }]).map((p) => [p.name, p.kind === "component" ? "component" : p.kind === "fn" ? "unit" : "resource"] as [string, "resource" | "component" | "unit"]);
-    const body = (tb?.forbids ?? []).map((f): Clause => ({ forbid: "effect", final: f.final, atom: `${f.effect}<${f.target}>` }));
+    const [m, n] = t.includes("::")
+      ? [t.slice(0, t.lastIndexOf("::")), t.slice(t.lastIndexOf("::") + 2)]
+      : [MIG, t];
+    const params = (tb?.params ?? [{ name: "T", kind: bearer }]).map(
+      (p) =>
+        [p.name, p.kind === "component" ? "component" : p.kind === "fn" ? "unit" : "resource"] as [
+          string,
+          "resource" | "component" | "unit"
+        ]
+    );
+    const body = (tb?.forbids ?? []).map(
+      (f): Clause => ({ forbid: "effect", final: f.final, atom: `${f.effect}<${f.target}>` })
+    );
     for (const f of tb?.forbids ?? []) if (!STD_EFFECTS.has(f.effect)) effects.add(f.effect);
     const target = m === MIG ? migDecls : mod(m).decls;
-    if (!target.some((d) => d.decl === "template" && d.name === n)) target.push({ decl: "template", name: n, params, body });
+    if (!target.some((d) => d.decl === "template" && d.name === n))
+      target.push({ decl: "template", name: n, params, body });
   }
-  for (const e of [...effects].sort(cmpStr)) if (!migDecls.some((d) => d.decl === "effect" && d.name === e)) migDecls.push({ decl: "effect", name: e });
+  for (const e of [...effects].sort(cmpStr))
+    if (!migDecls.some((d) => d.decl === "effect" && d.name === e))
+      migDecls.push({ decl: "effect", name: e });
   modules.set(MIG, { module: MIG, imports: ["std"], decls: migDecls, file: "shape1.migrated" });
   // every module imports the migration module so marker templates and owners resolve
-  for (const m of modules.values()) if (m.module !== MIG) m.imports = sortedUniq([...(m.imports ?? []), MIG]);
-  const source: SourceDoc = { v: "shape.source.v1", modules: [...modules.values()].sort((a, b) => cmpStr(a.module, b.module)) };
+  for (const m of modules.values())
+    if (m.module !== MIG) m.imports = sortedUniq([...(m.imports ?? []), MIG]);
+  const source: SourceDoc = {
+    v: "shape.source.v1",
+    modules: [...modules.values()].sort((a, b) => cmpStr(a.module, b.module))
+  };
   return { source, notes: sortedUniq(notes), renames: [] };
 }
 
@@ -298,23 +443,37 @@ export function mergeSidecar(base: SourceDoc, sidecar: SourceDoc | null): Source
   if (!sidecar) return base;
   const modules = new Map(base.modules.map((m) => [m.module, { ...m, decls: [...m.decls] }]));
   const hasShape = sidecar.modules.some((m) => m.decls.some((d) => d.decl === "shape"));
-  if (hasShape) for (const m of modules.values()) m.decls = m.decls.filter((d) => d.decl !== "shape");
+  if (hasShape)
+    for (const m of modules.values()) m.decls = m.decls.filter((d) => d.decl !== "shape");
   for (const sm of sidecar.modules) {
-    const m = modules.get(sm.module) ?? { module: sm.module, imports: [], decls: [], file: sm.file };
+    const m = modules.get(sm.module) ?? {
+      module: sm.module,
+      imports: [],
+      decls: [],
+      file: sm.file
+    };
     m.imports = sortedUniq([...(m.imports ?? []), ...(sm.imports ?? [])]);
     for (const d of sm.decls) {
       const name = d.decl === "hatch" ? d.names.join(",") : d.name;
-      const i = m.decls.findIndex((x) => x.decl === d.decl && (x.decl === "hatch" ? x.names.join(",") : x.name) === name);
+      const i = m.decls.findIndex(
+        (x) => x.decl === d.decl && (x.decl === "hatch" ? x.names.join(",") : x.name) === name
+      );
       if (i >= 0) m.decls[i] = d;
       else m.decls.push(d);
     }
     modules.set(sm.module, m);
   }
-  return { v: "shape.source.v1", lock: sidecar.lock ?? base.lock, modules: [...modules.values()].sort((a, b) => cmpStr(a.module, b.module)) };
+  return {
+    v: "shape.source.v1",
+    lock: sidecar.lock ?? base.lock,
+    modules: [...modules.values()].sort((a, b) => cmpStr(a.module, b.module))
+  };
 }
 
 function withoutGenerated(ins: Inspect): Inspect {
-  const gen = new Set(ins.documents.filter((d) => d.origin === "generated_ast").map((d) => d.module));
+  const gen = new Set(
+    ins.documents.filter((d) => d.origin === "generated_ast").map((d) => d.module)
+  );
   if (gen.size === 0) return ins;
   const keep = <T extends { module: string }>(xs: T[]): T[] => xs.filter((x) => !gen.has(x.module));
   return {
@@ -342,7 +501,10 @@ export interface BindIndex {
  * path, exact symbols, then a unique same-file identity whose last segment is the symbol;
  * unregistered languages bind their raw file identity. Returns the rewritten source and renames.
  */
-export function rewriteBinds(src: SourceDoc, idx: BindIndex): { source: SourceDoc; renames: { from: string; to: string }[] } {
+export function rewriteBinds(
+  src: SourceDoc,
+  idx: BindIndex
+): { source: SourceDoc; renames: { from: string; to: string }[] } {
   const renames: { from: string; to: string }[] = [];
   const modules = src.modules.map((m) => ({
     ...m,

@@ -63,7 +63,7 @@ export function transfer(
   ledger: Ledger,
   from: AccountId,
   to: AccountId,
-  amount: number,
+  amount: number
 ): TransferResult {
   const valid = Number.isInteger(amount) && amount > 0;
   const fee = valid ? feeFor(from, to, amount) : 0;

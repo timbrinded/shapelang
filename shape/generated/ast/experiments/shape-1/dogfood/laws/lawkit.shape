@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.shape_1.dogfood.laws.lawkit
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LawkitModuleDistinctNamesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/lawkit.ts#distinctNames")
+  fingerprint ast.semantic_subtree_v1("sha256:fee445e54534bc4df2b44823d2828aab500cbf0d92ed6de3800f44f0c8d26d38")
+}
+
+resource LawkitModuleLawTestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/lawkit.ts#lawTest")
+  fingerprint ast.semantic_subtree_v1("sha256:b268ab9efa96642773bcf736e0dc097372ebea9b64c110079f818bd3bca72ac6")
+}
+
+resource LawkitModulePropertyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/lawkit.ts#property")
+  fingerprint ast.semantic_subtree_v1("sha256:c0be6c31c84b5f8052cb02a7b0b8cf1f735e0c3eb7b9fedb94703d45ccaeedd9")
+}
+
+resource LawkitModuleRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/lawkit.ts#record")
+  fingerprint ast.semantic_subtree_v1("sha256:691cf73cc115533943f25734a123c8d0b43989f286dbdf50376e0be5ae3cb61e")
+}
+
+resource LawkitModuleRngAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/lawkit.ts#rng")
+  fingerprint ast.semantic_subtree_v1("sha256:9a14f224037f27443d951196a33a030cfe73b082b7884e5a36d9fd89b1450573")
+}
+
+resource LawkitModuleStableAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/lawkit.ts#stable")
+  fingerprint ast.semantic_subtree_v1("sha256:98c174a00ec97345e3f7b625aa54da915822dc17973a8b9c1a75aab00c2896a1")
+}
+
+resource LawkitModuleStableDeepAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/lawkit.ts#stableDeep")
+  fingerprint ast.semantic_subtree_v1("sha256:f79cc355dbe140f30c82ffa130ab8b300e621e6d6eedc3a6c3f9891dfd89ea85")
+}
+
+component LawkitModule : GeneratedCandidate {
+  fn distinctNames
+    source ts("experiments/shape-1/dogfood/laws/lawkit.ts#distinctNames")
+    effects unknown
+  fn lawTest
+    source ts("experiments/shape-1/dogfood/laws/lawkit.ts#lawTest")
+    effects unknown
+  fn property
+    source ts("experiments/shape-1/dogfood/laws/lawkit.ts#property")
+    effects unknown
+  fn record
+    source ts("experiments/shape-1/dogfood/laws/lawkit.ts#record")
+    effects unknown
+  fn rng
+    source ts("experiments/shape-1/dogfood/laws/lawkit.ts#rng")
+    effects unknown
+  fn stable
+    source ts("experiments/shape-1/dogfood/laws/lawkit.ts#stable")
+    effects unknown
+  fn stableDeep
+    source ts("experiments/shape-1/dogfood/laws/lawkit.ts#stableDeep")
+    effects unknown
+}
+
+relation LawkitModuleDistinctNamesGeneratedFromLawkitModuleDistinctNamesAstAnchor {
+  kind generated_from
+  connects LawkitModule -> LawkitModuleDistinctNamesAstAnchor
+  roles { LawkitModule as generated, LawkitModuleDistinctNamesAstAnchor as syntax }
+  expects LawkitModuleDistinctNamesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fee445e54534bc4df2b44823d2828aab500cbf0d92ed6de3800f44f0c8d26d38")
+  summary "fn LawkitModule.distinctNames generated from typescript function_declaration at experiments/shape-1/dogfood/laws/lawkit.ts#distinctNames."
+}
+
+relation LawkitModuleLawTestGeneratedFromLawkitModuleLawTestAstAnchor {
+  kind generated_from
+  connects LawkitModule -> LawkitModuleLawTestAstAnchor
+  roles { LawkitModule as generated, LawkitModuleLawTestAstAnchor as syntax }
+  expects LawkitModuleLawTestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b268ab9efa96642773bcf736e0dc097372ebea9b64c110079f818bd3bca72ac6")
+  summary "fn LawkitModule.lawTest generated from typescript function_declaration at experiments/shape-1/dogfood/laws/lawkit.ts#lawTest."
+}
+
+relation LawkitModulePropertyGeneratedFromLawkitModulePropertyAstAnchor {
+  kind generated_from
+  connects LawkitModule -> LawkitModulePropertyAstAnchor
+  roles { LawkitModule as generated, LawkitModulePropertyAstAnchor as syntax }
+  expects LawkitModulePropertyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c0be6c31c84b5f8052cb02a7b0b8cf1f735e0c3eb7b9fedb94703d45ccaeedd9")
+  summary "fn LawkitModule.property generated from typescript function_declaration at experiments/shape-1/dogfood/laws/lawkit.ts#property."
+}
+
+relation LawkitModuleRecordGeneratedFromLawkitModuleRecordAstAnchor {
+  kind generated_from
+  connects LawkitModule -> LawkitModuleRecordAstAnchor
+  roles { LawkitModule as generated, LawkitModuleRecordAstAnchor as syntax }
+  expects LawkitModuleRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:691cf73cc115533943f25734a123c8d0b43989f286dbdf50376e0be5ae3cb61e")
+  summary "fn LawkitModule.record generated from typescript function_declaration at experiments/shape-1/dogfood/laws/lawkit.ts#record."
+}
+
+relation LawkitModuleRngGeneratedFromLawkitModuleRngAstAnchor {
+  kind generated_from
+  connects LawkitModule -> LawkitModuleRngAstAnchor
+  roles { LawkitModule as generated, LawkitModuleRngAstAnchor as syntax }
+  expects LawkitModuleRngAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9a14f224037f27443d951196a33a030cfe73b082b7884e5a36d9fd89b1450573")
+  summary "fn LawkitModule.rng generated from typescript function_declaration at experiments/shape-1/dogfood/laws/lawkit.ts#rng."
+}
+
+relation LawkitModuleStableDeepGeneratedFromLawkitModuleStableDeepAstAnchor {
+  kind generated_from
+  connects LawkitModule -> LawkitModuleStableDeepAstAnchor
+  roles { LawkitModule as generated, LawkitModuleStableDeepAstAnchor as syntax }
+  expects LawkitModuleStableDeepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f79cc355dbe140f30c82ffa130ab8b300e621e6d6eedc3a6c3f9891dfd89ea85")
+  summary "fn LawkitModule.stableDeep generated from typescript function_declaration at experiments/shape-1/dogfood/laws/lawkit.ts#stableDeep."
+}
+
+relation LawkitModuleStableGeneratedFromLawkitModuleStableAstAnchor {
+  kind generated_from
+  connects LawkitModule -> LawkitModuleStableAstAnchor
+  roles { LawkitModule as generated, LawkitModuleStableAstAnchor as syntax }
+  expects LawkitModuleStableAstAnchor fingerprint ast.semantic_subtree_v1("sha256:98c174a00ec97345e3f7b625aa54da915822dc17973a8b9c1a75aab00c2896a1")
+  summary "fn LawkitModule.stable generated from typescript function_declaration at experiments/shape-1/dogfood/laws/lawkit.ts#stable."
+}
+
+implementation LawkitModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/laws/lawkit.ts"
+  }
+  conforms_to LawkitModule
+}

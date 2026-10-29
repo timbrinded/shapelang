@@ -507,6 +507,1469 @@
       ]
     },
     {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.laws.authoring_law_test",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/laws/authoring.law.test.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/laws/authoring.law.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.laws.change_planning_law_test",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/laws/change-planning.law.test.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/laws/change-planning.law.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.laws.determinism_law_test",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/laws/determinism.law.test.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/laws/determinism.law.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.laws.formatter_law_test",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/laws/formatter.law.test.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/laws/formatter.law.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.laws.incremental_law_test",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/laws/incremental.law.test.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/laws/incremental.law.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.laws.inspection_law_test",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/laws/inspection.law.test.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/laws/inspection.law.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.laws.lawkit",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/laws/lawkit.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/laws/lawkit.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.laws.paths_law_test",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/laws/paths.law.test.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/laws/paths.law.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.laws.rules_law_test",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/laws/rules.law.test.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/laws/rules.law.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.providers.bun_test",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/providers/bun-test.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/providers/bun-test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.providers.common",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/providers/common.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/providers/common.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.providers.ts_calls",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/providers/ts-calls.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/providers/ts-calls.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.providers.ts_clock_scan",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/providers/ts-clock-scan.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/providers/ts-clock-scan.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.providers.ts_ident",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/providers/ts-ident.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/providers/ts-ident.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.tools.check",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/tools/check.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/tools/check.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.tools.compose",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/tools/compose.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/tools/compose.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.tools.lib",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/tools/lib.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/tools/lib.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.tools.print",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/tools/print.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/tools/print.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.tools.provide",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/tools/provide.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/tools/provide.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.tools.runs",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/tools/runs.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/tools/runs.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.dogfood.tools.generated_summary",
+      "path": "shape/generated/ast/experiments/shape-1/dogfood/tools/summary.shape",
+      "sources": [
+        "experiments/shape-1/dogfood/tools/summary.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.kernel.test.bridge",
+      "path": "shape/generated/ast/experiments/shape-1/kernel/test/bridge.shape",
+      "sources": [
+        "experiments/shape-1/kernel/test/bridge.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.kernel.test.gen_cases",
+      "path": "shape/generated/ast/experiments/shape-1/kernel/test/gen_cases.shape",
+      "sources": [
+        "experiments/shape-1/kernel/test/gen_cases.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.kernel.test.run_tests",
+      "path": "shape/generated/ast/experiments/shape-1/kernel/test/run_tests.shape",
+      "sources": [
+        "experiments/shape-1/kernel/test/run_tests.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.examples.fixtures",
+      "path": "shape/generated/ast/experiments/shape-1/proto/examples/fixtures.shape",
+      "sources": [
+        "experiments/shape-1/proto/examples/fixtures.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.examples.sources",
+      "path": "shape/generated/ast/experiments/shape-1/proto/examples/sources.shape",
+      "sources": [
+        "experiments/shape-1/proto/examples/sources.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.examples.write_inputs",
+      "path": "shape/generated/ast/experiments/shape-1/proto/examples/write-inputs.shape",
+      "sources": [
+        "experiments/shape-1/proto/examples/write-inputs.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.cli",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/cli.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/cli.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.common",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/common.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/common.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.examples.strings_law",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/examples/strings.law.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/examples/strings.law.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.laws.mutate",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/laws/mutate.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/laws/mutate.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.laws.pbt",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/laws/pbt.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/laws/pbt.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.laws.provider",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/laws/provider.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/laws/provider.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.modgraph",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/modgraph.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/modgraph.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.observe_ts.provider",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/observe-ts/provider.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/observe-ts/provider.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.observe_ts.scan",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/observe-ts/scan.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/observe-ts/scan.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.teeth.mutants",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/teeth/mutants.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/teeth/mutants.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.teeth.provider",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/teeth/provider.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/teeth/provider.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.teeth.validate",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/teeth/validate.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/teeth/validate.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.test.cli_test",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/test/cli.test.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/test/cli.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.test.fixture",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/test/fixture.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/test/fixture.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.test.laws_test",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/test/laws.test.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/test/laws.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.test.observe_ts_test",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/test/observe-ts.test.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/test/observe-ts.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.test.teeth_test",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/test/teeth.test.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/test/teeth.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.test.trust_test",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/test/trust.test.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/test/trust.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.trust.bend",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/trust/bend.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/trust/bend.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.trust.lean",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/trust/lean.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/trust/lean.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.trust.provider",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/trust/provider.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/trust/provider.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.trust.replay",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/trust/replay.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/trust/replay.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.trust.rust",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/trust/rust.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/trust/rust.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.providers.ts_api",
+      "path": "shape/generated/ast/experiments/shape-1/proto/providers/ts-api.shape",
+      "sources": [
+        "experiments/shape-1/proto/providers/ts-api.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.checker",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/checker.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/checker.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.cli",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/cli.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/cli.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.context",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/context.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/context.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.coverage",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/coverage.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/coverage.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.derive",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/derive.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/derive.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.elaborate",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/elaborate.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/elaborate.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.generated_evidence",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/evidence.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/evidence.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.generated_fingerprint.common",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/fingerprint/common.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/fingerprint/common.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.generated_fingerprint.rust",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/fingerprint/rust.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/fingerprint/rust.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.generated_fingerprint.ts",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/fingerprint/ts.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/fingerprint/ts.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.globs",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/globs.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/globs.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.governance",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/governance.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/governance.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.io_types",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/io-types.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/io-types.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.jcs",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/jcs.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/jcs.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.laws",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/laws.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/laws.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.loader",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/loader.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/loader.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.loosening",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/loosening.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/loosening.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.manifest_build",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/manifest-build.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/manifest-build.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.manifest",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/manifest.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/manifest.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.migrate",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/migrate.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/migrate.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.model",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/model.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/model.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.records",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/records.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/records.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.render",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/render.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/render.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.resource_code",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/resource-code.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/resource-code.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.generated_source",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/source.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/source.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.std",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/std.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/std.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.strength",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/strength.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/strength.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.util",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/util.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/util.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.world",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/world.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/world.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.test.cli_test",
+      "path": "shape/generated/ast/experiments/shape-1/proto/test/cli.test.shape",
+      "sources": [
+        "experiments/shape-1/proto/test/cli.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.test.determinism_test",
+      "path": "shape/generated/ast/experiments/shape-1/proto/test/determinism.test.shape",
+      "sources": [
+        "experiments/shape-1/proto/test/determinism.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.test.examples_test",
+      "path": "shape/generated/ast/experiments/shape-1/proto/test/examples.test.shape",
+      "sources": [
+        "experiments/shape-1/proto/test/examples.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.test.fingerprint_test",
+      "path": "shape/generated/ast/experiments/shape-1/proto/test/fingerprint.test.shape",
+      "sources": [
+        "experiments/shape-1/proto/test/fingerprint.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.test.helpers",
+      "path": "shape/generated/ast/experiments/shape-1/proto/test/helpers.shape",
+      "sources": [
+        "experiments/shape-1/proto/test/helpers.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.test.migrate_test",
+      "path": "shape/generated/ast/experiments/shape-1/proto/test/migrate.test.shape",
+      "sources": [
+        "experiments/shape-1/proto/test/migrate.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.test.obligations_test",
+      "path": "shape/generated/ast/experiments/shape-1/proto/test/obligations.test.shape",
+      "sources": [
+        "experiments/shape-1/proto/test/obligations.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.test.records_test",
+      "path": "shape/generated/ast/experiments/shape-1/proto/test/records.test.shape",
+      "sources": [
+        "experiments/shape-1/proto/test/records.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.test.vectors_test",
+      "path": "shape/generated/ast/experiments/shape-1/proto/test/vectors.test.shape",
+      "sources": [
+        "experiments/shape-1/proto/test/vectors.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.redteam.agent.fp_probe",
+      "path": "shape/generated/ast/experiments/shape-1/redteam/agent/fp-probe.shape",
+      "sources": [
+        "experiments/shape-1/redteam/agent/fp-probe.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.redteam.agent.negsuite",
+      "path": "shape/generated/ast/experiments/shape-1/redteam/agent/negsuite.shape",
+      "sources": [
+        "experiments/shape-1/redteam/agent/negsuite.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.redteam.lawyer.dangling_else",
+      "path": "shape/generated/ast/experiments/shape-1/redteam/lawyer/dangling_else.shape",
+      "sources": [
+        "experiments/shape-1/redteam/lawyer/dangling_else.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.redteam.lawyer.kattack",
+      "path": "shape/generated/ast/experiments/shape-1/redteam/lawyer/kattack.shape",
+      "sources": [
+        "experiments/shape-1/redteam/lawyer/kattack.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.redteam.lawyer.pattack",
+      "path": "shape/generated/ast/experiments/shape-1/redteam/lawyer/pattack.shape",
+      "sources": [
+        "experiments/shape-1/redteam/lawyer/pattack.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.spec.vectors.vectors",
+      "path": "shape/generated/ast/experiments/shape-1/spec/vectors/vectors.shape",
+      "sources": [
+        "experiments/shape-1/spec/vectors/vectors.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.compare",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/compare.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/compare.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.drtlib",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/drtlib.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/drtlib.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.gen_corpus",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/gen-corpus.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/gen-corpus.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.gen",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/gen.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/gen.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.loo",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/loo.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/loo.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.patch_kernel",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/patch_kernel.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/patch_kernel.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.patch_proto",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/patch_proto.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/patch_proto.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.prep",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/prep.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/prep.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.project",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/project.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/project.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.run_files",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/run-files.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/run-files.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.run_k",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/run-k.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/run-k.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.run_random",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/run-random.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/run-random.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.run_ts",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/run-ts.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/run-ts.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.run_cfg",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/run_cfg.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/run_cfg.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.show",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/show.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/show.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT.generated_why",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT/why.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT/why.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H1.analyze",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H1/analyze.shape",
+      "sources": [
+        "experiments/shape-1/trials/H1/analyze.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H1.replay",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H1/replay.shape",
+      "sources": [
+        "experiments/shape-1/trials/H1/replay.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H1.sample0x",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H1/sample0x.shape",
+      "sources": [
+        "experiments/shape-1/trials/H1/sample0x.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H1.sample_nonpc",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H1/sample_nonpc.shape",
+      "sources": [
+        "experiments/shape-1/trials/H1/sample_nonpc.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H1.show",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H1/show.shape",
+      "sources": [
+        "experiments/shape-1/trials/H1/show.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H1.zerox",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H1/zerox.shape",
+      "sources": [
+        "experiments/shape-1/trials/H1/zerox.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H2.classify",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H2/classify.shape",
+      "sources": [
+        "experiments/shape-1/trials/H2/classify.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H2.harness",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H2/harness.shape",
+      "sources": [
+        "experiments/shape-1/trials/H2/harness.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H2.kernel_xcheck",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H2/kernel-xcheck.shape",
+      "sources": [
+        "experiments/shape-1/trials/H2/kernel-xcheck.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H2.probe",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H2/probe.shape",
+      "sources": [
+        "experiments/shape-1/trials/H2/probe.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H2.run",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H2/run.shape",
+      "sources": [
+        "experiments/shape-1/trials/H2/run.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H2.seeds",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H2/seeds.shape",
+      "sources": [
+        "experiments/shape-1/trials/H2/seeds.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.analyze",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/analyze.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/analyze.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.dogfood_analyze",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/dogfood-analyze.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/dogfood-analyze.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.dogfood_refactors",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/dogfood-refactors.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/dogfood-refactors.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.dogfood_run",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/dogfood-run.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/dogfood-run.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.dogfood_screen",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/dogfood-screen.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/dogfood-screen.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.lib",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/lib.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/lib.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.probe",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/probe.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/probe.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r01_comments",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T1/r01_comments.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T1/r01_comments.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r02_format",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T1/r02_format.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T1/r02_format.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r03_reorder",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T1/r03_reorder.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T1/r03_reorder.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r04_rename_helpers",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T1/r04_rename_helpers.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T1/r04_rename_helpers.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r05_inline_targets",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r06_walls_table",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r07_arrow_helpers",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r08_replay_reduce",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T1/r08_replay_reduce.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T1/r08_replay_reduce.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r09_split_level.game",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T1/r09_split_level/game.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r09_split_level.level",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T1/r09_split_level/level.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T1/r09_split_level/level.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r10_step_table",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T1/r10_step_table.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T1/r10_step_table.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r11_rename_locals",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r12_expressions",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T1/r12_expressions.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r13_line_comments",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T1/r13_line_comments.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T1/r13_line_comments.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r01_comments",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T3/r01_comments.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T3/r01_comments.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r02_format",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T3/r02_format.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T3/r02_format.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r03_reorder",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T3/r03_reorder.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T3/r03_reorder.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r04_rename_const",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r05_purge_loop",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r06_extract_expired",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r07_extract_redact",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T3/r07_extract_redact.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r08_get_expression",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r09_list_slice",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T3/r09_list_slice.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r10_append_fields",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T3/r10_append_fields.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r11_with_entries",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r12_split_retention.audit",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/audit.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r12_split_retention.retention",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/retention.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/retention.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r13_line_comments",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r01_comments",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T4/r01_comments.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T4/r01_comments.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r02_format",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T4/r02_format.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T4/r02_format.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r03_reorder",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T4/r03_reorder.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T4/r03_reorder.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r04_rename_helpers",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r05_total_reduce",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T4/r05_total_reduce.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r06_fee_constants",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T4/r06_fee_constants.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r07_transfer_cost",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T4/r07_transfer_cost.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r08_delta_map",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T4/r08_delta_map.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r09_balance_switch",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r10_arrow_helpers",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T4/r10_arrow_helpers.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T4/r10_arrow_helpers.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r11_split_fees.fees",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/fees.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/fees.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r11_split_fees.ledger",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r12_guard_order",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r13_line_comments",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/refactors/T4/r13_line_comments.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/refactors/T4/r13_line_comments.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.replay_analyze",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/replay-analyze.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/replay-analyze.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.replay_dumps",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/replay-dumps.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/replay-dumps.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.run",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/run.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/run.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.validate",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/validate.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/validate.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.variant_checker",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/variant-checker.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/variant-checker.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H3.variants",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H3/variants.shape",
+      "sources": [
+        "experiments/shape-1/trials/H3/variants.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H4.analyze",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H4/analyze.shape",
+      "sources": [
+        "experiments/shape-1/trials/H4/analyze.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H4.build",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H4/build.shape",
+      "sources": [
+        "experiments/shape-1/trials/H4/build.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H4.cases",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H4/cases.shape",
+      "sources": [
+        "experiments/shape-1/trials/H4/cases.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H4.cases.cal7_generic_attestation.base.src.audit.store",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H4/cases/cal7-generic-attestation/base/src/audit/store.shape",
+      "sources": [
+        "experiments/shape-1/trials/H4/cases/cal7-generic-attestation/base/src/audit/store.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H4.cases.cal7_generic_attestation.head.src.audit.store",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H4/cases/cal7-generic-attestation/head/src/audit/store.shape",
+      "sources": [
+        "experiments/shape-1/trials/H4/cases/cal7-generic-attestation/head/src/audit/store.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H4.compare_kernel",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H4/compare_kernel.shape",
+      "sources": [
+        "experiments/shape-1/trials/H4/compare_kernel.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H4.run_kernel",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H4/run-kernel.shape",
+      "sources": [
+        "experiments/shape-1/trials/H4/run-kernel.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H4.run",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H4/run.shape",
+      "sources": [
+        "experiments/shape-1/trials/H4/run.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H4.summary_bound",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H4/summary_bound.shape",
+      "sources": [
+        "experiments/shape-1/trials/H4/summary_bound.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H5.analyze",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H5/analyze.shape",
+      "sources": [
+        "experiments/shape-1/trials/H5/analyze.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H5.analyze_glob",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H5/analyze_glob.shape",
+      "sources": [
+        "experiments/shape-1/trials/H5/analyze_glob.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H5.audit_markers",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H5/audit_markers.shape",
+      "sources": [
+        "experiments/shape-1/trials/H5/audit_markers.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H5.check_walk",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H5/check_walk.shape",
+      "sources": [
+        "experiments/shape-1/trials/H5/check_walk.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H5.ex2_hatch",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H5/ex2-hatch.shape",
+      "sources": [
+        "experiments/shape-1/trials/H5/ex2-hatch.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H5.kernel_xcheck",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H5/kernel-xcheck.shape",
+      "sources": [
+        "experiments/shape-1/trials/H5/kernel-xcheck.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H5.replay",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H5/replay.shape",
+      "sources": [
+        "experiments/shape-1/trials/H5/replay.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H5.surface_drift",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H5/surface_drift.shape",
+      "sources": [
+        "experiments/shape-1/trials/H5/surface_drift.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H5.walk_fn",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H5/walk_fn.shape",
+      "sources": [
+        "experiments/shape-1/trials/H5/walk_fn.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H6.analyze",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H6/analyze.shape",
+      "sources": [
+        "experiments/shape-1/trials/H6/analyze.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H6.hatch_allows",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H6/hatch-allows.shape",
+      "sources": [
+        "experiments/shape-1/trials/H6/hatch-allows.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H6.law_adequacy",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H6/law-adequacy.shape",
+      "sources": [
+        "experiments/shape-1/trials/H6/law-adequacy.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H6.law_teeth",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H6/law-teeth.shape",
+      "sources": [
+        "experiments/shape-1/trials/H6/law-teeth.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H6.p1_change",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H6/p1-change.shape",
+      "sources": [
+        "experiments/shape-1/trials/H6/p1-change.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H6.p1_control",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H6/p1-control.shape",
+      "sources": [
+        "experiments/shape-1/trials/H6/p1-control.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H6.retired_guards",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H6/retired-guards.shape",
+      "sources": [
+        "experiments/shape-1/trials/H6/retired-guards.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H6.teeth_dogfood",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H6/teeth-dogfood.shape",
+      "sources": [
+        "experiments/shape-1/trials/H6/teeth-dogfood.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H6.teeth_skills",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H6/teeth-skills.shape",
+      "sources": [
+        "experiments/shape-1/trials/H6/teeth-skills.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H6.ungoverned_clock",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H6/ungoverned-clock.shape",
+      "sources": [
+        "experiments/shape-1/trials/H6/ungoverned-clock.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H6.ungoverned_ids",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H6/ungoverned-ids.shape",
+      "sources": [
+        "experiments/shape-1/trials/H6/ungoverned-ids.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H6.validate_dogfood",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H6/validate-dogfood.shape",
+      "sources": [
+        "experiments/shape-1/trials/H6/validate-dogfood.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.H6.w2_edges",
+      "path": "shape/generated/ast/experiments/shape-1/trials/H6/w2-edges.shape",
+      "sources": [
+        "experiments/shape-1/trials/H6/w2-edges.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.experiments.verus_probes.e10.scripts.analyze",
       "path": "shape/generated/ast/experiments/verus-probes/e10/scripts/analyze.shape",
       "sources": [

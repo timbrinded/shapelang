@@ -1,0 +1,337 @@
+module shape.generated.ast.experiments.shape_1.proto.src.world
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource WorldModuleBuildWorldAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#buildWorld")
+  fingerprint ast.semantic_subtree_v1("sha256:d82b99cb8027c01a65a9c7f951ee48f75d5b0b8008a04430e6b71a87ebc5a938")
+}
+
+resource WorldModuleClosureMapsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#closureMaps")
+  fingerprint ast.semantic_subtree_v1("sha256:38263e4daec11b431c173ee027feeca655ac05ef444aedf76fee51d474b029b2")
+}
+
+resource WorldModuleCompCodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#compCode")
+  fingerprint ast.semantic_subtree_v1("sha256:e793f15a915d6db3b12ebd4f3b536a9d391c0eac5767a8619f1ab2af1b8a52dc")
+}
+
+resource WorldModuleCoversAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#covers")
+  fingerprint ast.semantic_subtree_v1("sha256:373e2e39d7cb951c73ab78fa831a3c4c2abe10575d0fdc9173b28ca85aa81b32")
+}
+
+resource WorldModuleExcludingClaimsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#excludingClaims")
+  fingerprint ast.semantic_subtree_v1("sha256:763606be070a2ffd6e54c4cabd655e5dd72878406086d9ebe4c1bfbb77882772")
+}
+
+resource WorldModuleHigherTierAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#higherTier")
+  fingerprint ast.semantic_subtree_v1("sha256:6d66e58705462b28fb002e7177670d7f24504e12f6c4e556eab1768510f6ca01")
+}
+
+resource WorldModuleImplAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#impl")
+  fingerprint ast.semantic_subtree_v1("sha256:7d89bad13245a3643b45c43bd0224c57366b4254167469cf492728af9e41486c")
+}
+
+resource WorldModuleInAAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#inA")
+  fingerprint ast.semantic_subtree_v1("sha256:9a1723e6f5b73895e2f349cd227d9201808ea9ae6ad99d6f99a85909f61e8f9b")
+}
+
+resource WorldModuleInUnitSelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#inUnitSel")
+  fingerprint ast.semantic_subtree_v1("sha256:707838c4892655c4651a586802dfd08ec4f734692120c6e66a2689dcfea8cd9f")
+}
+
+resource WorldModuleLastSegmentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#lastSegment")
+  fingerprint ast.semantic_subtree_v1("sha256:064cc1db75a8e0bc9f3bdf9d709f8dcf29abf40f5b4a8fc4ecebd93c7cc643c5")
+}
+
+resource WorldModuleLiftEffectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#liftEffect")
+  fingerprint ast.semantic_subtree_v1("sha256:3b680ec2588852db6299633ab8c6c8dbc458419dab70aecec89d107b909f44d7")
+}
+
+resource WorldModuleLiftHatchAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#liftHatch")
+  fingerprint ast.semantic_subtree_v1("sha256:39f14453410924a7f3e4fa7b2a7359ae48802759844675d57fc294c0e692488e")
+}
+
+resource WorldModuleLvlAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#lvl")
+  fingerprint ast.semantic_subtree_v1("sha256:cf7233c9dfbf7d4fab6e7f2b5bfcd7d764cbfea7def17ce63a0a6b947a194750")
+}
+
+resource WorldModuleNodeSetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#nodeSet")
+  fingerprint ast.semantic_subtree_v1("sha256:babad20bff0bea070099db07737375fdd4858f1b06a78d6fc7f61a7399cf6249")
+}
+
+resource WorldModulePermittedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#permitted")
+  fingerprint ast.semantic_subtree_v1("sha256:9101ae74e2e32a833fabf53167dc8a1d027e11db26b040fe4be357c7b753fb83")
+}
+
+resource WorldModulePosCompAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#posComp")
+  fingerprint ast.semantic_subtree_v1("sha256:2b58438f00ec9f592a71122ff8e76fc2b05df0242d880a66659b28c27c6df2d7")
+}
+
+resource WorldModuleProtectingForbidsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#protectingForbids")
+  fingerprint ast.semantic_subtree_v1("sha256:c3ee448ab5fdc096cd4a25fc76b8f0ca3dd423e4b1d4aaa19ffa763035e782f5")
+}
+
+resource WorldModuleTierOfPosAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#tierOfPos")
+  fingerprint ast.semantic_subtree_v1("sha256:70e159c788985c2cc9ca07c2c32bc076d6c342d7cad7b2f8e7b2bfb18d764e1b")
+}
+
+resource WorldModuleUnitCodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#unitCode")
+  fingerprint ast.semantic_subtree_v1("sha256:0791158e3dc8258098849d6a3f01acc6faab1db71f96ecf34f8ca559342e7609")
+}
+
+resource WorldModuleVerbDeclaredAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/world.ts#verbDeclared")
+  fingerprint ast.semantic_subtree_v1("sha256:d6be37e7dcdf96f3d0d3cbf7f5aa0491c3ebd9f48e6e41f6b54f25d16816d1c3")
+}
+
+component WorldModule : GeneratedCandidate {
+  fn buildWorld
+    source ts("experiments/shape-1/proto/src/world.ts#buildWorld")
+    effects unknown
+  fn closureMaps
+    source ts("experiments/shape-1/proto/src/world.ts#closureMaps")
+    effects unknown
+  fn compCode
+    source ts("experiments/shape-1/proto/src/world.ts#compCode")
+    effects unknown
+  fn covers
+    source ts("experiments/shape-1/proto/src/world.ts#covers")
+    effects unknown
+  fn excludingClaims
+    source ts("experiments/shape-1/proto/src/world.ts#excludingClaims")
+    effects unknown
+  fn higherTier
+    source ts("experiments/shape-1/proto/src/world.ts#higherTier")
+    effects unknown
+  fn impl
+    source ts("experiments/shape-1/proto/src/world.ts#impl")
+    effects unknown
+  fn inA
+    source ts("experiments/shape-1/proto/src/world.ts#inA")
+    effects unknown
+  fn inUnitSel
+    source ts("experiments/shape-1/proto/src/world.ts#inUnitSel")
+    effects unknown
+  fn lastSegment
+    source ts("experiments/shape-1/proto/src/world.ts#lastSegment")
+    effects unknown
+  fn liftEffect
+    source ts("experiments/shape-1/proto/src/world.ts#liftEffect")
+    effects unknown
+  fn liftHatch
+    source ts("experiments/shape-1/proto/src/world.ts#liftHatch")
+    effects unknown
+  fn lvl
+    source ts("experiments/shape-1/proto/src/world.ts#lvl")
+    effects unknown
+  fn nodeSet
+    source ts("experiments/shape-1/proto/src/world.ts#nodeSet")
+    effects unknown
+  fn permitted
+    source ts("experiments/shape-1/proto/src/world.ts#permitted")
+    effects unknown
+  fn posComp
+    source ts("experiments/shape-1/proto/src/world.ts#posComp")
+    effects unknown
+  fn protectingForbids
+    source ts("experiments/shape-1/proto/src/world.ts#protectingForbids")
+    effects unknown
+  fn tierOfPos
+    source ts("experiments/shape-1/proto/src/world.ts#tierOfPos")
+    effects unknown
+  fn unitCode
+    source ts("experiments/shape-1/proto/src/world.ts#unitCode")
+    effects unknown
+  fn verbDeclared
+    source ts("experiments/shape-1/proto/src/world.ts#verbDeclared")
+    effects unknown
+}
+
+relation WorldModuleBuildWorldGeneratedFromWorldModuleBuildWorldAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleBuildWorldAstAnchor
+  roles { WorldModule as generated, WorldModuleBuildWorldAstAnchor as syntax }
+  expects WorldModuleBuildWorldAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d82b99cb8027c01a65a9c7f951ee48f75d5b0b8008a04430e6b71a87ebc5a938")
+  summary "fn WorldModule.buildWorld generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#buildWorld."
+}
+
+relation WorldModuleClosureMapsGeneratedFromWorldModuleClosureMapsAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleClosureMapsAstAnchor
+  roles { WorldModule as generated, WorldModuleClosureMapsAstAnchor as syntax }
+  expects WorldModuleClosureMapsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:38263e4daec11b431c173ee027feeca655ac05ef444aedf76fee51d474b029b2")
+  summary "fn WorldModule.closureMaps generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#closureMaps."
+}
+
+relation WorldModuleCompCodeGeneratedFromWorldModuleCompCodeAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleCompCodeAstAnchor
+  roles { WorldModule as generated, WorldModuleCompCodeAstAnchor as syntax }
+  expects WorldModuleCompCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e793f15a915d6db3b12ebd4f3b536a9d391c0eac5767a8619f1ab2af1b8a52dc")
+  summary "fn WorldModule.compCode generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#compCode."
+}
+
+relation WorldModuleCoversGeneratedFromWorldModuleCoversAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleCoversAstAnchor
+  roles { WorldModule as generated, WorldModuleCoversAstAnchor as syntax }
+  expects WorldModuleCoversAstAnchor fingerprint ast.semantic_subtree_v1("sha256:373e2e39d7cb951c73ab78fa831a3c4c2abe10575d0fdc9173b28ca85aa81b32")
+  summary "fn WorldModule.covers generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#covers."
+}
+
+relation WorldModuleExcludingClaimsGeneratedFromWorldModuleExcludingClaimsAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleExcludingClaimsAstAnchor
+  roles { WorldModule as generated, WorldModuleExcludingClaimsAstAnchor as syntax }
+  expects WorldModuleExcludingClaimsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:763606be070a2ffd6e54c4cabd655e5dd72878406086d9ebe4c1bfbb77882772")
+  summary "fn WorldModule.excludingClaims generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#excludingClaims."
+}
+
+relation WorldModuleHigherTierGeneratedFromWorldModuleHigherTierAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleHigherTierAstAnchor
+  roles { WorldModule as generated, WorldModuleHigherTierAstAnchor as syntax }
+  expects WorldModuleHigherTierAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6d66e58705462b28fb002e7177670d7f24504e12f6c4e556eab1768510f6ca01")
+  summary "fn WorldModule.higherTier generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#higherTier."
+}
+
+relation WorldModuleImplGeneratedFromWorldModuleImplAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleImplAstAnchor
+  roles { WorldModule as generated, WorldModuleImplAstAnchor as syntax }
+  expects WorldModuleImplAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7d89bad13245a3643b45c43bd0224c57366b4254167469cf492728af9e41486c")
+  summary "fn WorldModule.impl generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#impl."
+}
+
+relation WorldModuleInAGeneratedFromWorldModuleInAAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleInAAstAnchor
+  roles { WorldModule as generated, WorldModuleInAAstAnchor as syntax }
+  expects WorldModuleInAAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9a1723e6f5b73895e2f349cd227d9201808ea9ae6ad99d6f99a85909f61e8f9b")
+  summary "fn WorldModule.inA generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#inA."
+}
+
+relation WorldModuleInUnitSelGeneratedFromWorldModuleInUnitSelAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleInUnitSelAstAnchor
+  roles { WorldModule as generated, WorldModuleInUnitSelAstAnchor as syntax }
+  expects WorldModuleInUnitSelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:707838c4892655c4651a586802dfd08ec4f734692120c6e66a2689dcfea8cd9f")
+  summary "fn WorldModule.inUnitSel generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#inUnitSel."
+}
+
+relation WorldModuleLastSegmentGeneratedFromWorldModuleLastSegmentAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleLastSegmentAstAnchor
+  roles { WorldModule as generated, WorldModuleLastSegmentAstAnchor as syntax }
+  expects WorldModuleLastSegmentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:064cc1db75a8e0bc9f3bdf9d709f8dcf29abf40f5b4a8fc4ecebd93c7cc643c5")
+  summary "fn WorldModule.lastSegment generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#lastSegment."
+}
+
+relation WorldModuleLiftEffectGeneratedFromWorldModuleLiftEffectAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleLiftEffectAstAnchor
+  roles { WorldModule as generated, WorldModuleLiftEffectAstAnchor as syntax }
+  expects WorldModuleLiftEffectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3b680ec2588852db6299633ab8c6c8dbc458419dab70aecec89d107b909f44d7")
+  summary "fn WorldModule.liftEffect generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#liftEffect."
+}
+
+relation WorldModuleLiftHatchGeneratedFromWorldModuleLiftHatchAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleLiftHatchAstAnchor
+  roles { WorldModule as generated, WorldModuleLiftHatchAstAnchor as syntax }
+  expects WorldModuleLiftHatchAstAnchor fingerprint ast.semantic_subtree_v1("sha256:39f14453410924a7f3e4fa7b2a7359ae48802759844675d57fc294c0e692488e")
+  summary "fn WorldModule.liftHatch generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#liftHatch."
+}
+
+relation WorldModuleLvlGeneratedFromWorldModuleLvlAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleLvlAstAnchor
+  roles { WorldModule as generated, WorldModuleLvlAstAnchor as syntax }
+  expects WorldModuleLvlAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cf7233c9dfbf7d4fab6e7f2b5bfcd7d764cbfea7def17ce63a0a6b947a194750")
+  summary "fn WorldModule.lvl generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#lvl."
+}
+
+relation WorldModuleNodeSetGeneratedFromWorldModuleNodeSetAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleNodeSetAstAnchor
+  roles { WorldModule as generated, WorldModuleNodeSetAstAnchor as syntax }
+  expects WorldModuleNodeSetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:babad20bff0bea070099db07737375fdd4858f1b06a78d6fc7f61a7399cf6249")
+  summary "fn WorldModule.nodeSet generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#nodeSet."
+}
+
+relation WorldModulePermittedGeneratedFromWorldModulePermittedAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModulePermittedAstAnchor
+  roles { WorldModule as generated, WorldModulePermittedAstAnchor as syntax }
+  expects WorldModulePermittedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9101ae74e2e32a833fabf53167dc8a1d027e11db26b040fe4be357c7b753fb83")
+  summary "fn WorldModule.permitted generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#permitted."
+}
+
+relation WorldModulePosCompGeneratedFromWorldModulePosCompAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModulePosCompAstAnchor
+  roles { WorldModule as generated, WorldModulePosCompAstAnchor as syntax }
+  expects WorldModulePosCompAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2b58438f00ec9f592a71122ff8e76fc2b05df0242d880a66659b28c27c6df2d7")
+  summary "fn WorldModule.posComp generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#posComp."
+}
+
+relation WorldModuleProtectingForbidsGeneratedFromWorldModuleProtectingForbidsAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleProtectingForbidsAstAnchor
+  roles { WorldModule as generated, WorldModuleProtectingForbidsAstAnchor as syntax }
+  expects WorldModuleProtectingForbidsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c3ee448ab5fdc096cd4a25fc76b8f0ca3dd423e4b1d4aaa19ffa763035e782f5")
+  summary "fn WorldModule.protectingForbids generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#protectingForbids."
+}
+
+relation WorldModuleTierOfPosGeneratedFromWorldModuleTierOfPosAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleTierOfPosAstAnchor
+  roles { WorldModule as generated, WorldModuleTierOfPosAstAnchor as syntax }
+  expects WorldModuleTierOfPosAstAnchor fingerprint ast.semantic_subtree_v1("sha256:70e159c788985c2cc9ca07c2c32bc076d6c342d7cad7b2f8e7b2bfb18d764e1b")
+  summary "fn WorldModule.tierOfPos generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#tierOfPos."
+}
+
+relation WorldModuleUnitCodeGeneratedFromWorldModuleUnitCodeAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleUnitCodeAstAnchor
+  roles { WorldModule as generated, WorldModuleUnitCodeAstAnchor as syntax }
+  expects WorldModuleUnitCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0791158e3dc8258098849d6a3f01acc6faab1db71f96ecf34f8ca559342e7609")
+  summary "fn WorldModule.unitCode generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#unitCode."
+}
+
+relation WorldModuleVerbDeclaredGeneratedFromWorldModuleVerbDeclaredAstAnchor {
+  kind generated_from
+  connects WorldModule -> WorldModuleVerbDeclaredAstAnchor
+  roles { WorldModule as generated, WorldModuleVerbDeclaredAstAnchor as syntax }
+  expects WorldModuleVerbDeclaredAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d6be37e7dcdf96f3d0d3cbf7f5aa0491c3ebd9f48e6e41f6b54f25d16816d1c3")
+  summary "fn WorldModule.verbDeclared generated from typescript function_declaration at experiments/shape-1/proto/src/world.ts#verbDeclared."
+}
+
+implementation WorldModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/world.ts"
+  }
+  conforms_to WorldModule
+}

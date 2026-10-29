@@ -1,0 +1,7 @@
+module shape.generated.ast.experiments.shape_1.proto.test.cli_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

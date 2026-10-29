@@ -1,0 +1,113 @@
+module shape.generated.ast.experiments.shape_1.proto.src.migrate
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource MigrateModuleExtractTraitsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/migrate.ts#extractTraits")
+  fingerprint ast.semantic_subtree_v1("sha256:2d064eee08fa7e8f5a40da2b3676f91a3ec68363c3f5bb419e8aed189add6e2f")
+}
+
+resource MigrateModuleLocalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/migrate.ts#local")
+  fingerprint ast.semantic_subtree_v1("sha256:a6983ca0cbe766ffcf6d8c8e2245dc0ea41325c4603a38fa6a29373494a0a67e")
+}
+
+resource MigrateModuleMergeSidecarAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/migrate.ts#mergeSidecar")
+  fingerprint ast.semantic_subtree_v1("sha256:9ef03f5188de5e9bb9d19842946d41954bf9dab754be49a1f778cd4935a0d39e")
+}
+
+resource MigrateModuleMigrateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/migrate.ts#migrate")
+  fingerprint ast.semantic_subtree_v1("sha256:0c0f83e75b42583a5bf3a6ef9bff4b8f123ea0085e445289bb0c6d592c1236dd")
+}
+
+resource MigrateModuleRewriteBindsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/migrate.ts#rewriteBinds")
+  fingerprint ast.semantic_subtree_v1("sha256:230377c14f3f3bd0ab75d162550964c470be17570315ff8be648d789797fc9fe")
+}
+
+resource MigrateModuleWithoutGeneratedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/migrate.ts#withoutGenerated")
+  fingerprint ast.semantic_subtree_v1("sha256:5c50bf4ea553c5126e3154bdfde873b300763cd62b2144013df2a99b892880f1")
+}
+
+component MigrateModule : GeneratedCandidate {
+  fn extractTraits
+    source ts("experiments/shape-1/proto/src/migrate.ts#extractTraits")
+    effects unknown
+  fn local
+    source ts("experiments/shape-1/proto/src/migrate.ts#local")
+    effects unknown
+  fn mergeSidecar
+    source ts("experiments/shape-1/proto/src/migrate.ts#mergeSidecar")
+    effects unknown
+  fn migrate
+    source ts("experiments/shape-1/proto/src/migrate.ts#migrate")
+    effects unknown
+  fn rewriteBinds
+    source ts("experiments/shape-1/proto/src/migrate.ts#rewriteBinds")
+    effects unknown
+  fn withoutGenerated
+    source ts("experiments/shape-1/proto/src/migrate.ts#withoutGenerated")
+    effects unknown
+}
+
+relation MigrateModuleExtractTraitsGeneratedFromMigrateModuleExtractTraitsAstAnchor {
+  kind generated_from
+  connects MigrateModule -> MigrateModuleExtractTraitsAstAnchor
+  roles { MigrateModule as generated, MigrateModuleExtractTraitsAstAnchor as syntax }
+  expects MigrateModuleExtractTraitsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2d064eee08fa7e8f5a40da2b3676f91a3ec68363c3f5bb419e8aed189add6e2f")
+  summary "fn MigrateModule.extractTraits generated from typescript function_declaration at experiments/shape-1/proto/src/migrate.ts#extractTraits."
+}
+
+relation MigrateModuleLocalGeneratedFromMigrateModuleLocalAstAnchor {
+  kind generated_from
+  connects MigrateModule -> MigrateModuleLocalAstAnchor
+  roles { MigrateModule as generated, MigrateModuleLocalAstAnchor as syntax }
+  expects MigrateModuleLocalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a6983ca0cbe766ffcf6d8c8e2245dc0ea41325c4603a38fa6a29373494a0a67e")
+  summary "fn MigrateModule.local generated from typescript function_declaration at experiments/shape-1/proto/src/migrate.ts#local."
+}
+
+relation MigrateModuleMergeSidecarGeneratedFromMigrateModuleMergeSidecarAstAnchor {
+  kind generated_from
+  connects MigrateModule -> MigrateModuleMergeSidecarAstAnchor
+  roles { MigrateModule as generated, MigrateModuleMergeSidecarAstAnchor as syntax }
+  expects MigrateModuleMergeSidecarAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9ef03f5188de5e9bb9d19842946d41954bf9dab754be49a1f778cd4935a0d39e")
+  summary "fn MigrateModule.mergeSidecar generated from typescript function_declaration at experiments/shape-1/proto/src/migrate.ts#mergeSidecar."
+}
+
+relation MigrateModuleMigrateGeneratedFromMigrateModuleMigrateAstAnchor {
+  kind generated_from
+  connects MigrateModule -> MigrateModuleMigrateAstAnchor
+  roles { MigrateModule as generated, MigrateModuleMigrateAstAnchor as syntax }
+  expects MigrateModuleMigrateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0c0f83e75b42583a5bf3a6ef9bff4b8f123ea0085e445289bb0c6d592c1236dd")
+  summary "fn MigrateModule.migrate generated from typescript function_declaration at experiments/shape-1/proto/src/migrate.ts#migrate."
+}
+
+relation MigrateModuleRewriteBindsGeneratedFromMigrateModuleRewriteBindsAstAnchor {
+  kind generated_from
+  connects MigrateModule -> MigrateModuleRewriteBindsAstAnchor
+  roles { MigrateModule as generated, MigrateModuleRewriteBindsAstAnchor as syntax }
+  expects MigrateModuleRewriteBindsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:230377c14f3f3bd0ab75d162550964c470be17570315ff8be648d789797fc9fe")
+  summary "fn MigrateModule.rewriteBinds generated from typescript function_declaration at experiments/shape-1/proto/src/migrate.ts#rewriteBinds."
+}
+
+relation MigrateModuleWithoutGeneratedGeneratedFromMigrateModuleWithoutGeneratedAstAnchor {
+  kind generated_from
+  connects MigrateModule -> MigrateModuleWithoutGeneratedAstAnchor
+  roles { MigrateModule as generated, MigrateModuleWithoutGeneratedAstAnchor as syntax }
+  expects MigrateModuleWithoutGeneratedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5c50bf4ea553c5126e3154bdfde873b300763cd62b2144013df2a99b892880f1")
+  summary "fn MigrateModule.withoutGenerated generated from typescript function_declaration at experiments/shape-1/proto/src/migrate.ts#withoutGenerated."
+}
+
+implementation MigrateModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/migrate.ts"
+  }
+  conforms_to MigrateModule
+}

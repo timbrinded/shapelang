@@ -37,7 +37,7 @@ export function append(log: AuditLog, entry: NewEntry): AuditLog {
     id: log.entries.length,
     timestamp: entry.timestamp,
     actor: entry.actor,
-    payload: entry.payload,
+    payload: entry.payload
   };
   return { entries: [...log.entries, stored] };
 }
@@ -65,7 +65,7 @@ export const REDACTED = REDACTED_PAYLOAD;
 export function purge(log: AuditLog, now: number, retention: number): AuditLog {
   return {
     entries: log.entries.map((e) =>
-      e.timestamp + retention <= now ? { ...e, payload: REDACTED_PAYLOAD } : e,
-    ),
+      e.timestamp + retention <= now ? { ...e, payload: REDACTED_PAYLOAD } : e
+    )
   };
 }

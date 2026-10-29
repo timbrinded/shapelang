@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.dogfood.tools.generated_summary
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SummaryModuleSummarizeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/summary.ts#summarize")
+  fingerprint ast.semantic_subtree_v1("sha256:1049f25ed2061928dab9e6acf2196dfee8c0f0dd265fef3f1996b85fda841b9f")
+}
+
+component SummaryModule : GeneratedCandidate {
+  fn summarize
+    source ts("experiments/shape-1/dogfood/tools/summary.ts#summarize")
+    effects unknown
+}
+
+relation SummaryModuleSummarizeGeneratedFromSummaryModuleSummarizeAstAnchor {
+  kind generated_from
+  connects SummaryModule -> SummaryModuleSummarizeAstAnchor
+  roles { SummaryModule as generated, SummaryModuleSummarizeAstAnchor as syntax }
+  expects SummaryModuleSummarizeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1049f25ed2061928dab9e6acf2196dfee8c0f0dd265fef3f1996b85fda841b9f")
+  summary "fn SummaryModule.summarize generated from typescript function_declaration at experiments/shape-1/dogfood/tools/summary.ts#summarize."
+}
+
+implementation SummaryModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/tools/summary.ts"
+  }
+  conforms_to SummaryModule
+}

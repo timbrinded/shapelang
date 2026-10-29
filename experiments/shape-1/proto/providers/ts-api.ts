@@ -91,7 +91,12 @@ export interface TsChecker {
   isTypeAssignableTo(source: TsType, target: TsType): boolean;
   /** the type an object or array destructuring assignment target receives */
   getTypeOfAssignmentPattern(pattern: TsNode): TsType;
-  resolveName(name: string, location: TsNode | undefined, meaning: number, excludeGlobals: boolean): TsSymbol | undefined;
+  resolveName(
+    name: string,
+    location: TsNode | undefined,
+    meaning: number,
+    excludeGlobals: boolean
+  ): TsSymbol | undefined;
 }
 
 export interface TsProgram {
@@ -120,10 +125,23 @@ export interface TsFull {
   ModuleKind: Record<string, number>;
   ModuleResolutionKind: Record<string, number>;
   sys: TsSys;
-  createSourceFile(name: string, text: string, target: number, setParents: boolean, kind?: number): TsSourceFile;
+  createSourceFile(
+    name: string,
+    text: string,
+    target: number,
+    setParents: boolean,
+    kind?: number
+  ): TsSourceFile;
   createProgram(roots: string[], options: TsCompilerOptions): TsProgram;
-  readConfigFile(path: string, read: (p: string) => string | undefined): { config?: unknown; error?: unknown };
-  parseJsonConfigFileContent(json: unknown, sys: TsSys, basePath: string): { options: TsCompilerOptions; fileNames: string[] };
+  readConfigFile(
+    path: string,
+    read: (p: string) => string | undefined
+  ): { config?: unknown; error?: unknown };
+  parseJsonConfigFileContent(
+    json: unknown,
+    sys: TsSys,
+    basePath: string
+  ): { options: TsCompilerOptions; fileNames: string[] };
   forEachChild(node: TsNode, cb: (n: TsNode) => void): void;
 }
 
@@ -159,17 +177,45 @@ export interface IdentitySpan {
 export function identitySpans(ts: TsFull, sf: TsSourceFile, path: string): IdentitySpan[] {
   const K = ts.SyntaxKind;
   const fileId = `ts:${encodePath(path)}`;
-  const out: IdentitySpan[] = [{ id: fileId, symbol: null, kind: "file", start: 0, end: sf.text.length, node: sf, parent: null }];
+  const out: IdentitySpan[] = [
+    {
+      id: fileId,
+      symbol: null,
+      kind: "file",
+      start: 0,
+      end: sf.text.length,
+      node: sf,
+      parent: null
+    }
+  ];
   const nameText = (n: TsNode | undefined): string | null => {
     if (!n) return null;
-    if (n.kind === K.Identifier || n.kind === K.StringLiteral || n.kind === K.NumericLiteral) return n.text ?? n.escapedText ?? null;
+    if (n.kind === K.Identifier || n.kind === K.StringLiteral || n.kind === K.NumericLiteral)
+      return n.text ?? n.escapedText ?? null;
     if (n.kind === K.PrivateIdentifier) return n.text ?? null;
     return null;
   };
-  const isFn = (n: TsNode | undefined): boolean => !!n && (n.kind === K.ArrowFunction || n.kind === K.FunctionExpression);
-  const join2 = (prefix: string | null, name: string): string => (prefix ? `${prefix}.${encodeSegment(name, ".")}` : encodeSegment(name, "."));
-  const push = (sym: string, kind: string, node: TsNode, start: number, end: number, prefix: string | null): void => {
-    out.push({ id: `${fileId}#${sym}`, symbol: sym, kind, start, end, node, parent: prefix ? `${fileId}#${prefix}` : fileId });
+  const isFn = (n: TsNode | undefined): boolean =>
+    !!n && (n.kind === K.ArrowFunction || n.kind === K.FunctionExpression);
+  const join2 = (prefix: string | null, name: string): string =>
+    prefix ? `${prefix}.${encodeSegment(name, ".")}` : encodeSegment(name, ".");
+  const push = (
+    sym: string,
+    kind: string,
+    node: TsNode,
+    start: number,
+    end: number,
+    prefix: string | null
+  ): void => {
+    out.push({
+      id: `${fileId}#${sym}`,
+      symbol: sym,
+      kind,
+      start,
+      end,
+      node,
+      parent: prefix ? `${fileId}#${prefix}` : fileId
+    });
   };
   const visitStatements = (stmts: TsNode[], prefix: string | null): void => {
     for (const s of stmts) visitStatement(s, prefix);
@@ -223,7 +269,11 @@ export function identitySpans(ts: TsFull, sf: TsSourceFile, path: string): Ident
     for (const m of members) {
       let n = nameText(m.name);
       if (m.kind === K.Constructor) n = "constructor";
-      const isMethod = m.kind === K.MethodDeclaration || m.kind === K.Constructor || m.kind === K.GetAccessor || m.kind === K.SetAccessor;
+      const isMethod =
+        m.kind === K.MethodDeclaration ||
+        m.kind === K.Constructor ||
+        m.kind === K.GetAccessor ||
+        m.kind === K.SetAccessor;
       const isFnProp = m.kind === K.PropertyDeclaration && isFn(m.initializer);
       if (!n || !(isMethod || isFnProp)) continue;
       const sym = join2(prefix, n);
@@ -235,7 +285,10 @@ export function identitySpans(ts: TsFull, sf: TsSourceFile, path: string): Ident
     for (const p of props) {
       const n = nameText(p.name);
       if (!n) continue;
-      if (p.kind === K.MethodDeclaration || (p.kind === K.PropertyAssignment && isFn(p.initializer))) {
+      if (
+        p.kind === K.MethodDeclaration ||
+        (p.kind === K.PropertyAssignment && isFn(p.initializer))
+      ) {
         const sym = join2(prefix, n);
         push(sym, "method", p, p.getStart(sf), p.end, prefix);
         visitBody(p.kind === K.MethodDeclaration ? p.body : p.initializer?.body, sym);
@@ -251,7 +304,13 @@ export function identitySpans(ts: TsFull, sf: TsSourceFile, path: string): Ident
 export function enclosingIdentity(spans: IdentitySpan[], pos: number): IdentitySpan {
   let best = spans[0] as IdentitySpan;
   for (const s of spans) {
-    if (s.start <= pos && pos < s.end && s.start >= best.start && (s.end - s.start) <= (best.end - best.start)) best = s;
+    if (
+      s.start <= pos &&
+      pos < s.end &&
+      s.start >= best.start &&
+      s.end - s.start <= best.end - best.start
+    )
+      best = s;
   }
   return best;
 }

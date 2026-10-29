@@ -1,0 +1,195 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:8e785e37d1c8446f926ff399b295d22ace6f31987226f6eb42f7e3e0cccdcfb6",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:f99ad91d0fb961864cea647e6188ac9c56b6d243cb026fee5224db411dfce977",
+   "kind": "coverage",
+   "reason": null,
+   "questions": null,
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "final",
+   "budget": "judgment",
+   "force": null,
+   "owner": "audit::AuditTeam",
+   "assignee": null,
+   "group": "g:653ab42b86f21de0466ca752c96582a4f821db00f82f75f772484cbf10b02053",
+   "claim": null,
+   "subject": "component audit::AuditStore",
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": null,
+   "final": true,
+   "binding": "bd:1659f0c4216254b44df99883334df26e9638ed80fcb8534e6e990afac8d0859d",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "audit::bob"
+     ],
+     "creates": null
+    },
+    {
+     "act": "bind",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "provide",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "code",
+     "id": "ts:src/audit/purge.ts#purgeOldEvents"
+    },
+    {
+     "type": "code",
+     "id": "ts:src/audit/purge.ts#purgeOldEvents"
+    },
+    {
+     "type": "code",
+     "id": "ts:src/audit/purge.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:src/audit/purge.ts"
+    }
+   ]
+  },
+  {
+   "key": "ob:ae867d9fedbd638a8baeee2d00bfce60354cf08f3b841270ec7a2bcbd0ecab1d",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L7"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "final",
+   "budget": "judgment",
+   "force": null,
+   "owner": "audit::Platform",
+   "assignee": null,
+   "group": "g:30cfbdae593684828e4e14c6056dd700c2f9a9dc4a8dc985293e45ddf6e27ebe",
+   "claim": null,
+   "subject": "provider audit::sqlEffects",
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": false,
+   "final": true,
+   "binding": "bd:c51bbf7de40859a13c4cd3bd73c033452faba9ca3670405a3d99ecf7e03e3643",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "audit::carol"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "provider audit::sqlEffects"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [
+  {
+   "question": "L7",
+   "subject": "provider audit::sqlEffects",
+   "answer": "undecided",
+   "exploited": false,
+   "final": true,
+   "affected": [],
+   "counterexample": null,
+   "obligation": "ob:ae867d9fedbd638a8baeee2d00bfce60354cf08f3b841270ec7a2bcbd0ecab1d"
+  }
+ ],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 0,
+   "den": 2
+  },
+  "unobservable": [
+   "audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+   "audit::AuditStore.appendEvent/effects.lower",
+   "audit::AuditStore.appendEvent/effects.upper",
+   "audit::AuditStore/authority"
+  ],
+  "unanswered": [],
+  "openAuthority": [],
+  "ungoverned": {
+   "num": 3,
+   "den": 7
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [
+   "audit::fastCheck"
+  ],
+  "baseObservations": "missing",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"audit::AuditStore.*\",\"audit::AuditStore.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 1,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

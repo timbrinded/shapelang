@@ -35,7 +35,17 @@ export function projectOut(full) {
       x_excl: o.x_excl
     })),
     answered: (full.answered ?? []).map((a) => ({ obligation: a.obligation, as: a.as })),
-    debt: (full.debt ?? []).map((d) => ({ obligation: d.obligation, exception: d.exception, owner: d.owner, expiresInDays: d.expiresInDays })),
-    loosening: (full.loosening ?? []).map((r) => ({ question: r.question, subject: r.subject, answer: r.answer, exploited: r.exploited }))
+    debt: (full.debt ?? []).map((d) => ({
+      obligation: d.obligation,
+      exception: d.exception,
+      owner: d.owner,
+      expiresInDays: d.expiresInDays
+    })),
+    loosening: (full.loosening ?? []).map((r) => ({
+      question: r.question,
+      subject: r.subject,
+      answer: r.answer,
+      exploited: r.exploited
+    }))
   };
 }

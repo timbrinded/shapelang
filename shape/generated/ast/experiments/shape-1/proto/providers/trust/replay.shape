@@ -1,0 +1,105 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.trust.replay
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ReplayModuleReadPerCommitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/replay.ts#readPerCommit")
+  fingerprint ast.semantic_subtree_v1("sha256:a6b221e507ffd8f0da469752323ef13283e856582b0ae635a80adc6f0579c721")
+}
+
+resource ReplayModuleReplayAllAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/replay.ts#replayAll")
+  fingerprint ast.semantic_subtree_v1("sha256:3c3181f17944f7d1fbab06044677b0b92aea9a8755e4ba84d06b0b66d837e3da")
+}
+
+resource ReplayModuleReplayRepoAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/replay.ts#replayRepo")
+  fingerprint ast.semantic_subtree_v1("sha256:3e05d62537f56018c3578841162c25bbfac10af598c059369297d6023a12d636")
+}
+
+resource ReplayRowAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/replay.ts#ReplayRow")
+  fingerprint ast.semantic_subtree_v1("sha256:45bd20aed232f5270d1c39b683e71618c5aab4e0832135ed3ae99ae0d05ffb21")
+}
+
+resource TrustEvent : GeneratedCandidate {
+  storage ts.type("experiments/shape-1/proto/providers/trust/replay.ts#TrustEvent")
+}
+
+resource TrustEventAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/replay.ts#TrustEvent")
+  fingerprint ast.semantic_subtree_v1("sha256:44b3582ce235cb192d1b26c7e9803b4f19e95d5ed6254c73a09dcd0426b2ca1c")
+}
+
+component ReplayModule : GeneratedCandidate {
+  fn readPerCommit
+    source ts("experiments/shape-1/proto/providers/trust/replay.ts#readPerCommit")
+    effects unknown
+  fn replayAll
+    source ts("experiments/shape-1/proto/providers/trust/replay.ts#replayAll")
+    effects unknown
+  fn replayRepo
+    source ts("experiments/shape-1/proto/providers/trust/replay.ts#replayRepo")
+    effects unknown
+}
+
+component ReplayRow : GeneratedCandidate {
+}
+
+relation ReplayModuleReadPerCommitGeneratedFromReplayModuleReadPerCommitAstAnchor {
+  kind generated_from
+  connects ReplayModule -> ReplayModuleReadPerCommitAstAnchor
+  roles { ReplayModule as generated, ReplayModuleReadPerCommitAstAnchor as syntax }
+  expects ReplayModuleReadPerCommitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a6b221e507ffd8f0da469752323ef13283e856582b0ae635a80adc6f0579c721")
+  summary "fn ReplayModule.readPerCommit generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/replay.ts#readPerCommit."
+}
+
+relation ReplayModuleReplayAllGeneratedFromReplayModuleReplayAllAstAnchor {
+  kind generated_from
+  connects ReplayModule -> ReplayModuleReplayAllAstAnchor
+  roles { ReplayModule as generated, ReplayModuleReplayAllAstAnchor as syntax }
+  expects ReplayModuleReplayAllAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3c3181f17944f7d1fbab06044677b0b92aea9a8755e4ba84d06b0b66d837e3da")
+  summary "fn ReplayModule.replayAll generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/replay.ts#replayAll."
+}
+
+relation ReplayModuleReplayRepoGeneratedFromReplayModuleReplayRepoAstAnchor {
+  kind generated_from
+  connects ReplayModule -> ReplayModuleReplayRepoAstAnchor
+  roles { ReplayModule as generated, ReplayModuleReplayRepoAstAnchor as syntax }
+  expects ReplayModuleReplayRepoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3e05d62537f56018c3578841162c25bbfac10af598c059369297d6023a12d636")
+  summary "fn ReplayModule.replayRepo generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/replay.ts#replayRepo."
+}
+
+relation ReplayRowGeneratedFromReplayRowAstAnchor {
+  kind generated_from
+  connects ReplayRow -> ReplayRowAstAnchor
+  roles { ReplayRow as generated, ReplayRowAstAnchor as syntax }
+  expects ReplayRowAstAnchor fingerprint ast.semantic_subtree_v1("sha256:45bd20aed232f5270d1c39b683e71618c5aab4e0832135ed3ae99ae0d05ffb21")
+  summary "component ReplayRow generated from typescript interface_declaration at experiments/shape-1/proto/providers/trust/replay.ts#ReplayRow."
+}
+
+relation TrustEventGeneratedFromTrustEventAstAnchor {
+  kind generated_from
+  connects TrustEvent -> TrustEventAstAnchor
+  roles { TrustEvent as generated, TrustEventAstAnchor as syntax }
+  expects TrustEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:44b3582ce235cb192d1b26c7e9803b4f19e95d5ed6254c73a09dcd0426b2ca1c")
+  summary "resource TrustEvent generated from typescript interface_declaration at experiments/shape-1/proto/providers/trust/replay.ts#TrustEvent."
+}
+
+implementation ReplayModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/trust/replay.ts"
+  }
+  conforms_to ReplayModule
+}
+
+implementation ReplayRowImpl {
+  paths {
+    "experiments/shape-1/proto/providers/trust/replay.ts"
+  }
+  conforms_to ReplayRow
+}

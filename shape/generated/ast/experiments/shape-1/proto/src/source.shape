@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.proto.src.generated_source
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SourceModuleDeclNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/source.ts#declName")
+  fingerprint ast.semantic_subtree_v1("sha256:0e68a232dd14e67bfc22de3ece86a4932614b1d7e48218bb97d9552db7f18d8a")
+}
+
+component SourceModule : GeneratedCandidate {
+  fn declName
+    source ts("experiments/shape-1/proto/src/source.ts#declName")
+    effects unknown
+}
+
+relation SourceModuleDeclNameGeneratedFromSourceModuleDeclNameAstAnchor {
+  kind generated_from
+  connects SourceModule -> SourceModuleDeclNameAstAnchor
+  roles { SourceModule as generated, SourceModuleDeclNameAstAnchor as syntax }
+  expects SourceModuleDeclNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0e68a232dd14e67bfc22de3ece86a4932614b1d7e48218bb97d9552db7f18d8a")
+  summary "fn SourceModule.declName generated from typescript function_declaration at experiments/shape-1/proto/src/source.ts#declName."
+}
+
+implementation SourceModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/source.ts"
+  }
+  conforms_to SourceModule
+}

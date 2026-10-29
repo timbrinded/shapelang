@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r10_arrow_helpers
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R10ArrowHelpersModuleBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r10_arrow_helpers.ts#balance")
+  fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+}
+
+resource R10ArrowHelpersModuleFeeForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r10_arrow_helpers.ts#feeFor")
+  fingerprint ast.semantic_subtree_v1("sha256:43932b3ec2d08e8620e6acb10f280ac62aa6fb2e45cf85c88b0c65f900f0ff2a")
+}
+
+resource R10ArrowHelpersModuleTotalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r10_arrow_helpers.ts#total")
+  fingerprint ast.semantic_subtree_v1("sha256:d9a6a3d298fbcc063cb0a8e5ce994c2de1789a71d0d2b076c40b54531ce92cba")
+}
+
+resource R10ArrowHelpersModuleTransferAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r10_arrow_helpers.ts#transfer")
+  fingerprint ast.semantic_subtree_v1("sha256:4ec302cab35074f269f2f1a0d1a4327578f3f44c64856c14018b5b9c3adc1ca5")
+}
+
+component R10ArrowHelpersModule : GeneratedCandidate {
+  fn balance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r10_arrow_helpers.ts#balance")
+    effects unknown
+  fn feeFor
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r10_arrow_helpers.ts#feeFor")
+    effects unknown
+  fn total
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r10_arrow_helpers.ts#total")
+    effects unknown
+  fn transfer
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r10_arrow_helpers.ts#transfer")
+    effects unknown
+}
+
+relation R10ArrowHelpersModuleBalanceGeneratedFromR10ArrowHelpersModuleBalanceAstAnchor {
+  kind generated_from
+  connects R10ArrowHelpersModule -> R10ArrowHelpersModuleBalanceAstAnchor
+  roles { R10ArrowHelpersModule as generated, R10ArrowHelpersModuleBalanceAstAnchor as syntax }
+  expects R10ArrowHelpersModuleBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+  summary "fn R10ArrowHelpersModule.balance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r10_arrow_helpers.ts#balance."
+}
+
+relation R10ArrowHelpersModuleFeeForGeneratedFromR10ArrowHelpersModuleFeeForAstAnchor {
+  kind generated_from
+  connects R10ArrowHelpersModule -> R10ArrowHelpersModuleFeeForAstAnchor
+  roles { R10ArrowHelpersModule as generated, R10ArrowHelpersModuleFeeForAstAnchor as syntax }
+  expects R10ArrowHelpersModuleFeeForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:43932b3ec2d08e8620e6acb10f280ac62aa6fb2e45cf85c88b0c65f900f0ff2a")
+  summary "fn R10ArrowHelpersModule.feeFor generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r10_arrow_helpers.ts#feeFor."
+}
+
+relation R10ArrowHelpersModuleTotalGeneratedFromR10ArrowHelpersModuleTotalAstAnchor {
+  kind generated_from
+  connects R10ArrowHelpersModule -> R10ArrowHelpersModuleTotalAstAnchor
+  roles { R10ArrowHelpersModule as generated, R10ArrowHelpersModuleTotalAstAnchor as syntax }
+  expects R10ArrowHelpersModuleTotalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d9a6a3d298fbcc063cb0a8e5ce994c2de1789a71d0d2b076c40b54531ce92cba")
+  summary "fn R10ArrowHelpersModule.total generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r10_arrow_helpers.ts#total."
+}
+
+relation R10ArrowHelpersModuleTransferGeneratedFromR10ArrowHelpersModuleTransferAstAnchor {
+  kind generated_from
+  connects R10ArrowHelpersModule -> R10ArrowHelpersModuleTransferAstAnchor
+  roles { R10ArrowHelpersModule as generated, R10ArrowHelpersModuleTransferAstAnchor as syntax }
+  expects R10ArrowHelpersModuleTransferAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ec302cab35074f269f2f1a0d1a4327578f3f44c64856c14018b5b9c3adc1ca5")
+  summary "fn R10ArrowHelpersModule.transfer generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r10_arrow_helpers.ts#transfer."
+}
+
+implementation R10ArrowHelpersModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T4/r10_arrow_helpers.ts"
+  }
+  conforms_to R10ArrowHelpersModule
+}

@@ -31,7 +31,8 @@ function readSide(dir, flat) {
   for (const p of walk(dir)) {
     const rel = relative(dir, p);
     if (rel.endsWith(".shape")) shape[flat ? `shape/${rel}` : rel] = readFileSync(p, "utf8");
-    else if (rel !== "changed-files.txt" && rel !== "repository.txt") code[rel] = readFileSync(p, "utf8");
+    else if (rel !== "changed-files.txt" && rel !== "repository.txt")
+      code[rel] = readFileSync(p, "utf8");
   }
   return { shape, code };
 }
@@ -47,12 +48,18 @@ function synthSymbols(shape) {
     }
     for (const blk of text.matchAll(/implementation\s+\w+\s*\{[^]*?paths\s*\{([^}]*)\}/g))
       for (const q of blk[1].matchAll(/"([^"]+)"/g))
-        if (!/[*?]/.test(q[1]) && /\.(ts|tsx|js|mjs|cjs)$/.test(q[1]) && !by.has(q[1])) by.set(q[1], new Set());
+        if (!/[*?]/.test(q[1]) && /\.(ts|tsx|js|mjs|cjs)$/.test(q[1]) && !by.has(q[1]))
+          by.set(q[1], new Set());
   }
   return by;
 }
 const synthText = (syms) =>
-  [...syms].sort().map((s) => `export function ${s.split(".").pop() ?? s}() {\n  return ${JSON.stringify(s)};\n}\n`).join("\n") || "export {};\n";
+  [...syms]
+    .sort()
+    .map(
+      (s) => `export function ${s.split(".").pop() ?? s}() {\n  return ${JSON.stringify(s)};\n}\n`
+    )
+    .join("\n") || "export {};\n";
 
 function codeOf(side, extra, syms) {
   const code = { ...side.code };
@@ -69,7 +76,13 @@ function writeModel(dir, shape, code) {
 }
 
 function normalise(c) {
-  return { ...c, baseDir: c.base, headDir: c.head, extraBase: c.extra?.base ?? {}, extraHead: c.extra?.head ?? {} };
+  return {
+    ...c,
+    baseDir: c.base,
+    headDir: c.head,
+    extraBase: c.extra?.base ?? {},
+    extraHead: c.extra?.head ?? {}
+  };
 }
 
 rmSync(out, { recursive: true, force: true });
@@ -86,7 +99,9 @@ for (const c0 of CASES) {
   const su = new Map(sb);
   for (const [p, s] of sh) su.set(p, new Set([...(su.get(p) ?? []), ...s]));
   const codeU = { ...codeB, ...codeH };
-  for (const [p, s] of su) if (!(p in Hh.code) && !(p in B.code) && !(p in c.extraHead) && !(p in c.extraBase)) codeU[p] = synthText(s);
+  for (const [p, s] of su)
+    if (!(p in Hh.code) && !(p in B.code) && !(p in c.extraHead) && !(p in c.extraBase))
+      codeU[p] = synthText(s);
   const root = join(out, c.id);
   writeModel(join(root, "fwd/base"), B.shape, codeB);
   writeModel(join(root, "fwd/head"), Hh.shape, codeH);
@@ -95,12 +110,22 @@ for (const c0 of CASES) {
   writeModel(join(root, "rev/base"), Hh.shape, codeU);
   writeModel(join(root, "rev/head"), B.shape, codeU);
   // changed files for 0.x: the registry's list, else every path whose text differs
-  const all = new Set([...Object.keys({ ...B.shape, ...codeB }), ...Object.keys({ ...Hh.shape, ...codeH })]);
+  const all = new Set([
+    ...Object.keys({ ...B.shape, ...codeB }),
+    ...Object.keys({ ...Hh.shape, ...codeH })
+  ]);
   const changed =
     c.changed ??
-    [...all].filter((p) => ({ ...B.shape, ...codeB })[p] !== ({ ...Hh.shape, ...codeH })[p]).sort();
+    [...all].filter((p) => ({ ...B.shape, ...codeB })[p] !== { ...Hh.shape, ...codeH }[p]).sort();
   writeFileSync(join(root, "changed-files.txt"), `${changed.join("\n")}\n`);
-  rows.push({ id: c.id, family: c.family, baseCode: Object.keys(codeB).sort(), headCode: Object.keys(codeH).sort(), unionCode: Object.keys(codeU).sort(), changed });
+  rows.push({
+    id: c.id,
+    family: c.family,
+    baseCode: Object.keys(codeB).sort(),
+    headCode: Object.keys(codeH).sort(),
+    unionCode: Object.keys(codeU).sort(),
+    changed
+  });
 }
 writeFileSync(join(out, "index.json"), `${JSON.stringify(rows, null, 1)}\n`);
 console.log(`${rows.length} cases written to ${out}`);

@@ -1,0 +1,7 @@
+module shape.generated.ast.experiments.shape_1.proto.src.context
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

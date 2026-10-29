@@ -67,7 +67,12 @@ export interface Verdict {
  * Checks `prop` over `cases` generated inputs. `prop` returns null when the property holds for
  * the case, else a short description of the violation.
  */
-export function property<C>(law: string, opts: { cases: number; seed: number }, gen: (r: Rng, i: number) => C, prop: (c: C) => string | null): Verdict {
+export function property<C>(
+  law: string,
+  opts: { cases: number; seed: number },
+  gen: (r: Rng, i: number) => C,
+  prop: (c: C) => string | null
+): Verdict {
   const r = rng(opts.seed);
   for (let i = 0; i < opts.cases; i += 1) {
     const c = gen(r, i);
@@ -77,7 +82,14 @@ export function property<C>(law: string, opts: { cases: number; seed: number }, 
     } catch (e) {
       detail = `threw: ${e instanceof Error ? e.message : String(e)}`;
     }
-    if (detail !== null) return { law, holds: false, cases: i + 1, seed: opts.seed, counterexample: { index: i, detail: detail.slice(0, 2000) } };
+    if (detail !== null)
+      return {
+        law,
+        holds: false,
+        cases: i + 1,
+        seed: opts.seed,
+        counterexample: { index: i, detail: detail.slice(0, 2000) }
+      };
   }
   return { law, holds: true, cases: opts.cases, seed: opts.seed, counterexample: null };
 }
@@ -91,14 +103,23 @@ export function record(v: Verdict): void {
  * Registers the law's test. `expect` is what the dogfood currently records for the law:
  * "holds", or "fails" for a law whose clause the implementation contradicts.
  */
-export function lawTest(law: string, expect: "holds" | "fails", run: () => Verdict, timeoutMs = 60_000): void {
+export function lawTest(
+  law: string,
+  expect: "holds" | "fails",
+  run: () => Verdict,
+  timeoutMs = 60_000
+): void {
   test(
     law,
     () => {
       const v = run();
       record(v);
-      if (expect === "holds" && !v.holds) throw new Error(`${law} fails at case ${v.counterexample?.index}: ${v.counterexample?.detail}`);
-      if (expect === "fails" && v.holds) throw new Error(`${law} now holds over ${v.cases} cases; record it as "holds"`);
+      if (expect === "holds" && !v.holds)
+        throw new Error(
+          `${law} fails at case ${v.counterexample?.index}: ${v.counterexample?.detail}`
+        );
+      if (expect === "fails" && v.holds)
+        throw new Error(`${law} now holds over ${v.cases} cases; record it as "holds"`);
     },
     timeoutMs
   );
@@ -107,20 +128,53 @@ export function lawTest(law: string, expect: "holds" | "fails", run: () => Verdi
 /** Stable JSON with Maps and Sets as sorted entry lists (for comparing models and results). */
 export function stable(value: unknown): string {
   return JSON.stringify(value, (_k, v: unknown) => {
-    if (v instanceof Map) return { $map: [...v.entries()].map(([k, x]) => [String(k), x]).sort((a, b) => (String(a[0]) < String(b[0]) ? -1 : String(a[0]) > String(b[0]) ? 1 : 0)) };
-    if (v instanceof Set) return { $set: [...v].map((x) => (typeof x === "string" ? x : JSON.stringify(x))).sort() };
+    if (v instanceof Map)
+      return {
+        $map: [...v.entries()]
+          .map(([k, x]) => [String(k), x])
+          .sort((a, b) => (String(a[0]) < String(b[0]) ? -1 : String(a[0]) > String(b[0]) ? 1 : 0))
+      };
+    if (v instanceof Set)
+      return { $set: [...v].map((x) => (typeof x === "string" ? x : JSON.stringify(x))).sort() };
     return v;
   });
 }
 
 /** Identifier pool (Shape IDs are ASCII): mixed case, digits and underscores, so codepoint order
  *  (B < _ < a) differs from locale order. */
-export const NAMES = ["Alpha", "Bravo", "charlie", "Delta", "Echo", "Zulu", "_hidden", "a", "B", "Z", "z", "Ab", "aB", "a_b", "A9", "a10", "a2", "Ledger", "Catalog", "Store", "Gateway", "Policy", "Vault"];
+export const NAMES = [
+  "Alpha",
+  "Bravo",
+  "charlie",
+  "Delta",
+  "Echo",
+  "Zulu",
+  "_hidden",
+  "a",
+  "B",
+  "Z",
+  "z",
+  "Ab",
+  "aB",
+  "a_b",
+  "A9",
+  "a10",
+  "a2",
+  "Ledger",
+  "Catalog",
+  "Store",
+  "Gateway",
+  "Policy",
+  "Vault"
+];
 
 export function distinctNames(r: Rng, n: number, prefix = ""): string[] {
   const pool = r.shuffle(NAMES);
   const out: string[] = [];
-  for (let i = 0; out.length < n; i += 1) out.push(`${prefix}${pool[i % pool.length]}${i >= pool.length ? String(Math.floor(i / pool.length)) : ""}`);
+  for (let i = 0; out.length < n; i += 1)
+    out.push(
+      `${prefix}${pool[i % pool.length]}${i >= pool.length ? String(Math.floor(i / pool.length)) : ""}`
+    );
   return out;
 }
 
@@ -136,12 +190,18 @@ export function stableDeep(value: unknown): string {
     if (ancestors.includes(v)) return "[cycle]";
     ancestors.push(v);
     let out: unknown;
-    if (v instanceof Map) out = { $map: [...v.entries()].map(([k, x]) => [String(k), walk(x)]).sort((a, b) => (String(a[0]) < String(b[0]) ? -1 : String(a[0]) > String(b[0]) ? 1 : 0)) };
+    if (v instanceof Map)
+      out = {
+        $map: [...v.entries()]
+          .map(([k, x]) => [String(k), walk(x)])
+          .sort((a, b) => (String(a[0]) < String(b[0]) ? -1 : String(a[0]) > String(b[0]) ? 1 : 0))
+      };
     else if (v instanceof Set) out = { $set: [...v].map((x) => JSON.stringify(walk(x))).sort() };
     else if (Array.isArray(v)) out = v.map(walk);
     else {
       const o: Record<string, unknown> = {};
-      for (const k of Object.keys(v).sort()) if (!k.startsWith("$")) o[k] = walk((v as Record<string, unknown>)[k]);
+      for (const k of Object.keys(v).sort())
+        if (!k.startsWith("$")) o[k] = walk((v as Record<string, unknown>)[k]);
       out = o;
     }
     ancestors.pop();

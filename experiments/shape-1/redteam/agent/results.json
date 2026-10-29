@@ -1,0 +1,2693 @@
+[
+ {
+  "id": "A1",
+  "cat": "subject-digest",
+  "name": "test record cites a superseded digest of the changed unit (revision = head)",
+  "steps": "Example 1 Variant B. Replace fastCheck's fresh record for EventsArePreserved with one that cites purgeOldEvents@unit at an earlier-draft digest; revision is the head.",
+  "expected": "law EventsArePreserved unestablished, blocking at critical (or E-provider-missing)",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(missing) blocking critical audit::EventsArePreserved",
+   "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [
+    "RJ13 ts:src/audit/purge.ts#purgeOldEvents@unit contradicts the revision's manifest"
+   ],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(missing) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(stale) blocking critical audit::EventsArePreserved",
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(stale) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": {
+   "expect": "no EventsArePreserved obligation",
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "answered": [],
+   "grade": "succeeded"
+  }
+ },
+ {
+  "id": "A2",
+  "cat": "subject-digest",
+  "name": "test record cites a superseded digest, revision is a third commit (RJ13 cannot check it)",
+  "steps": "As A1, but the record's revision is a commit that is neither base nor head, so no manifest is available to reject it.",
+  "expected": "law unestablished (stale), blocking at critical",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(stale) blocking critical audit::EventsArePreserved",
+   "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(stale) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(stale) blocking critical audit::EventsArePreserved",
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(stale) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "A3",
+  "cat": "subject-digest",
+  "name": "observation scope entry for the violating unit cites a wrong digest (revision = head)",
+  "steps": "Example 1 Variant B. sqlEffects' signed head observation still reports HardDelete at purgeOldEvents, but its scope entry for purgeOldEvents cites a digest the head manifest does not have.",
+  "expected": "the final AppendOnly contradiction (blocking), or a blocking E-provider-missing for sqlEffects",
+  "outcome": "blocked",
+  "hits": [
+   "E-provider-missing provider audit::sqlEffects"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::sqlEffects"
+   ],
+   "rejected": [
+    "RJ13 ts:src/audit/purge.ts#purgeOldEvents@unit contradicts the revision's manifest"
+   ],
+   "obligations": [
+    "coverage blocking final \"component audit::AuditStore\""
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "partial",
+   "hits": [
+    "coverage blocking final \"component audit::AuditStore\""
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking final \"component audit::AuditStore\""
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "A4",
+  "cat": "subject-digest",
+  "name": "observation from a third commit whose entries for the violating file and unit cite other digests (deps complete)",
+  "steps": "As A3, but the observation's revision is a third commit and both purge.ts entries (file and purgeOldEvents) cite digests the head lacks; sqlEffects is `deps complete`, so its entries for unchanged identities (store.ts) are reusable and the record counts as supplied.",
+  "expected": "the final AppendOnly contradiction, or a blocking E-provider-missing (no usable head entry for the changed code)",
+  "outcome": "partial",
+  "hits": [
+   "coverage blocking final \"component audit::AuditStore\""
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking final \"component audit::AuditStore\""
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "partial",
+   "hits": [
+    "coverage blocking final \"component audit::AuditStore\""
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking final \"component audit::AuditStore\""
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "A5",
+  "cat": "subject-digest",
+  "name": "in-toto subject digest and predicate digest disagree (subject = head digest, predicate = old)",
+  "steps": "fastCheck statement whose subject shape:code/purgeOldEvents@unit carries the head digest while predicate.shape.code carries an older one; signed by fastCheck.",
+  "expected": "RJ02 rejection; law unestablished blocking (or E-provider-missing)",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(missing) blocking critical audit::EventsArePreserved",
+   "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [
+    "RJ02 code subject mismatch ts:src/audit/purge.ts#purgeOldEvents"
+   ],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(missing) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(missing) blocking critical audit::EventsArePreserved",
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(missing) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "A6",
+  "cat": "subject-digest",
+  "name": "in-toto subject digest wrong, predicate digest right",
+  "steps": "fastCheck statement whose predicate cites the head digest but whose subject for purgeOldEvents@unit names an older digest.",
+  "expected": "RJ02 rejection; law unestablished blocking (or E-provider-missing)",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(missing) blocking critical audit::EventsArePreserved",
+   "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [
+    "RJ02 code subject mismatch ts:src/audit/purge.ts#purgeOldEvents"
+   ],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(missing) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(missing) blocking critical audit::EventsArePreserved",
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(missing) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "B1",
+  "cat": "claim-fingerprint",
+  "name": "test record names the law's id but carries another claim's fingerprint",
+  "steps": "fastCheck record with claim.id = audit::EventsArePreserved and claim.fp = the fp of an unrelated Deterministic law (8620c3be…); subjects consistent; signed.",
+  "expected": "record not applicable; law unestablished blocking (or E-provider-missing)",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(missing) blocking critical audit::EventsArePreserved",
+   "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(missing) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(missing) blocking critical audit::EventsArePreserved",
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(missing) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "B2",
+  "cat": "claim-fingerprint",
+  "name": "record for a weaker template instance establishes a stronger one through string order",
+  "steps": "Template LatencyAtMost<F: unit, Budget: value> with `order Budget by leq`; law AppendFast = LatencyAtMost<AuditStore.appendEvent, \"250ms\"> (critical, tested by fastCheck). The change edits appendEvent; the only record is a fresh test of the instance Budget = \"1000ms\" (nf supplied, hashes to its fp).",
+  "expected": "AppendFast unestablished, blocking (a 1000 ms budget does not imply a 250 ms one)",
+  "outcome": "succeeded",
+  "hits": [],
+  "proto": {
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(missing) blocking critical audit::AppendFast",
+    "E-provider-missing provider audit::fastCheck audit::AppendFast"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::AppendFast"
+   ],
+   "rejected": [],
+   "obligations": [
+    "unestablished(missing) blocking critical audit::AppendFast"
+   ],
+   "answered": []
+  },
+  "control": {
+   "expect": "AppendFast unestablished (300ms is weaker in both orders)",
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::AppendFast"
+   ],
+   "rejected": [],
+   "obligations": [
+    "unestablished(missing) blocking critical audit::AppendFast"
+   ],
+   "answered": [],
+   "grade": "blocked"
+  }
+ },
+ {
+  "id": "B3",
+  "cat": "claim-fingerprint",
+  "name": "record for the base instance of a law the head tightened",
+  "steps": "Base law Bounded<AuditStore.appendEvent, 0, 100>; head tightens it to Bounded<…, 0, 50> and edits appendEvent. The only record is a fresh test whose claim fp is the base instance (Hi = 100).",
+  "expected": "head law unestablished, blocking at critical",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(missing) blocking critical audit::AppendBounded",
+   "E-provider-missing provider audit::fastCheck claim audit::AppendBounded"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::AppendBounded"
+   ],
+   "rejected": [],
+   "obligations": [
+    "unestablished(missing) blocking critical audit::AppendBounded"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(missing) blocking critical audit::AppendBounded",
+    "E-provider-missing provider audit::fastCheck audit::AppendBounded"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::AppendBounded"
+   ],
+   "rejected": [],
+   "obligations": [
+    "loosening[L4] blocking critical audit::AppendBounded",
+    "unestablished(missing) blocking critical audit::AppendBounded"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "B4",
+  "cat": "claim-fingerprint",
+  "name": "a fresh supporting record alongside a fresh contradicting one for the same law",
+  "steps": "Clean encodeRow world (appendEvent edited). fastCheck supplies two fresh head records for AppendDeterministic: one supports, one contradicts with a counterexample (presence-sound provider).",
+  "expected": "sound law contradiction, introduced, blocking (evidence never waives; contradicting beats supporting)",
+  "outcome": "blocked",
+  "hits": [
+   "contradiction blocking critical sound audit::AppendDeterministic"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking critical sound audit::AppendDeterministic"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "contradiction blocking critical sound audit::AppendDeterministic"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking critical sound audit::AppendDeterministic"
+   ],
+   "answered": []
+  },
+  "control": {
+   "expect": "pass (baseline of the clean world)",
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": [],
+   "grade": "succeeded"
+  }
+ },
+ {
+  "id": "C1",
+  "cat": "carried-over",
+  "name": "base-revision test record replaces the fresh one",
+  "steps": "Example 1 Variant B. Drop fastCheck's head record; supply its genuine base-revision record (cites store.ts only).",
+  "expected": "law unestablished (stale), introduced, blocking at critical; E-provider-missing",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(stale) blocking critical audit::EventsArePreserved",
+   "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(stale) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(stale) blocking critical audit::EventsArePreserved",
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(stale) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "C2",
+  "cat": "carried-over",
+  "name": "deps-complete provider reuses a base record whose citations no longer cover Req",
+  "steps": "As C1, with fastCheck declared `deps complete` in base and head and the base record carrying deps: [].",
+  "expected": "law unestablished (stale: Req grew), blocking",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(stale) blocking critical audit::EventsArePreserved",
+   "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(stale) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(stale) blocking critical audit::EventsArePreserved",
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(stale) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "C3",
+  "cat": "carried-over",
+  "name": "deps-complete base record reused although an observed callee of the law's unit changed (deps: [])",
+  "steps": "Unit law AppendDeterministic = Deterministic<AuditStore.appendEvent>, fastCheck deps complete. appendEvent calls encodeRow (call fact from an authenticated call observer). The change edits encodeRow only; appendEvent's unit digest is unchanged. The only record is fastCheck's base-revision record citing appendEvent@unit with deps: [].",
+  "expected": "AppendDeterministic unestablished (stale), blocking at critical",
+  "outcome": "succeeded",
+  "hits": [],
+  "proto": {
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "E-provider-missing provider audit::fastCheck audit::AppendDeterministic"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::AppendDeterministic"
+   ],
+   "rejected": [],
+   "obligations": [
+    "unestablished(stale) owed critical preexisting audit::AppendDeterministic"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "C3b",
+  "cat": "carried-over",
+  "name": "as C3, but the base record honestly lists the callee in deps",
+  "steps": "As C3, with the base record's deps = [encodeRow@unit at its base digest].",
+  "expected": "AppendDeterministic unestablished (stale), blocking at critical",
+  "outcome": "blocked",
+  "hits": [
+   "E-provider-missing provider audit::fastCheck claim audit::AppendDeterministic"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::AppendDeterministic"
+   ],
+   "rejected": [],
+   "obligations": [
+    "unestablished(stale) owed critical preexisting audit::AppendDeterministic"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "E-provider-missing provider audit::fastCheck audit::AppendDeterministic"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::AppendDeterministic"
+   ],
+   "rejected": [],
+   "obligations": [
+    "unestablished(stale) owed critical preexisting audit::AppendDeterministic"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "C4",
+  "cat": "carried-over",
+  "name": "base-revision observation from a deps-complete observer replaces the head one (normal tier)",
+  "steps": "Example 3 Step 2 with a Date.now() seeded into checkFreshness; CheckerNeverReadsClock at tier normal; tsClockScan `deps complete`. Drop the head scan; supply the genuine base-revision scan (before the seed).",
+  "expected": "sound contradiction of CheckerNeverReadsClock, blocking (rule 7), or E-provider-missing",
+  "outcome": "partial",
+  "hits": [
+   "coverage owed normal \"component checker::ShapeRuleEngine\""
+  ],
+  "proto": {
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage owed normal \"component checker::ShapeRuleEngine\""
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "partial",
+   "hits": [
+    "coverage owed normal \"component checker::ShapeRuleEngine\""
+   ],
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage owed normal \"component checker::ShapeRuleEngine\""
+   ],
+   "answered": []
+  },
+  "control": {
+   "expect": "blocking sound contradiction",
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking normal sound tooling::CheckerNeverReadsClock"
+   ],
+   "answered": [],
+   "grade": "blocked"
+  }
+ },
+ {
+  "id": "C5",
+  "cat": "carried-over",
+  "name": "answers from before a push that edits the purge",
+  "steps": "Example 1 Variant C with bob's and carol's approve lines (refs bd:8d771e08…, bd:2785f31d…); then the agent pushes an edit to purgeOldEvents (honest providers re-run).",
+  "expected": "both L1 loosenings reopen and block",
+  "outcome": "blocked",
+  "hits": [
+   "loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+   "loosening[L1] blocking critical exploited \"component audit::AuditStore\""
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking critical \"component audit::AuditStore\"",
+    "loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L1] blocking critical exploited \"component audit::AuditStore\""
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L1] blocking critical exploited \"component audit::AuditStore\""
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking critical \"component audit::AuditStore\"",
+    "loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L1] blocking critical exploited \"component audit::AuditStore\""
+   ],
+   "answered": []
+  },
+  "control": {
+   "expect": "both loosenings answered (pass)",
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking critical \"component audit::AuditStore\""
+   ],
+   "answered": [
+    "discharge ob:031024b1dfd16fe2",
+    "discharge ob:ca99c5461b8ff9a8"
+   ],
+   "grade": "succeeded"
+  }
+ },
+ {
+  "id": "C6",
+  "cat": "carried-over",
+  "name": "answers given on another change id",
+  "steps": "Example 1 Variant C with the same approve lines written on github:acme/audit#99.",
+  "expected": "both loosenings stay open and block",
+  "outcome": "blocked",
+  "hits": [
+   "loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+   "loosening[L1] blocking critical exploited \"component audit::AuditStore\""
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking critical \"component audit::AuditStore\"",
+    "loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L1] blocking critical exploited \"component audit::AuditStore\""
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L1] blocking critical exploited \"component audit::AuditStore\""
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking critical \"component audit::AuditStore\"",
+    "loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L1] blocking critical exploited \"component audit::AuditStore\""
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "C7",
+  "cat": "carried-over",
+  "name": "base record of a preexisting violation masks a second violation in the same function (no n)",
+  "steps": "Example 3 Step 2: checkFreshness already read Date.now() at base (base-revision scan reports it, no n). The change adds a second Date.now() call in checkFreshness; the head scan reports the fact once, without n.",
+  "expected": "introduced sound contradiction, blocking (critical)",
+  "outcome": "partial",
+  "hits": [
+   "contradiction owed critical sound preexisting tooling::CheckerNeverReadsClock"
+  ],
+  "proto": {
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction owed critical sound preexisting tooling::CheckerNeverReadsClock"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "partial",
+   "hits": [
+    "contradiction owed critical sound preexisting tooling::CheckerNeverReadsClock"
+   ],
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction owed critical sound preexisting tooling::CheckerNeverReadsClock"
+   ],
+   "answered": []
+  },
+  "control": {
+   "expect": "introduced blocking contradiction (n 2 > 1)",
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking critical sound tooling::CheckerNeverReadsClock"
+   ],
+   "answered": [],
+   "grade": "blocked"
+  }
+ },
+ {
+  "id": "D1",
+  "cat": "fingerprint-unchanged",
+  "name": "head manifest keeps base digests for an edited file (blob changed)",
+  "steps": "Example 3 Step 2 with the seeded Date.now(). The head manifest lists guards.ts and checkFreshness with their base digests although guards.ts's tree blob changed; the head scan reports the Date.now fact at the (unmoved) entry.",
+  "expected": "introduced sound contradiction, blocking; or invalid input",
+  "outcome": "partial",
+  "hits": [
+   "contradiction owed critical sound preexisting tooling::CheckerNeverReadsClock"
+  ],
+  "proto": {
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction owed critical sound preexisting tooling::CheckerNeverReadsClock"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "partial",
+   "hits": [
+    "contradiction owed critical sound preexisting tooling::CheckerNeverReadsClock"
+   ],
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction owed critical sound preexisting tooling::CheckerNeverReadsClock"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "D2",
+  "cat": "fingerprint-unchanged",
+  "name": "guarded unit reads a const imported from another file; the const changes",
+  "steps": "Real TypeScript, fingerprinted by the prototype. purgeOld (RefactorSensitive, tier critical, judged by ann at its base unit digest) uses RETENTION_DAYS imported from src/config.ts; the change sets it from 30 to 0.",
+  "expected": "the RefactorSensitive law unestablished (stale), blocking at critical",
+  "outcome": "succeeded",
+  "hits": [],
+  "proto": {
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "succeeded",
+   "hits": [],
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "D3",
+  "cat": "fingerprint-unchanged",
+  "name": "guarded unit reads an imported JSON file; the JSON changes",
+  "steps": "As D2, but purgeOld reads cfg.days from src/retention.json, changed from 30 to 0.",
+  "expected": "the RefactorSensitive law unestablished (stale), blocking at critical",
+  "outcome": "succeeded",
+  "hits": [],
+  "proto": {
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "succeeded",
+   "hits": [],
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "D4",
+  "cat": "fingerprint-unchanged",
+  "name": "guarded unit passes a same-file const as `{ days: days }`; the const changes",
+  "steps": "As D2, but `const days = 30` is in purge.ts and purgeOld calls run({ table, days: days }); the change sets days to 0.",
+  "expected": "the RefactorSensitive law unestablished (stale), blocking at critical",
+  "outcome": "succeeded",
+  "hits": [],
+  "proto": {
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "succeeded",
+   "hits": [],
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "D5",
+  "cat": "fingerprint-unchanged",
+  "name": "guarded unit uses a same-file enum; the enum value changes",
+  "steps": "As D2, with `enum Days { Keep = 30 }` in purge.ts changed to 0.",
+  "expected": "the RefactorSensitive law unestablished (stale), blocking at critical",
+  "outcome": "succeeded",
+  "hits": [],
+  "proto": {
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "succeeded",
+   "hits": [],
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "D6",
+  "cat": "fingerprint-unchanged",
+  "name": "control: the guarded unit's own body changes",
+  "steps": "As D2, but the literal 30 inside purgeOld changes to 0.",
+  "expected": "the RefactorSensitive law unestablished (stale), blocking at critical",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(stale) blocking critical ret::Retention.purgeOld/RefactorSensitive/law"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "unestablished(stale) blocking critical ret::Retention.purgeOld/RefactorSensitive/law"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(stale) blocking critical ret::Retention.purgeOld/RefactorSensitive/law"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "unestablished(stale) blocking critical ret::Retention.purgeOld/RefactorSensitive/law"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "D7",
+  "cat": "fingerprint-unchanged",
+  "name": "an optimisation in a callee breaks a unit law; the law's unit fingerprint is unchanged",
+  "steps": "encodeRow world: the change optimises encodeRow; appendEvent's digests do not move. fastCheck reruns at head: the test of AppendDeterministic fails with a counterexample (presence-sound provider), citing appendEvent@unit and deps encodeRow@unit (head).",
+  "expected": "sound law contradiction, introduced, blocking",
+  "outcome": "partial",
+  "hits": [
+   "contradiction owed critical sound preexisting audit::AppendDeterministic"
+  ],
+  "proto": {
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction owed critical sound preexisting audit::AppendDeterministic"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "partial",
+   "hits": [
+    "contradiction owed critical sound preexisting audit::AppendDeterministic"
+   ],
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction owed critical sound preexisting audit::AppendDeterministic"
+   ],
+   "answered": []
+  },
+  "control": {
+   "expect": "blocking sound law contradiction (appendEvent itself edited)",
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking critical sound audit::AppendDeterministic"
+   ],
+   "answered": [],
+   "grade": "blocked"
+  }
+ },
+ {
+  "id": "E1",
+  "cat": "split-rename",
+  "name": "guarded unit's logic lives in a same-file helper; the helper changes",
+  "steps": "Real TypeScript. isoToday (RefactorSensitive, critical, judged by ann) returns fmt(new Date()); the change rewrites fmt to toLocaleDateString(). isoToday's own text is unchanged.",
+  "expected": "the RefactorSensitive law unestablished (stale), blocking at critical",
+  "outcome": "succeeded",
+  "hits": [],
+  "proto": {
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "succeeded",
+   "hits": [],
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "E2",
+  "cat": "split-rename",
+  "name": "component split moves the violating code out of a component-scoped forbid",
+  "steps": "rule NoDeleteInStore { forbid HardDelete<AuditEvent> within component AuditStore } (critical; AuditStore has open authority). The change narrows AuditStore to src/audit/store.ts, adds component AuditJobs for src/audit/jobs/**, and adds jobs/purge.ts whose purgeOldEvents hard-deletes (observed, sound).",
+  "expected": "L1/L6 loosening of NoDeleteInStore, exploited, blocking (or a blocking contradiction)",
+  "outcome": "blocked",
+  "hits": [
+   "loosening[L1] blocking critical exploited audit::NoDeleteInStore"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "loosening[L1] blocking critical exploited audit::NoDeleteInStore"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "loosening[L1] blocking critical exploited audit::NoDeleteInStore"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "loosening[L1] blocking critical exploited audit::NoDeleteInStore"
+   ],
+   "answered": []
+  },
+  "control": {
+   "expect": "blocking sound contradiction of NoDeleteInStore",
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking critical sound audit::NoDeleteInStore"
+   ],
+   "answered": [],
+   "grade": "blocked"
+  }
+ },
+ {
+  "id": "E3",
+  "cat": "split-rename",
+  "name": "rule renamed and narrowed in the same change that violates it",
+  "steps": "Example 3 Step 2 with the seeded Date.now() in ShapeRuleEngine (open authority on both sides). The head renames CheckerNeverReadsClock to CheckerClockPolicy and drops ShapeRuleEngine from its `within` list.",
+  "expected": "L1 loosening of the base rule, exploited, blocking",
+  "outcome": "blocked",
+  "hits": [
+   "loosening[L1] blocking critical exploited tooling::CheckerNeverReadsClock"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "loosening[L1] blocking critical exploited tooling::CheckerNeverReadsClock"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "loosening[L1] blocking critical exploited tooling::CheckerNeverReadsClock"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "loosening[L1] blocking critical exploited tooling::CheckerNeverReadsClock"
+   ],
+   "answered": []
+  },
+  "control": {
+   "expect": "blocking sound contradiction",
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking critical sound tooling::CheckerNeverReadsClock"
+   ],
+   "answered": [],
+   "grade": "blocked"
+  }
+ },
+ {
+  "id": "E4",
+  "cat": "split-rename",
+  "name": "resource renamed (same bindings, no `was`) in the same change that violates its forbid",
+  "steps": "As the Example 3 Step 2 seeded change, but the head renames SystemClock to WallClock everywhere (bindings identical, so ρ maps it by binding).",
+  "expected": "sound contradiction of the renamed rule, blocking (heir by ρ)",
+  "outcome": "blocked",
+  "hits": [
+   "contradiction blocking critical sound tooling::CheckerNeverReadsClock"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking critical sound tooling::CheckerNeverReadsClock"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "contradiction blocking critical sound tooling::CheckerNeverReadsClock"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking critical sound tooling::CheckerNeverReadsClock",
+    "loosening[L1] blocking critical tooling::CheckerNeverReadsClock",
+    "loosening[L2] blocking normal tooling::ShpCli.isoToday/effects.upper"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "E5",
+  "cat": "split-rename",
+  "name": "resource binding narrowed so the new read's resource code is unmapped",
+  "steps": "Example 3 Step 2 with a performance.now() read seeded into checkFreshness; the same change drops ts.call(\"performance.now\") from SystemClock's bindings.",
+  "expected": "L1 loosening (unmapping a resource code loosens), exploited, blocking at critical",
+  "outcome": "blocked",
+  "hits": [
+   "loosening[L1] blocking critical tooling::CheckerNeverReadsClock"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking critical \"resourceCode ts.call(\\\"performance.now\\\")\"",
+    "loosening[L1] blocking normal \"component checker::ShapeChecker\"",
+    "loosening[L1] blocking normal \"component checker::ShapeRuleEngine\"",
+    "loosening[L1] blocking critical tooling::CheckerNeverReadsClock"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "succeeded",
+   "hits": [],
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "E6",
+  "cat": "split-rename",
+  "name": "append-only log rewritten (UPDATE … SET payload = NULL) from code outside the law's component",
+  "steps": "Example 1 Variant B′ (scripts/purge-audit.ts, ungoverned), but the purge rewrites rows: the signed sound observation reports Update on pg.table(\"audit_events\"). AuditEvent is AppendOnly (final); HistoryPreserved<AuditEvent> is a law on component AuditStore.",
+  "expected": "a blocking obligation (contradiction of AppendOnly or of HistoryPreserved)",
+  "outcome": "succeeded",
+  "hits": [],
+  "proto": {
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "succeeded",
+   "hits": [],
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "control": {
+   "expect": "blocking final contradiction (HardDelete)",
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "answered": [],
+   "grade": "blocked"
+  }
+ },
+ {
+  "id": "E7",
+  "cat": "split-rename",
+  "name": "unit law re-bound to a decoy while the real function is broken",
+  "steps": "encodeWorld: the head re-binds unit appendEvent to a new decoy identity store.ts#appendEventV2 and edits the real store.ts#appendEvent (now AuditStore.*). fastCheck's fresh head record tests the decoy and supports AppendDeterministic.",
+  "expected": "L6 loosening (the law no longer governs the real function), blocking at critical",
+  "outcome": "blocked",
+  "hits": [
+   "loosening[L6] blocking critical audit::AppendDeterministic",
+   "loosening[L6] blocking critical audit::AuditStore.appendEvent/effects.upper"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "loosening[L6] blocking critical audit::AppendDeterministic",
+    "loosening[L6] blocking critical audit::AuditStore.appendEvent/effects.upper",
+    "unestablished(stale) blocking critical audit::EventsArePreserved",
+    "contradiction owed critical sound preexisting audit::AuditStore.appendEvent/effects.lower"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "partial",
+   "hits": [
+    "coverage blocking final \"component audit::AuditStore\""
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking final \"component audit::AuditStore\"",
+    "unestablished(stale) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "F1",
+  "cat": "exception-policy",
+  "name": "exception names the final forbid by claim id, with an exception answer",
+  "steps": "Example 1 Variant B; the head adds `exception PurgeAccepted { waives contradiction of claim audit::AuditEvent/AppendOnly/effect.forbid-HardDelete for code ts(purge) owner AuditTeam expires 2026-12-15 }`; bob writes `shape approve <binding>`.",
+  "expected": "E-exception; the final contradiction stays blocking, not debt",
+  "outcome": "blocked",
+  "hits": [
+   "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-exception exception audit::PurgeAccepted"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-exception exception audit::PurgeAccepted"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "F2",
+  "cat": "exception-policy",
+  "name": "component exception on AuditStore (non-final target) covering the purge, with an exception answer",
+  "steps": "As F1 with target `component AuditStore` (tier critical, so no E-exception).",
+  "expected": "the exception does not match (tier* final); contradiction stays blocking",
+  "outcome": "blocked",
+  "hits": [
+   "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "F3",
+  "cat": "exception-policy",
+  "name": "exception names the final forbid by fingerprint prefix",
+  "steps": "As F1 with target `claim c:ccfcbabf10265d64`.",
+  "expected": "E-exception; contradiction stays blocking",
+  "outcome": "blocked",
+  "hits": [
+   "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-exception exception audit::PurgeAccepted"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-exception exception audit::PurgeAccepted"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "F4",
+  "cat": "exception-policy",
+  "name": "head lowers AuditEvent from final to critical and adds a component exception, with an exception answer",
+  "steps": "As F2, and the head also sets AuditEvent's tier to critical (the forbid's head tier becomes critical; its base heir is final).",
+  "expected": "tier* stays final; no match; contradiction blocking; L7 loosening",
+  "outcome": "blocked",
+  "hits": [
+   "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L1,L7] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking final \"resource audit::AuditEvent\""
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L1,L7] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking final \"resource audit::AuditEvent\""
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "F5",
+  "cat": "exception-policy",
+  "name": "head restates the final forbid at tier low and drops AppendOnly",
+  "steps": "Example 1 Variant B; the head removes `: AppendOnly` and adds `rule Cleanup { forbid HardDelete<AuditEvent> tier low }` (equal NF to the base final forbid).",
+  "expected": "contradiction with tier* final, blocking (rule 2)",
+  "outcome": "blocked",
+  "hits": [
+   "contradiction blocking final sound audit::Cleanup"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::Cleanup",
+    "loosening[L1,L7] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "contradiction blocking final sound audit::Cleanup"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::Cleanup",
+    "loosening[L1,L7] blocking final exploited audit::Cleanup"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "F6",
+  "cat": "exception-policy",
+  "name": "head policy stops blocking unestablished at critical while dropping the law's evidence",
+  "steps": "Example 1 Variant B without fastCheck's record; the head adds policy Lax (critical: floor declared, blocks nothing, judges owner, agents) and `shape AuditService { policy Lax }`.",
+  "expected": "law unestablished, blocking (policy* unions blocks, highest floor)",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(missing) blocking critical audit::EventsArePreserved",
+   "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking normal \"policy normal\"",
+    "loosening[L7] blocking critical \"policy critical\"",
+    "unestablished(missing) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(missing) blocking critical audit::EventsArePreserved",
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking normal \"policy normal\"",
+    "loosening[L7] blocking critical \"policy critical\"",
+    "unestablished(missing) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "F7",
+  "cat": "exception-policy",
+  "name": "head policy admits agents as critical judges; a non-author agent approves Variant C's final loosening",
+  "steps": "Example 1 Variant C; base and head declare agent opsAgent (operator carol); the head policy adds `judges owner, agents` at critical; opsAgent and carol write approve lines for both bindings.",
+  "expected": "both loosenings stay blocking (loosenings never answered by agents; judges from base)",
+  "outcome": "blocked",
+  "hits": [
+   "loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+   "loosening[L7] blocking critical \"policy critical\"",
+   "loosening[L1] blocking critical exploited \"component audit::AuditStore\""
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking critical \"component audit::AuditStore\"",
+    "loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking critical \"policy critical\"",
+    "loosening[L1] blocking critical exploited \"component audit::AuditStore\""
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking critical \"policy critical\"",
+    "loosening[L1] blocking critical exploited \"component audit::AuditStore\""
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking critical \"component audit::AuditStore\"",
+    "loosening[L1] blocking final exploited audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking critical \"policy critical\"",
+    "loosening[L1] blocking critical exploited \"component audit::AuditStore\""
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "F8",
+  "cat": "exception-policy",
+  "name": "preexisting final violation under a whole-component exception declared in base and head",
+  "steps": "purgeOldEvents already hard-deleted at base (genuine base-revision observation); base and head declare `exception OldPurge { waives contradiction of component AuditStore owner AuditTeam expires 2026-12-15 }`. The change touches only README.",
+  "expected": "final contradiction blocks (preexisting final still blocks; no exception on final)",
+  "outcome": "blocked",
+  "hits": [
+   "contradiction blocking final sound preexisting audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound preexisting audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "contradiction blocking final sound preexisting audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound preexisting audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "G1",
+  "cat": "judged-for-mechanical",
+  "name": "`shape judge` line for a law that requires tested evidence",
+  "steps": "Example 1 Variant B without fastCheck's record; bob (AuditTeam, eligible owner) writes `shape judge audit::EventsArePreserved`.",
+  "expected": "law unestablished (weak), blocking",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(weak) blocking critical audit::EventsArePreserved",
+   "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(weak) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(weak) blocking critical audit::EventsArePreserved",
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(weak) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "G2",
+  "cat": "judged-for-mechanical",
+  "name": "signed judgment record for a law that requires tested evidence",
+  "steps": "As G1 with a judgment record signed by bob's ed25519 key (declared in base), citing the head Req.",
+  "expected": "law unestablished (weak), blocking",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(weak) blocking critical audit::EventsArePreserved",
+   "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(weak) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(weak) blocking critical audit::EventsArePreserved",
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(weak) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "G3",
+  "cat": "judged-for-mechanical",
+  "name": "head adds `or judged` to the law, then judges it",
+  "steps": "As G1, and the head changes the law's evidence to `tested or judged`.",
+  "expected": "law unestablished (R* judged needs base and head), blocking; L7",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(weak) blocking critical audit::EventsArePreserved",
+   "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking critical audit::EventsArePreserved",
+    "unestablished(weak) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(weak) blocking critical audit::EventsArePreserved",
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking critical audit::EventsArePreserved",
+    "unestablished(weak) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "G4",
+  "cat": "judged-for-mechanical",
+  "name": "`shape approve` of the unestablished law's binding",
+  "steps": "As G1, but bob approves the unestablished obligation's binding instead of judging.",
+  "expected": "nothing discharged (no answer discharger for missing); blocking",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(missing) blocking critical audit::EventsArePreserved",
+   "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(missing) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(missing) blocking critical audit::EventsArePreserved",
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(missing) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "G5",
+  "cat": "judged-for-mechanical",
+  "name": "judgment and approval offered against the final forbid's contradiction",
+  "steps": "Example 1 Variant B; bob writes `shape judge audit::AuditEvent/AppendOnly/effect.forbid-HardDelete` and approves the contradiction's binding; a signed bob judgment record supporting the forbid's fp is also supplied.",
+  "expected": "contradiction stays blocking",
+  "outcome": "blocked",
+  "hits": [
+   "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "G6",
+  "cat": "judged-for-mechanical",
+  "name": "a failing (inconclusive) test plus a harness edit turns the law into an answerable producer-changed obligation",
+  "steps": "Example 3 Step 2: the change edits checkShapeModules and determinism.test.ts (the test's harness). bunTest's fresh head record is `inconclusive` (failed without counterexample). ann approves the obligation's binding.",
+  "expected": "CheckIsDeterministic unestablished (missing: an inconclusive record holds no reason, A.5.4.3), blocking, not answerable",
+  "outcome": "succeeded",
+  "hits": [],
+  "proto": {
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": [
+    "discharge ob:79b18d16e2bc560c"
+   ]
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(missing) blocking critical checker::CheckIsDeterministic"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "unestablished(missing) blocking critical checker::CheckIsDeterministic"
+   ],
+   "answered": []
+  },
+  "control": {
+   "expect": "producer-changed, discharged by ann's answer (designed path)",
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": [
+    "discharge ob:79b18d16e2bc560c"
+   ],
+   "grade": "succeeded"
+  }
+ },
+ {
+  "id": "G7",
+  "cat": "judged-for-mechanical",
+  "name": "producer change masks an undeclared assume (an answer substitutes for removing or declaring it)",
+  "steps": "Example 2 (agent inserts assume in set; the fresh proof's cone holds the undeclared hatch). The same change bumps ironkv/Cargo.lock (verus' implementation). dana approves the SetRefinesSpec obligation's binding.",
+  "expected": "SetRefinesSpec unestablished (assumption), blocking; no answer discharges it",
+  "outcome": "succeeded",
+  "hits": [],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking critical sound ironkv::NoHatchesOutsideBoundaries/1584bb88c66c",
+    "contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4"
+   ],
+   "answered": [
+    "discharge ob:8b9a1c953f7ed31c"
+   ]
+  },
+  "kernel": {
+   "outcome": "succeeded",
+   "hits": [],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking critical sound ironkv::NoHatchesOutsideBoundaries/1584bb88c66c",
+    "contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4"
+   ],
+   "answered": [
+    "discharge ob:8b9a1c953f7ed31c"
+   ]
+  },
+  "control": null
+ },
+ {
+  "id": "G8",
+  "cat": "judged-for-mechanical",
+  "name": "producer change masks an undeclared named assumption (no hatch involved)",
+  "steps": "Example 2 without the assume (set edited, no marker). The fresh proof lists the named assumption NetworkDelivers, which no base boundary `assumes`. The same change bumps ironkv/Cargo.lock; dana approves the SetRefinesSpec obligation's binding.",
+  "expected": "SetRefinesSpec unestablished (assumption), blocking; no answer discharges it (EM-4)",
+  "outcome": "succeeded",
+  "hits": [],
+  "proto": {
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4"
+   ],
+   "answered": [
+    "discharge ob:8b9a1c953f7ed31c"
+   ]
+  },
+  "kernel": {
+   "outcome": "succeeded",
+   "hits": [],
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4"
+   ],
+   "answered": [
+    "discharge ob:8b9a1c953f7ed31c"
+   ]
+  },
+  "control": {
+   "expect": "SetRefinesSpec unestablished (assumption), blocking",
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "unestablished(assumption) blocking critical ironkv::SetRefinesSpec",
+    "contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4"
+   ],
+   "answered": [],
+   "grade": "blocked"
+  }
+ },
+ {
+  "id": "W1",
+  "cat": "law-weakened",
+  "name": "integer bound widened in the change that supplies a test of the widened law",
+  "steps": "Base law AppendBounded = Bounded<AuditStore.appendEvent, 0, 50>; the change edits appendEvent and widens the law to Bounded<…, 0, 100>; a fresh fastCheck record supports the widened instance.",
+  "expected": "L4 loosening of the base law (no heir), blocking at critical",
+  "outcome": "blocked",
+  "hits": [
+   "loosening[L4] blocking critical audit::AppendBounded"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "loosening[L4] blocking critical audit::AppendBounded"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "loosening[L4] blocking critical audit::AppendBounded"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "loosening[L4] blocking critical audit::AppendBounded"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "W2",
+  "cat": "law-weakened",
+  "name": "string budget widened (\"250ms\" to \"1000ms\") in the change that supplies a test of the widened law",
+  "steps": "Base law AppendFast = LatencyAtMost<AuditStore.appendEvent, \"250ms\"> (`order Budget by leq`); the change edits appendEvent and widens Budget to \"1000ms\"; a fresh fastCheck record supports the widened instance.",
+  "expected": "L4 loosening (the head law is weaker, so not an heir), blocking at critical",
+  "outcome": "succeeded",
+  "hits": [],
+  "proto": {
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "loosening[L4] blocking critical audit::AppendFast"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "loosening[L4] blocking critical audit::AppendFast"
+   ],
+   "answered": []
+  },
+  "control": {
+   "expect": "L4 loosening (300ms is weaker in both orders)",
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "loosening[L4] blocking critical audit::AppendFast"
+   ],
+   "answered": [],
+   "grade": "blocked"
+  }
+ },
+ {
+  "id": "W3",
+  "cat": "law-weakened",
+  "name": "law requirement lowered from tested to declared while its evidence is dropped (normal tier)",
+  "steps": "Base law AppendBounded (tier normal, evidence tested by fastCheck); the change edits appendEvent and lowers the head law to `evidence declared`; no record for it.",
+  "expected": "L7 loosening (requirement weakened), blocking under DefaultPolicy normal; unestablished (R* keeps tested)",
+  "outcome": "blocked",
+  "hits": [
+   "loosening[L7] blocking normal audit::AppendBounded",
+   "E-provider-missing provider audit::fastCheck claim audit::AppendBounded"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::AppendBounded"
+   ],
+   "rejected": [],
+   "obligations": [
+    "loosening[L7] blocking normal audit::AppendBounded",
+    "unestablished(missing) owed normal audit::AppendBounded"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "loosening[L7] blocking normal audit::AppendBounded",
+    "E-provider-missing provider audit::fastCheck audit::AppendBounded"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::AppendBounded"
+   ],
+   "rejected": [],
+   "obligations": [
+    "loosening[L7] blocking normal audit::AppendBounded",
+    "unestablished(missing) owed normal audit::AppendBounded"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "W4",
+  "cat": "law-weakened",
+  "name": "law re-pinned to a head-only provider that supplies the only record",
+  "steps": "Base law AppendBounded (critical, tested by fastCheck); the change edits appendEvent, re-pins the law to `by fakeCheck` (a head-only provider deciding Bounded) and supplies fakeCheck's supporting record.",
+  "expected": "AppendBounded unestablished (weak: pins united, head-only level declared), blocking",
+  "outcome": "blocked",
+  "hits": [
+   "loosening[L7] blocking critical audit::AppendBounded",
+   "unestablished(weak) blocking critical audit::AppendBounded",
+   "E-provider-missing provider audit::fastCheck claim audit::AppendBounded"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::AppendBounded"
+   ],
+   "rejected": [],
+   "obligations": [
+    "loosening[L7] blocking critical audit::AppendBounded",
+    "unestablished(weak) blocking critical audit::AppendBounded"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "loosening[L7] blocking critical audit::AppendBounded",
+    "unestablished(weak) blocking critical audit::AppendBounded",
+    "E-provider-missing provider audit::fastCheck audit::AppendBounded"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::AppendBounded"
+   ],
+   "rejected": [],
+   "obligations": [
+    "loosening[L7] blocking critical audit::AppendBounded",
+    "unestablished(weak) blocking critical audit::AppendBounded"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "W5",
+  "cat": "law-weakened",
+  "name": "law target narrowed from the component to one unit so the old record covers it again",
+  "steps": "Example 1 Variant B (purge added to AuditStore); the head changes EventsArePreserved to `on unit AuditStore.appendEvent`; fastCheck's fresh record cites only appendEvent (the narrowed Req).",
+  "expected": "L4 loosening of the base law (on is in the NF; no heir), blocking at critical",
+  "outcome": "blocked",
+  "hits": [
+   "loosening[L4] blocking critical audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L4] blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "loosening[L4] blocking critical audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L4] blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "W6",
+  "cat": "law-weakened",
+  "name": "hosted statement's specification weakened in the change that re-proves it",
+  "steps": "Example 2 without the assume: the change edits set and weakens its ensures clause, so set's closure digest moves (its contract digest is left as in the fixture). The fresh verus proof cites the new closure and supports SetRefinesSpec.",
+  "expected": "L4 undecided for SetRefinesSpec (closure change awaiting an implies record or answer), blocking at critical",
+  "outcome": "succeeded",
+  "hits": [],
+  "proto": {
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "succeeded",
+   "hits": [],
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "W7",
+  "cat": "law-weakened",
+  "name": "law tier lowered to low while its evidence is dropped",
+  "steps": "Example 1 Variant B without fastCheck's record; the head sets EventsArePreserved to `tier low`.",
+  "expected": "law unestablished with tier* critical, blocking; L7",
+  "outcome": "blocked",
+  "hits": [
+   "loosening[L7] blocking critical audit::EventsArePreserved",
+   "unestablished(missing) blocking critical audit::EventsArePreserved",
+   "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking critical audit::EventsArePreserved",
+    "unestablished(missing) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "loosening[L7] blocking critical audit::EventsArePreserved",
+    "unestablished(missing) blocking critical audit::EventsArePreserved",
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking critical audit::EventsArePreserved",
+    "unestablished(missing) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "W8",
+  "cat": "law-weakened",
+  "name": "user template's law body lowered from tested to declared while the evidence is dropped",
+  "steps": "Base and head declare template Retained<R: resource> { law { evidence tested } } and law AuditRetained = Retained<AuditEvent> { on component AuditStore }; the head changes the template body to `evidence declared`; the change adds the purge (Req grows); no record.",
+  "expected": "AuditRetained unestablished (R* from base) or L4/L7 loosening, blocking at critical",
+  "outcome": "blocked",
+  "hits": [
+   "loosening[L7] blocking critical audit::AuditRetained",
+   "unestablished(missing) blocking critical audit::AuditRetained"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-route claim audit::AuditRetained"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking critical audit::AuditRetained",
+    "unestablished(missing) blocking critical audit::AuditRetained"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "loosening[L7] blocking critical audit::AuditRetained",
+    "unestablished(missing) blocking critical audit::AuditRetained"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking critical audit::AuditRetained",
+    "unestablished(missing) blocking critical audit::AuditRetained"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "H1",
+  "cat": "provider-edit",
+  "name": "head drops presence soundness from the observer",
+  "steps": "Example 1 Variant B-weak (sqlEffects `sound absence` in head).",
+  "expected": "final contradiction stays sound and blocking; L7",
+  "outcome": "blocked",
+  "hits": [
+   "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking final \"provider audit::sqlEffects\""
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking final \"provider audit::sqlEffects\""
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "H2",
+  "cat": "provider-edit",
+  "name": "head drops absence soundness from the observer",
+  "steps": "Example 1 Variant B; head sqlEffects declares `sound presence` only.",
+  "expected": "final contradiction blocking; coverage of the purge unmet",
+  "outcome": "blocked",
+  "hits": [
+   "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "coverage blocking final \"component audit::AuditStore\"",
+    "loosening[L7] blocking final \"provider audit::sqlEffects\""
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "coverage blocking final \"component audit::AuditStore\"",
+    "loosening[L7] blocking final \"provider audit::sqlEffects\""
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "H3",
+  "cat": "provider-edit",
+  "name": "head deletes the authenticated observer's declaration and its record",
+  "steps": "Example 1 Variant B; the head removes `provider sqlEffects`; CI supplies no sqlEffects record.",
+  "expected": "E-provider-missing (base authenticated observer, A.5.2.13), blocking",
+  "outcome": "partial",
+  "hits": [
+   "coverage blocking final \"component audit::AuditStore\"",
+   "loosening[L7] blocking final \"provider audit::sqlEffects\""
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking final \"component audit::AuditStore\"",
+    "loosening[L7] blocking final \"provider audit::sqlEffects\""
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "E-provider-missing provider audit::sqlEffects"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::sqlEffects"
+   ],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking final \"component audit::AuditStore\"",
+    "loosening[L7] blocking final \"provider audit::sqlEffects\""
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "H4",
+  "cat": "provider-edit",
+  "name": "head narrows the observer's channel to another table and its record is dropped",
+  "steps": "Example 1 Variant B; head sqlEffects `observes effect(pg.table(\"audit_archive\"))`; no sqlEffects record.",
+  "expected": "E-provider-missing, blocking",
+  "outcome": "partial",
+  "hits": [
+   "coverage blocking final \"component audit::AuditStore\"",
+   "loosening[L7] blocking final \"provider audit::sqlEffects\""
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking final \"component audit::AuditStore\"",
+    "loosening[L7] blocking final \"provider audit::sqlEffects\""
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "E-provider-missing provider audit::sqlEffects"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::sqlEffects"
+   ],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking final \"component audit::AuditStore\"",
+    "loosening[L7] blocking final \"provider audit::sqlEffects\""
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "H5",
+  "cat": "provider-edit",
+  "name": "head narrows the observer's channel but its record still reports the violation",
+  "steps": "As H4, keeping sqlEffects' signed head record.",
+  "expected": "final contradiction blocking (force from base ∨ head)",
+  "outcome": "blocked",
+  "hits": [
+   "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "coverage blocking final \"component audit::AuditStore\"",
+    "loosening[L7] blocking final \"provider audit::sqlEffects\""
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "coverage blocking final \"component audit::AuditStore\"",
+    "loosening[L7] blocking final \"provider audit::sqlEffects\""
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "H6",
+  "cat": "provider-edit",
+  "name": "head bumps the observer's implementation digest (new version)",
+  "steps": "Example 1 Variant B; head sqlEffects implementation digest changes to a 2.4.0 archive.",
+  "expected": "final contradiction stays blocking (producer-changed keeps contradiction force)",
+  "outcome": "blocked",
+  "hits": [
+   "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "coverage blocking final \"component audit::AuditStore\"",
+    "loosening[L7] blocking final \"provider audit::sqlEffects\""
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking final \"provider audit::sqlEffects\""
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "H7",
+  "cat": "provider-edit",
+  "name": "head swaps the observer's signing identity and supplies a clean record signed by the new key",
+  "steps": "Example 1 Variant B; head sqlEffects identity = attacker key; the genuine record is dropped; a record signed by the attacker key reports no HardDelete (entries complete).",
+  "expected": "record rejected (RJ08: base identity); E-provider-missing, blocking",
+  "outcome": "blocked",
+  "hits": [
+   "E-provider-missing provider audit::sqlEffects"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::sqlEffects"
+   ],
+   "rejected": [
+    "RJ08 not signed by audit::sqlEffects's base identity"
+   ],
+   "obligations": [
+    "coverage blocking final \"component audit::AuditStore\"",
+    "loosening[L7] blocking final \"provider audit::sqlEffects\""
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "E-provider-missing provider audit::sqlEffects"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::sqlEffects"
+   ],
+   "rejected": [],
+   "obligations": [
+    "coverage blocking final \"component audit::AuditStore\"",
+    "loosening[L7] blocking final \"provider audit::sqlEffects\""
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "H8",
+  "cat": "provider-edit",
+  "name": "head changes the prover's trusted solver version to match a proof run on it",
+  "steps": "Example 2 without the assume (set edited, no marker). The fresh proof lists tool assumption z3@4.13.0; the head changes verus' `trusts tool(\"z3\", …)` from 4.12.5 to 4.13.0.",
+  "expected": "SetRefinesSpec unestablished (assumption: trusts read from base), blocking",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(assumption) blocking critical ironkv::SetRefinesSpec"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "loosening[L7] blocking critical \"provider ironkv::verus\"",
+    "unestablished(assumption) blocking critical ironkv::SetRefinesSpec",
+    "contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(assumption) blocking critical ironkv::SetRefinesSpec"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "loosening[L7] blocking critical \"provider ironkv::verus\"",
+    "unestablished(assumption) blocking critical ironkv::SetRefinesSpec",
+    "contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4"
+   ],
+   "answered": []
+  },
+  "control": {
+   "expect": "SetRefinesSpec established",
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction owed critical sound preexisting ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4"
+   ],
+   "answered": [],
+   "grade": "succeeded"
+  }
+ },
+ {
+  "id": "H9",
+  "cat": "provider-edit",
+  "name": "head makes the tester deps-complete and reuses a base-revision record",
+  "steps": "Example 1 Variant B; head (only) declares fastCheck `deps complete`; its fresh record is replaced by the base-revision record with deps: [].",
+  "expected": "law unestablished (stale), blocking",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(stale) blocking critical audit::EventsArePreserved",
+   "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking critical \"provider audit::fastCheck\"",
+    "unestablished(stale) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(stale) blocking critical audit::EventsArePreserved",
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "loosening[L7] blocking critical \"provider audit::fastCheck\"",
+    "unestablished(stale) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "H10",
+  "cat": "provider-edit",
+  "name": "head-only provider decides the law and supplies the only supporting record",
+  "steps": "Example 1 Variant B; the head adds provider fakeCheck (produces test, decides template HistoryPreserved, sound presence, own identity); fastCheck's record is dropped; fakeCheck's signed record supports the law and cites the head Req.",
+  "expected": "law unestablished (weak: head-only provider counts as declared), blocking; E-provider-missing for fastCheck",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(weak) blocking critical audit::EventsArePreserved",
+   "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck claim audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(weak) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(weak) blocking critical audit::EventsArePreserved",
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "verdict": "blocked",
+   "errors": [
+    "E-provider-missing provider audit::fastCheck audit::EventsArePreserved"
+   ],
+   "rejected": [],
+   "obligations": [
+    "contradiction blocking final sound audit::AuditEvent/AppendOnly/effect.forbid-HardDelete",
+    "unestablished(weak) blocking critical audit::EventsArePreserved"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "H11",
+  "cat": "provider-edit",
+  "name": "head drops bun.lock from the tester's implementation paths in the change that edits bun.lock",
+  "steps": "Example 3 Step 2; the change bumps bun.lock and removes it from bunTest's `implementation` paths; bunTest's fresh record supports.",
+  "expected": "CheckIsDeterministic producer-changed, blocking at critical until a person answers",
+  "outcome": "blocked",
+  "hits": [
+   "unestablished(producer-changed) blocking critical checker::CheckIsDeterministic"
+  ],
+  "proto": {
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "loosening[L7] blocking critical \"provider checker::bunTest\"",
+    "unestablished(producer-changed) blocking critical checker::CheckIsDeterministic"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "blocked",
+   "hits": [
+    "unestablished(producer-changed) blocking critical checker::CheckIsDeterministic"
+   ],
+   "verdict": "blocked",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "loosening[L7] blocking critical \"provider checker::bunTest\"",
+    "unestablished(producer-changed) blocking critical checker::CheckIsDeterministic"
+   ],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "X1",
+  "cat": "other",
+  "name": "observer reports the violation at a nested identity the manifest does not list (relocated fact)",
+  "steps": "Example 1 Variant B; sqlEffects' signed head record reports HardDelete at ts:src/audit/purge.ts#purgeOldEvents.batch (an inner function the manifest builder does not list).",
+  "expected": "final contradiction, sound, blocking",
+  "outcome": "partial",
+  "hits": [
+   "contradiction owed final heuristic audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+  ],
+  "proto": {
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "contradiction owed final heuristic audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "succeeded",
+   "hits": [],
+   "verdict": "pass",
+   "errors": [],
+   "rejected": [],
+   "obligations": [],
+   "answered": []
+  },
+  "control": null
+ },
+ {
+  "id": "X2",
+  "cat": "other",
+  "name": "observer reports the violation but its scope omits the violating file (unanchored fact), normal tier",
+  "steps": "Example 3 Step 2 seeded change with CheckerNeverReadsClock at tier normal; the head scan reports the Date.now fact but lists no entry for guards.ts or checkFreshness.",
+  "expected": "sound contradiction, blocking (rule 7)",
+  "outcome": "partial",
+  "hits": [
+   "coverage owed normal \"component checker::ShapeRuleEngine\""
+  ],
+  "proto": {
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage owed normal \"component checker::ShapeRuleEngine\""
+   ],
+   "answered": []
+  },
+  "kernel": {
+   "outcome": "partial",
+   "hits": [
+    "coverage owed normal \"component checker::ShapeRuleEngine\""
+   ],
+   "verdict": "owed",
+   "errors": [],
+   "rejected": [],
+   "obligations": [
+    "coverage owed normal \"component checker::ShapeRuleEngine\""
+   ],
+   "answered": []
+  },
+  "control": null
+ }
+]

@@ -1,0 +1,61 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:26c1f8d79bf5d0941f1984bfea7f58fba10b86c0d25c0fd3709150f1155f1d61",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:cf369f77ee17e87abf8598b5489f3b483cc1b4efe348610cee5fe703c0ac7110",
+    "ids": [
+     "tooling::CheckerNeverReadsClock"
+    ],
+    "tier": "normal"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": "sound",
+   "group": "g:42c8bf8ceeccd15ee6a6992449125f0708bda49f500702a7cabd0675cd2019bd",
+   "introduced": true,
+   "key": "ob:d98055745547389f83971693def7cf3d1e3dd6850821637f736b8867dbc95226",
+   "kind": "contradiction",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": null,
+   "reason": null,
+   "severity": "blocking",
+   "subject": {
+    "atom": "Read<tooling::SystemClock>",
+    "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+   },
+   "tier": "normal",
+   "witness": [
+    "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e"
+   ]
+  },
+  {
+   "binding": "bd:4d6726f1cb82a21caae6d91377b1fa3cc6468f3c98dddfff986658249e28d1d6",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:42c8bf8ceeccd15ee6a6992449125f0708bda49f500702a7cabd0675cd2019bd",
+   "introduced": true,
+   "key": "ob:4e436759e4554b39d3af2a46cba1d3f8dec05f9b5359ff3f122d3c63c717f6ad",
+   "kind": "coverage",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": null,
+   "reason": null,
+   "severity": "owed",
+   "subject": "component checker::ShapeRuleEngine",
+   "tier": "normal",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

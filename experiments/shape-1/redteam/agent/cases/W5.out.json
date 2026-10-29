@@ -1,0 +1,225 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:8560c8007ebb62ac79c572172e61ca7d070f592c8045c41272295c2374a64c7d",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:bb51a88f52f5081e773dabf7f021b863325e003c20a47af0a4e2b8e133f59628",
+   "kind": "contradiction",
+   "reason": null,
+   "questions": null,
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "final",
+   "budget": "mechanical",
+   "force": "sound",
+   "owner": "audit::AuditTeam",
+   "assignee": null,
+   "group": "g:c8994b8055faed3d69f9f2a33f0305e88a53cce668465062197014d0353847de",
+   "claim": {
+    "fp": "sha256:ccfcbabf10265d643560fc2bcd0014f9bf15241ce35da1f5e0a269c349e617c0",
+    "ids": [
+     "audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+    ],
+    "tier": "final"
+   },
+   "subject": {
+    "code": "ts:src/audit/purge.ts#purgeOldEvents",
+    "atom": "HardDelete<audit::AuditEvent>"
+   },
+   "witness": [
+    "sha256:51ed979304abfea638295c5bec1e63db15cfa26c3425a552f31ae7ca312dc279"
+   ],
+   "facts": {
+    "sha256:51ed979304abfea638295c5bec1e63db15cfa26c3425a552f31ae7ca312dc279": {
+     "at": "ts:src/audit/purge.ts#purgeOldEvents",
+     "resource": "pg.table(\"audit_events\")",
+     "type": "effect",
+     "verb": "HardDelete"
+    }
+   },
+   "counterexample": null,
+   "exploited": null,
+   "final": true,
+   "binding": "bd:0ee8731661d897e621efbd56e0875beecb7c4b7524920ad681fdc55c8ad187d6",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "edit-code",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "edit-shape",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "final",
+      "answers": 2,
+      "owners": [
+       "audit::AuditTeam",
+       "audit::Platform"
+      ]
+     }
+    }
+   ],
+   "causes": [
+    {
+     "type": "fact",
+     "id": "sha256:51ed979304abfea638295c5bec1e63db15cfa26c3425a552f31ae7ca312dc279"
+    },
+    {
+     "type": "binding",
+     "id": "resource audit::AuditEvent"
+    },
+    {
+     "type": "code",
+     "id": "ts:src/audit/purge.ts#purgeOldEvents"
+    },
+    {
+     "type": "claim",
+     "id": "sha256:987106a04014478f6935873a3a96a3fc65c384de7b145c679dbf6cc9d082eaa4"
+    }
+   ]
+  },
+  {
+   "key": "ob:e116fbb7fe2c24094607d78ecb494bbbf48165859e455702232b9062519a39e0",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L4"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "judgment",
+   "force": null,
+   "owner": "audit::AuditTeam",
+   "assignee": null,
+   "group": "g:c8994b8055faed3d69f9f2a33f0305e88a53cce668465062197014d0353847de",
+   "claim": {
+    "fp": "sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3",
+    "ids": [
+     "audit::EventsArePreserved"
+    ],
+    "tier": "critical"
+   },
+   "subject": "sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3",
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": false,
+   "final": false,
+   "binding": "bd:ec759fd38da84396362059a6822dbc63f466aba56be23fae57fd0c633eff7c9b",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "provide",
+     "by": "ci",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "audit::bob"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [
+  {
+   "question": "L4",
+   "subject": "sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3",
+   "answer": "undecided",
+   "exploited": false,
+   "final": false,
+   "affected": [
+    "ts:src/audit/purge.ts",
+    "ts:src/audit/purge.ts#purgeOldEvents",
+    "ts:src/audit/store.ts",
+    "ts:src/audit/store.ts#appendEvent"
+   ],
+   "counterexample": null,
+   "obligation": "ob:e116fbb7fe2c24094607d78ecb494bbbf48165859e455702232b9062519a39e0"
+  }
+ ],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 2,
+   "den": 2
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [],
+  "ungoverned": {
+   "num": 3,
+   "den": 7
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [
+   "audit::fastCheck"
+  ],
+  "baseObservations": "missing",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"audit::AuditStore.*\",\"audit::AuditStore.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 2,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

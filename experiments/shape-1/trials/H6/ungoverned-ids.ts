@@ -14,10 +14,14 @@ let files = 0;
 for (const [id, info] of W.man.ids) {
   if (W.att(id) !== UNGOVERNED) continue;
   const parts = info.path.split("/");
-  const top = info.path.startsWith("packages/") ? parts.slice(0, 4).join("/") : parts.slice(0, info.path.startsWith("experiments/") ? 2 : 1).join("/");
+  const top = info.path.startsWith("packages/")
+    ? parts.slice(0, 4).join("/")
+    : parts.slice(0, info.path.startsWith("experiments/") ? 2 : 1).join("/");
   byTop[top] = (byTop[top] ?? 0) + 1;
   byLang[info.lang] = (byLang[info.lang] ?? 0) + 1;
   if (info.kind === "file") files += 1;
 }
 const total = Object.values(byTop).reduce((a, b) => a + b, 0);
-process.stdout.write(`${JSON.stringify({ total, identities: W.man.ids.size, files, byLang, byTop: Object.fromEntries(Object.entries(byTop).sort((a, b) => b[1] - a[1])) }, null, 1)}\n`);
+process.stdout.write(
+  `${JSON.stringify({ total, identities: W.man.ids.size, files, byLang, byTop: Object.fromEntries(Object.entries(byTop).sort((a, b) => b[1] - a[1])) }, null, 1)}\n`
+);

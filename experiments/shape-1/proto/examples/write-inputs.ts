@@ -16,7 +16,7 @@ const all: Record<string, CheckInput> = {
   "ex1-Bsecond": ex1("Bsecond"),
   "ex1-C": ex1("C"),
   "ex1-C-answered": ex1("C-answered"),
-  "ex2": ex2(),
+  ex2: ex2(),
   "ex2-approve-only": ex2({ approve: true }),
   "ex2-exception-approve": ex2({ exception: true, approve: true }),
   "ex3-step1": ex3(),
@@ -26,7 +26,7 @@ const all: Record<string, CheckInput> = {
   "ex3-step2-record-dropped": ex3s2({ harnessEdited: true, dropRecord: true }),
   "ex3-step2-seeded-clock": ex3s2({ seededClock: true }),
   "ex3-step2-refactor-sensitive-removed": ex3s2({ removeRefactorSensitive: true }),
-  "ex4": ex4(),
+  ex4: ex4(),
   "ex4-closing-the-set": ex4({ complete: true, headDiagnostics: true })
 };
 
@@ -36,5 +36,6 @@ if (!out) {
   process.exit(2);
 }
 mkdirSync(out, { recursive: true });
-for (const [name, input] of Object.entries(all)) writeFileSync(join(out, `${name}.json`), `${JSON.stringify(input, null, 1)}\n`);
+for (const [name, input] of Object.entries(all))
+  writeFileSync(join(out, `${name}.json`), `${JSON.stringify(input, null, 1)}\n`);
 process.stdout.write(`${Object.keys(all).length} inputs written to ${out}\n`);

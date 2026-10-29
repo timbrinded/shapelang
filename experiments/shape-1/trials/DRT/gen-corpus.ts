@@ -34,7 +34,10 @@ for (let s = first; s < first + Number(countStr); s += 1) {
         g.meta.attempt = k;
       }
   } catch (e) {
-    appendFileSync(`${outDir}/index.${shard[0]}.jsonl`, `${JSON.stringify({ id, seed: s, status: "gen-error", error: String(e).slice(0, 300) })}\n`);
+    appendFileSync(
+      `${outDir}/index.${shard[0]}.jsonl`,
+      `${JSON.stringify({ id, seed: s, status: "gen-error", error: String(e).slice(0, 300) })}\n`
+    );
     continue;
   }
   let input = g.input;
@@ -52,5 +55,8 @@ for (let s = first; s < first + Number(countStr); s += 1) {
   }
   const path = `${outDir}/${id}.input.json`;
   writeFileSync(path, JSON.stringify(input));
-  appendFileSync(`${outDir}/index.${shard[0]}.jsonl`, `${JSON.stringify({ id, seed: s, path, profile, phase2, mode: input.mode, ops: g.meta.ops, features: g.meta.features, reviews: input.reviews.length, records: input.records.length })}\n`);
+  appendFileSync(
+    `${outDir}/index.${shard[0]}.jsonl`,
+    `${JSON.stringify({ id, seed: s, path, profile, phase2, mode: input.mode, ops: g.meta.ops, features: g.meta.features, reviews: input.reviews.length, records: input.records.length })}\n`
+  );
 }

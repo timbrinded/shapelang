@@ -58,7 +58,9 @@ function rightX(x: number): number {
 }
 
 function moveTo(tx: number, ty: number, g: Game): Game {
-  return isWall(tx, ty) ? { x: g.x, y: g.y, won: g.won } : { x: tx, y: ty, won: g.won || onFlag(tx, ty) };
+  return isWall(tx, ty)
+    ? { x: g.x, y: g.y, won: g.won }
+    : { x: tx, y: ty, won: g.won || onFlag(tx, ty) };
 }
 
 /** Plays one move. */

@@ -1,0 +1,145 @@
+module shape.generated.ast.experiments.shape_1.dogfood.laws.incremental_law_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource IncrementalLawTestModuleComponentDocAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/incremental.law.test.ts#componentDoc")
+  fingerprint ast.semantic_subtree_v1("sha256:4a858037e5004a46c5241de136e383d36711ca19b84ed23b158b0e0299ab69c9")
+}
+
+resource IncrementalLawTestModuleFullCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/incremental.law.test.ts#fullCheck")
+  fingerprint ast.semantic_subtree_v1("sha256:4e4b9476e6398e2202eb9b3a531baa3ff1d74c336993d438b160d6fe5eef176f")
+}
+
+resource IncrementalLawTestModuleGenSessionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/incremental.law.test.ts#genSession")
+  fingerprint ast.semantic_subtree_v1("sha256:b9cd54eb3ebcd5620ab9b6a8dee904797070d2f70aa2cdca209d53126f04493d")
+}
+
+resource IncrementalLawTestModuleInitialDocsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/incremental.law.test.ts#initialDocs")
+  fingerprint ast.semantic_subtree_v1("sha256:86ec66b7765da12f128a23e44604555a8323810a52ba31af0c9cbd0660fcdc45")
+}
+
+resource IncrementalLawTestModuleMutateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/incremental.law.test.ts#mutate")
+  fingerprint ast.semantic_subtree_v1("sha256:982c2a52138ec4cd3ceede8fbb8ea40c94093dcad20a69b2907725145079bf9e")
+}
+
+resource IncrementalLawTestModuleOptionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/incremental.law.test.ts#options")
+  fingerprint ast.semantic_subtree_v1("sha256:fdc663432733a9d379ba9a912b20331f30d5649a6540b5dbd03f7a89452a6a3d")
+}
+
+resource IncrementalLawTestModuleReplayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/incremental.law.test.ts#replay")
+  fingerprint ast.semantic_subtree_v1("sha256:8b4c16834208ec607d6f09f43761e0965831ab3f3007029a0ce94a56da34ee58")
+}
+
+resource IncrementalLawTestModuleResourcesDocAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/incremental.law.test.ts#resourcesDoc")
+  fingerprint ast.semantic_subtree_v1("sha256:d781592763b7864bf1642a37e182465f43b6594f84bdfa136ff35fa7b2c428d2")
+}
+
+component IncrementalLawTestModule : GeneratedCandidate {
+  fn componentDoc
+    source ts("experiments/shape-1/dogfood/laws/incremental.law.test.ts#componentDoc")
+    effects unknown
+  fn fullCheck
+    source ts("experiments/shape-1/dogfood/laws/incremental.law.test.ts#fullCheck")
+    effects unknown
+  fn genSession
+    source ts("experiments/shape-1/dogfood/laws/incremental.law.test.ts#genSession")
+    effects unknown
+  fn initialDocs
+    source ts("experiments/shape-1/dogfood/laws/incremental.law.test.ts#initialDocs")
+    effects unknown
+  fn mutate
+    source ts("experiments/shape-1/dogfood/laws/incremental.law.test.ts#mutate")
+    effects unknown
+  fn options
+    source ts("experiments/shape-1/dogfood/laws/incremental.law.test.ts#options")
+    effects unknown
+  fn replay
+    source ts("experiments/shape-1/dogfood/laws/incremental.law.test.ts#replay")
+    effects unknown
+  fn resourcesDoc
+    source ts("experiments/shape-1/dogfood/laws/incremental.law.test.ts#resourcesDoc")
+    effects unknown
+}
+
+relation IncrementalLawTestModuleComponentDocGeneratedFromIncrementalLawTestModuleComponentDocAstAnchor {
+  kind generated_from
+  connects IncrementalLawTestModule -> IncrementalLawTestModuleComponentDocAstAnchor
+  roles { IncrementalLawTestModule as generated, IncrementalLawTestModuleComponentDocAstAnchor as syntax }
+  expects IncrementalLawTestModuleComponentDocAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4a858037e5004a46c5241de136e383d36711ca19b84ed23b158b0e0299ab69c9")
+  summary "fn IncrementalLawTestModule.componentDoc generated from typescript function_declaration at experiments/shape-1/dogfood/laws/incremental.law.test.ts#componentDoc."
+}
+
+relation IncrementalLawTestModuleFullCheckGeneratedFromIncrementalLawTestModuleFullCheckAstAnchor {
+  kind generated_from
+  connects IncrementalLawTestModule -> IncrementalLawTestModuleFullCheckAstAnchor
+  roles { IncrementalLawTestModule as generated, IncrementalLawTestModuleFullCheckAstAnchor as syntax }
+  expects IncrementalLawTestModuleFullCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4e4b9476e6398e2202eb9b3a531baa3ff1d74c336993d438b160d6fe5eef176f")
+  summary "fn IncrementalLawTestModule.fullCheck generated from typescript function_declaration at experiments/shape-1/dogfood/laws/incremental.law.test.ts#fullCheck."
+}
+
+relation IncrementalLawTestModuleGenSessionGeneratedFromIncrementalLawTestModuleGenSessionAstAnchor {
+  kind generated_from
+  connects IncrementalLawTestModule -> IncrementalLawTestModuleGenSessionAstAnchor
+  roles { IncrementalLawTestModule as generated, IncrementalLawTestModuleGenSessionAstAnchor as syntax }
+  expects IncrementalLawTestModuleGenSessionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b9cd54eb3ebcd5620ab9b6a8dee904797070d2f70aa2cdca209d53126f04493d")
+  summary "fn IncrementalLawTestModule.genSession generated from typescript function_declaration at experiments/shape-1/dogfood/laws/incremental.law.test.ts#genSession."
+}
+
+relation IncrementalLawTestModuleInitialDocsGeneratedFromIncrementalLawTestModuleInitialDocsAstAnchor {
+  kind generated_from
+  connects IncrementalLawTestModule -> IncrementalLawTestModuleInitialDocsAstAnchor
+  roles { IncrementalLawTestModule as generated, IncrementalLawTestModuleInitialDocsAstAnchor as syntax }
+  expects IncrementalLawTestModuleInitialDocsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:86ec66b7765da12f128a23e44604555a8323810a52ba31af0c9cbd0660fcdc45")
+  summary "fn IncrementalLawTestModule.initialDocs generated from typescript function_declaration at experiments/shape-1/dogfood/laws/incremental.law.test.ts#initialDocs."
+}
+
+relation IncrementalLawTestModuleMutateGeneratedFromIncrementalLawTestModuleMutateAstAnchor {
+  kind generated_from
+  connects IncrementalLawTestModule -> IncrementalLawTestModuleMutateAstAnchor
+  roles { IncrementalLawTestModule as generated, IncrementalLawTestModuleMutateAstAnchor as syntax }
+  expects IncrementalLawTestModuleMutateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:982c2a52138ec4cd3ceede8fbb8ea40c94093dcad20a69b2907725145079bf9e")
+  summary "fn IncrementalLawTestModule.mutate generated from typescript function_declaration at experiments/shape-1/dogfood/laws/incremental.law.test.ts#mutate."
+}
+
+relation IncrementalLawTestModuleOptionsGeneratedFromIncrementalLawTestModuleOptionsAstAnchor {
+  kind generated_from
+  connects IncrementalLawTestModule -> IncrementalLawTestModuleOptionsAstAnchor
+  roles { IncrementalLawTestModule as generated, IncrementalLawTestModuleOptionsAstAnchor as syntax }
+  expects IncrementalLawTestModuleOptionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fdc663432733a9d379ba9a912b20331f30d5649a6540b5dbd03f7a89452a6a3d")
+  summary "fn IncrementalLawTestModule.options generated from typescript function_declaration at experiments/shape-1/dogfood/laws/incremental.law.test.ts#options."
+}
+
+relation IncrementalLawTestModuleReplayGeneratedFromIncrementalLawTestModuleReplayAstAnchor {
+  kind generated_from
+  connects IncrementalLawTestModule -> IncrementalLawTestModuleReplayAstAnchor
+  roles { IncrementalLawTestModule as generated, IncrementalLawTestModuleReplayAstAnchor as syntax }
+  expects IncrementalLawTestModuleReplayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b4c16834208ec607d6f09f43761e0965831ab3f3007029a0ce94a56da34ee58")
+  summary "fn IncrementalLawTestModule.replay generated from typescript function_declaration at experiments/shape-1/dogfood/laws/incremental.law.test.ts#replay."
+}
+
+relation IncrementalLawTestModuleResourcesDocGeneratedFromIncrementalLawTestModuleResourcesDocAstAnchor {
+  kind generated_from
+  connects IncrementalLawTestModule -> IncrementalLawTestModuleResourcesDocAstAnchor
+  roles { IncrementalLawTestModule as generated, IncrementalLawTestModuleResourcesDocAstAnchor as syntax }
+  expects IncrementalLawTestModuleResourcesDocAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d781592763b7864bf1642a37e182465f43b6594f84bdfa136ff35fa7b2c428d2")
+  summary "fn IncrementalLawTestModule.resourcesDoc generated from typescript function_declaration at experiments/shape-1/dogfood/laws/incremental.law.test.ts#resourcesDoc."
+}
+
+implementation IncrementalLawTestModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/laws/incremental.law.test.ts"
+  }
+  conforms_to IncrementalLawTestModule
+}

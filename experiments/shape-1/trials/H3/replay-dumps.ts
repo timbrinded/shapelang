@@ -26,7 +26,11 @@ const take = (k: string): string | undefined => {
 const OUT = take("out") ?? "/dev/stdout";
 const KERNEL = take("kernel");
 if (OUT !== "/dev/stdout") rmSync(OUT, { force: true });
-const checkers = { stock: derive, vnew: (await import(buildVariant("vnew"))).derive, vnew2: (await import(buildVariant("vnew2"))).derive };
+const checkers = {
+  stock: derive,
+  vnew: (await import(buildVariant("vnew"))).derive,
+  vnew2: (await import(buildVariant("vnew2"))).derive
+};
 
 function krecords(list) {
   const parsed = [];
@@ -34,7 +38,11 @@ function krecords(list) {
     const r = parseRecord(x);
     if (!r.error) parsed.push(r);
   }
-  return mergeRecords(parsed).map((r) => ({ id: r.id, predicate: { shape: r.shape }, authenticated: r.signers.length > 0 }));
+  return mergeRecords(parsed).map((r) => ({
+    id: r.id,
+    predicate: { shape: r.shape },
+    authenticated: r.signers.length > 0
+  }));
 }
 function kernelCase(input) {
   const now = toSeconds(input.now);
@@ -42,9 +50,13 @@ function kernelCase(input) {
   const base = elaborate(input.base.source, { lenient: true, now });
   const gv = buildGov(base, base.policy, input.authors ?? []);
   const owners = [];
-  for (const c of base.components) for (const g of c.paths) owners.push({ side: "b", glob: g, owner: `${c.q}.*` });
-  for (const c of head.components) for (const g of c.paths) owners.push({ side: "h", glob: g, owner: `${c.q}.*` });
-  const cells = computeCells(owners).cells.filter((c) => typeof c.b === "string" && typeof c.h === "string").map((c) => [c.b, c.h]);
+  for (const c of base.components)
+    for (const g of c.paths) owners.push({ side: "b", glob: g, owner: `${c.q}.*` });
+  for (const c of head.components)
+    for (const g of c.paths) owners.push({ side: "h", glob: g, owner: `${c.q}.*` });
+  const cells = computeCells(owners)
+    .cells.filter((c) => typeof c.b === "string" && typeof c.h === "string")
+    .map((c) => [c.b, c.h]);
   return {
     contract: "shape.kernel.case/v1",
     mode: input.mode,
@@ -73,13 +85,28 @@ for (const f of argv) {
   }
   if (KERNEL) {
     const t0 = performance.now();
-    const r = spawnSync(KERNEL, [], { input: JSON.stringify(kernelCase(input)), maxBuffer: 1 << 30 });
+    const r = spawnSync(KERNEL, [], {
+      input: JSON.stringify(kernelCase(input)),
+      maxBuffer: 1 << 30
+    });
     let row;
     try {
       const out = JSON.parse(r.stdout.toString());
-      row = { input: basename(f), checker: "kernel", verdict: out.verdict, errors: (out.errors ?? []).map((e) => ({ code: e.code, subject: e.subject })), obligations: (out.obligations ?? []).filter((o) => o.introduced || o.kind === "contradiction" || o.kind === "unestablished").map(compact) };
+      row = {
+        input: basename(f),
+        checker: "kernel",
+        verdict: out.verdict,
+        errors: (out.errors ?? []).map((e) => ({ code: e.code, subject: e.subject })),
+        obligations: (out.obligations ?? [])
+          .filter((o) => o.introduced || o.kind === "contradiction" || o.kind === "unestablished")
+          .map(compact)
+      };
     } catch {
-      row = { input: basename(f), checker: "kernel", crash: `exit ${r.status} ${r.stderr.toString().slice(0, 300)}` };
+      row = {
+        input: basename(f),
+        checker: "kernel",
+        crash: `exit ${r.status} ${r.stderr.toString().slice(0, 300)}`
+      };
     }
     row.ms = Math.round(performance.now() - t0);
     appendFileSync(OUT, `${JSON.stringify(row)}\n`);

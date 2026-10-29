@@ -4,7 +4,14 @@ import type { Ctx } from "./context.ts";
 import { type WFact, channelCovered, factId } from "./evidence.ts";
 import { idToSourceRef } from "./elaborate.ts";
 import { type IdentityInfo, ancestorsOrSelf } from "./manifest.ts";
-import { type Cause, type Claim, type JsonValue, type ShapeError, TRUST, parseAtom } from "./model.ts";
+import {
+  type Cause,
+  type Claim,
+  type JsonValue,
+  type ShapeError,
+  TRUST,
+  parseAtom
+} from "./model.ts";
 import { carriers, parseResourceCode } from "./resource-code.ts";
 import { type Tier, cmpStr, cmpTuple, maxTier, sortedUniq, tierRank } from "./util.ts";
 import {
@@ -79,15 +86,53 @@ export function declaredFacts(ctx: Ctx): WFact[] {
         const a = parseAtom(atom);
         if (via) {
           out.push(
-            mk({ type: "declared", claim: c.fp, atom: entry }, { kind: "call", at: W.unitBind.get(u) ?? null, unit: u, to: W.unitBind.get(via) ?? null, atom, verb: a?.verb ?? null, resource: a?.resource ?? null })
+            mk(
+              { type: "declared", claim: c.fp, atom: entry },
+              {
+                kind: "call",
+                at: W.unitBind.get(u) ?? null,
+                unit: u,
+                to: W.unitBind.get(via) ?? null,
+                atom,
+                verb: a?.verb ?? null,
+                resource: a?.resource ?? null
+              }
+            )
           );
-          out.push(mk({ type: "declared", claim: c.fp, atom, unit: via }, { at: W.unitBind.get(via) ?? null, unit: via, atom, verb: a?.verb ?? null, resource: a?.resource ?? null }));
+          out.push(
+            mk(
+              { type: "declared", claim: c.fp, atom, unit: via },
+              {
+                at: W.unitBind.get(via) ?? null,
+                unit: via,
+                atom,
+                verb: a?.verb ?? null,
+                resource: a?.resource ?? null
+              }
+            )
+          );
         } else {
-          out.push(mk({ type: "declared", claim: c.fp, atom }, { at: W.unitBind.get(u) ?? null, unit: u, atom, verb: a?.verb ?? null, resource: a?.resource ?? null }));
+          out.push(
+            mk(
+              { type: "declared", claim: c.fp, atom },
+              {
+                at: W.unitBind.get(u) ?? null,
+                unit: u,
+                atom,
+                verb: a?.verb ?? null,
+                resource: a?.resource ?? null
+              }
+            )
+          );
         }
       }
     } else if (c.op === "edge.exists") {
-      out.push(mk({ type: "declared", claim: c.fp }, { kind: String(c.args.kind), unit: String(c.args.from), to: String(c.args.to) }));
+      out.push(
+        mk(
+          { type: "declared", claim: c.fp },
+          { kind: String(c.args.kind), unit: String(c.args.from), to: String(c.args.to) }
+        )
+      );
     }
   }
   return out;
@@ -103,7 +148,8 @@ export function buildCalls(facts: WFact[]): Map<string, { to: string; fact: WFac
     list.push({ to: f.to, fact: f });
     calls.set(f.at, list);
   }
-  for (const list of calls.values()) list.sort((a, b) => cmpStr(a.to, b.to) || cmpStr(a.fact.fid, b.fact.fid));
+  for (const list of calls.values())
+    list.sort((a, b) => cmpStr(a.to, b.to) || cmpStr(a.fact.fid, b.fact.fid));
   return calls;
 }
 
@@ -113,13 +159,17 @@ export function factCost(f: WFact): [number, number] {
 }
 
 function bestFact(facts: WFact[]): WFact {
-  return [...facts].sort(
-    (a, b) => cmpTuple([...factCost(a), a.fid], [...factCost(b), b.fid])
+  return [...facts].sort((a, b) =>
+    cmpTuple([...factCost(a), a.fid], [...factCost(b), b.fid])
   )[0] as WFact;
 }
 
 /** Lifted edges E_S of W_eval: relations, `via` pairs and observed calls/edges between components. */
-export function liftedEdges(ctx: Ctx, w: World, facts: WFact[]): { edges: Edge[]; ungovernedCalls: number; droppedEdges: number } {
+export function liftedEdges(
+  ctx: Ctx,
+  w: World,
+  facts: WFact[]
+): { edges: Edge[]; ungovernedCalls: number; droppedEdges: number } {
   const byKey = new Map<string, Edge>();
   let ungovernedCalls = 0;
   let droppedEdges = 0;
@@ -148,7 +198,12 @@ export function liftedEdges(ctx: Ctx, w: World, facts: WFact[]): { edges: Edge[]
         continue;
       }
       const a = compAt(f.at);
-      const b = kd.to === "resource" ? (w.resOfCode.get(f.to) ?? null) : w.man.ids.has(f.to) ? compAt(f.to) : null;
+      const b =
+        kd.to === "resource"
+          ? (w.resOfCode.get(f.to) ?? null)
+          : w.man.ids.has(f.to)
+            ? compAt(f.to)
+            : null;
       if (!a || !b) {
         ungovernedCalls += 1;
         continue;
@@ -157,7 +212,9 @@ export function liftedEdges(ctx: Ctx, w: World, facts: WFact[]): { edges: Edge[]
     }
   }
   void ctx;
-  const edges = [...byKey.values()].sort((x, y) => cmpTuple([x.from, x.kind, x.to], [y.from, y.kind, y.to]));
+  const edges = [...byKey.values()].sort((x, y) =>
+    cmpTuple([x.from, x.kind, x.to], [y.from, y.kind, y.to])
+  );
   for (const e of edges) e.facts.sort((a, b) => cmpStr(a.fid, b.fid));
   return { edges, ungovernedCalls, droppedEdges };
 }
@@ -179,7 +236,10 @@ function claimId(c: Claim): string {
 
 // ---- authority and effect forbids ------------------------------------------------------------------
 
-export function effectSites(ctx: Ctx, facts: WFact[]): { x: string; pos: string; atom: string; f: WFact }[] {
+export function effectSites(
+  ctx: Ctx,
+  facts: WFact[]
+): { x: string; pos: string; atom: string; f: WFact }[] {
   const W = ctx.Wh;
   const out: { x: string; pos: string; atom: string; f: WFact }[] = [];
   for (const f of facts) {
@@ -226,14 +286,17 @@ export function evalEffects(ctx: Ctx, facts: WFact[], errors: ShapeError[]): Con
       causes.push({ type: "binding", id: `resource ${r}`, text: `${r} binds ${w.resource}` });
     }
     causes.push({ type: "code", id: s.x, text: `${where} is attributed to ${s.pos}` });
-    for (const o of excl.slice(1)) causes.push({ type: "claim", id: o.fp, text: `${claimId(o)} also excludes it` });
+    for (const o of excl.slice(1))
+      causes.push({ type: "claim", id: o.fp, text: `${claimId(o)} also excludes it` });
     if (decl.length > 0) {
       errors.push({
         code: "E-conduct",
         subject: `${claimId(claim)} ${JSON.stringify(subject)}`,
         message: `${s.pos} declares ${s.atom}, which ${claimId(claim)} excludes`,
         causes,
-        dischargers: [{ act: "edit-shape", by: "author", agentSafe: true, eligible: [], creates: null }]
+        dischargers: [
+          { act: "edit-shape", by: "author", agentSafe: true, eligible: [], creates: null }
+        ]
       });
       continue;
     }
@@ -255,9 +318,11 @@ export function evalEffects(ctx: Ctx, facts: WFact[], errors: ShapeError[]): Con
 }
 
 function factText(f: WFact): string {
-  if (f.type === "effect") return `${f.verb} at ${f.at} on ${f.resource}${f.presenceSound ? " (presence-sound)" : " (heuristic)"} from ${f.sources.map((s) => s.provider).join(", ")}`;
+  if (f.type === "effect")
+    return `${f.verb} at ${f.at} on ${f.resource}${f.presenceSound ? " (presence-sound)" : " (heuristic)"} from ${f.sources.map((s) => s.provider).join(", ")}`;
   if (f.type === "hatch") return `${f.n} ${f.kind} marker(s) at ${f.at} (manifest)`;
-  if (f.type === "call") return `call ${f.at} -> ${f.to}${f.presenceSound ? "" : " (heuristic)"} from ${f.sources.map((s) => s.provider).join(", ")}`;
+  if (f.type === "call")
+    return `call ${f.at} -> ${f.to}${f.presenceSound ? "" : " (heuristic)"} from ${f.sources.map((s) => s.provider).join(", ")}`;
   if (f.type === "edge") return `${f.kind} edge ${f.at} -> ${f.to}`;
   return `declared by ${f.claim}${f.atom ? ` (${f.atom})` : ""}`;
 }
@@ -267,7 +332,11 @@ function factText(f: WFact): string {
 export function reach(ctx: Ctx, from: string[]): Map<string, WFact[]> {
   // shortest call chains by (heuristic, observed, length) from any start identity
   const best = new Map<string, { cost: [number, number, number]; chain: WFact[] }>();
-  const queue: { x: string; cost: [number, number, number]; chain: WFact[] }[] = from.map((x) => ({ x, cost: [0, 0, 0], chain: [] }));
+  const queue: { x: string; cost: [number, number, number]; chain: WFact[] }[] = from.map((x) => ({
+    x,
+    cost: [0, 0, 0],
+    chain: []
+  }));
   while (queue.length > 0) {
     queue.sort((a, b) => cmpTuple([...a.cost, a.x], [...b.cost, b.x]));
     const cur = queue.shift() as { x: string; cost: [number, number, number]; chain: WFact[] };
@@ -276,7 +345,11 @@ export function reach(ctx: Ctx, from: string[]): Map<string, WFact[]> {
     for (const c of ctx.calls.get(cur.x) ?? []) {
       if (best.has(c.to)) continue;
       const fc = factCost(c.fact);
-      queue.push({ x: c.to, cost: [cur.cost[0] + fc[0], cur.cost[1] + fc[1], cur.cost[2] + 1], chain: [...cur.chain, c.fact] });
+      queue.push({
+        x: c.to,
+        cost: [cur.cost[0] + fc[0], cur.cost[1] + fc[1], cur.cost[2] + 1],
+        chain: [...cur.chain, c.fact]
+      });
     }
   }
   return new Map([...best.entries()].map(([k, v]) => [k, v.chain]));
@@ -323,20 +396,30 @@ export function evalUpper(ctx: Ctx, facts: WFact[], errors: ShapeError[]): Contr
           const all = [...o.chain, o.f];
           const h = all.filter((f) => !f.declared && !f.presenceSound).length;
           const ob = all.filter((f) => f.observed).length;
-          return { o, all, key: [h, ob, all.length, ...all.map((f) => f.fid)] as (string | number)[] };
+          return {
+            o,
+            all,
+            key: [h, ob, all.length, ...all.map((f) => f.fid)] as (string | number)[]
+          };
         })
         .sort((a, b) => cmpTuple(a.key, b.key));
       const w = scored[0];
       if (!w) continue;
       const subject = { unit: u, atom };
-      const causes: Cause[] = w.all.map((f) => ({ type: "fact" as const, id: f.fid, text: factText(f) }));
+      const causes: Cause[] = w.all.map((f) => ({
+        type: "fact" as const,
+        id: f.fid,
+        text: factText(f)
+      }));
       if (w.all.every((f) => f.declared)) {
         errors.push({
           code: "E-conduct",
           subject: `${claimId(c)} ${JSON.stringify(subject)}`,
           message: `${u}'s complete summary omits ${atom}, which W_decl gives it`,
           causes,
-          dischargers: [{ act: "edit-shape", by: "author", agentSafe: true, eligible: [], creates: null }]
+          dischargers: [
+            { act: "edit-shape", by: "author", agentSafe: true, eligible: [], creates: null }
+          ]
         });
         continue;
       }
@@ -383,7 +466,9 @@ export function prod(w: World, kind: string, targets: Set<string>): string[] {
   if (!kd) return [];
   if (kd.to === "component") return [`edge(${kind})`];
   const out: string[] = [];
-  for (const t of targets) for (const b of w.esf.resources.find((r) => r.q === t)?.bind ?? []) out.push(`edge(${kind}, ${b})`);
+  for (const t of targets)
+    for (const b of w.esf.resources.find((r) => r.q === t)?.bind ?? [])
+      out.push(`edge(${kind}, ${b})`);
   return out;
 }
 
@@ -401,37 +486,60 @@ export function governedCode(w: World): string[] {
 export function footprint(ctx: Ctx, w: World, c: Claim): { code: string[]; channels: string[] } {
   switch (c.op) {
     case "authority":
-      return { code: compCode(w, String(c.args.component)), channels: boundCodes(w).map((t) => `effect(${t})`) };
+      return {
+        code: compCode(w, String(c.args.component)),
+        channels: boundCodes(w).map((t) => `effect(${t})`)
+      };
     case "effect.forbid": {
       const scope = c.args.scope as string[];
       const except = c.args.except as string[];
-      const pos = w.positions.filter((p) => scope.some((s) => inUnitSel(s, p)) && !except.some((s) => inUnitSel(s, p)));
-      return { code: sortedUniq(pos.flatMap((p) => w.codeOfPos.get(p) ?? [])), channels: chanOfAtom(w, String(c.args.atom)) };
+      const pos = w.positions.filter(
+        (p) => scope.some((s) => inUnitSel(s, p)) && !except.some((s) => inUnitSel(s, p))
+      );
+      return {
+        code: sortedUniq(pos.flatMap((p) => w.codeOfPos.get(p) ?? [])),
+        channels: chanOfAtom(w, String(c.args.atom))
+      };
     }
     case "effects.upper":
     case "effects.lower": {
       const u = String(c.args.unit);
       const r = reach(ctx, [...(w.codeOfPos.get(u) ?? [])]);
-      return { code: sortedUniq(r.keys()), channels: ["call(*)", ...boundCodes(w).map((t) => `effect(${t})`)] };
+      return {
+        code: sortedUniq(r.keys()),
+        channels: ["call(*)", ...boundCodes(w).map((t) => `effect(${t})`)]
+      };
     }
     case "edge.exists": {
       const a = String(c.args.from);
-      return { code: compCode(w, a), channels: prod(w, String(c.args.kind), new Set([String(c.args.to)])) };
+      return {
+        code: compCode(w, a),
+        channels: prod(w, String(c.args.kind), new Set([String(c.args.to)]))
+      };
     }
     case "edge.forbid": {
       const S = nodeSet(w, c.args.from as string[]);
       for (const x of nodeSet(w, c.args.exceptFrom as string[])) S.delete(x);
       const T = nodeSet(w, c.args.to as string[]);
       for (const y of nodeSet(w, c.args.exceptTo as string[])) T.delete(y);
-      return { code: sortedUniq([...S].flatMap((s) => compCode(w, s))), channels: prod(w, String(c.args.kind), T) };
+      return {
+        code: sortedUniq([...S].flatMap((s) => compCode(w, s))),
+        channels: prod(w, String(c.args.kind), T)
+      };
     }
     case "path.forbid": {
       const T = nodeSet(w, c.args.to as string[]);
-      return { code: governedCode(w), channels: sortedUniq((c.args.kinds as string[]).flatMap((k) => prod(w, k, T))) };
+      return {
+        code: governedCode(w),
+        channels: sortedUniq((c.args.kinds as string[]).flatMap((k) => prod(w, k, T)))
+      };
     }
     case "cycle.forbid": {
       const N = new Set(w.nodes);
-      return { code: governedCode(w), channels: sortedUniq((c.args.kinds as string[]).flatMap((k) => prod(w, k, N))) };
+      return {
+        code: governedCode(w),
+        channels: sortedUniq((c.args.kinds as string[]).flatMap((k) => prod(w, k, N)))
+      };
     }
     default:
       return { code: [], channels: [] };
@@ -466,7 +574,10 @@ export function channelAt(t: string, info: IdentityInfo): string | null {
 
 // ---- refutation of lower bounds -----------------------------------------------------------------------
 
-function entryFor(ctx: Ctx, x: string): { provider: string; record: string; producerChanged: boolean }[] {
+function entryFor(
+  ctx: Ctx,
+  x: string
+): { provider: string; record: string; producerChanged: boolean }[] {
   const out: { provider: string; record: string; producerChanged: boolean }[] = [];
   for (const a of ancestorsOrSelf(ctx.Mh, x)) {
     for (const e of ctx.obsEntries.get(a) ?? []) if (e.entry.complete) out.push(e);
@@ -476,7 +587,12 @@ function entryFor(ctx: Ctx, x: string): { provider: string; record: string; prod
 
 /** Footprint identities each covered by a usable complete entry on an applicable channel from a
  *  provider absence-sound in the given direction. */
-export function fullyObserved(ctx: Ctx, code: string[], channels: string[], dir: "a" | "b"): { ok: boolean; covered: string[] } {
+export function fullyObserved(
+  ctx: Ctx,
+  code: string[],
+  channels: string[],
+  dir: "a" | "b"
+): { ok: boolean; covered: string[] } {
   const covered: string[] = [];
   let any = false;
   for (const x of code) {
@@ -506,7 +622,10 @@ export function fullyObserved(ctx: Ctx, code: string[], channels: string[], dir:
 export function evalLower(ctx: Ctx, facts: WFact[], edges: Edge[]): Contra[] {
   const W = ctx.Wh;
   const out: Contra[] = [];
-  const observedSites = effectSites(ctx, facts.filter((f) => f.observed));
+  const observedSites = effectSites(
+    ctx,
+    facts.filter((f) => f.observed)
+  );
   for (const c of ctx.head.claims) {
     if (c.op === "effects.lower") {
       const fp = footprint(ctx, W, c);
@@ -531,7 +650,13 @@ export function evalLower(ctx: Ctx, facts: WFact[], edges: Edge[]): Contra[] {
           supportCode: obs.covered,
           excluding: [c],
           tierStar: tierStar(ctx, c),
-          causes: [{ type: "claim", id: c.fp, text: `complete absence-sound entries cover ${obs.covered.length} identities and none reports ${atom}` }],
+          causes: [
+            {
+              type: "claim",
+              id: c.fp,
+              text: `complete absence-sound entries cover ${obs.covered.length} identities and none reports ${atom}`
+            }
+          ],
           message: `${c.args.unit} is declared to cause ${atom}, but complete observations of its reach report none.`,
           refuted: true
         });
@@ -540,7 +665,13 @@ export function evalLower(ctx: Ctx, facts: WFact[], edges: Edge[]): Contra[] {
       const fp = footprint(ctx, W, c);
       const obs = fullyObserved(ctx, fp.code, fp.channels, "a");
       if (!obs.ok) continue;
-      const present = edges.some((e) => e.from === c.args.from && e.kind === c.args.kind && e.to === c.args.to && e.facts.some((f) => f.observed));
+      const present = edges.some(
+        (e) =>
+          e.from === c.args.from &&
+          e.kind === c.args.kind &&
+          e.to === c.args.to &&
+          e.facts.some((f) => f.observed)
+      );
       if (present) continue;
       out.push({
         claim: c,
@@ -551,7 +682,13 @@ export function evalLower(ctx: Ctx, facts: WFact[], edges: Edge[]): Contra[] {
         supportCode: obs.covered,
         excluding: [c],
         tierStar: tierStar(ctx, c),
-        causes: [{ type: "claim", id: c.fp, text: `complete absence-sound entries cover ${obs.covered.length} identities of ${c.args.from} and report no ${c.args.kind} edge to ${c.args.to}` }],
+        causes: [
+          {
+            type: "claim",
+            id: c.fp,
+            text: `complete absence-sound entries cover ${obs.covered.length} identities of ${c.args.from} and report no ${c.args.kind} edge to ${c.args.to}`
+          }
+        ],
         message: `${claimId(c)}: no ${c.args.kind} edge ${c.args.from} -> ${c.args.to} is observed where observation is complete.`,
         refuted: true
       });
@@ -578,7 +715,11 @@ function pathCost(path: Edge[]): (number | string)[] {
   return [h, o, path.length, ...path.map((e) => bestFact(e.facts).fid)];
 }
 
-function shortestPaths(start: string, edges: Edge[], allowInterior: (n: string) => boolean): Map<string, Edge[]> {
+function shortestPaths(
+  start: string,
+  edges: Edge[],
+  allowInterior: (n: string) => boolean
+): Map<string, Edge[]> {
   const best = new Map<string, Edge[]>();
   const out = new Map<string, Edge[]>();
   for (const e of edges) out.set(e.from, [...(out.get(e.from) ?? []), e]);
@@ -641,16 +782,28 @@ function sccs(nodes: string[], edges: Edge[]): string[][] {
 export function evalStructure(ctx: Ctx, edges: Edge[], errors: ShapeError[]): Contra[] {
   const W = ctx.Wh;
   const out: Contra[] = [];
-  const emit = (c: Claim, subject: JsonValue, witness: Edge[], support: WFact[], what: string): void => {
+  const emit = (
+    c: Claim,
+    subject: JsonValue,
+    witness: Edge[],
+    support: WFact[],
+    what: string
+  ): void => {
     const wfacts = witness.map((e) => bestFact(e.facts));
-    const causes: Cause[] = wfacts.map((f) => ({ type: "fact" as const, id: f.fid, text: factText(f) }));
+    const causes: Cause[] = wfacts.map((f) => ({
+      type: "fact" as const,
+      id: f.fid,
+      text: factText(f)
+    }));
     if (wfacts.every((f) => f.declared)) {
       errors.push({
         code: "E-structure",
         subject: `${claimId(c)} ${JSON.stringify(subject)}`,
         message: `declared structure violates ${claimId(c)}: ${what}`,
         causes,
-        dischargers: [{ act: "edit-shape", by: "author", agentSafe: true, eligible: [], creates: null }]
+        dischargers: [
+          { act: "edit-shape", by: "author", agentSafe: true, eligible: [], creates: null }
+        ]
       });
       return;
     }
@@ -692,18 +845,36 @@ export function evalStructure(ctx: Ctx, edges: Edge[], errors: ShapeError[]): Co
           const p = sp.get(t);
           if (!p) continue;
           // support: K-edges (a,b) with a reachable from s and t reachable from b through allowed interiors
-          const fwd = new Set([s, ...[...sp.keys()].filter((n) => !V.has(n) && !S.has(n) && !T.has(n))]);
+          const fwd = new Set([
+            s,
+            ...[...sp.keys()].filter((n) => !V.has(n) && !S.has(n) && !T.has(n))
+          ]);
           const back = new Set<string>([t]);
           let grew = true;
           while (grew) {
             grew = false;
-            for (const e of kEdges) if (back.has(e.to) && !back.has(e.from) && !V.has(e.from) && !T.has(e.from) && (e.from === s || !S.has(e.from))) {
-              back.add(e.from);
-              grew = true;
-            }
+            for (const e of kEdges)
+              if (
+                back.has(e.to) &&
+                !back.has(e.from) &&
+                !V.has(e.from) &&
+                !T.has(e.from) &&
+                (e.from === s || !S.has(e.from))
+              ) {
+                back.add(e.from);
+                grew = true;
+              }
           }
-          const support = kEdges.filter((e) => fwd.has(e.from) && back.has(e.to)).flatMap((e) => e.facts);
-          emit(c, { from: s, to: t }, p, support, `path ${[s, ...p.map((e) => e.to)].join(" -> ")}`);
+          const support = kEdges
+            .filter((e) => fwd.has(e.from) && back.has(e.to))
+            .flatMap((e) => e.facts);
+          emit(
+            c,
+            { from: s, to: t },
+            p,
+            support,
+            `path ${[s, ...p.map((e) => e.to)].join(" -> ")}`
+          );
         }
       }
     } else if (c.op === "cycle.forbid") {
@@ -725,7 +896,13 @@ export function evalStructure(ctx: Ctx, edges: Edge[], errors: ShapeError[]): Co
           if (!best || cmpTuple(pathCost(cyc), pathCost(best)) < 0) best = cyc;
         }
         if (!best) continue;
-        emit(c, { nodes: comp }, best, inner.flatMap((e) => e.facts), `cycle ${[n, ...best.map((e) => e.to)].join(" -> ")}`);
+        emit(
+          c,
+          { nodes: comp },
+          best,
+          inner.flatMap((e) => e.facts),
+          `cycle ${[n, ...best.map((e) => e.to)].join(" -> ")}`
+        );
       }
     }
   }

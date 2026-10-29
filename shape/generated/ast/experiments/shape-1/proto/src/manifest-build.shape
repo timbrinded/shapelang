@@ -1,0 +1,225 @@
+module shape.generated.ast.experiments.shape_1.proto.src.manifest_build
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ManifestBuildModuleBuildManifestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest-build.ts#buildManifest")
+  fingerprint ast.semantic_subtree_v1("sha256:ac3033d05e043fa300829373576c0ef5795afac441faa71c2689f8bade2d6e16")
+}
+
+resource ManifestBuildModuleFilesFromDirAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest-build.ts#filesFromDir")
+  fingerprint ast.semantic_subtree_v1("sha256:c8a56745eb5d34091966ff4a98107f092e4d15f832bcf48cee60e3843b2b4a1c")
+}
+
+resource ManifestBuildModuleFilesFromGitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest-build.ts#filesFromGit")
+  fingerprint ast.semantic_subtree_v1("sha256:4385e74b49bdb4c8f754fafcdf0dbf11ffb8246f297fec2e6432f09583dbf201")
+}
+
+resource ManifestBuildModuleGhaIdentitiesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest-build.ts#ghaIdentities")
+  fingerprint ast.semantic_subtree_v1("sha256:71084dd714e052290edeed3348b0c8581302819e9ba163fef7353c6bb0f4b94e")
+}
+
+resource ManifestBuildModuleGitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest-build.ts#git")
+  fingerprint ast.semantic_subtree_v1("sha256:072e47102953852aa05e8caf6e1519be5ed9b724e7f3c45041fb3c413e3e446b")
+}
+
+resource ManifestBuildModuleHashbangInterpreterAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest-build.ts#hashbangInterpreter")
+  fingerprint ast.semantic_subtree_v1("sha256:bee2ba9a48ef22a0067f58e8893d29718dc6fa02dc305ff0e126fb23f8b676d6")
+}
+
+resource ManifestBuildModuleMakeResolverAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest-build.ts#makeResolver")
+  fingerprint ast.semantic_subtree_v1("sha256:cf47b2072c3e0e10619f6908a1d0d84dece21b8faf431997ee7360ca0f4fc8a2")
+}
+
+resource ManifestBuildModuleManifestFromFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest-build.ts#manifestFromFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:6f8904ccb3b5b979b41cd6459167972f7d393ed75d5747b207382a3c9d7d618d")
+}
+
+resource ManifestBuildModulePkgjsonIdentitiesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest-build.ts#pkgjsonIdentities")
+  fingerprint ast.semantic_subtree_v1("sha256:57713def989b758ea6d0f1a685381efe887c3798df9cba2b4bfc92ed4887ceb9")
+}
+
+resource ManifestBuildModulePushAllAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest-build.ts#pushAll")
+  fingerprint ast.semantic_subtree_v1("sha256:e4157f56fad06be8584697404771863af24719cbd62004dd5fa633b139d73c22")
+}
+
+resource ManifestBuildModuleRawExecutableAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest-build.ts#rawExecutable")
+  fingerprint ast.semantic_subtree_v1("sha256:ae6872e1c1e80dea81090bf1683f1033a7eb1e032041cb1a09a50e42682f8009")
+}
+
+resource ManifestBuildModuleRawIdentityAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest-build.ts#rawIdentity")
+  fingerprint ast.semantic_subtree_v1("sha256:6b1b49924f3bf4f3918804da708243d58936e02980b6dcd114fd917a975853d5")
+}
+
+resource ManifestBuildModuleSafeJcsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest-build.ts#safeJcs")
+  fingerprint ast.semantic_subtree_v1("sha256:3936db6fc4c284eee207f3b37de427d1e138ce572591d04bcfbda5c366345749")
+}
+
+component ManifestBuildModule : GeneratedCandidate {
+  fn buildManifest
+    source ts("experiments/shape-1/proto/src/manifest-build.ts#buildManifest")
+    effects unknown
+  fn filesFromDir
+    source ts("experiments/shape-1/proto/src/manifest-build.ts#filesFromDir")
+    effects unknown
+  fn filesFromGit
+    source ts("experiments/shape-1/proto/src/manifest-build.ts#filesFromGit")
+    effects unknown
+  fn ghaIdentities
+    source ts("experiments/shape-1/proto/src/manifest-build.ts#ghaIdentities")
+    effects unknown
+  fn git
+    source ts("experiments/shape-1/proto/src/manifest-build.ts#git")
+    effects unknown
+  fn hashbangInterpreter
+    source ts("experiments/shape-1/proto/src/manifest-build.ts#hashbangInterpreter")
+    effects unknown
+  fn makeResolver
+    source ts("experiments/shape-1/proto/src/manifest-build.ts#makeResolver")
+    effects unknown
+  fn manifestFromFiles
+    source ts("experiments/shape-1/proto/src/manifest-build.ts#manifestFromFiles")
+    effects unknown
+  fn pkgjsonIdentities
+    source ts("experiments/shape-1/proto/src/manifest-build.ts#pkgjsonIdentities")
+    effects unknown
+  fn pushAll
+    source ts("experiments/shape-1/proto/src/manifest-build.ts#pushAll")
+    effects unknown
+  fn rawExecutable
+    source ts("experiments/shape-1/proto/src/manifest-build.ts#rawExecutable")
+    effects unknown
+  fn rawIdentity
+    source ts("experiments/shape-1/proto/src/manifest-build.ts#rawIdentity")
+    effects unknown
+  fn safeJcs
+    source ts("experiments/shape-1/proto/src/manifest-build.ts#safeJcs")
+    effects unknown
+}
+
+relation ManifestBuildModuleBuildManifestGeneratedFromManifestBuildModuleBuildManifestAstAnchor {
+  kind generated_from
+  connects ManifestBuildModule -> ManifestBuildModuleBuildManifestAstAnchor
+  roles { ManifestBuildModule as generated, ManifestBuildModuleBuildManifestAstAnchor as syntax }
+  expects ManifestBuildModuleBuildManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ac3033d05e043fa300829373576c0ef5795afac441faa71c2689f8bade2d6e16")
+  summary "fn ManifestBuildModule.buildManifest generated from typescript function_declaration at experiments/shape-1/proto/src/manifest-build.ts#buildManifest."
+}
+
+relation ManifestBuildModuleFilesFromDirGeneratedFromManifestBuildModuleFilesFromDirAstAnchor {
+  kind generated_from
+  connects ManifestBuildModule -> ManifestBuildModuleFilesFromDirAstAnchor
+  roles { ManifestBuildModule as generated, ManifestBuildModuleFilesFromDirAstAnchor as syntax }
+  expects ManifestBuildModuleFilesFromDirAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c8a56745eb5d34091966ff4a98107f092e4d15f832bcf48cee60e3843b2b4a1c")
+  summary "fn ManifestBuildModule.filesFromDir generated from typescript function_declaration at experiments/shape-1/proto/src/manifest-build.ts#filesFromDir."
+}
+
+relation ManifestBuildModuleFilesFromGitGeneratedFromManifestBuildModuleFilesFromGitAstAnchor {
+  kind generated_from
+  connects ManifestBuildModule -> ManifestBuildModuleFilesFromGitAstAnchor
+  roles { ManifestBuildModule as generated, ManifestBuildModuleFilesFromGitAstAnchor as syntax }
+  expects ManifestBuildModuleFilesFromGitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4385e74b49bdb4c8f754fafcdf0dbf11ffb8246f297fec2e6432f09583dbf201")
+  summary "fn ManifestBuildModule.filesFromGit generated from typescript function_declaration at experiments/shape-1/proto/src/manifest-build.ts#filesFromGit."
+}
+
+relation ManifestBuildModuleGhaIdentitiesGeneratedFromManifestBuildModuleGhaIdentitiesAstAnchor {
+  kind generated_from
+  connects ManifestBuildModule -> ManifestBuildModuleGhaIdentitiesAstAnchor
+  roles { ManifestBuildModule as generated, ManifestBuildModuleGhaIdentitiesAstAnchor as syntax }
+  expects ManifestBuildModuleGhaIdentitiesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:71084dd714e052290edeed3348b0c8581302819e9ba163fef7353c6bb0f4b94e")
+  summary "fn ManifestBuildModule.ghaIdentities generated from typescript function_declaration at experiments/shape-1/proto/src/manifest-build.ts#ghaIdentities."
+}
+
+relation ManifestBuildModuleGitGeneratedFromManifestBuildModuleGitAstAnchor {
+  kind generated_from
+  connects ManifestBuildModule -> ManifestBuildModuleGitAstAnchor
+  roles { ManifestBuildModule as generated, ManifestBuildModuleGitAstAnchor as syntax }
+  expects ManifestBuildModuleGitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:072e47102953852aa05e8caf6e1519be5ed9b724e7f3c45041fb3c413e3e446b")
+  summary "fn ManifestBuildModule.git generated from typescript function_declaration at experiments/shape-1/proto/src/manifest-build.ts#git."
+}
+
+relation ManifestBuildModuleHashbangInterpreterGeneratedFromManifestBuildModuleHashbangInterpreterAstAnchor {
+  kind generated_from
+  connects ManifestBuildModule -> ManifestBuildModuleHashbangInterpreterAstAnchor
+  roles { ManifestBuildModule as generated, ManifestBuildModuleHashbangInterpreterAstAnchor as syntax }
+  expects ManifestBuildModuleHashbangInterpreterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bee2ba9a48ef22a0067f58e8893d29718dc6fa02dc305ff0e126fb23f8b676d6")
+  summary "fn ManifestBuildModule.hashbangInterpreter generated from typescript function_declaration at experiments/shape-1/proto/src/manifest-build.ts#hashbangInterpreter."
+}
+
+relation ManifestBuildModuleMakeResolverGeneratedFromManifestBuildModuleMakeResolverAstAnchor {
+  kind generated_from
+  connects ManifestBuildModule -> ManifestBuildModuleMakeResolverAstAnchor
+  roles { ManifestBuildModule as generated, ManifestBuildModuleMakeResolverAstAnchor as syntax }
+  expects ManifestBuildModuleMakeResolverAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cf47b2072c3e0e10619f6908a1d0d84dece21b8faf431997ee7360ca0f4fc8a2")
+  summary "fn ManifestBuildModule.makeResolver generated from typescript function_declaration at experiments/shape-1/proto/src/manifest-build.ts#makeResolver."
+}
+
+relation ManifestBuildModuleManifestFromFilesGeneratedFromManifestBuildModuleManifestFromFilesAstAnchor {
+  kind generated_from
+  connects ManifestBuildModule -> ManifestBuildModuleManifestFromFilesAstAnchor
+  roles { ManifestBuildModule as generated, ManifestBuildModuleManifestFromFilesAstAnchor as syntax }
+  expects ManifestBuildModuleManifestFromFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6f8904ccb3b5b979b41cd6459167972f7d393ed75d5747b207382a3c9d7d618d")
+  summary "fn ManifestBuildModule.manifestFromFiles generated from typescript function_declaration at experiments/shape-1/proto/src/manifest-build.ts#manifestFromFiles."
+}
+
+relation ManifestBuildModulePkgjsonIdentitiesGeneratedFromManifestBuildModulePkgjsonIdentitiesAstAnchor {
+  kind generated_from
+  connects ManifestBuildModule -> ManifestBuildModulePkgjsonIdentitiesAstAnchor
+  roles { ManifestBuildModule as generated, ManifestBuildModulePkgjsonIdentitiesAstAnchor as syntax }
+  expects ManifestBuildModulePkgjsonIdentitiesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:57713def989b758ea6d0f1a685381efe887c3798df9cba2b4bfc92ed4887ceb9")
+  summary "fn ManifestBuildModule.pkgjsonIdentities generated from typescript function_declaration at experiments/shape-1/proto/src/manifest-build.ts#pkgjsonIdentities."
+}
+
+relation ManifestBuildModulePushAllGeneratedFromManifestBuildModulePushAllAstAnchor {
+  kind generated_from
+  connects ManifestBuildModule -> ManifestBuildModulePushAllAstAnchor
+  roles { ManifestBuildModule as generated, ManifestBuildModulePushAllAstAnchor as syntax }
+  expects ManifestBuildModulePushAllAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e4157f56fad06be8584697404771863af24719cbd62004dd5fa633b139d73c22")
+  summary "fn ManifestBuildModule.pushAll generated from typescript function_declaration at experiments/shape-1/proto/src/manifest-build.ts#pushAll."
+}
+
+relation ManifestBuildModuleRawExecutableGeneratedFromManifestBuildModuleRawExecutableAstAnchor {
+  kind generated_from
+  connects ManifestBuildModule -> ManifestBuildModuleRawExecutableAstAnchor
+  roles { ManifestBuildModule as generated, ManifestBuildModuleRawExecutableAstAnchor as syntax }
+  expects ManifestBuildModuleRawExecutableAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ae6872e1c1e80dea81090bf1683f1033a7eb1e032041cb1a09a50e42682f8009")
+  summary "fn ManifestBuildModule.rawExecutable generated from typescript function_declaration at experiments/shape-1/proto/src/manifest-build.ts#rawExecutable."
+}
+
+relation ManifestBuildModuleRawIdentityGeneratedFromManifestBuildModuleRawIdentityAstAnchor {
+  kind generated_from
+  connects ManifestBuildModule -> ManifestBuildModuleRawIdentityAstAnchor
+  roles { ManifestBuildModule as generated, ManifestBuildModuleRawIdentityAstAnchor as syntax }
+  expects ManifestBuildModuleRawIdentityAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6b1b49924f3bf4f3918804da708243d58936e02980b6dcd114fd917a975853d5")
+  summary "fn ManifestBuildModule.rawIdentity generated from typescript function_declaration at experiments/shape-1/proto/src/manifest-build.ts#rawIdentity."
+}
+
+relation ManifestBuildModuleSafeJcsGeneratedFromManifestBuildModuleSafeJcsAstAnchor {
+  kind generated_from
+  connects ManifestBuildModule -> ManifestBuildModuleSafeJcsAstAnchor
+  roles { ManifestBuildModule as generated, ManifestBuildModuleSafeJcsAstAnchor as syntax }
+  expects ManifestBuildModuleSafeJcsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3936db6fc4c284eee207f3b37de427d1e138ce572591d04bcfbda5c366345749")
+  summary "fn ManifestBuildModule.safeJcs generated from typescript function_declaration at experiments/shape-1/proto/src/manifest-build.ts#safeJcs."
+}
+
+implementation ManifestBuildModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/manifest-build.ts"
+  }
+  conforms_to ManifestBuildModule
+}

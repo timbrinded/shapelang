@@ -8,9 +8,16 @@ import { loadModel } from "../../proto/src/loader.ts";
 
 const guarded = (src) => {
   const out = new Set();
-  for (const m of src.modules) for (const d of m.decls) if (d.decl === "component") for (const u of d.units ?? []) if ((u.attach ?? []).some((a) => /RefactorSensitive/.test(a.name))) out.add(`${m.module}::${d.name}.${u.name}`);
+  for (const m of src.modules)
+    for (const d of m.decls)
+      if (d.decl === "component")
+        for (const u of d.units ?? [])
+          if ((u.attach ?? []).some((a) => /RefactorSensitive/.test(a.name)))
+            out.add(`${m.module}::${d.name}.${u.name}`);
   return out;
 };
 const mig = guarded(loadModel(join(REPO), { maintainers: [] }).source);
 const dog = guarded(readModel());
-process.stdout.write(`${JSON.stringify({ migrated: mig.size, dogfood: dog.size, retired: [...mig].filter((x) => !dog.has(x)).sort(), added: [...dog].filter((x) => !mig.has(x)).sort() }, null, 1)}\n`);
+process.stdout.write(
+  `${JSON.stringify({ migrated: mig.size, dogfood: dog.size, retired: [...mig].filter((x) => !dog.has(x)).sort(), added: [...dog].filter((x) => !mig.has(x)).sort() }, null, 1)}\n`
+);

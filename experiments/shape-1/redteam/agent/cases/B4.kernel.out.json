@@ -1,0 +1,36 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:d8c939b90af1d5941290420b61a40f13f5e196aa3d07696e40964745ede1a836",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:2b6108a7ae494a9461386abe37d959058c6555016ec11efa9fe4efda628cbfca",
+    "ids": [
+     "audit::AppendDeterministic"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": "sound",
+   "group": "g:07c92ec36c271c276a0c214ebe83360f59db3999be5bb0baf980d25048f12a08",
+   "introduced": true,
+   "key": "ob:7642d481777e851e51960181f4382a4315722ede5b069cb50ca36cbf2be86481",
+   "kind": "contradiction",
+   "owner": "audit::AuditTeam",
+   "questions": null,
+   "reason": null,
+   "severity": "blocking",
+   "subject": null,
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

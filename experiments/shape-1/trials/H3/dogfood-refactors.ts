@@ -12,8 +12,8 @@ export const DOG_REFACTORS = [
     note: "local `target` renamed to `subject` in checkFreshness",
     edits: [
       [
-        "    const target = info.appliesTo ?? info.target;\n    diagnostics.push({\n      kind: \"stale_memory\",\n      guardKind: kind,\n      guard: info.name,\n      targetKind: target.kind,\n      target: target.name,",
-        "    const subject = info.appliesTo ?? info.target;\n    diagnostics.push({\n      kind: \"stale_memory\",\n      guardKind: kind,\n      guard: info.name,\n      targetKind: subject.kind,\n      target: subject.name,"
+        '    const target = info.appliesTo ?? info.target;\n    diagnostics.push({\n      kind: "stale_memory",\n      guardKind: kind,\n      guard: info.name,\n      targetKind: target.kind,\n      target: target.name,',
+        '    const subject = info.appliesTo ?? info.target;\n    diagnostics.push({\n      kind: "stale_memory",\n      guardKind: kind,\n      guard: info.name,\n      targetKind: subject.kind,\n      target: subject.name,'
       ]
     ]
   },
@@ -26,8 +26,8 @@ export const DOG_REFACTORS = [
     note: "line comment added inside checkFreshness (inert)",
     edits: [
       [
-        "    const target = info.appliesTo ?? info.target;\n    diagnostics.push({\n      kind: \"stale_memory\",",
-        "    // a memory guard reports against what it applies to, else its own target\n    const target = info.appliesTo ?? info.target;\n    diagnostics.push({\n      kind: \"stale_memory\","
+        '    const target = info.appliesTo ?? info.target;\n    diagnostics.push({\n      kind: "stale_memory",',
+        '    // a memory guard reports against what it applies to, else its own target\n    const target = info.appliesTo ?? info.target;\n    diagnostics.push({\n      kind: "stale_memory",'
       ]
     ]
   },
@@ -40,8 +40,8 @@ export const DOG_REFACTORS = [
     note: "locals renamed in normalizeShapeSourcePath",
     edits: [
       [
-        "  const withoutAnchor = path.split(\"#\", 1)[0] ?? path;\n  const lineMatch = /^(.*):\\d+(?:-\\d+)?$/.exec(withoutAnchor);\n  return normalizeShapePath(lineMatch?.[1] ?? withoutAnchor);",
-        "  const pathOnly = path.split(\"#\", 1)[0] ?? path;\n  const located = /^(.*):\\d+(?:-\\d+)?$/.exec(pathOnly);\n  return normalizeShapePath(located?.[1] ?? pathOnly);"
+        '  const withoutAnchor = path.split("#", 1)[0] ?? path;\n  const lineMatch = /^(.*):\\d+(?:-\\d+)?$/.exec(withoutAnchor);\n  return normalizeShapePath(lineMatch?.[1] ?? withoutAnchor);',
+        '  const pathOnly = path.split("#", 1)[0] ?? path;\n  const located = /^(.*):\\d+(?:-\\d+)?$/.exec(pathOnly);\n  return normalizeShapePath(located?.[1] ?? pathOnly);'
       ]
     ]
   },
@@ -54,8 +54,8 @@ export const DOG_REFACTORS = [
     note: "normalizeShapePath moved above normalizeShapeSourcePath",
     edits: [
       [
-        "export function normalizeShapeSourcePath(path: string): string {\n  const withoutAnchor = path.split(\"#\", 1)[0] ?? path;\n  const lineMatch = /^(.*):\\d+(?:-\\d+)?$/.exec(withoutAnchor);\n  return normalizeShapePath(lineMatch?.[1] ?? withoutAnchor);\n}\n\nexport function normalizeShapePath(path: string): string {\n  return path.replaceAll(\"\\\\\", \"/\").replace(/^\\.\\//, \"\");\n}\n",
-        "export function normalizeShapePath(path: string): string {\n  return path.replaceAll(\"\\\\\", \"/\").replace(/^\\.\\//, \"\");\n}\n\nexport function normalizeShapeSourcePath(path: string): string {\n  const withoutAnchor = path.split(\"#\", 1)[0] ?? path;\n  const lineMatch = /^(.*):\\d+(?:-\\d+)?$/.exec(withoutAnchor);\n  return normalizeShapePath(lineMatch?.[1] ?? withoutAnchor);\n}\n"
+        'export function normalizeShapeSourcePath(path: string): string {\n  const withoutAnchor = path.split("#", 1)[0] ?? path;\n  const lineMatch = /^(.*):\\d+(?:-\\d+)?$/.exec(withoutAnchor);\n  return normalizeShapePath(lineMatch?.[1] ?? withoutAnchor);\n}\n\nexport function normalizeShapePath(path: string): string {\n  return path.replaceAll("\\\\", "/").replace(/^\\.\\//, "");\n}\n',
+        'export function normalizeShapePath(path: string): string {\n  return path.replaceAll("\\\\", "/").replace(/^\\.\\//, "");\n}\n\nexport function normalizeShapeSourcePath(path: string): string {\n  const withoutAnchor = path.split("#", 1)[0] ?? path;\n  const lineMatch = /^(.*):\\d+(?:-\\d+)?$/.exec(withoutAnchor);\n  return normalizeShapePath(lineMatch?.[1] ?? withoutAnchor);\n}\n'
       ]
     ]
   },
@@ -99,7 +99,10 @@ export const DOG_REFACTORS = [
         "  for (const traitName of resource.traits.keys()) {\n    const trait = model.traits.get(traitName);",
         "  for (const attached of resource.traits.keys()) {\n    const trait = model.traits.get(attached);"
       ],
-      ["        trait: traitName,\n        provenance: forbid.provenance\n      });\n    }\n  }\n\n  for (const rule of model.rules) {", "        trait: attached,\n        provenance: forbid.provenance\n      });\n    }\n  }\n\n  for (const rule of model.rules) {"]
+      [
+        "        trait: traitName,\n        provenance: forbid.provenance\n      });\n    }\n  }\n\n  for (const rule of model.rules) {",
+        "        trait: attached,\n        provenance: forbid.provenance\n      });\n    }\n  }\n\n  for (const rule of model.rules) {"
+      ]
     ]
   },
   {
@@ -155,6 +158,12 @@ export const DOG_REFACTORS = [
     at: "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft",
     path: "packages/shp-checker/src/authoring.ts",
     note: "local `changedFunctions` renamed to `drafted` in generateShapeUpdateDraft",
-    edits: [{ renameIn: "export function generateShapeUpdateDraft(", from: "changedFunctions", to: "drafted" }]
+    edits: [
+      {
+        renameIn: "export function generateShapeUpdateDraft(",
+        from: "changedFunctions",
+        to: "drafted"
+      }
+    ]
   }
 ];

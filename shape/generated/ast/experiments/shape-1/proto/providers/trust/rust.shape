@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.trust.rust
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RustModuleAsHatchKindsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/rust.ts#asHatchKinds")
+  fingerprint ast.semantic_subtree_v1("sha256:eb114b40bb137367bae29f5f4206b2203ace604e9ebec141e7b926ad71ced874")
+}
+
+resource RustModuleAuditRustAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/rust.ts#auditRust")
+  fingerprint ast.semantic_subtree_v1("sha256:72a04662230e6fa6df1418ccc0ada11adcb7f7246f7901e05376b6e0a2755d31")
+}
+
+resource RustModuleLexRustTreeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/rust.ts#lexRustTree")
+  fingerprint ast.semantic_subtree_v1("sha256:412f9d607cf443acc3285e8026192240986928090eced9013db2c59954a5bce0")
+}
+
+resource RustModuleManifestFileMarkersAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/rust.ts#manifestFileMarkers")
+  fingerprint ast.semantic_subtree_v1("sha256:be8dbe6c8189f17d8fb086e956fb4103b70c0b0872821423bd13aac0150a41c3")
+}
+
+resource RustModuleVprobeTcbAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/rust.ts#vprobeTcb")
+  fingerprint ast.semantic_subtree_v1("sha256:29bc7844863ec2ade1c63d64524546e22bd2c2e713be1d820f68b1c9c6567b41")
+}
+
+component RustModule : GeneratedCandidate {
+  fn asHatchKinds
+    source ts("experiments/shape-1/proto/providers/trust/rust.ts#asHatchKinds")
+    effects unknown
+  fn auditRust
+    source ts("experiments/shape-1/proto/providers/trust/rust.ts#auditRust")
+    effects unknown
+  fn lexRustTree
+    source ts("experiments/shape-1/proto/providers/trust/rust.ts#lexRustTree")
+    effects unknown
+  fn manifestFileMarkers
+    source ts("experiments/shape-1/proto/providers/trust/rust.ts#manifestFileMarkers")
+    effects unknown
+  fn vprobeTcb
+    source ts("experiments/shape-1/proto/providers/trust/rust.ts#vprobeTcb")
+    effects unknown
+}
+
+relation RustModuleAsHatchKindsGeneratedFromRustModuleAsHatchKindsAstAnchor {
+  kind generated_from
+  connects RustModule -> RustModuleAsHatchKindsAstAnchor
+  roles { RustModule as generated, RustModuleAsHatchKindsAstAnchor as syntax }
+  expects RustModuleAsHatchKindsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eb114b40bb137367bae29f5f4206b2203ace604e9ebec141e7b926ad71ced874")
+  summary "fn RustModule.asHatchKinds generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/rust.ts#asHatchKinds."
+}
+
+relation RustModuleAuditRustGeneratedFromRustModuleAuditRustAstAnchor {
+  kind generated_from
+  connects RustModule -> RustModuleAuditRustAstAnchor
+  roles { RustModule as generated, RustModuleAuditRustAstAnchor as syntax }
+  expects RustModuleAuditRustAstAnchor fingerprint ast.semantic_subtree_v1("sha256:72a04662230e6fa6df1418ccc0ada11adcb7f7246f7901e05376b6e0a2755d31")
+  summary "fn RustModule.auditRust generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/rust.ts#auditRust."
+}
+
+relation RustModuleLexRustTreeGeneratedFromRustModuleLexRustTreeAstAnchor {
+  kind generated_from
+  connects RustModule -> RustModuleLexRustTreeAstAnchor
+  roles { RustModule as generated, RustModuleLexRustTreeAstAnchor as syntax }
+  expects RustModuleLexRustTreeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:412f9d607cf443acc3285e8026192240986928090eced9013db2c59954a5bce0")
+  summary "fn RustModule.lexRustTree generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/rust.ts#lexRustTree."
+}
+
+relation RustModuleManifestFileMarkersGeneratedFromRustModuleManifestFileMarkersAstAnchor {
+  kind generated_from
+  connects RustModule -> RustModuleManifestFileMarkersAstAnchor
+  roles { RustModule as generated, RustModuleManifestFileMarkersAstAnchor as syntax }
+  expects RustModuleManifestFileMarkersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:be8dbe6c8189f17d8fb086e956fb4103b70c0b0872821423bd13aac0150a41c3")
+  summary "fn RustModule.manifestFileMarkers generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/rust.ts#manifestFileMarkers."
+}
+
+relation RustModuleVprobeTcbGeneratedFromRustModuleVprobeTcbAstAnchor {
+  kind generated_from
+  connects RustModule -> RustModuleVprobeTcbAstAnchor
+  roles { RustModule as generated, RustModuleVprobeTcbAstAnchor as syntax }
+  expects RustModuleVprobeTcbAstAnchor fingerprint ast.semantic_subtree_v1("sha256:29bc7844863ec2ade1c63d64524546e22bd2c2e713be1d820f68b1c9c6567b41")
+  summary "fn RustModule.vprobeTcb generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/rust.ts#vprobeTcb."
+}
+
+implementation RustModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/trust/rust.ts"
+  }
+  conforms_to RustModule
+}

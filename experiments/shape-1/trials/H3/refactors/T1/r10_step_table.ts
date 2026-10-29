@@ -39,7 +39,7 @@ const TARGET: Readonly<Record<Move, (x: number, y: number) => Cell>> = {
   Up: (x, y) => [x, y === 0 ? MAP_H - 1 : y - 1],
   Down: (x, y) => [x, y + 1 === MAP_H ? 0 : y + 1],
   Left: (x, y) => [x === 0 ? MAP_W - 1 : x - 1, y],
-  Right: (x, y) => [x + 1 === MAP_W ? 0 : x + 1, y],
+  Right: (x, y) => [x + 1 === MAP_W ? 0 : x + 1, y]
 };
 
 /** Plays one move: a wall target blocks it; entering the flag's cell wins. */

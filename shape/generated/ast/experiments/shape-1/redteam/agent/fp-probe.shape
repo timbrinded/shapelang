@@ -1,0 +1,7 @@
+module shape.generated.ast.experiments.shape_1.redteam.agent.fp_probe
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

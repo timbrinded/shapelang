@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.proto.src.model
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ModelModuleAtomOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/model.ts#atomOf")
+  fingerprint ast.semantic_subtree_v1("sha256:18e873182fe6c3daea4ed2c28046297bd152660cecda60c5df9add690f89f4a1")
+}
+
+resource ModelModuleParseAtomAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/model.ts#parseAtom")
+  fingerprint ast.semantic_subtree_v1("sha256:a7811f6c21cff2e59c42f413fa0c6e2133040c93ace1a2cf043fe0db2d615ef8")
+}
+
+component ModelModule : GeneratedCandidate {
+  fn atomOf
+    source ts("experiments/shape-1/proto/src/model.ts#atomOf")
+    effects unknown
+  fn parseAtom
+    source ts("experiments/shape-1/proto/src/model.ts#parseAtom")
+    effects unknown
+}
+
+relation ModelModuleAtomOfGeneratedFromModelModuleAtomOfAstAnchor {
+  kind generated_from
+  connects ModelModule -> ModelModuleAtomOfAstAnchor
+  roles { ModelModule as generated, ModelModuleAtomOfAstAnchor as syntax }
+  expects ModelModuleAtomOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:18e873182fe6c3daea4ed2c28046297bd152660cecda60c5df9add690f89f4a1")
+  summary "fn ModelModule.atomOf generated from typescript function_declaration at experiments/shape-1/proto/src/model.ts#atomOf."
+}
+
+relation ModelModuleParseAtomGeneratedFromModelModuleParseAtomAstAnchor {
+  kind generated_from
+  connects ModelModule -> ModelModuleParseAtomAstAnchor
+  roles { ModelModule as generated, ModelModuleParseAtomAstAnchor as syntax }
+  expects ModelModuleParseAtomAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7811f6c21cff2e59c42f413fa0c6e2133040c93ace1a2cf043fe0db2d615ef8")
+  summary "fn ModelModule.parseAtom generated from typescript function_declaration at experiments/shape-1/proto/src/model.ts#parseAtom."
+}
+
+implementation ModelModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/model.ts"
+  }
+  conforms_to ModelModule
+}

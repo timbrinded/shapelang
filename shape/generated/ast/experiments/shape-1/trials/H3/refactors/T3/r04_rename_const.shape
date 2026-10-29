@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r04_rename_const
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R04RenameConstModuleAppendAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts#append")
+  fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+}
+
+resource R04RenameConstModuleEmptyLogAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts#emptyLog")
+  fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+}
+
+resource R04RenameConstModuleGetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts#get")
+  fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+}
+
+resource R04RenameConstModuleListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts#list")
+  fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+}
+
+resource R04RenameConstModulePurgeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts#purge")
+  fingerprint ast.semantic_subtree_v1("sha256:35165bf2a989f5010f4e78a65efcc271950177cce99d416e371ab80994b38d7b")
+}
+
+component R04RenameConstModule : GeneratedCandidate {
+  fn append
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts#append")
+    effects unknown
+  fn emptyLog
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts#emptyLog")
+    effects unknown
+  fn get
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts#get")
+    effects unknown
+  fn list
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts#list")
+    effects unknown
+  fn purge
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts#purge")
+    effects unknown
+}
+
+relation R04RenameConstModuleAppendGeneratedFromR04RenameConstModuleAppendAstAnchor {
+  kind generated_from
+  connects R04RenameConstModule -> R04RenameConstModuleAppendAstAnchor
+  roles { R04RenameConstModule as generated, R04RenameConstModuleAppendAstAnchor as syntax }
+  expects R04RenameConstModuleAppendAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+  summary "fn R04RenameConstModule.append generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts#append."
+}
+
+relation R04RenameConstModuleEmptyLogGeneratedFromR04RenameConstModuleEmptyLogAstAnchor {
+  kind generated_from
+  connects R04RenameConstModule -> R04RenameConstModuleEmptyLogAstAnchor
+  roles { R04RenameConstModule as generated, R04RenameConstModuleEmptyLogAstAnchor as syntax }
+  expects R04RenameConstModuleEmptyLogAstAnchor fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+  summary "fn R04RenameConstModule.emptyLog generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts#emptyLog."
+}
+
+relation R04RenameConstModuleGetGeneratedFromR04RenameConstModuleGetAstAnchor {
+  kind generated_from
+  connects R04RenameConstModule -> R04RenameConstModuleGetAstAnchor
+  roles { R04RenameConstModule as generated, R04RenameConstModuleGetAstAnchor as syntax }
+  expects R04RenameConstModuleGetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+  summary "fn R04RenameConstModule.get generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts#get."
+}
+
+relation R04RenameConstModuleListGeneratedFromR04RenameConstModuleListAstAnchor {
+  kind generated_from
+  connects R04RenameConstModule -> R04RenameConstModuleListAstAnchor
+  roles { R04RenameConstModule as generated, R04RenameConstModuleListAstAnchor as syntax }
+  expects R04RenameConstModuleListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+  summary "fn R04RenameConstModule.list generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts#list."
+}
+
+relation R04RenameConstModulePurgeGeneratedFromR04RenameConstModulePurgeAstAnchor {
+  kind generated_from
+  connects R04RenameConstModule -> R04RenameConstModulePurgeAstAnchor
+  roles { R04RenameConstModule as generated, R04RenameConstModulePurgeAstAnchor as syntax }
+  expects R04RenameConstModulePurgeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:35165bf2a989f5010f4e78a65efcc271950177cce99d416e371ab80994b38d7b")
+  summary "fn R04RenameConstModule.purge generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts#purge."
+}
+
+implementation R04RenameConstModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T3/r04_rename_const.ts"
+  }
+  conforms_to R04RenameConstModule
+}

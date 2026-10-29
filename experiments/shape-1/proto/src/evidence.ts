@@ -49,7 +49,8 @@ export function providerGovernance(base: ESF, head: ESF): Map<string, ProvG> {
     const b = base.providers.find((p) => p.q === q) ?? null;
     const h = head.providers.find((p) => p.q === q) ?? null;
     const both = !!b && !!h;
-    const inter = (x: string[] | undefined, y: string[] | undefined): string[] => (x && y ? x.filter((c) => y.includes(c)) : []);
+    const inter = (x: string[] | undefined, y: string[] | undefined): string[] =>
+      x && y ? x.filter((c) => y.includes(c)) : [];
     out.set(q, {
       q,
       base: b,
@@ -66,9 +67,14 @@ export function providerGovernance(base: ESF, head: ESF): Map<string, ProvG> {
       establishes: both,
       identity: b?.identity ?? null,
       authenticated: !!b?.identity,
-      implementationPaths: sortedUniq([...(b?.implementation?.paths ?? []), ...(h?.implementation?.paths ?? [])]),
+      implementationPaths: sortedUniq([
+        ...(b?.implementation?.paths ?? []),
+        ...(h?.implementation?.paths ?? [])
+      ]),
       implementationDigests: sortedUniq(
-        [b?.implementation?.digest, h?.implementation?.digest].filter((x): x is string => typeof x === "string")
+        [b?.implementation?.digest, h?.implementation?.digest].filter(
+          (x): x is string => typeof x === "string"
+        )
       ),
       produces: b ? b.produces : (h?.produces ?? []),
       trusts: b?.trusts ?? [],
@@ -151,7 +157,8 @@ export function factId(f: Record<string, unknown>): string {
   const { n: _n, ...rest } = f;
   void _n;
   const g = { ...rest };
-  if (g.type === "effect" && typeof g.resource === "string") g.resource = canonResourceCode(g.resource) ?? g.resource;
+  if (g.type === "effect" && typeof g.resource === "string")
+    g.resource = canonResourceCode(g.resource) ?? g.resource;
   return H(g);
 }
 
@@ -180,7 +187,13 @@ export interface ObservationIndex {
   externalCalls: number;
 }
 
-function digestOk(man: ManifestIndex, id: string, projection: string, digest: string, equiv: (a: string, b: string) => boolean): boolean {
+function digestOk(
+  man: ManifestIndex,
+  id: string,
+  projection: string,
+  digest: string,
+  equiv: (a: string, b: string) => boolean
+): boolean {
   const d = man.ids.get(id)?.digests.get(projection);
   return d !== undefined && equiv(d, digest);
 }
@@ -209,7 +222,9 @@ export function observedWorld(
       const atHead = r.shape.revision === headRevision;
       const ok =
         digestOk(man, e.id, e.projection, e.digest, equiv) &&
-        (atHead || (g.depsCompleteB && (e.deps ?? []).every((d) => digestOk(man, d.id, d.projection, d.digest, equiv))));
+        (atHead ||
+          (g.depsCompleteB &&
+            (e.deps ?? []).every((d) => digestOk(man, d.id, d.projection, d.digest, equiv))));
       if (!ok) continue;
       usable.set(e.id, e);
       const list = entries.get(e.id) ?? [];
@@ -310,7 +325,11 @@ export function hatchFacts(man: ManifestIndex): WFact[] {
 }
 
 /** Facts reported by usable base-revision entries (for novelty): fid → max n. */
-export function baseReported(records: ParsedRecord[], baseMan: ManifestIndex | null, baseRevision: string | null): Map<string, number> {
+export function baseReported(
+  records: ParsedRecord[],
+  baseMan: ManifestIndex | null,
+  baseRevision: string | null
+): Map<string, number> {
   const out = new Map<string, number>();
   if (!baseMan || !baseRevision) return out;
   for (const r of records) {
@@ -321,7 +340,9 @@ export function baseReported(records: ParsedRecord[], baseMan: ManifestIndex | n
         .map((e) => e.id)
     );
     for (const f of r.shape.facts ?? []) {
-      const anchor = baseMan.ids.has(f.at) ? ancestorsOrSelf(baseMan, f.at).find((a) => usable.has(a)) : undefined;
+      const anchor = baseMan.ids.has(f.at)
+        ? ancestorsOrSelf(baseMan, f.at).find((a) => usable.has(a))
+        : undefined;
       if (!anchor) continue;
       const rawFact: Record<string, unknown> = { ...f };
       if (f.type === "effect") rawFact.resource = canonResourceCode(f.resource) ?? f.resource;
@@ -341,7 +362,8 @@ export function channelCovered(declared: string[], needed: string): boolean {
     if (dm && nm && channelMatches(dm[1] ?? "", nm[1] ?? "")) return true;
     const de = /^edge\((\w+)(?:, (.+))?\)$/.exec(d);
     const ne = /^edge\((\w+)(?:, (.+))?\)$/.exec(needed);
-    if (de && ne && de[1] === ne[1] && (!de[2] || (ne[2] && channelMatches(de[2], ne[2])))) return true;
+    if (de && ne && de[1] === ne[1] && (!de[2] || (ne[2] && channelMatches(de[2], ne[2]))))
+      return true;
   }
   return false;
 }

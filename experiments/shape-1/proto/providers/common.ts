@@ -7,8 +7,20 @@ import { spawnSync } from "node:child_process";
 import { dirname, join, resolve } from "node:path";
 import { elaborate } from "../src/elaborate.ts";
 import { loadModel, readSidecar } from "../src/loader.ts";
-import { type SourceFileBytes, buildManifest, filesFromDir, filesFromGit } from "../src/manifest-build.ts";
-import { type ManifestIndex, type ManifestPredicate, type Statement, gitTreeId, indexManifest, manifestStatement } from "../src/manifest.ts";
+import {
+  type SourceFileBytes,
+  buildManifest,
+  filesFromDir,
+  filesFromGit
+} from "../src/manifest-build.ts";
+import {
+  type ManifestIndex,
+  type ManifestPredicate,
+  type Statement,
+  gitTreeId,
+  indexManifest,
+  manifestStatement
+} from "../src/manifest.ts";
 import type { ESF } from "../src/model.ts";
 import {
   type CodeCite,
@@ -120,14 +132,20 @@ export async function manifestFor(opts: {
     statement = JSON.parse(readFileSync(opts.manifest, "utf8")) as Statement;
   } else {
     if (!files) throw new Error("manifestFor: need --root, --git or --manifest");
-    const draft = await buildManifest({ repoRoot: REPO_ROOT, revision: revision ?? "pending", files, noTypeScript: opts.noTypeScript });
+    const draft = await buildManifest({
+      repoRoot: REPO_ROOT,
+      revision: revision ?? "pending",
+      files,
+      noTypeScript: opts.noTypeScript
+    });
     const pred = draft.statement.predicate.shape as ManifestPredicate;
     const rev = revision ?? gitTreeId(pred.tree);
     statement = manifestStatement({ ...pred, revision: rev });
     backend = draft.backend;
   }
   const { index, problems } = indexManifest(statement);
-  if (!index) throw new Error(`manifest: ${problems.map((p) => `${p.code} ${p.detail}`).join("; ")}`);
+  if (!index)
+    throw new Error(`manifest: ${problems.map((p) => `${p.code} ${p.detail}`).join("; ")}`);
   const byPath = new Map((files ?? []).map((f) => [f.path, f]));
   const root = opts.root ? resolve(opts.root) : null;
   const read = (path: string): string | null => {
@@ -156,7 +174,8 @@ export function cite(index: ManifestIndex, id: string, projection: string): Code
 
 /** The file identity of a tracked path (ts:, rust:, verus:, raw:, …). */
 export function fileIdentity(index: ManifestIndex, path: string): string | null {
-  for (const info of index.ids.values()) if (info.symbol === null && info.path === path) return info.id;
+  for (const info of index.ids.values())
+    if (info.symbol === null && info.path === path) return info.id;
   return null;
 }
 
@@ -176,10 +195,19 @@ export function sortCites(xs: CodeCite[]): CodeCite[] {
 
 /** Loads a shape: a shape.source.v1 file (--source), or a model directory (--model, 0.x files
  *  migrated plus the sidecar). */
-export function loadSource(opts: { source?: string; model?: string; sidecar?: string; maintainers?: string[] }): SourceDoc {
+export function loadSource(opts: {
+  source?: string;
+  model?: string;
+  sidecar?: string;
+  maintainers?: string[];
+}): SourceDoc {
   if (opts.source) {
     const text = readFileSync(opts.source, "utf8");
-    const doc = (opts.source.endsWith(".yaml") || opts.source.endsWith(".yml") ? Bun.YAML.parse(text) : JSON.parse(text)) as SourceDoc;
+    const doc = (
+      opts.source.endsWith(".yaml") || opts.source.endsWith(".yml")
+        ? Bun.YAML.parse(text)
+        : JSON.parse(text)
+    ) as SourceDoc;
     if (doc.v !== "shape.source.v1") throw new Error(`${opts.source}: not shape.source.v1`);
     return doc;
   }
@@ -234,12 +262,19 @@ export function emit(rec: ShapeRecord, signer: Signer | null): Emitted {
 
 /** Validates an emitted record against RJ01–RJ14 as a checker would, with the provider
  *  declared in base and head (its identity from the signer, when any). */
-export function selfValidate(e: Emitted, info: ProviderInfo, man: ManifestIndex, nowIso: string, actors?: Map<string, { identities: string[]; kind: string; operator: string | null }>): Rejection | null {
+export function selfValidate(
+  e: Emitted,
+  info: ProviderInfo,
+  man: ManifestIndex,
+  nowIso: string,
+  actors?: Map<string, { identities: string[]; kind: string; operator: string | null }>
+): Rejection | null {
   const parsed = parseRecord(e.record) as ParsedRecord;
   const identity = info.decl.identity ?? null;
   const prov = new Map([[info.q, { produces: info.decl.produces as string[], identity }]]);
   const digests = new Map<string, string>();
-  for (const x of man.ids.values()) for (const [p, d] of x.digests) digests.set(`${x.id}\u0000${p}\u0000${x.schemes.get(p)}`, d);
+  for (const x of man.ids.values())
+    for (const [p, d] of x.digests) digests.set(`${x.id}\u0000${p}\u0000${x.schemes.get(p)}`, d);
   return validateRecord(parsed, {
     now: toSeconds(nowIso) ?? 0,
     mode: "change",
@@ -273,10 +308,12 @@ export async function flushStdout(): Promise<void> {
 export function writeRecords(path: string | undefined, records: Emitted[]): void {
   if (path && path.endsWith("/")) {
     mkdirSync(path, { recursive: true });
-    for (const r of records) writeFileSync(join(path, `${r.id.slice(7)}.json`), `${JSON.stringify(r.record)}\n`);
+    for (const r of records)
+      writeFileSync(join(path, `${r.id.slice(7)}.json`), `${JSON.stringify(r.record)}\n`);
     return;
   }
-  const text = records.map((r) => JSON.stringify(r.record)).join("\n") + (records.length > 0 ? "\n" : "");
+  const text =
+    records.map((r) => JSON.stringify(r.record)).join("\n") + (records.length > 0 ? "\n" : "");
   if (!path || path === "-") toStdout(text);
   else {
     mkdirSync(dirname(resolve(path)), { recursive: true });

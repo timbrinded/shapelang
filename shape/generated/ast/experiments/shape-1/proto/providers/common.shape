@@ -1,0 +1,321 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.common
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CommonModuleCiteAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#cite")
+  fingerprint ast.semantic_subtree_v1("sha256:ba70c5c234801fe99f0a9065ce82b17ea83e9dbc866dc411be1f7a37bcf8e2cc")
+}
+
+resource CommonModuleElaborateAtAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#elaborateAt")
+  fingerprint ast.semantic_subtree_v1("sha256:ccc29565c77e58c373d0b3238b1bdfc1c762503401edf2493847cefe9aa0d3b2")
+}
+
+resource CommonModuleEmitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#emit")
+  fingerprint ast.semantic_subtree_v1("sha256:def119db9437c6788bbd881fe472214ad73ba1e4f70a5ebdf63f4d5006d51f51")
+}
+
+resource CommonModuleFileIdentityAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#fileIdentity")
+  fingerprint ast.semantic_subtree_v1("sha256:b78347fd99575d6bf370b3a24bdb1f13bad468beb1a9ae1ed2314b0d6fb03bd7")
+}
+
+resource CommonModuleFlushStdoutAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#flushStdout")
+  fingerprint ast.semantic_subtree_v1("sha256:311017349d6aa8b88afa90f31f081e1cdf92659499f493fc0359508065d0297e")
+}
+
+resource CommonModuleLoadSourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#loadSource")
+  fingerprint ast.semantic_subtree_v1("sha256:68e36c9088624ad8dd64916bc200cf5e13f836e911eed8b7ea9c0bd79546f54f")
+}
+
+resource CommonModuleManifestForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#manifestFor")
+  fingerprint ast.semantic_subtree_v1("sha256:e6e8c177d64fa88a02fb171e64d6e04d60b54f27d81e8563bb01b7f6811dfa65")
+}
+
+resource CommonModuleParseArgsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#parseArgs")
+  fingerprint ast.semantic_subtree_v1("sha256:7b47cd0929ba21120393ccf6a0b5584215c17f5880c3379229c05bd6b7653794")
+}
+
+resource CommonModulePctAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#pct")
+  fingerprint ast.semantic_subtree_v1("sha256:5d0725ebb5bac824414e9abf90f8faacaf86c0c07606b2726648efe274515a48")
+}
+
+resource CommonModuleProviderNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#providerName")
+  fingerprint ast.semantic_subtree_v1("sha256:8fb35f89581a7ee2c0a79d30bb466e86e39ca1974aa5d2fe9debd615c16a2ed1")
+}
+
+resource CommonModuleRecordTimeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#recordTime")
+  fingerprint ast.semantic_subtree_v1("sha256:f39f9775241b88c90088b8be677882897ce1a440cb51ed5263b37ab60b7e0920")
+}
+
+resource CommonModuleRevParseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#revParse")
+  fingerprint ast.semantic_subtree_v1("sha256:0ba434ae1a36be642360929bef947afaa77afa2e17f64518f698e4284650c435")
+}
+
+resource CommonModuleSelfValidateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#selfValidate")
+  fingerprint ast.semantic_subtree_v1("sha256:9ee95641dbeccee7abcbccb701d7218281086af8f47669edeb29928fce2bd676")
+}
+
+resource CommonModuleShareAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#share")
+  fingerprint ast.semantic_subtree_v1("sha256:5a1cb864f7943a3605dd42ef788fcf0a8d646efc89f21a75b70131d532858f9b")
+}
+
+resource CommonModuleSignerOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#signerOf")
+  fingerprint ast.semantic_subtree_v1("sha256:804fd64658ad92128da01325b3f41d796e8324773dce7812f48b1db8c8036048")
+}
+
+resource CommonModuleSortCitesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#sortCites")
+  fingerprint ast.semantic_subtree_v1("sha256:d90533baf5b30f1467903e2a992be967c735219002f6913b5b564a8891ca30cf")
+}
+
+resource CommonModuleToStdoutAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#toStdout")
+  fingerprint ast.semantic_subtree_v1("sha256:cae20009451f53c2e68f0d26a71a4998c71b0f25f8f2059ef32ff1787452b62a")
+}
+
+resource CommonModuleWriteJsonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#writeJson")
+  fingerprint ast.semantic_subtree_v1("sha256:74978d392da005eabb4bd6598f5b5d2b7453480061ad4558df7f3247f6bb1933")
+}
+
+resource CommonModuleWriteRecordsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/common.ts#writeRecords")
+  fingerprint ast.semantic_subtree_v1("sha256:6d459fcfd17f8ae9419dd2dbaa9c658e4867c1f95136f83bc86848da8663a4fb")
+}
+
+component CommonModule : GeneratedCandidate {
+  fn cite
+    source ts("experiments/shape-1/proto/providers/common.ts#cite")
+    effects unknown
+  fn elaborateAt
+    source ts("experiments/shape-1/proto/providers/common.ts#elaborateAt")
+    effects unknown
+  fn emit
+    source ts("experiments/shape-1/proto/providers/common.ts#emit")
+    effects unknown
+  fn fileIdentity
+    source ts("experiments/shape-1/proto/providers/common.ts#fileIdentity")
+    effects unknown
+  fn flushStdout
+    source ts("experiments/shape-1/proto/providers/common.ts#flushStdout")
+    effects unknown
+  fn loadSource
+    source ts("experiments/shape-1/proto/providers/common.ts#loadSource")
+    effects unknown
+  fn manifestFor
+    source ts("experiments/shape-1/proto/providers/common.ts#manifestFor")
+    effects unknown
+  fn parseArgs
+    source ts("experiments/shape-1/proto/providers/common.ts#parseArgs")
+    effects unknown
+  fn pct
+    source ts("experiments/shape-1/proto/providers/common.ts#pct")
+    effects unknown
+  fn providerName
+    source ts("experiments/shape-1/proto/providers/common.ts#providerName")
+    effects unknown
+  fn recordTime
+    source ts("experiments/shape-1/proto/providers/common.ts#recordTime")
+    effects unknown
+  fn revParse
+    source ts("experiments/shape-1/proto/providers/common.ts#revParse")
+    effects unknown
+  fn selfValidate
+    source ts("experiments/shape-1/proto/providers/common.ts#selfValidate")
+    effects unknown
+  fn share
+    source ts("experiments/shape-1/proto/providers/common.ts#share")
+    effects unknown
+  fn signerOf
+    source ts("experiments/shape-1/proto/providers/common.ts#signerOf")
+    effects unknown
+  fn sortCites
+    source ts("experiments/shape-1/proto/providers/common.ts#sortCites")
+    effects unknown
+  fn toStdout
+    source ts("experiments/shape-1/proto/providers/common.ts#toStdout")
+    effects unknown
+  fn writeJson
+    source ts("experiments/shape-1/proto/providers/common.ts#writeJson")
+    effects unknown
+  fn writeRecords
+    source ts("experiments/shape-1/proto/providers/common.ts#writeRecords")
+    effects unknown
+}
+
+relation CommonModuleCiteGeneratedFromCommonModuleCiteAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleCiteAstAnchor
+  roles { CommonModule as generated, CommonModuleCiteAstAnchor as syntax }
+  expects CommonModuleCiteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba70c5c234801fe99f0a9065ce82b17ea83e9dbc866dc411be1f7a37bcf8e2cc")
+  summary "fn CommonModule.cite generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#cite."
+}
+
+relation CommonModuleElaborateAtGeneratedFromCommonModuleElaborateAtAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleElaborateAtAstAnchor
+  roles { CommonModule as generated, CommonModuleElaborateAtAstAnchor as syntax }
+  expects CommonModuleElaborateAtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ccc29565c77e58c373d0b3238b1bdfc1c762503401edf2493847cefe9aa0d3b2")
+  summary "fn CommonModule.elaborateAt generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#elaborateAt."
+}
+
+relation CommonModuleEmitGeneratedFromCommonModuleEmitAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleEmitAstAnchor
+  roles { CommonModule as generated, CommonModuleEmitAstAnchor as syntax }
+  expects CommonModuleEmitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:def119db9437c6788bbd881fe472214ad73ba1e4f70a5ebdf63f4d5006d51f51")
+  summary "fn CommonModule.emit generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#emit."
+}
+
+relation CommonModuleFileIdentityGeneratedFromCommonModuleFileIdentityAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleFileIdentityAstAnchor
+  roles { CommonModule as generated, CommonModuleFileIdentityAstAnchor as syntax }
+  expects CommonModuleFileIdentityAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b78347fd99575d6bf370b3a24bdb1f13bad468beb1a9ae1ed2314b0d6fb03bd7")
+  summary "fn CommonModule.fileIdentity generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#fileIdentity."
+}
+
+relation CommonModuleFlushStdoutGeneratedFromCommonModuleFlushStdoutAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleFlushStdoutAstAnchor
+  roles { CommonModule as generated, CommonModuleFlushStdoutAstAnchor as syntax }
+  expects CommonModuleFlushStdoutAstAnchor fingerprint ast.semantic_subtree_v1("sha256:311017349d6aa8b88afa90f31f081e1cdf92659499f493fc0359508065d0297e")
+  summary "fn CommonModule.flushStdout generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#flushStdout."
+}
+
+relation CommonModuleLoadSourceGeneratedFromCommonModuleLoadSourceAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleLoadSourceAstAnchor
+  roles { CommonModule as generated, CommonModuleLoadSourceAstAnchor as syntax }
+  expects CommonModuleLoadSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:68e36c9088624ad8dd64916bc200cf5e13f836e911eed8b7ea9c0bd79546f54f")
+  summary "fn CommonModule.loadSource generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#loadSource."
+}
+
+relation CommonModuleManifestForGeneratedFromCommonModuleManifestForAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleManifestForAstAnchor
+  roles { CommonModule as generated, CommonModuleManifestForAstAnchor as syntax }
+  expects CommonModuleManifestForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e6e8c177d64fa88a02fb171e64d6e04d60b54f27d81e8563bb01b7f6811dfa65")
+  summary "fn CommonModule.manifestFor generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#manifestFor."
+}
+
+relation CommonModuleParseArgsGeneratedFromCommonModuleParseArgsAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleParseArgsAstAnchor
+  roles { CommonModule as generated, CommonModuleParseArgsAstAnchor as syntax }
+  expects CommonModuleParseArgsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7b47cd0929ba21120393ccf6a0b5584215c17f5880c3379229c05bd6b7653794")
+  summary "fn CommonModule.parseArgs generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#parseArgs."
+}
+
+relation CommonModulePctGeneratedFromCommonModulePctAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModulePctAstAnchor
+  roles { CommonModule as generated, CommonModulePctAstAnchor as syntax }
+  expects CommonModulePctAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5d0725ebb5bac824414e9abf90f8faacaf86c0c07606b2726648efe274515a48")
+  summary "fn CommonModule.pct generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#pct."
+}
+
+relation CommonModuleProviderNameGeneratedFromCommonModuleProviderNameAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleProviderNameAstAnchor
+  roles { CommonModule as generated, CommonModuleProviderNameAstAnchor as syntax }
+  expects CommonModuleProviderNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8fb35f89581a7ee2c0a79d30bb466e86e39ca1974aa5d2fe9debd615c16a2ed1")
+  summary "fn CommonModule.providerName generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#providerName."
+}
+
+relation CommonModuleRecordTimeGeneratedFromCommonModuleRecordTimeAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleRecordTimeAstAnchor
+  roles { CommonModule as generated, CommonModuleRecordTimeAstAnchor as syntax }
+  expects CommonModuleRecordTimeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f39f9775241b88c90088b8be677882897ce1a440cb51ed5263b37ab60b7e0920")
+  summary "fn CommonModule.recordTime generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#recordTime."
+}
+
+relation CommonModuleRevParseGeneratedFromCommonModuleRevParseAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleRevParseAstAnchor
+  roles { CommonModule as generated, CommonModuleRevParseAstAnchor as syntax }
+  expects CommonModuleRevParseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0ba434ae1a36be642360929bef947afaa77afa2e17f64518f698e4284650c435")
+  summary "fn CommonModule.revParse generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#revParse."
+}
+
+relation CommonModuleSelfValidateGeneratedFromCommonModuleSelfValidateAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleSelfValidateAstAnchor
+  roles { CommonModule as generated, CommonModuleSelfValidateAstAnchor as syntax }
+  expects CommonModuleSelfValidateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9ee95641dbeccee7abcbccb701d7218281086af8f47669edeb29928fce2bd676")
+  summary "fn CommonModule.selfValidate generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#selfValidate."
+}
+
+relation CommonModuleShareGeneratedFromCommonModuleShareAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleShareAstAnchor
+  roles { CommonModule as generated, CommonModuleShareAstAnchor as syntax }
+  expects CommonModuleShareAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5a1cb864f7943a3605dd42ef788fcf0a8d646efc89f21a75b70131d532858f9b")
+  summary "fn CommonModule.share generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#share."
+}
+
+relation CommonModuleSignerOfGeneratedFromCommonModuleSignerOfAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleSignerOfAstAnchor
+  roles { CommonModule as generated, CommonModuleSignerOfAstAnchor as syntax }
+  expects CommonModuleSignerOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:804fd64658ad92128da01325b3f41d796e8324773dce7812f48b1db8c8036048")
+  summary "fn CommonModule.signerOf generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#signerOf."
+}
+
+relation CommonModuleSortCitesGeneratedFromCommonModuleSortCitesAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleSortCitesAstAnchor
+  roles { CommonModule as generated, CommonModuleSortCitesAstAnchor as syntax }
+  expects CommonModuleSortCitesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d90533baf5b30f1467903e2a992be967c735219002f6913b5b564a8891ca30cf")
+  summary "fn CommonModule.sortCites generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#sortCites."
+}
+
+relation CommonModuleToStdoutGeneratedFromCommonModuleToStdoutAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleToStdoutAstAnchor
+  roles { CommonModule as generated, CommonModuleToStdoutAstAnchor as syntax }
+  expects CommonModuleToStdoutAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cae20009451f53c2e68f0d26a71a4998c71b0f25f8f2059ef32ff1787452b62a")
+  summary "fn CommonModule.toStdout generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#toStdout."
+}
+
+relation CommonModuleWriteJsonGeneratedFromCommonModuleWriteJsonAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleWriteJsonAstAnchor
+  roles { CommonModule as generated, CommonModuleWriteJsonAstAnchor as syntax }
+  expects CommonModuleWriteJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:74978d392da005eabb4bd6598f5b5d2b7453480061ad4558df7f3247f6bb1933")
+  summary "fn CommonModule.writeJson generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#writeJson."
+}
+
+relation CommonModuleWriteRecordsGeneratedFromCommonModuleWriteRecordsAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleWriteRecordsAstAnchor
+  roles { CommonModule as generated, CommonModuleWriteRecordsAstAnchor as syntax }
+  expects CommonModuleWriteRecordsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6d459fcfd17f8ae9419dd2dbaa9c658e4867c1f95136f83bc86848da8663a4fb")
+  summary "fn CommonModule.writeRecords generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#writeRecords."
+}
+
+implementation CommonModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/common.ts"
+  }
+  conforms_to CommonModule
+}

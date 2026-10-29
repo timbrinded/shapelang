@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.shape_1.trials.H2.classify
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ClassifyModuleBlobAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/classify.py#blob")
+  fingerprint ast.semantic_subtree_v1("sha256:5ac35ad82561fd46f2f208617ab2cc3f02da883837613651bfe50bdb89207b9e")
+}
+
+resource ClassifyModuleClassifyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/classify.py#classify")
+  fingerprint ast.semantic_subtree_v1("sha256:ab0731f0857b3506a8403ee8a1d45127a6a0943f4f6744f8f3c7edbe6c93e3f3")
+}
+
+resource ClassifyModuleErrMatchesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/classify.py#err_matches")
+  fingerprint ast.semantic_subtree_v1("sha256:a9dcd9e3c04739d6ac215b42f0b2538a59c2b4ef76e2f1074fc0634191b52104")
+}
+
+resource ClassifyModuleIsDriftyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/classify.py#is_drifty")
+  fingerprint ast.semantic_subtree_v1("sha256:4591cf60107427b33c31534d3f4b7ddf8e84e1d408498a2e87743ec4c421b50f")
+}
+
+resource ClassifyModuleMatchesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/classify.py#matches")
+  fingerprint ast.semantic_subtree_v1("sha256:811ae42a2f8eb144fab65b07c3c4e38cd525e5b0c239ce4929e3f4c899f1d4aa")
+}
+
+resource ClassifyModuleProviderOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/classify.py#provider_of")
+  fingerprint ast.semantic_subtree_v1("sha256:571f0681ea6eea903e7329386cebaff2cffd9b606dfea30e0875edb24b4de6ea")
+}
+
+resource ClassifyModuleSigAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/classify.py#sig")
+  fingerprint ast.semantic_subtree_v1("sha256:752917f9213941f5843728bd10ce61de3ac0b2f7fcc5878e43754e0682c76ee7")
+}
+
+component ClassifyModule : GeneratedCandidate {
+  fn blob
+    source python("experiments/shape-1/trials/H2/classify.py#blob")
+    effects unknown
+  fn classify
+    source python("experiments/shape-1/trials/H2/classify.py#classify")
+    effects unknown
+  fn err_matches
+    source python("experiments/shape-1/trials/H2/classify.py#err_matches")
+    effects unknown
+  fn is_drifty
+    source python("experiments/shape-1/trials/H2/classify.py#is_drifty")
+    effects unknown
+  fn matches
+    source python("experiments/shape-1/trials/H2/classify.py#matches")
+    effects unknown
+  fn provider_of
+    source python("experiments/shape-1/trials/H2/classify.py#provider_of")
+    effects unknown
+  fn sig
+    source python("experiments/shape-1/trials/H2/classify.py#sig")
+    effects unknown
+}
+
+relation ClassifyModuleBlobGeneratedFromClassifyModuleBlobAstAnchor {
+  kind generated_from
+  connects ClassifyModule -> ClassifyModuleBlobAstAnchor
+  roles { ClassifyModule as generated, ClassifyModuleBlobAstAnchor as syntax }
+  expects ClassifyModuleBlobAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5ac35ad82561fd46f2f208617ab2cc3f02da883837613651bfe50bdb89207b9e")
+  summary "fn ClassifyModule.blob generated from python function_definition at experiments/shape-1/trials/H2/classify.py#blob."
+}
+
+relation ClassifyModuleClassifyGeneratedFromClassifyModuleClassifyAstAnchor {
+  kind generated_from
+  connects ClassifyModule -> ClassifyModuleClassifyAstAnchor
+  roles { ClassifyModule as generated, ClassifyModuleClassifyAstAnchor as syntax }
+  expects ClassifyModuleClassifyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ab0731f0857b3506a8403ee8a1d45127a6a0943f4f6744f8f3c7edbe6c93e3f3")
+  summary "fn ClassifyModule.classify generated from python function_definition at experiments/shape-1/trials/H2/classify.py#classify."
+}
+
+relation ClassifyModuleErrMatchesGeneratedFromClassifyModuleErrMatchesAstAnchor {
+  kind generated_from
+  connects ClassifyModule -> ClassifyModuleErrMatchesAstAnchor
+  roles { ClassifyModule as generated, ClassifyModuleErrMatchesAstAnchor as syntax }
+  expects ClassifyModuleErrMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a9dcd9e3c04739d6ac215b42f0b2538a59c2b4ef76e2f1074fc0634191b52104")
+  summary "fn ClassifyModule.err_matches generated from python function_definition at experiments/shape-1/trials/H2/classify.py#err_matches."
+}
+
+relation ClassifyModuleIsDriftyGeneratedFromClassifyModuleIsDriftyAstAnchor {
+  kind generated_from
+  connects ClassifyModule -> ClassifyModuleIsDriftyAstAnchor
+  roles { ClassifyModule as generated, ClassifyModuleIsDriftyAstAnchor as syntax }
+  expects ClassifyModuleIsDriftyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4591cf60107427b33c31534d3f4b7ddf8e84e1d408498a2e87743ec4c421b50f")
+  summary "fn ClassifyModule.is_drifty generated from python function_definition at experiments/shape-1/trials/H2/classify.py#is_drifty."
+}
+
+relation ClassifyModuleMatchesGeneratedFromClassifyModuleMatchesAstAnchor {
+  kind generated_from
+  connects ClassifyModule -> ClassifyModuleMatchesAstAnchor
+  roles { ClassifyModule as generated, ClassifyModuleMatchesAstAnchor as syntax }
+  expects ClassifyModuleMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:811ae42a2f8eb144fab65b07c3c4e38cd525e5b0c239ce4929e3f4c899f1d4aa")
+  summary "fn ClassifyModule.matches generated from python function_definition at experiments/shape-1/trials/H2/classify.py#matches."
+}
+
+relation ClassifyModuleProviderOfGeneratedFromClassifyModuleProviderOfAstAnchor {
+  kind generated_from
+  connects ClassifyModule -> ClassifyModuleProviderOfAstAnchor
+  roles { ClassifyModule as generated, ClassifyModuleProviderOfAstAnchor as syntax }
+  expects ClassifyModuleProviderOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:571f0681ea6eea903e7329386cebaff2cffd9b606dfea30e0875edb24b4de6ea")
+  summary "fn ClassifyModule.provider_of generated from python function_definition at experiments/shape-1/trials/H2/classify.py#provider_of."
+}
+
+relation ClassifyModuleSigGeneratedFromClassifyModuleSigAstAnchor {
+  kind generated_from
+  connects ClassifyModule -> ClassifyModuleSigAstAnchor
+  roles { ClassifyModule as generated, ClassifyModuleSigAstAnchor as syntax }
+  expects ClassifyModuleSigAstAnchor fingerprint ast.semantic_subtree_v1("sha256:752917f9213941f5843728bd10ce61de3ac0b2f7fcc5878e43754e0682c76ee7")
+  summary "fn ClassifyModule.sig generated from python function_definition at experiments/shape-1/trials/H2/classify.py#sig."
+}
+
+implementation ClassifyModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H2/classify.py"
+  }
+  conforms_to ClassifyModule
+}

@@ -1,0 +1,299 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:5b7650ed7d8910ba86f2b0c115681438ed318edf391c62f0ab95cd18e7aeeb3b",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:b871c4238ecb38fcc9dcc3eada007c9182470d138a3f605eb0be8b417d95614a",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L7"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "judgment",
+   "force": null,
+   "owner": "ironkv::Maintainers",
+   "assignee": null,
+   "group": "g:9e3a5fa08b9c5953055ae7d2411c8a028e704ea59283c560b6450e256adfa191",
+   "claim": null,
+   "subject": "provider ironkv::verus",
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": false,
+   "final": false,
+   "binding": "bd:2e37b8a15de37a54b4d0e08c3aa2904ae8a5b6cb12a3bb0e4f116df1fce8e23b",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "ironkv::dana",
+      "ironkv::erin"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "provider ironkv::verus"
+    }
+   ]
+  },
+  {
+   "key": "ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d",
+   "kind": "unestablished",
+   "reason": "assumption",
+   "questions": null,
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "mechanical",
+   "force": null,
+   "owner": "ironkv::IronKvTeam",
+   "assignee": null,
+   "group": "g:f6592a87115ebb63e3616dd9d1321262005019a9ec3f2bf6981ac65bdab8e1e4",
+   "claim": {
+    "fp": "sha256:60a867af53d80a7f7691530f9ae5869779c05abccd602cd75b2baad28a85db38",
+    "ids": [
+     "ironkv::SetRefinesSpec"
+    ],
+    "tier": "critical"
+   },
+   "subject": null,
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:1da36a42e325dc5acd89366516a304d11c2ce32f9dba52dc6934ad33a2c0535d",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "edit-code",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "declare",
+     "by": "author",
+     "agentSafe": false,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "critical",
+      "answers": 1,
+      "owners": [
+       "ironkv::IronKvTeam"
+      ]
+     }
+    },
+    {
+     "act": "exception",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "ironkv::dana"
+     ],
+     "creates": null
+    },
+    {
+     "act": "lower-requirement",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "critical",
+      "answers": 1,
+      "owners": [
+       "ironkv::IronKvTeam"
+      ]
+     }
+    }
+   ],
+   "causes": [
+    {
+     "type": "record",
+     "id": "sha256:cd7c8e4e416175a13c413f8c9448f612c89e2247fe6a6bd1880bd7c2ae628de4"
+    }
+   ]
+  },
+  {
+   "key": "ob:220a9b307f0f3608a5573921a7884109fe00e95b64b0202e797e5fdc3faef2af",
+   "kind": "contradiction",
+   "reason": null,
+   "questions": null,
+   "introduced": false,
+   "severity": "owed",
+   "tier": "critical",
+   "budget": "mechanical",
+   "force": "sound",
+   "owner": "ironkv::IronKvTeam",
+   "assignee": null,
+   "group": "g:1773aa8cf684c1c60f847e64760ffdcd5c6bdbb88a490e1c24025571a0415e81",
+   "claim": {
+    "fp": "sha256:dc8454f26ba4a098a6681e766d63ddf9226954a5a5bf8ed9d8148c7b0996fac8",
+    "ids": [
+     "ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "tier": "critical"
+   },
+   "subject": {
+    "code": "verus:ironkv/src/host_t.rs#Host::send",
+    "atom": "external_body<std::Trust>"
+   },
+   "witness": [
+    "sha256:4d5288ce6d2ededfce2d79368c5fa934e9959d7005fdf1b8220baae6c65c2bcf"
+   ],
+   "facts": {
+    "sha256:4d5288ce6d2ededfce2d79368c5fa934e9959d7005fdf1b8220baae6c65c2bcf": {
+     "type": "hatch",
+     "at": "verus:ironkv/src/host_t.rs#Host::send",
+     "kind": "external_body",
+     "n": 1
+    }
+   },
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:48dec644b2c008e44a083bdc750a9ff9aa6bf8b186355f2225740ae47584d1d7",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "edit-code",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "exception",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "ironkv::dana"
+     ],
+     "creates": null
+    },
+    {
+     "act": "edit-shape",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "critical",
+      "answers": 1,
+      "owners": [
+       "ironkv::IronKvTeam"
+      ]
+     }
+    }
+   ],
+   "causes": [
+    {
+     "type": "fact",
+     "id": "sha256:4d5288ce6d2ededfce2d79368c5fa934e9959d7005fdf1b8220baae6c65c2bcf"
+    },
+    {
+     "type": "code",
+     "id": "verus:ironkv/src/host_t.rs#Host::send"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [
+  {
+   "question": "L7",
+   "subject": "provider ironkv::verus",
+   "answer": "loosened",
+   "exploited": false,
+   "final": false,
+   "affected": [],
+   "counterexample": null,
+   "obligation": "ob:b871c4238ecb38fcc9dcc3eada007c9182470d138a3f605eb0be8b417d95614a"
+  }
+ ],
+ "renames": [],
+ "debt": [],
+ "preexisting": [
+  {
+   "obligation": "ob:220a9b307f0f3608a5573921a7884109fe00e95b64b0202e797e5fdc3faef2af",
+   "owner": "ironkv::IronKvTeam"
+  }
+ ],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 1,
+   "den": 1
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [
+   "ironkv::DelegationMap",
+   "ironkv::HostTrusted"
+  ],
+  "ungoverned": {
+   "num": 2,
+   "den": 7
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [
+   "ironkv::verus",
+   "ironkv::verusRefines"
+  ],
+  "baseObservations": "present",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 1,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"ironkv::DelegationMap.*\",\"ironkv::DelegationMap.*\"]",
+   "cell:[\"ironkv::HostTrusted.*\",\"ironkv::HostTrusted.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 3,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

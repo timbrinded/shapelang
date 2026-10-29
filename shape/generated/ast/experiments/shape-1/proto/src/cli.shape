@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.shape_1.proto.src.cli
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CliModuleCmdCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/cli.ts#cmdCheck")
+  fingerprint ast.semantic_subtree_v1("sha256:0c8648188bd5efc1f75d97626f6d8bc88ea0804dca832dfd8c36d9fb5d626feb")
+}
+
+resource CliModuleGitRootAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/cli.ts#gitRoot")
+  fingerprint ast.semantic_subtree_v1("sha256:39fb1948ba45131699eb0fc7ae6194d81bbb0be9ed7554ed31021aeaf40b4332")
+}
+
+resource CliModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/cli.ts#main")
+  fingerprint ast.semantic_subtree_v1("sha256:14d585bc06d3d88690274637ab07d761c4df804c716bf615f308fb3260a60e99")
+}
+
+resource CliModuleManifestForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/cli.ts#manifestFor")
+  fingerprint ast.semantic_subtree_v1("sha256:e65cb8f06537babeaa60eefc42596ad413cb4ada16f2d428a51e6e26c8445a94")
+}
+
+resource CliModuleParseArgsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/cli.ts#parseArgs")
+  fingerprint ast.semantic_subtree_v1("sha256:ce11129c3d26df789ff4427f29c1014da336533d6eabcf6735ac0e3222f83ea4")
+}
+
+resource CliModuleRevParseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/cli.ts#revParse")
+  fingerprint ast.semantic_subtree_v1("sha256:0ba434ae1a36be642360929bef947afaa77afa2e17f64518f698e4284650c435")
+}
+
+resource CliModuleSynthesizeFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/cli.ts#synthesizeFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:00cbbbb4bd424adaad6432482227fda0db0ea2568a5ef07bae85a6ed1373c575")
+}
+
+component CliModule : GeneratedCandidate {
+  fn cmdCheck
+    source ts("experiments/shape-1/proto/src/cli.ts#cmdCheck")
+    effects unknown
+  fn gitRoot
+    source ts("experiments/shape-1/proto/src/cli.ts#gitRoot")
+    effects unknown
+  fn main
+    source ts("experiments/shape-1/proto/src/cli.ts#main")
+    effects unknown
+  fn manifestFor
+    source ts("experiments/shape-1/proto/src/cli.ts#manifestFor")
+    effects unknown
+  fn parseArgs
+    source ts("experiments/shape-1/proto/src/cli.ts#parseArgs")
+    effects unknown
+  fn revParse
+    source ts("experiments/shape-1/proto/src/cli.ts#revParse")
+    effects unknown
+  fn synthesizeFiles
+    source ts("experiments/shape-1/proto/src/cli.ts#synthesizeFiles")
+    effects unknown
+}
+
+relation CliModuleCmdCheckGeneratedFromCliModuleCmdCheckAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleCmdCheckAstAnchor
+  roles { CliModule as generated, CliModuleCmdCheckAstAnchor as syntax }
+  expects CliModuleCmdCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0c8648188bd5efc1f75d97626f6d8bc88ea0804dca832dfd8c36d9fb5d626feb")
+  summary "fn CliModule.cmdCheck generated from typescript function_declaration at experiments/shape-1/proto/src/cli.ts#cmdCheck."
+}
+
+relation CliModuleGitRootGeneratedFromCliModuleGitRootAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleGitRootAstAnchor
+  roles { CliModule as generated, CliModuleGitRootAstAnchor as syntax }
+  expects CliModuleGitRootAstAnchor fingerprint ast.semantic_subtree_v1("sha256:39fb1948ba45131699eb0fc7ae6194d81bbb0be9ed7554ed31021aeaf40b4332")
+  summary "fn CliModule.gitRoot generated from typescript function_declaration at experiments/shape-1/proto/src/cli.ts#gitRoot."
+}
+
+relation CliModuleMainGeneratedFromCliModuleMainAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleMainAstAnchor
+  roles { CliModule as generated, CliModuleMainAstAnchor as syntax }
+  expects CliModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:14d585bc06d3d88690274637ab07d761c4df804c716bf615f308fb3260a60e99")
+  summary "fn CliModule.main generated from typescript function_declaration at experiments/shape-1/proto/src/cli.ts#main."
+}
+
+relation CliModuleManifestForGeneratedFromCliModuleManifestForAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleManifestForAstAnchor
+  roles { CliModule as generated, CliModuleManifestForAstAnchor as syntax }
+  expects CliModuleManifestForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e65cb8f06537babeaa60eefc42596ad413cb4ada16f2d428a51e6e26c8445a94")
+  summary "fn CliModule.manifestFor generated from typescript function_declaration at experiments/shape-1/proto/src/cli.ts#manifestFor."
+}
+
+relation CliModuleParseArgsGeneratedFromCliModuleParseArgsAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleParseArgsAstAnchor
+  roles { CliModule as generated, CliModuleParseArgsAstAnchor as syntax }
+  expects CliModuleParseArgsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ce11129c3d26df789ff4427f29c1014da336533d6eabcf6735ac0e3222f83ea4")
+  summary "fn CliModule.parseArgs generated from typescript function_declaration at experiments/shape-1/proto/src/cli.ts#parseArgs."
+}
+
+relation CliModuleRevParseGeneratedFromCliModuleRevParseAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleRevParseAstAnchor
+  roles { CliModule as generated, CliModuleRevParseAstAnchor as syntax }
+  expects CliModuleRevParseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0ba434ae1a36be642360929bef947afaa77afa2e17f64518f698e4284650c435")
+  summary "fn CliModule.revParse generated from typescript function_declaration at experiments/shape-1/proto/src/cli.ts#revParse."
+}
+
+relation CliModuleSynthesizeFilesGeneratedFromCliModuleSynthesizeFilesAstAnchor {
+  kind generated_from
+  connects CliModule -> CliModuleSynthesizeFilesAstAnchor
+  roles { CliModule as generated, CliModuleSynthesizeFilesAstAnchor as syntax }
+  expects CliModuleSynthesizeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:00cbbbb4bd424adaad6432482227fda0db0ea2568a5ef07bae85a6ed1373c575")
+  summary "fn CliModule.synthesizeFiles generated from typescript function_declaration at experiments/shape-1/proto/src/cli.ts#synthesizeFiles."
+}
+
+implementation CliModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/cli.ts"
+  }
+  conforms_to CliModule
+}

@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.ts_api
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource TsApiModuleEnclosingIdentityAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/ts-api.ts#enclosingIdentity")
+  fingerprint ast.semantic_subtree_v1("sha256:8fd888bf68ef617b1c4a9530ffc1153cddb678ecfef24f1f2b2304397633ca4f")
+}
+
+resource TsApiModuleIdentitySpansAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/ts-api.ts#identitySpans")
+  fingerprint ast.semantic_subtree_v1("sha256:80c74c4c1a115c64b9592e83533fe6ad936832177957fbf27cd0d4c56d985b37")
+}
+
+resource TsApiModuleLineColAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/ts-api.ts#lineCol")
+  fingerprint ast.semantic_subtree_v1("sha256:7fe71ba8ab9cba2c5578e954ba673190f0a84317da383a7002d193b9802564b5")
+}
+
+resource TsApiModuleLoadTsFullAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/ts-api.ts#loadTsFull")
+  fingerprint ast.semantic_subtree_v1("sha256:71ca3556c3813bf2a7e52ff45a7e54ef19e10f56881c7fa0f3ca6d783f4a1062")
+}
+
+resource TsApiModuleScriptKindOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/ts-api.ts#scriptKindOf")
+  fingerprint ast.semantic_subtree_v1("sha256:deaa84723674ee989da33ea135dc02dedaf8528a4c3fc08170bd9ea20c8ba10c")
+}
+
+component TsApiModule : GeneratedCandidate {
+  fn enclosingIdentity
+    source ts("experiments/shape-1/proto/providers/ts-api.ts#enclosingIdentity")
+    effects unknown
+  fn identitySpans
+    source ts("experiments/shape-1/proto/providers/ts-api.ts#identitySpans")
+    effects unknown
+  fn lineCol
+    source ts("experiments/shape-1/proto/providers/ts-api.ts#lineCol")
+    effects unknown
+  fn loadTsFull
+    source ts("experiments/shape-1/proto/providers/ts-api.ts#loadTsFull")
+    effects unknown
+  fn scriptKindOf
+    source ts("experiments/shape-1/proto/providers/ts-api.ts#scriptKindOf")
+    effects unknown
+}
+
+relation TsApiModuleEnclosingIdentityGeneratedFromTsApiModuleEnclosingIdentityAstAnchor {
+  kind generated_from
+  connects TsApiModule -> TsApiModuleEnclosingIdentityAstAnchor
+  roles { TsApiModule as generated, TsApiModuleEnclosingIdentityAstAnchor as syntax }
+  expects TsApiModuleEnclosingIdentityAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8fd888bf68ef617b1c4a9530ffc1153cddb678ecfef24f1f2b2304397633ca4f")
+  summary "fn TsApiModule.enclosingIdentity generated from typescript function_declaration at experiments/shape-1/proto/providers/ts-api.ts#enclosingIdentity."
+}
+
+relation TsApiModuleIdentitySpansGeneratedFromTsApiModuleIdentitySpansAstAnchor {
+  kind generated_from
+  connects TsApiModule -> TsApiModuleIdentitySpansAstAnchor
+  roles { TsApiModule as generated, TsApiModuleIdentitySpansAstAnchor as syntax }
+  expects TsApiModuleIdentitySpansAstAnchor fingerprint ast.semantic_subtree_v1("sha256:80c74c4c1a115c64b9592e83533fe6ad936832177957fbf27cd0d4c56d985b37")
+  summary "fn TsApiModule.identitySpans generated from typescript function_declaration at experiments/shape-1/proto/providers/ts-api.ts#identitySpans."
+}
+
+relation TsApiModuleLineColGeneratedFromTsApiModuleLineColAstAnchor {
+  kind generated_from
+  connects TsApiModule -> TsApiModuleLineColAstAnchor
+  roles { TsApiModule as generated, TsApiModuleLineColAstAnchor as syntax }
+  expects TsApiModuleLineColAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7fe71ba8ab9cba2c5578e954ba673190f0a84317da383a7002d193b9802564b5")
+  summary "fn TsApiModule.lineCol generated from typescript function_declaration at experiments/shape-1/proto/providers/ts-api.ts#lineCol."
+}
+
+relation TsApiModuleLoadTsFullGeneratedFromTsApiModuleLoadTsFullAstAnchor {
+  kind generated_from
+  connects TsApiModule -> TsApiModuleLoadTsFullAstAnchor
+  roles { TsApiModule as generated, TsApiModuleLoadTsFullAstAnchor as syntax }
+  expects TsApiModuleLoadTsFullAstAnchor fingerprint ast.semantic_subtree_v1("sha256:71ca3556c3813bf2a7e52ff45a7e54ef19e10f56881c7fa0f3ca6d783f4a1062")
+  summary "fn TsApiModule.loadTsFull generated from typescript function_declaration at experiments/shape-1/proto/providers/ts-api.ts#loadTsFull."
+}
+
+relation TsApiModuleScriptKindOfGeneratedFromTsApiModuleScriptKindOfAstAnchor {
+  kind generated_from
+  connects TsApiModule -> TsApiModuleScriptKindOfAstAnchor
+  roles { TsApiModule as generated, TsApiModuleScriptKindOfAstAnchor as syntax }
+  expects TsApiModuleScriptKindOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:deaa84723674ee989da33ea135dc02dedaf8528a4c3fc08170bd9ea20c8ba10c")
+  summary "fn TsApiModule.scriptKindOf generated from typescript function_declaration at experiments/shape-1/proto/providers/ts-api.ts#scriptKindOf."
+}
+
+implementation TsApiModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/ts-api.ts"
+  }
+  conforms_to TsApiModule
+}

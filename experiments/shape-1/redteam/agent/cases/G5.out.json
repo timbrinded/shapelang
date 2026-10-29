@@ -1,0 +1,150 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:a9eb65992694c60005c195d93547ce450464d6a2f3460042661c35fecf4fb322",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:bb51a88f52f5081e773dabf7f021b863325e003c20a47af0a4e2b8e133f59628",
+   "kind": "contradiction",
+   "reason": null,
+   "questions": null,
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "final",
+   "budget": "mechanical",
+   "force": "sound",
+   "owner": "audit::AuditTeam",
+   "assignee": null,
+   "group": "g:d8aa91339ae209d845c6f3b0b20443bd6e5e00f65fe7445743a1b97284f09738",
+   "claim": {
+    "fp": "sha256:ccfcbabf10265d643560fc2bcd0014f9bf15241ce35da1f5e0a269c349e617c0",
+    "ids": [
+     "audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+    ],
+    "tier": "final"
+   },
+   "subject": {
+    "code": "ts:src/audit/purge.ts#purgeOldEvents",
+    "atom": "HardDelete<audit::AuditEvent>"
+   },
+   "witness": [
+    "sha256:51ed979304abfea638295c5bec1e63db15cfa26c3425a552f31ae7ca312dc279"
+   ],
+   "facts": {
+    "sha256:51ed979304abfea638295c5bec1e63db15cfa26c3425a552f31ae7ca312dc279": {
+     "at": "ts:src/audit/purge.ts#purgeOldEvents",
+     "resource": "pg.table(\"audit_events\")",
+     "type": "effect",
+     "verb": "HardDelete"
+    }
+   },
+   "counterexample": null,
+   "exploited": null,
+   "final": true,
+   "binding": "bd:0ee8731661d897e621efbd56e0875beecb7c4b7524920ad681fdc55c8ad187d6",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "edit-code",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "edit-shape",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "final",
+      "answers": 2,
+      "owners": [
+       "audit::AuditTeam",
+       "audit::Platform"
+      ]
+     }
+    }
+   ],
+   "causes": [
+    {
+     "type": "fact",
+     "id": "sha256:51ed979304abfea638295c5bec1e63db15cfa26c3425a552f31ae7ca312dc279"
+    },
+    {
+     "type": "binding",
+     "id": "resource audit::AuditEvent"
+    },
+    {
+     "type": "code",
+     "id": "ts:src/audit/purge.ts#purgeOldEvents"
+    },
+    {
+     "type": "claim",
+     "id": "sha256:987106a04014478f6935873a3a96a3fc65c384de7b145c679dbf6cc9d082eaa4"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 2,
+   "den": 2
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [],
+  "ungoverned": {
+   "num": 3,
+   "den": 7
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [
+   "review audit::bob: shape approve bd:0ee8731661d897e6",
+   "review audit::bob: shape judge audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+  ],
+  "executesHead": [
+   "audit::fastCheck"
+  ],
+  "baseObservations": "missing",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"audit::AuditStore.*\",\"audit::AuditStore.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 3,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

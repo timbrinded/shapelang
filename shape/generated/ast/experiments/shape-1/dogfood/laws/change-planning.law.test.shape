@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.dogfood.laws.change_planning_law_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ChangePlanningLawTestModuleGenCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/change-planning.law.test.ts#genCase")
+  fingerprint ast.semantic_subtree_v1("sha256:78c9b991378f62903451c0700bc2d678502613c65913f6a2085864981b7fbff5")
+}
+
+resource ChangePlanningLawTestModuleLoadAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/change-planning.law.test.ts#load")
+  fingerprint ast.semantic_subtree_v1("sha256:115bd567577a571cb68d90dbac38129eeecaa3a212e0df04f4e5bc747de134d0")
+}
+
+component ChangePlanningLawTestModule : GeneratedCandidate {
+  fn genCase
+    source ts("experiments/shape-1/dogfood/laws/change-planning.law.test.ts#genCase")
+    effects unknown
+  fn load
+    source ts("experiments/shape-1/dogfood/laws/change-planning.law.test.ts#load")
+    effects unknown
+}
+
+relation ChangePlanningLawTestModuleGenCaseGeneratedFromChangePlanningLawTestModuleGenCaseAstAnchor {
+  kind generated_from
+  connects ChangePlanningLawTestModule -> ChangePlanningLawTestModuleGenCaseAstAnchor
+  roles { ChangePlanningLawTestModule as generated, ChangePlanningLawTestModuleGenCaseAstAnchor as syntax }
+  expects ChangePlanningLawTestModuleGenCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:78c9b991378f62903451c0700bc2d678502613c65913f6a2085864981b7fbff5")
+  summary "fn ChangePlanningLawTestModule.genCase generated from typescript function_declaration at experiments/shape-1/dogfood/laws/change-planning.law.test.ts#genCase."
+}
+
+relation ChangePlanningLawTestModuleLoadGeneratedFromChangePlanningLawTestModuleLoadAstAnchor {
+  kind generated_from
+  connects ChangePlanningLawTestModule -> ChangePlanningLawTestModuleLoadAstAnchor
+  roles { ChangePlanningLawTestModule as generated, ChangePlanningLawTestModuleLoadAstAnchor as syntax }
+  expects ChangePlanningLawTestModuleLoadAstAnchor fingerprint ast.semantic_subtree_v1("sha256:115bd567577a571cb68d90dbac38129eeecaa3a212e0df04f4e5bc747de134d0")
+  summary "fn ChangePlanningLawTestModule.load generated from typescript function_declaration at experiments/shape-1/dogfood/laws/change-planning.law.test.ts#load."
+}
+
+implementation ChangePlanningLawTestModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/laws/change-planning.law.test.ts"
+  }
+  conforms_to ChangePlanningLawTestModule
+}

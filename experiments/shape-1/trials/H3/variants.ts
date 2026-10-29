@@ -31,7 +31,9 @@ export function preCode(T: Task): Code {
   return { [T.module]: read(join(BENDEXP, "g8", T.id, T.module)) };
 }
 
-function mutantTags(T: Task): Map<string, { breaks: string[]; feature: boolean | null; description: string }> {
+function mutantTags(
+  T: Task
+): Map<string, { breaks: string[]; feature: boolean | null; description: string }> {
   const m = JSON.parse(read(join(BENDEXP, "hidden", T.id, "mutants", "manifest.json")));
   const list = Array.isArray(m) ? m : m.mutants;
   const out = new Map();
@@ -92,30 +94,86 @@ export function variantsOf(tid: string): Variant[] {
   const ref = refCode(T);
   const pre = preCode(T);
   // feature-change controls and traps (base = pre-feature)
-  out.push({ task: tid, id: "ref", kind: "feature", base: pre, head: ref, breaks: [], breaksFeature: false, description: "the reference solution of the ticket" });
+  out.push({
+    task: tid,
+    id: "ref",
+    kind: "feature",
+    base: pre,
+    head: ref,
+    breaks: [],
+    breaksFeature: false,
+    description: "the reference solution of the ticket"
+  });
   if (tid === "T1") {
     for (const f of ["alt_a_minimal_far_walls.ts", "alt_b_inner_walls.ts", "alt_c_flag_cage.ts"]) {
-      out.push({ task: tid, id: f.replace(/\.ts$/, ""), kind: "feature", base: pre, head: { [T.module]: read(join(BENDEXP, "hidden", tid, "ref", "alt", f)) }, breaks: [], breaksFeature: false, description: "an alternative legitimate solution" });
+      out.push({
+        task: tid,
+        id: f.replace(/\.ts$/, ""),
+        kind: "feature",
+        base: pre,
+        head: { [T.module]: read(join(BENDEXP, "hidden", tid, "ref", "alt", f)) },
+        breaks: [],
+        breaksFeature: false,
+        description: "an alternative legitimate solution"
+      });
     }
   }
   const trapDir = join(BENDEXP, "hidden", tid, "trap", "ts");
-  for (const f of readdirSync(trapDir).filter((x) => x.endsWith(".ts")).sort()) {
-    const breaks = tid === "T1" ? ["L1", "L2"] : tid === "T3" ? ["L0", "L1", "L2", "L3", "L4", "L5"] : f.startsWith("stale_self") ? ["L1", "L5"] : ["L1", "L4", "L5"];
-    out.push({ task: tid, id: `trap_${f.replace(/\.ts$/, "")}`, kind: "trap", base: pre, head: { [T.module]: read(join(trapDir, f)) }, breaks, breaksFeature: null, description: "the natural law-breaking implementation of the ticket" });
+  for (const f of readdirSync(trapDir)
+    .filter((x) => x.endsWith(".ts"))
+    .sort()) {
+    const breaks =
+      tid === "T1"
+        ? ["L1", "L2"]
+        : tid === "T3"
+          ? ["L0", "L1", "L2", "L3", "L4", "L5"]
+          : f.startsWith("stale_self")
+            ? ["L1", "L5"]
+            : ["L1", "L4", "L5"];
+    out.push({
+      task: tid,
+      id: `trap_${f.replace(/\.ts$/, "")}`,
+      kind: "trap",
+      base: pre,
+      head: { [T.module]: read(join(trapDir, f)) },
+      breaks,
+      breaksFeature: null,
+      description: "the natural law-breaking implementation of the ticket"
+    });
   }
   // mutants (base = reference)
   const tags = mutantTags(T);
   const mdir = join(BENDEXP, "hidden", tid, "mutants");
-  for (const f of readdirSync(mdir).filter((x) => x.endsWith(".ts")).sort()) {
+  for (const f of readdirSync(mdir)
+    .filter((x) => x.endsWith(".ts"))
+    .sort()) {
     const t = tags.get(f) ?? { breaks: [], feature: null, description: "" };
-    out.push({ task: tid, id: f.replace(/\.ts$/, ""), kind: "mutant", base: ref, head: { [T.module]: read(join(mdir, f)) }, breaks: t.breaks, breaksFeature: t.feature, description: t.description });
+    out.push({
+      task: tid,
+      id: f.replace(/\.ts$/, ""),
+      kind: "mutant",
+      base: ref,
+      head: { [T.module]: read(join(mdir, f)) },
+      breaks: t.breaks,
+      breaksFeature: t.feature,
+      description: t.description
+    });
   }
   // refactors (base = reference)
   const rdir = join(H3_DIR, "refactors", tid);
   if (existsSync(rdir)) {
     for (const f of readdirSync(rdir).sort()) {
       const id = f.replace(/\.ts$/, "");
-      out.push({ task: tid, id, kind: "refactor", base: ref, head: refactorCode(T, join(rdir, f)), breaks: [], breaksFeature: false, description: REFACTOR_NOTES[id] ?? "" });
+      out.push({
+        task: tid,
+        id,
+        kind: "refactor",
+        base: ref,
+        head: refactorCode(T, join(rdir, f)),
+        breaks: [],
+        breaksFeature: false,
+        description: REFACTOR_NOTES[id] ?? ""
+      });
     }
   }
   return out;

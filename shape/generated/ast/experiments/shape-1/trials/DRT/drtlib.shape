@@ -1,0 +1,161 @@
+module shape.generated.ast.experiments.shape_1.trials.DRT.drtlib
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource DrtlibModuleCanonJAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/drtlib.ts#canonJ")
+  fingerprint ast.semantic_subtree_v1("sha256:7547fb283d54c5ea0ce144cac080fcf806ce16e87ea97fd4489f646e55184431")
+}
+
+resource DrtlibModuleCompareAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/drtlib.ts#compare")
+  fingerprint ast.semantic_subtree_v1("sha256:0ea01d33742a2f5bf3c933588932e0d08eb9606227b33e1acd1a41ca3e7cc0e3")
+}
+
+resource DrtlibModuleDiffOneAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/drtlib.ts#diffOne")
+  fingerprint ast.semantic_subtree_v1("sha256:7d087eae0f3b8a6c5d14decf691b5d4a65eb57f9828ded00cd756fe9dc93a703")
+}
+
+resource DrtlibModuleKernelCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/drtlib.ts#kernelCase")
+  fingerprint ast.semantic_subtree_v1("sha256:71c025338fba29585b7a31f70e0d55ca8a41040858d5913dd0bcddb95f22e5ab")
+}
+
+resource DrtlibModuleProjectObAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/drtlib.ts#projectOb")
+  fingerprint ast.semantic_subtree_v1("sha256:b5c7dc50cfb473861a7da7e5e113b2e22ec1c2b518298cd74e3c592d1dc0ae06")
+}
+
+resource DrtlibModuleRecordsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/drtlib.ts#records")
+  fingerprint ast.semantic_subtree_v1("sha256:dd3d144fe754bfde24013d5923fda4a4221ca9a838f268ecde281d29607e1019")
+}
+
+resource DrtlibModuleRunKernelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/drtlib.ts#runKernel")
+  fingerprint ast.semantic_subtree_v1("sha256:298dc8f527a253ef1a12cbe0bb9449c29e2c5df0121a96e54d0ef1eb38fa024b")
+}
+
+resource DrtlibModuleRunTsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/drtlib.ts#runTs")
+  fingerprint ast.semantic_subtree_v1("sha256:bffcb55316630a6e672e26e1c059aed8d5b1b3491c8750f66a3aa86288790275")
+}
+
+resource DrtlibModuleShortAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/drtlib.ts#short")
+  fingerprint ast.semantic_subtree_v1("sha256:e438812c54602ca9e33f1bfcf5f93bf55d318399fb70d91dd79a3e735a546c28")
+}
+
+component DrtlibModule : GeneratedCandidate {
+  fn canonJ
+    source ts("experiments/shape-1/trials/DRT/drtlib.ts#canonJ")
+    effects unknown
+  fn compare
+    source ts("experiments/shape-1/trials/DRT/drtlib.ts#compare")
+    effects unknown
+  fn diffOne
+    source ts("experiments/shape-1/trials/DRT/drtlib.ts#diffOne")
+    effects unknown
+  fn kernelCase
+    source ts("experiments/shape-1/trials/DRT/drtlib.ts#kernelCase")
+    effects unknown
+  fn projectOb
+    source ts("experiments/shape-1/trials/DRT/drtlib.ts#projectOb")
+    effects unknown
+  fn records
+    source ts("experiments/shape-1/trials/DRT/drtlib.ts#records")
+    effects unknown
+  fn runKernel
+    source ts("experiments/shape-1/trials/DRT/drtlib.ts#runKernel")
+    effects unknown
+  fn runTs
+    source ts("experiments/shape-1/trials/DRT/drtlib.ts#runTs")
+    effects unknown
+  fn short
+    source ts("experiments/shape-1/trials/DRT/drtlib.ts#short")
+    effects unknown
+}
+
+relation DrtlibModuleCanonJGeneratedFromDrtlibModuleCanonJAstAnchor {
+  kind generated_from
+  connects DrtlibModule -> DrtlibModuleCanonJAstAnchor
+  roles { DrtlibModule as generated, DrtlibModuleCanonJAstAnchor as syntax }
+  expects DrtlibModuleCanonJAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7547fb283d54c5ea0ce144cac080fcf806ce16e87ea97fd4489f646e55184431")
+  summary "fn DrtlibModule.canonJ generated from typescript function_declaration at experiments/shape-1/trials/DRT/drtlib.ts#canonJ."
+}
+
+relation DrtlibModuleCompareGeneratedFromDrtlibModuleCompareAstAnchor {
+  kind generated_from
+  connects DrtlibModule -> DrtlibModuleCompareAstAnchor
+  roles { DrtlibModule as generated, DrtlibModuleCompareAstAnchor as syntax }
+  expects DrtlibModuleCompareAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0ea01d33742a2f5bf3c933588932e0d08eb9606227b33e1acd1a41ca3e7cc0e3")
+  summary "fn DrtlibModule.compare generated from typescript function_declaration at experiments/shape-1/trials/DRT/drtlib.ts#compare."
+}
+
+relation DrtlibModuleDiffOneGeneratedFromDrtlibModuleDiffOneAstAnchor {
+  kind generated_from
+  connects DrtlibModule -> DrtlibModuleDiffOneAstAnchor
+  roles { DrtlibModule as generated, DrtlibModuleDiffOneAstAnchor as syntax }
+  expects DrtlibModuleDiffOneAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7d087eae0f3b8a6c5d14decf691b5d4a65eb57f9828ded00cd756fe9dc93a703")
+  summary "fn DrtlibModule.diffOne generated from typescript function_declaration at experiments/shape-1/trials/DRT/drtlib.ts#diffOne."
+}
+
+relation DrtlibModuleKernelCaseGeneratedFromDrtlibModuleKernelCaseAstAnchor {
+  kind generated_from
+  connects DrtlibModule -> DrtlibModuleKernelCaseAstAnchor
+  roles { DrtlibModule as generated, DrtlibModuleKernelCaseAstAnchor as syntax }
+  expects DrtlibModuleKernelCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:71c025338fba29585b7a31f70e0d55ca8a41040858d5913dd0bcddb95f22e5ab")
+  summary "fn DrtlibModule.kernelCase generated from typescript function_declaration at experiments/shape-1/trials/DRT/drtlib.ts#kernelCase."
+}
+
+relation DrtlibModuleProjectObGeneratedFromDrtlibModuleProjectObAstAnchor {
+  kind generated_from
+  connects DrtlibModule -> DrtlibModuleProjectObAstAnchor
+  roles { DrtlibModule as generated, DrtlibModuleProjectObAstAnchor as syntax }
+  expects DrtlibModuleProjectObAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b5c7dc50cfb473861a7da7e5e113b2e22ec1c2b518298cd74e3c592d1dc0ae06")
+  summary "fn DrtlibModule.projectOb generated from typescript function_declaration at experiments/shape-1/trials/DRT/drtlib.ts#projectOb."
+}
+
+relation DrtlibModuleRecordsGeneratedFromDrtlibModuleRecordsAstAnchor {
+  kind generated_from
+  connects DrtlibModule -> DrtlibModuleRecordsAstAnchor
+  roles { DrtlibModule as generated, DrtlibModuleRecordsAstAnchor as syntax }
+  expects DrtlibModuleRecordsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dd3d144fe754bfde24013d5923fda4a4221ca9a838f268ecde281d29607e1019")
+  summary "fn DrtlibModule.records generated from typescript function_declaration at experiments/shape-1/trials/DRT/drtlib.ts#records."
+}
+
+relation DrtlibModuleRunKernelGeneratedFromDrtlibModuleRunKernelAstAnchor {
+  kind generated_from
+  connects DrtlibModule -> DrtlibModuleRunKernelAstAnchor
+  roles { DrtlibModule as generated, DrtlibModuleRunKernelAstAnchor as syntax }
+  expects DrtlibModuleRunKernelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:298dc8f527a253ef1a12cbe0bb9449c29e2c5df0121a96e54d0ef1eb38fa024b")
+  summary "fn DrtlibModule.runKernel generated from typescript function_declaration at experiments/shape-1/trials/DRT/drtlib.ts#runKernel."
+}
+
+relation DrtlibModuleRunTsGeneratedFromDrtlibModuleRunTsAstAnchor {
+  kind generated_from
+  connects DrtlibModule -> DrtlibModuleRunTsAstAnchor
+  roles { DrtlibModule as generated, DrtlibModuleRunTsAstAnchor as syntax }
+  expects DrtlibModuleRunTsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bffcb55316630a6e672e26e1c059aed8d5b1b3491c8750f66a3aa86288790275")
+  summary "fn DrtlibModule.runTs generated from typescript function_declaration at experiments/shape-1/trials/DRT/drtlib.ts#runTs."
+}
+
+relation DrtlibModuleShortGeneratedFromDrtlibModuleShortAstAnchor {
+  kind generated_from
+  connects DrtlibModule -> DrtlibModuleShortAstAnchor
+  roles { DrtlibModule as generated, DrtlibModuleShortAstAnchor as syntax }
+  expects DrtlibModuleShortAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e438812c54602ca9e33f1bfcf5f93bf55d318399fb70d91dd79a3e735a546c28")
+  summary "fn DrtlibModule.short generated from typescript function_declaration at experiments/shape-1/trials/DRT/drtlib.ts#short."
+}
+
+implementation DrtlibModuleImpl {
+  paths {
+    "experiments/shape-1/trials/DRT/drtlib.ts"
+  }
+  conforms_to DrtlibModule
+}

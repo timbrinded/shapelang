@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.trials.H6.teeth_skills
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource TeethSkillsModuleWalkAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H6/teeth-skills.ts#walk")
+  fingerprint ast.semantic_subtree_v1("sha256:84d1d8ae1f04583ca3716eca426f94befb3b2bd64c734b4a6ccf6741263f92a6")
+}
+
+component TeethSkillsModule : GeneratedCandidate {
+  fn walk
+    source ts("experiments/shape-1/trials/H6/teeth-skills.ts#walk")
+    effects unknown
+}
+
+relation TeethSkillsModuleWalkGeneratedFromTeethSkillsModuleWalkAstAnchor {
+  kind generated_from
+  connects TeethSkillsModule -> TeethSkillsModuleWalkAstAnchor
+  roles { TeethSkillsModule as generated, TeethSkillsModuleWalkAstAnchor as syntax }
+  expects TeethSkillsModuleWalkAstAnchor fingerprint ast.semantic_subtree_v1("sha256:84d1d8ae1f04583ca3716eca426f94befb3b2bd64c734b4a6ccf6741263f92a6")
+  summary "fn TeethSkillsModule.walk generated from typescript function_declaration at experiments/shape-1/trials/H6/teeth-skills.ts#walk."
+}
+
+implementation TeethSkillsModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H6/teeth-skills.ts"
+  }
+  conforms_to TeethSkillsModule
+}

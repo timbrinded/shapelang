@@ -1,0 +1,7 @@
+module shape.generated.ast.experiments.shape_1.trials.DRT.gen_corpus
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

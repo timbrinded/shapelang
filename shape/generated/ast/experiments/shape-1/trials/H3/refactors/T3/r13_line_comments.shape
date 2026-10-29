@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r13_line_comments
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R13LineCommentsModuleAppendAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts#append")
+  fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+}
+
+resource R13LineCommentsModuleEmptyLogAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts#emptyLog")
+  fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+}
+
+resource R13LineCommentsModuleGetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts#get")
+  fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+}
+
+resource R13LineCommentsModuleListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts#list")
+  fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+}
+
+resource R13LineCommentsModulePurgeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts#purge")
+  fingerprint ast.semantic_subtree_v1("sha256:8b12a4a10086337a3191358ff9a5dfb3a345a47ffbce86f8833626ad5689e06b")
+}
+
+component R13LineCommentsModule : GeneratedCandidate {
+  fn append
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts#append")
+    effects unknown
+  fn emptyLog
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts#emptyLog")
+    effects unknown
+  fn get
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts#get")
+    effects unknown
+  fn list
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts#list")
+    effects unknown
+  fn purge
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts#purge")
+    effects unknown
+}
+
+relation R13LineCommentsModuleAppendGeneratedFromR13LineCommentsModuleAppendAstAnchor {
+  kind generated_from
+  connects R13LineCommentsModule -> R13LineCommentsModuleAppendAstAnchor
+  roles { R13LineCommentsModule as generated, R13LineCommentsModuleAppendAstAnchor as syntax }
+  expects R13LineCommentsModuleAppendAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+  summary "fn R13LineCommentsModule.append generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts#append."
+}
+
+relation R13LineCommentsModuleEmptyLogGeneratedFromR13LineCommentsModuleEmptyLogAstAnchor {
+  kind generated_from
+  connects R13LineCommentsModule -> R13LineCommentsModuleEmptyLogAstAnchor
+  roles { R13LineCommentsModule as generated, R13LineCommentsModuleEmptyLogAstAnchor as syntax }
+  expects R13LineCommentsModuleEmptyLogAstAnchor fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+  summary "fn R13LineCommentsModule.emptyLog generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts#emptyLog."
+}
+
+relation R13LineCommentsModuleGetGeneratedFromR13LineCommentsModuleGetAstAnchor {
+  kind generated_from
+  connects R13LineCommentsModule -> R13LineCommentsModuleGetAstAnchor
+  roles { R13LineCommentsModule as generated, R13LineCommentsModuleGetAstAnchor as syntax }
+  expects R13LineCommentsModuleGetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+  summary "fn R13LineCommentsModule.get generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts#get."
+}
+
+relation R13LineCommentsModuleListGeneratedFromR13LineCommentsModuleListAstAnchor {
+  kind generated_from
+  connects R13LineCommentsModule -> R13LineCommentsModuleListAstAnchor
+  roles { R13LineCommentsModule as generated, R13LineCommentsModuleListAstAnchor as syntax }
+  expects R13LineCommentsModuleListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+  summary "fn R13LineCommentsModule.list generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts#list."
+}
+
+relation R13LineCommentsModulePurgeGeneratedFromR13LineCommentsModulePurgeAstAnchor {
+  kind generated_from
+  connects R13LineCommentsModule -> R13LineCommentsModulePurgeAstAnchor
+  roles { R13LineCommentsModule as generated, R13LineCommentsModulePurgeAstAnchor as syntax }
+  expects R13LineCommentsModulePurgeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b12a4a10086337a3191358ff9a5dfb3a345a47ffbce86f8833626ad5689e06b")
+  summary "fn R13LineCommentsModule.purge generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts#purge."
+}
+
+implementation R13LineCommentsModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T3/r13_line_comments.ts"
+  }
+  conforms_to R13LineCommentsModule
+}

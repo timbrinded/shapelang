@@ -1,0 +1,161 @@
+module shape.generated.ast.experiments.shape_1.proto.src.resource_code
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ResourceCodeModuleCanonResourceCodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/resource-code.ts#canonResourceCode")
+  fingerprint ast.semantic_subtree_v1("sha256:e9ad082fb4ed79a400b87a5dd976b65729096ec39c7a8a53c59a2194545fd679")
+}
+
+resource ResourceCodeModuleCanonRouteAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/resource-code.ts#canonRoute")
+  fingerprint ast.semantic_subtree_v1("sha256:01c0feffa10e4664a723cdaff13c78605a7171e9f3212e2c629e972e942aa242")
+}
+
+resource ResourceCodeModuleCanonSqlTableAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/resource-code.ts#canonSqlTable")
+  fingerprint ast.semantic_subtree_v1("sha256:181fb69d12365123d2c407e537ae91a90d5cabe7cb55f91cb02db73a5a33c02e")
+}
+
+resource ResourceCodeModuleCarriersAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/resource-code.ts#carriers")
+  fingerprint ast.semantic_subtree_v1("sha256:df37a070d2ce6e008e10817f5d8dcfff0c83eca6bb6611d215da8b9dd7228e6e")
+}
+
+resource ResourceCodeModuleChannelMatchesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/resource-code.ts#channelMatches")
+  fingerprint ast.semantic_subtree_v1("sha256:960ef1e3bf1e8c2991d42b73841b9d32d4b4c055f8a6d748467bee17f528ae37")
+}
+
+resource ResourceCodeModuleParseResourceCodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/resource-code.ts#parseResourceCode")
+  fingerprint ast.semantic_subtree_v1("sha256:bb8d4a57f5fca780d1ed39fffb9eb83b061a921a328bcde6baac02824ec74266")
+}
+
+resource ResourceCodeModulePrintResourceCodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/resource-code.ts#printResourceCode")
+  fingerprint ast.semantic_subtree_v1("sha256:6367bf75c93c7cc51c63bd529ea59a8be20e2cd0edee143ba762fe45a668ca7f")
+}
+
+resource ResourceCodeModuleSqlIdentPartsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/resource-code.ts#sqlIdentParts")
+  fingerprint ast.semantic_subtree_v1("sha256:cef5105cba65dcc6b34a152fe1e226172ad3e7df7bf74fb61f76f95124f28106")
+}
+
+resource ResourceCodeModuleTagKindAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/resource-code.ts#tagKind")
+  fingerprint ast.semantic_subtree_v1("sha256:ce3fd3bbb0e962f10e09f22a0d1b0f6a666c634b0ce8877b9a8178bebd142804")
+}
+
+component ResourceCodeModule : GeneratedCandidate {
+  fn canonResourceCode
+    source ts("experiments/shape-1/proto/src/resource-code.ts#canonResourceCode")
+    effects unknown
+  fn canonRoute
+    source ts("experiments/shape-1/proto/src/resource-code.ts#canonRoute")
+    effects unknown
+  fn canonSqlTable
+    source ts("experiments/shape-1/proto/src/resource-code.ts#canonSqlTable")
+    effects unknown
+  fn carriers
+    source ts("experiments/shape-1/proto/src/resource-code.ts#carriers")
+    effects unknown
+  fn channelMatches
+    source ts("experiments/shape-1/proto/src/resource-code.ts#channelMatches")
+    effects unknown
+  fn parseResourceCode
+    source ts("experiments/shape-1/proto/src/resource-code.ts#parseResourceCode")
+    effects unknown
+  fn printResourceCode
+    source ts("experiments/shape-1/proto/src/resource-code.ts#printResourceCode")
+    effects unknown
+  fn sqlIdentParts
+    source ts("experiments/shape-1/proto/src/resource-code.ts#sqlIdentParts")
+    effects unknown
+  fn tagKind
+    source ts("experiments/shape-1/proto/src/resource-code.ts#tagKind")
+    effects unknown
+}
+
+relation ResourceCodeModuleCanonResourceCodeGeneratedFromResourceCodeModuleCanonResourceCodeAstAnchor {
+  kind generated_from
+  connects ResourceCodeModule -> ResourceCodeModuleCanonResourceCodeAstAnchor
+  roles { ResourceCodeModule as generated, ResourceCodeModuleCanonResourceCodeAstAnchor as syntax }
+  expects ResourceCodeModuleCanonResourceCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e9ad082fb4ed79a400b87a5dd976b65729096ec39c7a8a53c59a2194545fd679")
+  summary "fn ResourceCodeModule.canonResourceCode generated from typescript function_declaration at experiments/shape-1/proto/src/resource-code.ts#canonResourceCode."
+}
+
+relation ResourceCodeModuleCanonRouteGeneratedFromResourceCodeModuleCanonRouteAstAnchor {
+  kind generated_from
+  connects ResourceCodeModule -> ResourceCodeModuleCanonRouteAstAnchor
+  roles { ResourceCodeModule as generated, ResourceCodeModuleCanonRouteAstAnchor as syntax }
+  expects ResourceCodeModuleCanonRouteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:01c0feffa10e4664a723cdaff13c78605a7171e9f3212e2c629e972e942aa242")
+  summary "fn ResourceCodeModule.canonRoute generated from typescript function_declaration at experiments/shape-1/proto/src/resource-code.ts#canonRoute."
+}
+
+relation ResourceCodeModuleCanonSqlTableGeneratedFromResourceCodeModuleCanonSqlTableAstAnchor {
+  kind generated_from
+  connects ResourceCodeModule -> ResourceCodeModuleCanonSqlTableAstAnchor
+  roles { ResourceCodeModule as generated, ResourceCodeModuleCanonSqlTableAstAnchor as syntax }
+  expects ResourceCodeModuleCanonSqlTableAstAnchor fingerprint ast.semantic_subtree_v1("sha256:181fb69d12365123d2c407e537ae91a90d5cabe7cb55f91cb02db73a5a33c02e")
+  summary "fn ResourceCodeModule.canonSqlTable generated from typescript function_declaration at experiments/shape-1/proto/src/resource-code.ts#canonSqlTable."
+}
+
+relation ResourceCodeModuleCarriersGeneratedFromResourceCodeModuleCarriersAstAnchor {
+  kind generated_from
+  connects ResourceCodeModule -> ResourceCodeModuleCarriersAstAnchor
+  roles { ResourceCodeModule as generated, ResourceCodeModuleCarriersAstAnchor as syntax }
+  expects ResourceCodeModuleCarriersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:df37a070d2ce6e008e10817f5d8dcfff0c83eca6bb6611d215da8b9dd7228e6e")
+  summary "fn ResourceCodeModule.carriers generated from typescript function_declaration at experiments/shape-1/proto/src/resource-code.ts#carriers."
+}
+
+relation ResourceCodeModuleChannelMatchesGeneratedFromResourceCodeModuleChannelMatchesAstAnchor {
+  kind generated_from
+  connects ResourceCodeModule -> ResourceCodeModuleChannelMatchesAstAnchor
+  roles { ResourceCodeModule as generated, ResourceCodeModuleChannelMatchesAstAnchor as syntax }
+  expects ResourceCodeModuleChannelMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:960ef1e3bf1e8c2991d42b73841b9d32d4b4c055f8a6d748467bee17f528ae37")
+  summary "fn ResourceCodeModule.channelMatches generated from typescript function_declaration at experiments/shape-1/proto/src/resource-code.ts#channelMatches."
+}
+
+relation ResourceCodeModuleParseResourceCodeGeneratedFromResourceCodeModuleParseResourceCodeAstAnchor {
+  kind generated_from
+  connects ResourceCodeModule -> ResourceCodeModuleParseResourceCodeAstAnchor
+  roles { ResourceCodeModule as generated, ResourceCodeModuleParseResourceCodeAstAnchor as syntax }
+  expects ResourceCodeModuleParseResourceCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bb8d4a57f5fca780d1ed39fffb9eb83b061a921a328bcde6baac02824ec74266")
+  summary "fn ResourceCodeModule.parseResourceCode generated from typescript function_declaration at experiments/shape-1/proto/src/resource-code.ts#parseResourceCode."
+}
+
+relation ResourceCodeModulePrintResourceCodeGeneratedFromResourceCodeModulePrintResourceCodeAstAnchor {
+  kind generated_from
+  connects ResourceCodeModule -> ResourceCodeModulePrintResourceCodeAstAnchor
+  roles { ResourceCodeModule as generated, ResourceCodeModulePrintResourceCodeAstAnchor as syntax }
+  expects ResourceCodeModulePrintResourceCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6367bf75c93c7cc51c63bd529ea59a8be20e2cd0edee143ba762fe45a668ca7f")
+  summary "fn ResourceCodeModule.printResourceCode generated from typescript function_declaration at experiments/shape-1/proto/src/resource-code.ts#printResourceCode."
+}
+
+relation ResourceCodeModuleSqlIdentPartsGeneratedFromResourceCodeModuleSqlIdentPartsAstAnchor {
+  kind generated_from
+  connects ResourceCodeModule -> ResourceCodeModuleSqlIdentPartsAstAnchor
+  roles { ResourceCodeModule as generated, ResourceCodeModuleSqlIdentPartsAstAnchor as syntax }
+  expects ResourceCodeModuleSqlIdentPartsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cef5105cba65dcc6b34a152fe1e226172ad3e7df7bf74fb61f76f95124f28106")
+  summary "fn ResourceCodeModule.sqlIdentParts generated from typescript function_declaration at experiments/shape-1/proto/src/resource-code.ts#sqlIdentParts."
+}
+
+relation ResourceCodeModuleTagKindGeneratedFromResourceCodeModuleTagKindAstAnchor {
+  kind generated_from
+  connects ResourceCodeModule -> ResourceCodeModuleTagKindAstAnchor
+  roles { ResourceCodeModule as generated, ResourceCodeModuleTagKindAstAnchor as syntax }
+  expects ResourceCodeModuleTagKindAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ce3fd3bbb0e962f10e09f22a0d1b0f6a666c634b0ce8877b9a8178bebd142804")
+  summary "fn ResourceCodeModule.tagKind generated from typescript function_declaration at experiments/shape-1/proto/src/resource-code.ts#tagKind."
+}
+
+implementation ResourceCodeModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/resource-code.ts"
+  }
+  conforms_to ResourceCodeModule
+}

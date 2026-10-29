@@ -5,13 +5,26 @@
 //   bun experiments/shape-1/trials/H3/dogfood-run.ts prep --work <dir>
 //   bun experiments/shape-1/trials/H3/dogfood-run.ts run --work <dir> --screen <screen.json> [--per 2] [--shard i/n]
 // Rows go to <work>/dog-rows-<i>of<n>.jsonl.
-import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  appendFileSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync
+} from "node:fs";
 import { join, resolve } from "node:path";
 import { derive } from "../../proto/src/derive.ts";
 import { runLaws } from "../../dogfood/providers/bun-test.ts";
 import { callScan } from "../../dogfood/providers/ts-calls.ts";
 import { clockScan } from "../../dogfood/providers/ts-clock-scan.ts";
-import { composeModel, manifestFor, materialize, readOverlay, treeFiles } from "../../dogfood/tools/lib.ts";
+import {
+  composeModel,
+  manifestFor,
+  materialize,
+  readOverlay,
+  treeFiles
+} from "../../dogfood/tools/lib.ts";
 import { applyMutant } from "../../proto/providers/laws/mutate.ts";
 import { DOG_REFACTORS } from "./dogfood-refactors.ts";
 import { compact } from "./lib.ts";
@@ -23,12 +36,15 @@ const NOW = "2026-10-26T00:00:00Z";
 export function applyEdit(id: string, text: string, e): string {
   if (Array.isArray(e)) {
     const [from, to] = e;
-    if (text.split(from).length !== 2) throw new Error(`${id}: anchor not unique or missing: ${from.slice(0, 60)}`);
+    if (text.split(from).length !== 2)
+      throw new Error(`${id}: anchor not unique or missing: ${from.slice(0, 60)}`);
     return text.replace(from, to);
   }
   const i = text.indexOf(e.renameIn);
-  if (i < 0 || text.indexOf(e.renameIn, i + 1) >= 0) throw new Error(`${id}: function anchor not unique or missing`);
-  const open = text.indexOf(") {\n", i) >= 0 ? text.indexOf("{", text.indexOf(")", text.indexOf("(", i))) : -1;
+  if (i < 0 || text.indexOf(e.renameIn, i + 1) >= 0)
+    throw new Error(`${id}: function anchor not unique or missing`);
+  const open =
+    text.indexOf(") {\n", i) >= 0 ? text.indexOf("{", text.indexOf(")", text.indexOf("(", i))) : -1;
   let depth = 0;
   let j = open;
   for (; j < text.length; j += 1) {
@@ -81,7 +97,9 @@ if (cmd === "prep") {
   };
   writeFileSync(join(work, "base.json"), JSON.stringify(base));
   rmSync(dir, { recursive: true, force: true });
-  process.stdout.write(`base ${m.revision}: ${base.baseRecords.length} records, ${((performance.now() - t0) / 1000).toFixed(1)} s\n`);
+  process.stdout.write(
+    `base ${m.revision}: ${base.baseRecords.length} records, ${((performance.now() - t0) / 1000).toFixed(1)} s\n`
+  );
   process.exit(0);
 }
 
@@ -95,7 +113,9 @@ const per = Number(opt("per", "2"));
 const variants = [];
 if (opt("screen")) {
   // --screen takes a comma list of screen files; their per-law entries are merged
-  const screen = opt("screen").split(",").flatMap((f) => JSON.parse(readFileSync(f, "utf8")));
+  const screen = opt("screen")
+    .split(",")
+    .flatMap((f) => JSON.parse(readFileSync(f, "utf8")));
   const seen = new Set();
   for (const l of screen) {
     for (const where of ["unit", "callee", "import"]) {
@@ -107,12 +127,30 @@ if (opt("screen")) {
         if (seen.has(key)) continue;
         seen.add(key);
         k += 1;
-        variants.push({ id: `M-${l.law.split("::")[1]}-${where}-${k}`, kind: "mutant", where, law: l.law, at: c.at, path, mutant: c.mutant });
+        variants.push({
+          id: `M-${l.law.split("::")[1]}-${where}-${k}`,
+          kind: "mutant",
+          where,
+          law: l.law,
+          at: c.at,
+          path,
+          mutant: c.mutant
+        });
       }
     }
   }
 }
-for (const r of DOG_REFACTORS) variants.push({ id: r.id, kind: "refactor", where: r.where, law: r.law, at: r.at, path: r.path, edits: r.edits, note: r.note });
+for (const r of DOG_REFACTORS)
+  variants.push({
+    id: r.id,
+    kind: "refactor",
+    where: r.where,
+    law: r.law,
+    at: r.at,
+    path: r.path,
+    edits: r.edits,
+    note: r.note
+  });
 const only = opt("only") ? new Set(opt("only").split(",")) : null;
 const [si, sn] = (opt("shard") ?? "0/1").split("/").map(Number);
 const list = variants.filter((v) => !only || only.has(v.id)).filter((_, i) => i % sn === si);
@@ -152,8 +190,11 @@ for (const v of list) {
     const t2 = performance.now();
     const moved = [];
     const bi = new Map();
-    for (const e of base.manifest.predicate.shape.entries) bi.set(`${e.id}@${e.projection}`, e.digest);
-    for (const e of hm.statement.predicate.shape.entries) if (bi.get(`${e.id}@${e.projection}`) !== e.digest && e.id.startsWith(`ts:${v.path}`)) moved.push(`${e.id}@${e.projection}`);
+    for (const e of base.manifest.predicate.shape.entries)
+      bi.set(`${e.id}@${e.projection}`, e.digest);
+    for (const e of hm.statement.predicate.shape.entries)
+      if (bi.get(`${e.id}@${e.projection}`) !== e.digest && e.id.startsWith(`ts:${v.path}`))
+        moved.push(`${e.id}@${e.projection}`);
     for (const [checker, out] of Object.entries(outs)) {
       const row = {
         variant: v.id,
@@ -169,20 +210,36 @@ for (const v of list) {
         verdict: out.verdict,
         errors: out.errors.map((e) => ({ code: e.code, subject: e.subject })),
         rejected: out.rejected.map((r) => ({ code: r.code, detail: r.detail })),
-        obligations: out.obligations.filter((o) => o.introduced || o.kind === "contradiction" || o.kind === "unestablished").map(compact),
+        obligations: out.obligations
+          .filter((o) => o.introduced || o.kind === "contradiction" || o.kind === "unestablished")
+          .map(compact),
         nObligations: out.obligations.length,
         lawVerdicts: p.laws.verdicts.map((x) => ({ law: x.law, holds: x.holds })),
-        seconds: { total: Number(((performance.now() - t0) / 1000).toFixed(1)), derive: Number(((t2 - t1) / 2000).toFixed(1)) }
+        seconds: {
+          total: Number(((performance.now() - t0) / 1000).toFixed(1)),
+          derive: Number(((t2 - t1) / 2000).toFixed(1))
+        }
       };
       appendFileSync(outPath, `${JSON.stringify(row)}\n`);
     }
     const s = outs.stock;
-    const lawObs = s.obligations.filter((o) => (o.kind === "contradiction" || o.kind === "unestablished") && o.claim?.ids?.some((i) => i === v.law));
-    const vlawObs = outs.vnew.obligations.filter((o) => (o.kind === "contradiction" || o.kind === "unestablished") && o.claim?.ids?.some((i) => i === v.law));
-    process.stderr.write(`${v.id} ${v.where} stock=${s.verdict} vnew=${outs.vnew.verdict} target-law stock=[${lawObs.map((o) => `${o.kind}:${o.force ?? o.reason}:${o.introduced ? "I" : "-"}:${o.severity}`).join(",")}] vnew=[${vlawObs.map((o) => `${o.kind}:${o.introduced ? "I" : "-"}:${o.severity}`).join(",")}] (${((performance.now() - t0) / 1000).toFixed(0)} s)\n`);
+    const lawObs = s.obligations.filter(
+      (o) =>
+        (o.kind === "contradiction" || o.kind === "unestablished") &&
+        o.claim?.ids?.some((i) => i === v.law)
+    );
+    const vlawObs = outs.vnew.obligations.filter(
+      (o) =>
+        (o.kind === "contradiction" || o.kind === "unestablished") &&
+        o.claim?.ids?.some((i) => i === v.law)
+    );
+    process.stderr.write(
+      `${v.id} ${v.where} stock=${s.verdict} vnew=${outs.vnew.verdict} target-law stock=[${lawObs.map((o) => `${o.kind}:${o.force ?? o.reason}:${o.introduced ? "I" : "-"}:${o.severity}`).join(",")}] vnew=[${vlawObs.map((o) => `${o.kind}:${o.introduced ? "I" : "-"}:${o.severity}`).join(",")}] (${((performance.now() - t0) / 1000).toFixed(0)} s)\n`
+    );
   } catch (e) {
     appendFileSync(outPath, `${JSON.stringify({ variant: v.id, crash: String(e?.stack ?? e) })}\n`);
     process.stderr.write(`${v.id} CRASH ${String(e)}\n`);
   }
 }
-if (existsSync(join(work, "trees", `h-${si}`))) rmSync(join(work, "trees", `h-${si}`), { recursive: true, force: true });
+if (existsSync(join(work, "trees", `h-${si}`)))
+  rmSync(join(work, "trees", `h-${si}`), { recursive: true, force: true });

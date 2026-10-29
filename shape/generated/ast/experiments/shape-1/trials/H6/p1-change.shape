@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.shape_1.trials.H6.p1_change
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource P1ChangeModuleBaseManifestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H6/p1-change.ts#baseManifest")
+  fingerprint ast.semantic_subtree_v1("sha256:440f9c11c0f759749708a9c0b88012c513b944d356a77578cb8d488bd1b3062f")
+}
+
+resource P1ChangeModuleFindCompAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H6/p1-change.ts#findComp")
+  fingerprint ast.semantic_subtree_v1("sha256:f7458db476090286c4e50384ada401cf3c3bd035dfe1537caa21a877401f4a5c")
+}
+
+resource P1ChangeModuleInputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H6/p1-change.ts#input")
+  fingerprint ast.semantic_subtree_v1("sha256:bb07c2afcf6279fd916508f9a9b4dff43f5cbca640f4d7dd76eb400578965781")
+}
+
+resource P1ChangeModuleObservationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H6/p1-change.ts#observation")
+  fingerprint ast.semantic_subtree_v1("sha256:fc9d26a57bbc61bd77865446c2ad46ff3d3c37caba3020cc23d1a24b9acdc226")
+}
+
+component P1ChangeModule : GeneratedCandidate {
+  fn baseManifest
+    source ts("experiments/shape-1/trials/H6/p1-change.ts#baseManifest")
+    effects unknown
+  fn findComp
+    source ts("experiments/shape-1/trials/H6/p1-change.ts#findComp")
+    effects unknown
+  fn input
+    source ts("experiments/shape-1/trials/H6/p1-change.ts#input")
+    effects unknown
+  fn observation
+    source ts("experiments/shape-1/trials/H6/p1-change.ts#observation")
+    effects unknown
+}
+
+relation P1ChangeModuleBaseManifestGeneratedFromP1ChangeModuleBaseManifestAstAnchor {
+  kind generated_from
+  connects P1ChangeModule -> P1ChangeModuleBaseManifestAstAnchor
+  roles { P1ChangeModule as generated, P1ChangeModuleBaseManifestAstAnchor as syntax }
+  expects P1ChangeModuleBaseManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:440f9c11c0f759749708a9c0b88012c513b944d356a77578cb8d488bd1b3062f")
+  summary "fn P1ChangeModule.baseManifest generated from typescript function_declaration at experiments/shape-1/trials/H6/p1-change.ts#baseManifest."
+}
+
+relation P1ChangeModuleFindCompGeneratedFromP1ChangeModuleFindCompAstAnchor {
+  kind generated_from
+  connects P1ChangeModule -> P1ChangeModuleFindCompAstAnchor
+  roles { P1ChangeModule as generated, P1ChangeModuleFindCompAstAnchor as syntax }
+  expects P1ChangeModuleFindCompAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f7458db476090286c4e50384ada401cf3c3bd035dfe1537caa21a877401f4a5c")
+  summary "fn P1ChangeModule.findComp generated from typescript function_declaration at experiments/shape-1/trials/H6/p1-change.ts#findComp."
+}
+
+relation P1ChangeModuleInputGeneratedFromP1ChangeModuleInputAstAnchor {
+  kind generated_from
+  connects P1ChangeModule -> P1ChangeModuleInputAstAnchor
+  roles { P1ChangeModule as generated, P1ChangeModuleInputAstAnchor as syntax }
+  expects P1ChangeModuleInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bb07c2afcf6279fd916508f9a9b4dff43f5cbca640f4d7dd76eb400578965781")
+  summary "fn P1ChangeModule.input generated from typescript function_declaration at experiments/shape-1/trials/H6/p1-change.ts#input."
+}
+
+relation P1ChangeModuleObservationGeneratedFromP1ChangeModuleObservationAstAnchor {
+  kind generated_from
+  connects P1ChangeModule -> P1ChangeModuleObservationAstAnchor
+  roles { P1ChangeModule as generated, P1ChangeModuleObservationAstAnchor as syntax }
+  expects P1ChangeModuleObservationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fc9d26a57bbc61bd77865446c2ad46ff3d3c37caba3020cc23d1a24b9acdc226")
+  summary "fn P1ChangeModule.observation generated from typescript function_declaration at experiments/shape-1/trials/H6/p1-change.ts#observation."
+}
+
+implementation P1ChangeModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H6/p1-change.ts"
+  }
+  conforms_to P1ChangeModule
+}

@@ -1,0 +1,69 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:0ee8731661d897e621efbd56e0875beecb7c4b7524920ad681fdc55c8ad187d6",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:ccfcbabf10265d643560fc2bcd0014f9bf15241ce35da1f5e0a269c349e617c0",
+    "ids": [
+     "audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+    ],
+    "tier": "final"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": true,
+   "force": "sound",
+   "group": "g:c8994b8055faed3d69f9f2a33f0305e88a53cce668465062197014d0353847de",
+   "introduced": true,
+   "key": "ob:bb51a88f52f5081e773dabf7f021b863325e003c20a47af0a4e2b8e133f59628",
+   "kind": "contradiction",
+   "owner": "audit::AuditTeam",
+   "questions": null,
+   "reason": null,
+   "severity": "blocking",
+   "subject": {
+    "atom": "HardDelete<audit::AuditEvent>",
+    "code": "ts:src/audit/purge.ts#purgeOldEvents"
+   },
+   "tier": "final",
+   "witness": [
+    "sha256:51ed979304abfea638295c5bec1e63db15cfa26c3425a552f31ae7ca312dc279"
+   ]
+  },
+  {
+   "binding": "bd:ec759fd38da84396362059a6822dbc63f466aba56be23fae57fd0c633eff7c9b",
+   "budget": "judgment",
+   "claim": {
+    "fp": "sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3",
+    "ids": [
+     "audit::EventsArePreserved"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": false,
+   "final": false,
+   "force": null,
+   "group": "g:c8994b8055faed3d69f9f2a33f0305e88a53cce668465062197014d0353847de",
+   "introduced": true,
+   "key": "ob:e116fbb7fe2c24094607d78ecb494bbbf48165859e455702232b9062519a39e0",
+   "kind": "loosening",
+   "owner": "audit::AuditTeam",
+   "questions": [
+    "L4"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3",
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

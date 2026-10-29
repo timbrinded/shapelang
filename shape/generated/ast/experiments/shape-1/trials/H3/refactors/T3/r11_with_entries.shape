@@ -1,0 +1,113 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r11_with_entries
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R11WithEntriesModuleAppendAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#append")
+  fingerprint ast.semantic_subtree_v1("sha256:5dc16aeb2d15c963c3a8a90c6db89982e0b99b5fa893fe257e5aef77f9680a12")
+}
+
+resource R11WithEntriesModuleEmptyLogAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#emptyLog")
+  fingerprint ast.semantic_subtree_v1("sha256:603efd648bb847a0fb65e4304640bff954066c6211242e0ef0151823a4c1603e")
+}
+
+resource R11WithEntriesModuleGetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#get")
+  fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+}
+
+resource R11WithEntriesModuleListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#list")
+  fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+}
+
+resource R11WithEntriesModulePurgeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#purge")
+  fingerprint ast.semantic_subtree_v1("sha256:e01f71696ed61781065f5905f3dc861c708f83be04780312a388b0d3d296ae77")
+}
+
+resource R11WithEntriesModuleWithEntriesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#withEntries")
+  fingerprint ast.semantic_subtree_v1("sha256:4c29fa86edb1716dee6c6339fad787e0c1118fbbbc62dbb8452bd39796fab0fd")
+}
+
+component R11WithEntriesModule : GeneratedCandidate {
+  fn append
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#append")
+    effects unknown
+  fn emptyLog
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#emptyLog")
+    effects unknown
+  fn get
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#get")
+    effects unknown
+  fn list
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#list")
+    effects unknown
+  fn purge
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#purge")
+    effects unknown
+  fn withEntries
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#withEntries")
+    effects unknown
+}
+
+relation R11WithEntriesModuleAppendGeneratedFromR11WithEntriesModuleAppendAstAnchor {
+  kind generated_from
+  connects R11WithEntriesModule -> R11WithEntriesModuleAppendAstAnchor
+  roles { R11WithEntriesModule as generated, R11WithEntriesModuleAppendAstAnchor as syntax }
+  expects R11WithEntriesModuleAppendAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5dc16aeb2d15c963c3a8a90c6db89982e0b99b5fa893fe257e5aef77f9680a12")
+  summary "fn R11WithEntriesModule.append generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#append."
+}
+
+relation R11WithEntriesModuleEmptyLogGeneratedFromR11WithEntriesModuleEmptyLogAstAnchor {
+  kind generated_from
+  connects R11WithEntriesModule -> R11WithEntriesModuleEmptyLogAstAnchor
+  roles { R11WithEntriesModule as generated, R11WithEntriesModuleEmptyLogAstAnchor as syntax }
+  expects R11WithEntriesModuleEmptyLogAstAnchor fingerprint ast.semantic_subtree_v1("sha256:603efd648bb847a0fb65e4304640bff954066c6211242e0ef0151823a4c1603e")
+  summary "fn R11WithEntriesModule.emptyLog generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#emptyLog."
+}
+
+relation R11WithEntriesModuleGetGeneratedFromR11WithEntriesModuleGetAstAnchor {
+  kind generated_from
+  connects R11WithEntriesModule -> R11WithEntriesModuleGetAstAnchor
+  roles { R11WithEntriesModule as generated, R11WithEntriesModuleGetAstAnchor as syntax }
+  expects R11WithEntriesModuleGetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+  summary "fn R11WithEntriesModule.get generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#get."
+}
+
+relation R11WithEntriesModuleListGeneratedFromR11WithEntriesModuleListAstAnchor {
+  kind generated_from
+  connects R11WithEntriesModule -> R11WithEntriesModuleListAstAnchor
+  roles { R11WithEntriesModule as generated, R11WithEntriesModuleListAstAnchor as syntax }
+  expects R11WithEntriesModuleListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+  summary "fn R11WithEntriesModule.list generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#list."
+}
+
+relation R11WithEntriesModulePurgeGeneratedFromR11WithEntriesModulePurgeAstAnchor {
+  kind generated_from
+  connects R11WithEntriesModule -> R11WithEntriesModulePurgeAstAnchor
+  roles { R11WithEntriesModule as generated, R11WithEntriesModulePurgeAstAnchor as syntax }
+  expects R11WithEntriesModulePurgeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e01f71696ed61781065f5905f3dc861c708f83be04780312a388b0d3d296ae77")
+  summary "fn R11WithEntriesModule.purge generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#purge."
+}
+
+relation R11WithEntriesModuleWithEntriesGeneratedFromR11WithEntriesModuleWithEntriesAstAnchor {
+  kind generated_from
+  connects R11WithEntriesModule -> R11WithEntriesModuleWithEntriesAstAnchor
+  roles { R11WithEntriesModule as generated, R11WithEntriesModuleWithEntriesAstAnchor as syntax }
+  expects R11WithEntriesModuleWithEntriesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4c29fa86edb1716dee6c6339fad787e0c1118fbbbc62dbb8452bd39796fab0fd")
+  summary "fn R11WithEntriesModule.withEntries generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts#withEntries."
+}
+
+implementation R11WithEntriesModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T3/r11_with_entries.ts"
+  }
+  conforms_to R11WithEntriesModule
+}

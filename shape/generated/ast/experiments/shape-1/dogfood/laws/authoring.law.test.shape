@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.dogfood.laws.authoring_law_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AuthoringLawTestModuleGenInputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/authoring.law.test.ts#genInput")
+  fingerprint ast.semantic_subtree_v1("sha256:a61ed0bc311e631cb1d63fe416ed4451d628a3d8f9ddc65c1dba2a92e08224ae")
+}
+
+component AuthoringLawTestModule : GeneratedCandidate {
+  fn genInput
+    source ts("experiments/shape-1/dogfood/laws/authoring.law.test.ts#genInput")
+    effects unknown
+}
+
+relation AuthoringLawTestModuleGenInputGeneratedFromAuthoringLawTestModuleGenInputAstAnchor {
+  kind generated_from
+  connects AuthoringLawTestModule -> AuthoringLawTestModuleGenInputAstAnchor
+  roles { AuthoringLawTestModule as generated, AuthoringLawTestModuleGenInputAstAnchor as syntax }
+  expects AuthoringLawTestModuleGenInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a61ed0bc311e631cb1d63fe416ed4451d628a3d8f9ddc65c1dba2a92e08224ae")
+  summary "fn AuthoringLawTestModule.genInput generated from typescript function_declaration at experiments/shape-1/dogfood/laws/authoring.law.test.ts#genInput."
+}
+
+implementation AuthoringLawTestModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/laws/authoring.law.test.ts"
+  }
+  conforms_to AuthoringLawTestModule
+}

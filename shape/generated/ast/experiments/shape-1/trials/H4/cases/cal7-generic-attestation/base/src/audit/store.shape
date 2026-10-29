@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.trials.H4.cases.cal7_generic_attestation.base.src.audit.store
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource StoreModuleAppendEventAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H4/cases/cal7-generic-attestation/base/src/audit/store.ts#appendEvent")
+  fingerprint ast.semantic_subtree_v1("sha256:9faa529fa0b2dbb2bb7fcf00c2b8e0c9f3f9be4869e3f058131f6a44600e0a91")
+}
+
+component StoreModule : GeneratedCandidate {
+  fn appendEvent
+    source ts("experiments/shape-1/trials/H4/cases/cal7-generic-attestation/base/src/audit/store.ts#appendEvent")
+    effects unknown
+}
+
+relation StoreModuleAppendEventGeneratedFromStoreModuleAppendEventAstAnchor {
+  kind generated_from
+  connects StoreModule -> StoreModuleAppendEventAstAnchor
+  roles { StoreModule as generated, StoreModuleAppendEventAstAnchor as syntax }
+  expects StoreModuleAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9faa529fa0b2dbb2bb7fcf00c2b8e0c9f3f9be4869e3f058131f6a44600e0a91")
+  summary "fn StoreModule.appendEvent generated from typescript function_declaration at experiments/shape-1/trials/H4/cases/cal7-generic-attestation/base/src/audit/store.ts#appendEvent."
+}
+
+implementation StoreModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H4/cases/cal7-generic-attestation/base/src/audit/store.ts"
+  }
+  conforms_to StoreModule
+}

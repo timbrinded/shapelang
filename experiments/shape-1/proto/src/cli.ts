@@ -13,9 +13,27 @@ import { derive } from "./derive.ts";
 import { elaborate } from "./elaborate.ts";
 import { type CheckInput, EXIT } from "./io-types.ts";
 import { H } from "./jcs.ts";
-import { type SourceFileBytes, buildManifest, filesFromDir, filesFromGit } from "./manifest-build.ts";
-import { type ManifestPredicate, type Statement, gitTreeId, isRecordFile, isShapeFile, manifestStatement } from "./manifest.ts";
-import { loadModel, materialiseShape, readEvidence, readPersisted, rewriteAgainst } from "./loader.ts";
+import {
+  type SourceFileBytes,
+  buildManifest,
+  filesFromDir,
+  filesFromGit
+} from "./manifest-build.ts";
+import {
+  type ManifestPredicate,
+  type Statement,
+  gitTreeId,
+  isRecordFile,
+  isShapeFile,
+  manifestStatement
+} from "./manifest.ts";
+import {
+  loadModel,
+  materialiseShape,
+  readEvidence,
+  readPersisted,
+  rewriteAgainst
+} from "./loader.ts";
 import { parseRecord, signStatement, signerFromSeed } from "./records.ts";
 import { coreOutput, renderHuman } from "./render.ts";
 import { fromSeconds } from "./util.ts";
@@ -27,7 +45,17 @@ interface Args {
   rest: string[];
 }
 
-const BOOLS = new Set(["json", "core", "no-typescript", "teeth", "help", "bot", "synthesize", "include-generated", "no-rewrite"]);
+const BOOLS = new Set([
+  "json",
+  "core",
+  "no-typescript",
+  "teeth",
+  "help",
+  "bot",
+  "synthesize",
+  "include-generated",
+  "no-rewrite"
+]);
 
 function parseArgs(argv: string[]): Args {
   const [cmd = "help", ...rest] = argv;
@@ -64,7 +92,10 @@ function revParse(dir: string, ref: string): string | null {
 
 /** --synthesize: adds a small TS file per unit binding `ts("path#symbol")` (and per literal
  *  component path) so shape-only fixtures have code identities to attribute. */
-function synthesizeFiles(files: SourceFileBytes[], source: CheckInput["head"]["source"]): SourceFileBytes[] {
+function synthesizeFiles(
+  files: SourceFileBytes[],
+  source: CheckInput["head"]["source"]
+): SourceFileBytes[] {
   if (!source) return files;
   const byPath = new Map<string, Set<string>>();
   for (const m of source.modules) {
@@ -77,26 +108,51 @@ function synthesizeFiles(files: SourceFileBytes[], source: CheckInput["head"]["s
         if (id[2]) syms.add(id[2]);
         byPath.set(id[1], syms);
       }
-      for (const p of d.paths ?? []) if (!/[*?]/.test(p) && /\.(ts|tsx|js|mjs|cjs)$/.test(p) && !byPath.has(p)) byPath.set(p, new Set());
+      for (const p of d.paths ?? [])
+        if (!/[*?]/.test(p) && /\.(ts|tsx|js|mjs|cjs)$/.test(p) && !byPath.has(p))
+          byPath.set(p, new Set());
     }
   }
   const out = [...files];
   const have = new Set(files.map((f) => f.path));
   for (const [path, syms] of [...byPath.entries()].sort((x, y) => (x[0] < y[0] ? -1 : 1))) {
     if (have.has(path)) continue;
-    const text = [...syms].sort().map((s) => `export function ${s.split(".").pop() ?? s}() {\n  return ${JSON.stringify(s)};\n}\n`).join("\n");
+    const text = [...syms]
+      .sort()
+      .map(
+        (s) => `export function ${s.split(".").pop() ?? s}() {\n  return ${JSON.stringify(s)};\n}\n`
+      )
+      .join("\n");
     out.push({ path, mode: "100644", bytes: new Uint8Array(Buffer.from(text || "export {};\n")) });
   }
   return out;
 }
 
-async function manifestFor(files: SourceFileBytes[], revision: string | undefined, noTs: boolean): Promise<{ statement: Statement; revision: string; backend: string }> {
-  const tmpPred: ManifestPredicate = { v: "shape.manifest.v1", revision: "", tree: [], entries: [] };
+async function manifestFor(
+  files: SourceFileBytes[],
+  revision: string | undefined,
+  noTs: boolean
+): Promise<{ statement: Statement; revision: string; backend: string }> {
+  const tmpPred: ManifestPredicate = {
+    v: "shape.manifest.v1",
+    revision: "",
+    tree: [],
+    entries: []
+  };
   void tmpPred;
-  const draft = await buildManifest({ repoRoot: resolve(import.meta.dir, "../../../.."), revision: revision ?? "pending", files, noTypeScript: noTs });
+  const draft = await buildManifest({
+    repoRoot: resolve(import.meta.dir, "../../../.."),
+    revision: revision ?? "pending",
+    files,
+    noTypeScript: noTs
+  });
   const pred = draft.statement.predicate.shape as ManifestPredicate;
   const rev = revision ?? gitTreeId(pred.tree);
-  return { statement: manifestStatement({ ...pred, revision: rev }), revision: rev, backend: draft.backend };
+  return {
+    statement: manifestStatement({ ...pred, revision: rev }),
+    revision: rev,
+    backend: draft.backend
+  };
 }
 
 const HELP = `shape1 — Shape 1.0 prototype checker
@@ -119,7 +175,9 @@ async function cmdCheck(a: Args): Promise<number> {
   let input: CheckInput;
   if (one(a, "input")) {
     const src = one(a, "input") as string;
-    input = JSON.parse(src === "-" ? readFileSync(0, "utf8") : readFileSync(src, "utf8")) as CheckInput;
+    input = JSON.parse(
+      src === "-" ? readFileSync(0, "utf8") : readFileSync(src, "utf8")
+    ) as CheckInput;
   } else {
     const model = resolve(one(a, "model") ?? ".");
     const noTs = a.bools.has("no-typescript");
@@ -165,12 +223,26 @@ async function cmdCheck(a: Args): Promise<number> {
         }
         const bm = await manifestFor(filesFromGit(repo, rev), rev, noTs);
         const ct = spawnSync("git", ["show", "-s", "--format=%ct", rev], { cwd: repo });
-        base = { revision: rev, source: src, manifest: bm.statement, ...(ct.status === 0 ? { committerTime: fromSeconds(Number(ct.stdout.toString().trim())) } : {}) };
+        base = {
+          revision: rev,
+          source: src,
+          manifest: bm.statement,
+          ...(ct.status === 0
+            ? { committerTime: fromSeconds(Number(ct.stdout.toString().trim())) }
+            : {})
+        };
         basePersisted = readPersisted(dir);
       } else if (one(a, "changed")) {
         // synthetic base: the head shape over the head manifest without the changed paths
-        const changed = new Set(readFileSync(one(a, "changed") as string, "utf8").split("\n").map((l) => l.trim()).filter(Boolean));
-        const files = headFiles.filter((f) => !changed.has(f.path) || isShapeFile(f.path) || isRecordFile(f.path));
+        const changed = new Set(
+          readFileSync(one(a, "changed") as string, "utf8")
+            .split("\n")
+            .map((l) => l.trim())
+            .filter(Boolean)
+        );
+        const files = headFiles.filter(
+          (f) => !changed.has(f.path) || isShapeFile(f.path) || isRecordFile(f.path)
+        );
         const bm = await manifestFor(files, undefined, noTs);
         base = { revision: bm.revision, source: head.source, manifest: bm.statement };
       } else {
@@ -178,15 +250,25 @@ async function cmdCheck(a: Args): Promise<number> {
       }
     }
     const authors: CheckInput["authors"] = [
-      ...(one(a, "authors") ? (JSON.parse(readFileSync(one(a, "authors") as string, "utf8")) as CheckInput["authors"]) : []),
-      ...many(a, "author").map((identity) => ({ identity, verified: true, bot: /\[bot\]/.test(identity) || a.bools.has("bot") }))
+      ...(one(a, "authors")
+        ? (JSON.parse(readFileSync(one(a, "authors") as string, "utf8")) as CheckInput["authors"])
+        : []),
+      ...many(a, "author").map((identity) => ({
+        identity,
+        verified: true,
+        bot: /\[bot\]/.test(identity) || a.bools.has("bot")
+      }))
     ];
     let headSource = head.source;
     if (!a.bools.has("no-rewrite")) {
       const rw = rewriteAgainst(head.source, hm.statement);
       headSource = rw.source ?? head.source;
-      if (base?.source) base = { ...base, source: rewriteAgainst(base.source, base.manifest).source };
-      if (rw.renames.length > 0) process.stderr.write(`migrate: rewrote ${rw.renames.length} unit sources against the head manifest\n`);
+      if (base?.source)
+        base = { ...base, source: rewriteAgainst(base.source, base.manifest).source };
+      if (rw.renames.length > 0)
+        process.stderr.write(
+          `migrate: rewrote ${rw.renames.length} unit sources against the head manifest\n`
+        );
     }
     input = {
       contract: "shape.check.input/v1",
@@ -196,16 +278,22 @@ async function cmdCheck(a: Args): Promise<number> {
       base,
       change: { ids: many(a, "change-id").length > 0 ? many(a, "change-id") : ["local"] },
       authors,
-      reviews: one(a, "reviews") ? (JSON.parse(readFileSync(one(a, "reviews") as string, "utf8")) as CheckInput["reviews"]) : [],
+      reviews: one(a, "reviews")
+        ? (JSON.parse(readFileSync(one(a, "reviews") as string, "utf8")) as CheckInput["reviews"])
+        : [],
       records: readEvidence(many(a, "evidence")),
       baseRecords: readEvidence(many(a, "base-evidence")),
       persisted: { base: basePersisted, head: readPersisted(model) },
       options: { health: true, teeth: a.bools.has("teeth") }
     };
-    if (head.notes.length > 0 && !a.bools.has("json") && !a.bools.has("core")) for (const n of head.notes.slice(0, 20)) process.stderr.write(`migrate: ${n}\n`);
-    process.stderr.write(`manifest: ${hm.backend}; head ${hm.revision}${base ? `; base ${base.revision}` : ""}\n`);
+    if (head.notes.length > 0 && !a.bools.has("json") && !a.bools.has("core"))
+      for (const n of head.notes.slice(0, 20)) process.stderr.write(`migrate: ${n}\n`);
+    process.stderr.write(
+      `manifest: ${hm.backend}; head ${hm.revision}${base ? `; base ${base.revision}` : ""}\n`
+    );
   }
-  if (one(a, "write-input")) writeFileSync(one(a, "write-input") as string, `${JSON.stringify(input, null, 1)}\n`);
+  if (one(a, "write-input"))
+    writeFileSync(one(a, "write-input") as string, `${JSON.stringify(input, null, 1)}\n`);
   const out = derive(input);
   if (a.bools.has("core")) process.stdout.write(`${JSON.stringify(coreOutput(out), null, 1)}\n`);
   else if (a.bools.has("json")) process.stdout.write(`${JSON.stringify(out, null, 1)}\n`);

@@ -1,0 +1,32 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:54ae4532bdfa1bfc0a3c74731b968e00e69284787b8c4a6be47c5e331c1e1585",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": false,
+   "final": false,
+   "force": null,
+   "group": "g:9805bdc5108fbfd3ec164696512ce23d008645e1ea0e2f8e49ff8a6087510f8a",
+   "introduced": true,
+   "key": "ob:27f581e664db754fc1b964b15ba063ac9a69df7c9d5a6aa0eef94e2e5bc3ab3a",
+   "kind": "loosening",
+   "owner": "tooling::OtherTeam",
+   "questions": [
+    "L1"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "component tooling::Other",
+   "tier": "normal",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

@@ -23,6 +23,16 @@ const man = await manifestFor({ manifest: join(WORK, "manifest.json") });
 const source = readModel();
 const esf = elaborateAt(source, NOW);
 const world = buildWorld(esf, man.index, { side: "h" });
-const res = validateTeeth({ source, esf, world, manifest: man.statement, revision: man.revision, now: NOW, perOp: PER });
+const res = validateTeeth({
+  source,
+  esf,
+  world,
+  manifest: man.statement,
+  revision: man.revision,
+  now: NOW,
+  perOp: PER
+});
 writeFileSync(join(WORK, "validate.json"), JSON.stringify(res, null, 1));
-process.stderr.write(`validate: ${res.agree}/${res.sampled} agree; ${JSON.stringify(res.byOp)}; ${(res.ms / 1000).toFixed(0)} s\n`);
+process.stderr.write(
+  `validate: ${res.agree}/${res.sampled} agree; ${JSON.stringify(res.byOp)}; ${(res.ms / 1000).toFixed(0)} s\n`
+);

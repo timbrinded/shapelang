@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.observe_ts.provider
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ProviderModuleCallsProviderAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/observe-ts/provider.ts#callsProvider")
+  fingerprint ast.semantic_subtree_v1("sha256:ca1314d6acacd82bd6053837f14305a9fad8e01257e95350c6ad215bfd948194")
+}
+
+resource ProviderModuleChannelsFromShapeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/observe-ts/provider.ts#channelsFromShape")
+  fingerprint ast.semantic_subtree_v1("sha256:f199892dda970c9f084911cacba243745912dbb6074ba93b1f88b117f8b5084b")
+}
+
+resource ProviderModuleEffectsProviderAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/observe-ts/provider.ts#effectsProvider")
+  fingerprint ast.semantic_subtree_v1("sha256:3f7c6b267fd0bf09a1b0ad2fd9844be544917fd76ccfaa992593718ee08561d3")
+}
+
+resource ProviderModuleReasonKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/observe-ts/provider.ts#reasonKey")
+  fingerprint ast.semantic_subtree_v1("sha256:ad3a6f07647f7c1c5c84b41044438187fecc53c20237758356d18dafe0525e15")
+}
+
+resource ProviderModuleRunObserveTsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/observe-ts/provider.ts#runObserveTs")
+  fingerprint ast.semantic_subtree_v1("sha256:19695844e0c0e7e20c1098cacf2a0a9db94b4d7ae5785c9dcee305d2b1be2252")
+}
+
+component ProviderModule : GeneratedCandidate {
+  fn callsProvider
+    source ts("experiments/shape-1/proto/providers/observe-ts/provider.ts#callsProvider")
+    effects unknown
+  fn channelsFromShape
+    source ts("experiments/shape-1/proto/providers/observe-ts/provider.ts#channelsFromShape")
+    effects unknown
+  fn effectsProvider
+    source ts("experiments/shape-1/proto/providers/observe-ts/provider.ts#effectsProvider")
+    effects unknown
+  fn reasonKey
+    source ts("experiments/shape-1/proto/providers/observe-ts/provider.ts#reasonKey")
+    effects unknown
+  fn runObserveTs
+    source ts("experiments/shape-1/proto/providers/observe-ts/provider.ts#runObserveTs")
+    effects unknown
+}
+
+relation ProviderModuleCallsProviderGeneratedFromProviderModuleCallsProviderAstAnchor {
+  kind generated_from
+  connects ProviderModule -> ProviderModuleCallsProviderAstAnchor
+  roles { ProviderModule as generated, ProviderModuleCallsProviderAstAnchor as syntax }
+  expects ProviderModuleCallsProviderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ca1314d6acacd82bd6053837f14305a9fad8e01257e95350c6ad215bfd948194")
+  summary "fn ProviderModule.callsProvider generated from typescript function_declaration at experiments/shape-1/proto/providers/observe-ts/provider.ts#callsProvider."
+}
+
+relation ProviderModuleChannelsFromShapeGeneratedFromProviderModuleChannelsFromShapeAstAnchor {
+  kind generated_from
+  connects ProviderModule -> ProviderModuleChannelsFromShapeAstAnchor
+  roles { ProviderModule as generated, ProviderModuleChannelsFromShapeAstAnchor as syntax }
+  expects ProviderModuleChannelsFromShapeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f199892dda970c9f084911cacba243745912dbb6074ba93b1f88b117f8b5084b")
+  summary "fn ProviderModule.channelsFromShape generated from typescript function_declaration at experiments/shape-1/proto/providers/observe-ts/provider.ts#channelsFromShape."
+}
+
+relation ProviderModuleEffectsProviderGeneratedFromProviderModuleEffectsProviderAstAnchor {
+  kind generated_from
+  connects ProviderModule -> ProviderModuleEffectsProviderAstAnchor
+  roles { ProviderModule as generated, ProviderModuleEffectsProviderAstAnchor as syntax }
+  expects ProviderModuleEffectsProviderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3f7c6b267fd0bf09a1b0ad2fd9844be544917fd76ccfaa992593718ee08561d3")
+  summary "fn ProviderModule.effectsProvider generated from typescript function_declaration at experiments/shape-1/proto/providers/observe-ts/provider.ts#effectsProvider."
+}
+
+relation ProviderModuleReasonKeyGeneratedFromProviderModuleReasonKeyAstAnchor {
+  kind generated_from
+  connects ProviderModule -> ProviderModuleReasonKeyAstAnchor
+  roles { ProviderModule as generated, ProviderModuleReasonKeyAstAnchor as syntax }
+  expects ProviderModuleReasonKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ad3a6f07647f7c1c5c84b41044438187fecc53c20237758356d18dafe0525e15")
+  summary "fn ProviderModule.reasonKey generated from typescript function_declaration at experiments/shape-1/proto/providers/observe-ts/provider.ts#reasonKey."
+}
+
+relation ProviderModuleRunObserveTsGeneratedFromProviderModuleRunObserveTsAstAnchor {
+  kind generated_from
+  connects ProviderModule -> ProviderModuleRunObserveTsAstAnchor
+  roles { ProviderModule as generated, ProviderModuleRunObserveTsAstAnchor as syntax }
+  expects ProviderModuleRunObserveTsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:19695844e0c0e7e20c1098cacf2a0a9db94b4d7ae5785c9dcee305d2b1be2252")
+  summary "fn ProviderModule.runObserveTs generated from typescript function_declaration at experiments/shape-1/proto/providers/observe-ts/provider.ts#runObserveTs."
+}
+
+implementation ProviderModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/observe-ts/provider.ts"
+  }
+  conforms_to ProviderModule
+}

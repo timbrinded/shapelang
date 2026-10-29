@@ -1,0 +1,171 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:456a8a7d5570ae2fe76067a0f7f50a780ae0c7bae627dd27c60458921a38bbc9",
+ "verdict": "owed",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:d4218b3063c6f1b91aae4d39f84ca56299815d68e7994c92d0ecaeb3ce3c89e7",
+   "kind": "contradiction",
+   "reason": null,
+   "questions": null,
+   "introduced": false,
+   "severity": "owed",
+   "tier": "critical",
+   "budget": "mechanical",
+   "force": "sound",
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": null,
+   "group": "g:fffbe09e2d6e5f44d113128bc65a6d4163d46623a1579cde572481c10290b5ef",
+   "claim": {
+    "fp": "sha256:866e06e6bddd0add1cd7a6103d38d09c31bed7b56936712bd6318cd6497ba0f1",
+    "ids": [
+     "tooling::CheckerNeverReadsClock"
+    ],
+    "tier": "critical"
+   },
+   "subject": {
+    "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+    "atom": "Read<tooling::SystemClock>"
+   },
+   "witness": [
+    "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e"
+   ],
+   "facts": {
+    "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e": {
+     "at": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+     "resource": "ts.call(\"Date.now\")",
+     "type": "effect",
+     "verb": "Read"
+    }
+   },
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:77a64fd89c83d89fa031303b5a26842e85fcecdbcf0b2dc489980cce40cc5ecc",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "edit-code",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "exception",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::ann"
+     ],
+     "creates": null
+    },
+    {
+     "act": "edit-shape",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "critical",
+      "answers": 1,
+      "owners": [
+       "tooling::ShapeMaintainers"
+      ]
+     }
+    }
+   ],
+   "causes": [
+    {
+     "type": "fact",
+     "id": "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e"
+    },
+    {
+     "type": "binding",
+     "id": "resource tooling::SystemClock"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "claim",
+     "id": "sha256:215f7e3f8c7bab0e3328df7fd52abb5ede66440a460f89e8a02a9789f9c62441"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [],
+ "renames": [],
+ "debt": [],
+ "preexisting": [
+  {
+   "obligation": "ob:d4218b3063c6f1b91aae4d39f84ca56299815d68e7994c92d0ecaeb3ce3c89e7",
+   "owner": "tooling::ShapeMaintainers"
+  }
+ ],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 0,
+   "den": 0
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [
+   "checker.incremental::ShapeIncrementalChecker",
+   "checker::ShapeBindings",
+   "checker::ShapeDiagnostics",
+   "checker::ShapeModelLowerer",
+   "checker::ShapeModuleResolver",
+   "checker::ShapePreludeRegistry",
+   "checker::ShapeStringHelpers",
+   "tooling::ShpCli"
+  ],
+  "ungoverned": {
+   "num": 2,
+   "den": 8
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [
+   "checker::bunTest"
+  ],
+  "baseObservations": "missing",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 1,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"checker::ShapeChecker.*\",\"checker::ShapeChecker.*\"]",
+   "cell:[\"checker::ShapeRuleEngine.*\",\"checker::ShapeRuleEngine.*\"]",
+   "cell:[\"tooling::ShpCli.*\",\"tooling::ShpCli.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 3,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.trials.DRT.loo
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LooModuleRunKAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/loo.py#run_k")
+  fingerprint ast.semantic_subtree_v1("sha256:abb45d07986ddde3763c5bcaa16357d9e9a22803b6f15768802476834c4342a2")
+}
+
+resource LooModuleRunTsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/loo.py#run_ts")
+  fingerprint ast.semantic_subtree_v1("sha256:7089eec8eeef26f4f2c25cbc818c5a5fae9f23aea8c14e9c37be9c091e0204d5")
+}
+
+component LooModule : GeneratedCandidate {
+  fn run_k
+    source python("experiments/shape-1/trials/DRT/loo.py#run_k")
+    effects unknown
+  fn run_ts
+    source python("experiments/shape-1/trials/DRT/loo.py#run_ts")
+    effects unknown
+}
+
+relation LooModuleRunKGeneratedFromLooModuleRunKAstAnchor {
+  kind generated_from
+  connects LooModule -> LooModuleRunKAstAnchor
+  roles { LooModule as generated, LooModuleRunKAstAnchor as syntax }
+  expects LooModuleRunKAstAnchor fingerprint ast.semantic_subtree_v1("sha256:abb45d07986ddde3763c5bcaa16357d9e9a22803b6f15768802476834c4342a2")
+  summary "fn LooModule.run_k generated from python function_definition at experiments/shape-1/trials/DRT/loo.py#run_k."
+}
+
+relation LooModuleRunTsGeneratedFromLooModuleRunTsAstAnchor {
+  kind generated_from
+  connects LooModule -> LooModuleRunTsAstAnchor
+  roles { LooModule as generated, LooModuleRunTsAstAnchor as syntax }
+  expects LooModuleRunTsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7089eec8eeef26f4f2c25cbc818c5a5fae9f23aea8c14e9c37be9c091e0204d5")
+  summary "fn LooModule.run_ts generated from python function_definition at experiments/shape-1/trials/DRT/loo.py#run_ts."
+}
+
+implementation LooModuleImpl {
+  paths {
+    "experiments/shape-1/trials/DRT/loo.py"
+  }
+  conforms_to LooModule
+}

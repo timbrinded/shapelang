@@ -22,12 +22,18 @@ export interface ClockScanResult {
   incomplete: string[];
 }
 
-export async function clockScan(opts: { root: string; manifest: Statement; now: string }): Promise<ClockScanResult> {
+export async function clockScan(opts: {
+  root: string;
+  manifest: Statement;
+  now: string;
+}): Promise<ClockScanResult> {
   const ts = await loadTs(opts.root);
   const K = ts.SyntaxKind;
   const v = viewOf(opts.manifest);
   const known = (id: string): boolean => v.cites.has(id);
-  const files = [...v.cites.keys()].filter((id) => id.startsWith("ts:") && !id.includes("#") && TS_EXT.test(id)).sort();
+  const files = [...v.cites.keys()]
+    .filter((id) => id.startsWith("ts:") && !id.includes("#") && TS_EXT.test(id))
+    .sort();
   const counts = new Map<string, number>();
   const entries: ScopeEntry[] = [];
   const incomplete: string[] = [];
@@ -41,7 +47,13 @@ export async function clockScan(opts: { root: string; manifest: Statement; now: 
     } catch {
       continue;
     }
-    const sf = ts.createSourceFile(path, text, ts.ScriptTarget.Latest as number, true, scriptKind(ts, path));
+    const sf = ts.createSourceFile(
+      path,
+      text,
+      ts.ScriptTarget.Latest as number,
+      true,
+      scriptKind(ts, path)
+    );
     const idents = identsOf(ts, sf, path);
     let complete = (sf.parseDiagnostics ?? []).length === 0;
     const hit = (n: Node, resource: string): void => {
@@ -49,11 +61,22 @@ export async function clockScan(opts: { root: string; manifest: Statement; now: 
       const k = `${at}\u0000${resource}`;
       counts.set(k, (counts.get(k) ?? 0) + 1);
     };
-    const ident = (n: Node | undefined, name: string): boolean => !!n && n.kind === K.Identifier && n.text === name;
+    const ident = (n: Node | undefined, name: string): boolean =>
+      !!n && n.kind === K.Identifier && n.text === name;
     const prop = (n: Node | undefined, obj: string, name: string): boolean =>
-      !!n && n.kind === K.PropertyAccessExpression && n.name?.text === name && (ident(n.expression, obj) || (n.expression?.kind === K.PropertyAccessExpression && n.expression.name?.text === obj && ident(n.expression.expression, "globalThis")));
-    const isCallee = (n: Node): boolean => !!n.parent && (n.parent.kind === K.CallExpression || n.parent.kind === K.NewExpression) && n.parent.expression === n;
-    const kindIs = (n: Node | undefined, k: number | undefined): n is Node => !!n && k !== undefined && n.kind === k;
+      !!n &&
+      n.kind === K.PropertyAccessExpression &&
+      n.name?.text === name &&
+      (ident(n.expression, obj) ||
+        (n.expression?.kind === K.PropertyAccessExpression &&
+          n.expression.name?.text === obj &&
+          ident(n.expression.expression, "globalThis")));
+    const isCallee = (n: Node): boolean =>
+      !!n.parent &&
+      (n.parent.kind === K.CallExpression || n.parent.kind === K.NewExpression) &&
+      n.parent.expression === n;
+    const kindIs = (n: Node | undefined, k: number | undefined): n is Node =>
+      !!n && k !== undefined && n.kind === k;
     /** Is the Identifier n (Date, performance or hrtime) used only in a way the scan reads whole? */
     const accountedFor = (n: Node): boolean => {
       const p = n.parent;
@@ -62,9 +85,17 @@ export async function clockScan(opts: { root: string; manifest: Statement; now: 
       const isMemberName = kindIs(p, K.PropertyAccessExpression) && p.name === n;
       if (n.text === "hrtime") {
         if (!isMemberName) return true;
-        return isCallee(p) || (kindIs(gp, K.PropertyAccessExpression) && gp.name?.text === "bigint" && isCallee(gp));
+        return (
+          isCallee(p) ||
+          (kindIs(gp, K.PropertyAccessExpression) && gp.name?.text === "bigint" && isCallee(gp))
+        );
       }
-      const inType = p.kind === K.TypeReference || p.kind === K.TypeQuery || p.kind === K.QualifiedName || (p.kind === K.ExpressionWithTypeArguments && !(kindIs(gp, K.HeritageClause) && kindIs(gp.parent, K.ClassDeclaration)));
+      const inType =
+        p.kind === K.TypeReference ||
+        p.kind === K.TypeQuery ||
+        p.kind === K.QualifiedName ||
+        (p.kind === K.ExpressionWithTypeArguments &&
+          !(kindIs(gp, K.HeritageClause) && kindIs(gp.parent, K.ClassDeclaration)));
       if (inType) return true;
       // `globalThis.Date` is the Date value itself: judge the property access in its context
       const viaGlobal = n.text === "Date" && isMemberName && ident(p.expression, "globalThis");
@@ -93,10 +124,25 @@ export async function clockScan(opts: { root: string; manifest: Statement; now: 
         const callee = n.expression;
         if (prop(callee, "Date", "now")) hit(n, 'ts.call("Date.now")');
         else if (prop(callee, "performance", "now")) hit(n, 'ts.call("performance.now")');
-        else if (prop(callee, "process", "hrtime") || (kindIs(callee, K.PropertyAccessExpression) && callee.name?.text === "bigint" && prop(callee.expression, "process", "hrtime"))) hit(n, 'ts.call("process.hrtime")');
-        else if ((ident(callee, "Date") || prop(callee, "globalThis", "Date")) && (n.kind === K.CallExpression || (n.arguments ?? []).length === 0)) hit(n, 'ts.call("Date")');
+        else if (
+          prop(callee, "process", "hrtime") ||
+          (kindIs(callee, K.PropertyAccessExpression) &&
+            callee.name?.text === "bigint" &&
+            prop(callee.expression, "process", "hrtime"))
+        )
+          hit(n, 'ts.call("process.hrtime")');
+        else if (
+          (ident(callee, "Date") || prop(callee, "globalThis", "Date")) &&
+          (n.kind === K.CallExpression || (n.arguments ?? []).length === 0)
+        )
+          hit(n, 'ts.call("Date")');
       }
-      if (n.kind === K.Identifier && (n.text === "Date" || n.text === "performance" || n.text === "hrtime") && !accountedFor(n)) complete = false;
+      if (
+        n.kind === K.Identifier &&
+        (n.text === "Date" || n.text === "performance" || n.text === "hrtime") &&
+        !accountedFor(n)
+      )
+        complete = false;
       ts.forEachChild(n, visit);
     };
     visit(sf);
@@ -117,10 +163,23 @@ export async function clockScan(opts: { root: string; manifest: Statement; now: 
     revision: v.revision,
     time: recordTime(opts.now),
     scope: { root: scopeRoot(entries), entries },
-    facts: sites.map((s) => ({ type: "effect" as const, at: s.at, verb: "Read", resource: s.resource, n: s.n })),
+    facts: sites.map((s) => ({
+      type: "effect" as const,
+      at: s.at,
+      verb: "Read",
+      resource: s.resource,
+      n: s.n
+    })),
     harness: [],
     assumptions: []
   };
   const { envelope, id } = emit(PROVIDERS.tsClockScan, rec);
-  return { envelope, id, facts: sites.length, sites, files: entries.length, incomplete: incomplete.sort() };
+  return {
+    envelope,
+    id,
+    facts: sites.length,
+    sites,
+    files: entries.length,
+    incomplete: incomplete.sort()
+  };
 }

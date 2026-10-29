@@ -1,0 +1,257 @@
+module shape.generated.ast.experiments.shape_1.dogfood.tools.lib
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LibModuleClaimIndexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/lib.ts#claimIndex")
+  fingerprint ast.semantic_subtree_v1("sha256:a0864e562e7b980ef92a00eaeaa564cb99c1a0b62ee3ed80e75dab40e23707e1")
+}
+
+resource LibModuleCommitFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/lib.ts#commitFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:7df7f9f07a0e50cd26393bb764d81378bfb1ec73651ded7c12107287c98861f6")
+}
+
+resource LibModuleComposeModelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/lib.ts#composeModel")
+  fingerprint ast.semantic_subtree_v1("sha256:11e5397f2db931f71c0ab1cb6c0d0273044df98834bccde253b30aa8ce844fd6")
+}
+
+resource LibModuleDogfoodFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/lib.ts#dogfoodFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:3612bbf560ee970abab044cb48b6c352de8fa30518d691544157382a9a3ee94e")
+}
+
+resource LibModuleDroppedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/lib.ts#dropped")
+  fingerprint ast.semantic_subtree_v1("sha256:57247e0f0701424111a321d6f1bd05df032a0990ed629122195e78e034d6621e")
+}
+
+resource LibModuleManifestForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/lib.ts#manifestFor")
+  fingerprint ast.semantic_subtree_v1("sha256:4d8520ec0b3cfd340df5a418ca1a13318a30ba0ec7eccab53aa1c69c5799696c")
+}
+
+resource LibModuleMaterializeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/lib.ts#materialize")
+  fingerprint ast.semantic_subtree_v1("sha256:ef1e41cfe7c7cb48a383b1d73510f76288dd2b0f0e73317caf94afa0f9710025")
+}
+
+resource LibModuleMergeDeclAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/lib.ts#mergeDecl")
+  fingerprint ast.semantic_subtree_v1("sha256:95dc9d5e004e1b5c2fbdab894b5cf1cec6ce2509c05bf66d679dc84bbceaaf42")
+}
+
+resource LibModuleMergeObjAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/lib.ts#mergeObj")
+  fingerprint ast.semantic_subtree_v1("sha256:c8e6dd2c646aac56758ca0ddd154a0641ab868b704c63a3c4842f43a40e44642")
+}
+
+resource LibModuleReadModelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/lib.ts#readModel")
+  fingerprint ast.semantic_subtree_v1("sha256:fb5c87112da8f78062b2814f49f4324b193c41073829d82d5366ff1f5ebc7205")
+}
+
+resource LibModuleReadOverlayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/lib.ts#readOverlay")
+  fingerprint ast.semantic_subtree_v1("sha256:998fdeac154c834ed7d84b6d24107113b943a50446ca701273e406d14232cc63")
+}
+
+resource LibModuleRenameRefsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/lib.ts#renameRefs")
+  fingerprint ast.semantic_subtree_v1("sha256:1f16361e2b31e74b3f5e93d759166cb0ddbe5d102dd17240c33b422c458fb61e")
+}
+
+resource LibModuleTreeFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/lib.ts#treeFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:c45f4a0cba40954ba65b73de3d386f4377f959ce4b075e1515408c0f4855ed61")
+}
+
+resource LibModuleUnitBindingsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/lib.ts#unitBindings")
+  fingerprint ast.semantic_subtree_v1("sha256:50088024f4402b10cb5cc5080e6a20fe22c9d8c4defd82dbaf43e762cd8faeaf")
+}
+
+resource LibModuleWorkingTreeFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/lib.ts#workingTreeFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:bf20d2dbf05197696c4c87f934ffc2dc9bad092a2c92157325168553ef9f911a")
+}
+
+component LibModule : GeneratedCandidate {
+  fn claimIndex
+    source ts("experiments/shape-1/dogfood/tools/lib.ts#claimIndex")
+    effects unknown
+  fn commitFiles
+    source ts("experiments/shape-1/dogfood/tools/lib.ts#commitFiles")
+    effects unknown
+  fn composeModel
+    source ts("experiments/shape-1/dogfood/tools/lib.ts#composeModel")
+    effects unknown
+  fn dogfoodFiles
+    source ts("experiments/shape-1/dogfood/tools/lib.ts#dogfoodFiles")
+    effects unknown
+  fn dropped
+    source ts("experiments/shape-1/dogfood/tools/lib.ts#dropped")
+    effects unknown
+  fn manifestFor
+    source ts("experiments/shape-1/dogfood/tools/lib.ts#manifestFor")
+    effects unknown
+  fn materialize
+    source ts("experiments/shape-1/dogfood/tools/lib.ts#materialize")
+    effects unknown
+  fn mergeDecl
+    source ts("experiments/shape-1/dogfood/tools/lib.ts#mergeDecl")
+    effects unknown
+  fn mergeObj
+    source ts("experiments/shape-1/dogfood/tools/lib.ts#mergeObj")
+    effects unknown
+  fn readModel
+    source ts("experiments/shape-1/dogfood/tools/lib.ts#readModel")
+    effects unknown
+  fn readOverlay
+    source ts("experiments/shape-1/dogfood/tools/lib.ts#readOverlay")
+    effects unknown
+  fn renameRefs
+    source ts("experiments/shape-1/dogfood/tools/lib.ts#renameRefs")
+    effects unknown
+  fn treeFiles
+    source ts("experiments/shape-1/dogfood/tools/lib.ts#treeFiles")
+    effects unknown
+  fn unitBindings
+    source ts("experiments/shape-1/dogfood/tools/lib.ts#unitBindings")
+    effects unknown
+  fn workingTreeFiles
+    source ts("experiments/shape-1/dogfood/tools/lib.ts#workingTreeFiles")
+    effects unknown
+}
+
+relation LibModuleClaimIndexGeneratedFromLibModuleClaimIndexAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleClaimIndexAstAnchor
+  roles { LibModule as generated, LibModuleClaimIndexAstAnchor as syntax }
+  expects LibModuleClaimIndexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a0864e562e7b980ef92a00eaeaa564cb99c1a0b62ee3ed80e75dab40e23707e1")
+  summary "fn LibModule.claimIndex generated from typescript function_declaration at experiments/shape-1/dogfood/tools/lib.ts#claimIndex."
+}
+
+relation LibModuleCommitFilesGeneratedFromLibModuleCommitFilesAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleCommitFilesAstAnchor
+  roles { LibModule as generated, LibModuleCommitFilesAstAnchor as syntax }
+  expects LibModuleCommitFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7df7f9f07a0e50cd26393bb764d81378bfb1ec73651ded7c12107287c98861f6")
+  summary "fn LibModule.commitFiles generated from typescript function_declaration at experiments/shape-1/dogfood/tools/lib.ts#commitFiles."
+}
+
+relation LibModuleComposeModelGeneratedFromLibModuleComposeModelAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleComposeModelAstAnchor
+  roles { LibModule as generated, LibModuleComposeModelAstAnchor as syntax }
+  expects LibModuleComposeModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:11e5397f2db931f71c0ab1cb6c0d0273044df98834bccde253b30aa8ce844fd6")
+  summary "fn LibModule.composeModel generated from typescript function_declaration at experiments/shape-1/dogfood/tools/lib.ts#composeModel."
+}
+
+relation LibModuleDogfoodFilesGeneratedFromLibModuleDogfoodFilesAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleDogfoodFilesAstAnchor
+  roles { LibModule as generated, LibModuleDogfoodFilesAstAnchor as syntax }
+  expects LibModuleDogfoodFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3612bbf560ee970abab044cb48b6c352de8fa30518d691544157382a9a3ee94e")
+  summary "fn LibModule.dogfoodFiles generated from typescript function_declaration at experiments/shape-1/dogfood/tools/lib.ts#dogfoodFiles."
+}
+
+relation LibModuleDroppedGeneratedFromLibModuleDroppedAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleDroppedAstAnchor
+  roles { LibModule as generated, LibModuleDroppedAstAnchor as syntax }
+  expects LibModuleDroppedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:57247e0f0701424111a321d6f1bd05df032a0990ed629122195e78e034d6621e")
+  summary "fn LibModule.dropped generated from typescript function_declaration at experiments/shape-1/dogfood/tools/lib.ts#dropped."
+}
+
+relation LibModuleManifestForGeneratedFromLibModuleManifestForAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleManifestForAstAnchor
+  roles { LibModule as generated, LibModuleManifestForAstAnchor as syntax }
+  expects LibModuleManifestForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4d8520ec0b3cfd340df5a418ca1a13318a30ba0ec7eccab53aa1c69c5799696c")
+  summary "fn LibModule.manifestFor generated from typescript function_declaration at experiments/shape-1/dogfood/tools/lib.ts#manifestFor."
+}
+
+relation LibModuleMaterializeGeneratedFromLibModuleMaterializeAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleMaterializeAstAnchor
+  roles { LibModule as generated, LibModuleMaterializeAstAnchor as syntax }
+  expects LibModuleMaterializeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ef1e41cfe7c7cb48a383b1d73510f76288dd2b0f0e73317caf94afa0f9710025")
+  summary "fn LibModule.materialize generated from typescript function_declaration at experiments/shape-1/dogfood/tools/lib.ts#materialize."
+}
+
+relation LibModuleMergeDeclGeneratedFromLibModuleMergeDeclAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleMergeDeclAstAnchor
+  roles { LibModule as generated, LibModuleMergeDeclAstAnchor as syntax }
+  expects LibModuleMergeDeclAstAnchor fingerprint ast.semantic_subtree_v1("sha256:95dc9d5e004e1b5c2fbdab894b5cf1cec6ce2509c05bf66d679dc84bbceaaf42")
+  summary "fn LibModule.mergeDecl generated from typescript function_declaration at experiments/shape-1/dogfood/tools/lib.ts#mergeDecl."
+}
+
+relation LibModuleMergeObjGeneratedFromLibModuleMergeObjAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleMergeObjAstAnchor
+  roles { LibModule as generated, LibModuleMergeObjAstAnchor as syntax }
+  expects LibModuleMergeObjAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c8e6dd2c646aac56758ca0ddd154a0641ab868b704c63a3c4842f43a40e44642")
+  summary "fn LibModule.mergeObj generated from typescript function_declaration at experiments/shape-1/dogfood/tools/lib.ts#mergeObj."
+}
+
+relation LibModuleReadModelGeneratedFromLibModuleReadModelAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleReadModelAstAnchor
+  roles { LibModule as generated, LibModuleReadModelAstAnchor as syntax }
+  expects LibModuleReadModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fb5c87112da8f78062b2814f49f4324b193c41073829d82d5366ff1f5ebc7205")
+  summary "fn LibModule.readModel generated from typescript function_declaration at experiments/shape-1/dogfood/tools/lib.ts#readModel."
+}
+
+relation LibModuleReadOverlayGeneratedFromLibModuleReadOverlayAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleReadOverlayAstAnchor
+  roles { LibModule as generated, LibModuleReadOverlayAstAnchor as syntax }
+  expects LibModuleReadOverlayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:998fdeac154c834ed7d84b6d24107113b943a50446ca701273e406d14232cc63")
+  summary "fn LibModule.readOverlay generated from typescript function_declaration at experiments/shape-1/dogfood/tools/lib.ts#readOverlay."
+}
+
+relation LibModuleRenameRefsGeneratedFromLibModuleRenameRefsAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleRenameRefsAstAnchor
+  roles { LibModule as generated, LibModuleRenameRefsAstAnchor as syntax }
+  expects LibModuleRenameRefsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1f16361e2b31e74b3f5e93d759166cb0ddbe5d102dd17240c33b422c458fb61e")
+  summary "fn LibModule.renameRefs generated from typescript function_declaration at experiments/shape-1/dogfood/tools/lib.ts#renameRefs."
+}
+
+relation LibModuleTreeFilesGeneratedFromLibModuleTreeFilesAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleTreeFilesAstAnchor
+  roles { LibModule as generated, LibModuleTreeFilesAstAnchor as syntax }
+  expects LibModuleTreeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c45f4a0cba40954ba65b73de3d386f4377f959ce4b075e1515408c0f4855ed61")
+  summary "fn LibModule.treeFiles generated from typescript function_declaration at experiments/shape-1/dogfood/tools/lib.ts#treeFiles."
+}
+
+relation LibModuleUnitBindingsGeneratedFromLibModuleUnitBindingsAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleUnitBindingsAstAnchor
+  roles { LibModule as generated, LibModuleUnitBindingsAstAnchor as syntax }
+  expects LibModuleUnitBindingsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:50088024f4402b10cb5cc5080e6a20fe22c9d8c4defd82dbaf43e762cd8faeaf")
+  summary "fn LibModule.unitBindings generated from typescript function_declaration at experiments/shape-1/dogfood/tools/lib.ts#unitBindings."
+}
+
+relation LibModuleWorkingTreeFilesGeneratedFromLibModuleWorkingTreeFilesAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleWorkingTreeFilesAstAnchor
+  roles { LibModule as generated, LibModuleWorkingTreeFilesAstAnchor as syntax }
+  expects LibModuleWorkingTreeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bf20d2dbf05197696c4c87f934ffc2dc9bad092a2c92157325168553ef9f911a")
+  summary "fn LibModule.workingTreeFiles generated from typescript function_declaration at experiments/shape-1/dogfood/tools/lib.ts#workingTreeFiles."
+}
+
+implementation LibModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/tools/lib.ts"
+  }
+  conforms_to LibModule
+}

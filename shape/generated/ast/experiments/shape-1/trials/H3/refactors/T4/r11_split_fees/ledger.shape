@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r11_split_fees.ledger
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LedgerModuleAdjustAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#adjust")
+  fingerprint ast.semantic_subtree_v1("sha256:78554a6fb0bd4909cb4253cb158f7b059a205f3f68c316191e2658ec5426a8d2")
+}
+
+resource LedgerModuleBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#balance")
+  fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+}
+
+resource LedgerModuleFeeForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#feeFor")
+  fingerprint ast.semantic_subtree_v1("sha256:f79b33024a0825c717468ac9e4861bb7455f29b34197eb2f9f4d59160596678a")
+}
+
+resource LedgerModuleRejectedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#rejected")
+  fingerprint ast.semantic_subtree_v1("sha256:1c2540dd3edb4b3686d319860967bcdb3cca397b1d9966a7b60a8577b14f4f18")
+}
+
+resource LedgerModuleSetBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#setBalance")
+  fingerprint ast.semantic_subtree_v1("sha256:f1f9de177693b3dd73cad9c920b7b219458daaa494194b9357f78a57e964adfc")
+}
+
+resource LedgerModuleTotalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#total")
+  fingerprint ast.semantic_subtree_v1("sha256:d9a6a3d298fbcc063cb0a8e5ce994c2de1789a71d0d2b076c40b54531ce92cba")
+}
+
+resource LedgerModuleTransferAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#transfer")
+  fingerprint ast.semantic_subtree_v1("sha256:4ec302cab35074f269f2f1a0d1a4327578f3f44c64856c14018b5b9c3adc1ca5")
+}
+
+component LedgerModule : GeneratedCandidate {
+  fn adjust
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#adjust")
+    effects unknown
+  fn balance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#balance")
+    effects unknown
+  fn feeFor
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#feeFor")
+    effects unknown
+  fn rejected
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#rejected")
+    effects unknown
+  fn setBalance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#setBalance")
+    effects unknown
+  fn total
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#total")
+    effects unknown
+  fn transfer
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#transfer")
+    effects unknown
+}
+
+relation LedgerModuleAdjustGeneratedFromLedgerModuleAdjustAstAnchor {
+  kind generated_from
+  connects LedgerModule -> LedgerModuleAdjustAstAnchor
+  roles { LedgerModule as generated, LedgerModuleAdjustAstAnchor as syntax }
+  expects LedgerModuleAdjustAstAnchor fingerprint ast.semantic_subtree_v1("sha256:78554a6fb0bd4909cb4253cb158f7b059a205f3f68c316191e2658ec5426a8d2")
+  summary "fn LedgerModule.adjust generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#adjust."
+}
+
+relation LedgerModuleBalanceGeneratedFromLedgerModuleBalanceAstAnchor {
+  kind generated_from
+  connects LedgerModule -> LedgerModuleBalanceAstAnchor
+  roles { LedgerModule as generated, LedgerModuleBalanceAstAnchor as syntax }
+  expects LedgerModuleBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+  summary "fn LedgerModule.balance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#balance."
+}
+
+relation LedgerModuleFeeForGeneratedFromLedgerModuleFeeForAstAnchor {
+  kind generated_from
+  connects LedgerModule -> LedgerModuleFeeForAstAnchor
+  roles { LedgerModule as generated, LedgerModuleFeeForAstAnchor as syntax }
+  expects LedgerModuleFeeForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f79b33024a0825c717468ac9e4861bb7455f29b34197eb2f9f4d59160596678a")
+  summary "fn LedgerModule.feeFor generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#feeFor."
+}
+
+relation LedgerModuleRejectedGeneratedFromLedgerModuleRejectedAstAnchor {
+  kind generated_from
+  connects LedgerModule -> LedgerModuleRejectedAstAnchor
+  roles { LedgerModule as generated, LedgerModuleRejectedAstAnchor as syntax }
+  expects LedgerModuleRejectedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1c2540dd3edb4b3686d319860967bcdb3cca397b1d9966a7b60a8577b14f4f18")
+  summary "fn LedgerModule.rejected generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#rejected."
+}
+
+relation LedgerModuleSetBalanceGeneratedFromLedgerModuleSetBalanceAstAnchor {
+  kind generated_from
+  connects LedgerModule -> LedgerModuleSetBalanceAstAnchor
+  roles { LedgerModule as generated, LedgerModuleSetBalanceAstAnchor as syntax }
+  expects LedgerModuleSetBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f1f9de177693b3dd73cad9c920b7b219458daaa494194b9357f78a57e964adfc")
+  summary "fn LedgerModule.setBalance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#setBalance."
+}
+
+relation LedgerModuleTotalGeneratedFromLedgerModuleTotalAstAnchor {
+  kind generated_from
+  connects LedgerModule -> LedgerModuleTotalAstAnchor
+  roles { LedgerModule as generated, LedgerModuleTotalAstAnchor as syntax }
+  expects LedgerModuleTotalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d9a6a3d298fbcc063cb0a8e5ce994c2de1789a71d0d2b076c40b54531ce92cba")
+  summary "fn LedgerModule.total generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#total."
+}
+
+relation LedgerModuleTransferGeneratedFromLedgerModuleTransferAstAnchor {
+  kind generated_from
+  connects LedgerModule -> LedgerModuleTransferAstAnchor
+  roles { LedgerModule as generated, LedgerModuleTransferAstAnchor as syntax }
+  expects LedgerModuleTransferAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ec302cab35074f269f2f1a0d1a4327578f3f44c64856c14018b5b9c3adc1ca5")
+  summary "fn LedgerModule.transfer generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts#transfer."
+}
+
+implementation LedgerModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T4/r11_split_fees/ledger.ts"
+  }
+  conforms_to LedgerModule
+}

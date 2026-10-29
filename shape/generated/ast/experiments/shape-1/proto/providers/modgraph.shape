@@ -1,0 +1,65 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.modgraph
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ModgraphModuleDiskClosureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/modgraph.ts#diskClosure")
+  fingerprint ast.semantic_subtree_v1("sha256:fd379e8ef9fbdff22951a5a2afe9c86e96da166d1236361785f31613f466e293")
+}
+
+resource ModgraphModuleImportSpecifiersAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/modgraph.ts#importSpecifiers")
+  fingerprint ast.semantic_subtree_v1("sha256:f1a1b113c128adb8b60bd3134b00f3a175bd59d6d8b90ca0873f829bb84ce07e")
+}
+
+resource ModgraphModuleModuleClosureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/modgraph.ts#moduleClosure")
+  fingerprint ast.semantic_subtree_v1("sha256:e2f4eff081245831fd3e8e45454e0ba7400dc54799c908b755ee4d89c44a1b7f")
+}
+
+component ModgraphModule : GeneratedCandidate {
+  fn diskClosure
+    source ts("experiments/shape-1/proto/providers/modgraph.ts#diskClosure")
+    effects unknown
+  fn importSpecifiers
+    source ts("experiments/shape-1/proto/providers/modgraph.ts#importSpecifiers")
+    effects unknown
+  fn moduleClosure
+    source ts("experiments/shape-1/proto/providers/modgraph.ts#moduleClosure")
+    effects unknown
+}
+
+relation ModgraphModuleDiskClosureGeneratedFromModgraphModuleDiskClosureAstAnchor {
+  kind generated_from
+  connects ModgraphModule -> ModgraphModuleDiskClosureAstAnchor
+  roles { ModgraphModule as generated, ModgraphModuleDiskClosureAstAnchor as syntax }
+  expects ModgraphModuleDiskClosureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fd379e8ef9fbdff22951a5a2afe9c86e96da166d1236361785f31613f466e293")
+  summary "fn ModgraphModule.diskClosure generated from typescript function_declaration at experiments/shape-1/proto/providers/modgraph.ts#diskClosure."
+}
+
+relation ModgraphModuleImportSpecifiersGeneratedFromModgraphModuleImportSpecifiersAstAnchor {
+  kind generated_from
+  connects ModgraphModule -> ModgraphModuleImportSpecifiersAstAnchor
+  roles { ModgraphModule as generated, ModgraphModuleImportSpecifiersAstAnchor as syntax }
+  expects ModgraphModuleImportSpecifiersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f1a1b113c128adb8b60bd3134b00f3a175bd59d6d8b90ca0873f829bb84ce07e")
+  summary "fn ModgraphModule.importSpecifiers generated from typescript function_declaration at experiments/shape-1/proto/providers/modgraph.ts#importSpecifiers."
+}
+
+relation ModgraphModuleModuleClosureGeneratedFromModgraphModuleModuleClosureAstAnchor {
+  kind generated_from
+  connects ModgraphModule -> ModgraphModuleModuleClosureAstAnchor
+  roles { ModgraphModule as generated, ModgraphModuleModuleClosureAstAnchor as syntax }
+  expects ModgraphModuleModuleClosureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e2f4eff081245831fd3e8e45454e0ba7400dc54799c908b755ee4d89c44a1b7f")
+  summary "fn ModgraphModule.moduleClosure generated from typescript function_declaration at experiments/shape-1/proto/providers/modgraph.ts#moduleClosure."
+}
+
+implementation ModgraphModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/modgraph.ts"
+  }
+  conforms_to ModgraphModule
+}

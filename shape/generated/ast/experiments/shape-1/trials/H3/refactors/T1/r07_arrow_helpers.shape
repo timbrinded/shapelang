@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r07_arrow_helpers
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R07ArrowHelpersModuleIsWallAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts#isWall")
+  fingerprint ast.semantic_subtree_v1("sha256:563b7ae0d645b25b114fd9529b626e8e0fadc30de41fae4cffd35a1ddd00c17b")
+}
+
+resource R07ArrowHelpersModuleIsWonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts#isWon")
+  fingerprint ast.semantic_subtree_v1("sha256:1fc01820c39d249759ecb8e878dc2bbb42be54d5c3f09c70ccf2b161059bfb7e")
+}
+
+resource R07ArrowHelpersModuleReplayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts#replay")
+  fingerprint ast.semantic_subtree_v1("sha256:adee12aae531c70809824e54168b5f4dc5182d984699a428d3fa4da898e79518")
+}
+
+resource R07ArrowHelpersModuleStartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts#start")
+  fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+}
+
+resource R07ArrowHelpersModuleStepAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts#step")
+  fingerprint ast.semantic_subtree_v1("sha256:537cdc8f3f4447d62362d0989933f699a95eff1861ac6f116f9e411a5a61c54a")
+}
+
+component R07ArrowHelpersModule : GeneratedCandidate {
+  fn isWall
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts#isWall")
+    effects unknown
+  fn isWon
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts#isWon")
+    effects unknown
+  fn replay
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts#replay")
+    effects unknown
+  fn start
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts#start")
+    effects unknown
+  fn step
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts#step")
+    effects unknown
+}
+
+relation R07ArrowHelpersModuleIsWallGeneratedFromR07ArrowHelpersModuleIsWallAstAnchor {
+  kind generated_from
+  connects R07ArrowHelpersModule -> R07ArrowHelpersModuleIsWallAstAnchor
+  roles { R07ArrowHelpersModule as generated, R07ArrowHelpersModuleIsWallAstAnchor as syntax }
+  expects R07ArrowHelpersModuleIsWallAstAnchor fingerprint ast.semantic_subtree_v1("sha256:563b7ae0d645b25b114fd9529b626e8e0fadc30de41fae4cffd35a1ddd00c17b")
+  summary "fn R07ArrowHelpersModule.isWall generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts#isWall."
+}
+
+relation R07ArrowHelpersModuleIsWonGeneratedFromR07ArrowHelpersModuleIsWonAstAnchor {
+  kind generated_from
+  connects R07ArrowHelpersModule -> R07ArrowHelpersModuleIsWonAstAnchor
+  roles { R07ArrowHelpersModule as generated, R07ArrowHelpersModuleIsWonAstAnchor as syntax }
+  expects R07ArrowHelpersModuleIsWonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fc01820c39d249759ecb8e878dc2bbb42be54d5c3f09c70ccf2b161059bfb7e")
+  summary "fn R07ArrowHelpersModule.isWon generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts#isWon."
+}
+
+relation R07ArrowHelpersModuleReplayGeneratedFromR07ArrowHelpersModuleReplayAstAnchor {
+  kind generated_from
+  connects R07ArrowHelpersModule -> R07ArrowHelpersModuleReplayAstAnchor
+  roles { R07ArrowHelpersModule as generated, R07ArrowHelpersModuleReplayAstAnchor as syntax }
+  expects R07ArrowHelpersModuleReplayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:adee12aae531c70809824e54168b5f4dc5182d984699a428d3fa4da898e79518")
+  summary "fn R07ArrowHelpersModule.replay generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts#replay."
+}
+
+relation R07ArrowHelpersModuleStartGeneratedFromR07ArrowHelpersModuleStartAstAnchor {
+  kind generated_from
+  connects R07ArrowHelpersModule -> R07ArrowHelpersModuleStartAstAnchor
+  roles { R07ArrowHelpersModule as generated, R07ArrowHelpersModuleStartAstAnchor as syntax }
+  expects R07ArrowHelpersModuleStartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+  summary "fn R07ArrowHelpersModule.start generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts#start."
+}
+
+relation R07ArrowHelpersModuleStepGeneratedFromR07ArrowHelpersModuleStepAstAnchor {
+  kind generated_from
+  connects R07ArrowHelpersModule -> R07ArrowHelpersModuleStepAstAnchor
+  roles { R07ArrowHelpersModule as generated, R07ArrowHelpersModuleStepAstAnchor as syntax }
+  expects R07ArrowHelpersModuleStepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:537cdc8f3f4447d62362d0989933f699a95eff1861ac6f116f9e411a5a61c54a")
+  summary "fn R07ArrowHelpersModule.step generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts#step."
+}
+
+implementation R07ArrowHelpersModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T1/r07_arrow_helpers.ts"
+  }
+  conforms_to R07ArrowHelpersModule
+}

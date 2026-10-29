@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.trials.DRT.patch_kernel
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource PatchKernelModulePatchAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/patch_kernel.py#patch")
+  fingerprint ast.semantic_subtree_v1("sha256:a9195b7118e9fdb8887ad9ad56c3ae4d4a9b3a08192189bdaa9a216a3039a553")
+}
+
+component PatchKernelModule : GeneratedCandidate {
+  fn patch
+    source python("experiments/shape-1/trials/DRT/patch_kernel.py#patch")
+    effects unknown
+}
+
+relation PatchKernelModulePatchGeneratedFromPatchKernelModulePatchAstAnchor {
+  kind generated_from
+  connects PatchKernelModule -> PatchKernelModulePatchAstAnchor
+  roles { PatchKernelModule as generated, PatchKernelModulePatchAstAnchor as syntax }
+  expects PatchKernelModulePatchAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a9195b7118e9fdb8887ad9ad56c3ae4d4a9b3a08192189bdaa9a216a3039a553")
+  summary "fn PatchKernelModule.patch generated from python function_definition at experiments/shape-1/trials/DRT/patch_kernel.py#patch."
+}
+
+implementation PatchKernelModuleImpl {
+  paths {
+    "experiments/shape-1/trials/DRT/patch_kernel.py"
+  }
+  conforms_to PatchKernelModule
+}

@@ -46,10 +46,14 @@ export function feeFor(from: AccountId, to: AccountId, amount: number): number {
   return Math.max(1, Math.floor(amount / 100));
 }
 
-const setBalance = (ledger: Ledger, id: AccountId, value: number): Ledger => ({ ...ledger, [id]: value });
+const setBalance = (ledger: Ledger, id: AccountId, value: number): Ledger => ({
+  ...ledger,
+  [id]: value
+});
 
 // Adds delta to one account, reading the balance it updates.
-const adjust = (ledger: Ledger, id: AccountId, delta: number): Ledger => setBalance(ledger, id, balance(ledger, id) + delta);
+const adjust = (ledger: Ledger, id: AccountId, delta: number): Ledger =>
+  setBalance(ledger, id, balance(ledger, id) + delta);
 
 const rejected = (ledger: Ledger): TransferResult => ({ ok: false, ledger });
 
@@ -61,7 +65,7 @@ export function transfer(
   ledger: Ledger,
   from: AccountId,
   to: AccountId,
-  amount: number,
+  amount: number
 ): TransferResult {
   if (!Number.isInteger(amount) || amount <= 0) {
     return rejected(ledger);

@@ -7,20 +7,27 @@ import { parseAtom } from "./model.ts";
 
 /** Renames qualified names in an NF's args by ρ (base Q → head Q). */
 export function renameArgs(args: JsonValue, rho: Map<string, string>): JsonValue {
-  const keys = [...rho.entries()].filter(([a, b]) => a !== b).sort((a, b) => b[0].length - a[0].length || cmpStr(a[0], b[0]));
+  const keys = [...rho.entries()]
+    .filter(([a, b]) => a !== b)
+    .sort((a, b) => b[0].length - a[0].length || cmpStr(a[0], b[0]));
   if (keys.length === 0) return args;
   const fix = (s: string): string => {
     let out = s;
     for (const [from, to] of keys) {
-      const re = new RegExp(`(^|[\\s<])${from.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?=$|[\\s>.]|\\.\\*)`, "g");
+      const re = new RegExp(
+        `(^|[\\s<])${from.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?=$|[\\s>.]|\\.\\*)`,
+        "g"
+      );
       out = out.replace(re, (_m, p: string) => `${p}${to}`);
     }
     return out;
   };
   const walk = (v: JsonValue): JsonValue => {
     if (typeof v === "string") return fix(v);
-    if (Array.isArray(v)) return v.map(walk).sort((a, b) => cmpStr(JSON.stringify(a), JSON.stringify(b)));
-    if (v && typeof v === "object") return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)]));
+    if (Array.isArray(v))
+      return v.map(walk).sort((a, b) => cmpStr(JSON.stringify(a), JSON.stringify(b)));
+    if (v && typeof v === "object")
+      return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)]));
     return v;
   };
   return walk(args);
@@ -37,7 +44,8 @@ function normaliseArrays(v: JsonValue): JsonValue {
     const xs = v.map(normaliseArrays);
     return xs.every((x) => typeof x === "string") ? [...new Set(xs as string[])].sort(cmpStr) : xs;
   }
-  if (v && typeof v === "object") return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, normaliseArrays(x)]));
+  if (v && typeof v === "object")
+    return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, normaliseArrays(x)]));
   return v;
 }
 
@@ -70,10 +78,13 @@ export function opOrderGeq(
       // cl(C_a) ⊆ cl(C_b): every atom of a is implied by some atom of b on the same resource
       return ca.every((x) => {
         const p = parseAtom(x);
-        return !!p && cb.some((y) => {
-          const q = parseAtom(y);
-          return !!q && q.resource === p.resource && impl(w, q.verb, p.verb);
-        });
+        return (
+          !!p &&
+          cb.some((y) => {
+            const q = parseAtom(y);
+            return !!q && q.resource === p.resource && impl(w, q.verb, p.verb);
+          })
+        );
       });
     }
     case "path.forbid":

@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r09_balance_switch
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R09BalanceSwitchModuleAdjustAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#adjust")
+  fingerprint ast.semantic_subtree_v1("sha256:78554a6fb0bd4909cb4253cb158f7b059a205f3f68c316191e2658ec5426a8d2")
+}
+
+resource R09BalanceSwitchModuleBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#balance")
+  fingerprint ast.semantic_subtree_v1("sha256:c8093c541403c17500a4750af238d778f7dba4720b4cc2d5d5e3150ee0448873")
+}
+
+resource R09BalanceSwitchModuleFeeForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#feeFor")
+  fingerprint ast.semantic_subtree_v1("sha256:43932b3ec2d08e8620e6acb10f280ac62aa6fb2e45cf85c88b0c65f900f0ff2a")
+}
+
+resource R09BalanceSwitchModuleRejectedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#rejected")
+  fingerprint ast.semantic_subtree_v1("sha256:1c2540dd3edb4b3686d319860967bcdb3cca397b1d9966a7b60a8577b14f4f18")
+}
+
+resource R09BalanceSwitchModuleSetBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#setBalance")
+  fingerprint ast.semantic_subtree_v1("sha256:f1f9de177693b3dd73cad9c920b7b219458daaa494194b9357f78a57e964adfc")
+}
+
+resource R09BalanceSwitchModuleTotalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#total")
+  fingerprint ast.semantic_subtree_v1("sha256:8dd605d4ed0ad26326b4dd977b2aff04fe09f87f4be4d6f00d13a3571e853c47")
+}
+
+resource R09BalanceSwitchModuleTransferAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#transfer")
+  fingerprint ast.semantic_subtree_v1("sha256:4ec302cab35074f269f2f1a0d1a4327578f3f44c64856c14018b5b9c3adc1ca5")
+}
+
+component R09BalanceSwitchModule : GeneratedCandidate {
+  fn adjust
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#adjust")
+    effects unknown
+  fn balance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#balance")
+    effects unknown
+  fn feeFor
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#feeFor")
+    effects unknown
+  fn rejected
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#rejected")
+    effects unknown
+  fn setBalance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#setBalance")
+    effects unknown
+  fn total
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#total")
+    effects unknown
+  fn transfer
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#transfer")
+    effects unknown
+}
+
+relation R09BalanceSwitchModuleAdjustGeneratedFromR09BalanceSwitchModuleAdjustAstAnchor {
+  kind generated_from
+  connects R09BalanceSwitchModule -> R09BalanceSwitchModuleAdjustAstAnchor
+  roles { R09BalanceSwitchModule as generated, R09BalanceSwitchModuleAdjustAstAnchor as syntax }
+  expects R09BalanceSwitchModuleAdjustAstAnchor fingerprint ast.semantic_subtree_v1("sha256:78554a6fb0bd4909cb4253cb158f7b059a205f3f68c316191e2658ec5426a8d2")
+  summary "fn R09BalanceSwitchModule.adjust generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#adjust."
+}
+
+relation R09BalanceSwitchModuleBalanceGeneratedFromR09BalanceSwitchModuleBalanceAstAnchor {
+  kind generated_from
+  connects R09BalanceSwitchModule -> R09BalanceSwitchModuleBalanceAstAnchor
+  roles { R09BalanceSwitchModule as generated, R09BalanceSwitchModuleBalanceAstAnchor as syntax }
+  expects R09BalanceSwitchModuleBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c8093c541403c17500a4750af238d778f7dba4720b4cc2d5d5e3150ee0448873")
+  summary "fn R09BalanceSwitchModule.balance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#balance."
+}
+
+relation R09BalanceSwitchModuleFeeForGeneratedFromR09BalanceSwitchModuleFeeForAstAnchor {
+  kind generated_from
+  connects R09BalanceSwitchModule -> R09BalanceSwitchModuleFeeForAstAnchor
+  roles { R09BalanceSwitchModule as generated, R09BalanceSwitchModuleFeeForAstAnchor as syntax }
+  expects R09BalanceSwitchModuleFeeForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:43932b3ec2d08e8620e6acb10f280ac62aa6fb2e45cf85c88b0c65f900f0ff2a")
+  summary "fn R09BalanceSwitchModule.feeFor generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#feeFor."
+}
+
+relation R09BalanceSwitchModuleRejectedGeneratedFromR09BalanceSwitchModuleRejectedAstAnchor {
+  kind generated_from
+  connects R09BalanceSwitchModule -> R09BalanceSwitchModuleRejectedAstAnchor
+  roles { R09BalanceSwitchModule as generated, R09BalanceSwitchModuleRejectedAstAnchor as syntax }
+  expects R09BalanceSwitchModuleRejectedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1c2540dd3edb4b3686d319860967bcdb3cca397b1d9966a7b60a8577b14f4f18")
+  summary "fn R09BalanceSwitchModule.rejected generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#rejected."
+}
+
+relation R09BalanceSwitchModuleSetBalanceGeneratedFromR09BalanceSwitchModuleSetBalanceAstAnchor {
+  kind generated_from
+  connects R09BalanceSwitchModule -> R09BalanceSwitchModuleSetBalanceAstAnchor
+  roles { R09BalanceSwitchModule as generated, R09BalanceSwitchModuleSetBalanceAstAnchor as syntax }
+  expects R09BalanceSwitchModuleSetBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f1f9de177693b3dd73cad9c920b7b219458daaa494194b9357f78a57e964adfc")
+  summary "fn R09BalanceSwitchModule.setBalance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#setBalance."
+}
+
+relation R09BalanceSwitchModuleTotalGeneratedFromR09BalanceSwitchModuleTotalAstAnchor {
+  kind generated_from
+  connects R09BalanceSwitchModule -> R09BalanceSwitchModuleTotalAstAnchor
+  roles { R09BalanceSwitchModule as generated, R09BalanceSwitchModuleTotalAstAnchor as syntax }
+  expects R09BalanceSwitchModuleTotalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8dd605d4ed0ad26326b4dd977b2aff04fe09f87f4be4d6f00d13a3571e853c47")
+  summary "fn R09BalanceSwitchModule.total generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#total."
+}
+
+relation R09BalanceSwitchModuleTransferGeneratedFromR09BalanceSwitchModuleTransferAstAnchor {
+  kind generated_from
+  connects R09BalanceSwitchModule -> R09BalanceSwitchModuleTransferAstAnchor
+  roles { R09BalanceSwitchModule as generated, R09BalanceSwitchModuleTransferAstAnchor as syntax }
+  expects R09BalanceSwitchModuleTransferAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ec302cab35074f269f2f1a0d1a4327578f3f44c64856c14018b5b9c3adc1ca5")
+  summary "fn R09BalanceSwitchModule.transfer generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts#transfer."
+}
+
+implementation R09BalanceSwitchModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T4/r09_balance_switch.ts"
+  }
+  conforms_to R09BalanceSwitchModule
+}

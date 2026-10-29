@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r05_inline_targets
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R05InlineTargetsModuleIsWallAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts#isWall")
+  fingerprint ast.semantic_subtree_v1("sha256:563b7ae0d645b25b114fd9529b626e8e0fadc30de41fae4cffd35a1ddd00c17b")
+}
+
+resource R05InlineTargetsModuleIsWonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts#isWon")
+  fingerprint ast.semantic_subtree_v1("sha256:1fc01820c39d249759ecb8e878dc2bbb42be54d5c3f09c70ccf2b161059bfb7e")
+}
+
+resource R05InlineTargetsModuleReplayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts#replay")
+  fingerprint ast.semantic_subtree_v1("sha256:adee12aae531c70809824e54168b5f4dc5182d984699a428d3fa4da898e79518")
+}
+
+resource R05InlineTargetsModuleStartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts#start")
+  fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+}
+
+resource R05InlineTargetsModuleStepAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts#step")
+  fingerprint ast.semantic_subtree_v1("sha256:e1b2130bb1f467f1c9e7642839ea8c21e8eca0afa9b0da124ed366840a7fc267")
+}
+
+component R05InlineTargetsModule : GeneratedCandidate {
+  fn isWall
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts#isWall")
+    effects unknown
+  fn isWon
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts#isWon")
+    effects unknown
+  fn replay
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts#replay")
+    effects unknown
+  fn start
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts#start")
+    effects unknown
+  fn step
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts#step")
+    effects unknown
+}
+
+relation R05InlineTargetsModuleIsWallGeneratedFromR05InlineTargetsModuleIsWallAstAnchor {
+  kind generated_from
+  connects R05InlineTargetsModule -> R05InlineTargetsModuleIsWallAstAnchor
+  roles { R05InlineTargetsModule as generated, R05InlineTargetsModuleIsWallAstAnchor as syntax }
+  expects R05InlineTargetsModuleIsWallAstAnchor fingerprint ast.semantic_subtree_v1("sha256:563b7ae0d645b25b114fd9529b626e8e0fadc30de41fae4cffd35a1ddd00c17b")
+  summary "fn R05InlineTargetsModule.isWall generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts#isWall."
+}
+
+relation R05InlineTargetsModuleIsWonGeneratedFromR05InlineTargetsModuleIsWonAstAnchor {
+  kind generated_from
+  connects R05InlineTargetsModule -> R05InlineTargetsModuleIsWonAstAnchor
+  roles { R05InlineTargetsModule as generated, R05InlineTargetsModuleIsWonAstAnchor as syntax }
+  expects R05InlineTargetsModuleIsWonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fc01820c39d249759ecb8e878dc2bbb42be54d5c3f09c70ccf2b161059bfb7e")
+  summary "fn R05InlineTargetsModule.isWon generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts#isWon."
+}
+
+relation R05InlineTargetsModuleReplayGeneratedFromR05InlineTargetsModuleReplayAstAnchor {
+  kind generated_from
+  connects R05InlineTargetsModule -> R05InlineTargetsModuleReplayAstAnchor
+  roles { R05InlineTargetsModule as generated, R05InlineTargetsModuleReplayAstAnchor as syntax }
+  expects R05InlineTargetsModuleReplayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:adee12aae531c70809824e54168b5f4dc5182d984699a428d3fa4da898e79518")
+  summary "fn R05InlineTargetsModule.replay generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts#replay."
+}
+
+relation R05InlineTargetsModuleStartGeneratedFromR05InlineTargetsModuleStartAstAnchor {
+  kind generated_from
+  connects R05InlineTargetsModule -> R05InlineTargetsModuleStartAstAnchor
+  roles { R05InlineTargetsModule as generated, R05InlineTargetsModuleStartAstAnchor as syntax }
+  expects R05InlineTargetsModuleStartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+  summary "fn R05InlineTargetsModule.start generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts#start."
+}
+
+relation R05InlineTargetsModuleStepGeneratedFromR05InlineTargetsModuleStepAstAnchor {
+  kind generated_from
+  connects R05InlineTargetsModule -> R05InlineTargetsModuleStepAstAnchor
+  roles { R05InlineTargetsModule as generated, R05InlineTargetsModuleStepAstAnchor as syntax }
+  expects R05InlineTargetsModuleStepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e1b2130bb1f467f1c9e7642839ea8c21e8eca0afa9b0da124ed366840a7fc267")
+  summary "fn R05InlineTargetsModule.step generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts#step."
+}
+
+implementation R05InlineTargetsModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T1/r05_inline_targets.ts"
+  }
+  conforms_to R05InlineTargetsModule
+}

@@ -1,0 +1,161 @@
+module shape.generated.ast.experiments.shape_1.proto.src.generated_evidence
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource EvidenceModuleBaseReportedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/evidence.ts#baseReported")
+  fingerprint ast.semantic_subtree_v1("sha256:2e5e20b7286335141db471b794f7bd42c46781b4bed79070b9a7d521c483361b")
+}
+
+resource EvidenceModuleChannelCoveredAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/evidence.ts#channelCovered")
+  fingerprint ast.semantic_subtree_v1("sha256:9af29508a03a8dce7abeb5b4a283e613f8eb09798a014ff3cc17e141306467e9")
+}
+
+resource EvidenceModuleDigestOkAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/evidence.ts#digestOk")
+  fingerprint ast.semantic_subtree_v1("sha256:1aebcac7364b1cb8551f23330f6a3fac4afb2a232bc0127378986af3785b7a7d")
+}
+
+resource EvidenceModuleFactIdAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/evidence.ts#factId")
+  fingerprint ast.semantic_subtree_v1("sha256:f6e92e3f47de6308fe868b63c8ee86381d937f15a5eb220d10a2c98b51e19328")
+}
+
+resource EvidenceModuleHatchFactsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/evidence.ts#hatchFacts")
+  fingerprint ast.semantic_subtree_v1("sha256:832e2488ba9692776637e06eb22397ff43188f9280d308594e0b666f6f41bb1f")
+}
+
+resource EvidenceModuleObservedWorldAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/evidence.ts#observedWorld")
+  fingerprint ast.semantic_subtree_v1("sha256:e3ba85b4bc697fe3ad04371371f27d62ff617a5560a92de37b08220bae97e7e5")
+}
+
+resource EvidenceModuleParentOfIdAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/evidence.ts#parentOfId")
+  fingerprint ast.semantic_subtree_v1("sha256:e028c3eb550de521c6910f7ebb27054312ebe2befcdab31ccfe0f3afa0a804cf")
+}
+
+resource EvidenceModuleProcessRecordsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/evidence.ts#processRecords")
+  fingerprint ast.semantic_subtree_v1("sha256:75a948f37fa84c0bb094326cb013b1b0346286d1dcb90bafd8d06475753c308e")
+}
+
+resource EvidenceModuleProviderGovernanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/evidence.ts#providerGovernance")
+  fingerprint ast.semantic_subtree_v1("sha256:506633245464a691ba74fb8f0c4c85a87c2b23483076ff6df242a686534846d8")
+}
+
+component EvidenceModule : GeneratedCandidate {
+  fn baseReported
+    source ts("experiments/shape-1/proto/src/evidence.ts#baseReported")
+    effects unknown
+  fn channelCovered
+    source ts("experiments/shape-1/proto/src/evidence.ts#channelCovered")
+    effects unknown
+  fn digestOk
+    source ts("experiments/shape-1/proto/src/evidence.ts#digestOk")
+    effects unknown
+  fn factId
+    source ts("experiments/shape-1/proto/src/evidence.ts#factId")
+    effects unknown
+  fn hatchFacts
+    source ts("experiments/shape-1/proto/src/evidence.ts#hatchFacts")
+    effects unknown
+  fn observedWorld
+    source ts("experiments/shape-1/proto/src/evidence.ts#observedWorld")
+    effects unknown
+  fn parentOfId
+    source ts("experiments/shape-1/proto/src/evidence.ts#parentOfId")
+    effects unknown
+  fn processRecords
+    source ts("experiments/shape-1/proto/src/evidence.ts#processRecords")
+    effects unknown
+  fn providerGovernance
+    source ts("experiments/shape-1/proto/src/evidence.ts#providerGovernance")
+    effects unknown
+}
+
+relation EvidenceModuleBaseReportedGeneratedFromEvidenceModuleBaseReportedAstAnchor {
+  kind generated_from
+  connects EvidenceModule -> EvidenceModuleBaseReportedAstAnchor
+  roles { EvidenceModule as generated, EvidenceModuleBaseReportedAstAnchor as syntax }
+  expects EvidenceModuleBaseReportedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2e5e20b7286335141db471b794f7bd42c46781b4bed79070b9a7d521c483361b")
+  summary "fn EvidenceModule.baseReported generated from typescript function_declaration at experiments/shape-1/proto/src/evidence.ts#baseReported."
+}
+
+relation EvidenceModuleChannelCoveredGeneratedFromEvidenceModuleChannelCoveredAstAnchor {
+  kind generated_from
+  connects EvidenceModule -> EvidenceModuleChannelCoveredAstAnchor
+  roles { EvidenceModule as generated, EvidenceModuleChannelCoveredAstAnchor as syntax }
+  expects EvidenceModuleChannelCoveredAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9af29508a03a8dce7abeb5b4a283e613f8eb09798a014ff3cc17e141306467e9")
+  summary "fn EvidenceModule.channelCovered generated from typescript function_declaration at experiments/shape-1/proto/src/evidence.ts#channelCovered."
+}
+
+relation EvidenceModuleDigestOkGeneratedFromEvidenceModuleDigestOkAstAnchor {
+  kind generated_from
+  connects EvidenceModule -> EvidenceModuleDigestOkAstAnchor
+  roles { EvidenceModule as generated, EvidenceModuleDigestOkAstAnchor as syntax }
+  expects EvidenceModuleDigestOkAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1aebcac7364b1cb8551f23330f6a3fac4afb2a232bc0127378986af3785b7a7d")
+  summary "fn EvidenceModule.digestOk generated from typescript function_declaration at experiments/shape-1/proto/src/evidence.ts#digestOk."
+}
+
+relation EvidenceModuleFactIdGeneratedFromEvidenceModuleFactIdAstAnchor {
+  kind generated_from
+  connects EvidenceModule -> EvidenceModuleFactIdAstAnchor
+  roles { EvidenceModule as generated, EvidenceModuleFactIdAstAnchor as syntax }
+  expects EvidenceModuleFactIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f6e92e3f47de6308fe868b63c8ee86381d937f15a5eb220d10a2c98b51e19328")
+  summary "fn EvidenceModule.factId generated from typescript function_declaration at experiments/shape-1/proto/src/evidence.ts#factId."
+}
+
+relation EvidenceModuleHatchFactsGeneratedFromEvidenceModuleHatchFactsAstAnchor {
+  kind generated_from
+  connects EvidenceModule -> EvidenceModuleHatchFactsAstAnchor
+  roles { EvidenceModule as generated, EvidenceModuleHatchFactsAstAnchor as syntax }
+  expects EvidenceModuleHatchFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:832e2488ba9692776637e06eb22397ff43188f9280d308594e0b666f6f41bb1f")
+  summary "fn EvidenceModule.hatchFacts generated from typescript function_declaration at experiments/shape-1/proto/src/evidence.ts#hatchFacts."
+}
+
+relation EvidenceModuleObservedWorldGeneratedFromEvidenceModuleObservedWorldAstAnchor {
+  kind generated_from
+  connects EvidenceModule -> EvidenceModuleObservedWorldAstAnchor
+  roles { EvidenceModule as generated, EvidenceModuleObservedWorldAstAnchor as syntax }
+  expects EvidenceModuleObservedWorldAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e3ba85b4bc697fe3ad04371371f27d62ff617a5560a92de37b08220bae97e7e5")
+  summary "fn EvidenceModule.observedWorld generated from typescript function_declaration at experiments/shape-1/proto/src/evidence.ts#observedWorld."
+}
+
+relation EvidenceModuleParentOfIdGeneratedFromEvidenceModuleParentOfIdAstAnchor {
+  kind generated_from
+  connects EvidenceModule -> EvidenceModuleParentOfIdAstAnchor
+  roles { EvidenceModule as generated, EvidenceModuleParentOfIdAstAnchor as syntax }
+  expects EvidenceModuleParentOfIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e028c3eb550de521c6910f7ebb27054312ebe2befcdab31ccfe0f3afa0a804cf")
+  summary "fn EvidenceModule.parentOfId generated from typescript function_declaration at experiments/shape-1/proto/src/evidence.ts#parentOfId."
+}
+
+relation EvidenceModuleProcessRecordsGeneratedFromEvidenceModuleProcessRecordsAstAnchor {
+  kind generated_from
+  connects EvidenceModule -> EvidenceModuleProcessRecordsAstAnchor
+  roles { EvidenceModule as generated, EvidenceModuleProcessRecordsAstAnchor as syntax }
+  expects EvidenceModuleProcessRecordsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:75a948f37fa84c0bb094326cb013b1b0346286d1dcb90bafd8d06475753c308e")
+  summary "fn EvidenceModule.processRecords generated from typescript function_declaration at experiments/shape-1/proto/src/evidence.ts#processRecords."
+}
+
+relation EvidenceModuleProviderGovernanceGeneratedFromEvidenceModuleProviderGovernanceAstAnchor {
+  kind generated_from
+  connects EvidenceModule -> EvidenceModuleProviderGovernanceAstAnchor
+  roles { EvidenceModule as generated, EvidenceModuleProviderGovernanceAstAnchor as syntax }
+  expects EvidenceModuleProviderGovernanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:506633245464a691ba74fb8f0c4c85a87c2b23483076ff6df242a686534846d8")
+  summary "fn EvidenceModule.providerGovernance generated from typescript function_declaration at experiments/shape-1/proto/src/evidence.ts#providerGovernance."
+}
+
+implementation EvidenceModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/evidence.ts"
+  }
+  conforms_to EvidenceModule
+}

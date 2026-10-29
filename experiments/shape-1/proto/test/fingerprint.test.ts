@@ -10,8 +10,11 @@ import { gitBlobId, gitTreeId, indexManifest, manifestStatement } from "../src/m
 const REPO = new URL("../../../..", import.meta.url).pathname.replace(/\/$/, "");
 const ts = await loadTypeScript(REPO);
 const fp = (src: string, useTs = true) =>
-  Object.fromEntries(fingerprintTs("src/a.ts", src, useTs ? ts : null, { resolve: () => null }).map((i) => [i.id, i]));
-const dig = (m: ReturnType<typeof fp>, id: string, p: string): string | undefined => m[id]?.digests.find((d) => d.projection === p)?.digest;
+  Object.fromEntries(
+    fingerprintTs("src/a.ts", src, useTs ? ts : null, { resolve: () => null }).map((i) => [i.id, i])
+  );
+const dig = (m: ReturnType<typeof fp>, id: string, p: string): string | undefined =>
+  m[id]?.digests.find((d) => d.projection === p)?.digest;
 
 const A = `const LIMIT = { days: 0 };\n// a comment\nexport function f(x: number) {\n  function g() { return 'a' }\n  return x + LIMIT.days;\n}\n`;
 
@@ -39,24 +42,36 @@ describe("TypeScript digests", () => {
   });
   test("parents and identities: classes, methods, private names", () => {
     const m = fp("export class C { m() { return 1 } #p = () => 2 }\n");
-    expect(Object.keys(m).sort()).toEqual(["ts:src/a.ts", "ts:src/a.ts#C", "ts:src/a.ts#C.%23p", "ts:src/a.ts#C.m"]);
+    expect(Object.keys(m).sort()).toEqual([
+      "ts:src/a.ts",
+      "ts:src/a.ts#C",
+      "ts:src/a.ts#C.%23p",
+      "ts:src/a.ts#C.m"
+    ]);
     expect(m["ts:src/a.ts#C.m"]?.parent).toBe("ts:src/a.ts#C");
   });
   test("lexical fallback: top-level identities, comment-insensitive", () => {
     const x = fp(A, false);
     expect(Object.keys(x).sort()).toEqual(["ts:src/a.ts", "ts:src/a.ts#f"]);
-    expect(dig(fp(A.replace("// a comment", "// other"), false), "ts:src/a.ts#f", "unit")).toBe(dig(x, "ts:src/a.ts#f", "unit"));
+    expect(dig(fp(A.replace("// a comment", "// other"), false), "ts:src/a.ts#f", "unit")).toBe(
+      dig(x, "ts:src/a.ts#f", "unit")
+    );
   });
 });
 
 describe("Rust and Verus", () => {
   const V = `verus! {\nimpl DelegationMap {\n  pub fn set(&mut self, k: K)\n    requires old(self).valid(),\n    ensures self.valid(),\n  {\n    self.m.insert(k);\n  }\n}\n#[verifier::external_body]\nfn host_send() {}\n}\n`;
-  const ids = (src: string) => Object.fromEntries(fingerprintRust("ironkv/src/d.rs", src).map((i) => [i.id, i]));
+  const ids = (src: string) =>
+    Object.fromEntries(fingerprintRust("ironkv/src/d.rs", src).map((i) => [i.id, i]));
   test("Verus identities and the assume marker; contract and closure ignore the body", () => {
     const a = ids(V);
     const b = ids(V.replace("self.m.insert(k);", "assume(self.valid());\n    self.m.insert(k);"));
     const set = "verus:ironkv/src/d.rs#DelegationMap::set";
-    expect(Object.keys(a).sort()).toEqual(["verus:ironkv/src/d.rs", "verus:ironkv/src/d.rs#DelegationMap::set", "verus:ironkv/src/d.rs#host_send"]);
+    expect(Object.keys(a).sort()).toEqual([
+      "verus:ironkv/src/d.rs",
+      "verus:ironkv/src/d.rs#DelegationMap::set",
+      "verus:ironkv/src/d.rs#host_send"
+    ]);
     expect(b[set]?.markers).toEqual({ assume: 1 });
     expect(a["verus:ironkv/src/d.rs#host_send"]?.markers).toEqual({ external_body: 1 });
     const d = (m: typeof a, p: string) => m[set]?.digests.find((x) => x.projection === p)?.digest;
@@ -65,19 +80,33 @@ describe("Rust and Verus", () => {
     expect(d(b, "closure")).toBe(d(a, "closure"));
   });
   test("item-producing macros make identities not hatch-complete", () => {
-    expect(fingerprintRust("x.rs", "macro_rules! m { () => {} }\nfn f() {}\n")[0]?.hatchComplete).toBe(false);
+    expect(
+      fingerprintRust("x.rs", "macro_rules! m { () => {} }\nfn f() {}\n")[0]?.hatchComplete
+    ).toBe(false);
     expect(fingerprintRust("x.rs", "fn f() {}\n")[0]?.hatchComplete).toBe(true);
   });
 });
 
 describe("manifests", () => {
   const files = [
-    { path: "package.json", mode: "100644", bytes: Buffer.from('{"name":"x","scripts":{"build":"tsc"}}') },
-    { path: "scripts/purge.sh", mode: "100644", bytes: Buffer.from("#!/bin/sh\npsql -c 'DELETE FROM audit_events'\n") },
+    {
+      path: "package.json",
+      mode: "100644",
+      bytes: Buffer.from('{"name":"x","scripts":{"build":"tsc"}}')
+    },
+    {
+      path: "scripts/purge.sh",
+      mode: "100644",
+      bytes: Buffer.from("#!/bin/sh\npsql -c 'DELETE FROM audit_events'\n")
+    },
     { path: "data/x.json", mode: "100644", bytes: Buffer.from("{}") },
     { path: "shape/a.shape", mode: "100644", bytes: Buffer.from("module a") },
     { path: "src/a.ts", mode: "100644", bytes: Buffer.from(A) },
-    { path: ".github/workflows/ci.yml", mode: "100644", bytes: Buffer.from("jobs:\n  t:\n    steps:\n      - run: bun test\n") }
+    {
+      path: ".github/workflows/ci.yml",
+      mode: "100644",
+      bytes: Buffer.from("jobs:\n  t:\n    steps:\n      - run: bun test\n")
+    }
   ];
   test("registry: command code, raw executables, raw data, shape files excluded", () => {
     const m = indexManifest(manifestStatement(manifestFromFiles("r1", files, ts)));
@@ -92,10 +121,14 @@ describe("manifests", () => {
   test("an omitted tracked path makes the manifest invalid", () => {
     const p = manifestFromFiles("r1", files, ts);
     p.entries = p.entries.filter((e) => !e.id.startsWith("raw:data/"));
-    expect(indexManifest(manifestStatement(p)).problems.map((x) => x.code)).toContain("omitted-path");
+    expect(indexManifest(manifestStatement(p)).problems.map((x) => x.code)).toContain(
+      "omitted-path"
+    );
   });
   test("the rebuilt git tree equals git's own tree id for HEAD", () => {
-    const tree = spawnSync("git", ["rev-parse", "HEAD^{tree}"], { cwd: REPO }).stdout.toString().trim();
+    const tree = spawnSync("git", ["rev-parse", "HEAD^{tree}"], { cwd: REPO })
+      .stdout.toString()
+      .trim();
     const all = filesFromGit(REPO, "HEAD");
     expect(all.length).toBeGreaterThan(100);
     const treeEntries = all.map((f) => ({ path: f.path, mode: f.mode, blob: gitBlobId(f.bytes) }));

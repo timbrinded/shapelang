@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.trials.H4.run_kernel
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RunKernelModuleKdumpAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H4/run-kernel.ts#kdump")
+  fingerprint ast.semantic_subtree_v1("sha256:39edc160a74b449ad64834d9cbcee1d176daa5e7b65bec5e0fa66d0e454ed59f")
+}
+
+resource RunKernelModulePrebindAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H4/run-kernel.ts#prebind")
+  fingerprint ast.semantic_subtree_v1("sha256:9cf6135c6b7fad093cc1266b5e7429ddd4e1b62ec38b88490b6133728fa07fcb")
+}
+
+component RunKernelModule : GeneratedCandidate {
+  fn kdump
+    source ts("experiments/shape-1/trials/H4/run-kernel.ts#kdump")
+    effects unknown
+  fn prebind
+    source ts("experiments/shape-1/trials/H4/run-kernel.ts#prebind")
+    effects unknown
+}
+
+relation RunKernelModuleKdumpGeneratedFromRunKernelModuleKdumpAstAnchor {
+  kind generated_from
+  connects RunKernelModule -> RunKernelModuleKdumpAstAnchor
+  roles { RunKernelModule as generated, RunKernelModuleKdumpAstAnchor as syntax }
+  expects RunKernelModuleKdumpAstAnchor fingerprint ast.semantic_subtree_v1("sha256:39edc160a74b449ad64834d9cbcee1d176daa5e7b65bec5e0fa66d0e454ed59f")
+  summary "fn RunKernelModule.kdump generated from typescript function_declaration at experiments/shape-1/trials/H4/run-kernel.ts#kdump."
+}
+
+relation RunKernelModulePrebindGeneratedFromRunKernelModulePrebindAstAnchor {
+  kind generated_from
+  connects RunKernelModule -> RunKernelModulePrebindAstAnchor
+  roles { RunKernelModule as generated, RunKernelModulePrebindAstAnchor as syntax }
+  expects RunKernelModulePrebindAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9cf6135c6b7fad093cc1266b5e7429ddd4e1b62ec38b88490b6133728fa07fcb")
+  summary "fn RunKernelModule.prebind generated from typescript function_declaration at experiments/shape-1/trials/H4/run-kernel.ts#prebind."
+}
+
+implementation RunKernelModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H4/run-kernel.ts"
+  }
+  conforms_to RunKernelModule
+}

@@ -16,10 +16,18 @@ import { derive } from "../../proto/src/derive.ts";
 import { reqOf } from "../../proto/src/laws.ts";
 import { signerFromSeed } from "../../proto/src/records.ts";
 import { buildWorld } from "../../proto/src/world.ts";
-import { cite, elaborateAt, emit, fileIdentity, manifestFor, sortCites } from "../../proto/providers/common.ts";
+import {
+  cite,
+  elaborateAt,
+  emit,
+  fileIdentity,
+  manifestFor,
+  sortCites
+} from "../../proto/providers/common.ts";
 import { moduleClosure } from "../../proto/providers/modgraph.ts";
 
-export const SCRATCH = "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad";
+export const SCRATCH =
+  "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad";
 export const BENDEXP = `${SCRATCH}/bendexp`;
 export const WORK = `${SCRATCH}/shape1work/H3`;
 export const H3_DIR = import.meta.dir;
@@ -27,7 +35,9 @@ export const H3_DIR = import.meta.dir;
 export const NOW = "2026-10-26T00:00:00Z";
 export const REC_TIME = "2026-10-25T23:00:00Z";
 export const AUTHORS = [{ identity: 'github("acme-code-agent[bot]")', verified: true, bot: true }];
-export const PROVIDER_SEED = createHash("sha256").update("shape-h3-law-suite-provider").digest("hex");
+export const PROVIDER_SEED = createHash("sha256")
+  .update("shape-h3-law-suite-provider")
+  .digest("hex");
 export const SIGNER = signerFromSeed(PROVIDER_SEED);
 
 // ---- tasks -------------------------------------------------------------------------------------
@@ -70,15 +80,45 @@ export const TASKS: Record<string, Task> = {
     mod: "wrapboard",
     comp: "Game",
     shapeName: "WrapBoard",
-    units: { isWall: ["Read<Level>"], isWon: [], replay: [], start: ["Read<Level>"], step: ["Read<Level>"] },
+    units: {
+      isWall: ["Read<Level>"],
+      isWon: [],
+      replay: [],
+      start: ["Read<Level>"],
+      step: ["Read<Level>"]
+    },
     resources: [{ name: "Board" }, { name: "Level" }],
     grants: ["Read<Level>"],
     templates: [],
     laws: [
-      { key: "L1", name: "NoWin", text: "for every finite ms, isWon(replay(start(), ms)) is false", named: ["isWon", "replay", "start"], principal: "step" },
-      { key: "L2", name: "FlagUnreachable", text: "for every finite ms, the player in replay(start(), ms) is not on (1, 1)", named: ["replay", "start"], principal: "step" },
-      { key: "L3", name: "FlagIsLive", text: "stepping onto (1, 1) from each of its four neighbours wins", named: ["isWon", "step"], principal: "step" },
-      { key: "L4", name: "ReplayInOrder", text: "replay(g, []) = g and replay(g, [m, ...ms]) = replay(step(m, g), ms) for every board", named: ["replay", "step"], principal: "replay" }
+      {
+        key: "L1",
+        name: "NoWin",
+        text: "for every finite ms, isWon(replay(start(), ms)) is false",
+        named: ["isWon", "replay", "start"],
+        principal: "step"
+      },
+      {
+        key: "L2",
+        name: "FlagUnreachable",
+        text: "for every finite ms, the player in replay(start(), ms) is not on (1, 1)",
+        named: ["replay", "start"],
+        principal: "step"
+      },
+      {
+        key: "L3",
+        name: "FlagIsLive",
+        text: "stepping onto (1, 1) from each of its four neighbours wins",
+        named: ["isWon", "step"],
+        principal: "step"
+      },
+      {
+        key: "L4",
+        name: "ReplayInOrder",
+        text: "replay(g, []) = g and replay(g, [m, ...ms]) = replay(step(m, g), ms) for every board",
+        named: ["replay", "step"],
+        principal: "replay"
+      }
     ],
     lawOf: (cls, name) => lawNum(cls) ?? lawNum(name),
     extraFiles: ["package.json", "TASK.md", "test/visible.test.ts"]
@@ -89,17 +129,59 @@ export const TASKS: Record<string, Task> = {
     mod: "audit",
     comp: "AuditStore",
     shapeName: "AuditService",
-    units: { append: ["Append<AuditLog>"], emptyLog: [], get: ["Read<AuditLog>"], list: ["Read<AuditLog>"], purge: ["Read<AuditLog>", "Redact<AuditLog>"] },
+    units: {
+      append: ["Append<AuditLog>"],
+      emptyLog: [],
+      get: ["Read<AuditLog>"],
+      list: ["Read<AuditLog>"],
+      purge: ["Read<AuditLog>", "Redact<AuditLog>"]
+    },
     resources: [{ name: "AuditLog", attach: [{ name: "AppendOnly" }] }],
     grants: ["Append<AuditLog>", "Read<AuditLog>", "Redact<AuditLog>"],
     templates: [],
     laws: [
-      { key: "L0", name: "ValuesAndViews", text: "no call changes a log it is given; get(L, i) equals list(L)[i] in range and is undefined elsewhere", named: ["append", "get", "list", "purge"], principal: "get" },
-      { key: "L1", name: "IdsPrefix", text: "ids(L) is a prefix of ids(L2) for every later log L2", named: ["append", "list", "purge"], principal: "purge" },
-      { key: "L2", name: "NoShrinking", text: "count(L2) >= count(L) for every later log L2", named: ["append", "list", "purge"], principal: "purge" },
-      { key: "L3", name: "FixedMetadata", text: "later logs keep id, timestamp and actor at every position of L", named: ["append", "list", "purge"], principal: "purge" },
-      { key: "L4", name: "PurgeScope", text: "purge keeps the count, keeps unexpired entries equal and expired ones' id, timestamp and actor", named: ["list", "purge"], principal: "purge" },
-      { key: "L5", name: "AppendEntry", text: "append adds exactly one entry with id count(L) and the given fields; payloads are kept until purged", named: ["append", "list", "purge"], principal: "append" }
+      {
+        key: "L0",
+        name: "ValuesAndViews",
+        text: "no call changes a log it is given; get(L, i) equals list(L)[i] in range and is undefined elsewhere",
+        named: ["append", "get", "list", "purge"],
+        principal: "get"
+      },
+      {
+        key: "L1",
+        name: "IdsPrefix",
+        text: "ids(L) is a prefix of ids(L2) for every later log L2",
+        named: ["append", "list", "purge"],
+        principal: "purge"
+      },
+      {
+        key: "L2",
+        name: "NoShrinking",
+        text: "count(L2) >= count(L) for every later log L2",
+        named: ["append", "list", "purge"],
+        principal: "purge"
+      },
+      {
+        key: "L3",
+        name: "FixedMetadata",
+        text: "later logs keep id, timestamp and actor at every position of L",
+        named: ["append", "list", "purge"],
+        principal: "purge"
+      },
+      {
+        key: "L4",
+        name: "PurgeScope",
+        text: "purge keeps the count, keeps unexpired entries equal and expired ones' id, timestamp and actor",
+        named: ["list", "purge"],
+        principal: "purge"
+      },
+      {
+        key: "L5",
+        name: "AppendEntry",
+        text: "append adds exactly one entry with id count(L) and the given fields; payloads are kept until purged",
+        named: ["append", "list", "purge"],
+        principal: "append"
+      }
     ],
     lawOf: (cls, name) => lawNum(cls) ?? lawNum(name),
     extraFiles: ["package.json", "TASK.md", "test/visible.test.ts"]
@@ -110,7 +192,12 @@ export const TASKS: Record<string, Task> = {
     mod: "ledger",
     comp: "LedgerService",
     shapeName: "LedgerSystem",
-    units: { balance: ["Read<Ledger>"], total: ["Read<Ledger>"], feeFor: [], transfer: ["Read<Ledger>", "Update<Ledger>"] },
+    units: {
+      balance: ["Read<Ledger>"],
+      total: ["Read<Ledger>"],
+      feeFor: [],
+      transfer: ["Read<Ledger>", "Update<Ledger>"]
+    },
     resources: [{ name: "Ledger", attach: [{ name: "Conserved" }] }],
     grants: ["Read<Ledger>", "Update<Ledger>"],
     templates: [
@@ -125,12 +212,48 @@ export const TASKS: Record<string, Task> = {
       }
     ],
     laws: [
-      { key: "L0", name: "Reads", text: "balance(l, x) is l[x] and total(l) is the sum of all four balances", named: ["balance", "total"], principal: "total" },
-      { key: "L1", name: "Conservation", text: "total(after) = total(before), applied or not", named: ["total", "transfer"], principal: "transfer" },
-      { key: "L2", name: "NoNegativeBalance", text: "every balance of after is a non-negative integer", named: ["transfer"], principal: "transfer" },
-      { key: "L3", name: "FailureChangesNothing", text: "if r.ok is false, after equals before", named: ["transfer"], principal: "transfer" },
-      { key: "L4", name: "ExactEffect", text: "between different accounts, ok iff amount >= 1 and before[from] >= amount + fee; then exact balances", named: ["feeFor", "transfer"], principal: "transfer" },
-      { key: "L5", name: "SelfTransferChangesNothing", text: "if from = to, after equals before, applied or not", named: ["transfer"], principal: "transfer" }
+      {
+        key: "L0",
+        name: "Reads",
+        text: "balance(l, x) is l[x] and total(l) is the sum of all four balances",
+        named: ["balance", "total"],
+        principal: "total"
+      },
+      {
+        key: "L1",
+        name: "Conservation",
+        text: "total(after) = total(before), applied or not",
+        named: ["total", "transfer"],
+        principal: "transfer"
+      },
+      {
+        key: "L2",
+        name: "NoNegativeBalance",
+        text: "every balance of after is a non-negative integer",
+        named: ["transfer"],
+        principal: "transfer"
+      },
+      {
+        key: "L3",
+        name: "FailureChangesNothing",
+        text: "if r.ok is false, after equals before",
+        named: ["transfer"],
+        principal: "transfer"
+      },
+      {
+        key: "L4",
+        name: "ExactEffect",
+        text: "between different accounts, ok iff amount >= 1 and before[from] >= amount + fee; then exact balances",
+        named: ["feeFor", "transfer"],
+        principal: "transfer"
+      },
+      {
+        key: "L5",
+        name: "SelfTransferChangesNothing",
+        text: "if from = to, after equals before, applied or not",
+        named: ["transfer"],
+        principal: "transfer"
+      }
     ],
     // T4 names its tests "L1 Conservation: ..." under one describe; "the generated cases ..." is a
     // generator self-check, not a law.
@@ -153,9 +276,16 @@ export function sourceFor(T: Task, arm: Arm, tier: Tier, pv: ProvVariant) {
   decls.push({ decl: "actor", name: "Maintainers", kind: "team", members: ["alice", "bob"] });
   decls.push({ decl: "actor", name: "alice", kind: "person", identities: ['github("alice")'] });
   decls.push({ decl: "actor", name: "bob", kind: "person", identities: ['github("bob")'] });
-  decls.push({ decl: "actor", name: "codeAgent", kind: "agent", operator: "alice", identities: ['github("acme-code-agent[bot]")'] });
+  decls.push({
+    decl: "actor",
+    name: "codeAgent",
+    kind: "agent",
+    operator: "alice",
+    identities: ['github("acme-code-agent[bot]")']
+  });
   decls.push(...T.templates);
-  for (const r of T.resources) decls.push({ decl: "resource", name: r.name, ...(r.attach ? { attach: r.attach } : {}) });
+  for (const r of T.resources)
+    decls.push({ decl: "resource", name: r.name, ...(r.attach ? { attach: r.attach } : {}) });
   decls.push({
     decl: "component",
     name: T.comp,
@@ -169,10 +299,27 @@ export function sourceFor(T: Task, arm: Arm, tier: Tier, pv: ProvVariant) {
       effects: { mode: "complete", atoms: atoms.map((a) => ({ atom: a })) }
     }))
   });
-  decls.push({ decl: "template", name: "Contract", params: [["Statement", "value"]], body: [{ law: { evidence: { level: "tested" } } }] });
+  decls.push({
+    decl: "template",
+    name: "Contract",
+    params: [["Statement", "value"]],
+    body: [{ law: { evidence: { level: "tested" } } }]
+  });
   for (const l of T.laws) {
-    const on = arm === "C" ? [`component ${T.comp}`] : arm === "N" ? l.named.map((u) => `unit ${T.comp}.${u}`) : [`unit ${T.comp}.${l.principal}`];
-    decls.push({ decl: "law", name: l.name, template: { name: "Contract", args: [`${l.key}: ${l.text}`] }, on, tier, evidence: { level: "tested", by: ["lawSuite"] } });
+    const on =
+      arm === "C"
+        ? [`component ${T.comp}`]
+        : arm === "N"
+          ? l.named.map((u) => `unit ${T.comp}.${u}`)
+          : [`unit ${T.comp}.${l.principal}`];
+    decls.push({
+      decl: "law",
+      name: l.name,
+      template: { name: "Contract", args: [`${l.key}: ${l.text}`] },
+      on,
+      tier,
+      evidence: { level: "tested", by: ["lawSuite"] }
+    });
   }
   decls.push({
     decl: "provider",
@@ -193,15 +340,21 @@ export function sourceFor(T: Task, arm: Arm, tier: Tier, pv: ProvVariant) {
 /** Code under test: repo-relative path → text (the task module plus any files a refactor adds). */
 export type Code = Record<string, string>;
 
-const codeKey = (code: Code): string => JSON.stringify(Object.entries(code).sort((a, b) => (a[0] < b[0] ? -1 : 1)));
+const codeKey = (code: Code): string =>
+  JSON.stringify(Object.entries(code).sort((a, b) => (a[0] < b[0] ? -1 : 1)));
 
 /** The task workspace as tracked files, with `code` as the code under test. */
 export function treeFiles(T: Task, code: Code) {
   const g8 = join(BENDEXP, "g8", T.id);
-  const files = Object.entries(code).map(([path, text]) => ({ path, mode: "100644", bytes: new Uint8Array(Buffer.from(text)) }));
+  const files = Object.entries(code).map(([path, text]) => ({
+    path,
+    mode: "100644",
+    bytes: new Uint8Array(Buffer.from(text))
+  }));
   for (const p of ["test/laws.test.ts", ...T.extraFiles]) {
     const abs = join(g8, p);
-    if (existsSync(abs)) files.push({ path: p, mode: "100644", bytes: new Uint8Array(readFileSync(abs)) });
+    if (existsSync(abs))
+      files.push({ path: p, mode: "100644", bytes: new Uint8Array(readFileSync(abs)) });
   }
   return files.sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
 }
@@ -247,7 +400,10 @@ export interface SuiteRun {
   exit: number;
   ms: number;
   cases: TestCase[];
-  perLaw: Record<string, { pass: boolean; tests: number; failed: string | null; message: string | null }>;
+  perLaw: Record<
+    string,
+    { pass: boolean; tests: number; failed: string | null; message: string | null }
+  >;
   selfCheckFailed: boolean;
 }
 
@@ -261,16 +417,21 @@ const xmlUnescape = (s: string): string =>
     .replace(/&#(\d+);/g, (_m, n) => String.fromCharCode(Number(n)))
     .replace(/&amp;/g, "&");
 
-export function parseJunit(xml: string): { classname: string; name: string; pass: boolean; message: string | null }[] {
+export function parseJunit(
+  xml: string
+): { classname: string; name: string; pass: boolean; message: string | null }[] {
   const out = [];
   const re = /<testcase\s+([^>]*?)(\/>|>([\s\S]*?)<\/testcase>)/g;
   for (let m = re.exec(xml); m; m = re.exec(xml)) {
     const attrs = m[1] as string;
-    const attr = (k: string): string => xmlUnescape((new RegExp(`\\b${k}="([^"]*)"`).exec(attrs)?.[1] ?? "") as string);
+    const attr = (k: string): string =>
+      xmlUnescape((new RegExp(`\\b${k}="([^"]*)"`).exec(attrs)?.[1] ?? "") as string);
     const body = m[3] ?? "";
     const fail = /<(failure|error)\b([^>]*)>/.exec(body);
     let message: string | null = null;
-    if (fail) message = xmlUnescape((/\bmessage="([^"]*)"/.exec(fail[2] ?? "")?.[1] ?? "") as string) || "failed";
+    if (fail)
+      message =
+        xmlUnescape((/\bmessage="([^"]*)"/.exec(fail[2] ?? "")?.[1] ?? "") as string) || "failed";
     const skipped = /<skipped\b/.test(body);
     if (skipped) continue;
     out.push({ classname: attr("classname"), name: attr("name"), pass: !fail, message });
@@ -281,7 +442,11 @@ export function parseJunit(xml: string): { classname: string; name: string; pass
 const suiteCache = new Map<string, SuiteRun>();
 
 /** Runs the agent-written law suite (or another suite file) against `code` in a sandbox. */
-export function runSuite(T: Task, code: Code, opts: { suiteDir?: string; file?: string } = {}): SuiteRun {
+export function runSuite(
+  T: Task,
+  code: Code,
+  opts: { suiteDir?: string; file?: string } = {}
+): SuiteRun {
   const suiteDir = opts.suiteDir ?? join(BENDEXP, "g8", T.id);
   const file = opts.file ?? "test/laws.test.ts";
   const key = `${T.id}\u0000${suiteDir}\u0000${file}\u0000${codeKey(code)}`;
@@ -298,7 +463,11 @@ export function runSuite(T: Task, code: Code, opts: { suiteDir?: string; file?: 
   }
   const xml = join(box, "junit.xml");
   const t0 = Date.now();
-  const r = spawnSync("bun", ["test", file, "--reporter=junit", `--reporter-outfile=${xml}`], { cwd: box, timeout: 900_000, maxBuffer: 1 << 26 });
+  const r = spawnSync("bun", ["test", file, "--reporter=junit", `--reporter-outfile=${xml}`], {
+    cwd: box,
+    timeout: 900_000,
+    maxBuffer: 1 << 26
+  });
   const ms = Date.now() - t0;
   const raw = existsSync(xml) ? parseJunit(readFileSync(xml, "utf8")) : [];
   const cases: TestCase[] = raw.map((c) => ({ ...c, law: T.lawOf(c.classname, c.name) }));
@@ -330,7 +499,13 @@ export function runSuite(T: Task, code: Code, opts: { suiteDir?: string; file?: 
 export type Mapping = "contra" | "inconcl";
 
 /** One Test Result record per law claim of `source`, citing Req(c, test) from `man` (A.5.3.4). */
-export function lawRecords(T: Task, source, man, suite: SuiteRun, opts: { signed: boolean; mapping: Mapping; time?: string }) {
+export function lawRecords(
+  T: Task,
+  source,
+  man,
+  suite: SuiteRun,
+  opts: { signed: boolean; mapping: Mapping; time?: string }
+) {
   const time = opts.time ?? REC_TIME;
   const esf = elaborateAt(source, time);
   const world = buildWorld(esf, man.index, { side: "h" });
@@ -343,7 +518,8 @@ export function lawRecords(T: Task, source, man, suite: SuiteRun, opts: { signed
     const r = suite.perLaw[law.key];
     const req = reqOf(ctx, c, "test", "unit");
     const code = req.map((p) => cite(man.index, p.id, p.projection));
-    if (code.some((x) => !x) || code.length === 0) throw new Error(`Req not citable for ${c.ids[0]}: ${JSON.stringify(req)}`);
+    if (code.some((x) => !x) || code.length === 0)
+      throw new Error(`Req not citable for ${c.ids[0]}: ${JSON.stringify(req)}`);
     const codeFiles = [...new Set(code.map((x) => man.index.ids.get(x.id)?.path).filter(Boolean))];
     const depPaths = moduleClosure(codeFiles, man.index.paths, man.read);
     const reqKeys = new Set(code.map((x) => `${x.id}@${x.projection}`));
@@ -376,7 +552,9 @@ export function lawRecords(T: Task, source, man, suite: SuiteRun, opts: { signed
       harness: sortCites(harness),
       assumptions: [{ id: `bun@${Bun.version}`, kind: "tool" }],
       bound: { runs: r.tests, seed: 0, laws: r.tests },
-      ...(contra ? { counterexample: { law: r.failed, input: String(r.message).slice(0, 1500) } } : {})
+      ...(contra
+        ? { counterexample: { law: r.failed, input: String(r.message).slice(0, 1500) } }
+        : {})
     };
     out.push({ law: law.key, claim: c.ids[0], result, em: emit(rec, opts.signed ? SIGNER : null) });
   }
@@ -385,7 +563,14 @@ export function lawRecords(T: Task, source, man, suite: SuiteRun, opts: { signed
 
 // ---- derive ------------------------------------------------------------------------------------
 
-export function checkInput(T: Task, label: string, base: { man; source }, head: { man; source }, records: unknown[], baseRecords: unknown[]) {
+export function checkInput(
+  T: Task,
+  label: string,
+  base: { man; source },
+  head: { man; source },
+  records: unknown[],
+  baseRecords: unknown[]
+) {
   return {
     contract: "shape.check.input/v1",
     mode: "change",

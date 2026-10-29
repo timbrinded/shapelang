@@ -1,0 +1,65 @@
+module shape.generated.ast.experiments.shape_1.dogfood.laws.inspection_law_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource InspectionLawTestModuleCodepointLessAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/inspection.law.test.ts#codepointLess")
+  fingerprint ast.semantic_subtree_v1("sha256:cd8e3ea07b3fc9baefb7133593094a869bd940cf718e28f463a7fc64ad3ed70c")
+}
+
+resource InspectionLawTestModuleGenModulesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/inspection.law.test.ts#genModules")
+  fingerprint ast.semantic_subtree_v1("sha256:10ba1e64c04db0a877b5b7f4f8904966d5a36cbacc9b2df7b2e03a9557350ed4")
+}
+
+resource InspectionLawTestModuleInputsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/inspection.law.test.ts#inputs")
+  fingerprint ast.semantic_subtree_v1("sha256:ce623232e57edbeb6720c0bb3bd36ead599ca79798ac818da16677bf0c57a08d")
+}
+
+component InspectionLawTestModule : GeneratedCandidate {
+  fn codepointLess
+    source ts("experiments/shape-1/dogfood/laws/inspection.law.test.ts#codepointLess")
+    effects unknown
+  fn genModules
+    source ts("experiments/shape-1/dogfood/laws/inspection.law.test.ts#genModules")
+    effects unknown
+  fn inputs
+    source ts("experiments/shape-1/dogfood/laws/inspection.law.test.ts#inputs")
+    effects unknown
+}
+
+relation InspectionLawTestModuleCodepointLessGeneratedFromInspectionLawTestModuleCodepointLessAstAnchor {
+  kind generated_from
+  connects InspectionLawTestModule -> InspectionLawTestModuleCodepointLessAstAnchor
+  roles { InspectionLawTestModule as generated, InspectionLawTestModuleCodepointLessAstAnchor as syntax }
+  expects InspectionLawTestModuleCodepointLessAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cd8e3ea07b3fc9baefb7133593094a869bd940cf718e28f463a7fc64ad3ed70c")
+  summary "fn InspectionLawTestModule.codepointLess generated from typescript function_declaration at experiments/shape-1/dogfood/laws/inspection.law.test.ts#codepointLess."
+}
+
+relation InspectionLawTestModuleGenModulesGeneratedFromInspectionLawTestModuleGenModulesAstAnchor {
+  kind generated_from
+  connects InspectionLawTestModule -> InspectionLawTestModuleGenModulesAstAnchor
+  roles { InspectionLawTestModule as generated, InspectionLawTestModuleGenModulesAstAnchor as syntax }
+  expects InspectionLawTestModuleGenModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:10ba1e64c04db0a877b5b7f4f8904966d5a36cbacc9b2df7b2e03a9557350ed4")
+  summary "fn InspectionLawTestModule.genModules generated from typescript function_declaration at experiments/shape-1/dogfood/laws/inspection.law.test.ts#genModules."
+}
+
+relation InspectionLawTestModuleInputsGeneratedFromInspectionLawTestModuleInputsAstAnchor {
+  kind generated_from
+  connects InspectionLawTestModule -> InspectionLawTestModuleInputsAstAnchor
+  roles { InspectionLawTestModule as generated, InspectionLawTestModuleInputsAstAnchor as syntax }
+  expects InspectionLawTestModuleInputsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ce623232e57edbeb6720c0bb3bd36ead599ca79798ac818da16677bf0c57a08d")
+  summary "fn InspectionLawTestModule.inputs generated from typescript function_declaration at experiments/shape-1/dogfood/laws/inspection.law.test.ts#inputs."
+}
+
+implementation InspectionLawTestModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/laws/inspection.law.test.ts"
+  }
+  conforms_to InspectionLawTestModule
+}

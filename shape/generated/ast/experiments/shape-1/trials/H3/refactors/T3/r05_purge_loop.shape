@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r05_purge_loop
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R05PurgeLoopModuleAppendAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts#append")
+  fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+}
+
+resource R05PurgeLoopModuleEmptyLogAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts#emptyLog")
+  fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+}
+
+resource R05PurgeLoopModuleGetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts#get")
+  fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+}
+
+resource R05PurgeLoopModuleListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts#list")
+  fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+}
+
+resource R05PurgeLoopModulePurgeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts#purge")
+  fingerprint ast.semantic_subtree_v1("sha256:7d7fcdd0e4e6278ae65196ceb1f54a13ed1fb9dae9108e0493530df5c45a3dd9")
+}
+
+component R05PurgeLoopModule : GeneratedCandidate {
+  fn append
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts#append")
+    effects unknown
+  fn emptyLog
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts#emptyLog")
+    effects unknown
+  fn get
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts#get")
+    effects unknown
+  fn list
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts#list")
+    effects unknown
+  fn purge
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts#purge")
+    effects unknown
+}
+
+relation R05PurgeLoopModuleAppendGeneratedFromR05PurgeLoopModuleAppendAstAnchor {
+  kind generated_from
+  connects R05PurgeLoopModule -> R05PurgeLoopModuleAppendAstAnchor
+  roles { R05PurgeLoopModule as generated, R05PurgeLoopModuleAppendAstAnchor as syntax }
+  expects R05PurgeLoopModuleAppendAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+  summary "fn R05PurgeLoopModule.append generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts#append."
+}
+
+relation R05PurgeLoopModuleEmptyLogGeneratedFromR05PurgeLoopModuleEmptyLogAstAnchor {
+  kind generated_from
+  connects R05PurgeLoopModule -> R05PurgeLoopModuleEmptyLogAstAnchor
+  roles { R05PurgeLoopModule as generated, R05PurgeLoopModuleEmptyLogAstAnchor as syntax }
+  expects R05PurgeLoopModuleEmptyLogAstAnchor fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+  summary "fn R05PurgeLoopModule.emptyLog generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts#emptyLog."
+}
+
+relation R05PurgeLoopModuleGetGeneratedFromR05PurgeLoopModuleGetAstAnchor {
+  kind generated_from
+  connects R05PurgeLoopModule -> R05PurgeLoopModuleGetAstAnchor
+  roles { R05PurgeLoopModule as generated, R05PurgeLoopModuleGetAstAnchor as syntax }
+  expects R05PurgeLoopModuleGetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+  summary "fn R05PurgeLoopModule.get generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts#get."
+}
+
+relation R05PurgeLoopModuleListGeneratedFromR05PurgeLoopModuleListAstAnchor {
+  kind generated_from
+  connects R05PurgeLoopModule -> R05PurgeLoopModuleListAstAnchor
+  roles { R05PurgeLoopModule as generated, R05PurgeLoopModuleListAstAnchor as syntax }
+  expects R05PurgeLoopModuleListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+  summary "fn R05PurgeLoopModule.list generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts#list."
+}
+
+relation R05PurgeLoopModulePurgeGeneratedFromR05PurgeLoopModulePurgeAstAnchor {
+  kind generated_from
+  connects R05PurgeLoopModule -> R05PurgeLoopModulePurgeAstAnchor
+  roles { R05PurgeLoopModule as generated, R05PurgeLoopModulePurgeAstAnchor as syntax }
+  expects R05PurgeLoopModulePurgeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7d7fcdd0e4e6278ae65196ceb1f54a13ed1fb9dae9108e0493530df5c45a3dd9")
+  summary "fn R05PurgeLoopModule.purge generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts#purge."
+}
+
+implementation R05PurgeLoopModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T3/r05_purge_loop.ts"
+  }
+  conforms_to R05PurgeLoopModule
+}

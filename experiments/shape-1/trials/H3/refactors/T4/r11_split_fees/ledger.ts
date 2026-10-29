@@ -65,7 +65,7 @@ export function transfer(
   ledger: Ledger,
   from: AccountId,
   to: AccountId,
-  amount: number,
+  amount: number
 ): TransferResult {
   if (!Number.isInteger(amount) || amount <= 0) {
     return rejected(ledger);

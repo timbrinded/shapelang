@@ -2,7 +2,15 @@
 // lifting, and the permitted set P(u) = A(u) ∖ Prot(u) with protection levels (A.3.3, A.4.4.7).
 import { globMatches, specificity } from "./globs.ts";
 import { type IdentityInfo, type ManifestIndex, ancestorsOrSelf } from "./manifest.ts";
-import { type Claim, type ComponentItem, type ESF, type ShapeError, TRUST, type UnitItem, parseAtom } from "./model.ts";
+import {
+  type Claim,
+  type ComponentItem,
+  type ESF,
+  type ShapeError,
+  TRUST,
+  type UnitItem,
+  parseAtom
+} from "./model.ts";
 import { canonResourceCode, tagKind } from "./resource-code.ts";
 import { type Tier, cmpStr, maxTier, sortedUniq, tierRank } from "./util.ts";
 
@@ -90,7 +98,8 @@ export function buildWorld(esf: ESF, man: ManifestIndex, opts: WorldOptions): Wo
     const c = compByQ.get(u.component);
     if (!c) return [];
     const out: string[] = [];
-    for (const info of m.ids.values()) if (lastSegment(info) === u.name && inPaths(c, info)) out.push(info.id);
+    for (const info of m.ids.values())
+      if (lastSegment(info) === u.name && inPaths(c, info)) out.push(info.id);
     return out.sort(cmpStr);
   };
 
@@ -105,8 +114,18 @@ export function buildWorld(esf: ESF, man: ManifestIndex, opts: WorldOptions): Wo
       } else {
         const cands = byName(u, man);
         if (cands.length === 1) bound = cands[0] as string;
-        else if (cands.length === 0) err("E-unbound", `unit ${u.q}`, `no identity named ${u.name} within ${u.component}'s paths`);
-        else err("E-ambiguous", `unit ${u.q}`, `${cands.length} identities named ${u.name}: ${cands.join(", ")}`);
+        else if (cands.length === 0)
+          err(
+            "E-unbound",
+            `unit ${u.q}`,
+            `no identity named ${u.name} within ${u.component}'s paths`
+          );
+        else
+          err(
+            "E-ambiguous",
+            `unit ${u.q}`,
+            `${cands.length} identities named ${u.name}: ${cands.join(", ")}`
+          );
       }
     } else {
       // base: default names take the unique M_h match; else x_b if present; else a unique new
@@ -141,7 +160,8 @@ export function buildWorld(esf: ESF, man: ManifestIndex, opts: WorldOptions): Wo
 
   // ---- attribution ---------------------------------------------------------------------------
   const globOwners: { glob: string; owner: string }[] = [];
-  for (const c of esf.components) for (const g of c.paths) globOwners.push({ glob: g, owner: `${c.q}.*` });
+  for (const c of esf.components)
+    for (const g of c.paths) globOwners.push({ glob: g, owner: `${c.q}.*` });
   const attCache = new Map<string, string>();
   const overlapSeen = new Set<string>();
   const att = (x: string): string => {
@@ -168,7 +188,11 @@ export function buildWorld(esf: ESF, man: ManifestIndex, opts: WorldOptions): Wo
         const k = who.join("|");
         if (!overlapSeen.has(k)) {
           overlapSeen.add(k);
-          err("E-overlap", `component ${posComp(who[0] as string)}`, `equally specific globs of ${who.map((w) => posComp(w)).join(" and ")} match ${path}`);
+          err(
+            "E-overlap",
+            `component ${posComp(who[0] as string)}`,
+            `equally specific globs of ${who.map((w) => posComp(w)).join(" and ")} match ${path}`
+          );
         }
       }
       if (who.length > 0) res = who[0] as string;
@@ -234,7 +258,11 @@ export function buildWorld(esf: ESF, man: ManifestIndex, opts: WorldOptions): Wo
 
 // ---- lifting and permitted sets ---------------------------------------------------------------
 
-export function liftEffect(w: World, verb: string, resource: string): { atom: string; resource: string } | null {
+export function liftEffect(
+  w: World,
+  verb: string,
+  resource: string
+): { atom: string; resource: string } | null {
   const rc = canonResourceCode(resource) ?? resource;
   const r = w.resOfCode.get(rc);
   if (!r) return null;
@@ -292,7 +320,12 @@ export function protectingForbids(w: World, pos: string, atom: string): Claim[] 
   });
 }
 
-export function lvl(w: World, pos: string, atom: string, tierOf: (c: Claim) => Tier = (c) => c.tier): Tier | null {
+export function lvl(
+  w: World,
+  pos: string,
+  atom: string,
+  tierOf: (c: Claim) => Tier = (c) => c.tier
+): Tier | null {
   const fs = protectingForbids(w, pos, atom);
   if (fs.length === 0) return null;
   return maxTier(...fs.map(tierOf));

@@ -1,0 +1,352 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:2d7a8b6a4b434b878529ab26003501b685beec8452cfbdbfbc88de1c44e7483c",
+ "verdict": "blocked",
+ "errors": [
+  {
+   "code": "E-provider-missing",
+   "subject": "provider audit::fastCheck claim audit::EventsArePreserved",
+   "causes": [
+    {
+     "type": "provider",
+     "id": "audit::fastCheck"
+    },
+    {
+     "type": "claim",
+     "id": "sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3"
+    }
+   ],
+   "dischargers": [
+    {
+     "act": "rerun",
+     "by": "ci",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    }
+   ]
+  }
+ ],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:bb51a88f52f5081e773dabf7f021b863325e003c20a47af0a4e2b8e133f59628",
+   "kind": "contradiction",
+   "reason": null,
+   "questions": null,
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "final",
+   "budget": "mechanical",
+   "force": "sound",
+   "owner": "audit::AuditTeam",
+   "assignee": null,
+   "group": "g:3bd22abf2e3ea55e7899b281311b1c2700bfb082286d4cf4d43da3b067a2ecd6",
+   "claim": {
+    "fp": "sha256:ccfcbabf10265d643560fc2bcd0014f9bf15241ce35da1f5e0a269c349e617c0",
+    "ids": [
+     "audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+    ],
+    "tier": "final"
+   },
+   "subject": {
+    "code": "ts:src/audit/purge.ts#purgeOldEvents",
+    "atom": "HardDelete<audit::AuditEvent>"
+   },
+   "witness": [
+    "sha256:51ed979304abfea638295c5bec1e63db15cfa26c3425a552f31ae7ca312dc279"
+   ],
+   "facts": {
+    "sha256:51ed979304abfea638295c5bec1e63db15cfa26c3425a552f31ae7ca312dc279": {
+     "at": "ts:src/audit/purge.ts#purgeOldEvents",
+     "resource": "pg.table(\"audit_events\")",
+     "type": "effect",
+     "verb": "HardDelete"
+    }
+   },
+   "counterexample": null,
+   "exploited": null,
+   "final": true,
+   "binding": "bd:0ee8731661d897e621efbd56e0875beecb7c4b7524920ad681fdc55c8ad187d6",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "edit-code",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "edit-shape",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "final",
+      "answers": 2,
+      "owners": [
+       "audit::AuditTeam",
+       "audit::Platform"
+      ]
+     }
+    }
+   ],
+   "causes": [
+    {
+     "type": "fact",
+     "id": "sha256:51ed979304abfea638295c5bec1e63db15cfa26c3425a552f31ae7ca312dc279"
+    },
+    {
+     "type": "binding",
+     "id": "resource audit::AuditEvent"
+    },
+    {
+     "type": "code",
+     "id": "ts:src/audit/purge.ts#purgeOldEvents"
+    },
+    {
+     "type": "claim",
+     "id": "sha256:987106a04014478f6935873a3a96a3fc65c384de7b145c679dbf6cc9d082eaa4"
+    }
+   ]
+  },
+  {
+   "key": "ob:4a5b0267fa8565f29d6ead78a1c0aa3def183da1f4060b901c13ba5ff2242495",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L7"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "normal",
+   "budget": "judgment",
+   "force": null,
+   "owner": "audit::Platform",
+   "assignee": null,
+   "group": "g:c0b06644f460b3fe002aaff4ceeae3844e86c29aa077f3c4068ea9013399c323",
+   "claim": null,
+   "subject": "policy normal",
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": false,
+   "final": false,
+   "binding": "bd:395143aefefc528e71db8c424a6968232b59d7306f759007b50f3093cc979f51",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "audit::carol"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "policy normal"
+    }
+   ]
+  },
+  {
+   "key": "ob:bfa6d92c0e888a02c3fd6ac13fdbc92cd8fa5af330880cce4429a7bfdafada88",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L7"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "judgment",
+   "force": null,
+   "owner": "audit::Platform",
+   "assignee": null,
+   "group": "g:da805cd0e14a23a521d677b2a1666cb8091c9d656e064becfdcb6fefe226b59e",
+   "claim": null,
+   "subject": "policy critical",
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": false,
+   "final": false,
+   "binding": "bd:2f9437c73bf9730c238061524bcdb1dba8de326f91a286cb8c243a64f6626486",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "audit::carol"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "policy critical"
+    }
+   ]
+  },
+  {
+   "key": "ob:e388df561228b690f4d7907a2c17a85038acbeeb1a82f08101c508e6322252cb",
+   "kind": "unestablished",
+   "reason": "missing",
+   "questions": null,
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "mechanical",
+   "force": null,
+   "owner": "audit::AuditTeam",
+   "assignee": null,
+   "group": "g:3bd22abf2e3ea55e7899b281311b1c2700bfb082286d4cf4d43da3b067a2ecd6",
+   "claim": {
+    "fp": "sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3",
+    "ids": [
+     "audit::EventsArePreserved"
+    ],
+    "tier": "critical"
+   },
+   "subject": null,
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:d80f1e0451bfdaddc031d0e06a982bdc420518cefd9cda853cdb9ae2896ff1a7",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "rerun",
+     "by": "ci",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "exception",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "audit::bob"
+     ],
+     "creates": null
+    },
+    {
+     "act": "lower-requirement",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "critical",
+      "answers": 1,
+      "owners": [
+       "audit::AuditTeam"
+      ]
+     }
+    }
+   ],
+   "causes": []
+  }
+ ],
+ "answered": [],
+ "loosening": [
+  {
+   "question": "L7",
+   "subject": "policy critical",
+   "answer": "loosened",
+   "exploited": false,
+   "final": false,
+   "affected": [],
+   "counterexample": null,
+   "obligation": "ob:bfa6d92c0e888a02c3fd6ac13fdbc92cd8fa5af330880cce4429a7bfdafada88"
+  },
+  {
+   "question": "L7",
+   "subject": "policy normal",
+   "answer": "loosened",
+   "exploited": false,
+   "final": false,
+   "affected": [],
+   "counterexample": null,
+   "obligation": "ob:4a5b0267fa8565f29d6ead78a1c0aa3def183da1f4060b901c13ba5ff2242495"
+  }
+ ],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 2,
+   "den": 2
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [],
+  "ungoverned": {
+   "num": 3,
+   "den": 7
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [
+   "audit::fastCheck"
+  ],
+  "baseObservations": "missing",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"audit::AuditStore.*\",\"audit::AuditStore.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 1,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

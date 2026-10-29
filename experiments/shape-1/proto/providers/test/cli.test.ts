@@ -18,12 +18,30 @@ function run(args: string[]): { code: number; out: string; err: string } {
 describe("cli", () => {
   test("help and declarations", () => {
     expect(run(["help"]).code).toBe(0);
-    const d = run(["laws", "declare", "--provider", "demo::bunLaws", "--decides", "template Deterministic", "--seed", "0a"]);
+    const d = run([
+      "laws",
+      "declare",
+      "--provider",
+      "demo::bunLaws",
+      "--decides",
+      "template Deterministic",
+      "--seed",
+      "0a"
+    ]);
     expect(d.code).toBe(0);
     const decl = JSON.parse(d.out) as { produces: string[]; identity: string; sound: string[] };
     expect(decl.produces).toEqual(["test"]);
     expect(decl.identity).toMatch(/^ed25519\("[0-9a-f]{64}"\)$/);
-    const o = run(["observe-ts", "declare", "--effects-provider", "demo::fx", "--channel", 'ts.call("Date.now")', "--calls-provider", "demo::calls"]);
+    const o = run([
+      "observe-ts",
+      "declare",
+      "--effects-provider",
+      "demo::fx",
+      "--channel",
+      'ts.call("Date.now")',
+      "--calls-provider",
+      "demo::calls"
+    ]);
     expect(JSON.parse(o.out)).toHaveLength(2);
   });
 
@@ -50,16 +68,63 @@ describe("cli", () => {
       "src/lib.rs": "fn f() { unsafe { g() } }\n"
     });
     const src = join(root, "shape1.json");
-    writeFileSync(src, JSON.stringify(shape("demo", [{ decl: "component", name: "M", owner: "alice", paths: ["src/**"], units: [{ name: "inc", attach: [{ name: "Deterministic" }] }] }])));
-    const l = run(["laws", "run", "--root", root, "--source", src, "--provider", "demo::bunLaws", "--decides", "template Deterministic", "--time", "2026-10-25T10:00:00Z"]);
+    writeFileSync(
+      src,
+      JSON.stringify(
+        shape("demo", [
+          {
+            decl: "component",
+            name: "M",
+            owner: "alice",
+            paths: ["src/**"],
+            units: [{ name: "inc", attach: [{ name: "Deterministic" }] }]
+          }
+        ])
+      )
+    );
+    const l = run([
+      "laws",
+      "run",
+      "--root",
+      root,
+      "--source",
+      src,
+      "--provider",
+      "demo::bunLaws",
+      "--decides",
+      "template Deterministic",
+      "--time",
+      "2026-10-25T10:00:00Z"
+    ]);
     expect(l.code).toBe(0);
     const lines = l.out.trim().split("\n");
     expect(lines).toHaveLength(1);
-    expect((JSON.parse(lines[0] as string) as { predicate: { shape: { result: string } } }).predicate.shape.result).toBe("supports");
-    const t = run(["teeth", "run", "--root", root, "--source", src, "--time", "2026-10-25T12:00:00Z"]);
+    expect(
+      (JSON.parse(lines[0] as string) as { predicate: { shape: { result: string } } }).predicate
+        .shape.result
+    ).toBe("supports");
+    const t = run([
+      "teeth",
+      "run",
+      "--root",
+      root,
+      "--source",
+      src,
+      "--time",
+      "2026-10-25T12:00:00Z"
+    ]);
     expect(t.code).toBe(0);
     expect((JSON.parse(t.out) as { v: string }).v).toBe("shape.teeth.v1");
     const a = run(["trust", "rust-audit", "--root", root, "--no-typescript"]);
-    expect(JSON.parse(a.out)).toEqual([{ path: "src/lib.rs", lang: "rust", vprobe: {}, manifest: { unsafe: 1 }, delta: { unsafe: 1 }, hatchComplete: true }]);
+    expect(JSON.parse(a.out)).toEqual([
+      {
+        path: "src/lib.rs",
+        lang: "rust",
+        vprobe: {},
+        manifest: { unsafe: 1 },
+        delta: { unsafe: 1 },
+        hatchComplete: true
+      }
+    ]);
   }, 60_000);
 });

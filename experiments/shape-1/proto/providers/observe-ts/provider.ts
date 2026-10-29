@@ -20,14 +20,36 @@ import { scopeRoot } from "../../src/records.ts";
 import { canonResourceCode, parseResourceCode } from "../../src/resource-code.ts";
 import type { SourceDoc } from "../../src/source.ts";
 import { cmpStr, sortedUniq } from "../../src/util.ts";
-import { type Emitted, type Manifested, type ProviderInfo, REPO_ROOT, cite, elaborateAt, emit, fileIdentity, providerName, selfValidate, sortCites } from "../common.ts";
+import {
+  type Emitted,
+  type Manifested,
+  type ProviderInfo,
+  REPO_ROOT,
+  cite,
+  elaborateAt,
+  emit,
+  fileIdentity,
+  providerName,
+  selfValidate,
+  sortCites
+} from "../common.ts";
 import { loadTsFull } from "../ts-api.ts";
 import { type ScanResult, scanTs } from "./scan.ts";
 
 export const OBSERVE_TS_VERSION = "0.1.0";
-export const DEFAULT_OBSERVE_IMPLEMENTATION = ["experiments/shape-1/proto/providers/observe-ts/**", "experiments/shape-1/proto/providers/ts-api.ts"];
+export const DEFAULT_OBSERVE_IMPLEMENTATION = [
+  "experiments/shape-1/proto/providers/observe-ts/**",
+  "experiments/shape-1/proto/providers/ts-api.ts"
+];
 
-export function effectsProvider(o: { q: string; channels: string[]; identity?: string; implementation?: string[]; sound?: ("presence" | "absence")[]; depsComplete?: boolean }): ProviderInfo {
+export function effectsProvider(o: {
+  q: string;
+  channels: string[];
+  identity?: string;
+  implementation?: string[];
+  sound?: ("presence" | "absence")[];
+  depsComplete?: boolean;
+}): ProviderInfo {
   return {
     q: o.q,
     version: OBSERVE_TS_VERSION,
@@ -38,12 +60,19 @@ export function effectsProvider(o: { q: string; channels: string[]; identity?: s
       observes: sortedUniq(o.channels.map((c) => `effect(${canonResourceCode(c) ?? c})`)),
       sound: o.sound ?? ["presence", "absence"],
       ...(o.identity ? { identity: o.identity } : {}),
-      implementation: { paths: [...(o.implementation ?? DEFAULT_OBSERVE_IMPLEMENTATION)].sort(cmpStr) }
+      implementation: {
+        paths: [...(o.implementation ?? DEFAULT_OBSERVE_IMPLEMENTATION)].sort(cmpStr)
+      }
     }
   };
 }
 
-export function callsProvider(o: { q: string; identity?: string; implementation?: string[]; sound?: ("presence" | "absence")[] }): ProviderInfo {
+export function callsProvider(o: {
+  q: string;
+  identity?: string;
+  implementation?: string[];
+  sound?: ("presence" | "absence")[];
+}): ProviderInfo {
   return {
     q: o.q,
     version: OBSERVE_TS_VERSION,
@@ -54,7 +83,9 @@ export function callsProvider(o: { q: string; identity?: string; implementation?
       observes: ["call(ts)"],
       ...(o.sound && o.sound.length > 0 ? { sound: o.sound } : {}),
       ...(o.identity ? { identity: o.identity } : {}),
-      implementation: { paths: [...(o.implementation ?? DEFAULT_OBSERVE_IMPLEMENTATION)].sort(cmpStr) }
+      implementation: {
+        paths: [...(o.implementation ?? DEFAULT_OBSERVE_IMPLEMENTATION)].sort(cmpStr)
+      }
     }
   };
 }
@@ -68,7 +99,13 @@ export function channelsFromShape(source: SourceDoc, time = "2026-01-01T00:00:00
       const rc = parseResourceCode(b);
       if (!rc) continue;
       const key = `${rc.tag}.${rc.kind}`;
-      if (key === "ts.call" || key === "pg.table" || key === "mysql.table" || key === "sqlite.table") out.push(canonResourceCode(b) ?? b);
+      if (
+        key === "ts.call" ||
+        key === "pg.table" ||
+        key === "mysql.table" ||
+        key === "sqlite.table"
+      )
+        out.push(canonResourceCode(b) ?? b);
     }
   }
   return sortedUniq(out);
@@ -108,7 +145,9 @@ function reasonKey(r: string): string {
   return r;
 }
 
-export async function runObserveTs(o: ObserveOptions): Promise<{ records: Emitted[]; report: ObserveReport; scan: ScanResult }> {
+export async function runObserveTs(
+  o: ObserveOptions
+): Promise<{ records: Emitted[]; report: ObserveReport; scan: ScanResult }> {
   const ts = await loadTsFull(REPO_ROOT);
   if (!ts) throw new Error("observe-ts: no TypeScript compiler found");
   const files = sortedUniq(
@@ -118,7 +157,14 @@ export async function runObserveTs(o: ObserveOptions): Promise<{ records: Emitte
       .filter((p) => !o.paths || o.paths.length === 0 || o.paths.some((g) => globMatches(g, p)))
   );
   const channels = sortedUniq((o.effects?.channels ?? []).map((c) => canonResourceCode(c) ?? c));
-  const scan = scanTs(ts, { root: o.root, files, man: o.man.index, channels, calls: !!o.calls, tsconfig: o.tsconfig });
+  const scan = scanTs(ts, {
+    root: o.root,
+    files,
+    man: o.man.index,
+    channels,
+    calls: !!o.calls,
+    tsconfig: o.tsconfig
+  });
   const harness: CodeCite[] = [];
   const cfg = fileIdentity(o.man.index, "tsconfig.json");
   if (cfg) {
@@ -165,7 +211,9 @@ export async function runObserveTs(o: ObserveOptions): Promise<{ records: Emitte
   const count = (family: "effects" | "calls"): Record<string, number> => {
     const m: Record<string, number> = {};
     for (const s of scan.identities.values()) {
-      const rs = new Set((family === "effects" ? s.effectsIncomplete : s.callsIncomplete).map(reasonKey));
+      const rs = new Set(
+        (family === "effects" ? s.effectsIncomplete : s.callsIncomplete).map(reasonKey)
+      );
       for (const r of rs) m[r] = (m[r] ?? 0) + 1;
     }
     return Object.fromEntries(Object.entries(m).sort((a, b) => cmpStr(a[0], b[0])));

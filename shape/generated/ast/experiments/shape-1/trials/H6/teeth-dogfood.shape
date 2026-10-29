@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.trials.H6.teeth_dogfood
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource TeethDogfoodModuleAnalyseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H6/teeth-dogfood.ts#analyse")
+  fingerprint ast.semantic_subtree_v1("sha256:adb16671f948f52e34791dab21078a3a29e80ecb4487ffb425f1e47ba4fcef56")
+}
+
+resource TeethDogfoodModuleObservableAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H6/teeth-dogfood.ts#observable")
+  fingerprint ast.semantic_subtree_v1("sha256:c9a9e1999f3903b6a6ae834582c29d2861935cb3c8081e4b36d87c260757d143")
+}
+
+component TeethDogfoodModule : GeneratedCandidate {
+  fn analyse
+    source ts("experiments/shape-1/trials/H6/teeth-dogfood.ts#analyse")
+    effects unknown
+  fn observable
+    source ts("experiments/shape-1/trials/H6/teeth-dogfood.ts#observable")
+    effects unknown
+}
+
+relation TeethDogfoodModuleAnalyseGeneratedFromTeethDogfoodModuleAnalyseAstAnchor {
+  kind generated_from
+  connects TeethDogfoodModule -> TeethDogfoodModuleAnalyseAstAnchor
+  roles { TeethDogfoodModule as generated, TeethDogfoodModuleAnalyseAstAnchor as syntax }
+  expects TeethDogfoodModuleAnalyseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:adb16671f948f52e34791dab21078a3a29e80ecb4487ffb425f1e47ba4fcef56")
+  summary "fn TeethDogfoodModule.analyse generated from typescript function_declaration at experiments/shape-1/trials/H6/teeth-dogfood.ts#analyse."
+}
+
+relation TeethDogfoodModuleObservableGeneratedFromTeethDogfoodModuleObservableAstAnchor {
+  kind generated_from
+  connects TeethDogfoodModule -> TeethDogfoodModuleObservableAstAnchor
+  roles { TeethDogfoodModule as generated, TeethDogfoodModuleObservableAstAnchor as syntax }
+  expects TeethDogfoodModuleObservableAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c9a9e1999f3903b6a6ae834582c29d2861935cb3c8081e4b36d87c260757d143")
+  summary "fn TeethDogfoodModule.observable generated from typescript function_declaration at experiments/shape-1/trials/H6/teeth-dogfood.ts#observable."
+}
+
+implementation TeethDogfoodModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H6/teeth-dogfood.ts"
+  }
+  conforms_to TeethDogfoodModule
+}

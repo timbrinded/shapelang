@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.examples.strings_law
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource StringsLawModuleOracleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/examples/strings.law.ts#oracle")
+  fingerprint ast.semantic_subtree_v1("sha256:ce47ff62a39cbfa9227c771b4ba090f5901e5d9712fe0113d7214aac615c9834")
+}
+
+component StringsLawModule : GeneratedCandidate {
+  fn oracle
+    source ts("experiments/shape-1/proto/providers/examples/strings.law.ts#oracle")
+    effects unknown
+}
+
+relation StringsLawModuleOracleGeneratedFromStringsLawModuleOracleAstAnchor {
+  kind generated_from
+  connects StringsLawModule -> StringsLawModuleOracleAstAnchor
+  roles { StringsLawModule as generated, StringsLawModuleOracleAstAnchor as syntax }
+  expects StringsLawModuleOracleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ce47ff62a39cbfa9227c771b4ba090f5901e5d9712fe0113d7214aac615c9834")
+  summary "fn StringsLawModule.oracle generated from typescript function_declaration at experiments/shape-1/proto/providers/examples/strings.law.ts#oracle."
+}
+
+implementation StringsLawModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/examples/strings.law.ts"
+  }
+  conforms_to StringsLawModule
+}

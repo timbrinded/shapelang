@@ -12,7 +12,8 @@ const [exe, outFile, saveDir, timeoutStr] = argv;
 let files = [];
 let shard = null;
 for (let i = 4; i < argv.length; i += 1) {
-  if (argv[i] === "--list") files.push(...readFileSync(argv[++i], "utf8").split("\n").filter(Boolean));
+  if (argv[i] === "--list")
+    files.push(...readFileSync(argv[++i], "utf8").split("\n").filter(Boolean));
   else if (argv[i] === "--shard") shard = argv[++i].split("/").map(Number);
   else files.push(argv[i]);
 }
@@ -23,7 +24,10 @@ for (const f of files) {
   try {
     input = JSON.parse(readFileSync(f, "utf8"));
   } catch (e) {
-    appendFileSync(outFile, `${JSON.stringify({ file: f, status: "unreadable", error: String(e).slice(0, 200) })}\n`);
+    appendFileSync(
+      outFile,
+      `${JSON.stringify({ file: f, status: "unreadable", error: String(e).slice(0, 200) })}\n`
+    );
     continue;
   }
   const r = diffOne(input, exe, Number(timeoutStr));
@@ -33,7 +37,18 @@ for (const f of files) {
     if (r.tsFull) writeFileSync(`${saveDir}/${name}.ts.json`, JSON.stringify(r.tsFull));
     if (r.lean) writeFileSync(`${saveDir}/${name}.lean.json`, JSON.stringify(r.lean));
   }
-  const row = { file: f, status: r.status, diffs: r.diffs ?? [], stats: r.stats ?? null, error: r.error ?? null, errors: r.errors ?? null, tsMs: Math.round(r.tsMs ?? 0), leanMs: Math.round(r.leanMs ?? 0) };
+  const row = {
+    file: f,
+    status: r.status,
+    diffs: r.diffs ?? [],
+    stats: r.stats ?? null,
+    error: r.error ?? null,
+    errors: r.errors ?? null,
+    tsMs: Math.round(r.tsMs ?? 0),
+    leanMs: Math.round(r.leanMs ?? 0)
+  };
   appendFileSync(outFile, `${JSON.stringify(row)}\n`);
-  process.stderr.write(`${r.status} ${basename(f)} ${(r.diffs ?? []).length} diffs ts ${Math.round(r.tsMs ?? 0)}ms lean ${Math.round(r.leanMs ?? 0)}ms\n`);
+  process.stderr.write(
+    `${r.status} ${basename(f)} ${(r.diffs ?? []).length} diffs ts ${Math.round(r.tsMs ?? 0)}ms lean ${Math.round(r.leanMs ?? 0)}ms\n`
+  );
 }

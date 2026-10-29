@@ -1,0 +1,92 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:0ee8731661d897e621efbd56e0875beecb7c4b7524920ad681fdc55c8ad187d6",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:ccfcbabf10265d643560fc2bcd0014f9bf15241ce35da1f5e0a269c349e617c0",
+    "ids": [
+     "audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": true,
+   "force": "sound",
+   "group": "g:a32580baffc34e12fc9a4aa01c851a5f28140d5171e46959ee7ec6350472aad7",
+   "introduced": true,
+   "key": "ob:bb51a88f52f5081e773dabf7f021b863325e003c20a47af0a4e2b8e133f59628",
+   "kind": "contradiction",
+   "owner": "audit::AuditTeam",
+   "questions": null,
+   "reason": null,
+   "severity": "blocking",
+   "subject": {
+    "atom": "HardDelete<audit::AuditEvent>",
+    "code": "ts:src/audit/purge.ts#purgeOldEvents"
+   },
+   "tier": "final",
+   "witness": [
+    "sha256:51ed979304abfea638295c5bec1e63db15cfa26c3425a552f31ae7ca312dc279"
+   ]
+  },
+  {
+   "binding": "bd:0db56fa4523aa66b40e13d3432763cb61637e52bb2e209e56df2e00b4bc00416",
+   "budget": "judgment",
+   "claim": {
+    "fp": "sha256:ccfcbabf10265d643560fc2bcd0014f9bf15241ce35da1f5e0a269c349e617c0",
+    "ids": [
+     "audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+    ],
+    "tier": "final"
+   },
+   "exception": null,
+   "exploited": true,
+   "final": true,
+   "force": null,
+   "group": "g:a32580baffc34e12fc9a4aa01c851a5f28140d5171e46959ee7ec6350472aad7",
+   "introduced": true,
+   "key": "ob:031024b1dfd16fe266cf991b13b10ca3e58431846f44d3ae2c851d52644fd44a",
+   "kind": "loosening",
+   "owner": "audit::AuditTeam",
+   "questions": [
+    "L1",
+    "L7"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "sha256:ccfcbabf10265d643560fc2bcd0014f9bf15241ce35da1f5e0a269c349e617c0",
+   "tier": "final",
+   "witness": []
+  },
+  {
+   "binding": "bd:ecc0d1f2755c30a3a836b6208566447acad9a0356a18dd5cc7779f7ef4c6a6f7",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": false,
+   "final": true,
+   "force": null,
+   "group": "g:062de268415d62b7f0e7b310a743a0ac412731f295131bb8dafd21c64edeb7de",
+   "introduced": true,
+   "key": "ob:137c57752dee93addda153a45430b46e39db4843df9b47861efe914553cdbb03",
+   "kind": "loosening",
+   "owner": "audit::AuditTeam",
+   "questions": [
+    "L7"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "resource audit::AuditEvent",
+   "tier": "final",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

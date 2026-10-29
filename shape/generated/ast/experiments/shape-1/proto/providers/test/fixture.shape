@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.test.fixture
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource FixtureModuleCleanupAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/test/fixture.ts#cleanup")
+  fingerprint ast.semantic_subtree_v1("sha256:9c28e01bc616ca600e21a1dc96801356e5e5aae43eb34ff4019047c02dd750d7")
+}
+
+resource FixtureModuleInputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/test/fixture.ts#input")
+  fingerprint ast.semantic_subtree_v1("sha256:b3f8ceefe20bc83f5cd01eefb1484e3eac55d77eae851665f692377e758c5f97")
+}
+
+resource FixtureModuleShapeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/test/fixture.ts#shape")
+  fingerprint ast.semantic_subtree_v1("sha256:f4e8563a9c8ba15b3cdadf6882a2b21bf5e7256b5aa372696f3019d1f4d531ac")
+}
+
+resource FixtureModuleTreeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/test/fixture.ts#tree")
+  fingerprint ast.semantic_subtree_v1("sha256:75009a11a9a4f4dd6065d9d61584d1240630cc03207dcd485a665ceb044b5306")
+}
+
+component FixtureModule : GeneratedCandidate {
+  fn cleanup
+    source ts("experiments/shape-1/proto/providers/test/fixture.ts#cleanup")
+    effects unknown
+  fn input
+    source ts("experiments/shape-1/proto/providers/test/fixture.ts#input")
+    effects unknown
+  fn shape
+    source ts("experiments/shape-1/proto/providers/test/fixture.ts#shape")
+    effects unknown
+  fn tree
+    source ts("experiments/shape-1/proto/providers/test/fixture.ts#tree")
+    effects unknown
+}
+
+relation FixtureModuleCleanupGeneratedFromFixtureModuleCleanupAstAnchor {
+  kind generated_from
+  connects FixtureModule -> FixtureModuleCleanupAstAnchor
+  roles { FixtureModule as generated, FixtureModuleCleanupAstAnchor as syntax }
+  expects FixtureModuleCleanupAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9c28e01bc616ca600e21a1dc96801356e5e5aae43eb34ff4019047c02dd750d7")
+  summary "fn FixtureModule.cleanup generated from typescript function_declaration at experiments/shape-1/proto/providers/test/fixture.ts#cleanup."
+}
+
+relation FixtureModuleInputGeneratedFromFixtureModuleInputAstAnchor {
+  kind generated_from
+  connects FixtureModule -> FixtureModuleInputAstAnchor
+  roles { FixtureModule as generated, FixtureModuleInputAstAnchor as syntax }
+  expects FixtureModuleInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b3f8ceefe20bc83f5cd01eefb1484e3eac55d77eae851665f692377e758c5f97")
+  summary "fn FixtureModule.input generated from typescript function_declaration at experiments/shape-1/proto/providers/test/fixture.ts#input."
+}
+
+relation FixtureModuleShapeGeneratedFromFixtureModuleShapeAstAnchor {
+  kind generated_from
+  connects FixtureModule -> FixtureModuleShapeAstAnchor
+  roles { FixtureModule as generated, FixtureModuleShapeAstAnchor as syntax }
+  expects FixtureModuleShapeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f4e8563a9c8ba15b3cdadf6882a2b21bf5e7256b5aa372696f3019d1f4d531ac")
+  summary "fn FixtureModule.shape generated from typescript function_declaration at experiments/shape-1/proto/providers/test/fixture.ts#shape."
+}
+
+relation FixtureModuleTreeGeneratedFromFixtureModuleTreeAstAnchor {
+  kind generated_from
+  connects FixtureModule -> FixtureModuleTreeAstAnchor
+  roles { FixtureModule as generated, FixtureModuleTreeAstAnchor as syntax }
+  expects FixtureModuleTreeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:75009a11a9a4f4dd6065d9d61584d1240630cc03207dcd485a665ceb044b5306")
+  summary "fn FixtureModule.tree generated from typescript function_declaration at experiments/shape-1/proto/providers/test/fixture.ts#tree."
+}
+
+implementation FixtureModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/test/fixture.ts"
+  }
+  conforms_to FixtureModule
+}

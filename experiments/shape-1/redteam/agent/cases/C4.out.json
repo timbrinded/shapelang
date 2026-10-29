@@ -1,0 +1,201 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:2a7914395b10f4daa7f1de5f3c14fe7755277b3e8eace790f1f6eb58369327fe",
+ "verdict": "owed",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:4e436759e4554b39d3af2a46cba1d3f8dec05f9b5359ff3f122d3c63c717f6ad",
+   "kind": "coverage",
+   "reason": null,
+   "questions": null,
+   "introduced": true,
+   "severity": "owed",
+   "tier": "normal",
+   "budget": "judgment",
+   "force": null,
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": "agents",
+   "group": "g:54aec25938afe2cd3cdb88f3e5d500c646cfe901132a3855c4ced5a925b8e212",
+   "claim": null,
+   "subject": "component checker::ShapeRuleEngine",
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:4ac93ef15f058545bab6f1ef02fec7bc57ede8c23537749f74d97c7c028f4b4b",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::ann"
+     ],
+     "creates": null
+    },
+    {
+     "act": "bind",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "provide",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 1,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 0,
+   "den": 2
+  },
+  "unobservable": [],
+  "unanswered": [
+   {
+    "key": "ob:4e436759e4554b39d3af2a46cba1d3f8dec05f9b5359ff3f122d3c63c717f6ad",
+    "kind": "coverage",
+    "subject": "component checker::ShapeRuleEngine",
+    "questions": null,
+    "tier": "normal",
+    "affected": [
+     "ts:packages/shp-checker/src/checker/rules/guards.ts",
+     "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    ]
+   }
+  ],
+  "openAuthority": [
+   "checker.incremental::ShapeIncrementalChecker",
+   "checker::ShapeBindings",
+   "checker::ShapeDiagnostics",
+   "checker::ShapeModelLowerer",
+   "checker::ShapeModuleResolver",
+   "checker::ShapePreludeRegistry",
+   "checker::ShapeStringHelpers",
+   "tooling::ShpCli"
+  ],
+  "ungoverned": {
+   "num": 2,
+   "den": 8
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [
+   "checker::bunTest"
+  ],
+  "baseObservations": "missing",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 1,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"checker::ShapeChecker.*\",\"checker::ShapeChecker.*\"]",
+   "cell:[\"checker::ShapeRuleEngine.*\",\"checker::ShapeRuleEngine.*\"]",
+   "cell:[\"tooling::ShpCli.*\",\"tooling::ShpCli.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 3,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

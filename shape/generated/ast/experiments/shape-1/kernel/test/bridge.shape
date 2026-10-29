@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.kernel.test.bridge
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource BridgeModuleKernelCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/bridge.ts#kernelCase")
+  fingerprint ast.semantic_subtree_v1("sha256:bf339b8ac6c7d95962fe6bfb572cf4e8fad63c726719b00e35539ef4c207cbd1")
+}
+
+resource BridgeModuleRecordsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/kernel/test/bridge.ts#records")
+  fingerprint ast.semantic_subtree_v1("sha256:2b14836d79aaec27329ad7620793fe5d55c77942a2a6d9bcd84f699621ae27dd")
+}
+
+component BridgeModule : GeneratedCandidate {
+  fn kernelCase
+    source ts("experiments/shape-1/kernel/test/bridge.ts#kernelCase")
+    effects unknown
+  fn records
+    source ts("experiments/shape-1/kernel/test/bridge.ts#records")
+    effects unknown
+}
+
+relation BridgeModuleKernelCaseGeneratedFromBridgeModuleKernelCaseAstAnchor {
+  kind generated_from
+  connects BridgeModule -> BridgeModuleKernelCaseAstAnchor
+  roles { BridgeModule as generated, BridgeModuleKernelCaseAstAnchor as syntax }
+  expects BridgeModuleKernelCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bf339b8ac6c7d95962fe6bfb572cf4e8fad63c726719b00e35539ef4c207cbd1")
+  summary "fn BridgeModule.kernelCase generated from typescript function_declaration at experiments/shape-1/kernel/test/bridge.ts#kernelCase."
+}
+
+relation BridgeModuleRecordsGeneratedFromBridgeModuleRecordsAstAnchor {
+  kind generated_from
+  connects BridgeModule -> BridgeModuleRecordsAstAnchor
+  roles { BridgeModule as generated, BridgeModuleRecordsAstAnchor as syntax }
+  expects BridgeModuleRecordsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2b14836d79aaec27329ad7620793fe5d55c77942a2a6d9bcd84f699621ae27dd")
+  summary "fn BridgeModule.records generated from typescript function_declaration at experiments/shape-1/kernel/test/bridge.ts#records."
+}
+
+implementation BridgeModuleImpl {
+  paths {
+    "experiments/shape-1/kernel/test/bridge.ts"
+  }
+  conforms_to BridgeModule
+}

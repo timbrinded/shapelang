@@ -96,7 +96,11 @@ export function channelMatches(pattern: string, t: string): boolean {
 }
 
 /** Languages carrying a resource-code kind, and whether raw executables and command code carry it. */
-export function carriers(t: string): { langs: Set<string> | "all"; rawCarrier: boolean; rawExts: string[] } {
+export function carriers(t: string): {
+  langs: Set<string> | "all";
+  rawCarrier: boolean;
+  rawExts: string[];
+} {
   const r = parseResourceCode(t);
   const key = r ? `${r.tag}.${r.kind}` : "";
   switch (key) {
@@ -106,7 +110,11 @@ export function carriers(t: string): { langs: Set<string> | "all"; rawCarrier: b
       // embedded-SQL languages (A.12.4); .sql files are raw executables (script list).
       return { langs: new Set(["ts", "rust", "verus"]), rawCarrier: true, rawExts: [] };
     case "ts.call":
-      return { langs: new Set(["ts"]), rawCarrier: false, rawExts: ["html", "htm", "astro", "vue", "svelte"] };
+      return {
+        langs: new Set(["ts"]),
+        rawCarrier: false,
+        rawExts: ["html", "htm", "astro", "vue", "svelte"]
+      };
     case "http.route":
       return { langs: "all", rawCarrier: true, rawExts: [] };
     default:

@@ -3,7 +3,8 @@ import { H } from "./jcs.ts";
 import type { SourceModule } from "./source.ts";
 
 export const SURFACE_TEXT = "The trusted surface of this component is acceptable.";
-export const REFACTOR_TEXT = "Changes to this unit preserve the constraint recorded in its memory note.";
+export const REFACTOR_TEXT =
+  "Changes to this unit preserve the constraint recorded in its memory note.";
 export const DOCUMENTED_TEXT = "The documentation describes this component as implemented.";
 
 export const STD: SourceModule = {
@@ -30,7 +31,15 @@ export const STD: SourceModule = {
     { decl: "kind", name: "coordinated_call", from: "component", to: "component" },
     {
       decl: "hatch",
-      names: ["external_body", "external", "assume", "admit", "assume_specification", "uninterp", "axiom"],
+      names: [
+        "external_body",
+        "external",
+        "assume",
+        "admit",
+        "assume_specification",
+        "uninterp",
+        "axiom"
+      ],
       lang: "verus"
     },
     { decl: "hatch", names: ["unsafe"], lang: "bend" },
@@ -79,7 +88,11 @@ export const STD: SourceModule = {
         ["Lo", "value"],
         ["Hi", "value"]
       ],
-      body: [{ law: { evidence: { level: "tested" } } }, { order: ["Lo", "geq"] }, { order: ["Hi", "leq"] }]
+      body: [
+        { law: { evidence: { level: "tested" } } },
+        { order: ["Lo", "geq"] },
+        { order: ["Hi", "leq"] }
+      ]
     },
     {
       decl: "template",
@@ -107,7 +120,14 @@ export const STD: SourceModule = {
         ["Upper", "component"],
         ["Lower", "component"]
       ],
-      body: [{ forbid: "path", from: ["Lower"], to: ["Upper"], over: ["calls", "callbacks", "coordinated_call"] }]
+      body: [
+        {
+          forbid: "path",
+          from: ["Lower"],
+          to: ["Upper"],
+          over: ["calls", "callbacks", "coordinated_call"]
+        }
+      ]
     },
     {
       decl: "template",
@@ -123,7 +143,12 @@ export const STD: SourceModule = {
       name: "DefaultPolicy",
       tiers: {
         low: { floor: "declared", blocks: [], maxAge: 365, judges: ["owner", "agents"] },
-        normal: { floor: "declared", blocks: ["latent-loosening"], maxAge: 365, judges: ["owner", "agents"] },
+        normal: {
+          floor: "declared",
+          blocks: ["latent-loosening"],
+          maxAge: 365,
+          judges: ["owner", "agents"]
+        },
         critical: {
           floor: "tested",
           blocks: ["unestablished", "coverage", "latent-loosening"],

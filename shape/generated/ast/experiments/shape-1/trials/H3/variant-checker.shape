@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.variant_checker
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource VariantCheckerModuleBuildVariantAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/variant-checker.ts#buildVariant")
+  fingerprint ast.semantic_subtree_v1("sha256:600916f18198b46fb9593f7d9382f89af72e20aa887aedf5534766b10dfed87f")
+}
+
+component VariantCheckerModule : GeneratedCandidate {
+  fn buildVariant
+    source ts("experiments/shape-1/trials/H3/variant-checker.ts#buildVariant")
+    effects unknown
+}
+
+relation VariantCheckerModuleBuildVariantGeneratedFromVariantCheckerModuleBuildVariantAstAnchor {
+  kind generated_from
+  connects VariantCheckerModule -> VariantCheckerModuleBuildVariantAstAnchor
+  roles { VariantCheckerModule as generated, VariantCheckerModuleBuildVariantAstAnchor as syntax }
+  expects VariantCheckerModuleBuildVariantAstAnchor fingerprint ast.semantic_subtree_v1("sha256:600916f18198b46fb9593f7d9382f89af72e20aa887aedf5534766b10dfed87f")
+  summary "fn VariantCheckerModule.buildVariant generated from typescript function_declaration at experiments/shape-1/trials/H3/variant-checker.ts#buildVariant."
+}
+
+implementation VariantCheckerModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/variant-checker.ts"
+  }
+  conforms_to VariantCheckerModule
+}

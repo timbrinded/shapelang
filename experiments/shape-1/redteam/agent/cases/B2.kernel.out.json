@@ -1,0 +1,41 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [
+  {
+   "code": "E-provider-missing",
+   "subject": "provider audit::fastCheck audit::AppendFast"
+  }
+ ],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:1a886e773ed69abfbdb6e295625e4d12e2d2b290328031759d37e06a0eeff1d5",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:a266e8476c3dae9d7d6bfd2cbc47ca9bf4a038782abfd1684b2f41ad816d3205",
+    "ids": [
+     "audit::AppendFast"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:4918010a34fc77cb9c0344d4c7200867e6b6d7b1bcb9f2c8e504b73c9adf3e07",
+   "introduced": true,
+   "key": "ob:b04bcbb9fe92f69b52df8879eda18ea8ca9d264c9f260e03df5246923f1292fd",
+   "kind": "unestablished",
+   "owner": "audit::AuditTeam",
+   "questions": null,
+   "reason": "missing",
+   "severity": "blocking",
+   "subject": null,
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r08_get_expression
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R08GetExpressionModuleAppendAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts#append")
+  fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+}
+
+resource R08GetExpressionModuleEmptyLogAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts#emptyLog")
+  fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+}
+
+resource R08GetExpressionModuleGetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts#get")
+  fingerprint ast.semantic_subtree_v1("sha256:9b8ae35b0b6de836d0a5d01833cb8eaec274551f069ab795bb8d4d622027f597")
+}
+
+resource R08GetExpressionModuleListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts#list")
+  fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+}
+
+resource R08GetExpressionModulePurgeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts#purge")
+  fingerprint ast.semantic_subtree_v1("sha256:8b12a4a10086337a3191358ff9a5dfb3a345a47ffbce86f8833626ad5689e06b")
+}
+
+component R08GetExpressionModule : GeneratedCandidate {
+  fn append
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts#append")
+    effects unknown
+  fn emptyLog
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts#emptyLog")
+    effects unknown
+  fn get
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts#get")
+    effects unknown
+  fn list
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts#list")
+    effects unknown
+  fn purge
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts#purge")
+    effects unknown
+}
+
+relation R08GetExpressionModuleAppendGeneratedFromR08GetExpressionModuleAppendAstAnchor {
+  kind generated_from
+  connects R08GetExpressionModule -> R08GetExpressionModuleAppendAstAnchor
+  roles { R08GetExpressionModule as generated, R08GetExpressionModuleAppendAstAnchor as syntax }
+  expects R08GetExpressionModuleAppendAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+  summary "fn R08GetExpressionModule.append generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts#append."
+}
+
+relation R08GetExpressionModuleEmptyLogGeneratedFromR08GetExpressionModuleEmptyLogAstAnchor {
+  kind generated_from
+  connects R08GetExpressionModule -> R08GetExpressionModuleEmptyLogAstAnchor
+  roles { R08GetExpressionModule as generated, R08GetExpressionModuleEmptyLogAstAnchor as syntax }
+  expects R08GetExpressionModuleEmptyLogAstAnchor fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+  summary "fn R08GetExpressionModule.emptyLog generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts#emptyLog."
+}
+
+relation R08GetExpressionModuleGetGeneratedFromR08GetExpressionModuleGetAstAnchor {
+  kind generated_from
+  connects R08GetExpressionModule -> R08GetExpressionModuleGetAstAnchor
+  roles { R08GetExpressionModule as generated, R08GetExpressionModuleGetAstAnchor as syntax }
+  expects R08GetExpressionModuleGetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9b8ae35b0b6de836d0a5d01833cb8eaec274551f069ab795bb8d4d622027f597")
+  summary "fn R08GetExpressionModule.get generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts#get."
+}
+
+relation R08GetExpressionModuleListGeneratedFromR08GetExpressionModuleListAstAnchor {
+  kind generated_from
+  connects R08GetExpressionModule -> R08GetExpressionModuleListAstAnchor
+  roles { R08GetExpressionModule as generated, R08GetExpressionModuleListAstAnchor as syntax }
+  expects R08GetExpressionModuleListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+  summary "fn R08GetExpressionModule.list generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts#list."
+}
+
+relation R08GetExpressionModulePurgeGeneratedFromR08GetExpressionModulePurgeAstAnchor {
+  kind generated_from
+  connects R08GetExpressionModule -> R08GetExpressionModulePurgeAstAnchor
+  roles { R08GetExpressionModule as generated, R08GetExpressionModulePurgeAstAnchor as syntax }
+  expects R08GetExpressionModulePurgeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b12a4a10086337a3191358ff9a5dfb3a345a47ffbce86f8833626ad5689e06b")
+  summary "fn R08GetExpressionModule.purge generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts#purge."
+}
+
+implementation R08GetExpressionModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T3/r08_get_expression.ts"
+  }
+  conforms_to R08GetExpressionModule
+}

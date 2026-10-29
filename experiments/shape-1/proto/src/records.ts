@@ -1,6 +1,12 @@
 // Evidence records: the in-toto Statement profile (records §3, A.12.5), DSSE envelopes signed
 // with ed25519, and validation RJ01–RJ14 (A.12.6).
-import { createPrivateKey, createPublicKey, sign as edSign, verify as edVerify, type KeyObject } from "node:crypto";
+import {
+  createPrivateKey,
+  createPublicKey,
+  sign as edSign,
+  verify as edVerify,
+  type KeyObject
+} from "node:crypto";
 import { H, jcs } from "./jcs.ts";
 import { SCAI_TYPE, STATEMENT_TYPE, type Statement, TEST_RESULT_TYPE } from "./manifest.ts";
 import type { JsonValue } from "./model.ts";
@@ -25,7 +31,14 @@ export type Fact =
   | { type: "edge"; at: string; kind: string; to: string; n?: number }
   | { type: "hatch"; at: string; kind: string; n?: number };
 
-export type RecResult = "observes" | "supports" | "contradicts" | "inconclusive" | "approves" | "equivalent" | "implies";
+export type RecResult =
+  | "observes"
+  | "supports"
+  | "contradicts"
+  | "inconclusive"
+  | "approves"
+  | "equivalent"
+  | "implies";
 
 export interface ShapeRecord {
   v: "shape.evidence.v1";
@@ -78,14 +91,21 @@ const RESULTS: Record<RecKind, RecResult[]> = {
 export function scopeRoot(entries: CodeCite[]): string {
   const sorted = entries
     .map((e) => ({ id: e.id, projection: e.projection, scheme: e.scheme, digest: e.digest }))
-    .sort((a, b) => cmpStr(a.id, b.id) || cmpStr(a.projection, b.projection) || cmpStr(a.scheme, b.scheme));
+    .sort(
+      (a, b) =>
+        cmpStr(a.id, b.id) || cmpStr(a.projection, b.projection) || cmpStr(a.scheme, b.scheme)
+    );
   return H({ v: "shape.scope.v1", entries: sorted });
 }
 
 /** Builds the in-toto statement for a record, with subjects per A.12.1.7. */
 export function makeStatement(r: ShapeRecord): Statement {
   const subject: Statement["subject"] = [];
-  if (r.claim) subject.push({ name: `shape:claim/${r.claim.id}`, digest: { sha256: r.claim.fp.replace(/^sha256:/, "") } });
+  if (r.claim)
+    subject.push({
+      name: `shape:claim/${r.claim.id}`,
+      digest: { sha256: r.claim.fp.replace(/^sha256:/, "") }
+    });
   for (const c of [...(r.code ?? []), ...(r.deps ?? [])]) {
     subject.push({
       name: `shape:code/${c.id}@${c.projection}`,
@@ -93,13 +113,22 @@ export function makeStatement(r: ShapeRecord): Statement {
       annotations: { "shape.scheme": c.scheme }
     });
   }
-  if (r.scope) subject.push({ name: `shape:scope/${r.provider?.id ?? "-"}/${r.revision}`, digest: { sha256: r.scope.root.replace(/^sha256:/, "") } });
-  if (r.about) subject.push({ name: `shape:answer/${r.about.change}`, digest: { sha256: H(r.about).slice(7) } });
+  if (r.scope)
+    subject.push({
+      name: `shape:scope/${r.provider?.id ?? "-"}/${r.revision}`,
+      digest: { sha256: r.scope.root.replace(/^sha256:/, "") }
+    });
+  if (r.about)
+    subject.push({
+      name: `shape:answer/${r.about.change}`,
+      digest: { sha256: H(r.about).slice(7) }
+    });
   subject.sort((a, b) => cmpStr(a.name, b.name));
   const isTest = r.kind === "test";
   const predicate: Statement["predicate"] = isTest
     ? {
-        result: r.result === "supports" ? "PASSED" : r.result === "contradicts" ? "FAILED" : "WARNED",
+        result:
+          r.result === "supports" ? "PASSED" : r.result === "contradicts" ? "FAILED" : "WARNED",
         configuration: [],
         url: "",
         passedTests: [],
@@ -114,10 +143,22 @@ export function makeStatement(r: ShapeRecord): Statement {
             conditions: { "shape.kind": r.kind }
           }
         ],
-        ...(r.provider ? { producer: { uri: r.provider.id, annotations: { version: r.provider.version, "shape.provider": r.provider.id } } } : {}),
+        ...(r.provider
+          ? {
+              producer: {
+                uri: r.provider.id,
+                annotations: { version: r.provider.version, "shape.provider": r.provider.id }
+              }
+            }
+          : {}),
         shape: r as unknown as JsonValue
       };
-  return { _type: STATEMENT_TYPE, subject, predicateType: isTest ? TEST_RESULT_TYPE : SCAI_TYPE, predicate };
+  return {
+    _type: STATEMENT_TYPE,
+    subject,
+    predicateType: isTest ? TEST_RESULT_TYPE : SCAI_TYPE,
+    predicate
+  };
 }
 
 export function recordId(stmt: Statement): string {
@@ -138,7 +179,11 @@ export interface Signer {
 /** Deterministic ed25519 key from a 32-byte hex seed (for tests and local providers). */
 export function signerFromSeed(seedHex: string): Signer {
   const seed = Buffer.from(seedHex.padStart(64, "0").slice(0, 64), "hex");
-  const privateKey = createPrivateKey({ key: Buffer.concat([PKCS8_PREFIX, seed]), format: "der", type: "pkcs8" });
+  const privateKey = createPrivateKey({
+    key: Buffer.concat([PKCS8_PREFIX, seed]),
+    format: "der",
+    type: "pkcs8"
+  });
   const spki = createPublicKey(privateKey).export({ format: "der", type: "spki" });
   const publicHex = Buffer.from(spki).subarray(SPKI_PREFIX.length).toString("hex");
   return { privateKey, publicHex, identity: `ed25519("${publicHex}")` };
@@ -158,14 +203,21 @@ export function signStatement(stmt: Statement, signers: Signer[]): DsseEnvelope 
   return {
     payloadType: DSSE_TYPE,
     payload: body.toString("base64"),
-    signatures: signers.map((s) => ({ keyid: s.publicHex, sig: edSign(null, pae(DSSE_TYPE, body), s.privateKey).toString("base64") }))
+    signatures: signers.map((s) => ({
+      keyid: s.publicHex,
+      sig: edSign(null, pae(DSSE_TYPE, body), s.privateKey).toString("base64")
+    }))
   };
 }
 
 function verifyEd25519(publicHex: string, data: Buffer, sigB64: string): boolean {
   try {
     if (!/^[0-9a-f]{64}$/.test(publicHex)) return false;
-    const key = createPublicKey({ key: Buffer.concat([SPKI_PREFIX, Buffer.from(publicHex, "hex")]), format: "der", type: "spki" });
+    const key = createPublicKey({
+      key: Buffer.concat([SPKI_PREFIX, Buffer.from(publicHex, "hex")]),
+      format: "der",
+      type: "spki"
+    });
     return edVerify(null, data, key, Buffer.from(sigB64, "base64"));
   } catch {
     return false;
@@ -195,7 +247,8 @@ export function parseRecord(input: unknown): ParsedRecord | { error: string } {
         unverifiable.push(s.keyid);
         continue;
       }
-      if (verifyEd25519(s.keyid, pae(env.payloadType, body), s.sig)) signers.push(`ed25519("${s.keyid}")`);
+      if (verifyEd25519(s.keyid, pae(env.payloadType, body), s.sig))
+        signers.push(`ed25519("${s.keyid}")`);
       else badSignature = true;
     }
   } else {
@@ -204,7 +257,15 @@ export function parseRecord(input: unknown): ParsedRecord | { error: string } {
   signers = [...new Set(signers)].sort(cmpStr);
   const shape = (stmt?.predicate?.shape ?? null) as ShapeRecord | null;
   if (!shape || typeof shape !== "object") return { error: "no predicate.shape" };
-  return { id: recordId(stmt), statement: stmt, shape, signers, signed, unverifiable, badSignature };
+  return {
+    id: recordId(stmt),
+    statement: stmt,
+    shape,
+    signers,
+    signed,
+    unverifiable,
+    badSignature
+  };
 }
 
 /** Envelopes of one statement are one record: signers unioned (A.5.1.1). */
@@ -256,25 +317,33 @@ export function validateRecord(r: ParsedRecord, ctx: ValidationContext): Rejecti
   const rej = (code: string, detail: string): Rejection => ({ record: r.id, code, detail });
   // RJ01 form or predicateType
   if (r.statement._type !== STATEMENT_TYPE) return rej("RJ01", "not an in-toto Statement v1");
-  if (r.statement.predicateType !== SCAI_TYPE && r.statement.predicateType !== TEST_RESULT_TYPE) return rej("RJ01", "unknown predicateType");
+  if (r.statement.predicateType !== SCAI_TYPE && r.statement.predicateType !== TEST_RESULT_TYPE)
+    return rej("RJ01", "unknown predicateType");
   if (s.v !== "shape.evidence.v1") return rej("RJ01", "predicate.shape.v is not shape.evidence.v1");
-  if (!(s.kind in RESULTS) || !(RESULTS[s.kind] ?? []).includes(s.result)) return rej("RJ01", `bad kind/result ${s.kind}/${s.result}`);
+  if (!(s.kind in RESULTS) || !(RESULTS[s.kind] ?? []).includes(s.result))
+    return rej("RJ01", `bad kind/result ${s.kind}/${s.result}`);
   const t = toSeconds(s.time ?? "");
   if (t === null || !s.time.endsWith("Z")) return rej("RJ01", "time is not RFC 3339 UTC");
-  if (typeof s.revision !== "string" || !/^[0-9a-f]{4,64}$/.test(s.revision)) return rej("RJ01", "bad revision");
+  if (typeof s.revision !== "string" || !/^[0-9a-f]{4,64}$/.test(s.revision))
+    return rej("RJ01", "bad revision");
   // RJ02 subjects against fields
   const subj = new Map(r.statement.subject.map((x) => [x.name, x.digest?.sha256 ?? ""]));
   if (s.claim) {
     if (!/^sha256:[0-9a-f]{64}$/.test(s.claim.fp)) return rej("RJ01", "bad claim fp");
-    if (s.claim.nf !== undefined && H(JSON.parse(s.claim.nf)) !== s.claim.fp) return rej("RJ02", "claim nf does not hash to fp");
-    if (subj.get(`shape:claim/${s.claim.id}`) !== s.claim.fp.slice(7)) return rej("RJ02", "claim subject mismatch");
+    if (s.claim.nf !== undefined && H(JSON.parse(s.claim.nf)) !== s.claim.fp)
+      return rej("RJ02", "claim nf does not hash to fp");
+    if (subj.get(`shape:claim/${s.claim.id}`) !== s.claim.fp.slice(7))
+      return rej("RJ02", "claim subject mismatch");
   }
   for (const c of [...(s.code ?? []), ...(s.deps ?? [])]) {
-    if (subj.get(`shape:code/${c.id}@${c.projection}`) !== c.digest.replace(/^sha256:/, "")) return rej("RJ02", `code subject mismatch ${c.id}`);
+    if (subj.get(`shape:code/${c.id}@${c.projection}`) !== c.digest.replace(/^sha256:/, ""))
+      return rej("RJ02", `code subject mismatch ${c.id}`);
   }
-  if (s.about && subj.get(`shape:answer/${s.about.change}`) !== H(s.about).slice(7)) return rej("RJ02", "answer subject mismatch");
+  if (s.about && subj.get(`shape:answer/${s.about.change}`) !== H(s.about).slice(7))
+    return rej("RJ02", "answer subject mismatch");
   // RJ03 scope root
-  if (s.scope && s.scope.root !== scopeRoot(s.scope.entries)) return rej("RJ03", "scope root mismatch");
+  if (s.scope && s.scope.root !== scopeRoot(s.scope.entries))
+    return rej("RJ03", "scope root mismatch");
   // RJ04 provider in neither shape; non-judgment without provider
   const pq = s.provider?.id ?? null;
   if (!pq && s.kind !== "judgment") return rej("RJ04", "non-judgment record without provider");
@@ -292,10 +361,18 @@ export function validateRecord(r: ParsedRecord, ctx: ValidationContext): Rejecti
   const preview = ctx.mode === "preview";
   if (r.badSignature && !preview) return rej("RJ07", "invalid signature");
   const authenticatedProvider = baseP?.identity ?? null;
-  const mustSign = !preview && (s.kind === "judgment" || ctx.persisted || authenticatedProvider !== null);
-  if (mustSign && r.signers.length === 0) return rej("RJ07", r.unverifiable.length > 0 ? "signature not verifiable by the prototype" : "unsigned record that must be signed");
+  const mustSign =
+    !preview && (s.kind === "judgment" || ctx.persisted || authenticatedProvider !== null);
+  if (mustSign && r.signers.length === 0)
+    return rej(
+      "RJ07",
+      r.unverifiable.length > 0
+        ? "signature not verifiable by the prototype"
+        : "unsigned record that must be signed"
+    );
   // RJ08 wrong signer
-  if (!preview && authenticatedProvider && !r.signers.includes(authenticatedProvider)) return rej("RJ08", `not signed by ${pq}'s base identity`);
+  if (!preview && authenticatedProvider && !r.signers.includes(authenticatedProvider))
+    return rej("RJ08", `not signed by ${pq}'s base identity`);
   if (s.kind === "judgment") {
     // RJ09 unknown judge or operator-less agent
     const judge = s.judge ? ctx.actors.get(s.judge) : undefined;
@@ -305,16 +382,25 @@ export function validateRecord(r: ParsedRecord, ctx: ValidationContext): Rejecti
       const relayed = pq !== null && ctx.relays.has(pq);
       if (relayed) {
         const relayId = ctx.relays.get(pq ?? "") ?? null;
-        if (relayId && !r.signers.includes(relayId)) return rej("RJ08", "relay record not signed by the relay");
-        if (!s.identity || !judge.identities.includes(s.identity)) return rej("RJ08", "relay names an identity that is not the judge's");
-      } else if (!r.signers.some((x) => judge.identities.includes(x))) return rej("RJ08", "judgment not signed by its judge");
+        if (relayId && !r.signers.includes(relayId))
+          return rej("RJ08", "relay record not signed by the relay");
+        if (!s.identity || !judge.identities.includes(s.identity))
+          return rej("RJ08", "relay names an identity that is not the judge's");
+      } else if (!r.signers.some((x) => judge.identities.includes(x)))
+        return rej("RJ08", "judgment not signed by its judge");
     }
   }
   // RJ10 empty citations; persisted proof without deps
-  if ((s.kind === "test" || s.kind === "proof" || (s.kind === "judgment" && s.claim)) && (s.code ?? []).length === 0) return rej("RJ10", "empty citations");
-  if (ctx.persisted && s.kind === "proof" && (s.deps ?? []).length === 0) return rej("RJ10", "persisted proof without deps");
+  if (
+    (s.kind === "test" || s.kind === "proof" || (s.kind === "judgment" && s.claim)) &&
+    (s.code ?? []).length === 0
+  )
+    return rej("RJ10", "empty citations");
+  if (ctx.persisted && s.kind === "proof" && (s.deps ?? []).length === 0)
+    return rej("RJ10", "persisted proof without deps");
   // RJ11 persisted record kinds
-  if (ctx.persisted && !(s.kind === "judgment" || s.kind === "proof")) return rej("RJ11", "persisted record is not a judgment or persist proof");
+  if (ctx.persisted && !(s.kind === "judgment" || s.kind === "proof"))
+    return rej("RJ11", "persisted record is not a judgment or persist proof");
   // RJ12 fact paths absent from the tree; RJ13 digests contradicting the revision's manifest
   const tree = ctx.trees.get(s.revision);
   if (tree && tree.size > 0) {
@@ -325,15 +411,26 @@ export function validateRecord(r: ParsedRecord, ctx: ValidationContext): Rejecti
   }
   const man = ctx.manifests.get(s.revision);
   if (man) {
-    const cites = [...(s.code ?? []), ...(s.deps ?? []), ...(s.harness ?? []), ...(s.scope?.entries ?? [])];
+    const cites = [
+      ...(s.code ?? []),
+      ...(s.deps ?? []),
+      ...(s.harness ?? []),
+      ...(s.scope?.entries ?? [])
+    ];
     for (const c of cites) {
       const d = man.get(`${c.id}\u0000${c.projection}\u0000${c.scheme}`);
-      if (d !== undefined && d !== c.digest) return rej("RJ13", `${c.id}@${c.projection} contradicts the revision's manifest`);
+      if (d !== undefined && d !== c.digest)
+        return rej("RJ13", `${c.id}@${c.projection} contradicts the revision's manifest`);
     }
   }
   // RJ14 missing harness; hatch facts in an observation
-  if ((s.kind === "observation" || s.kind === "test" || s.kind === "proof") && !Array.isArray(s.harness)) return rej("RJ14", "missing harness");
-  if (s.kind === "observation" && (s.facts ?? []).some((f) => f.type === "hatch")) return rej("RJ14", "hatch facts in an observation");
+  if (
+    (s.kind === "observation" || s.kind === "test" || s.kind === "proof") &&
+    !Array.isArray(s.harness)
+  )
+    return rej("RJ14", "missing harness");
+  if (s.kind === "observation" && (s.facts ?? []).some((f) => f.type === "hatch"))
+    return rej("RJ14", "hatch facts in an observation");
   return null;
 }
 

@@ -1,0 +1,156 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:ee645a056641dd018d423faf4a692d5802e285eff016d03d4fce5599b9576dfe",
+ "verdict": "blocked",
+ "errors": [
+  {
+   "code": "E-provider-missing",
+   "subject": "provider audit::sqlEffects",
+   "causes": [
+    {
+     "type": "provider",
+     "id": "audit::sqlEffects"
+    }
+   ],
+   "dischargers": [
+    {
+     "act": "rerun",
+     "by": "ci",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    }
+   ]
+  }
+ ],
+ "rejected": [
+  {
+   "record": "sha256:4b05ca2ab653d89d5c026e7c61df3808345604ba6cdd4526de99d87752f2ee66",
+   "code": "RJ13",
+   "detail": "ts:src/audit/purge.ts#purgeOldEvents@unit contradicts the revision's manifest"
+  }
+ ],
+ "obligations": [
+  {
+   "key": "ob:f99ad91d0fb961864cea647e6188ac9c56b6d243cb026fee5224db411dfce977",
+   "kind": "coverage",
+   "reason": null,
+   "questions": null,
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "final",
+   "budget": "judgment",
+   "force": null,
+   "owner": "audit::AuditTeam",
+   "assignee": null,
+   "group": "g:653ab42b86f21de0466ca752c96582a4f821db00f82f75f772484cbf10b02053",
+   "claim": null,
+   "subject": "component audit::AuditStore",
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": null,
+   "final": true,
+   "binding": "bd:1659f0c4216254b44df99883334df26e9638ed80fcb8534e6e990afac8d0859d",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "audit::bob"
+     ],
+     "creates": null
+    },
+    {
+     "act": "bind",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "provide",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "code",
+     "id": "ts:src/audit/purge.ts#purgeOldEvents"
+    },
+    {
+     "type": "code",
+     "id": "ts:src/audit/purge.ts#purgeOldEvents"
+    },
+    {
+     "type": "code",
+     "id": "ts:src/audit/purge.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:src/audit/purge.ts"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 0,
+   "den": 2
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [],
+  "ungoverned": {
+   "num": 3,
+   "den": 7
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [
+   "audit::fastCheck"
+  ],
+  "baseObservations": "missing",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"audit::AuditStore.*\",\"audit::AuditStore.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 1,
+   "rejected": 1
+  },
+  "baseUnreadable": false
+ }
+}

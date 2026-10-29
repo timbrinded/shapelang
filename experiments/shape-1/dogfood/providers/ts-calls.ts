@@ -6,10 +6,26 @@ import { relative, resolve } from "node:path";
 import type { Statement } from "../../proto/src/manifest.ts";
 import { type ScopeEntry, type ShapeRecord, scopeRoot } from "../../proto/src/records.ts";
 import { PROVIDERS, cite, emit, recordTime, viewOf } from "./common.ts";
-import { type Ident, type Node, type SourceFile, TS_EXT, attribute, identsOf, loadTs } from "./ts-ident.ts";
+import {
+  type Ident,
+  type Node,
+  type SourceFile,
+  TS_EXT,
+  attribute,
+  identsOf,
+  loadTs
+} from "./ts-ident.ts";
 
 /** Code whose calls matter to the model: everything but the research experiments. */
-export const CALL_SCOPE = [/^packages\//, /^scripts\//, /^docs-site\/scripts\//, /^\.github\/scripts\//, /^plugins\//, /^experiments\/semantic-kernel\//, /^experiments\/shape-1\/dogfood\//];
+export const CALL_SCOPE = [
+  /^packages\//,
+  /^scripts\//,
+  /^docs-site\/scripts\//,
+  /^\.github\/scripts\//,
+  /^plugins\//,
+  /^experiments\/semantic-kernel\//,
+  /^experiments\/shape-1\/dogfood\//
+];
 
 export interface CallsResult {
   envelope: unknown;
@@ -20,7 +36,11 @@ export interface CallsResult {
   unresolved: number;
 }
 
-export async function callScan(opts: { root: string; manifest: Statement; now: string }): Promise<CallsResult> {
+export async function callScan(opts: {
+  root: string;
+  manifest: Statement;
+  now: string;
+}): Promise<CallsResult> {
   const ts = await loadTs(opts.root);
   const K = ts.SyntaxKind;
   const v = viewOf(opts.manifest);
@@ -70,9 +90,14 @@ export async function callScan(opts: { root: string; manifest: Statement; now: s
     const visit = (n: Node): void => {
       if (n.kind === K.CallExpression || n.kind === K.NewExpression) {
         const callee = n.expression;
-        const at = callee ? (callee.kind === K.PropertyAccessExpression && callee.name ? callee.name : callee) : undefined;
+        const at = callee
+          ? callee.kind === K.PropertyAccessExpression && callee.name
+            ? callee.name
+            : callee
+          : undefined;
         let sym = at ? checker.getSymbolAtLocation(at) : undefined;
-        if (sym && sym.flags & (ts.SymbolFlags.Alias as number)) sym = checker.getAliasedSymbol(sym);
+        if (sym && sym.flags & (ts.SymbolFlags.Alias as number))
+          sym = checker.getAliasedSymbol(sym);
         const decl = sym?.valueDeclaration ?? sym?.declarations?.[0];
         if (!decl) unresolved += 1;
         else {
@@ -80,7 +105,8 @@ export async function callScan(opts: { root: string; manifest: Statement; now: s
           if (!target) external += 1;
           else {
             const tpath = relative(opts.root, decl.getSourceFile().fileName).replace(/\\/g, "/");
-            const to = target.byNode.get(decl) ?? attribute(target.idents, decl.getStart(), tpath, known);
+            const to =
+              target.byNode.get(decl) ?? attribute(target.idents, decl.getStart(), tpath, known);
             const from = attribute(mine.idents, n.getStart(sf), p, known);
             if (to !== from && !to.endsWith(`:${tpath}`)) {
               const k = `${from}\u0000${to}`;

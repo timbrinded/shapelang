@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.observe_ts.scan
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ScanModuleClassifiedChainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/observe-ts/scan.ts#classifiedChain")
+  fingerprint ast.semantic_subtree_v1("sha256:96571e1e4b9c77ffbd14936858923ab7893731b697ead9194ead5af2fefd2ac4")
+}
+
+resource ScanModuleClassifyApiAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/observe-ts/scan.ts#classifyApi")
+  fingerprint ast.semantic_subtree_v1("sha256:7a631e02c4ccf5850109e5fbef380acfa295b3ed3dfb7f2c457c0e05bd0aa5a3")
+}
+
+resource ScanModuleCompilerOptionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/observe-ts/scan.ts#compilerOptions")
+  fingerprint ast.semantic_subtree_v1("sha256:b112e978916e71b0113e94388459b15d13d05fe11b22bacba7ef9c3303492676")
+}
+
+resource ScanModuleScanTsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/observe-ts/scan.ts#scanTs")
+  fingerprint ast.semantic_subtree_v1("sha256:f3cb4fd8f0aac40252fea78799a0ed52d5e8978e9ffe5e21bff1a7f447b35a55")
+}
+
+resource ScanModuleSqlEffectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/observe-ts/scan.ts#sqlEffect")
+  fingerprint ast.semantic_subtree_v1("sha256:39ed4bf5e9bdee5a475782eb0d23a8d1ae03a58d09e32f0ab5e5d826c207e9bd")
+}
+
+component ScanModule : GeneratedCandidate {
+  fn classifiedChain
+    source ts("experiments/shape-1/proto/providers/observe-ts/scan.ts#classifiedChain")
+    effects unknown
+  fn classifyApi
+    source ts("experiments/shape-1/proto/providers/observe-ts/scan.ts#classifyApi")
+    effects unknown
+  fn compilerOptions
+    source ts("experiments/shape-1/proto/providers/observe-ts/scan.ts#compilerOptions")
+    effects unknown
+  fn scanTs
+    source ts("experiments/shape-1/proto/providers/observe-ts/scan.ts#scanTs")
+    effects unknown
+  fn sqlEffect
+    source ts("experiments/shape-1/proto/providers/observe-ts/scan.ts#sqlEffect")
+    effects unknown
+}
+
+relation ScanModuleClassifiedChainGeneratedFromScanModuleClassifiedChainAstAnchor {
+  kind generated_from
+  connects ScanModule -> ScanModuleClassifiedChainAstAnchor
+  roles { ScanModule as generated, ScanModuleClassifiedChainAstAnchor as syntax }
+  expects ScanModuleClassifiedChainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:96571e1e4b9c77ffbd14936858923ab7893731b697ead9194ead5af2fefd2ac4")
+  summary "fn ScanModule.classifiedChain generated from typescript function_declaration at experiments/shape-1/proto/providers/observe-ts/scan.ts#classifiedChain."
+}
+
+relation ScanModuleClassifyApiGeneratedFromScanModuleClassifyApiAstAnchor {
+  kind generated_from
+  connects ScanModule -> ScanModuleClassifyApiAstAnchor
+  roles { ScanModule as generated, ScanModuleClassifyApiAstAnchor as syntax }
+  expects ScanModuleClassifyApiAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7a631e02c4ccf5850109e5fbef380acfa295b3ed3dfb7f2c457c0e05bd0aa5a3")
+  summary "fn ScanModule.classifyApi generated from typescript function_declaration at experiments/shape-1/proto/providers/observe-ts/scan.ts#classifyApi."
+}
+
+relation ScanModuleCompilerOptionsGeneratedFromScanModuleCompilerOptionsAstAnchor {
+  kind generated_from
+  connects ScanModule -> ScanModuleCompilerOptionsAstAnchor
+  roles { ScanModule as generated, ScanModuleCompilerOptionsAstAnchor as syntax }
+  expects ScanModuleCompilerOptionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b112e978916e71b0113e94388459b15d13d05fe11b22bacba7ef9c3303492676")
+  summary "fn ScanModule.compilerOptions generated from typescript function_declaration at experiments/shape-1/proto/providers/observe-ts/scan.ts#compilerOptions."
+}
+
+relation ScanModuleScanTsGeneratedFromScanModuleScanTsAstAnchor {
+  kind generated_from
+  connects ScanModule -> ScanModuleScanTsAstAnchor
+  roles { ScanModule as generated, ScanModuleScanTsAstAnchor as syntax }
+  expects ScanModuleScanTsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f3cb4fd8f0aac40252fea78799a0ed52d5e8978e9ffe5e21bff1a7f447b35a55")
+  summary "fn ScanModule.scanTs generated from typescript function_declaration at experiments/shape-1/proto/providers/observe-ts/scan.ts#scanTs."
+}
+
+relation ScanModuleSqlEffectGeneratedFromScanModuleSqlEffectAstAnchor {
+  kind generated_from
+  connects ScanModule -> ScanModuleSqlEffectAstAnchor
+  roles { ScanModule as generated, ScanModuleSqlEffectAstAnchor as syntax }
+  expects ScanModuleSqlEffectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:39ed4bf5e9bdee5a475782eb0d23a8d1ae03a58d09e32f0ab5e5d826c207e9bd")
+  summary "fn ScanModule.sqlEffect generated from typescript function_declaration at experiments/shape-1/proto/providers/observe-ts/scan.ts#sqlEffect."
+}
+
+implementation ScanModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/observe-ts/scan.ts"
+  }
+  conforms_to ScanModule
+}

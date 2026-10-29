@@ -1,12 +1,31 @@
 // Shared plumbing for the dogfood model: files, manifests, composition of the 1.0 model from the
 // 0.x shape files plus the shape1.yaml overlay, and the elaborated claim index used by providers.
 import { spawnSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync } from "node:fs";
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  statSync,
+  symlinkSync
+} from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { elaborate } from "../../proto/src/elaborate.ts";
 import { loadModel, rewriteAgainst } from "../../proto/src/loader.ts";
-import { type SourceFileBytes, buildManifest, filesFromDir, filesFromGit } from "../../proto/src/manifest-build.ts";
-import { type ManifestPredicate, type Statement, gitTreeId, manifestStatement } from "../../proto/src/manifest.ts";
+import {
+  type SourceFileBytes,
+  buildManifest,
+  filesFromDir,
+  filesFromGit
+} from "../../proto/src/manifest-build.ts";
+import {
+  type ManifestPredicate,
+  type Statement,
+  gitTreeId,
+  manifestStatement
+} from "../../proto/src/manifest.ts";
 import type { Decl, SourceDoc, SourceModule, UnitDecl } from "../../proto/src/source.ts";
 import { cmpStr } from "../../proto/src/util.ts";
 
@@ -26,7 +45,12 @@ export function dogfoodFiles(root: string = REPO): SourceFileBytes[] {
       if (n === "node_modules") continue;
       const full = join(d, n);
       if (statSync(full).isDirectory()) walk(full);
-      else out.push({ path: relative(root, full).replace(/\\/g, "/"), mode: "100644", bytes: new Uint8Array(readFileSync(full)) });
+      else
+        out.push({
+          path: relative(root, full).replace(/\\/g, "/"),
+          mode: "100644",
+          bytes: new Uint8Array(readFileSync(full))
+        });
     }
   };
   walk(base);
@@ -45,11 +69,18 @@ export function commitFiles(rev: string): SourceFileBytes[] {
   return [...tracked, ...dogfoodFiles()].sort((a, b) => cmpStr(a.path, b.path));
 }
 
-export async function manifestFor(files: SourceFileBytes[], revision?: string): Promise<{ statement: Statement; revision: string; backend: string }> {
+export async function manifestFor(
+  files: SourceFileBytes[],
+  revision?: string
+): Promise<{ statement: Statement; revision: string; backend: string }> {
   const draft = await buildManifest({ repoRoot: REPO, revision: revision ?? "pending", files });
   const pred = draft.statement.predicate.shape as ManifestPredicate;
   const rev = revision ?? gitTreeId(pred.tree);
-  return { statement: manifestStatement({ ...pred, revision: rev }), revision: rev, backend: draft.backend };
+  return {
+    statement: manifestStatement({ ...pred, revision: rev }),
+    revision: rev,
+    backend: draft.backend
+  };
 }
 
 // ---- overlay -------------------------------------------------------------------------------
@@ -100,14 +131,24 @@ function mergeDecl(base: Decl, over: Decl): Decl {
     const units = [...(base.units ?? [])];
     for (const u of over.units) {
       const i = units.findIndex((x) => x.name === u.name);
-      if (i >= 0) units[i] = mergeObj(units[i] as unknown as { [k: string]: Json }, u as unknown as { [k: string]: Json }) as unknown as UnitDecl;
+      if (i >= 0)
+        units[i] = mergeObj(
+          units[i] as unknown as { [k: string]: Json },
+          u as unknown as { [k: string]: Json }
+        ) as unknown as UnitDecl;
       else units.push(u);
     }
-    const merged = mergeObj(base as unknown as { [k: string]: Json }, over as unknown as { [k: string]: Json }) as unknown as Decl & { units?: UnitDecl[] };
+    const merged = mergeObj(
+      base as unknown as { [k: string]: Json },
+      over as unknown as { [k: string]: Json }
+    ) as unknown as Decl & { units?: UnitDecl[] };
     merged.units = units;
     return merged;
   }
-  return mergeObj(base as unknown as { [k: string]: Json }, over as unknown as { [k: string]: Json }) as unknown as Decl;
+  return mergeObj(
+    base as unknown as { [k: string]: Json },
+    over as unknown as { [k: string]: Json }
+  ) as unknown as Decl;
 }
 
 const declName = (d: Decl): string => (d.decl === "hatch" ? d.names.join(",") : d.name);
@@ -132,11 +173,16 @@ export interface Composition {
 }
 
 /** 0.x shape files → migrate → rewrite unit sources against the manifest → apply the overlay. */
-export function composeModel(manifest: Statement, overlay: Overlay = readOverlay(), shapeDir: string = REPO): Composition {
+export function composeModel(
+  manifest: Statement,
+  overlay: Overlay = readOverlay(),
+  shapeDir: string = REPO
+): Composition {
   const loaded = loadModel(shapeDir, { maintainers: [] });
   const rw = rewriteAgainst(loaded.source, manifest);
   let src = (rw.source ?? loaded.source) as unknown as Json;
-  for (const [from, to] of Object.entries(overlay["x-overlay"]?.renameModules ?? {})) src = renameRefs(src, from, to);
+  for (const [from, to] of Object.entries(overlay["x-overlay"]?.renameModules ?? {}))
+    src = renameRefs(src, from, to);
   const doc = src as unknown as SourceDoc;
   const drops = overlay["x-overlay"]?.drop ?? [];
   const modules = new Map<string, SourceModule>();
@@ -152,7 +198,12 @@ export function composeModel(manifest: Statement, overlay: Overlay = readOverlay
   const merged: string[] = [];
   const added: string[] = [];
   for (const om of overlay.modules) {
-    const m = modules.get(om.module) ?? { module: om.module, imports: [], decls: [], file: `${DOGFOOD_REL}/shape1.yaml` };
+    const m = modules.get(om.module) ?? {
+      module: om.module,
+      imports: [],
+      decls: [],
+      file: `${DOGFOOD_REL}/shape1.yaml`
+    };
     m.imports = [...new Set([...(m.imports ?? []), ...(om.imports ?? [])])].sort(cmpStr);
     for (const d of om.decls) {
       const i = m.decls.findIndex((x) => x.decl === d.decl && declName(x) === declName(d));
@@ -172,8 +223,20 @@ export function composeModel(manifest: Statement, overlay: Overlay = readOverlay
     if (m.module === "shape.governance") continue;
     m.imports = [...new Set([...(m.imports ?? []), "shape.governance", "std"])].sort(cmpStr);
   }
-  const source: SourceDoc = { v: "shape.source.v1", modules: [...modules.values()].filter((m) => m.decls.length > 0).sort((a, b) => cmpStr(a.module, b.module)) };
-  return { source, migrateNotes: loaded.notes, rewrites: rw.renames, merged: merged.sort(cmpStr), added: added.sort(cmpStr), droppedDecls: droppedDecls.sort(cmpStr) };
+  const source: SourceDoc = {
+    v: "shape.source.v1",
+    modules: [...modules.values()]
+      .filter((m) => m.decls.length > 0)
+      .sort((a, b) => cmpStr(a.module, b.module))
+  };
+  return {
+    source,
+    migrateNotes: loaded.notes,
+    rewrites: rw.renames,
+    merged: merged.sort(cmpStr),
+    added: added.sort(cmpStr),
+    droppedDecls: droppedDecls.sort(cmpStr)
+  };
 }
 
 export function readModel(path: string = MODEL_PATH): SourceDoc {
@@ -190,8 +253,14 @@ export interface ClaimInfo {
   tier: string;
 }
 
-export function claimIndex(source: SourceDoc, now: number): { claims: ClaimInfo[]; errors: { code: string; subject: string; message: string }[] } {
-  const esf = elaborate(source, { now }) as unknown as { claims: ClaimInfo[]; errors: { code: string; subject: string; message: string }[] };
+export function claimIndex(
+  source: SourceDoc,
+  now: number
+): { claims: ClaimInfo[]; errors: { code: string; subject: string; message: string }[] } {
+  const esf = elaborate(source, { now }) as unknown as {
+    claims: ClaimInfo[];
+    errors: { code: string; subject: string; message: string }[];
+  };
   return { claims: esf.claims, errors: esf.errors };
 }
 
@@ -203,7 +272,11 @@ export function unitBindings(source: SourceDoc): Map<string, string> {
       if (d.decl !== "component") continue;
       for (const u of d.units ?? []) {
         const mm = u.bind ? /^\s*([A-Za-z_][\w-]*)\("((?:[^"\\]|\\.)*)"\)\s*$/.exec(u.bind) : null;
-        if (mm) out.set(`${m.module}::${d.name}.${u.name}`, `${mm[1]}:${JSON.parse(`"${mm[2] ?? ""}"`) as string}`);
+        if (mm)
+          out.set(
+            `${m.module}::${d.name}.${u.name}`,
+            `${mm[1]}:${JSON.parse(`"${mm[2] ?? ""}"`) as string}`
+          );
       }
     }
   return out;
@@ -216,16 +289,26 @@ export function unitBindings(source: SourceDoc): Map<string, string> {
 export function materialize(rev: string, dir: string): string {
   rmSync(dir, { recursive: true, force: true });
   mkdirSync(dir, { recursive: true });
-  const archive = spawnSync("sh", ["-c", `git -C ${JSON.stringify(REPO)} archive ${rev} | tar -x -C ${JSON.stringify(dir)}`]);
-  if (archive.status !== 0) throw new Error(`git archive ${rev} failed: ${archive.stderr.toString()}`);
+  const archive = spawnSync("sh", [
+    "-c",
+    `git -C ${JSON.stringify(REPO)} archive ${rev} | tar -x -C ${JSON.stringify(dir)}`
+  ]);
+  if (archive.status !== 0)
+    throw new Error(`git archive ${rev} failed: ${archive.stderr.toString()}`);
   cpSync(DOGFOOD, join(dir, DOGFOOD_REL), { recursive: true });
   // the root store is linked; workspace node_modules are copied link-for-link so relative
   // workspace links (@shape/shp-checker -> ../../../shp-checker) resolve inside the tree
-  if (!existsSync(join(dir, "node_modules"))) symlinkSync(join(REPO, "node_modules"), join(dir, "node_modules"), "dir");
-  for (const nm of ["packages/shp-checker/node_modules", "packages/shp-cli/node_modules", "docs-site/node_modules"]) {
+  if (!existsSync(join(dir, "node_modules")))
+    symlinkSync(join(REPO, "node_modules"), join(dir, "node_modules"), "dir");
+  for (const nm of [
+    "packages/shp-checker/node_modules",
+    "packages/shp-cli/node_modules",
+    "docs-site/node_modules"
+  ]) {
     const src = join(REPO, nm);
     const dst = join(dir, nm);
-    if (existsSync(src) && existsSync(dirname(dst)) && !existsSync(dst)) cpSync(src, dst, { recursive: true, verbatimSymlinks: true });
+    if (existsSync(src) && existsSync(dirname(dst)) && !existsSync(dst))
+      cpSync(src, dst, { recursive: true, verbatimSymlinks: true });
   }
   return dir;
 }

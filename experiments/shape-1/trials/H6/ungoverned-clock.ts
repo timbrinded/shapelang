@@ -21,8 +21,18 @@ const source = readModel();
 const base = await manifestFor(treeFiles(tree));
 const baseScan = await clockScan({ root: tree, manifest: base.statement, now: NOW });
 const SEEDS = [
-  { name: "ungoverned: freshness.ts#resolveFreshnessDate", path: "packages/shp-cli/src/freshness.ts", anchor: "}): IsoDateString | undefined {\n", insert: "  void Date.now();\n" },
-  { name: "governed control: freshness.ts#isoToday's sibling in ShpCli globs (git.ts)", path: "packages/shp-cli/src/git.ts", anchor: null, insert: null }
+  {
+    name: "ungoverned: freshness.ts#resolveFreshnessDate",
+    path: "packages/shp-cli/src/freshness.ts",
+    anchor: "}): IsoDateString | undefined {\n",
+    insert: "  void Date.now();\n"
+  },
+  {
+    name: "governed control: freshness.ts#isoToday's sibling in ShpCli globs (git.ts)",
+    path: "packages/shp-cli/src/git.ts",
+    anchor: null,
+    insert: null
+  }
 ];
 const rows = [];
 for (const s of SEEDS) {
@@ -36,7 +46,10 @@ for (const s of SEEDS) {
     // first exported function body in the file
     const m = /export (?:async )?function \w+\([^)]*\)[^{]*\{\n/.exec(text);
     if (!m) throw new Error(`no exported function in ${s.path}`);
-    edited = text.slice(0, m.index + m[0].length) + "  void Date.now();\n" + text.slice(m.index + m[0].length);
+    edited =
+      text.slice(0, m.index + m[0].length) +
+      "  void Date.now();\n" +
+      text.slice(m.index + m[0].length);
     s.name = `governed control: ${s.path}#${/function (\w+)/.exec(m[0])[1]}`;
   }
   writeFileSync(p, edited);
@@ -62,10 +75,18 @@ for (const s of SEEDS) {
       seed: s.name,
       clockFactsBase: baseScan.facts,
       clockFactsHead: scan.facts,
-      newSites: scan.sites.filter((x) => !baseScan.sites.some((y) => y.at === x.at && y.resource === x.resource)),
+      newSites: scan.sites.filter(
+        (x) => !baseScan.sites.some((y) => y.at === x.at && y.resource === x.resource)
+      ),
       verdict: out.verdict,
       errors: [...new Set(out.errors.map((e) => e.code))],
-      introduced: intro.map((o) => ({ kind: o.kind, severity: o.severity, force: o.force, claim: o.claim?.ids?.[0] ?? null, subject: o.subject }))
+      introduced: intro.map((o) => ({
+        kind: o.kind,
+        severity: o.severity,
+        force: o.force,
+        claim: o.claim?.ids?.[0] ?? null,
+        subject: o.subject
+      }))
     });
   } finally {
     writeFileSync(p, text);

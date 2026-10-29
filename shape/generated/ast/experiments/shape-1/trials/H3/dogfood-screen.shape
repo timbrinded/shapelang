@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.dogfood_screen
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource DogfoodScreenModuleLawVerdictsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/dogfood-screen.ts#lawVerdicts")
+  fingerprint ast.semantic_subtree_v1("sha256:636c7da925bf1cae807e1c6e496a32d6fc873bf6f9374a53d24fd588cb9cb456")
+}
+
+component DogfoodScreenModule : GeneratedCandidate {
+  fn lawVerdicts
+    source ts("experiments/shape-1/trials/H3/dogfood-screen.ts#lawVerdicts")
+    effects unknown
+}
+
+relation DogfoodScreenModuleLawVerdictsGeneratedFromDogfoodScreenModuleLawVerdictsAstAnchor {
+  kind generated_from
+  connects DogfoodScreenModule -> DogfoodScreenModuleLawVerdictsAstAnchor
+  roles { DogfoodScreenModule as generated, DogfoodScreenModuleLawVerdictsAstAnchor as syntax }
+  expects DogfoodScreenModuleLawVerdictsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:636c7da925bf1cae807e1c6e496a32d6fc873bf6f9374a53d24fd588cb9cb456")
+  summary "fn DogfoodScreenModule.lawVerdicts generated from typescript function_declaration at experiments/shape-1/trials/H3/dogfood-screen.ts#lawVerdicts."
+}
+
+implementation DogfoodScreenModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/dogfood-screen.ts"
+  }
+  conforms_to DogfoodScreenModule
+}

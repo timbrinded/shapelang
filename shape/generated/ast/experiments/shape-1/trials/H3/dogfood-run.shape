@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.dogfood_run
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource DogfoodRunModuleApplyEditAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/dogfood-run.ts#applyEdit")
+  fingerprint ast.semantic_subtree_v1("sha256:ec3fe44769d3c677db961fcdbeaf1a42af5c90e2c95e2fa28715f3474bb06639")
+}
+
+resource DogfoodRunModuleProvidersAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/dogfood-run.ts#providers")
+  fingerprint ast.semantic_subtree_v1("sha256:f0c41ee97e58f44af320a9def8914b3fd9f5b8ac838d285c2521eb01327e9d79")
+}
+
+component DogfoodRunModule : GeneratedCandidate {
+  fn applyEdit
+    source ts("experiments/shape-1/trials/H3/dogfood-run.ts#applyEdit")
+    effects unknown
+  fn providers
+    source ts("experiments/shape-1/trials/H3/dogfood-run.ts#providers")
+    effects unknown
+}
+
+relation DogfoodRunModuleApplyEditGeneratedFromDogfoodRunModuleApplyEditAstAnchor {
+  kind generated_from
+  connects DogfoodRunModule -> DogfoodRunModuleApplyEditAstAnchor
+  roles { DogfoodRunModule as generated, DogfoodRunModuleApplyEditAstAnchor as syntax }
+  expects DogfoodRunModuleApplyEditAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ec3fe44769d3c677db961fcdbeaf1a42af5c90e2c95e2fa28715f3474bb06639")
+  summary "fn DogfoodRunModule.applyEdit generated from typescript function_declaration at experiments/shape-1/trials/H3/dogfood-run.ts#applyEdit."
+}
+
+relation DogfoodRunModuleProvidersGeneratedFromDogfoodRunModuleProvidersAstAnchor {
+  kind generated_from
+  connects DogfoodRunModule -> DogfoodRunModuleProvidersAstAnchor
+  roles { DogfoodRunModule as generated, DogfoodRunModuleProvidersAstAnchor as syntax }
+  expects DogfoodRunModuleProvidersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f0c41ee97e58f44af320a9def8914b3fd9f5b8ac838d285c2521eb01327e9d79")
+  summary "fn DogfoodRunModule.providers generated from typescript function_declaration at experiments/shape-1/trials/H3/dogfood-run.ts#providers."
+}
+
+implementation DogfoodRunModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/dogfood-run.ts"
+  }
+  conforms_to DogfoodRunModule
+}

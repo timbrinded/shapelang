@@ -14,18 +14,38 @@
 //        admits judgment (RefactorSensitive guards, DocumentedBy laws), so editing their Req makes
 //        them stale rather than missing
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  renameSync,
+  rmSync,
+  statSync,
+  writeFileSync
+} from "node:fs";
 import { dirname, join } from "node:path";
 import { derive } from "../../proto/src/derive.ts";
 import { elaborate } from "../../proto/src/elaborate.ts";
 import { indexManifest } from "../../proto/src/manifest.ts";
-import { makeStatement, scopeRoot, signStatement, signerFromSeed } from "../../proto/src/records.ts";
+import {
+  makeStatement,
+  scopeRoot,
+  signStatement,
+  signerFromSeed
+} from "../../proto/src/records.ts";
 import { buildWorld, compCode } from "../../proto/src/world.ts";
 import { runLaws } from "../../dogfood/providers/bun-test.ts";
 import { PROVIDERS, cite, emit, recordTime, viewOf } from "../../dogfood/providers/common.ts";
 import { callScan } from "../../dogfood/providers/ts-calls.ts";
 import { clockScan } from "../../dogfood/providers/ts-clock-scan.ts";
-import { composeModel, manifestFor, materialize, readOverlay, treeFiles } from "../../dogfood/tools/lib.ts";
+import {
+  composeModel,
+  manifestFor,
+  materialize,
+  readOverlay,
+  treeFiles
+} from "../../dogfood/tools/lib.ts";
 
 export const NOW = "2026-10-26T00:00:00Z";
 export const NOW_S = Math.floor(Date.parse(NOW) / 1000);
@@ -57,8 +77,10 @@ export class Tree {
   rep(p: string, from: string, to: string): void {
     const t = this.read(p);
     const i = t.indexOf(from);
-    if (i < 0) throw new Error(`rep: anchor not found in ${p}: ${JSON.stringify(from.slice(0, 80))}`);
-    if (t.indexOf(from, i + 1) >= 0) throw new Error(`rep: anchor not unique in ${p}: ${JSON.stringify(from.slice(0, 80))}`);
+    if (i < 0)
+      throw new Error(`rep: anchor not found in ${p}: ${JSON.stringify(from.slice(0, 80))}`);
+    if (t.indexOf(from, i + 1) >= 0)
+      throw new Error(`rep: anchor not unique in ${p}: ${JSON.stringify(from.slice(0, 80))}`);
     this.write(p, t.slice(0, i) + to + t.slice(i + from.length));
   }
   /** insert text right after the unique anchor */
@@ -110,7 +132,12 @@ export class Tree {
     let start = i;
     const before = t.slice(0, i);
     const doc = before.lastIndexOf("/**");
-    if (doc >= 0 && before.slice(doc).trimEnd().endsWith("*/") && !before.slice(doc).includes("\n\n")) start = doc;
+    if (
+      doc >= 0 &&
+      before.slice(doc).trimEnd().endsWith("*/") &&
+      !before.slice(doc).includes("\n\n")
+    )
+      start = doc;
     const fn = t.slice(start, j + 1);
     this.write(p, t.slice(0, start) + t.slice(j + 2));
     return `${fn}\n`;
@@ -120,7 +147,14 @@ export class Tree {
 /** All TypeScript-family files under the code roots a rename would touch (an IDE rename). */
 export function codeFiles(dir: string): string[] {
   const out: string[] = [];
-  const roots = ["packages", "docs-site/scripts", "scripts", ".github/scripts", "experiments/semantic-kernel/harness", "experiments/shape-1/dogfood/laws"];
+  const roots = [
+    "packages",
+    "docs-site/scripts",
+    "scripts",
+    ".github/scripts",
+    "experiments/semantic-kernel/harness",
+    "experiments/shape-1/dogfood/laws"
+  ];
   const walk = (rel: string): void => {
     const abs = join(dir, rel);
     if (!existsSync(abs)) return;
@@ -141,7 +175,9 @@ export type Arm = "A" | "X";
 
 function componentsOf(source): { module: string; name: string }[] {
   const out = [];
-  for (const m of source.modules) for (const d of m.decls) if (d.decl === "component") out.push({ module: m.module, name: d.name });
+  for (const m of source.modules)
+    for (const d of m.decls)
+      if (d.decl === "component") out.push({ module: m.module, name: d.name });
   return out;
 }
 
@@ -156,10 +192,15 @@ export function overlayFor(arm: Arm, comps: { module: string; name: string }[]) 
     }
     return x;
   };
-  for (const c of comps) mod(c.module).decls.push({ decl: "component", name: c.name, relationsComplete: ["calls"] });
+  for (const c of comps)
+    mod(c.module).decls.push({ decl: "component", name: c.name, relationsComplete: ["calls"] });
   const g = mod("shape.governance");
   g.decls.push({ decl: "provider", name: "tsCalls", sound: ["presence", "absence"] });
-  g.decls.push({ decl: "actor", name: "timbrinded", identities: ['github("timbrinded")', JUDGE.identity] });
+  g.decls.push({
+    decl: "actor",
+    name: "timbrinded",
+    identities: ['github("timbrinded")', JUDGE.identity]
+  });
   return o;
 }
 
@@ -191,9 +232,11 @@ function judgmentReq(W, M, c): { id: string; projection: string }[] {
         if (!info?.symbol || !has(x, projection)) continue;
         const parent = info.parent;
         const parentFile = !parent || !M.ids.get(parent)?.symbol;
-        if (parentFile || !has(parent, projection) || !codeSet.has(parent)) out.push({ id: x, projection });
+        if (parentFile || !has(parent, projection) || !codeSet.has(parent))
+          out.push({ id: x, projection });
       }
-      if (projection === "unit") for (const x of code) if (!M.ids.get(x)?.symbol) out.push({ id: x, projection: "own" });
+      if (projection === "unit")
+        for (const x of code) if (!M.ids.get(x)?.symbol) out.push({ id: x, projection: "own" });
     } else if (t.startsWith("code ")) {
       const x = t.slice(5);
       out.push({ id: x, projection: has(x, "unit") ? "unit" : "file" });
@@ -226,7 +269,17 @@ function judgments(source, manifest) {
         return true;
       })
       .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : a.projection < b.projection ? -1 : 1));
-    const rec = { v: "shape.evidence.v1", kind: "judgment", result: "supports", provider: null, revision: v.revision, time: recordTime(NOW), claim: { id: c.ids[0], fp: c.fp, nf: c.nf }, code: cites, judge: JUDGE_Q };
+    const rec = {
+      v: "shape.evidence.v1",
+      kind: "judgment",
+      result: "supports",
+      provider: null,
+      revision: v.revision,
+      time: recordTime(NOW),
+      claim: { id: c.ids[0], fp: c.fp, nf: c.nf },
+      code: cites,
+      judge: JUDGE_Q
+    };
     out.push({ law: c.ids[0], envelope: signStatement(makeStatement(rec), [JUDGE]) });
   }
   return { records: out, skipped };
@@ -295,7 +348,14 @@ function compact(o) {
     claimFp: o.claim ? o.claim.fp : null,
     subject: o.subject,
     witness: o.witness,
-    facts: Object.values(o.facts ?? {}).map((f) => ({ type: f.type, at: f.at, to: f.to ?? null, verb: f.verb ?? null, resource: f.resource ?? null, claim: f.claim ?? null })),
+    facts: Object.values(o.facts ?? {}).map((f) => ({
+      type: f.type,
+      at: f.at,
+      to: f.to ?? null,
+      verb: f.verb ?? null,
+      resource: f.resource ?? null,
+      claim: f.claim ?? null
+    })),
     affected: o.affected ?? [],
     rule: o.rule ?? null,
     exception: o.exception,
@@ -336,12 +396,18 @@ export async function runSeed(arm: Arm, seed, work: string, base: Base) {
     persisted: { base: [], head: [] },
     options: { health: true, teeth: false }
   };
-  if (process.env.H2_DUMP_INPUT) writeFileSync(join(process.env.H2_DUMP_INPUT, `${arm}-${seed.id}.input.json`), JSON.stringify(input));
+  if (process.env.H2_DUMP_INPUT)
+    writeFileSync(
+      join(process.env.H2_DUMP_INPUT, `${arm}-${seed.id}.input.json`),
+      JSON.stringify(input)
+    );
   const t1 = performance.now();
   const out = derive(input);
   const t2 = performance.now();
   const clockFacts = decode(clock.envelope).predicate.shape.facts;
-  const clockIncomplete = decode(clock.envelope).predicate.shape.scope.entries.filter((e) => !e.complete).map((e) => e.id);
+  const clockIncomplete = decode(clock.envelope)
+    .predicate.shape.scope.entries.filter((e) => !e.complete)
+    .map((e) => e.id);
   const h = out.health ?? {};
   const row = {
     arm,
@@ -364,8 +430,15 @@ export async function runSeed(arm: Arm, seed, work: string, base: Base) {
     lawsUnprovable: laws.unprovable,
     clockFacts,
     clockIncomplete,
-    health: { coverage: h.coverage ?? null, unobservable: Array.isArray(h.unobservable) ? h.unobservable.length : null, unmapped: h.unmapped ?? null },
-    seconds: { total: Number(((performance.now() - t0) / 1000).toFixed(1)), derive: Number(((t2 - t1) / 1000).toFixed(1)) }
+    health: {
+      coverage: h.coverage ?? null,
+      unobservable: Array.isArray(h.unobservable) ? h.unobservable.length : null,
+      unmapped: h.unmapped ?? null
+    },
+    seconds: {
+      total: Number(((performance.now() - t0) / 1000).toFixed(1)),
+      derive: Number(((t2 - t1) / 1000).toFixed(1))
+    }
   };
   rmSync(dir, { recursive: true, force: true });
   return row;
@@ -378,7 +451,12 @@ async function parseCheck(dir: string, files: string[]): Promise<{ file: string;
   const out = [];
   for (const f of files) {
     if (!/\.(ts|mts|mjs|js)$/.test(f) || !existsSync(join(dir, f))) continue;
-    const sf = ts.createSourceFile(f, readFileSync(join(dir, f), "utf8"), ts.ScriptTarget.Latest, true);
+    const sf = ts.createSourceFile(
+      f,
+      readFileSync(join(dir, f), "utf8"),
+      ts.ScriptTarget.Latest,
+      true
+    );
     const n = (sf.parseDiagnostics ?? []).length;
     if (n > 0) out.push({ file: f, n });
   }

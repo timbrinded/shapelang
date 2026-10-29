@@ -1,0 +1,211 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:d99fc300c3537cb9058e25b4b0ca89894394b7b7884db4325e43cc3f6e49a447",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:d91001520fce1a4d661c30b234abb3c6d0851453b833e953a9dc01460453b8eb",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L7"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "judgment",
+   "force": null,
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": null,
+   "group": "g:e98df0b7c8289caf6dac2e08be6885544f575d30cece598e2368bfe278165a0e",
+   "claim": null,
+   "subject": "provider checker::bunTest",
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": false,
+   "final": false,
+   "binding": "bd:ce1794a88ee7186d149940f2d2ef08c1fce9763ce9e670066085658931354b60",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::ann"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "provider checker::bunTest"
+    }
+   ]
+  },
+  {
+   "key": "ob:79b18d16e2bc560c6c28f3722f151421320a80116886e10f80d3b5e0cab8e4fc",
+   "kind": "unestablished",
+   "reason": "producer-changed",
+   "questions": null,
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "judgment",
+   "force": null,
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": null,
+   "group": "g:a5e8cc5973b3b857398b7a97ebecf38c7b0e05913f0bce0ec2dde6d7ce00bdc3",
+   "claim": {
+    "fp": "sha256:8620c3bead39262d509d30d813c84d79db4e1ce51b1dd92c904225082519b8c3",
+    "ids": [
+     "checker::CheckIsDeterministic"
+    ],
+    "tier": "critical"
+   },
+   "subject": null,
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:68ce46713190ee6dd7c352fbae3a535706f0b2155f15422e2b3399e158968d25",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::ann"
+     ],
+     "creates": null
+    },
+    {
+     "act": "rerun",
+     "by": "ci",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "exception",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::ann"
+     ],
+     "creates": null
+    },
+    {
+     "act": "lower-requirement",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "critical",
+      "answers": 1,
+      "owners": [
+       "tooling::ShapeMaintainers"
+      ]
+     }
+    }
+   ],
+   "causes": [
+    {
+     "type": "record",
+     "id": "sha256:f3f5cbee8ec8741413faf3e3983bf887473428679b2d448880d585119c46affc"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [
+  {
+   "question": "L7",
+   "subject": "provider checker::bunTest",
+   "answer": "undecided",
+   "exploited": false,
+   "final": false,
+   "affected": [],
+   "counterexample": null,
+   "obligation": "ob:d91001520fce1a4d661c30b234abb3c6d0851453b833e953a9dc01460453b8eb"
+  }
+ ],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 1,
+   "den": 1
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [
+   "checker.incremental::ShapeIncrementalChecker",
+   "checker::ShapeBindings",
+   "checker::ShapeDiagnostics",
+   "checker::ShapeModelLowerer",
+   "checker::ShapeModuleResolver",
+   "checker::ShapePreludeRegistry",
+   "checker::ShapeStringHelpers",
+   "tooling::ShpCli"
+  ],
+  "ungoverned": {
+   "num": 3,
+   "den": 9
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [
+   "checker::bunTest"
+  ],
+  "baseObservations": "missing",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"checker::ShapeChecker.*\",\"checker::ShapeChecker.*\"]",
+   "cell:[\"checker::ShapeRuleEngine.*\",\"checker::ShapeRuleEngine.*\"]",
+   "cell:[\"tooling::ShpCli.*\",\"tooling::ShpCli.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 3,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

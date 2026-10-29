@@ -1,0 +1,7 @@
+module shape.generated.ast.experiments.shape_1.trials.H5.audit_markers
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

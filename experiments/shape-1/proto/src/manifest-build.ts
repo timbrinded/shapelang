@@ -5,7 +5,13 @@ import { readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, normalize, relative } from "node:path";
 import { codeDigest, encodePath, type FpIdentity } from "./fingerprint/common.ts";
 import { fingerprintRust } from "./fingerprint/rust.ts";
-import { TS_EXTENSIONS, type TsApi, fingerprintTs, isTsPath, loadTypeScript } from "./fingerprint/ts.ts";
+import {
+  TS_EXTENSIONS,
+  type TsApi,
+  fingerprintTs,
+  isTsPath,
+  loadTypeScript
+} from "./fingerprint/ts.ts";
 import { jcs } from "./jcs.ts";
 import {
   type ManifestEntry,
@@ -26,7 +32,9 @@ export interface SourceFileBytes {
 }
 
 const SCRIPT_EXTS = new Set(
-  "sh bash zsh fish py rb pl php ps1 bat cmd sql swift go java kt scala c h cc cpp hpp cs lua r jl ex exs erl hs ml dart groovy zig html htm astro vue svelte".split(" ")
+  "sh bash zsh fish py rb pl php ps1 bat cmd sql swift go java kt scala c h cc cpp hpp cs lua r jl ex exs erl hs ml dart groovy zig html htm astro vue svelte".split(
+    " "
+  )
 );
 const SCRIPT_NAMES = new Set(["Makefile", "GNUmakefile", "Dockerfile", "Justfile"]);
 const TS_INTERPRETERS = ["node", "bun", "deno", "tsx", "ts-node"];
@@ -71,15 +79,26 @@ function pkgjsonIdentities(path: string, bytes: Uint8Array): FpIdentity[] {
     return [{ ...rawIdentity(path, "100644", bytes), id: fileId }];
   }
   const scripts = (json.scripts ?? {}) as Record<string, string>;
-  const own = { ...json, scripts: Object.fromEntries(Object.keys(scripts).map((k) => [k, `⟨scripts.${k}⟩`])) };
+  const own = {
+    ...json,
+    scripts: Object.fromEntries(Object.keys(scripts).map((k) => [k, `⟨scripts.${k}⟩`]))
+  };
   const out: FpIdentity[] = [
     {
       id: fileId,
       kind: "file",
       parent: null,
       digests: [
-        { projection: "file", scheme: "pkgjson.file.v1", digest: codeDigest("pkgjson.file.v1", safeJcs(json)) },
-        { projection: "own", scheme: "pkgjson.own.v1", digest: codeDigest("pkgjson.own.v1", safeJcs(own)) }
+        {
+          projection: "file",
+          scheme: "pkgjson.file.v1",
+          digest: codeDigest("pkgjson.file.v1", safeJcs(json))
+        },
+        {
+          projection: "own",
+          scheme: "pkgjson.own.v1",
+          digest: codeDigest("pkgjson.own.v1", safeJcs(own))
+        }
       ],
       markers: {},
       hatchComplete: true,
@@ -92,8 +111,16 @@ function pkgjsonIdentities(path: string, bytes: Uint8Array): FpIdentity[] {
       kind: "script",
       parent: fileId,
       digests: [
-        { projection: "own", scheme: "pkgjson.unit.v1", digest: codeDigest("pkgjson.unit.v1", String(cmd)) },
-        { projection: "unit", scheme: "pkgjson.unit.v1", digest: codeDigest("pkgjson.unit.v1", String(cmd)) }
+        {
+          projection: "own",
+          scheme: "pkgjson.unit.v1",
+          digest: codeDigest("pkgjson.unit.v1", String(cmd))
+        },
+        {
+          projection: "unit",
+          scheme: "pkgjson.unit.v1",
+          digest: codeDigest("pkgjson.unit.v1", String(cmd))
+        }
       ],
       markers: {},
       hatchComplete: false,
@@ -136,7 +163,11 @@ function ghaIdentities(path: string, bytes: Uint8Array): FpIdentity[] {
     kind: "file",
     parent: null,
     digests: [
-      { projection: "file", scheme: "gha.file.v1", digest: codeDigest("gha.file.v1", safeJcs(doc)) },
+      {
+        projection: "file",
+        scheme: "gha.file.v1",
+        digest: codeDigest("gha.file.v1", safeJcs(doc))
+      },
       { projection: "own", scheme: "gha.own.v1", digest: codeDigest("gha.own.v1", safeJcs(own)) }
     ],
     markers: {},
@@ -164,15 +195,27 @@ export function makeResolver(paths: Set<string>): (spec: string, from: string) =
   return (spec, from) => {
     if (!spec.startsWith(".")) return null;
     const base = normalize(join(dirname(from), spec)).replace(/\\/g, "/");
-    const cands = [base, ...TS_EXTENSIONS.map((e) => base + e), ...TS_EXTENSIONS.map((e) => `${base}/index${e}`)];
+    const cands = [
+      base,
+      ...TS_EXTENSIONS.map((e) => base + e),
+      ...TS_EXTENSIONS.map((e) => `${base}/index${e}`)
+    ];
     for (const c of cands) if (paths.has(c)) return c;
     return null;
   };
 }
 
 /** Fingerprints a set of files into manifest entries and a tree. */
-export function manifestFromFiles(revision: string, files: SourceFileBytes[], ts: TsApi | null): ManifestPredicate {
-  const tree: TreeEntry[] = files.map((f) => ({ path: f.path, mode: f.mode, blob: gitBlobId(f.bytes) }));
+export function manifestFromFiles(
+  revision: string,
+  files: SourceFileBytes[],
+  ts: TsApi | null
+): ManifestPredicate {
+  const tree: TreeEntry[] = files.map((f) => ({
+    path: f.path,
+    mode: f.mode,
+    blob: gitBlobId(f.bytes)
+  }));
   const paths = new Set(files.map((f) => f.path));
   const resolve = makeResolver(paths);
   const entries: ManifestEntry[] = [];
@@ -185,12 +228,14 @@ export function manifestFromFiles(revision: string, files: SourceFileBytes[], ts
     const base = f.path.split("/").pop() ?? "";
     let ids: FpIdentity[];
     if (base === "package.json") ids = pkgjsonIdentities(f.path, f.bytes);
-    else if (/^\.github\/workflows\/[^/]+\.ya?ml$/.test(f.path)) ids = ghaIdentities(f.path, f.bytes);
+    else if (/^\.github\/workflows\/[^/]+\.ya?ml$/.test(f.path))
+      ids = ghaIdentities(f.path, f.bytes);
     else if (isTsPath(f.path)) {
       const interp = hashbangInterpreter(f.bytes);
       if (interp && !TS_INTERPRETERS.includes(interp)) ids = [rawIdentity(f.path, f.mode, f.bytes)];
       else ids = fingerprintTs(f.path, Buffer.from(f.bytes).toString("utf8"), ts, { resolve });
-    } else if (f.path.endsWith(".rs")) ids = fingerprintRust(f.path, Buffer.from(f.bytes).toString("utf8"));
+    } else if (f.path.endsWith(".rs"))
+      ids = fingerprintRust(f.path, Buffer.from(f.bytes).toString("utf8"));
     else ids = [rawIdentity(f.path, f.mode, f.bytes)];
     pushAll(entries, ids);
   }
@@ -200,7 +245,14 @@ export function manifestFromFiles(revision: string, files: SourceFileBytes[], ts
 function pushAll(entries: ManifestEntry[], ids: FpIdentity[]): void {
   for (const id of ids) {
     for (const d of id.digests) {
-      const e: ManifestEntry = { id: id.id, projection: d.projection, scheme: d.scheme, digest: d.digest, kind: id.kind, parent: id.parent };
+      const e: ManifestEntry = {
+        id: id.id,
+        projection: d.projection,
+        scheme: d.scheme,
+        digest: d.digest,
+        kind: id.kind,
+        parent: id.parent
+      };
       if (Object.keys(id.markers).length > 0) e.markers = id.markers;
       if (id.merged) e.merged = id.merged;
       if (!id.hatchComplete) e.hatchComplete = false;
@@ -215,13 +267,17 @@ function pushAll(entries: ManifestEntry[], ids: FpIdentity[]): void {
 
 function git(root: string, args: string[], input?: string): Buffer {
   const r = spawnSync("git", args, { cwd: root, input, maxBuffer: 1 << 30 });
-  if (r.status !== 0) throw new Error(`git ${args.join(" ")} failed: ${r.stderr?.toString() ?? ""}`);
+  if (r.status !== 0)
+    throw new Error(`git ${args.join(" ")} failed: ${r.stderr?.toString() ?? ""}`);
   return r.stdout;
 }
 
 /** Files of a git revision (`git ls-tree -r` + `git cat-file --batch`). */
 export function filesFromGit(root: string, rev: string): SourceFileBytes[] {
-  const listing = git(root, ["ls-tree", "-r", "-z", rev]).toString("utf8").split("\0").filter(Boolean);
+  const listing = git(root, ["ls-tree", "-r", "-z", rev])
+    .toString("utf8")
+    .split("\0")
+    .filter(Boolean);
   const items = listing.map((line) => {
     const [meta, path] = line.split("\t") as [string, string];
     const [mode, type, blob] = meta.split(" ") as [string, string, string];
@@ -239,7 +295,8 @@ export function filesFromGit(root: string, rev: string): SourceFileBytes[] {
     off = nl + 1 + size + 1;
     files.push({ path: b.path, mode: b.mode, bytes: new Uint8Array(bytes) });
   }
-  for (const i of items) if (i.type === "commit") files.push({ path: i.path, mode: "160000", bytes: new Uint8Array() });
+  for (const i of items)
+    if (i.type === "commit") files.push({ path: i.path, mode: "160000", bytes: new Uint8Array() });
   return files.sort((a, b) => cmpStr(a.path, b.path));
 }
 
@@ -248,7 +305,10 @@ export function filesFromDir(root: string): SourceFileBytes[] {
   const out: SourceFileBytes[] = [];
   const r = spawnSync("git", ["ls-files", "-s", "-z"], { cwd: root, maxBuffer: 1 << 30 });
   const top = spawnSync("git", ["rev-parse", "--show-toplevel"], { cwd: root });
-  const isRepoRoot = r.status === 0 && top.status === 0 && normalize(top.stdout.toString().trim()) === normalize(root);
+  const isRepoRoot =
+    r.status === 0 &&
+    top.status === 0 &&
+    normalize(top.stdout.toString().trim()) === normalize(root);
   if (isRepoRoot) {
     for (const line of r.stdout.toString("utf8").split("\0").filter(Boolean)) {
       const [meta, path] = line.split("\t") as [string, string];
@@ -273,7 +333,11 @@ export function filesFromDir(root: string): SourceFileBytes[] {
       if (st.isDirectory()) walk(full);
       else {
         const rel = relative(root, full).replace(/\\/g, "/");
-        out.push({ path: rel, mode: st.mode & 0o111 ? "100755" : "100644", bytes: new Uint8Array(readFileSync(full)) });
+        out.push({
+          path: rel,
+          mode: st.mode & 0o111 ? "100755" : "100644",
+          bytes: new Uint8Array(readFileSync(full))
+        });
       }
     }
   };
@@ -289,5 +353,8 @@ export async function buildManifest(opts: {
 }): Promise<{ statement: Statement; backend: string }> {
   const ts = opts.noTypeScript ? null : await loadTypeScript(opts.repoRoot);
   const pred = manifestFromFiles(opts.revision, opts.files, ts);
-  return { statement: manifestStatement(pred), backend: ts ? `typescript ${ts.version}` : "lexical fallback" };
+  return {
+    statement: manifestStatement(pred),
+    backend: ts ? `typescript ${ts.version}` : "lexical fallback"
+  };
 }

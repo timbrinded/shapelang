@@ -1,0 +1,241 @@
+module shape.generated.ast.experiments.shape_1.dogfood.laws.rules_law_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RulesLawTestModuleActualFinalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/rules.law.test.ts#actualFinal")
+  fingerprint ast.semantic_subtree_v1("sha256:922eb7615676eace5ff3861544d2d8eadc9376546e9467c35fd3dd3bb3c9ea52")
+}
+
+resource RulesLawTestModuleBfsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/rules.law.test.ts#bfs")
+  fingerprint ast.semantic_subtree_v1("sha256:2ccc0fcc550e67c35e49761ba0f6279fab24a0dfc8fa18214dcdbc7661293837")
+}
+
+resource RulesLawTestModuleCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/rules.law.test.ts#check")
+  fingerprint ast.semantic_subtree_v1("sha256:d9a2b3a24d05526be45c20c27e0fc90ab1f5bc6722e128904b4c07fb4dc505f0")
+}
+
+resource RulesLawTestModuleExpectedFinalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/rules.law.test.ts#expectedFinal")
+  fingerprint ast.semantic_subtree_v1("sha256:ffbd1c27f755fcaed81947df983b261d10af6b97db6797da8fd5d5b7de06f8d6")
+}
+
+resource RulesLawTestModuleFinalDeclsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/rules.law.test.ts#finalDecls")
+  fingerprint ast.semantic_subtree_v1("sha256:3cf9712a35227a88e914ddcfa4e83d6fc72bc63b1dbfaf77aa8cc61297e96e25")
+}
+
+resource RulesLawTestModuleGenDateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/rules.law.test.ts#genDate")
+  fingerprint ast.semantic_subtree_v1("sha256:ec8603d504aee7305338b4d16cf72aec8a2c33db4a763b75b79ffc33c3264de7")
+}
+
+resource RulesLawTestModuleGenFinalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/rules.law.test.ts#genFinal")
+  fingerprint ast.semantic_subtree_v1("sha256:d4d635f0ab2f5f9f13616a3a01ba6ab181aea62d582b7cfa0f58c5c27d413d04")
+}
+
+resource RulesLawTestModuleGenGraphAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/rules.law.test.ts#genGraph")
+  fingerprint ast.semantic_subtree_v1("sha256:061ad0ba85380783159ca15cd1dbdeef281633a42e0611cc3c72ec9a5df76f44")
+}
+
+resource RulesLawTestModuleGenPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/rules.law.test.ts#genPath")
+  fingerprint ast.semantic_subtree_v1("sha256:4c3d6de684e09b68f67a6d355739d70c46fb1a67be318efe5431be2c33e7c8c7")
+}
+
+resource RulesLawTestModuleGenReviewByAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/rules.law.test.ts#genReviewBy")
+  fingerprint ast.semantic_subtree_v1("sha256:8d0de1ac3e6f5ca908e5e4e672751fe3b42320e5baa1cb2b4ae34a6a5f021ed0")
+}
+
+resource RulesLawTestModuleGirthAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/rules.law.test.ts#girth")
+  fingerprint ast.semantic_subtree_v1("sha256:74b538f7a7e2fb563255eba0b9cfcb56da4651452bd61fc2ee6b961575c310c3")
+}
+
+resource RulesLawTestModuleGraphDeclsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/rules.law.test.ts#graphDecls")
+  fingerprint ast.semantic_subtree_v1("sha256:415325db1771334e3b9d33046aa420182663e78b1f8998819a5707bc085a1184")
+}
+
+resource RulesLawTestModuleIsCalendarDateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/rules.law.test.ts#isCalendarDate")
+  fingerprint ast.semantic_subtree_v1("sha256:193c791a2795e1d22e4799bd45c6634828d1c1902251e5b2ddc49b299338b8c6")
+}
+
+resource RulesLawTestModulePathWitnessAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/rules.law.test.ts#pathWitness")
+  fingerprint ast.semantic_subtree_v1("sha256:0d991f4dac53952e811ead37a3bdb8b6a5c772000bf572f777926128e998fdf3")
+}
+
+component RulesLawTestModule : GeneratedCandidate {
+  fn actualFinal
+    source ts("experiments/shape-1/dogfood/laws/rules.law.test.ts#actualFinal")
+    effects unknown
+  fn bfs
+    source ts("experiments/shape-1/dogfood/laws/rules.law.test.ts#bfs")
+    effects unknown
+  fn check
+    source ts("experiments/shape-1/dogfood/laws/rules.law.test.ts#check")
+    effects unknown
+  fn expectedFinal
+    source ts("experiments/shape-1/dogfood/laws/rules.law.test.ts#expectedFinal")
+    effects unknown
+  fn finalDecls
+    source ts("experiments/shape-1/dogfood/laws/rules.law.test.ts#finalDecls")
+    effects unknown
+  fn genDate
+    source ts("experiments/shape-1/dogfood/laws/rules.law.test.ts#genDate")
+    effects unknown
+  fn genFinal
+    source ts("experiments/shape-1/dogfood/laws/rules.law.test.ts#genFinal")
+    effects unknown
+  fn genGraph
+    source ts("experiments/shape-1/dogfood/laws/rules.law.test.ts#genGraph")
+    effects unknown
+  fn genPath
+    source ts("experiments/shape-1/dogfood/laws/rules.law.test.ts#genPath")
+    effects unknown
+  fn genReviewBy
+    source ts("experiments/shape-1/dogfood/laws/rules.law.test.ts#genReviewBy")
+    effects unknown
+  fn girth
+    source ts("experiments/shape-1/dogfood/laws/rules.law.test.ts#girth")
+    effects unknown
+  fn graphDecls
+    source ts("experiments/shape-1/dogfood/laws/rules.law.test.ts#graphDecls")
+    effects unknown
+  fn isCalendarDate
+    source ts("experiments/shape-1/dogfood/laws/rules.law.test.ts#isCalendarDate")
+    effects unknown
+  fn pathWitness
+    source ts("experiments/shape-1/dogfood/laws/rules.law.test.ts#pathWitness")
+    effects unknown
+}
+
+relation RulesLawTestModuleActualFinalGeneratedFromRulesLawTestModuleActualFinalAstAnchor {
+  kind generated_from
+  connects RulesLawTestModule -> RulesLawTestModuleActualFinalAstAnchor
+  roles { RulesLawTestModule as generated, RulesLawTestModuleActualFinalAstAnchor as syntax }
+  expects RulesLawTestModuleActualFinalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:922eb7615676eace5ff3861544d2d8eadc9376546e9467c35fd3dd3bb3c9ea52")
+  summary "fn RulesLawTestModule.actualFinal generated from typescript function_declaration at experiments/shape-1/dogfood/laws/rules.law.test.ts#actualFinal."
+}
+
+relation RulesLawTestModuleBfsGeneratedFromRulesLawTestModuleBfsAstAnchor {
+  kind generated_from
+  connects RulesLawTestModule -> RulesLawTestModuleBfsAstAnchor
+  roles { RulesLawTestModule as generated, RulesLawTestModuleBfsAstAnchor as syntax }
+  expects RulesLawTestModuleBfsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2ccc0fcc550e67c35e49761ba0f6279fab24a0dfc8fa18214dcdbc7661293837")
+  summary "fn RulesLawTestModule.bfs generated from typescript function_declaration at experiments/shape-1/dogfood/laws/rules.law.test.ts#bfs."
+}
+
+relation RulesLawTestModuleCheckGeneratedFromRulesLawTestModuleCheckAstAnchor {
+  kind generated_from
+  connects RulesLawTestModule -> RulesLawTestModuleCheckAstAnchor
+  roles { RulesLawTestModule as generated, RulesLawTestModuleCheckAstAnchor as syntax }
+  expects RulesLawTestModuleCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d9a2b3a24d05526be45c20c27e0fc90ab1f5bc6722e128904b4c07fb4dc505f0")
+  summary "fn RulesLawTestModule.check generated from typescript function_declaration at experiments/shape-1/dogfood/laws/rules.law.test.ts#check."
+}
+
+relation RulesLawTestModuleExpectedFinalGeneratedFromRulesLawTestModuleExpectedFinalAstAnchor {
+  kind generated_from
+  connects RulesLawTestModule -> RulesLawTestModuleExpectedFinalAstAnchor
+  roles { RulesLawTestModule as generated, RulesLawTestModuleExpectedFinalAstAnchor as syntax }
+  expects RulesLawTestModuleExpectedFinalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ffbd1c27f755fcaed81947df983b261d10af6b97db6797da8fd5d5b7de06f8d6")
+  summary "fn RulesLawTestModule.expectedFinal generated from typescript function_declaration at experiments/shape-1/dogfood/laws/rules.law.test.ts#expectedFinal."
+}
+
+relation RulesLawTestModuleFinalDeclsGeneratedFromRulesLawTestModuleFinalDeclsAstAnchor {
+  kind generated_from
+  connects RulesLawTestModule -> RulesLawTestModuleFinalDeclsAstAnchor
+  roles { RulesLawTestModule as generated, RulesLawTestModuleFinalDeclsAstAnchor as syntax }
+  expects RulesLawTestModuleFinalDeclsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3cf9712a35227a88e914ddcfa4e83d6fc72bc63b1dbfaf77aa8cc61297e96e25")
+  summary "fn RulesLawTestModule.finalDecls generated from typescript function_declaration at experiments/shape-1/dogfood/laws/rules.law.test.ts#finalDecls."
+}
+
+relation RulesLawTestModuleGenDateGeneratedFromRulesLawTestModuleGenDateAstAnchor {
+  kind generated_from
+  connects RulesLawTestModule -> RulesLawTestModuleGenDateAstAnchor
+  roles { RulesLawTestModule as generated, RulesLawTestModuleGenDateAstAnchor as syntax }
+  expects RulesLawTestModuleGenDateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ec8603d504aee7305338b4d16cf72aec8a2c33db4a763b75b79ffc33c3264de7")
+  summary "fn RulesLawTestModule.genDate generated from typescript function_declaration at experiments/shape-1/dogfood/laws/rules.law.test.ts#genDate."
+}
+
+relation RulesLawTestModuleGenFinalGeneratedFromRulesLawTestModuleGenFinalAstAnchor {
+  kind generated_from
+  connects RulesLawTestModule -> RulesLawTestModuleGenFinalAstAnchor
+  roles { RulesLawTestModule as generated, RulesLawTestModuleGenFinalAstAnchor as syntax }
+  expects RulesLawTestModuleGenFinalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d4d635f0ab2f5f9f13616a3a01ba6ab181aea62d582b7cfa0f58c5c27d413d04")
+  summary "fn RulesLawTestModule.genFinal generated from typescript function_declaration at experiments/shape-1/dogfood/laws/rules.law.test.ts#genFinal."
+}
+
+relation RulesLawTestModuleGenGraphGeneratedFromRulesLawTestModuleGenGraphAstAnchor {
+  kind generated_from
+  connects RulesLawTestModule -> RulesLawTestModuleGenGraphAstAnchor
+  roles { RulesLawTestModule as generated, RulesLawTestModuleGenGraphAstAnchor as syntax }
+  expects RulesLawTestModuleGenGraphAstAnchor fingerprint ast.semantic_subtree_v1("sha256:061ad0ba85380783159ca15cd1dbdeef281633a42e0611cc3c72ec9a5df76f44")
+  summary "fn RulesLawTestModule.genGraph generated from typescript function_declaration at experiments/shape-1/dogfood/laws/rules.law.test.ts#genGraph."
+}
+
+relation RulesLawTestModuleGenPathGeneratedFromRulesLawTestModuleGenPathAstAnchor {
+  kind generated_from
+  connects RulesLawTestModule -> RulesLawTestModuleGenPathAstAnchor
+  roles { RulesLawTestModule as generated, RulesLawTestModuleGenPathAstAnchor as syntax }
+  expects RulesLawTestModuleGenPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4c3d6de684e09b68f67a6d355739d70c46fb1a67be318efe5431be2c33e7c8c7")
+  summary "fn RulesLawTestModule.genPath generated from typescript function_declaration at experiments/shape-1/dogfood/laws/rules.law.test.ts#genPath."
+}
+
+relation RulesLawTestModuleGenReviewByGeneratedFromRulesLawTestModuleGenReviewByAstAnchor {
+  kind generated_from
+  connects RulesLawTestModule -> RulesLawTestModuleGenReviewByAstAnchor
+  roles { RulesLawTestModule as generated, RulesLawTestModuleGenReviewByAstAnchor as syntax }
+  expects RulesLawTestModuleGenReviewByAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8d0de1ac3e6f5ca908e5e4e672751fe3b42320e5baa1cb2b4ae34a6a5f021ed0")
+  summary "fn RulesLawTestModule.genReviewBy generated from typescript function_declaration at experiments/shape-1/dogfood/laws/rules.law.test.ts#genReviewBy."
+}
+
+relation RulesLawTestModuleGirthGeneratedFromRulesLawTestModuleGirthAstAnchor {
+  kind generated_from
+  connects RulesLawTestModule -> RulesLawTestModuleGirthAstAnchor
+  roles { RulesLawTestModule as generated, RulesLawTestModuleGirthAstAnchor as syntax }
+  expects RulesLawTestModuleGirthAstAnchor fingerprint ast.semantic_subtree_v1("sha256:74b538f7a7e2fb563255eba0b9cfcb56da4651452bd61fc2ee6b961575c310c3")
+  summary "fn RulesLawTestModule.girth generated from typescript function_declaration at experiments/shape-1/dogfood/laws/rules.law.test.ts#girth."
+}
+
+relation RulesLawTestModuleGraphDeclsGeneratedFromRulesLawTestModuleGraphDeclsAstAnchor {
+  kind generated_from
+  connects RulesLawTestModule -> RulesLawTestModuleGraphDeclsAstAnchor
+  roles { RulesLawTestModule as generated, RulesLawTestModuleGraphDeclsAstAnchor as syntax }
+  expects RulesLawTestModuleGraphDeclsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:415325db1771334e3b9d33046aa420182663e78b1f8998819a5707bc085a1184")
+  summary "fn RulesLawTestModule.graphDecls generated from typescript function_declaration at experiments/shape-1/dogfood/laws/rules.law.test.ts#graphDecls."
+}
+
+relation RulesLawTestModuleIsCalendarDateGeneratedFromRulesLawTestModuleIsCalendarDateAstAnchor {
+  kind generated_from
+  connects RulesLawTestModule -> RulesLawTestModuleIsCalendarDateAstAnchor
+  roles { RulesLawTestModule as generated, RulesLawTestModuleIsCalendarDateAstAnchor as syntax }
+  expects RulesLawTestModuleIsCalendarDateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:193c791a2795e1d22e4799bd45c6634828d1c1902251e5b2ddc49b299338b8c6")
+  summary "fn RulesLawTestModule.isCalendarDate generated from typescript function_declaration at experiments/shape-1/dogfood/laws/rules.law.test.ts#isCalendarDate."
+}
+
+relation RulesLawTestModulePathWitnessGeneratedFromRulesLawTestModulePathWitnessAstAnchor {
+  kind generated_from
+  connects RulesLawTestModule -> RulesLawTestModulePathWitnessAstAnchor
+  roles { RulesLawTestModule as generated, RulesLawTestModulePathWitnessAstAnchor as syntax }
+  expects RulesLawTestModulePathWitnessAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0d991f4dac53952e811ead37a3bdb8b6a5c772000bf572f777926128e998fdf3")
+  summary "fn RulesLawTestModule.pathWitness generated from typescript function_declaration at experiments/shape-1/dogfood/laws/rules.law.test.ts#pathWitness."
+}
+
+implementation RulesLawTestModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/laws/rules.law.test.ts"
+  }
+  conforms_to RulesLawTestModule
+}

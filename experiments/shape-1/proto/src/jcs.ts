@@ -17,7 +17,8 @@ function serialise(v: unknown): string {
     case "string":
       return JSON.stringify(v);
     case "object": {
-      if (Array.isArray(v)) return `[${v.map((x) => serialise(x === undefined ? null : x)).join(",")}]`;
+      if (Array.isArray(v))
+        return `[${v.map((x) => serialise(x === undefined ? null : x)).join(",")}]`;
       const obj = v as Record<string, unknown>;
       // RFC 8785 sorts keys by UTF-16 code units, which is JavaScript's default sort.
       const keys = Object.keys(obj)

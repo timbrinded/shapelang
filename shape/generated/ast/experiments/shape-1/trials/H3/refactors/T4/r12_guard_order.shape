@@ -1,0 +1,113 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r12_guard_order
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R12GuardOrderModuleAdjustAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#adjust")
+  fingerprint ast.semantic_subtree_v1("sha256:78554a6fb0bd4909cb4253cb158f7b059a205f3f68c316191e2658ec5426a8d2")
+}
+
+resource R12GuardOrderModuleBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#balance")
+  fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+}
+
+resource R12GuardOrderModuleFeeForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#feeFor")
+  fingerprint ast.semantic_subtree_v1("sha256:5b1823f1f0201618d2a11b958ed5f15eb9433e53d0285fa0982b7eafd32c0dd2")
+}
+
+resource R12GuardOrderModuleSetBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#setBalance")
+  fingerprint ast.semantic_subtree_v1("sha256:f1f9de177693b3dd73cad9c920b7b219458daaa494194b9357f78a57e964adfc")
+}
+
+resource R12GuardOrderModuleTotalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#total")
+  fingerprint ast.semantic_subtree_v1("sha256:d9a6a3d298fbcc063cb0a8e5ce994c2de1789a71d0d2b076c40b54531ce92cba")
+}
+
+resource R12GuardOrderModuleTransferAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#transfer")
+  fingerprint ast.semantic_subtree_v1("sha256:21ca2be610e907709fc539765aa37486486e5ea23409c2fae391aece2398dd0f")
+}
+
+component R12GuardOrderModule : GeneratedCandidate {
+  fn adjust
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#adjust")
+    effects unknown
+  fn balance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#balance")
+    effects unknown
+  fn feeFor
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#feeFor")
+    effects unknown
+  fn setBalance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#setBalance")
+    effects unknown
+  fn total
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#total")
+    effects unknown
+  fn transfer
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#transfer")
+    effects unknown
+}
+
+relation R12GuardOrderModuleAdjustGeneratedFromR12GuardOrderModuleAdjustAstAnchor {
+  kind generated_from
+  connects R12GuardOrderModule -> R12GuardOrderModuleAdjustAstAnchor
+  roles { R12GuardOrderModule as generated, R12GuardOrderModuleAdjustAstAnchor as syntax }
+  expects R12GuardOrderModuleAdjustAstAnchor fingerprint ast.semantic_subtree_v1("sha256:78554a6fb0bd4909cb4253cb158f7b059a205f3f68c316191e2658ec5426a8d2")
+  summary "fn R12GuardOrderModule.adjust generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#adjust."
+}
+
+relation R12GuardOrderModuleBalanceGeneratedFromR12GuardOrderModuleBalanceAstAnchor {
+  kind generated_from
+  connects R12GuardOrderModule -> R12GuardOrderModuleBalanceAstAnchor
+  roles { R12GuardOrderModule as generated, R12GuardOrderModuleBalanceAstAnchor as syntax }
+  expects R12GuardOrderModuleBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+  summary "fn R12GuardOrderModule.balance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#balance."
+}
+
+relation R12GuardOrderModuleFeeForGeneratedFromR12GuardOrderModuleFeeForAstAnchor {
+  kind generated_from
+  connects R12GuardOrderModule -> R12GuardOrderModuleFeeForAstAnchor
+  roles { R12GuardOrderModule as generated, R12GuardOrderModuleFeeForAstAnchor as syntax }
+  expects R12GuardOrderModuleFeeForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5b1823f1f0201618d2a11b958ed5f15eb9433e53d0285fa0982b7eafd32c0dd2")
+  summary "fn R12GuardOrderModule.feeFor generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#feeFor."
+}
+
+relation R12GuardOrderModuleSetBalanceGeneratedFromR12GuardOrderModuleSetBalanceAstAnchor {
+  kind generated_from
+  connects R12GuardOrderModule -> R12GuardOrderModuleSetBalanceAstAnchor
+  roles { R12GuardOrderModule as generated, R12GuardOrderModuleSetBalanceAstAnchor as syntax }
+  expects R12GuardOrderModuleSetBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f1f9de177693b3dd73cad9c920b7b219458daaa494194b9357f78a57e964adfc")
+  summary "fn R12GuardOrderModule.setBalance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#setBalance."
+}
+
+relation R12GuardOrderModuleTotalGeneratedFromR12GuardOrderModuleTotalAstAnchor {
+  kind generated_from
+  connects R12GuardOrderModule -> R12GuardOrderModuleTotalAstAnchor
+  roles { R12GuardOrderModule as generated, R12GuardOrderModuleTotalAstAnchor as syntax }
+  expects R12GuardOrderModuleTotalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d9a6a3d298fbcc063cb0a8e5ce994c2de1789a71d0d2b076c40b54531ce92cba")
+  summary "fn R12GuardOrderModule.total generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#total."
+}
+
+relation R12GuardOrderModuleTransferGeneratedFromR12GuardOrderModuleTransferAstAnchor {
+  kind generated_from
+  connects R12GuardOrderModule -> R12GuardOrderModuleTransferAstAnchor
+  roles { R12GuardOrderModule as generated, R12GuardOrderModuleTransferAstAnchor as syntax }
+  expects R12GuardOrderModuleTransferAstAnchor fingerprint ast.semantic_subtree_v1("sha256:21ca2be610e907709fc539765aa37486486e5ea23409c2fae391aece2398dd0f")
+  summary "fn R12GuardOrderModule.transfer generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts#transfer."
+}
+
+implementation R12GuardOrderModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T4/r12_guard_order.ts"
+  }
+  conforms_to R12GuardOrderModule
+}

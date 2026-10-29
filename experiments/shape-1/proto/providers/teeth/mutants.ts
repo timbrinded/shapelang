@@ -14,7 +14,18 @@
 import { type Claim, type ESF, TRUST, parseAtom } from "../../src/model.ts";
 import type { ParsedRecord } from "../../src/records.ts";
 import { cmpStr, sortedUniq } from "../../src/util.ts";
-import { UNGOVERNED, type World, covers, impl, inA, liftEffect, liftHatch, nodeSet, posComp, protectingForbids } from "../../src/world.ts";
+import {
+  UNGOVERNED,
+  type World,
+  covers,
+  impl,
+  inA,
+  liftEffect,
+  liftHatch,
+  nodeSet,
+  posComp,
+  protectingForbids
+} from "../../src/world.ts";
 
 export interface TeethOptions {
   esf: ESF;
@@ -53,7 +64,12 @@ export interface TeethReport {
     W2: { kind: string; class: string; total: number; killed: number }[];
     P1: { resources: number; uncaught: string[]; caught: string[] };
   };
-  laws: { fp: string; id: string; mutants: { total: number; killed: number } | null; verdict: "vacuous" | "weak" | "teeth" | "unassessed" }[];
+  laws: {
+    fp: string;
+    id: string;
+    mutants: { total: number; killed: number } | null;
+    verdict: "vacuous" | "weak" | "teeth" | "unassessed";
+  }[];
   notAssessed: string[];
 }
 
@@ -75,7 +91,11 @@ function isSubset(a: Set<number>, b: Set<number>): boolean {
 }
 
 /** Declared and observed atoms per position (⇒-closure applied later), and component edges. */
-export function worldFacts(o: Pick<TeethOptions, "esf" | "world" | "observations">): { atoms: Map<string, Set<string>>; edges: Set<string>; reachOf: Map<string, Set<string>> } {
+export function worldFacts(o: Pick<TeethOptions, "esf" | "world" | "observations">): {
+  atoms: Map<string, Set<string>>;
+  edges: Set<string>;
+  reachOf: Map<string, Set<string>>;
+} {
   const W = o.world;
   const atoms = new Map<string, Set<string>>();
   const add = (pos: string, atom: string): void => {
@@ -97,7 +117,8 @@ export function worldFacts(o: Pick<TeethOptions, "esf" | "world" | "observations
           callPairs.push([u, via]);
         } else add(u, atom);
       }
-    } else if (c.op === "edge.exists") edges.add(`${String(c.args.from)}\u0000${String(c.args.kind)}\u0000${String(c.args.to)}`);
+    } else if (c.op === "edge.exists")
+      edges.add(`${String(c.args.from)}\u0000${String(c.args.kind)}\u0000${String(c.args.to)}`);
   }
   for (const r of o.observations ?? []) {
     for (const f of r.shape.facts ?? []) {
@@ -114,7 +135,8 @@ export function worldFacts(o: Pick<TeethOptions, "esf" | "world" | "observations
       }
     }
   }
-  for (const x of W.man.ids.values()) for (const [k, n] of Object.entries(x.markers)) if (n > 0) add(W.att(x.id), liftHatch(W, k));
+  for (const x of W.man.ids.values())
+    for (const [k, n] of Object.entries(x.markers)) if (n > 0) add(W.att(x.id), liftHatch(W, k));
   // position-level reach through calls (summaries' footprint), and component call edges
   const callsFrom = new Map<string, Set<string>>();
   for (const [a, b] of callPairs) {
@@ -131,10 +153,11 @@ export function worldFacts(o: Pick<TeethOptions, "esf" | "world" | "observations
     const stack = [u];
     while (stack.length > 0) {
       const x = stack.pop() as string;
-      for (const y of callsFrom.get(x) ?? []) if (!seen.has(y)) {
-        seen.add(y);
-        stack.push(y);
-      }
+      for (const y of callsFrom.get(x) ?? [])
+        if (!seen.has(y)) {
+          seen.add(y);
+          stack.push(y);
+        }
     }
     reachOf.set(u, seen);
   }
@@ -163,7 +186,13 @@ function inClosure(W: World, atoms: string[], atom: string): boolean {
 
 /** The claims a W1 mutant (fact `atom` at position `pos`) breaks: forbids protecting it,
  *  authority when ungranted, and complete summaries whose reach holds the position. */
-export function w1Killers(W: World, uppers: Claim[], reachOf: Map<string, Set<string>>, pos: string, atom: string): Claim[] {
+export function w1Killers(
+  W: World,
+  uppers: Claim[],
+  reachOf: Map<string, Set<string>>,
+  pos: string,
+  atom: string
+): Claim[] {
   const killers: Claim[] = [...protectingForbids(W, pos, atom)];
   if (!inA(W, pos, atom)) {
     const comp = posComp(pos);
@@ -173,12 +202,17 @@ export function w1Killers(W: World, uppers: Claim[], reachOf: Map<string, Set<st
   for (const u of uppers) {
     const unit = String(u.args.unit);
     if (!reachOf.get(unit)?.has(pos)) continue;
-    if (!atom.endsWith(`<${TRUST}>`) && !inClosure(W, u.args.atoms as string[], atom)) killers.push(u);
+    if (!atom.endsWith(`<${TRUST}>`) && !inClosure(W, u.args.atoms as string[], atom))
+      killers.push(u);
   }
   return killers;
 }
 
-function reachable(adj: Map<string, string[]>, from: string, allow: (n: string) => boolean): Set<string> {
+function reachable(
+  adj: Map<string, string[]>,
+  from: string,
+  allow: (n: string) => boolean
+): Set<string> {
   const seen = new Set<string>();
   const stack = [from];
   while (stack.length > 0) {
@@ -198,9 +232,15 @@ export function teeth(o: TeethOptions): TeethReport {
   const byFp = new Map(claims.map((c) => [c.fp, c]));
   const { atoms: present, edges, reachOf } = worldFacts(o);
   const kills: KillSets = new Map();
-  const killsByOp: Record<"W1" | "W2" | "P1", KillSets> = { W1: new Map(), W2: new Map(), P1: new Map() };
+  const killsByOp: Record<"W1" | "W2" | "P1", KillSets> = {
+    W1: new Map(),
+    W2: new Map(),
+    P1: new Map()
+  };
   const operators: TeethReport["operators"] = [];
-  const hatchVerbs = new Set(o.esf.effects.map((e) => e.verb).filter((v) => v !== "Hatch" && impl(W, v, "Hatch")));
+  const hatchVerbs = new Set(
+    o.esf.effects.map((e) => e.verb).filter((v) => v !== "Hatch" && impl(W, v, "Hatch"))
+  );
   const verbs = o.esf.effects.map((e) => e.verb).filter((v) => v !== "Hatch" && !hatchVerbs.has(v));
   const resources = o.esf.resources.filter((r) => !r.q.startsWith("std::")).map((r) => r.q);
   const uppers = claims.filter((c) => c.op === "effects.upper");
@@ -210,7 +250,10 @@ export function teeth(o: TeethOptions): TeethReport {
   const w1Gap: Record<string, number> = {};
   let w1 = 0;
   let w1k = 0;
-  const atomUniverse = [...resources.flatMap((r) => verbs.map((v) => `${v}<${r}>`)), ...[...hatchVerbs, "Hatch"].map((h) => `${h}<${TRUST}>`)];
+  const atomUniverse = [
+    ...resources.flatMap((r) => verbs.map((v) => `${v}<${r}>`)),
+    ...[...hatchVerbs, "Hatch"].map((h) => `${h}<${TRUST}>`)
+  ];
   for (const pos of W.positions) {
     for (const atom of atomUniverse) {
       if (entailed(W, present.get(pos), atom)) continue;
@@ -251,7 +294,8 @@ export function teeth(o: TeethOptions): TeethReport {
   }
   const adjFor = (ks: string[]): Map<string, string[]> => {
     const m = new Map<string, string[]>();
-    for (const k of ks) for (const [a, bs] of adjByKind.get(k) ?? []) m.set(a, [...(m.get(a) ?? []), ...bs]);
+    for (const k of ks)
+      for (const [a, bs] of adjByKind.get(k) ?? []) m.set(a, [...(m.get(a) ?? []), ...bs]);
     return m;
   };
   const reverse = (adj: Map<string, string[]>): Map<string, string[]> => {
@@ -278,15 +322,25 @@ export function teeth(o: TeethOptions): TeethReport {
     const perSource = new Map<string, Set<string>>();
     const F = new Set<string>();
     for (const s of S) {
-      const f = new Set<string>([s, ...[...reachable(adj, s, (n) => !V.has(n))].filter((n) => !V.has(n))]);
+      const f = new Set<string>([
+        s,
+        ...[...reachable(adj, s, (n) => !V.has(n))].filter((n) => !V.has(n))
+      ]);
       perSource.set(s, f);
       for (const n of f) F.add(n);
     }
     const G = new Set<string>(T);
-    for (const t of T) for (const n of reachable(radj, t, (x) => !V.has(x))) if (!V.has(n)) G.add(n);
+    for (const t of T)
+      for (const n of reachable(radj, t, (x) => !V.has(x))) if (!V.has(n)) G.add(n);
     paths.push({ claim: c, kinds: new Set(ks), F, G, perSource });
   }
-  const cycles = claims.filter((x) => x.op === "cycle.forbid").map((c) => ({ claim: c, kinds: c.args.kinds as string[], adj: adjFor(c.args.kinds as string[]) }));
+  const cycles = claims
+    .filter((x) => x.op === "cycle.forbid")
+    .map((c) => ({
+      claim: c,
+      kinds: c.args.kinds as string[],
+      adj: adjFor(c.args.kinds as string[])
+    }));
   const edgeForbids = claims.filter((x) => x.op === "edge.forbid");
   const w2Classes = new Map<string, { total: number; killed: number }>();
   const sourceKills = new Map<string, Set<number>>();
@@ -315,12 +369,13 @@ export function teeth(o: TeethOptions): TeethReport {
           if (!p.kinds.has(kd.name)) continue;
           if (p.F.has(a) && p.G.has(b)) {
             killers.push(p.claim);
-            for (const [s, f] of p.perSource) if (f.has(a)) {
-              const key = `${p.claim.fp}\u0000${s}`;
-              const set = sourceKills.get(key) ?? new Set<number>();
-              set.add(i);
-              sourceKills.set(key, set);
-            }
+            for (const [s, f] of p.perSource)
+              if (f.has(a)) {
+                const key = `${p.claim.fp}\u0000${s}`;
+                const set = sourceKills.get(key) ?? new Set<number>();
+                set.add(i);
+                sourceKills.set(key, set);
+              }
           }
         }
         for (const cy of cycles) {
@@ -328,7 +383,14 @@ export function teeth(o: TeethOptions): TeethReport {
           if (reachable(cy.adj, b, () => true).has(a)) killers.push(cy.claim);
         }
         const reachB = reachable(adjK, b, () => true);
-        const cls = kd.to === "resource" ? "provider" : reachB.has(a) ? "back-edge" : reachA.has(b) ? "shortcut" : "new-coupling";
+        const cls =
+          kd.to === "resource"
+            ? "provider"
+            : reachB.has(a)
+              ? "back-edge"
+              : reachA.has(b)
+                ? "shortcut"
+                : "new-coupling";
         const key = `${kd.name}\u0000${cls}`;
         const row = w2Classes.get(key) ?? { total: 0, killed: 0 };
         row.total += 1;
@@ -347,7 +409,8 @@ export function teeth(o: TeethOptions): TeethReport {
   operators.push({ op: "W2", mutants: w2, killed: w2k });
 
   // ---- P1 -------------------------------------------------------------------------------------
-  const p1Verbs = o.p1Verbs ?? o.esf.effects.map((e) => e.verb).filter((v) => impl(W, v, "HardDelete"));
+  const p1Verbs =
+    o.p1Verbs ?? o.esf.effects.map((e) => e.verb).filter((v) => impl(W, v, "HardDelete"));
   let p1 = 0;
   let p1k = 0;
   const caughtRes = new Set<string>();
@@ -381,7 +444,9 @@ export function teeth(o: TeethOptions): TeethReport {
   for (const comp of [...W.compByQ.values()].filter((c) => !c.q.startsWith("std::"))) {
     if (comp.grants === null) continue;
     const posList = W.positions.filter((p) => posComp(p) === comp.q);
-    const facts = posList.flatMap((p) => [...(present.get(p) ?? [])]).filter((a) => !a.endsWith(`<${TRUST}>`));
+    const facts = posList
+      .flatMap((p) => [...(present.get(p) ?? [])])
+      .filter((a) => !a.endsWith(`<${TRUST}>`));
     for (const g of comp.grants) {
       m2 += 1;
       const rest = comp.grants.filter((x) => x !== g);
@@ -393,7 +458,10 @@ export function teeth(o: TeethOptions): TeethReport {
 
   // ---- vacuous and redundant ------------------------------------------------------------------------
   const assessed = claims.filter((c) => c.polarity === "upper");
-  const notAssessed = claims.filter((c) => c.polarity === "lower").map((c) => c.ids[0] ?? c.fp).sort(cmpStr);
+  const notAssessed = claims
+    .filter((c) => c.polarity === "lower")
+    .map((c) => c.ids[0] ?? c.fp)
+    .sort(cmpStr);
   const out: ClaimTeeth[] = [];
   for (const c of assessed) {
     const ks = kills.get(c.fp) ?? new Set<number>();
@@ -413,7 +481,11 @@ export function teeth(o: TeethOptions): TeethReport {
       id: c.ids[0] ?? c.fp,
       op: c.op,
       tier: c.tier,
-      kills: { W1: killsByOp.W1.get(c.fp)?.size ?? 0, W2: killsByOp.W2.get(c.fp)?.size ?? 0, P1: killsByOp.P1.get(c.fp)?.size ?? 0 },
+      kills: {
+        W1: killsByOp.W1.get(c.fp)?.size ?? 0,
+        W2: killsByOp.W2.get(c.fp)?.size ?? 0,
+        P1: killsByOp.P1.get(c.fp)?.size ?? 0
+      },
       vacuous: ks.size === 0,
       redundantWith: redundantWith.sort(cmpStr)
     });
@@ -441,13 +513,21 @@ export function teeth(o: TeethOptions): TeethReport {
     let best: { total: number; killed: number } | null = null;
     for (const r of o.tests ?? []) {
       if (r.shape.claim?.fp !== c.fp || r.shape.result !== "supports") continue;
-      const m = (r.shape.bound as { mutants?: { total?: number; killed?: number } } | undefined)?.mutants;
+      const m = (r.shape.bound as { mutants?: { total?: number; killed?: number } } | undefined)
+        ?.mutants;
       if (m && Number.isSafeInteger(m.total) && Number.isSafeInteger(m.killed)) {
         const cand = { total: m.total as number, killed: m.killed as number };
         if (!best || cand.total > best.total) best = cand;
       }
     }
-    const verdict = !best || best.total === 0 ? "unassessed" : best.killed === 0 ? "vacuous" : 2 * best.killed < best.total ? "weak" : "teeth";
+    const verdict =
+      !best || best.total === 0
+        ? "unassessed"
+        : best.killed === 0
+          ? "vacuous"
+          : 2 * best.killed < best.total
+            ? "weak"
+            : "teeth";
     laws.push({ fp: c.fp, id: c.ids[0] ?? c.fp, mutants: best, verdict });
   }
   laws.sort((a, b) => cmpStr(a.id, b.id));
@@ -455,7 +535,8 @@ export function teeth(o: TeethOptions): TeethReport {
   void covers;
   return {
     v: "shape.teeth.v1",
-    basis: "closed form over W_decl plus usable observed facts and manifest hatch facts; additions only (W1, W2, P1) and grant removal (M2); lower bounds not assessed",
+    basis:
+      "closed form over W_decl plus usable observed facts and manifest hatch facts; additions only (W1, W2, P1) and grant removal (M2); lower bounds not assessed",
     operators,
     claims: out,
     vacuous: out.filter((c) => c.vacuous).map((c) => c.id),
@@ -470,7 +551,11 @@ export function teeth(o: TeethOptions): TeethReport {
           return { kind, class: cls, total: v.total, killed: v.killed };
         })
         .sort((a, b) => cmpStr(a.kind, b.kind) || cmpStr(a.class, b.class)),
-      P1: { resources: resources.length, uncaught: sortedUniq([...uncaughtRes]), caught: sortedUniq([...caughtRes].filter((r) => !uncaughtRes.has(r))) }
+      P1: {
+        resources: resources.length,
+        uncaught: sortedUniq([...uncaughtRes]),
+        caught: sortedUniq([...caughtRes].filter((r) => !uncaughtRes.has(r)))
+      }
     },
     laws,
     notAssessed

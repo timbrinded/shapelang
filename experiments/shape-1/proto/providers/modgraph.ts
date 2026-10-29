@@ -23,7 +23,11 @@ export function importSpecifiers(text: string): string[] {
 }
 
 /** Repo-relative paths reachable from `start` through relative imports that resolve in `paths`. */
-export function moduleClosure(start: string[], paths: Set<string>, read: (p: string) => string | null): string[] {
+export function moduleClosure(
+  start: string[],
+  paths: Set<string>,
+  read: (p: string) => string | null
+): string[] {
   const resolve = makeResolver(paths);
   const seen = new Set<string>();
   const stack = [...start];
@@ -68,7 +72,11 @@ export function diskClosure(root: string, start: string[]): string[] {
       if (!spec.startsWith(".")) continue;
       const base = normalize(join(dirname(p), spec)).replace(/\\/g, "/");
       if (base.startsWith("..")) continue;
-      const cands = [base, ...TS_EXTS.map((e) => base + e), ...TS_EXTS.map((e) => `${base}/index${e}`)];
+      const cands = [
+        base,
+        ...TS_EXTS.map((e) => base + e),
+        ...TS_EXTS.map((e) => `${base}/index${e}`)
+      ];
       const hit = cands.find(exists);
       if (hit && !seen.has(hit)) stack.push(hit);
     }

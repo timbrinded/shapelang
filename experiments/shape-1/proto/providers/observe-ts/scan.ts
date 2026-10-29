@@ -42,11 +42,30 @@ import type { ManifestIndex } from "../../src/manifest.ts";
 import type { Fact } from "../../src/records.ts";
 import { canonResourceCode, channelMatches, parseResourceCode } from "../../src/resource-code.ts";
 import { cmpStr } from "../../src/util.ts";
-import { type IdentitySpan, type TsCompilerOptions, type TsFull, type TsNode, type TsSourceFile, type TsSymbol, type TsType, enclosingIdentity, identitySpans } from "../ts-api.ts";
+import {
+  type IdentitySpan,
+  type TsCompilerOptions,
+  type TsFull,
+  type TsNode,
+  type TsSourceFile,
+  type TsSymbol,
+  type TsType,
+  enclosingIdentity,
+  identitySpans
+} from "../ts-api.ts";
 
 export interface ApiClass {
   verb: string;
-  family: "clock" | "random" | "env" | "fs-read" | "fs-write" | "stdio" | "process" | "network" | "subprocess";
+  family:
+    | "clock"
+    | "random"
+    | "env"
+    | "fs-read"
+    | "fs-write"
+    | "stdio"
+    | "process"
+    | "network"
+    | "subprocess";
 }
 
 const FS_WRITE: Record<string, string> = {
@@ -81,13 +100,51 @@ const FS_WRITE: Record<string, string> = {
   utimes: "Update"
 };
 
-const PURE_MODULES = new Set(["path", "path/posix", "path/win32", "url", "util", "events", "buffer", "string_decoder", "querystring", "zlib", "stream", "assert", "assert/strict", "bun:test", "node:test", "crypto"]);
+const PURE_MODULES = new Set([
+  "path",
+  "path/posix",
+  "path/win32",
+  "url",
+  "util",
+  "events",
+  "buffer",
+  "string_decoder",
+  "querystring",
+  "zlib",
+  "stream",
+  "assert",
+  "assert/strict",
+  "bun:test",
+  "node:test",
+  "crypto"
+]);
 /** Modules whose members classifyApi knows (their effects are exactly the classified APIs). */
-const CLASSIFIED_MODULES = new Set(["fs", "fs/promises", "child_process", "http", "https", "net", "dgram", "tls", "dns", "http2", "os", "readline", "worker_threads", "crypto", "bun", "bun:sqlite"]);
+const CLASSIFIED_MODULES = new Set([
+  "fs",
+  "fs/promises",
+  "child_process",
+  "http",
+  "https",
+  "net",
+  "dgram",
+  "tls",
+  "dns",
+  "http2",
+  "os",
+  "readline",
+  "worker_threads",
+  "crypto",
+  "bun",
+  "bun:sqlite"
+]);
 
 /** Classifies an API chain (module or global root plus member names) into a canonical API name
  *  and its verb; null for pure APIs. `call` says whether the chain is called or constructed. */
-export function classifyApi(root: { module?: string; global?: string }, names: string[], ctx: { call: boolean; isNew: boolean; argc: number; spread: boolean }): { api: string; cls: ApiClass } | null {
+export function classifyApi(
+  root: { module?: string; global?: string },
+  names: string[],
+  ctx: { call: boolean; isNew: boolean; argc: number; spread: boolean }
+): { api: string; cls: ApiClass } | null {
   const a = names[0];
   if (root.module !== undefined) {
     const spec = root.module.replace(/^node:/, "");
@@ -95,23 +152,36 @@ export function classifyApi(root: { module?: string; global?: string }, names: s
     if (spec === "fs" || spec === "fs/promises") {
       if (!a) return null;
       const w = FS_WRITE[a];
-      return { api: api(1), cls: w ? { verb: w, family: "fs-write" } : { verb: "Read", family: "fs-read" } };
+      return {
+        api: api(1),
+        cls: w ? { verb: w, family: "fs-write" } : { verb: "Read", family: "fs-read" }
+      };
     }
-    if (spec === "child_process") return a ? { api: api(1), cls: { verb: "Write", family: "subprocess" } } : null;
-    if (["http", "https", "net", "dgram", "tls", "dns", "http2"].includes(spec)) return a ? { api: api(1), cls: { verb: "Write", family: "network" } } : null;
+    if (spec === "child_process")
+      return a ? { api: api(1), cls: { verb: "Write", family: "subprocess" } } : null;
+    if (["http", "https", "net", "dgram", "tls", "dns", "http2"].includes(spec))
+      return a ? { api: api(1), cls: { verb: "Write", family: "network" } } : null;
     if (spec === "os") return a ? { api: api(1), cls: { verb: "Read", family: "env" } } : null;
-    if (spec === "readline") return a ? { api: api(1), cls: { verb: "Read", family: "stdio" } } : null;
-    if (spec === "worker_threads") return a ? { api: api(1), cls: { verb: "Write", family: "process" } } : null;
-    if (spec === "crypto") return a && ["randomBytes", "randomUUID", "getRandomValues", "randomInt"].includes(a) ? { api: api(1), cls: { verb: "Read", family: "random" } } : null;
+    if (spec === "readline")
+      return a ? { api: api(1), cls: { verb: "Read", family: "stdio" } } : null;
+    if (spec === "worker_threads")
+      return a ? { api: api(1), cls: { verb: "Write", family: "process" } } : null;
+    if (spec === "crypto")
+      return a && ["randomBytes", "randomUUID", "getRandomValues", "randomInt"].includes(a)
+        ? { api: api(1), cls: { verb: "Read", family: "random" } }
+        : null;
     if (spec === "bun") {
       if (!a) return null;
-      if (["$", "spawn", "spawnSync"].includes(a)) return { api: api(1), cls: { verb: "Write", family: "subprocess" } };
-      if (a === "file" || a === "Glob") return { api: api(1), cls: { verb: "Read", family: "fs-read" } };
+      if (["$", "spawn", "spawnSync"].includes(a))
+        return { api: api(1), cls: { verb: "Write", family: "subprocess" } };
+      if (a === "file" || a === "Glob")
+        return { api: api(1), cls: { verb: "Read", family: "fs-read" } };
       if (a === "write") return { api: api(1), cls: { verb: "Write", family: "fs-write" } };
       if (a === "env" || a === "argv") return { api: api(1), cls: { verb: "Read", family: "env" } };
       return null;
     }
-    if (spec === "bun:sqlite") return a ? { api: api(1), cls: { verb: "Write", family: "fs-write" } } : null;
+    if (spec === "bun:sqlite")
+      return a ? { api: api(1), cls: { verb: "Write", family: "fs-write" } } : null;
     return null;
   }
   const g = root.global ?? "";
@@ -119,24 +189,48 @@ export function classifyApi(root: { module?: string; global?: string }, names: s
   switch (g) {
     case "Date":
       if (a === "now") return { api: "Date.now", cls: { verb: "Read", family: "clock" } };
-      if (a === undefined && ((ctx.isNew && ctx.argc === 0 && !ctx.spread) || (ctx.call && !ctx.isNew))) return { api: "Date", cls: { verb: "Read", family: "clock" } };
+      if (
+        a === undefined &&
+        ((ctx.isNew && ctx.argc === 0 && !ctx.spread) || (ctx.call && !ctx.isNew))
+      )
+        return { api: "Date", cls: { verb: "Read", family: "clock" } };
       return null;
     case "performance":
-      return a === "now" ? { api: "performance.now", cls: { verb: "Read", family: "clock" } } : null;
+      return a === "now"
+        ? { api: "performance.now", cls: { verb: "Read", family: "clock" } }
+        : null;
     case "process":
-      if (a === "hrtime" || a === "uptime") return { api: api(1), cls: { verb: "Read", family: "clock" } };
-      if (a === "env" || a === "argv" || a === "cwd" || a === "platform" || a === "arch" || a === "execPath" || a === "pid" || a === "execArgv" || a === "version" || a === "versions")
+      if (a === "hrtime" || a === "uptime")
+        return { api: api(1), cls: { verb: "Read", family: "clock" } };
+      if (
+        a === "env" ||
+        a === "argv" ||
+        a === "cwd" ||
+        a === "platform" ||
+        a === "arch" ||
+        a === "execPath" ||
+        a === "pid" ||
+        a === "execArgv" ||
+        a === "version" ||
+        a === "versions"
+      )
         return { api: api(1), cls: { verb: "Read", family: "env" } };
-      if (a === "stdout" || a === "stderr") return { api: api(1), cls: { verb: "Write", family: "stdio" } };
+      if (a === "stdout" || a === "stderr")
+        return { api: api(1), cls: { verb: "Write", family: "stdio" } };
       if (a === "stdin") return { api: api(1), cls: { verb: "Read", family: "stdio" } };
-      if (a === "exit" || a === "exitCode" || a === "kill" || a === "chdir") return { api: api(1), cls: { verb: "Write", family: "process" } };
+      if (a === "exit" || a === "exitCode" || a === "kill" || a === "chdir")
+        return { api: api(1), cls: { verb: "Write", family: "process" } };
       return null;
     case "console":
       return a ? { api: api(1), cls: { verb: "Write", family: "stdio" } } : null;
     case "Math":
-      return a === "random" ? { api: "Math.random", cls: { verb: "Read", family: "random" } } : null;
+      return a === "random"
+        ? { api: "Math.random", cls: { verb: "Read", family: "random" } }
+        : null;
     case "crypto":
-      return a === "randomUUID" || a === "getRandomValues" ? { api: api(1), cls: { verb: "Read", family: "random" } } : null;
+      return a === "randomUUID" || a === "getRandomValues"
+        ? { api: api(1), cls: { verb: "Read", family: "random" } }
+        : null;
     case "fetch":
     case "XMLHttpRequest":
     case "WebSocket":
@@ -144,13 +238,18 @@ export function classifyApi(root: { module?: string; global?: string }, names: s
       return { api: g, cls: { verb: "Write", family: "network" } };
     case "Bun":
       if (!a) return null;
-      if (a === "file" || a === "Glob") return { api: api(1), cls: { verb: "Read", family: "fs-read" } };
+      if (a === "file" || a === "Glob")
+        return { api: api(1), cls: { verb: "Read", family: "fs-read" } };
       if (a === "write") return { api: api(1), cls: { verb: "Write", family: "fs-write" } };
-      if (["spawn", "spawnSync", "$"].includes(a)) return { api: api(1), cls: { verb: "Write", family: "subprocess" } };
-      if (["env", "argv", "main", "cwd"].includes(a)) return { api: api(1), cls: { verb: "Read", family: "env" } };
+      if (["spawn", "spawnSync", "$"].includes(a))
+        return { api: api(1), cls: { verb: "Write", family: "subprocess" } };
+      if (["env", "argv", "main", "cwd"].includes(a))
+        return { api: api(1), cls: { verb: "Read", family: "env" } };
       if (a === "nanoseconds") return { api: api(1), cls: { verb: "Read", family: "clock" } };
-      if (["serve", "connect", "listen", "udpSocket"].includes(a)) return { api: api(1), cls: { verb: "Write", family: "network" } };
-      if (a === "stdout" || a === "stderr") return { api: api(1), cls: { verb: "Write", family: "stdio" } };
+      if (["serve", "connect", "listen", "udpSocket"].includes(a))
+        return { api: api(1), cls: { verb: "Write", family: "network" } };
+      if (a === "stdout" || a === "stderr")
+        return { api: api(1), cls: { verb: "Write", family: "stdio" } };
       if (a === "stdin") return { api: api(1), cls: { verb: "Read", family: "stdio" } };
       return null;
     default:
@@ -159,10 +258,30 @@ export function classifyApi(root: { module?: string; global?: string }, names: s
 }
 
 /** Names of the global object itself: a member of any of them is the global of that name. */
-export const GLOBAL_OBJECTS: ReadonlySet<string> = new Set(["globalThis", "global", "self", "window", "frames", "parent", "top"]);
+export const GLOBAL_OBJECTS: ReadonlySet<string> = new Set([
+  "globalThis",
+  "global",
+  "self",
+  "window",
+  "frames",
+  "parent",
+  "top"
+]);
 /** Global roots whose members classifyApi knows: their aliasing (use as a bare value) can hide a
  *  classified API. */
-const API_ROOTS = new Set(["Date", "performance", "process", "console", "Math", "crypto", "Bun", "fetch", "XMLHttpRequest", "WebSocket", "EventSource"]);
+const API_ROOTS = new Set([
+  "Date",
+  "performance",
+  "process",
+  "console",
+  "Math",
+  "crypto",
+  "Bun",
+  "fetch",
+  "XMLHttpRequest",
+  "WebSocket",
+  "EventSource"
+]);
 /** Globals onChain classifies exactly (or flags as dynamic code): every other global value (`JSON`,
  *  an undeclared `myClock`, `globalThis.myDate`) is checked by its type like any other value. */
 const GOVERNED_GLOBALS = new Set([...API_ROOTS, ...GLOBAL_OBJECTS, "eval", "Function", "require"]);
@@ -179,13 +298,43 @@ const END = String.raw`(?=\s*(?:$|;|\)|,))`;
 /** Literal SQL statements, each requiring its grammatical continuation so prose ("update the
  *  docs", "select one from the menu") does not match. */
 const SQL_FORMS: { re: RegExp; verb: string }[] = [
-  { re: new RegExp(String.raw`^\s*delete\s+from\s+(?:only\s+)?(${IDENT})(?:\s+as\s+\w+)?(?:(?:\s+\w+)?\s+(?:where|using|returning)\b|${END})`, "i"), verb: "HardDelete" },
-  { re: new RegExp(String.raw`^\s*insert\s+into\s+(${IDENT})\s*(?:\(|values\b|select\b|default\b|overriding\b)`, "i"), verb: "Append" },
-  { re: new RegExp(String.raw`^\s*update\s+(?:only\s+)?(${IDENT})(?:\s+(?:as\s+)?\w+)?\s+set\b`, "i"), verb: "Update" },
+  {
+    re: new RegExp(
+      String.raw`^\s*delete\s+from\s+(?:only\s+)?(${IDENT})(?:\s+as\s+\w+)?(?:(?:\s+\w+)?\s+(?:where|using|returning)\b|${END})`,
+      "i"
+    ),
+    verb: "HardDelete"
+  },
+  {
+    re: new RegExp(
+      String.raw`^\s*insert\s+into\s+(${IDENT})\s*(?:\(|values\b|select\b|default\b|overriding\b)`,
+      "i"
+    ),
+    verb: "Append"
+  },
+  {
+    re: new RegExp(
+      String.raw`^\s*update\s+(?:only\s+)?(${IDENT})(?:\s+(?:as\s+)?\w+)?\s+set\b`,
+      "i"
+    ),
+    verb: "Update"
+  },
   { re: new RegExp(String.raw`^\s*merge\s+into\s+(${IDENT})`, "i"), verb: "Update" },
-  { re: new RegExp(String.raw`^\s*alter\s+table\s+(?:if\s+exists\s+)?(?:only\s+)?(${IDENT})`, "i"), verb: "Update" },
-  { re: new RegExp(String.raw`^\s*truncate\s+(?:table\s+)?(?:only\s+)?(${IDENT})(?:\s+(?:restart|continue|cascade|restrict)\b|${END})`, "i"), verb: "Truncate" },
-  { re: new RegExp(String.raw`^\s*drop\s+table\s+(?:if\s+exists\s+)?(${IDENT})`, "i"), verb: "DropStorage" },
+  {
+    re: new RegExp(String.raw`^\s*alter\s+table\s+(?:if\s+exists\s+)?(?:only\s+)?(${IDENT})`, "i"),
+    verb: "Update"
+  },
+  {
+    re: new RegExp(
+      String.raw`^\s*truncate\s+(?:table\s+)?(?:only\s+)?(${IDENT})(?:\s+(?:restart|continue|cascade|restrict)\b|${END})`,
+      "i"
+    ),
+    verb: "Truncate"
+  },
+  {
+    re: new RegExp(String.raw`^\s*drop\s+table\s+(?:if\s+exists\s+)?(${IDENT})`, "i"),
+    verb: "DropStorage"
+  },
   {
     re: new RegExp(
       String.raw`^\s*(?:with\b[\s\S]*?\)\s*)?select\s+[\s\S]*?\bfrom\s+(${IDENT})(?:\s+as\s+\w+)?(?:(?:\s+\w+)?\s+(?:where|join|inner|left|right|full|cross|natural|group|order|limit|offset|union|for|having)\b|${END})`,
@@ -269,7 +418,8 @@ const NO_CALL = { call: false, isNew: false, argc: 0, spread: false };
 /** a chain inside a classified API (`process.platform`, `Date.now`): its value is that API's result
  *  or function, reported where the chain is read, and cannot hide another API */
 function classifiedChain(r: Root, chain: string[]): boolean {
-  for (let n = chain.length; n >= 0; n -= 1) if (classifyApi(r, chain.slice(0, n), NO_CALL)) return true;
+  for (let n = chain.length; n >= 0; n -= 1)
+    if (classifyApi(r, chain.slice(0, n), NO_CALL)) return true;
   return false;
 }
 
@@ -281,11 +431,15 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
   const abs = o.files.map((f) => join(root, f));
   const program = ts.createProgram(abs, compilerOptions(ts, root, o.tsconfig));
   const checker = program.getTypeChecker();
-  const isLocal = (fileName: string): boolean => fileName.startsWith(`${root}/`) && !fileName.endsWith(".d.ts") && !fileName.includes("/node_modules/");
+  const isLocal = (fileName: string): boolean =>
+    fileName.startsWith(`${root}/`) &&
+    !fileName.endsWith(".d.ts") &&
+    !fileName.includes("/node_modules/");
   const isLocalDecl = (d: TsNode): boolean => isLocal(d.getSourceFile().fileName);
   const rel = (fileName: string): string => relative(root, fileName).replace(/\\/g, "/");
   const wantEffects = o.channels.length > 0;
-  const reportable = (resource: string): boolean => o.channels.some((p) => channelMatches(p, resource));
+  const reportable = (resource: string): boolean =>
+    o.channels.some((p) => channelMatches(p, resource));
   // watched ts.call heads ("Date" for ts.call("Date.now"), "fs/promises" for ts.call("fs/promises.rm"),
   // "*") and their first members ("" for the head itself, as in ts.call("Date"))
   const heads = new Set<string>();
@@ -299,7 +453,8 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
     watchedMembers.set(h, (watchedMembers.get(h) ?? new Set<string>()).add(m));
   }
   /** does any configured channel reach APIs under this global root? The global object reaches all. */
-  const rootWatched = (g: string): boolean => (GLOBAL_OBJECTS.has(g) ? heads.size > 0 : heads.has("*") || heads.has(g));
+  const rootWatched = (g: string): boolean =>
+    GLOBAL_OBJECTS.has(g) ? heads.size > 0 : heads.has("*") || heads.has(g);
   const isApiRoot = (g: string): boolean => API_ROOTS.has(g) || GLOBAL_OBJECTS.has(g);
   /** does a watched channel reach member `key` of global root g? */
   const memberWatched = (g: string, key: string): boolean => {
@@ -310,7 +465,8 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
     return watchedMembers.get(g)?.has(key) ?? false;
   };
   /** is calling or constructing global root g itself watched (ts.call("Date"), ts.call("fetch"))? */
-  const callWatched = (g: string): boolean => heads.has("*") || (watchedMembers.get(g)?.has("") ?? false);
+  const callWatched = (g: string): boolean =>
+    heads.has("*") || (watchedMembers.get(g)?.has("") ?? false);
   /** can a supply of this root hide a fact on the configured channels? */
   const watchedRoot = (r: Root): boolean => {
     if (r.global !== undefined) return isApiRoot(r.global) && rootWatched(r.global);
@@ -329,7 +485,18 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
   const identities = new Map<string, IdentityScan>();
   const effects = new Map<string, { fact: Fact; n: number }>();
   const calls = new Map<string, { fact: Fact; n: number }>();
-  const stats: ScanResult["stats"] = { files: 0, unparsed: 0, identities: 0, relocated: 0, effectSites: 0, callSites: 0, callbackRefs: 0, externalCalls: 0, unresolvedCalls: 0, ms: 0 };
+  const stats: ScanResult["stats"] = {
+    files: 0,
+    unparsed: 0,
+    identities: 0,
+    relocated: 0,
+    effectSites: 0,
+    callSites: 0,
+    callbackRefs: 0,
+    externalCalls: 0,
+    unresolvedCalls: 0,
+    ms: 0
+  };
   // declaration node → identity id, across files (callee resolution)
   const spansByFile = new Map<string, IdentitySpan[]>();
   const nodeIdentity = new Map<TsNode, string>();
@@ -365,7 +532,9 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
     }
     return s;
   };
-  const importOf = (s: TsSymbol | undefined): { spec: string; imported: string | null; namespace: boolean } | null => {
+  const importOf = (
+    s: TsSymbol | undefined
+  ): { spec: string; imported: string | null; namespace: boolean } | null => {
     for (const d of s?.declarations ?? []) {
       let imp: TsNode | null = null;
       let imported: string | null = null;
@@ -382,17 +551,24 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
       } else if (d.kind === K.ImportEqualsDeclaration) {
         const ref = d.moduleReference;
         const lit = ref && ref.kind === K.ExternalModuleReference ? ref.expression : undefined;
-        if (lit && lit.kind === K.StringLiteral) return { spec: lit.text ?? "", imported: null, namespace: true };
+        if (lit && lit.kind === K.StringLiteral)
+          return { spec: lit.text ?? "", imported: null, namespace: true };
       }
       const ms = imp?.moduleSpecifier;
-      if (imp && imp.kind === K.ImportDeclaration && ms && ms.kind === K.StringLiteral) return { spec: ms.text ?? "", imported, namespace };
+      if (imp && imp.kind === K.ImportDeclaration && ms && ms.kind === K.StringLiteral)
+        return { spec: ms.text ?? "", imported, namespace };
     }
     return null;
   };
   const calleeIdentity = (decl: TsNode): string | null => {
     let d: TsNode | undefined = decl;
     // `const f = () => …`: the identity node is the VariableDeclaration
-    if (d && (d.kind === K.ArrowFunction || d.kind === K.FunctionExpression) && d.parent?.kind === K.VariableDeclaration) d = d.parent;
+    if (
+      d &&
+      (d.kind === K.ArrowFunction || d.kind === K.FunctionExpression) &&
+      d.parent?.kind === K.VariableDeclaration
+    )
+      d = d.parent;
     if (!d) return null;
     const sf = d.getSourceFile();
     if (!isLocal(sf.fileName)) return null;
@@ -416,9 +592,20 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
       if (k === K.ExpressionWithTypeArguments) {
         const h = p.parent;
         if (h?.kind !== K.HeritageClause) return false;
-        return !(h.token === K.ExtendsKeyword && (h.parent?.kind === K.ClassDeclaration || h.parent?.kind === K.ClassExpression));
+        return !(
+          h.token === K.ExtendsKeyword &&
+          (h.parent?.kind === K.ClassDeclaration || h.parent?.kind === K.ClassExpression)
+        );
       }
-      if (k === K.TypeReference || k === K.TypeQuery || k === K.TypeAliasDeclaration || k === K.InterfaceDeclaration || k === K.ImportDeclaration || k === K.ExportDeclaration) return true;
+      if (
+        k === K.TypeReference ||
+        k === K.TypeQuery ||
+        k === K.TypeAliasDeclaration ||
+        k === K.InterfaceDeclaration ||
+        k === K.ImportDeclaration ||
+        k === K.ExportDeclaration
+      )
+        return true;
       if (k === K.Block || k === K.SourceFile) return false;
     }
     return false;
@@ -437,7 +624,11 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
     }
   }
   const isWrapper = (n: TsNode): boolean =>
-    n.kind === K.ParenthesizedExpression || n.kind === K.NonNullExpression || n.kind === K.AsExpression || n.kind === K.SatisfiesExpression || n.kind === K.TypeAssertionExpression;
+    n.kind === K.ParenthesizedExpression ||
+    n.kind === K.NonNullExpression ||
+    n.kind === K.AsExpression ||
+    n.kind === K.SatisfiesExpression ||
+    n.kind === K.TypeAssertionExpression;
   const unwrap = (n: TsNode): TsNode => {
     let x = n;
     while (isWrapper(x) && x.expression) x = x.expression;
@@ -445,10 +636,16 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
   };
   /** a static member key: `["now"]`, `` [`now`] ``, `[0]` */
   const literalKey = (n: TsNode | undefined): string | null =>
-    n && (n.kind === K.StringLiteral || n.kind === K.NoSubstitutionTemplateLiteral || n.kind === K.NumericLiteral) ? (n.text ?? null) : null;
+    n &&
+    (n.kind === K.StringLiteral ||
+      n.kind === K.NoSubstitutionTemplateLiteral ||
+      n.kind === K.NumericLiteral)
+      ? (n.text ?? null)
+      : null;
   /** a module specifier argument: the external specifier, "local" for repo code, null if dynamic */
   const moduleArg = (n: TsNode | undefined): string | null => {
-    if (!n || (n.kind !== K.StringLiteral && n.kind !== K.NoSubstitutionTemplateLiteral)) return null;
+    if (!n || (n.kind !== K.StringLiteral && n.kind !== K.NoSubstitutionTemplateLiteral))
+      return null;
     const spec = n.text ?? "";
     if (spec.startsWith(".") || spec.startsWith("/")) return "local";
     const m = checker.getSymbolAtLocation(n);
@@ -459,19 +656,30 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
     let spec: string | null = null;
     if (x.kind === K.AwaitExpression && x.expression) {
       const inner = unwrap(x.expression);
-      if (inner.kind === K.CallExpression && inner.expression?.kind === K.ImportKeyword) spec = moduleArg(inner.arguments?.[0]);
-    } else if (x.kind === K.CallExpression && x.expression && x.expression.kind === K.Identifier && x.expression.text === "require") {
+      if (inner.kind === K.CallExpression && inner.expression?.kind === K.ImportKeyword)
+        spec = moduleArg(inner.arguments?.[0]);
+    } else if (
+      x.kind === K.CallExpression &&
+      x.expression &&
+      x.expression.kind === K.Identifier &&
+      x.expression.text === "require"
+    ) {
       const s = checker.getSymbolAtLocation(x.expression);
       if (!(s && (s.declarations ?? []).some(isLocalDecl))) spec = moduleArg(x.arguments?.[0]);
     }
     return spec === "local" ? null : spec;
   };
-  const may = (b: Base): Base => (b.kind === "may" ? b : { kind: "may", root: b.root, chain: b.chain });
+  const may = (b: Base): Base =>
+    b.kind === "may" ? b : { kind: "may", root: b.root, chain: b.chain };
   /** `globalThis.Date` is Date, `globalThis.globalThis` is globalThis, `X.prototype.constructor` is X */
   const normalise = (r0: Root, c0: string[]): { root: Root; chain: string[] } => {
     let r = r0;
     let c = c0;
-    for (let i = c.indexOf("prototype"); i >= 0 && i + 1 < c.length; i = c.indexOf("prototype", i + 1)) {
+    for (
+      let i = c.indexOf("prototype");
+      i >= 0 && i + 1 < c.length;
+      i = c.indexOf("prototype", i + 1)
+    ) {
       if (c[i + 1] === "constructor") {
         c = [...c.slice(0, i), ...c.slice(i + 2)];
         i = -1;
@@ -492,12 +700,18 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
     for (let p: TsNode | undefined = d; p && p.kind !== K.SourceFile; p = p.parent) {
       const nm = p.kind === K.ModuleDeclaration ? p.name : undefined;
       if (!nm) continue;
-      if (nm.kind === K.StringLiteral) return { kind: "root", root: { module: nm.text ?? "" }, chain: p === d ? [] : member };
-      if (nm.kind === K.Identifier && nm.text === "global") return { kind: "root", root: { global: target.name }, chain: [] };
+      if (nm.kind === K.StringLiteral)
+        return { kind: "root", root: { module: nm.text ?? "" }, chain: p === d ? [] : member };
+      if (nm.kind === K.Identifier && nm.text === "global")
+        return { kind: "root", root: { global: target.name }, chain: [] };
     }
     const sf = d.getSourceFile();
     const moduleFile = sf.statements.some(
-      (s) => s.kind === K.ImportDeclaration || s.kind === K.ExportDeclaration || s.kind === K.ExportAssignment || (s.modifiers ?? []).some((m) => m.kind === K.ExportKeyword)
+      (s) =>
+        s.kind === K.ImportDeclaration ||
+        s.kind === K.ExportDeclaration ||
+        s.kind === K.ExportAssignment ||
+        (s.modifiers ?? []).some((m) => m.kind === K.ExportKeyword)
     );
     if (!moduleFile) return { kind: "root", root: { global: target.name }, chain: [] };
     const f = sf.fileName.replace(/\\/g, "/");
@@ -520,7 +734,8 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
   /** what the value destructured by a binding pattern holds, and its variable declaration */
   const patternValue = (pattern: TsNode): { base: Base | null; decl: TsNode | null } => {
     const owner = pattern.parent;
-    if (owner?.kind === K.VariableDeclaration) return { base: owner.initializer ? valueBase(owner.initializer) : null, decl: owner };
+    if (owner?.kind === K.VariableDeclaration)
+      return { base: owner.initializer ? valueBase(owner.initializer) : null, decl: owner };
     if (owner?.kind === K.BindingElement) {
       const up = patternValue(owner.parent);
       return { base: up.base ? memberOf(up.base, owner) : null, decl: up.decl };
@@ -532,7 +747,8 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
     return { base: null, decl: null };
   };
   const memberOf = (b: Base, el: TsNode): Base => {
-    if (b.kind === "may" || el.dotDotDotToken || el.parent.kind !== K.ObjectBindingPattern) return may(b);
+    if (b.kind === "may" || el.dotDotDotToken || el.parent.kind !== K.ObjectBindingPattern)
+      return may(b);
     const pn = el.propertyName ?? el.name;
     const key = pn && pn.kind === K.Identifier ? (pn.text ?? null) : literalKey(pn);
     return key === null ? may(b) : { kind: "root", root: b.root, chain: [...b.chain, key] };
@@ -568,9 +784,25 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
     const target = resolveSym(sym);
     const decls = target?.declarations ?? [];
     const localTarget = decls.some(isLocalDecl);
-    if (imp && !localTarget && !imp.spec.startsWith(".")) return { kind: "root", root: { module: imp.spec }, chain: imp.namespace || imp.imported === "default" ? [] : [imp.imported ?? ""] };
-    if (!localTarget && target && decls.length > 0 && (imp || (sym?.declarations ?? []).some(isLocalDecl))) return externalBase(target);
-    if (!imp && !localTarget && (sym === undefined || (sym.declarations ?? []).every((d) => !isLocalDecl(d)))) return { kind: "root", root: { global: id.text ?? "" }, chain: [] };
+    if (imp && !localTarget && !imp.spec.startsWith("."))
+      return {
+        kind: "root",
+        root: { module: imp.spec },
+        chain: imp.namespace || imp.imported === "default" ? [] : [imp.imported ?? ""]
+      };
+    if (
+      !localTarget &&
+      target &&
+      decls.length > 0 &&
+      (imp || (sym?.declarations ?? []).some(isLocalDecl))
+    )
+      return externalBase(target);
+    if (
+      !imp &&
+      !localTarget &&
+      (sym === undefined || (sym.declarations ?? []).every((d) => !isLocalDecl(d)))
+    )
+      return { kind: "root", root: { global: id.text ?? "" }, chain: [] };
     if (!localTarget) return null;
     const holders = decls.map(aliasOf).filter((b): b is Base => b !== null);
     if (holders.length === 0) return null;
@@ -607,39 +839,65 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
   };
   /** a root onChain classifies (or flags as dynamic code): a module, an API root, the global object,
    *  eval, Function, require */
-  const governed = (b: Base | null): boolean => b !== null && (b.root.module !== undefined || GOVERNED_GLOBALS.has(b.root.global));
+  const governed = (b: Base | null): boolean =>
+    b !== null && (b.root.module !== undefined || GOVERNED_GLOBALS.has(b.root.global));
   /** an expression another handler owns: an exact chain to a governed root (onChain) or a binding
    *  that may hold one (onIdentifier). Everything else, `JSON`, an undeclared global or
    *  `(globalThis as any).myClock`, is checked by its type like any other value. */
   const handledChain = (e: TsNode): boolean => governed(chainBase(e));
-  const isOp = (op: number | undefined, ...names: string[]): boolean => op !== undefined && names.some((n) => K[n] === op);
+  const isOp = (op: number | undefined, ...names: string[]): boolean =>
+    op !== undefined && names.some((n) => K[n] === op);
   /** the call, construction or tagged template that invokes `top`, if any */
   const calleeOf = (top: TsNode): TsNode | null => {
     const p = top.parent;
     if (!p) return null;
-    if ((p.kind === K.CallExpression || p.kind === K.NewExpression) && p.expression === top) return p;
+    if ((p.kind === K.CallExpression || p.kind === K.NewExpression) && p.expression === top)
+      return p;
     return p.kind === K.TaggedTemplateExpression && p.tag === top ? p : null;
   };
   /** what `F.call(this, …args)` or `F.apply(this, list)` passes F */
   const invokedCtx = (kind: string, args: TsNode[]): typeof NO_CALL => {
-    const isSpread = (x: TsNode | undefined): boolean => x !== undefined && x.kind === K.SpreadElement;
+    const isSpread = (x: TsNode | undefined): boolean =>
+      x !== undefined && x.kind === K.SpreadElement;
     if (isSpread(args[0])) return { call: true, isNew: false, argc: 0, spread: true };
-    if (kind === "call") return { call: true, isNew: false, argc: Math.max(0, args.length - 1), spread: args.slice(1).some(isSpread) };
+    if (kind === "call")
+      return {
+        call: true,
+        isNew: false,
+        argc: Math.max(0, args.length - 1),
+        spread: args.slice(1).some(isSpread)
+      };
     if (args[1] === undefined) return { call: true, isNew: false, argc: 0, spread: false };
     const list = unwrap(args[1]);
-    if (list.kind === K.ArrayLiteralExpression && !(list.elements ?? []).some(isSpread)) return { call: true, isNew: false, argc: (list.elements ?? []).length, spread: false };
+    if (list.kind === K.ArrayLiteralExpression && !(list.elements ?? []).some(isSpread))
+      return { call: true, isNew: false, argc: (list.elements ?? []).length, spread: false };
     return { call: true, isNew: false, argc: 0, spread: true };
   };
   /** what an initializer or assigned value holds */
   const valueBase = (e: TsNode): Base | null => {
     const x = unwrap(e);
     if (x.kind === K.ConditionalExpression) {
-      const v = (x.whenTrue ? valueBase(x.whenTrue) : null) ?? (x.whenFalse ? valueBase(x.whenFalse) : null);
+      const v =
+        (x.whenTrue ? valueBase(x.whenTrue) : null) ??
+        (x.whenFalse ? valueBase(x.whenFalse) : null);
       return v ? may(v) : null;
     }
     if (x.kind === K.BinaryExpression) {
       const op = x.operatorToken?.kind;
-      if (!isOp(op, "BarBarToken", "QuestionQuestionToken", "AmpersandAmpersandToken", "CommaToken", "EqualsToken", "BarBarEqualsToken", "QuestionQuestionEqualsToken", "AmpersandAmpersandEqualsToken")) return null;
+      if (
+        !isOp(
+          op,
+          "BarBarToken",
+          "QuestionQuestionToken",
+          "AmpersandAmpersandToken",
+          "CommaToken",
+          "EqualsToken",
+          "BarBarEqualsToken",
+          "QuestionQuestionEqualsToken",
+          "AmpersandAmpersandEqualsToken"
+        )
+      )
+        return null;
       const r = x.right ? valueBase(x.right) : null;
       const l = !isOp(op, "CommaToken", "EqualsToken") && x.left ? valueBase(x.left) : null;
       const v = r ?? l;
@@ -649,7 +907,8 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
     if (x.kind === K.CallExpression && x.expression) {
       const cb = chainBase(x.expression);
       const last = cb?.chain[cb.chain.length - 1];
-      if (cb && last !== undefined && (last === "bind" || last === "valueOf")) return may({ kind: cb.kind, root: cb.root, chain: cb.chain.slice(0, -1) });
+      if (cb && last !== undefined && (last === "bind" || last === "valueOf"))
+        return may({ kind: cb.kind, root: cb.root, chain: cb.chain.slice(0, -1) });
     }
     const c = chainBase(x);
     if (c) return c;
@@ -674,22 +933,57 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
     if (t.kind === K.Identifier) add(checker.getSymbolAtLocation(t), value);
     else if (t.kind === K.ObjectLiteralExpression) {
       for (const p of t.properties ?? []) {
-        if (p.kind === K.ShorthandPropertyAssignment) add(checker.getShorthandAssignmentValueSymbol(p), value);
+        if (p.kind === K.ShorthandPropertyAssignment)
+          add(checker.getShorthandAssignmentValueSymbol(p), value);
         else if (p.kind === K.PropertyAssignment && p.initializer) noteTarget(p.initializer, value);
         else if (p.kind === K.SpreadAssignment && p.expression) noteTarget(p.expression, value);
       }
     } else if (t.kind === K.ArrayLiteralExpression) {
-      for (const el of t.elements ?? []) noteTarget(el.kind === K.SpreadElement && el.expression ? el.expression : el, value);
-    } else if (t.kind === K.BinaryExpression && isOp(t.operatorToken?.kind, "EqualsToken") && t.left) noteTarget(t.left, value); // default in a pattern
+      for (const el of t.elements ?? [])
+        noteTarget(el.kind === K.SpreadElement && el.expression ? el.expression : el, value);
+    } else if (
+      t.kind === K.BinaryExpression &&
+      isOp(t.operatorToken?.kind, "EqualsToken") &&
+      t.left
+    )
+      noteTarget(t.left, value); // default in a pattern
   };
   const ASSIGN_OPS = new Set(
-    ["EqualsToken", "PlusEqualsToken", "MinusEqualsToken", "AsteriskEqualsToken", "AsteriskAsteriskEqualsToken", "SlashEqualsToken", "PercentEqualsToken", "LessThanLessThanEqualsToken", "GreaterThanGreaterThanEqualsToken", "GreaterThanGreaterThanGreaterThanEqualsToken", "AmpersandEqualsToken", "BarEqualsToken", "CaretEqualsToken", "BarBarEqualsToken", "AmpersandAmpersandEqualsToken", "QuestionQuestionEqualsToken"].map((n) => K[n])
+    [
+      "EqualsToken",
+      "PlusEqualsToken",
+      "MinusEqualsToken",
+      "AsteriskEqualsToken",
+      "AsteriskAsteriskEqualsToken",
+      "SlashEqualsToken",
+      "PercentEqualsToken",
+      "LessThanLessThanEqualsToken",
+      "GreaterThanGreaterThanEqualsToken",
+      "GreaterThanGreaterThanGreaterThanEqualsToken",
+      "AmpersandEqualsToken",
+      "BarEqualsToken",
+      "CaretEqualsToken",
+      "BarBarEqualsToken",
+      "AmpersandAmpersandEqualsToken",
+      "QuestionQuestionEqualsToken"
+    ].map((n) => K[n])
   );
   const prepass = (n: TsNode): void => {
     const k = n.kind;
-    if (k === K.BinaryExpression && n.left && ASSIGN_OPS.has(n.operatorToken?.kind)) noteTarget(n.left, n.right ?? null);
-    else if ((k === K.PrefixUnaryExpression || k === K.PostfixUnaryExpression) && n.operand && (n.operator === K.PlusPlusToken || n.operator === K.MinusMinusToken)) noteTarget(n.operand, null);
-    else if ((k === K.ForOfStatement || k === K.ForInStatement) && n.initializer && n.initializer.kind !== K.VariableDeclarationList) noteTarget(n.initializer, null);
+    if (k === K.BinaryExpression && n.left && ASSIGN_OPS.has(n.operatorToken?.kind))
+      noteTarget(n.left, n.right ?? null);
+    else if (
+      (k === K.PrefixUnaryExpression || k === K.PostfixUnaryExpression) &&
+      n.operand &&
+      (n.operator === K.PlusPlusToken || n.operator === K.MinusMinusToken)
+    )
+      noteTarget(n.operand, null);
+    else if (
+      (k === K.ForOfStatement || k === K.ForInStatement) &&
+      n.initializer &&
+      n.initializer.kind !== K.VariableDeclarationList
+    )
+      noteTarget(n.initializer, null);
     ts.forEachChild(n, prepass);
   };
   for (const sf of program.getSourceFiles()) if (isLocal(sf.fileName)) prepass(sf);
@@ -699,10 +993,26 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
     const p = top.parent;
     if (!p) return false;
     const k = p.kind;
-    if (k === K.ExpressionStatement || k === K.TypeOfExpression || k === K.VoidExpression || k === K.DeleteExpression) return false;
+    if (
+      k === K.ExpressionStatement ||
+      k === K.TypeOfExpression ||
+      k === K.VoidExpression ||
+      k === K.DeleteExpression
+    )
+      return false;
     if (k === K.BinaryExpression) {
       const op = p.operatorToken?.kind;
-      if (isOp(op, "InstanceOfKeyword", "EqualsEqualsEqualsToken", "ExclamationEqualsEqualsToken", "EqualsEqualsToken", "ExclamationEqualsToken")) return false;
+      if (
+        isOp(
+          op,
+          "InstanceOfKeyword",
+          "EqualsEqualsEqualsToken",
+          "ExclamationEqualsEqualsToken",
+          "EqualsEqualsToken",
+          "ExclamationEqualsToken"
+        )
+      )
+        return false;
       if (isOp(op, "InKeyword") && p.right === top) return false;
       if (isOp(op, "EqualsToken") && p.left === top) return false; // assigned to, not read
       return true;
@@ -783,7 +1093,9 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
     const isCallable = (n: TsNode): boolean => {
       const t = checker.getTypeAtLocation(n);
       if (t.flags & (ts.TypeFlags.Any as number)) return true;
-      return checker.getSignaturesOfType(t, 0).length > 0 || checker.getSignaturesOfType(t, 1).length > 0;
+      return (
+        checker.getSignaturesOfType(t, 0).length > 0 || checker.getSignaturesOfType(t, 1).length > 0
+      );
     };
 
     /** one occurrence of a root: `head` and the static member chain above it (A.5.2 classification) */
@@ -795,7 +1107,8 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
       for (;;) {
         const p = top.parent;
         if (!p) break;
-        if (p.kind === K.PropertyAccessExpression && p.expression === top) names.push(p.name?.text ?? "");
+        if (p.kind === K.PropertyAccessExpression && p.expression === top)
+          names.push(p.name?.text ?? "");
         else if (p.kind === K.ElementAccessExpression && p.expression === top) {
           const key = literalKey(p.argumentExpression);
           if (key === null) {
@@ -848,23 +1161,31 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
       }
       if (element) {
         // a dynamic member of a root can be any of its APIs
-        if (g === undefined ? wantEffects : isApiRoot(g) && rootWatched(g)) incomplete(head, "effects", `dynamic:${g ?? r.module}[]`);
+        if (g === undefined ? wantEffects : isApiRoot(g) && rootWatched(g))
+          incomplete(head, "effects", `dynamic:${g ?? r.module}[]`);
         return;
       }
       if (g !== undefined) {
-        if (g === "Date" && chain.length === 0 && cctx.isNew && cctx.spread) incomplete(head, "effects", "dynamic:new Date(...)");
+        if (g === "Date" && chain.length === 0 && cctx.isNew && cctx.spread)
+          incomplete(head, "effects", "dynamic:new Date(...)");
         // Function.prototype on the root itself: `Date.call(null)` and `Date.apply(x, [])` call Date
         // (a member invocation keeps the receiver); `Date.bind(…)`, `Date.valueOf()`, `Date.call` as
         // a value or `Date.call.call(…)` hand Date on under another name (a supply)
         if (chain.length > 0 && REFLECTIVE.has(chain[0] as string) && watchedRoot(r)) {
-          if (chain.length === 1 && INVOKERS.has(chain[0] as string) && lastClimbed && callNode?.kind === K.CallExpression) {
+          if (
+            chain.length === 1 &&
+            INVOKERS.has(chain[0] as string) &&
+            lastClimbed &&
+            callNode?.kind === K.CallExpression
+          ) {
             const inv = classifyApi(r, [], invokedCtx(chain[0] as string, args));
             if (inv) addEffect(head, inv.cls.verb, `ts.call(${JSON.stringify(inv.api)})`);
           } else incomplete(head, "effects", supplyReason(r));
           return;
         }
         // a bare API root handed on (aliasing, injection) can hide any of its members
-        if (chain.length === 0 && !callNode && watchedRoot(r) && isEscape(top)) incomplete(head, "effects", supplyReason(r));
+        if (chain.length === 0 && !callNode && watchedRoot(r) && isEscape(top))
+          incomplete(head, "effects", supplyReason(r));
         return;
       }
       // a module: opaque external callees make the entry incomplete when called or handed on
@@ -880,7 +1201,8 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
       if (!isEscape(top)) return;
       if (chain.length === 0) {
         if (watchedRoot(r)) incomplete(head, "effects", supplyReason(r));
-      } else if (!CLASSIFIED_MODULES.has(spec) && !PURE_MODULES.has(spec) && isCallable(top)) incomplete(head, "effects", `external:${spec}`);
+      } else if (!CLASSIFIED_MODULES.has(spec) && !PURE_MODULES.has(spec) && isCallable(top))
+        incomplete(head, "effects", `external:${spec}`);
     };
 
     const onIdentifier = (id: TsNode): void => {
@@ -889,7 +1211,9 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
       // `{ Date }` reads Date
       const shorthand = p0?.kind === K.ShorthandPropertyAssignment && p0.name === id;
       if (!shorthand && (isDeclName(id) || isTypePosition(id))) return;
-      const sym = shorthand ? checker.getShorthandAssignmentValueSymbol(p0) : checker.getSymbolAtLocation(id);
+      const sym = shorthand
+        ? checker.getShorthandAssignmentValueSymbol(p0)
+        : checker.getSymbolAtLocation(id);
       const base = identBase(id, sym);
       if (base?.kind === "root") {
         onChain(id, base.root, base.chain);
@@ -897,8 +1221,15 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
       }
       // reading a binding that may hold a root is reading the root (unless it holds a classified
       // API's value, reported where it was read; an external member matters only if callable)
-      if (base?.kind === "may" && watchedRoot(base.root) && !classifiedChain(base.root, base.chain)) {
-        const opaqueValue = base.root.module !== undefined && !CLASSIFIED_MODULES.has(base.root.module.replace(/^node:/, "")) && base.chain.length > 0;
+      if (
+        base?.kind === "may" &&
+        watchedRoot(base.root) &&
+        !classifiedChain(base.root, base.chain)
+      ) {
+        const opaqueValue =
+          base.root.module !== undefined &&
+          !CLASSIFIED_MODULES.has(base.root.module.replace(/^node:/, "")) &&
+          base.chain.length > 0;
         if (!opaqueValue || isCallable(id)) incomplete(id, "effects", supplyReason(base.root));
       }
       // repo-local values: calls and callbacks
@@ -907,8 +1238,14 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
       let member = false;
       for (;;) {
         const p = top.parent;
-        if (p && (p.kind === K.PropertyAccessExpression || p.kind === K.ElementAccessExpression) && p.expression === top) member = true;
-        else if (!p || (p.kind !== K.NonNullExpression && p.kind !== K.ParenthesizedExpression)) break;
+        if (
+          p &&
+          (p.kind === K.PropertyAccessExpression || p.kind === K.ElementAccessExpression) &&
+          p.expression === top
+        )
+          member = true;
+        else if (!p || (p.kind !== K.NonNullExpression && p.kind !== K.ParenthesizedExpression))
+          break;
         if (member) break;
         top = p;
       }
@@ -917,7 +1254,11 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
       const callNode = calleeOf(top);
       const isCall = callNode !== null && callNode.kind !== K.NewExpression;
       for (const d of resolveSym(sym)?.declarations ?? []) {
-        if (d.kind === K.Parameter || d.kind === K.BindingElement || (d.kind === K.VariableDeclaration && !isModuleScopeVar(d))) {
+        if (
+          d.kind === K.Parameter ||
+          d.kind === K.BindingElement ||
+          (d.kind === K.VariableDeclaration && !isModuleScopeVar(d))
+        ) {
           if (isCall) {
             incomplete(id, "calls", "unresolved:callback-or-local");
             stats.unresolvedCalls += 1;
@@ -927,15 +1268,27 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
         const to = calleeIdentity(d);
         if (!to) continue;
         if (callNode) addCall(id, to, false);
-        else if (parent && (parent.kind === K.CallExpression || parent.kind === K.NewExpression) && (parent.arguments ?? []).includes(top)) addCall(id, to, true);
+        else if (
+          parent &&
+          (parent.kind === K.CallExpression || parent.kind === K.NewExpression) &&
+          (parent.arguments ?? []).includes(top)
+        )
+          addCall(id, to, true);
       }
     };
-    const isModuleScopeVar = (d: TsNode): boolean => d.kind === K.VariableDeclaration && d.parent?.kind === K.VariableDeclarationList && d.parent.parent?.kind === K.VariableStatement && d.parent.parent.parent?.kind === K.SourceFile;
+    const isModuleScopeVar = (d: TsNode): boolean =>
+      d.kind === K.VariableDeclaration &&
+      d.parent?.kind === K.VariableDeclarationList &&
+      d.parent.parent?.kind === K.VariableStatement &&
+      d.parent.parent.parent?.kind === K.SourceFile;
 
     const onPropertyAccess = (pa: TsNode): void => {
       if (!pa.name || (!o.calls && !wantEffects)) return;
       const callee = calleeOf(pa) !== null;
-      const asArg = pa.parent && (pa.parent.kind === K.CallExpression || pa.parent.kind === K.NewExpression) && (pa.parent.arguments ?? []).includes(pa);
+      const asArg =
+        pa.parent &&
+        (pa.parent.kind === K.CallExpression || pa.parent.kind === K.NewExpression) &&
+        (pa.parent.arguments ?? []).includes(pa);
       const sym = resolveSym(checker.getSymbolAtLocation(pa.name));
       const decls = sym?.declarations ?? [];
       let local = false;
@@ -963,7 +1316,17 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
           }
           if (wantEffects) incomplete(pa, "effects", "unresolved:untyped-receiver");
         }
-      } else if (o.calls && decls.some((d) => isLocal(d.getSourceFile().fileName) && (d.kind === K.MethodSignature || d.kind === K.PropertySignature || d.kind === K.PropertyDeclaration || d.kind === K.PropertyAssignment))) {
+      } else if (
+        o.calls &&
+        decls.some(
+          (d) =>
+            isLocal(d.getSourceFile().fileName) &&
+            (d.kind === K.MethodSignature ||
+              d.kind === K.PropertySignature ||
+              d.kind === K.PropertyDeclaration ||
+              d.kind === K.PropertyAssignment)
+        )
+      ) {
         incomplete(pa, "calls", "unresolved:interface-or-field");
         stats.unresolvedCalls += 1;
       }
@@ -981,11 +1344,24 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
         return;
       }
       const parts = t.types ?? [t];
-      if (parts.some((x) => x.symbol?.name === "Date" && (x.symbol.declarations ?? []).length > 0 && (x.symbol.declarations ?? []).every((d) => !isLocalDecl(d)))) {
+      if (
+        parts.some(
+          (x) =>
+            x.symbol?.name === "Date" &&
+            (x.symbol.declarations ?? []).length > 0 &&
+            (x.symbol.declarations ?? []).every((d) => !isLocalDecl(d))
+        )
+      ) {
         onChain(m, { global: "Date" }, []);
         return;
       }
-      if (parts.some((x) => checker.getSignaturesOfType(x, 0).length > 0 || checker.getSignaturesOfType(x, 1).length > 0)) {
+      if (
+        parts.some(
+          (x) =>
+            checker.getSignaturesOfType(x, 0).length > 0 ||
+            checker.getSignaturesOfType(x, 1).length > 0
+        )
+      ) {
         incomplete(m, "effects", "dynamic:constructor");
         incomplete(m, "calls", "dynamic:constructor");
       }
@@ -993,14 +1369,18 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
 
     const typeOf = (n: TsNode): TsType => {
       const t = checker.getTypeAtLocation(n);
-      return t.flags & (ts.TypeFlags.TypeParameter as number) ? (checker.getBaseConstraintOfType(t) ?? t) : t;
+      return t.flags & (ts.TypeFlags.TypeParameter as number)
+        ? (checker.getBaseConstraintOfType(t) ?? t)
+        : t;
     };
     const isAny = (t: TsType): boolean => (t.flags & (ts.TypeFlags.Any as number)) !== 0;
     /** is t (or a member of the union t) the root type r or a subtype of it? Nominal on purpose: a
      *  structural type the root merely fits (`{ now(): number }`) is a shadow, a mock or an injected
      *  clock; the root's supply is flagged where it escapes (A.5.2.1). */
     const holdsRoot = (t: TsType, r: TsType): boolean =>
-      (t.flags & (ts.TypeFlags.Union as number) ? (t.types ?? []) : [t]).some((c) => (c.flags & (ts.TypeFlags.Never as number)) === 0 && checker.isTypeAssignableTo(c, r));
+      (t.flags & (ts.TypeFlags.Union as number) ? (t.types ?? []) : [t]).some(
+        (c) => (c.flags & (ts.TypeFlags.Never as number)) === 0 && checker.isTypeAssignableTo(c, r)
+      );
     /** A static read of a watched member (`x.now`, `x["hrtime"]`, `x.Date` when Date is watched as a
      *  call) on a receiver that is no root chain but is typed as the root (`d: DateConstructor`,
      *  `getG(): typeof globalThis`, a field `clock = Date`) or reads the root's own member (`class F
@@ -1015,7 +1395,9 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
      *  by member reads (`d.now`), binding patterns (`{ now }: DateConstructor`) and assignment
      *  patterns (`({ now } = d)`). */
     const typedRead = (at: TsNode, t: TsType, key: string, accessed: readonly TsNode[]): void => {
-      const cands = [...rootTypes.keys()].filter((g) => memberWatched(g, key) || (TYPED_INVOKERS.has(key) && callWatched(g)));
+      const cands = [...rootTypes.keys()].filter(
+        (g) => memberWatched(g, key) || (TYPED_INVOKERS.has(key) && callWatched(g))
+      );
       if (cands.length === 0) return;
       if (isAny(t)) {
         incomplete(at, "effects", "unresolved:untyped-receiver");
@@ -1024,7 +1406,9 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
       for (const g of cands) {
         const r = rootTypes.get(g) as TsType;
         // every function inherits call/apply/bind: only a value holding the root reads its invokers
-        const own = memberWatched(g, key) && (checker.getPropertyOfType(r, key)?.declarations ?? []).some((d) => accessed.includes(d));
+        const own =
+          memberWatched(g, key) &&
+          (checker.getPropertyOfType(r, key)?.declarations ?? []).some((d) => accessed.includes(d));
         if (own || holdsRoot(t, r)) {
           incomplete(at, "effects", `alias-type:${g}`);
           return;
@@ -1035,20 +1419,37 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
       if (rootTypes.size === 0) return;
       const recv = m.expression as TsNode;
       const up = m.parent;
-      if (up?.kind === K.BinaryExpression && up.left === m && isOp(up.operatorToken?.kind, "EqualsToken")) return; // written, not read
+      if (
+        up?.kind === K.BinaryExpression &&
+        up.left === m &&
+        isOp(up.operatorToken?.kind, "EqualsToken")
+      )
+        return; // written, not read
       // an element of an untyped value, called, can be any API (as a called member: onPropertyAccess),
       // unless the element is itself an exact chain to a governed root (`(globalThis as any)["Date"]()`
       // is Date, classified by onChain); `(globalThis as any)["myDate"]()` is untyped
-      if (m.kind === K.ElementAccessExpression && up && (up.kind === K.CallExpression || up.kind === K.NewExpression) && up.expression === m && !handledChain(m) && isAny(typeOf(recv))) {
+      if (
+        m.kind === K.ElementAccessExpression &&
+        up &&
+        (up.kind === K.CallExpression || up.kind === K.NewExpression) &&
+        up.expression === m &&
+        !handledChain(m) &&
+        isAny(typeOf(recv))
+      ) {
         incomplete(m, "effects", "unresolved:untyped-receiver");
         return;
       }
       // chains to a governed root: onChain; bindings that may hold one: onIdentifier. A member of the
       // global object that is no known root (`globalThis.myClock`) is checked by its type here.
       if (handledChain(recv)) return;
-      const key = m.kind === K.PropertyAccessExpression ? (m.name?.text ?? null) : literalKey(m.argumentExpression);
+      const key =
+        m.kind === K.PropertyAccessExpression
+          ? (m.name?.text ?? null)
+          : literalKey(m.argumentExpression);
       if (key === null) return;
-      const accessed = checker.getSymbolAtLocation((m.kind === K.PropertyAccessExpression ? m.name : m.argumentExpression) as TsNode);
+      const accessed = checker.getSymbolAtLocation(
+        (m.kind === K.PropertyAccessExpression ? m.name : m.argumentExpression) as TsNode
+      );
       typedRead(m, typeOf(recv), key, accessed?.declarations ?? []);
     };
     /** `{ now }: DateConstructor`, `const { now } = d`, `{ x: { now } }`: each static key destructured
@@ -1073,9 +1474,11 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
     const isAssignmentPattern = (lit: TsNode): boolean => {
       const p = lit.parent;
       if (!p) return false;
-      if (p.kind === K.BinaryExpression) return p.left === lit && isOp(p.operatorToken?.kind, "EqualsToken");
+      if (p.kind === K.BinaryExpression)
+        return p.left === lit && isOp(p.operatorToken?.kind, "EqualsToken");
       if (p.kind === K.ForOfStatement) return p.initializer === lit;
-      if (p.kind === K.PropertyAssignment) return p.initializer === lit && p.parent !== undefined && isAssignmentPattern(p.parent);
+      if (p.kind === K.PropertyAssignment)
+        return p.initializer === lit && p.parent !== undefined && isAssignmentPattern(p.parent);
       if (p.kind === K.ArrayLiteralExpression) return isAssignmentPattern(p);
       return false;
     };
@@ -1115,11 +1518,21 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
      *  governed root */
     const onTypedCallee = (n: TsNode): void => {
       const callee = n.expression;
-      if (!callee || callee.kind === K.ImportKeyword || callee.kind === K.SuperKeyword || rootTypes.size === 0) return;
+      if (
+        !callee ||
+        callee.kind === K.ImportKeyword ||
+        callee.kind === K.SuperKeyword ||
+        rootTypes.size === 0
+      )
+        return;
       const args = n.arguments ?? [];
       const spread = args.some((x) => x.kind === K.SpreadElement);
       // Date reads the clock as Date() and new Date() (or new Date(...xs))
-      const cands = [...rootTypes.keys()].filter((g) => callWatched(g) && !(g === "Date" && n.kind === K.NewExpression && args.length > 0 && !spread));
+      const cands = [...rootTypes.keys()].filter(
+        (g) =>
+          callWatched(g) &&
+          !(g === "Date" && n.kind === K.NewExpression && args.length > 0 && !spread)
+      );
       // chains to a governed root: onChain; an undeclared or repo-declared global (`myDate()`) is typed here
       if (cands.length === 0 || handledChain(callee)) return;
       const u = unwrap(callee);
@@ -1128,11 +1541,17 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
         // a member of an untyped receiver is onPropertyAccess's or onTypedMember's
         // (`unresolved:untyped-receiver`), a member of `x.constructor` onConstructorAccess's; an
         // untyped member of a typed value (`o.f()` with `f: any`, `Record<string, any>`) is here
-        const member = u.kind === K.PropertyAccessExpression || u.kind === K.ElementAccessExpression;
+        const member =
+          u.kind === K.PropertyAccessExpression || u.kind === K.ElementAccessExpression;
         const recv = member ? (u.expression as TsNode) : null;
         const r0 = recv ? unwrap(recv) : null;
-        const viaCtor = r0 !== null && ((r0.kind === K.PropertyAccessExpression && r0.name?.text === "constructor") || (r0.kind === K.ElementAccessExpression && literalKey(r0.argumentExpression) === "constructor"));
-        if (recv === null || (!viaCtor && !isAny(typeOf(recv)))) incomplete(n, "effects", "unresolved:untyped-callee");
+        const viaCtor =
+          r0 !== null &&
+          ((r0.kind === K.PropertyAccessExpression && r0.name?.text === "constructor") ||
+            (r0.kind === K.ElementAccessExpression &&
+              literalKey(r0.argumentExpression) === "constructor"));
+        if (recv === null || (!viaCtor && !isAny(typeOf(recv))))
+          incomplete(n, "effects", "unresolved:untyped-callee");
         return;
       }
       const g = cands.find((x) => holdsRoot(t, rootTypes.get(x) as TsType));
@@ -1171,23 +1590,30 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
       while (up && isWrapper(up)) up = up.parent;
       // `await import("m")` is the module itself; a bare promise hands it to callbacks (a supply)
       if (up?.kind === K.AwaitExpression) onChain(up, { module: spec }, []);
-      else if (watchedRoot({ module: spec })) incomplete(n, "effects", supplyReason({ module: spec }));
+      else if (watchedRoot({ module: spec }))
+        incomplete(n, "effects", supplyReason({ module: spec }));
     };
 
     const onLiteral = (n: TsNode): void => {
       if (!wantEffects) return;
       let text: string | null = null;
       let dynamicTable = false;
-      if (n.kind === K.StringLiteral || n.kind === K.NoSubstitutionTemplateLiteral) text = n.text ?? null;
+      if (n.kind === K.StringLiteral || n.kind === K.NoSubstitutionTemplateLiteral)
+        text = n.text ?? null;
       else if (n.kind === K.TemplateExpression) {
         const head = n.head?.text ?? "";
         text = head;
         // the table name itself interpolated: dynamic SQL
-        if (/^\s*(?:delete|insert|update|merge|alter|truncate|drop|select|with)\b/i.test(head) && /\b(?:from|into|update|table|exists|only)\s*$/i.test(head)) dynamicTable = true;
+        if (
+          /^\s*(?:delete|insert|update|merge|alter|truncate|drop|select|with)\b/i.test(head) &&
+          /\b(?:from|into|update|table|exists|only)\s*$/i.test(head)
+        )
+          dynamicTable = true;
       }
       if (text === null) return;
       if (dynamicTable) {
-        if (o.channels.some((p) => p.startsWith("pg.table("))) incomplete(n, "effects", "dynamic:sql");
+        if (o.channels.some((p) => p.startsWith("pg.table(")))
+          incomplete(n, "effects", "dynamic:sql");
         return;
       }
       const s = sqlEffect(text);
@@ -1196,7 +1622,13 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
 
     const walk = (n: TsNode): void => {
       const k = n.kind;
-      if (k === K.InterfaceDeclaration || k === K.TypeAliasDeclaration || k === K.ImportDeclaration || k === K.ImportEqualsDeclaration) return;
+      if (
+        k === K.InterfaceDeclaration ||
+        k === K.TypeAliasDeclaration ||
+        k === K.ImportDeclaration ||
+        k === K.ImportEqualsDeclaration
+      )
+        return;
       if (k === K.Identifier) onIdentifier(n);
       else if (k === K.PropertyAccessExpression) {
         onPropertyAccess(n);
@@ -1205,10 +1637,18 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
       } else if (k === K.ElementAccessExpression) {
         if (literalKey(n.argumentExpression) === "constructor") onConstructorAccess(n);
         else onTypedMember(n);
-      } else if ((k === K.CallExpression || k === K.NewExpression) && n.expression?.kind !== K.ImportKeyword) {
+      } else if (
+        (k === K.CallExpression || k === K.NewExpression) &&
+        n.expression?.kind !== K.ImportKeyword
+      ) {
         onTypedCallee(n);
         onTypedArguments(n);
-      } else if (k === K.StringLiteral || k === K.NoSubstitutionTemplateLiteral || k === K.TemplateExpression) onLiteral(n);
+      } else if (
+        k === K.StringLiteral ||
+        k === K.NoSubstitutionTemplateLiteral ||
+        k === K.TemplateExpression
+      )
+        onLiteral(n);
       else if (k === K.CallExpression && n.expression?.kind === K.ImportKeyword) onImportCall(n);
       else if (k === K.ObjectBindingPattern) onObjectBindingPattern(n);
       else if (k === K.ObjectLiteralExpression && isAssignmentPattern(n)) onAssignmentPattern(n);
@@ -1223,8 +1663,10 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
     const parent = info?.parent ?? null;
     const p = parent ? identities.get(parent) : undefined;
     if (!p) continue;
-    if (s.effectsIncomplete.length > 0 && !p.effectsIncomplete.includes(`child:${s.id}`)) p.effectsIncomplete.push(`child:${s.id}`);
-    if (s.callsIncomplete.length > 0 && !p.callsIncomplete.includes(`child:${s.id}`)) p.callsIncomplete.push(`child:${s.id}`);
+    if (s.effectsIncomplete.length > 0 && !p.effectsIncomplete.includes(`child:${s.id}`))
+      p.effectsIncomplete.push(`child:${s.id}`);
+    if (s.callsIncomplete.length > 0 && !p.callsIncomplete.includes(`child:${s.id}`))
+      p.callsIncomplete.push(`child:${s.id}`);
   }
   stats.identities = identities.size;
   stats.ms = Date.now() - t0;

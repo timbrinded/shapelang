@@ -20,28 +20,69 @@ export interface TeethRun {
   ms: number;
 }
 
-export function runTeeth(o: { source: SourceDoc; man: Manifested; records?: unknown[]; time: string; validate?: number; p1Verbs?: string[] }): TeethRun {
+export function runTeeth(o: {
+  source: SourceDoc;
+  man: Manifested;
+  records?: unknown[];
+  time: string;
+  validate?: number;
+  p1Verbs?: string[];
+}): TeethRun {
   const t0 = Date.now();
   const esf = elaborateAt(o.source, o.time);
   const world = buildWorld(esf, o.man.index, { side: "h" });
-  const parsed = (o.records ?? []).map((r) => parseRecord(r)).filter((p): p is ParsedRecord => !("error" in p));
-  const observations = parsed.filter((r) => r.shape.kind === "observation" && r.shape.revision === o.man.revision);
+  const parsed = (o.records ?? [])
+    .map((r) => parseRecord(r))
+    .filter((p): p is ParsedRecord => !("error" in p));
+  const observations = parsed.filter(
+    (r) => r.shape.kind === "observation" && r.shape.revision === o.man.revision
+  );
   const tests = parsed.filter((r) => r.shape.kind === "test");
   const report = teeth({ esf, world, observations, tests, p1Verbs: o.p1Verbs });
-  const validation = o.validate && o.validate > 0 ? validateTeeth({ source: o.source, esf, world, manifest: o.man.statement, revision: o.man.revision, now: o.time, perOp: o.validate }) : null;
-  return { report, validation, errors: [...esf.errors, ...world.errors].map((e) => `${e.code} ${e.subject}`), ms: Date.now() - t0 };
+  const validation =
+    o.validate && o.validate > 0
+      ? validateTeeth({
+          source: o.source,
+          esf,
+          world,
+          manifest: o.man.statement,
+          revision: o.man.revision,
+          now: o.time,
+          perOp: o.validate
+        })
+      : null;
+  return {
+    report,
+    validation,
+    errors: [...esf.errors, ...world.errors].map((e) => `${e.code} ${e.subject}`),
+    ms: Date.now() - t0
+  };
 }
 
 /** The report as an in-toto Statement (SCAI), optionally DSSE-signed; not a shape.evidence.v1 record. */
-export function teethStatement(report: TeethReport, man: Manifested, signer: Signer | null): unknown {
-  const subject: Statement["subject"] = [{ name: `shape:manifest/${man.revision}`, digest: { sha256: man.index.root.replace(/^sha256:/, "") } }];
-  for (const c of report.claims) subject.push({ name: `shape:claim/${c.id}`, digest: { sha256: c.fp.replace(/^sha256:/, "") } });
+export function teethStatement(
+  report: TeethReport,
+  man: Manifested,
+  signer: Signer | null
+): unknown {
+  const subject: Statement["subject"] = [
+    {
+      name: `shape:manifest/${man.revision}`,
+      digest: { sha256: man.index.root.replace(/^sha256:/, "") }
+    }
+  ];
+  for (const c of report.claims)
+    subject.push({ name: `shape:claim/${c.id}`, digest: { sha256: c.fp.replace(/^sha256:/, "") } });
   subject.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
   const stmt: Statement = {
     _type: STATEMENT_TYPE,
     subject,
     predicateType: SCAI_TYPE,
-    predicate: { attributes: [{ attribute: "SHAPE_TEETH", conditions: { "shape.kind": "teeth" } }], producer: { uri: "shape-1/providers/teeth", annotations: { version: TEETH_VERSION } }, shape: { ...report, revision: man.revision } }
+    predicate: {
+      attributes: [{ attribute: "SHAPE_TEETH", conditions: { "shape.kind": "teeth" } }],
+      producer: { uri: "shape-1/providers/teeth", annotations: { version: TEETH_VERSION } },
+      shape: { ...report, revision: man.revision }
+    }
   };
   return signer ? signStatement(stmt, [signer]) : stmt;
 }

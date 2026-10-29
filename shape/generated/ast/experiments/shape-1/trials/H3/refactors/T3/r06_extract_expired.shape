@@ -1,0 +1,113 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r06_extract_expired
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R06ExtractExpiredModuleAppendAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#append")
+  fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+}
+
+resource R06ExtractExpiredModuleEmptyLogAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#emptyLog")
+  fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+}
+
+resource R06ExtractExpiredModuleGetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#get")
+  fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+}
+
+resource R06ExtractExpiredModuleIsExpiredAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#isExpired")
+  fingerprint ast.semantic_subtree_v1("sha256:0d30f499e6aa8477f4dd3895de14ebc66c849abc651b89e048f62c4b14f8479b")
+}
+
+resource R06ExtractExpiredModuleListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#list")
+  fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+}
+
+resource R06ExtractExpiredModulePurgeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#purge")
+  fingerprint ast.semantic_subtree_v1("sha256:082af3816c6fcba54f25f2ef8c26ebfe8b1f15419cc39398e63eaeaca5e9675f")
+}
+
+component R06ExtractExpiredModule : GeneratedCandidate {
+  fn append
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#append")
+    effects unknown
+  fn emptyLog
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#emptyLog")
+    effects unknown
+  fn get
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#get")
+    effects unknown
+  fn isExpired
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#isExpired")
+    effects unknown
+  fn list
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#list")
+    effects unknown
+  fn purge
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#purge")
+    effects unknown
+}
+
+relation R06ExtractExpiredModuleAppendGeneratedFromR06ExtractExpiredModuleAppendAstAnchor {
+  kind generated_from
+  connects R06ExtractExpiredModule -> R06ExtractExpiredModuleAppendAstAnchor
+  roles { R06ExtractExpiredModule as generated, R06ExtractExpiredModuleAppendAstAnchor as syntax }
+  expects R06ExtractExpiredModuleAppendAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58d10b2d2fdc2f1b4f60352d8245198663827b52d2d0ed2bb8d1b9b687642381")
+  summary "fn R06ExtractExpiredModule.append generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#append."
+}
+
+relation R06ExtractExpiredModuleEmptyLogGeneratedFromR06ExtractExpiredModuleEmptyLogAstAnchor {
+  kind generated_from
+  connects R06ExtractExpiredModule -> R06ExtractExpiredModuleEmptyLogAstAnchor
+  roles { R06ExtractExpiredModule as generated, R06ExtractExpiredModuleEmptyLogAstAnchor as syntax }
+  expects R06ExtractExpiredModuleEmptyLogAstAnchor fingerprint ast.semantic_subtree_v1("sha256:826769ecb32070b095ccb07cf7727a6e972e9c111f229f737a4d7cd30dac9fa7")
+  summary "fn R06ExtractExpiredModule.emptyLog generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#emptyLog."
+}
+
+relation R06ExtractExpiredModuleGetGeneratedFromR06ExtractExpiredModuleGetAstAnchor {
+  kind generated_from
+  connects R06ExtractExpiredModule -> R06ExtractExpiredModuleGetAstAnchor
+  roles { R06ExtractExpiredModule as generated, R06ExtractExpiredModuleGetAstAnchor as syntax }
+  expects R06ExtractExpiredModuleGetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d80ccb2478e6f0d35148aeb3f6cdfd0aad5d6c9f4026a520a936750e1ea14555")
+  summary "fn R06ExtractExpiredModule.get generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#get."
+}
+
+relation R06ExtractExpiredModuleIsExpiredGeneratedFromR06ExtractExpiredModuleIsExpiredAstAnchor {
+  kind generated_from
+  connects R06ExtractExpiredModule -> R06ExtractExpiredModuleIsExpiredAstAnchor
+  roles { R06ExtractExpiredModule as generated, R06ExtractExpiredModuleIsExpiredAstAnchor as syntax }
+  expects R06ExtractExpiredModuleIsExpiredAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0d30f499e6aa8477f4dd3895de14ebc66c849abc651b89e048f62c4b14f8479b")
+  summary "fn R06ExtractExpiredModule.isExpired generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#isExpired."
+}
+
+relation R06ExtractExpiredModuleListGeneratedFromR06ExtractExpiredModuleListAstAnchor {
+  kind generated_from
+  connects R06ExtractExpiredModule -> R06ExtractExpiredModuleListAstAnchor
+  roles { R06ExtractExpiredModule as generated, R06ExtractExpiredModuleListAstAnchor as syntax }
+  expects R06ExtractExpiredModuleListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92304fa0e4649c523e46877b44f2e99a009e8203a89cfd82f1d190b95674d297")
+  summary "fn R06ExtractExpiredModule.list generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#list."
+}
+
+relation R06ExtractExpiredModulePurgeGeneratedFromR06ExtractExpiredModulePurgeAstAnchor {
+  kind generated_from
+  connects R06ExtractExpiredModule -> R06ExtractExpiredModulePurgeAstAnchor
+  roles { R06ExtractExpiredModule as generated, R06ExtractExpiredModulePurgeAstAnchor as syntax }
+  expects R06ExtractExpiredModulePurgeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:082af3816c6fcba54f25f2ef8c26ebfe8b1f15419cc39398e63eaeaca5e9675f")
+  summary "fn R06ExtractExpiredModule.purge generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts#purge."
+}
+
+implementation R06ExtractExpiredModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T3/r06_extract_expired.ts"
+  }
+  conforms_to R06ExtractExpiredModule
+}

@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.shape_1.trials.H4.run
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RunModuleKernelCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H4/run.ts#kernelCase")
+  fingerprint ast.semantic_subtree_v1("sha256:06b3abc540625aceb2d46def48a06636d3554c9c2cdac37b8d73419025cc455c")
+}
+
+resource RunModuleProtoAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H4/run.ts#proto")
+  fingerprint ast.semantic_subtree_v1("sha256:3e72b77b31ea6e82bc0d48d85ecf4f1b4df0127b1e4ef65646f68c77c1447587")
+}
+
+resource RunModuleRecordsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H4/run.ts#records")
+  fingerprint ast.semantic_subtree_v1("sha256:2b14836d79aaec27329ad7620793fe5d55c77942a2a6d9bcd84f699621ae27dd")
+}
+
+resource RunModuleZeroxAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H4/run.ts#zerox")
+  fingerprint ast.semantic_subtree_v1("sha256:e789caeeef24557e677aa50a2e319d8e49c726527c1c761ad1c5e4799f1c2cec")
+}
+
+component RunModule : GeneratedCandidate {
+  fn kernelCase
+    source ts("experiments/shape-1/trials/H4/run.ts#kernelCase")
+    effects unknown
+  fn proto
+    source ts("experiments/shape-1/trials/H4/run.ts#proto")
+    effects unknown
+  fn records
+    source ts("experiments/shape-1/trials/H4/run.ts#records")
+    effects unknown
+  fn zerox
+    source ts("experiments/shape-1/trials/H4/run.ts#zerox")
+    effects unknown
+}
+
+relation RunModuleKernelCaseGeneratedFromRunModuleKernelCaseAstAnchor {
+  kind generated_from
+  connects RunModule -> RunModuleKernelCaseAstAnchor
+  roles { RunModule as generated, RunModuleKernelCaseAstAnchor as syntax }
+  expects RunModuleKernelCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:06b3abc540625aceb2d46def48a06636d3554c9c2cdac37b8d73419025cc455c")
+  summary "fn RunModule.kernelCase generated from typescript function_declaration at experiments/shape-1/trials/H4/run.ts#kernelCase."
+}
+
+relation RunModuleProtoGeneratedFromRunModuleProtoAstAnchor {
+  kind generated_from
+  connects RunModule -> RunModuleProtoAstAnchor
+  roles { RunModule as generated, RunModuleProtoAstAnchor as syntax }
+  expects RunModuleProtoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3e72b77b31ea6e82bc0d48d85ecf4f1b4df0127b1e4ef65646f68c77c1447587")
+  summary "fn RunModule.proto generated from typescript function_declaration at experiments/shape-1/trials/H4/run.ts#proto."
+}
+
+relation RunModuleRecordsGeneratedFromRunModuleRecordsAstAnchor {
+  kind generated_from
+  connects RunModule -> RunModuleRecordsAstAnchor
+  roles { RunModule as generated, RunModuleRecordsAstAnchor as syntax }
+  expects RunModuleRecordsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2b14836d79aaec27329ad7620793fe5d55c77942a2a6d9bcd84f699621ae27dd")
+  summary "fn RunModule.records generated from typescript function_declaration at experiments/shape-1/trials/H4/run.ts#records."
+}
+
+relation RunModuleZeroxGeneratedFromRunModuleZeroxAstAnchor {
+  kind generated_from
+  connects RunModule -> RunModuleZeroxAstAnchor
+  roles { RunModule as generated, RunModuleZeroxAstAnchor as syntax }
+  expects RunModuleZeroxAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e789caeeef24557e677aa50a2e319d8e49c726527c1c761ad1c5e4799f1c2cec")
+  summary "fn RunModule.zerox generated from typescript function_declaration at experiments/shape-1/trials/H4/run.ts#zerox."
+}
+
+implementation RunModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H4/run.ts"
+  }
+  conforms_to RunModule
+}

@@ -1,0 +1,348 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:f277f293ea0554fcb00e172cf389cf99cd6ad89d365949df24b8bec1122c0926",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:f15804c1ab48d61340e255b4a0c1f1f8466b718ccce4a823660dbe1bd5c13e81",
+   "kind": "coverage",
+   "reason": null,
+   "questions": null,
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "judgment",
+   "force": null,
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": null,
+   "group": "g:0c8b3d8ef3cca3180b664391ca6ae722ba6834171b1e0fdbb215f9961f47dca4",
+   "claim": null,
+   "subject": "resourceCode ts.call(\"performance.now\")",
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:25cbfa939aae4360e0a168ce00f3488063f8faf8fbf29d5a14e18f65b91db2ce",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::ann"
+     ],
+     "creates": null
+    },
+    {
+     "act": "bind",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "provide",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "fact",
+     "id": "sha256:1262033c29345a5869eded64e4c31103558db415c2e41b562a19f62b5632f79c"
+    }
+   ]
+  },
+  {
+   "key": "ob:10888a90fee94b803a836aaf54c3c29a79a8083406d156dcb3356c3499e6c9d7",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L1"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "normal",
+   "budget": "judgment",
+   "force": null,
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": null,
+   "group": "g:38200784eff79739a054a737c783cadf4edfddc3c08f074756993402bb53980b",
+   "claim": null,
+   "subject": "component checker::ShapeChecker",
+   "witness": [],
+   "facts": {},
+   "counterexample": {
+    "position": "ts:packages/shp-checker/src/checker/api.ts",
+    "atom": "Append<tooling::SystemClock>"
+   },
+   "exploited": false,
+   "final": false,
+   "binding": "bd:1700490b73024a1aff483fca3d044cada18bfbc8bbfaa4ea5e6c9a48f710e303",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::ann"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "component checker::ShapeChecker"
+    }
+   ]
+  },
+  {
+   "key": "ob:1317b1ed835df46c24f661dd20d27b94ef4e54cda05b52c1a804931f6628fe41",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L1"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "normal",
+   "budget": "judgment",
+   "force": null,
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": null,
+   "group": "g:0c8b3d8ef3cca3180b664391ca6ae722ba6834171b1e0fdbb215f9961f47dca4",
+   "claim": null,
+   "subject": "component checker::ShapeRuleEngine",
+   "witness": [],
+   "facts": {},
+   "counterexample": {
+    "position": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+    "atom": "Append<tooling::SystemClock>"
+   },
+   "exploited": false,
+   "final": false,
+   "binding": "bd:2e5ed9f6dbf1f94c1e965dff7ca4ac2ee034349266cfa7abd38f2e98a4059571",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::ann"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "component checker::ShapeRuleEngine"
+    }
+   ]
+  },
+  {
+   "key": "ob:58c4d96ace4f36e5b19a18f615188c3e1884862a67b2ea7110c9288d239d0908",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L1"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "judgment",
+   "force": null,
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": null,
+   "group": "g:0c8b3d8ef3cca3180b664391ca6ae722ba6834171b1e0fdbb215f9961f47dca4",
+   "claim": {
+    "fp": "sha256:866e06e6bddd0add1cd7a6103d38d09c31bed7b56936712bd6318cd6497ba0f1",
+    "ids": [
+     "tooling::CheckerNeverReadsClock"
+    ],
+    "tier": "critical"
+   },
+   "subject": "sha256:866e06e6bddd0add1cd7a6103d38d09c31bed7b56936712bd6318cd6497ba0f1",
+   "witness": [],
+   "facts": {},
+   "counterexample": {
+    "position": "ts:packages/shp-checker/src/checker/api.ts",
+    "atom": "Export<tooling::SystemClock>"
+   },
+   "exploited": false,
+   "final": false,
+   "binding": "bd:68983f47a15c2ddb45efcaac264747146a5e63dacd11c738c9bb4581728024fd",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::ann"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "sha256:866e06e6bddd0add1cd7a6103d38d09c31bed7b56936712bd6318cd6497ba0f1"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [
+  {
+   "question": "L1",
+   "subject": "component checker::ShapeChecker",
+   "answer": "loosened",
+   "exploited": false,
+   "final": false,
+   "affected": [
+    "cell:[\"checker::ShapeChecker.*\",\"checker::ShapeChecker.*\"]",
+    "ts:packages/shp-checker/src/checker/api.ts",
+    "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules"
+   ],
+   "counterexample": {
+    "position": "ts:packages/shp-checker/src/checker/api.ts",
+    "atom": "Append<tooling::SystemClock>"
+   },
+   "obligation": "ob:10888a90fee94b803a836aaf54c3c29a79a8083406d156dcb3356c3499e6c9d7"
+  },
+  {
+   "question": "L1",
+   "subject": "component checker::ShapeRuleEngine",
+   "answer": "loosened",
+   "exploited": false,
+   "final": false,
+   "affected": [
+    "cell:[\"checker::ShapeRuleEngine.*\",\"checker::ShapeRuleEngine.*\"]",
+    "ts:packages/shp-checker/src/checker/rules/guards.ts",
+    "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+   ],
+   "counterexample": {
+    "position": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+    "atom": "Append<tooling::SystemClock>"
+   },
+   "obligation": "ob:1317b1ed835df46c24f661dd20d27b94ef4e54cda05b52c1a804931f6628fe41"
+  },
+  {
+   "question": "L1",
+   "subject": "sha256:866e06e6bddd0add1cd7a6103d38d09c31bed7b56936712bd6318cd6497ba0f1",
+   "answer": "loosened",
+   "exploited": false,
+   "final": false,
+   "affected": [
+    "cell:[\"checker::ShapeChecker.*\",\"checker::ShapeChecker.*\"]",
+    "cell:[\"checker::ShapeRuleEngine.*\",\"checker::ShapeRuleEngine.*\"]",
+    "ts:packages/shp-checker/src/checker/api.ts",
+    "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules",
+    "ts:packages/shp-checker/src/checker/rules/guards.ts",
+    "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+   ],
+   "counterexample": {
+    "position": "ts:packages/shp-checker/src/checker/api.ts",
+    "atom": "Export<tooling::SystemClock>"
+   },
+   "obligation": "ob:58c4d96ace4f36e5b19a18f615188c3e1884862a67b2ea7110c9288d239d0908"
+  }
+ ],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 2,
+   "den": 2
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [
+   "checker.incremental::ShapeIncrementalChecker",
+   "checker::ShapeBindings",
+   "checker::ShapeDiagnostics",
+   "checker::ShapeModelLowerer",
+   "checker::ShapeModuleResolver",
+   "checker::ShapePreludeRegistry",
+   "checker::ShapeStringHelpers",
+   "tooling::ShpCli"
+  ],
+  "ungoverned": {
+   "num": 2,
+   "den": 8
+  },
+  "unmapped": [
+   "ts.call(\"performance.now\")"
+  ],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [
+   "checker::bunTest"
+  ],
+  "baseObservations": "missing",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"checker::ShapeChecker.*\",\"checker::ShapeChecker.*\"]",
+   "cell:[\"checker::ShapeRuleEngine.*\",\"checker::ShapeRuleEngine.*\"]",
+   "cell:[\"tooling::ShpCli.*\",\"tooling::ShpCli.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 3,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

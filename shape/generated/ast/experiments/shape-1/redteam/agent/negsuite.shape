@@ -1,0 +1,449 @@
+module shape.generated.ast.experiments.shape_1.redteam.agent.negsuite
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource NegsuiteModuleBriefAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#brief")
+  fingerprint ast.semantic_subtree_v1("sha256:b6eb0c222d2372f13e19860c6d9f296216e29568ccf8fc25dcff09d3287f70a3")
+}
+
+resource NegsuiteModuleC4AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#c4")
+  fingerprint ast.semantic_subtree_v1("sha256:e018c17b4ddfc8b066bf74392b7f7265db44265b265eb7acb02c2eaceec31b38")
+}
+
+resource NegsuiteModuleC5AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#c5")
+  fingerprint ast.semantic_subtree_v1("sha256:30239ec05ad71f891d05915130ba33e04d50222430a523e65f41a41565036ceb")
+}
+
+resource NegsuiteModuleC7AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#c7")
+  fingerprint ast.semantic_subtree_v1("sha256:7a503f47c5342b06939d6375781300c26dcd0403f4e2c85394fc643dc66606dd")
+}
+
+resource NegsuiteModuleEditAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#edit")
+  fingerprint ast.semantic_subtree_v1("sha256:08c00ce149efa34a1f505d83a7b58a9716f10bb2acc7e4034d900b46230ee2b4")
+}
+
+resource NegsuiteModuleEncodeWorldAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#encodeWorld")
+  fingerprint ast.semantic_subtree_v1("sha256:60c7ff7f4a94ec34ecbddd7f7885d0e2bb17409285035afebd393e4f7c1ca6c5")
+}
+
+resource NegsuiteModuleEx3s2SeededAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#ex3s2Seeded")
+  fingerprint ast.semantic_subtree_v1("sha256:57ec4b8de5f97e7a0f775bebe0c1ea996d3e778ca15f8e7e29deb10da32e39ef")
+}
+
+resource NegsuiteModuleFCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#fCase")
+  fingerprint ast.semantic_subtree_v1("sha256:63ef4b6362929a0a3d8f707ab4bd26e8a66c297ebf2b7f707d9335c5e36d360f")
+}
+
+resource NegsuiteModuleG6AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#g6")
+  fingerprint ast.semantic_subtree_v1("sha256:c7c8a7bda8e7874644679a87b3d8e8d4bdc7082f3d7b348790bbdd483831f2f4")
+}
+
+resource NegsuiteModuleGradeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#grade")
+  fingerprint ast.semantic_subtree_v1("sha256:285a20d62068fe936bd3f84397d3d44090c379bfaf741d6a296965e1d0401d65")
+}
+
+resource NegsuiteModuleGuardWorldAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#guardWorld")
+  fingerprint ast.semantic_subtree_v1("sha256:098388aa7a1c4c5780c68de517b70d54ea62752f731a54533bd58210fe259543")
+}
+
+resource NegsuiteModuleH8AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#h8")
+  fingerprint ast.semantic_subtree_v1("sha256:1c9ca57e7e76395797cd626c6e0c0371e480bdb3493da281bbc4f7f2d5596971")
+}
+
+resource NegsuiteModuleKernelCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#kernelCase")
+  fingerprint ast.semantic_subtree_v1("sha256:50e04b44c15adbf0c3cd235661fb81db53e842b0101049c4ec74d6edd5b937e9")
+}
+
+resource NegsuiteModuleKernelRunAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#kernelRun")
+  fingerprint ast.semantic_subtree_v1("sha256:9af0aebb2a61b4e8cb3a67ef53a9da455f9cc403b8fbb3c8c66e97de6913ab73")
+}
+
+resource NegsuiteModuleLatencyCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#latencyCase")
+  fingerprint ast.semantic_subtree_v1("sha256:48f68d147f3d7ec8e39ae35164924f7716b86038c5df6bb011cd690ac2e0367d")
+}
+
+resource NegsuiteModuleLawClaimAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#lawClaim")
+  fingerprint ast.semantic_subtree_v1("sha256:ff215eeec2448c760412c67deb48e7276d9e1261a25095e1ec8c5b30c51e91d5")
+}
+
+resource NegsuiteModuleNormaliseKernelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#normaliseKernel")
+  fingerprint ast.semantic_subtree_v1("sha256:5fb544a15d2156a7befbca584447d7e4ee26e7966e9f8069d8a56c1640f00f77")
+}
+
+resource NegsuiteModuleObsRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#obsRecord")
+  fingerprint ast.semantic_subtree_v1("sha256:1df635c3aad2c08ffcfce648ceb73fe0159407a335c89197db580aebdf5e9d76")
+}
+
+resource NegsuiteModulePhase2AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#phase2")
+  fingerprint ast.semantic_subtree_v1("sha256:4b48e592be1c62daebff687e69b4266267a6d39ea1977faafd781f8d67143ece")
+}
+
+resource NegsuiteModuleRemanifestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#remanifest")
+  fingerprint ast.semantic_subtree_v1("sha256:764cc1884871f99f3593d74d5a6b919f32dad60cf1c0461af56a916e8e3fa41e")
+}
+
+resource NegsuiteModuleResolveProtoAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#resolveProto")
+  fingerprint ast.semantic_subtree_v1("sha256:d5409acf743924e61f6cc9cb581198c05ee3430c266a2bc7bc19709769bd91b9")
+}
+
+resource NegsuiteModuleRunKernelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#runKernel")
+  fingerprint ast.semantic_subtree_v1("sha256:5b5cba180d8fce1cd3ea95577759a1df9a2e17c90df3786a3dadf38a98f68f73")
+}
+
+resource NegsuiteModuleScanRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#scanRecord")
+  fingerprint ast.semantic_subtree_v1("sha256:bbef8a8541e81746869174054f3d24cc270e6a98d887788f8c8f07f1f86adc95")
+}
+
+resource NegsuiteModuleScopedWorldAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#scopedWorld")
+  fingerprint ast.semantic_subtree_v1("sha256:c0743e24ff27f9f9a81de56f46b39e7d85b4efc96200a6a08c29e2107ce657be")
+}
+
+resource NegsuiteModuleTestRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#testRecord")
+  fingerprint ast.semantic_subtree_v1("sha256:516a6d9f2ffc5d56874efb92f29ac9d41a77fcde5e8957b50a08cdcf83ec89c0")
+}
+
+resource NegsuiteModuleWeakenCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#weakenCase")
+  fingerprint ast.semantic_subtree_v1("sha256:98f055e4e864f37dd1cbb436d49c395eb2b8784b48ad59b17271773a60cb7df8")
+}
+
+resource NegsuiteModuleWithAuditDeclsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/agent/negsuite.ts#withAuditDecls")
+  fingerprint ast.semantic_subtree_v1("sha256:b1bfb497ec035824e2b967254db27e3096cbc8ebbe4f648177ed9a3be287ba55")
+}
+
+component NegsuiteModule : GeneratedCandidate {
+  fn brief
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#brief")
+    effects unknown
+  fn c4
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#c4")
+    effects unknown
+  fn c5
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#c5")
+    effects unknown
+  fn c7
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#c7")
+    effects unknown
+  fn edit
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#edit")
+    effects unknown
+  fn encodeWorld
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#encodeWorld")
+    effects unknown
+  fn ex3s2Seeded
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#ex3s2Seeded")
+    effects unknown
+  fn fCase
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#fCase")
+    effects unknown
+  fn g6
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#g6")
+    effects unknown
+  fn grade
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#grade")
+    effects unknown
+  fn guardWorld
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#guardWorld")
+    effects unknown
+  fn h8
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#h8")
+    effects unknown
+  fn kernelCase
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#kernelCase")
+    effects unknown
+  fn kernelRun
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#kernelRun")
+    effects unknown
+  fn latencyCase
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#latencyCase")
+    effects unknown
+  fn lawClaim
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#lawClaim")
+    effects unknown
+  fn normaliseKernel
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#normaliseKernel")
+    effects unknown
+  fn obsRecord
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#obsRecord")
+    effects unknown
+  fn phase2
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#phase2")
+    effects unknown
+  fn remanifest
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#remanifest")
+    effects unknown
+  fn resolveProto
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#resolveProto")
+    effects unknown
+  fn runKernel
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#runKernel")
+    effects unknown
+  fn scanRecord
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#scanRecord")
+    effects unknown
+  fn scopedWorld
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#scopedWorld")
+    effects unknown
+  fn testRecord
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#testRecord")
+    effects unknown
+  fn weakenCase
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#weakenCase")
+    effects unknown
+  fn withAuditDecls
+    source ts("experiments/shape-1/redteam/agent/negsuite.ts#withAuditDecls")
+    effects unknown
+}
+
+relation NegsuiteModuleBriefGeneratedFromNegsuiteModuleBriefAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleBriefAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleBriefAstAnchor as syntax }
+  expects NegsuiteModuleBriefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b6eb0c222d2372f13e19860c6d9f296216e29568ccf8fc25dcff09d3287f70a3")
+  summary "fn NegsuiteModule.brief generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#brief."
+}
+
+relation NegsuiteModuleC4GeneratedFromNegsuiteModuleC4AstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleC4AstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleC4AstAnchor as syntax }
+  expects NegsuiteModuleC4AstAnchor fingerprint ast.semantic_subtree_v1("sha256:e018c17b4ddfc8b066bf74392b7f7265db44265b265eb7acb02c2eaceec31b38")
+  summary "fn NegsuiteModule.c4 generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#c4."
+}
+
+relation NegsuiteModuleC5GeneratedFromNegsuiteModuleC5AstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleC5AstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleC5AstAnchor as syntax }
+  expects NegsuiteModuleC5AstAnchor fingerprint ast.semantic_subtree_v1("sha256:30239ec05ad71f891d05915130ba33e04d50222430a523e65f41a41565036ceb")
+  summary "fn NegsuiteModule.c5 generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#c5."
+}
+
+relation NegsuiteModuleC7GeneratedFromNegsuiteModuleC7AstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleC7AstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleC7AstAnchor as syntax }
+  expects NegsuiteModuleC7AstAnchor fingerprint ast.semantic_subtree_v1("sha256:7a503f47c5342b06939d6375781300c26dcd0403f4e2c85394fc643dc66606dd")
+  summary "fn NegsuiteModule.c7 generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#c7."
+}
+
+relation NegsuiteModuleEditGeneratedFromNegsuiteModuleEditAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleEditAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleEditAstAnchor as syntax }
+  expects NegsuiteModuleEditAstAnchor fingerprint ast.semantic_subtree_v1("sha256:08c00ce149efa34a1f505d83a7b58a9716f10bb2acc7e4034d900b46230ee2b4")
+  summary "fn NegsuiteModule.edit generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#edit."
+}
+
+relation NegsuiteModuleEncodeWorldGeneratedFromNegsuiteModuleEncodeWorldAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleEncodeWorldAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleEncodeWorldAstAnchor as syntax }
+  expects NegsuiteModuleEncodeWorldAstAnchor fingerprint ast.semantic_subtree_v1("sha256:60c7ff7f4a94ec34ecbddd7f7885d0e2bb17409285035afebd393e4f7c1ca6c5")
+  summary "fn NegsuiteModule.encodeWorld generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#encodeWorld."
+}
+
+relation NegsuiteModuleEx3s2SeededGeneratedFromNegsuiteModuleEx3s2SeededAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleEx3s2SeededAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleEx3s2SeededAstAnchor as syntax }
+  expects NegsuiteModuleEx3s2SeededAstAnchor fingerprint ast.semantic_subtree_v1("sha256:57ec4b8de5f97e7a0f775bebe0c1ea996d3e778ca15f8e7e29deb10da32e39ef")
+  summary "fn NegsuiteModule.ex3s2Seeded generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#ex3s2Seeded."
+}
+
+relation NegsuiteModuleFCaseGeneratedFromNegsuiteModuleFCaseAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleFCaseAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleFCaseAstAnchor as syntax }
+  expects NegsuiteModuleFCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:63ef4b6362929a0a3d8f707ab4bd26e8a66c297ebf2b7f707d9335c5e36d360f")
+  summary "fn NegsuiteModule.fCase generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#fCase."
+}
+
+relation NegsuiteModuleG6GeneratedFromNegsuiteModuleG6AstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleG6AstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleG6AstAnchor as syntax }
+  expects NegsuiteModuleG6AstAnchor fingerprint ast.semantic_subtree_v1("sha256:c7c8a7bda8e7874644679a87b3d8e8d4bdc7082f3d7b348790bbdd483831f2f4")
+  summary "fn NegsuiteModule.g6 generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#g6."
+}
+
+relation NegsuiteModuleGradeGeneratedFromNegsuiteModuleGradeAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleGradeAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleGradeAstAnchor as syntax }
+  expects NegsuiteModuleGradeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:285a20d62068fe936bd3f84397d3d44090c379bfaf741d6a296965e1d0401d65")
+  summary "fn NegsuiteModule.grade generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#grade."
+}
+
+relation NegsuiteModuleGuardWorldGeneratedFromNegsuiteModuleGuardWorldAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleGuardWorldAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleGuardWorldAstAnchor as syntax }
+  expects NegsuiteModuleGuardWorldAstAnchor fingerprint ast.semantic_subtree_v1("sha256:098388aa7a1c4c5780c68de517b70d54ea62752f731a54533bd58210fe259543")
+  summary "fn NegsuiteModule.guardWorld generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#guardWorld."
+}
+
+relation NegsuiteModuleH8GeneratedFromNegsuiteModuleH8AstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleH8AstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleH8AstAnchor as syntax }
+  expects NegsuiteModuleH8AstAnchor fingerprint ast.semantic_subtree_v1("sha256:1c9ca57e7e76395797cd626c6e0c0371e480bdb3493da281bbc4f7f2d5596971")
+  summary "fn NegsuiteModule.h8 generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#h8."
+}
+
+relation NegsuiteModuleKernelCaseGeneratedFromNegsuiteModuleKernelCaseAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleKernelCaseAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleKernelCaseAstAnchor as syntax }
+  expects NegsuiteModuleKernelCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:50e04b44c15adbf0c3cd235661fb81db53e842b0101049c4ec74d6edd5b937e9")
+  summary "fn NegsuiteModule.kernelCase generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#kernelCase."
+}
+
+relation NegsuiteModuleKernelRunGeneratedFromNegsuiteModuleKernelRunAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleKernelRunAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleKernelRunAstAnchor as syntax }
+  expects NegsuiteModuleKernelRunAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9af0aebb2a61b4e8cb3a67ef53a9da455f9cc403b8fbb3c8c66e97de6913ab73")
+  summary "fn NegsuiteModule.kernelRun generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#kernelRun."
+}
+
+relation NegsuiteModuleLatencyCaseGeneratedFromNegsuiteModuleLatencyCaseAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleLatencyCaseAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleLatencyCaseAstAnchor as syntax }
+  expects NegsuiteModuleLatencyCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:48f68d147f3d7ec8e39ae35164924f7716b86038c5df6bb011cd690ac2e0367d")
+  summary "fn NegsuiteModule.latencyCase generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#latencyCase."
+}
+
+relation NegsuiteModuleLawClaimGeneratedFromNegsuiteModuleLawClaimAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleLawClaimAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleLawClaimAstAnchor as syntax }
+  expects NegsuiteModuleLawClaimAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ff215eeec2448c760412c67deb48e7276d9e1261a25095e1ec8c5b30c51e91d5")
+  summary "fn NegsuiteModule.lawClaim generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#lawClaim."
+}
+
+relation NegsuiteModuleNormaliseKernelGeneratedFromNegsuiteModuleNormaliseKernelAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleNormaliseKernelAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleNormaliseKernelAstAnchor as syntax }
+  expects NegsuiteModuleNormaliseKernelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5fb544a15d2156a7befbca584447d7e4ee26e7966e9f8069d8a56c1640f00f77")
+  summary "fn NegsuiteModule.normaliseKernel generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#normaliseKernel."
+}
+
+relation NegsuiteModuleObsRecordGeneratedFromNegsuiteModuleObsRecordAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleObsRecordAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleObsRecordAstAnchor as syntax }
+  expects NegsuiteModuleObsRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1df635c3aad2c08ffcfce648ceb73fe0159407a335c89197db580aebdf5e9d76")
+  summary "fn NegsuiteModule.obsRecord generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#obsRecord."
+}
+
+relation NegsuiteModulePhase2GeneratedFromNegsuiteModulePhase2AstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModulePhase2AstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModulePhase2AstAnchor as syntax }
+  expects NegsuiteModulePhase2AstAnchor fingerprint ast.semantic_subtree_v1("sha256:4b48e592be1c62daebff687e69b4266267a6d39ea1977faafd781f8d67143ece")
+  summary "fn NegsuiteModule.phase2 generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#phase2."
+}
+
+relation NegsuiteModuleRemanifestGeneratedFromNegsuiteModuleRemanifestAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleRemanifestAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleRemanifestAstAnchor as syntax }
+  expects NegsuiteModuleRemanifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:764cc1884871f99f3593d74d5a6b919f32dad60cf1c0461af56a916e8e3fa41e")
+  summary "fn NegsuiteModule.remanifest generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#remanifest."
+}
+
+relation NegsuiteModuleResolveProtoGeneratedFromNegsuiteModuleResolveProtoAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleResolveProtoAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleResolveProtoAstAnchor as syntax }
+  expects NegsuiteModuleResolveProtoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d5409acf743924e61f6cc9cb581198c05ee3430c266a2bc7bc19709769bd91b9")
+  summary "fn NegsuiteModule.resolveProto generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#resolveProto."
+}
+
+relation NegsuiteModuleRunKernelGeneratedFromNegsuiteModuleRunKernelAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleRunKernelAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleRunKernelAstAnchor as syntax }
+  expects NegsuiteModuleRunKernelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5b5cba180d8fce1cd3ea95577759a1df9a2e17c90df3786a3dadf38a98f68f73")
+  summary "fn NegsuiteModule.runKernel generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#runKernel."
+}
+
+relation NegsuiteModuleScanRecordGeneratedFromNegsuiteModuleScanRecordAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleScanRecordAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleScanRecordAstAnchor as syntax }
+  expects NegsuiteModuleScanRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bbef8a8541e81746869174054f3d24cc270e6a98d887788f8c8f07f1f86adc95")
+  summary "fn NegsuiteModule.scanRecord generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#scanRecord."
+}
+
+relation NegsuiteModuleScopedWorldGeneratedFromNegsuiteModuleScopedWorldAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleScopedWorldAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleScopedWorldAstAnchor as syntax }
+  expects NegsuiteModuleScopedWorldAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c0743e24ff27f9f9a81de56f46b39e7d85b4efc96200a6a08c29e2107ce657be")
+  summary "fn NegsuiteModule.scopedWorld generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#scopedWorld."
+}
+
+relation NegsuiteModuleTestRecordGeneratedFromNegsuiteModuleTestRecordAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleTestRecordAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleTestRecordAstAnchor as syntax }
+  expects NegsuiteModuleTestRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:516a6d9f2ffc5d56874efb92f29ac9d41a77fcde5e8957b50a08cdcf83ec89c0")
+  summary "fn NegsuiteModule.testRecord generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#testRecord."
+}
+
+relation NegsuiteModuleWeakenCaseGeneratedFromNegsuiteModuleWeakenCaseAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleWeakenCaseAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleWeakenCaseAstAnchor as syntax }
+  expects NegsuiteModuleWeakenCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:98f055e4e864f37dd1cbb436d49c395eb2b8784b48ad59b17271773a60cb7df8")
+  summary "fn NegsuiteModule.weakenCase generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#weakenCase."
+}
+
+relation NegsuiteModuleWithAuditDeclsGeneratedFromNegsuiteModuleWithAuditDeclsAstAnchor {
+  kind generated_from
+  connects NegsuiteModule -> NegsuiteModuleWithAuditDeclsAstAnchor
+  roles { NegsuiteModule as generated, NegsuiteModuleWithAuditDeclsAstAnchor as syntax }
+  expects NegsuiteModuleWithAuditDeclsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b1bfb497ec035824e2b967254db27e3096cbc8ebbe4f648177ed9a3be287ba55")
+  summary "fn NegsuiteModule.withAuditDecls generated from typescript function_declaration at experiments/shape-1/redteam/agent/negsuite.ts#withAuditDecls."
+}
+
+implementation NegsuiteModuleImpl {
+  paths {
+    "experiments/shape-1/redteam/agent/negsuite.ts"
+  }
+  conforms_to NegsuiteModule
+}

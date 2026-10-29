@@ -9,6 +9,20 @@ const actors = new Map([
 ]);
 const tp = (judges) => ({ floor: "declared", blocks: [], maxAge: 365, judges });
 for (const judges of [["m::bob"], ["owner", "m::bob"], ["agents", "owner", "m::bob"]]) {
-  const gov = { actors, byIdentity: new Map(), authors: new Set(), unmappedBot: false, shapeOwner: "m::Team", policy: { tiers: { low: tp(judges), normal: tp(judges), critical: tp(judges) }, budget: null } };
-  console.log(JSON.stringify(judges), "->", JSON.stringify(eligibleByRole(gov, { tier: "normal", owner: "m::Team", noAgent: false, final: false })), "(expected to include m::bob)");
+  const gov = {
+    actors,
+    byIdentity: new Map(),
+    authors: new Set(),
+    unmappedBot: false,
+    shapeOwner: "m::Team",
+    policy: { tiers: { low: tp(judges), normal: tp(judges), critical: tp(judges) }, budget: null }
+  };
+  console.log(
+    JSON.stringify(judges),
+    "->",
+    JSON.stringify(
+      eligibleByRole(gov, { tier: "normal", owner: "m::Team", noAgent: false, final: false })
+    ),
+    "(expected to include m::bob)"
+  );
 }

@@ -15,16 +15,34 @@ import { type Rng, lawTest, property, stable } from "./lawkit.ts";
 type Doc = IncrementalShapeDocument;
 
 function resourcesDoc(path: string, names: string[]): Doc {
-  return { filePath: path, source: ["module resources", ...names.map((n) => `resource ${n}`)].join("\n\n") };
+  return {
+    filePath: path,
+    source: ["module resources", ...names.map((n) => `resource ${n}`)].join("\n\n")
+  };
 }
 
-function componentDoc(path: string, mod: string, comp: string, res: string, effect: string, extra: string): Doc {
+function componentDoc(
+  path: string,
+  mod: string,
+  comp: string,
+  res: string,
+  effect: string,
+  extra: string
+): Doc {
   return {
     filePath: path,
     source: [
       `module ${mod}`,
       "import resources",
-      [`component ${comp} {`, `  grants ${effect}<${res}>`, `  fn act : RefactorSensitive`, "    effects complete {", `      ${effect}<${res}>`, "    }", "}"].join("\n"),
+      [
+        `component ${comp} {`,
+        `  grants ${effect}<${res}>`,
+        `  fn act : RefactorSensitive`,
+        "    effects complete {",
+        `      ${effect}<${res}>`,
+        "    }",
+        "}"
+      ].join("\n"),
       [
         `memory ${comp}Memory : RefactorConstraint<fn ${comp}.act> {`,
         `  applies_to fn ${comp}.act`,
@@ -46,14 +64,28 @@ function componentDoc(path: string, mod: string, comp: string, res: string, effe
 function initialDocs(r: Rng): Doc[] {
   const res = ["Ledger", "Catalog", "Vault"].slice(0, r.int(1, 3));
   const docs: Doc[] = [resourcesDoc("shape/resources.shape", res)];
-  for (let i = 0; i < r.int(1, 3); i += 1) docs.push(componentDoc(`shape/c${i}.shape`, `mod${i}`, `Comp${i}`, r.pick(res), r.pick(["Read", "Append", "HardDelete"]), "initial"));
+  for (let i = 0; i < r.int(1, 3); i += 1)
+    docs.push(
+      componentDoc(
+        `shape/c${i}.shape`,
+        `mod${i}`,
+        `Comp${i}`,
+        r.pick(res),
+        r.pick(["Read", "Append", "HardDelete"]),
+        "initial"
+      )
+    );
   return docs;
 }
 
 function options(r: Rng): CheckOptions {
   return {
     includeFacts: r.bool(),
-    ...(r.bool() ? { freshnessDate: requireIsoCalendarDate(r.pick(["2026-01-01", "2026-07-01", "2027-01-01"])) } : {}),
+    ...(r.bool()
+      ? {
+          freshnessDate: requireIsoCalendarDate(r.pick(["2026-01-01", "2026-07-01", "2027-01-01"]))
+        }
+      : {}),
     ...(r.bool(0.3) ? { allowUnknownEffects: true } : {})
   };
 }
@@ -65,11 +97,16 @@ function mutate(r: Rng, docs: Doc[]): Doc[] {
   const op = r.pick(["edit", "edit", "add", "remove", "origin"] as const);
   if (op === "edit" || comps.length === 0) {
     const d = r.pick(out);
-    d.source = d.filePath === "shape/resources.shape" ? `${d.source}\n\nresource Extra${r.int(0, 999)}` : d.source.replace(/summary "[^"]*"/, `summary "edit ${r.int(0, 9999)}"`);
+    d.source =
+      d.filePath === "shape/resources.shape"
+        ? `${d.source}\n\nresource Extra${r.int(0, 999)}`
+        : d.source.replace(/summary "[^"]*"/, `summary "edit ${r.int(0, 9999)}"`);
   } else if (op === "add") {
     const i = 10 + r.int(0, 50);
-    if (!out.some((d) => d.filePath === `shape/c${i}.shape`)) out.push(componentDoc(`shape/c${i}.shape`, `mod${i}`, `Comp${i}`, "Ledger", "Read", "added"));
-    if (!out[0]?.source.includes("resource Ledger") && out[0]) out[0].source = `${out[0].source}\n\nresource Ledger`;
+    if (!out.some((d) => d.filePath === `shape/c${i}.shape`))
+      out.push(componentDoc(`shape/c${i}.shape`, `mod${i}`, `Comp${i}`, "Ledger", "Read", "added"));
+    if (!out[0]?.source.includes("resource Ledger") && out[0])
+      out[0].source = `${out[0].source}\n\nresource Ledger`;
   } else if (op === "remove" && comps.length > 1) {
     const victim = r.pick(comps).filePath;
     return out.filter((d) => d.filePath !== victim);
@@ -112,7 +149,14 @@ function genSession(r: Rng): Step[] {
 }
 
 /** Replays a session, checking `law` at every step of the given kind. */
-function replay(steps: Step[], onStep: (s: Step, res: ReturnType<IncrementalShapeChecker["check"]>, prev: ReturnType<IncrementalShapeChecker["check"]> | null) => string | null): string | null {
+function replay(
+  steps: Step[],
+  onStep: (
+    s: Step,
+    res: ReturnType<IncrementalShapeChecker["check"]>,
+    prev: ReturnType<IncrementalShapeChecker["check"]> | null
+  ) => string | null
+): string | null {
   const checker = new IncrementalShapeChecker();
   let prev: ReturnType<IncrementalShapeChecker["check"]> | null = null;
   for (const [i, s] of steps.entries()) {
@@ -127,41 +171,65 @@ function replay(steps: Step[], onStep: (s: Step, res: ReturnType<IncrementalShap
 // "document mutations and implicit generated-AST origin changes rebuild the complete two-pass
 // model and facts"
 lawTest("shape.checker.incremental::IncrementalRebuildsOnDocumentChange", "holds", () =>
-  property("shape.checker.incremental::IncrementalRebuildsOnDocumentChange", { cases: 60, seed: 0x1c1101 }, genSession, (steps) =>
-    replay(steps, (s, res) => {
-      if (s.kind !== "documents") return null;
-      if (stable(res.result) !== stable(fullCheck(s.docs, s.opts))) return "result differs from a fresh full check";
-      const docsChanged = res.invalidation.reparsedDocuments.length > 0 || res.invalidation.removedDocuments.length > 0 || res.invalidation.causes.includes("initial_check");
-      if (docsChanged && res.invalidation.derivedFacts !== "rebuilt") return `documents changed but derivedFacts=${res.invalidation.derivedFacts}`;
-      if (docsChanged && res.invalidation.diagnostics !== "recomputed") return `documents changed but diagnostics=${res.invalidation.diagnostics}`;
-      return null;
-    })
+  property(
+    "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+    { cases: 60, seed: 0x1c1101 },
+    genSession,
+    (steps) =>
+      replay(steps, (s, res) => {
+        if (s.kind !== "documents") return null;
+        if (stable(res.result) !== stable(fullCheck(s.docs, s.opts)))
+          return "result differs from a fresh full check";
+        const docsChanged =
+          res.invalidation.reparsedDocuments.length > 0 ||
+          res.invalidation.removedDocuments.length > 0 ||
+          res.invalidation.causes.includes("initial_check");
+        if (docsChanged && res.invalidation.derivedFacts !== "rebuilt")
+          return `documents changed but derivedFacts=${res.invalidation.derivedFacts}`;
+        if (docsChanged && res.invalidation.diagnostics !== "recomputed")
+          return `documents changed but diagnostics=${res.invalidation.diagnostics}`;
+        return null;
+      })
   )
 );
 
 // "option-only checks may reuse the model when origins stay stable"
 lawTest("shape.checker.incremental::IncrementalReusesModelOnOptionChange", "holds", () =>
-  property("shape.checker.incremental::IncrementalReusesModelOnOptionChange", { cases: 60, seed: 0x1c1102 }, genSession, (steps) =>
-    replay(steps, (s, res) => {
-      if (s.kind !== "options") return null;
-      if (stable(res.result) !== stable(fullCheck(s.docs, s.opts))) return "option-only result differs from a fresh full check";
-      if (res.invalidation.reparsedDocuments.length > 0) return "an option-only check reparsed documents";
-      if (res.invalidation.derivedFacts !== "reused") return `option-only check rebuilt the model (derivedFacts=${res.invalidation.derivedFacts})`;
-      if (res.invalidation.diagnostics !== "recomputed") return "option-only check did not recompute diagnostics";
-      return null;
-    })
+  property(
+    "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+    { cases: 60, seed: 0x1c1102 },
+    genSession,
+    (steps) =>
+      replay(steps, (s, res) => {
+        if (s.kind !== "options") return null;
+        if (stable(res.result) !== stable(fullCheck(s.docs, s.opts)))
+          return "option-only result differs from a fresh full check";
+        if (res.invalidation.reparsedDocuments.length > 0)
+          return "an option-only check reparsed documents";
+        if (res.invalidation.derivedFacts !== "reused")
+          return `option-only check rebuilt the model (derivedFacts=${res.invalidation.derivedFacts})`;
+        if (res.invalidation.diagnostics !== "recomputed")
+          return "option-only check did not recompute diagnostics";
+        return null;
+      })
   )
 );
 
 // "exact no-ops may reuse diagnostics"
 lawTest("shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop", "holds", () =>
-  property("shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop", { cases: 60, seed: 0x1c1103 }, genSession, (steps) =>
-    replay(steps, (s, res, prev) => {
-      if (s.kind !== "noop" || !prev) return null;
-      if (stable(res.result) !== stable(prev.result)) return "a no-op changed the result";
-      if (stable(res.result) !== stable(fullCheck(s.docs, s.opts))) return "a no-op result differs from a fresh full check";
-      if (res.invalidation.diagnostics !== "reused" || res.invalidation.derivedFacts !== "reused") return `no-op recomputed: ${JSON.stringify(res.invalidation)}`;
-      return null;
-    })
+  property(
+    "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+    { cases: 60, seed: 0x1c1103 },
+    genSession,
+    (steps) =>
+      replay(steps, (s, res, prev) => {
+        if (s.kind !== "noop" || !prev) return null;
+        if (stable(res.result) !== stable(prev.result)) return "a no-op changed the result";
+        if (stable(res.result) !== stable(fullCheck(s.docs, s.opts)))
+          return "a no-op result differs from a fresh full check";
+        if (res.invalidation.diagnostics !== "reused" || res.invalidation.derivedFacts !== "reused")
+          return `no-op recomputed: ${JSON.stringify(res.invalidation)}`;
+        return null;
+      })
   )
 );

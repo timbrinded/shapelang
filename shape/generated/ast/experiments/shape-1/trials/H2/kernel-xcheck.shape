@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.trials.H2.kernel_xcheck
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource KernelXcheckModuleKernelCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/kernel-xcheck.ts#kernelCase")
+  fingerprint ast.semantic_subtree_v1("sha256:bfb645dc3955f9677f679f5721513d7a104c4c7d2851ac794ab441ab97e02a33")
+}
+
+resource KernelXcheckModuleRecordsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H2/kernel-xcheck.ts#records")
+  fingerprint ast.semantic_subtree_v1("sha256:2b14836d79aaec27329ad7620793fe5d55c77942a2a6d9bcd84f699621ae27dd")
+}
+
+component KernelXcheckModule : GeneratedCandidate {
+  fn kernelCase
+    source ts("experiments/shape-1/trials/H2/kernel-xcheck.ts#kernelCase")
+    effects unknown
+  fn records
+    source ts("experiments/shape-1/trials/H2/kernel-xcheck.ts#records")
+    effects unknown
+}
+
+relation KernelXcheckModuleKernelCaseGeneratedFromKernelXcheckModuleKernelCaseAstAnchor {
+  kind generated_from
+  connects KernelXcheckModule -> KernelXcheckModuleKernelCaseAstAnchor
+  roles { KernelXcheckModule as generated, KernelXcheckModuleKernelCaseAstAnchor as syntax }
+  expects KernelXcheckModuleKernelCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bfb645dc3955f9677f679f5721513d7a104c4c7d2851ac794ab441ab97e02a33")
+  summary "fn KernelXcheckModule.kernelCase generated from typescript function_declaration at experiments/shape-1/trials/H2/kernel-xcheck.ts#kernelCase."
+}
+
+relation KernelXcheckModuleRecordsGeneratedFromKernelXcheckModuleRecordsAstAnchor {
+  kind generated_from
+  connects KernelXcheckModule -> KernelXcheckModuleRecordsAstAnchor
+  roles { KernelXcheckModule as generated, KernelXcheckModuleRecordsAstAnchor as syntax }
+  expects KernelXcheckModuleRecordsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2b14836d79aaec27329ad7620793fe5d55c77942a2a6d9bcd84f699621ae27dd")
+  summary "fn KernelXcheckModule.records generated from typescript function_declaration at experiments/shape-1/trials/H2/kernel-xcheck.ts#records."
+}
+
+implementation KernelXcheckModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H2/kernel-xcheck.ts"
+  }
+  conforms_to KernelXcheckModule
+}

@@ -1,0 +1,38 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:2e93d9a08b16dfb9012f349fec58177a52e14b3bb0a6edc5f3d232ef241ccb93",
+   "budget": "judgment",
+   "claim": {
+    "fp": "sha256:866e06e6bddd0add1cd7a6103d38d09c31bed7b56936712bd6318cd6497ba0f1",
+    "ids": [
+     "tooling::CheckerNeverReadsClock"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": true,
+   "final": false,
+   "force": null,
+   "group": "g:7f56b901f81aa3ddcf4be245ab157b2eb0bdcf63f7a57e686f59cd484c151aa2",
+   "introduced": true,
+   "key": "ob:58c4d96ace4f36e5b19a18f615188c3e1884862a67b2ea7110c9288d239d0908",
+   "kind": "loosening",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": [
+    "L1"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "sha256:866e06e6bddd0add1cd7a6103d38d09c31bed7b56936712bd6318cd6497ba0f1",
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

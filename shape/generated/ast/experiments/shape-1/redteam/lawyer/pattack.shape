@@ -1,0 +1,113 @@
+module shape.generated.ast.experiments.shape_1.redteam.lawyer.pattack
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource PattackModuleClockShapeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/pattack.ts#clockShape")
+  fingerprint ast.semantic_subtree_v1("sha256:eace5b84d7f196f0f6be16351275d9a7221db589c557dddbd3e60039583632ae")
+}
+
+resource PattackModuleGeneratedFunctionSummaryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/pattack.ts#summary")
+  fingerprint ast.semantic_subtree_v1("sha256:69d306a99419bfe75499c7661f77e79b87e3099ff518a590511bf30230ea4078")
+}
+
+resource PattackModuleRecAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/pattack.ts#rec")
+  fingerprint ast.semantic_subtree_v1("sha256:cc995a67135f9a125adf4c1cc52d431bf59dd54b1cc1f7d31f8a08173caa978b")
+}
+
+resource PattackModuleRemanifestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/pattack.ts#remanifest")
+  fingerprint ast.semantic_subtree_v1("sha256:32d36a179b52e9d830168f34641c6cc2dd60cf5b16b14843451496feca8e91e7")
+}
+
+resource PattackModuleRunAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/pattack.ts#run")
+  fingerprint ast.semantic_subtree_v1("sha256:58ffc9f953feae5cee4772ff201f99c16d3eeca424e146803ca8b7fe685ab886")
+}
+
+resource PattackModuleScanAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/redteam/lawyer/pattack.ts#scan")
+  fingerprint ast.semantic_subtree_v1("sha256:fb8a7f322be14e44b6dbd3369f5f1ddc65b95d37a6c42d17fc766994971552ac")
+}
+
+component PattackModule : GeneratedCandidate {
+  fn clockShape
+    source ts("experiments/shape-1/redteam/lawyer/pattack.ts#clockShape")
+    effects unknown
+  fn generatedFunction_summary
+    source ts("experiments/shape-1/redteam/lawyer/pattack.ts#summary")
+    effects unknown
+  fn rec
+    source ts("experiments/shape-1/redteam/lawyer/pattack.ts#rec")
+    effects unknown
+  fn remanifest
+    source ts("experiments/shape-1/redteam/lawyer/pattack.ts#remanifest")
+    effects unknown
+  fn run
+    source ts("experiments/shape-1/redteam/lawyer/pattack.ts#run")
+    effects unknown
+  fn scan
+    source ts("experiments/shape-1/redteam/lawyer/pattack.ts#scan")
+    effects unknown
+}
+
+relation PattackModuleClockShapeGeneratedFromPattackModuleClockShapeAstAnchor {
+  kind generated_from
+  connects PattackModule -> PattackModuleClockShapeAstAnchor
+  roles { PattackModule as generated, PattackModuleClockShapeAstAnchor as syntax }
+  expects PattackModuleClockShapeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eace5b84d7f196f0f6be16351275d9a7221db589c557dddbd3e60039583632ae")
+  summary "fn PattackModule.clockShape generated from typescript function_declaration at experiments/shape-1/redteam/lawyer/pattack.ts#clockShape."
+}
+
+relation PattackModuleGeneratedFunctionSummaryGeneratedFromPattackModuleGeneratedFunctionSummaryAstAnchor {
+  kind generated_from
+  connects PattackModule -> PattackModuleGeneratedFunctionSummaryAstAnchor
+  roles { PattackModule as generated, PattackModuleGeneratedFunctionSummaryAstAnchor as syntax }
+  expects PattackModuleGeneratedFunctionSummaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:69d306a99419bfe75499c7661f77e79b87e3099ff518a590511bf30230ea4078")
+  summary "fn PattackModule.generatedFunction_summary generated from typescript function_declaration at experiments/shape-1/redteam/lawyer/pattack.ts#summary."
+}
+
+relation PattackModuleRecGeneratedFromPattackModuleRecAstAnchor {
+  kind generated_from
+  connects PattackModule -> PattackModuleRecAstAnchor
+  roles { PattackModule as generated, PattackModuleRecAstAnchor as syntax }
+  expects PattackModuleRecAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cc995a67135f9a125adf4c1cc52d431bf59dd54b1cc1f7d31f8a08173caa978b")
+  summary "fn PattackModule.rec generated from typescript function_declaration at experiments/shape-1/redteam/lawyer/pattack.ts#rec."
+}
+
+relation PattackModuleRemanifestGeneratedFromPattackModuleRemanifestAstAnchor {
+  kind generated_from
+  connects PattackModule -> PattackModuleRemanifestAstAnchor
+  roles { PattackModule as generated, PattackModuleRemanifestAstAnchor as syntax }
+  expects PattackModuleRemanifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:32d36a179b52e9d830168f34641c6cc2dd60cf5b16b14843451496feca8e91e7")
+  summary "fn PattackModule.remanifest generated from typescript function_declaration at experiments/shape-1/redteam/lawyer/pattack.ts#remanifest."
+}
+
+relation PattackModuleRunGeneratedFromPattackModuleRunAstAnchor {
+  kind generated_from
+  connects PattackModule -> PattackModuleRunAstAnchor
+  roles { PattackModule as generated, PattackModuleRunAstAnchor as syntax }
+  expects PattackModuleRunAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58ffc9f953feae5cee4772ff201f99c16d3eeca424e146803ca8b7fe685ab886")
+  summary "fn PattackModule.run generated from typescript function_declaration at experiments/shape-1/redteam/lawyer/pattack.ts#run."
+}
+
+relation PattackModuleScanGeneratedFromPattackModuleScanAstAnchor {
+  kind generated_from
+  connects PattackModule -> PattackModuleScanAstAnchor
+  roles { PattackModule as generated, PattackModuleScanAstAnchor as syntax }
+  expects PattackModuleScanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fb8a7f322be14e44b6dbd3369f5f1ddc65b95d37a6c42d17fc766994971552ac")
+  summary "fn PattackModule.scan generated from typescript function_declaration at experiments/shape-1/redteam/lawyer/pattack.ts#scan."
+}
+
+implementation PattackModuleImpl {
+  paths {
+    "experiments/shape-1/redteam/lawyer/pattack.ts"
+  }
+  conforms_to PattackModule
+}

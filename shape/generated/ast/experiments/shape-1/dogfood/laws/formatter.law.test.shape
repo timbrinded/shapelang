@@ -1,0 +1,65 @@
+module shape.generated.ast.experiments.shape_1.dogfood.laws.formatter_law_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource FormatterLawTestModuleFmtAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/formatter.law.test.ts#fmt")
+  fingerprint ast.semantic_subtree_v1("sha256:6af8c9e9d1ea969f6e3d3f7eebe885b39474b62f1437536c5e48f3715d2d6bdc")
+}
+
+resource FormatterLawTestModuleGenModuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/formatter.law.test.ts#genModule")
+  fingerprint ast.semantic_subtree_v1("sha256:d35e80dbf836329ed692cecf26aa2d42ba3eb0bcec783dc95f482e7e23fb8fb2")
+}
+
+resource FormatterLawTestModuleNoisyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/laws/formatter.law.test.ts#noisy")
+  fingerprint ast.semantic_subtree_v1("sha256:e87edeffe4526916c17604b19a002d4794761b162be501cdacb58a2db15f19c1")
+}
+
+component FormatterLawTestModule : GeneratedCandidate {
+  fn fmt
+    source ts("experiments/shape-1/dogfood/laws/formatter.law.test.ts#fmt")
+    effects unknown
+  fn genModule
+    source ts("experiments/shape-1/dogfood/laws/formatter.law.test.ts#genModule")
+    effects unknown
+  fn noisy
+    source ts("experiments/shape-1/dogfood/laws/formatter.law.test.ts#noisy")
+    effects unknown
+}
+
+relation FormatterLawTestModuleFmtGeneratedFromFormatterLawTestModuleFmtAstAnchor {
+  kind generated_from
+  connects FormatterLawTestModule -> FormatterLawTestModuleFmtAstAnchor
+  roles { FormatterLawTestModule as generated, FormatterLawTestModuleFmtAstAnchor as syntax }
+  expects FormatterLawTestModuleFmtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6af8c9e9d1ea969f6e3d3f7eebe885b39474b62f1437536c5e48f3715d2d6bdc")
+  summary "fn FormatterLawTestModule.fmt generated from typescript function_declaration at experiments/shape-1/dogfood/laws/formatter.law.test.ts#fmt."
+}
+
+relation FormatterLawTestModuleGenModuleGeneratedFromFormatterLawTestModuleGenModuleAstAnchor {
+  kind generated_from
+  connects FormatterLawTestModule -> FormatterLawTestModuleGenModuleAstAnchor
+  roles { FormatterLawTestModule as generated, FormatterLawTestModuleGenModuleAstAnchor as syntax }
+  expects FormatterLawTestModuleGenModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d35e80dbf836329ed692cecf26aa2d42ba3eb0bcec783dc95f482e7e23fb8fb2")
+  summary "fn FormatterLawTestModule.genModule generated from typescript function_declaration at experiments/shape-1/dogfood/laws/formatter.law.test.ts#genModule."
+}
+
+relation FormatterLawTestModuleNoisyGeneratedFromFormatterLawTestModuleNoisyAstAnchor {
+  kind generated_from
+  connects FormatterLawTestModule -> FormatterLawTestModuleNoisyAstAnchor
+  roles { FormatterLawTestModule as generated, FormatterLawTestModuleNoisyAstAnchor as syntax }
+  expects FormatterLawTestModuleNoisyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e87edeffe4526916c17604b19a002d4794761b162be501cdacb58a2db15f19c1")
+  summary "fn FormatterLawTestModule.noisy generated from typescript function_declaration at experiments/shape-1/dogfood/laws/formatter.law.test.ts#noisy."
+}
+
+implementation FormatterLawTestModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/laws/formatter.law.test.ts"
+  }
+  conforms_to FormatterLawTestModule
+}

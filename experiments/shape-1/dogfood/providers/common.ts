@@ -3,7 +3,15 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import type { Statement } from "../../proto/src/manifest.ts";
-import { type CodeCite, type DsseEnvelope, type ShapeRecord, makeStatement, recordId, signStatement, signerFromSeed } from "../../proto/src/records.ts";
+import {
+  type CodeCite,
+  type DsseEnvelope,
+  type ShapeRecord,
+  makeStatement,
+  recordId,
+  signStatement,
+  signerFromSeed
+} from "../../proto/src/records.ts";
 
 export interface ProviderId {
   q: string;
@@ -13,9 +21,21 @@ export interface ProviderId {
 
 /** Seeds are sha256("shape-dogfood-provider-<name>"); public keys are declared in shape1.yaml. */
 export const PROVIDERS = {
-  bunTest: { q: "shape.governance::bunTest", version: "0.1.0", seed: "09ecfb4142249dcffb3077ab078f72a3978e71153d0b146a430f7de8b2e7eec1" },
-  tsClockScan: { q: "shape.governance::tsClockScan", version: "0.1.0", seed: "2867793dda7d9916ac71667769ac579fde273a191827f84c3fa747d62505fae0" },
-  tsCalls: { q: "shape.governance::tsCalls", version: "0.1.0", seed: "5a353d72a3b2c89b5a24cb8cd8fc11723ee7ee4964754174b9b0a5c6cc476955" }
+  bunTest: {
+    q: "shape.governance::bunTest",
+    version: "0.1.0",
+    seed: "09ecfb4142249dcffb3077ab078f72a3978e71153d0b146a430f7de8b2e7eec1"
+  },
+  tsClockScan: {
+    q: "shape.governance::tsClockScan",
+    version: "0.1.0",
+    seed: "2867793dda7d9916ac71667769ac579fde273a191827f84c3fa747d62505fae0"
+  },
+  tsCalls: {
+    q: "shape.governance::tsCalls",
+    version: "0.1.0",
+    seed: "5a353d72a3b2c89b5a24cb8cd8fc11723ee7ee4964754174b9b0a5c6cc476955"
+  }
 } as const satisfies Record<string, ProviderId>;
 
 export interface ManifestView {
@@ -34,7 +54,11 @@ interface Entry {
 }
 
 export function viewOf(manifest: Statement): ManifestView {
-  const pred = manifest.predicate.shape as unknown as { revision: string; tree: { path: string }[]; entries: Entry[] };
+  const pred = manifest.predicate.shape as unknown as {
+    revision: string;
+    tree: { path: string }[];
+    entries: Entry[];
+  };
   const cites = new Map<string, Map<string, CodeCite>>();
   for (const e of pred.entries) {
     const m = cites.get(e.id) ?? new Map<string, CodeCite>();
@@ -66,7 +90,17 @@ export function sortCites(xs: CodeCite[]): CodeCite[] {
       seen.add(k);
       return true;
     })
-    .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : a.projection < b.projection ? -1 : a.projection > b.projection ? 1 : 0));
+    .sort((a, b) =>
+      a.id < b.id
+        ? -1
+        : a.id > b.id
+          ? 1
+          : a.projection < b.projection
+            ? -1
+            : a.projection > b.projection
+              ? 1
+              : 0
+    );
 }
 
 export function emit(p: ProviderId, rec: ShapeRecord): { envelope: DsseEnvelope; id: string } {

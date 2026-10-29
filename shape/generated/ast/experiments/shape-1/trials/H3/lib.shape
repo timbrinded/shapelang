@@ -1,0 +1,177 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.lib
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LibModuleCheckInputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/lib.ts#checkInput")
+  fingerprint ast.semantic_subtree_v1("sha256:b5d3f35f3dbf94958f029c3d374ff7d6a45b28f3d1da5cb9d88b04b3e3be66a2")
+}
+
+resource LibModuleCompactAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/lib.ts#compact")
+  fingerprint ast.semantic_subtree_v1("sha256:931459d2ef753baa36e24632904f27d8ecfb4cf3fc57d2cb267c877062c1b426")
+}
+
+resource LibModuleLawRecordsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/lib.ts#lawRecords")
+  fingerprint ast.semantic_subtree_v1("sha256:3a5d4e8a1d8620b1694e84b938797016a0038b36ade96e5ae3b4c9b2b461768e")
+}
+
+resource LibModuleManifestOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/lib.ts#manifestOf")
+  fingerprint ast.semantic_subtree_v1("sha256:d67028ff214da089beb8e19a2894eaf01df7eb5eba16a56a23ae6e5792664b8f")
+}
+
+resource LibModuleMovedIdentitiesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/lib.ts#movedIdentities")
+  fingerprint ast.semantic_subtree_v1("sha256:bab32a5c2dddf536496109639db97a2be57512ac0534bbd2cfead0e595b6467c")
+}
+
+resource LibModuleParseJunitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/lib.ts#parseJunit")
+  fingerprint ast.semantic_subtree_v1("sha256:8702a686c4ec9316df3b276f3ccbe0123932ad5cdc297dafd95bf97b0814b678")
+}
+
+resource LibModuleRunDeriveAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/lib.ts#runDerive")
+  fingerprint ast.semantic_subtree_v1("sha256:f92d6cb6d3f4dde0400ebe5e4cbbed6d869470c23dff1c1bb69c994a874bd420")
+}
+
+resource LibModuleRunSuiteAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/lib.ts#runSuite")
+  fingerprint ast.semantic_subtree_v1("sha256:92c273a3e80094dc12c7dd9e629ad541318670c183508e1468ae7a1e1d4c8c0e")
+}
+
+resource LibModuleSourceForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/lib.ts#sourceFor")
+  fingerprint ast.semantic_subtree_v1("sha256:31211327bfbafaf338e068e5a974f8d6182fae87889b1b2fedc0095abf456f40")
+}
+
+resource LibModuleTreeFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/lib.ts#treeFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:9e9ea5094372beac812470e5a0799082372178e3c0315286f761f7f2a70803a7")
+}
+
+component LibModule : GeneratedCandidate {
+  fn checkInput
+    source ts("experiments/shape-1/trials/H3/lib.ts#checkInput")
+    effects unknown
+  fn compact
+    source ts("experiments/shape-1/trials/H3/lib.ts#compact")
+    effects unknown
+  fn lawRecords
+    source ts("experiments/shape-1/trials/H3/lib.ts#lawRecords")
+    effects unknown
+  fn manifestOf
+    source ts("experiments/shape-1/trials/H3/lib.ts#manifestOf")
+    effects unknown
+  fn movedIdentities
+    source ts("experiments/shape-1/trials/H3/lib.ts#movedIdentities")
+    effects unknown
+  fn parseJunit
+    source ts("experiments/shape-1/trials/H3/lib.ts#parseJunit")
+    effects unknown
+  fn runDerive
+    source ts("experiments/shape-1/trials/H3/lib.ts#runDerive")
+    effects unknown
+  fn runSuite
+    source ts("experiments/shape-1/trials/H3/lib.ts#runSuite")
+    effects unknown
+  fn sourceFor
+    source ts("experiments/shape-1/trials/H3/lib.ts#sourceFor")
+    effects unknown
+  fn treeFiles
+    source ts("experiments/shape-1/trials/H3/lib.ts#treeFiles")
+    effects unknown
+}
+
+relation LibModuleCheckInputGeneratedFromLibModuleCheckInputAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleCheckInputAstAnchor
+  roles { LibModule as generated, LibModuleCheckInputAstAnchor as syntax }
+  expects LibModuleCheckInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b5d3f35f3dbf94958f029c3d374ff7d6a45b28f3d1da5cb9d88b04b3e3be66a2")
+  summary "fn LibModule.checkInput generated from typescript function_declaration at experiments/shape-1/trials/H3/lib.ts#checkInput."
+}
+
+relation LibModuleCompactGeneratedFromLibModuleCompactAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleCompactAstAnchor
+  roles { LibModule as generated, LibModuleCompactAstAnchor as syntax }
+  expects LibModuleCompactAstAnchor fingerprint ast.semantic_subtree_v1("sha256:931459d2ef753baa36e24632904f27d8ecfb4cf3fc57d2cb267c877062c1b426")
+  summary "fn LibModule.compact generated from typescript function_declaration at experiments/shape-1/trials/H3/lib.ts#compact."
+}
+
+relation LibModuleLawRecordsGeneratedFromLibModuleLawRecordsAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleLawRecordsAstAnchor
+  roles { LibModule as generated, LibModuleLawRecordsAstAnchor as syntax }
+  expects LibModuleLawRecordsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3a5d4e8a1d8620b1694e84b938797016a0038b36ade96e5ae3b4c9b2b461768e")
+  summary "fn LibModule.lawRecords generated from typescript function_declaration at experiments/shape-1/trials/H3/lib.ts#lawRecords."
+}
+
+relation LibModuleManifestOfGeneratedFromLibModuleManifestOfAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleManifestOfAstAnchor
+  roles { LibModule as generated, LibModuleManifestOfAstAnchor as syntax }
+  expects LibModuleManifestOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d67028ff214da089beb8e19a2894eaf01df7eb5eba16a56a23ae6e5792664b8f")
+  summary "fn LibModule.manifestOf generated from typescript function_declaration at experiments/shape-1/trials/H3/lib.ts#manifestOf."
+}
+
+relation LibModuleMovedIdentitiesGeneratedFromLibModuleMovedIdentitiesAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleMovedIdentitiesAstAnchor
+  roles { LibModule as generated, LibModuleMovedIdentitiesAstAnchor as syntax }
+  expects LibModuleMovedIdentitiesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bab32a5c2dddf536496109639db97a2be57512ac0534bbd2cfead0e595b6467c")
+  summary "fn LibModule.movedIdentities generated from typescript function_declaration at experiments/shape-1/trials/H3/lib.ts#movedIdentities."
+}
+
+relation LibModuleParseJunitGeneratedFromLibModuleParseJunitAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleParseJunitAstAnchor
+  roles { LibModule as generated, LibModuleParseJunitAstAnchor as syntax }
+  expects LibModuleParseJunitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8702a686c4ec9316df3b276f3ccbe0123932ad5cdc297dafd95bf97b0814b678")
+  summary "fn LibModule.parseJunit generated from typescript function_declaration at experiments/shape-1/trials/H3/lib.ts#parseJunit."
+}
+
+relation LibModuleRunDeriveGeneratedFromLibModuleRunDeriveAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleRunDeriveAstAnchor
+  roles { LibModule as generated, LibModuleRunDeriveAstAnchor as syntax }
+  expects LibModuleRunDeriveAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f92d6cb6d3f4dde0400ebe5e4cbbed6d869470c23dff1c1bb69c994a874bd420")
+  summary "fn LibModule.runDerive generated from typescript function_declaration at experiments/shape-1/trials/H3/lib.ts#runDerive."
+}
+
+relation LibModuleRunSuiteGeneratedFromLibModuleRunSuiteAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleRunSuiteAstAnchor
+  roles { LibModule as generated, LibModuleRunSuiteAstAnchor as syntax }
+  expects LibModuleRunSuiteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92c273a3e80094dc12c7dd9e629ad541318670c183508e1468ae7a1e1d4c8c0e")
+  summary "fn LibModule.runSuite generated from typescript function_declaration at experiments/shape-1/trials/H3/lib.ts#runSuite."
+}
+
+relation LibModuleSourceForGeneratedFromLibModuleSourceForAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleSourceForAstAnchor
+  roles { LibModule as generated, LibModuleSourceForAstAnchor as syntax }
+  expects LibModuleSourceForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:31211327bfbafaf338e068e5a974f8d6182fae87889b1b2fedc0095abf456f40")
+  summary "fn LibModule.sourceFor generated from typescript function_declaration at experiments/shape-1/trials/H3/lib.ts#sourceFor."
+}
+
+relation LibModuleTreeFilesGeneratedFromLibModuleTreeFilesAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleTreeFilesAstAnchor
+  roles { LibModule as generated, LibModuleTreeFilesAstAnchor as syntax }
+  expects LibModuleTreeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9e9ea5094372beac812470e5a0799082372178e3c0315286f761f7f2a70803a7")
+  summary "fn LibModule.treeFiles generated from typescript function_declaration at experiments/shape-1/trials/H3/lib.ts#treeFiles."
+}
+
+implementation LibModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/lib.ts"
+  }
+  conforms_to LibModule
+}

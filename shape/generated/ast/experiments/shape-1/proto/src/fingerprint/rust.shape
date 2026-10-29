@@ -1,0 +1,113 @@
+module shape.generated.ast.experiments.shape_1.proto.src.generated_fingerprint.rust
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RustModuleCanonToksAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/rust.ts#canonToks")
+  fingerprint ast.semantic_subtree_v1("sha256:f98101fef5cc582aca0e243da775b58540fdd3ed39228420aebf90b57d5cafd8")
+}
+
+resource RustModuleFingerprintRustAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/rust.ts#fingerprintRust")
+  fingerprint ast.semantic_subtree_v1("sha256:533d842f107eeb00302f26045c3e1355acd599daa1a77015754fd52ff3303813")
+}
+
+resource RustModuleImplSegmentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/rust.ts#implSegment")
+  fingerprint ast.semantic_subtree_v1("sha256:6873598bcf24c9209e9084150d55bca8ee17c1177ba46dbeccb044a1110cc9ff")
+}
+
+resource RustModuleIsInertRustAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/rust.ts#isInertRust")
+  fingerprint ast.semantic_subtree_v1("sha256:3944e622588c659ff390097c923d761727272ddc5f394e12530f2654ed9c7518")
+}
+
+resource RustModuleIsVerusTextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/rust.ts#isVerusText")
+  fingerprint ast.semantic_subtree_v1("sha256:3e8ed6ce5a112a001f7a30583942ae5ffbf58df45482c7aaa564883248d023e7")
+}
+
+resource RustModuleLexRustAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/fingerprint/rust.ts#lexRust")
+  fingerprint ast.semantic_subtree_v1("sha256:4ba031202abfcab23a612a854281469ce9b3c073d5b0c450500be5d9ecbff58d")
+}
+
+component RustModule : GeneratedCandidate {
+  fn canonToks
+    source ts("experiments/shape-1/proto/src/fingerprint/rust.ts#canonToks")
+    effects unknown
+  fn fingerprintRust
+    source ts("experiments/shape-1/proto/src/fingerprint/rust.ts#fingerprintRust")
+    effects unknown
+  fn implSegment
+    source ts("experiments/shape-1/proto/src/fingerprint/rust.ts#implSegment")
+    effects unknown
+  fn isInertRust
+    source ts("experiments/shape-1/proto/src/fingerprint/rust.ts#isInertRust")
+    effects unknown
+  fn isVerusText
+    source ts("experiments/shape-1/proto/src/fingerprint/rust.ts#isVerusText")
+    effects unknown
+  fn lexRust
+    source ts("experiments/shape-1/proto/src/fingerprint/rust.ts#lexRust")
+    effects unknown
+}
+
+relation RustModuleCanonToksGeneratedFromRustModuleCanonToksAstAnchor {
+  kind generated_from
+  connects RustModule -> RustModuleCanonToksAstAnchor
+  roles { RustModule as generated, RustModuleCanonToksAstAnchor as syntax }
+  expects RustModuleCanonToksAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f98101fef5cc582aca0e243da775b58540fdd3ed39228420aebf90b57d5cafd8")
+  summary "fn RustModule.canonToks generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/rust.ts#canonToks."
+}
+
+relation RustModuleFingerprintRustGeneratedFromRustModuleFingerprintRustAstAnchor {
+  kind generated_from
+  connects RustModule -> RustModuleFingerprintRustAstAnchor
+  roles { RustModule as generated, RustModuleFingerprintRustAstAnchor as syntax }
+  expects RustModuleFingerprintRustAstAnchor fingerprint ast.semantic_subtree_v1("sha256:533d842f107eeb00302f26045c3e1355acd599daa1a77015754fd52ff3303813")
+  summary "fn RustModule.fingerprintRust generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/rust.ts#fingerprintRust."
+}
+
+relation RustModuleImplSegmentGeneratedFromRustModuleImplSegmentAstAnchor {
+  kind generated_from
+  connects RustModule -> RustModuleImplSegmentAstAnchor
+  roles { RustModule as generated, RustModuleImplSegmentAstAnchor as syntax }
+  expects RustModuleImplSegmentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6873598bcf24c9209e9084150d55bca8ee17c1177ba46dbeccb044a1110cc9ff")
+  summary "fn RustModule.implSegment generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/rust.ts#implSegment."
+}
+
+relation RustModuleIsInertRustGeneratedFromRustModuleIsInertRustAstAnchor {
+  kind generated_from
+  connects RustModule -> RustModuleIsInertRustAstAnchor
+  roles { RustModule as generated, RustModuleIsInertRustAstAnchor as syntax }
+  expects RustModuleIsInertRustAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3944e622588c659ff390097c923d761727272ddc5f394e12530f2654ed9c7518")
+  summary "fn RustModule.isInertRust generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/rust.ts#isInertRust."
+}
+
+relation RustModuleIsVerusTextGeneratedFromRustModuleIsVerusTextAstAnchor {
+  kind generated_from
+  connects RustModule -> RustModuleIsVerusTextAstAnchor
+  roles { RustModule as generated, RustModuleIsVerusTextAstAnchor as syntax }
+  expects RustModuleIsVerusTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3e8ed6ce5a112a001f7a30583942ae5ffbf58df45482c7aaa564883248d023e7")
+  summary "fn RustModule.isVerusText generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/rust.ts#isVerusText."
+}
+
+relation RustModuleLexRustGeneratedFromRustModuleLexRustAstAnchor {
+  kind generated_from
+  connects RustModule -> RustModuleLexRustAstAnchor
+  roles { RustModule as generated, RustModuleLexRustAstAnchor as syntax }
+  expects RustModuleLexRustAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ba031202abfcab23a612a854281469ce9b3c073d5b0c450500be5d9ecbff58d")
+  summary "fn RustModule.lexRust generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/rust.ts#lexRust."
+}
+
+implementation RustModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/fingerprint/rust.ts"
+  }
+  conforms_to RustModule
+}

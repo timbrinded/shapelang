@@ -1,0 +1,145 @@
+module shape.generated.ast.experiments.shape_1.trials.DRT.compare
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CompareModuleCompareAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/compare.py#compare")
+  fingerprint ast.semantic_subtree_v1("sha256:705dc14f5d78b2b40e9669f66d1ba03655e5c2717a53cafbab633ec65aea781e")
+}
+
+resource CompareModuleDeclaredFidsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/compare.py#declared_fids")
+  fingerprint ast.semantic_subtree_v1("sha256:e424b00cca05730b19224d9ba5e6d17cbc67a0df44a50935ef57620e456fe869")
+}
+
+resource CompareModuleHAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/compare.py#H")
+  fingerprint ast.semantic_subtree_v1("sha256:c6321f6e2cb99e86f97c8060ca4ee060d44625d1eac4839fb3f307733b8c2de8")
+}
+
+resource CompareModuleJcsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/compare.py#jcs")
+  fingerprint ast.semantic_subtree_v1("sha256:a1a8e8ca856ff42d57f77d1089de431534764cc7b4ae537321dfe28e71782733")
+}
+
+resource CompareModuleKindQAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/compare.py#kind_q")
+  fingerprint ast.semantic_subtree_v1("sha256:11663179b35053060201a9842d78af104fdd187257d4a59a09b48dfdc6047749")
+}
+
+resource CompareModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/compare.py#main")
+  fingerprint ast.semantic_subtree_v1("sha256:acec9d3dbad55a89c3593a94c315abac851af0a292f9353b3ab9a07245ee935c")
+}
+
+resource CompareModuleProjAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/compare.py#proj")
+  fingerprint ast.semantic_subtree_v1("sha256:8a85232e17f64640e4826908ebbfe3dbbc87d39c292fcdf3f27e5dd0c633518a")
+}
+
+resource CompareModuleShortAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/compare.py#short")
+  fingerprint ast.semantic_subtree_v1("sha256:98e229b2eecb2d51709c6e956990285846dc122220c19ec69fc1442f83cf30d4")
+}
+
+component CompareModule : GeneratedCandidate {
+  fn H
+    source python("experiments/shape-1/trials/DRT/compare.py#H")
+    effects unknown
+  fn compare
+    source python("experiments/shape-1/trials/DRT/compare.py#compare")
+    effects unknown
+  fn declared_fids
+    source python("experiments/shape-1/trials/DRT/compare.py#declared_fids")
+    effects unknown
+  fn jcs
+    source python("experiments/shape-1/trials/DRT/compare.py#jcs")
+    effects unknown
+  fn kind_q
+    source python("experiments/shape-1/trials/DRT/compare.py#kind_q")
+    effects unknown
+  fn main
+    source python("experiments/shape-1/trials/DRT/compare.py#main")
+    effects unknown
+  fn proj
+    source python("experiments/shape-1/trials/DRT/compare.py#proj")
+    effects unknown
+  fn short
+    source python("experiments/shape-1/trials/DRT/compare.py#short")
+    effects unknown
+}
+
+relation CompareModuleCompareGeneratedFromCompareModuleCompareAstAnchor {
+  kind generated_from
+  connects CompareModule -> CompareModuleCompareAstAnchor
+  roles { CompareModule as generated, CompareModuleCompareAstAnchor as syntax }
+  expects CompareModuleCompareAstAnchor fingerprint ast.semantic_subtree_v1("sha256:705dc14f5d78b2b40e9669f66d1ba03655e5c2717a53cafbab633ec65aea781e")
+  summary "fn CompareModule.compare generated from python function_definition at experiments/shape-1/trials/DRT/compare.py#compare."
+}
+
+relation CompareModuleDeclaredFidsGeneratedFromCompareModuleDeclaredFidsAstAnchor {
+  kind generated_from
+  connects CompareModule -> CompareModuleDeclaredFidsAstAnchor
+  roles { CompareModule as generated, CompareModuleDeclaredFidsAstAnchor as syntax }
+  expects CompareModuleDeclaredFidsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e424b00cca05730b19224d9ba5e6d17cbc67a0df44a50935ef57620e456fe869")
+  summary "fn CompareModule.declared_fids generated from python function_definition at experiments/shape-1/trials/DRT/compare.py#declared_fids."
+}
+
+relation CompareModuleHGeneratedFromCompareModuleHAstAnchor {
+  kind generated_from
+  connects CompareModule -> CompareModuleHAstAnchor
+  roles { CompareModule as generated, CompareModuleHAstAnchor as syntax }
+  expects CompareModuleHAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c6321f6e2cb99e86f97c8060ca4ee060d44625d1eac4839fb3f307733b8c2de8")
+  summary "fn CompareModule.H generated from python function_definition at experiments/shape-1/trials/DRT/compare.py#H."
+}
+
+relation CompareModuleJcsGeneratedFromCompareModuleJcsAstAnchor {
+  kind generated_from
+  connects CompareModule -> CompareModuleJcsAstAnchor
+  roles { CompareModule as generated, CompareModuleJcsAstAnchor as syntax }
+  expects CompareModuleJcsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a1a8e8ca856ff42d57f77d1089de431534764cc7b4ae537321dfe28e71782733")
+  summary "fn CompareModule.jcs generated from python function_definition at experiments/shape-1/trials/DRT/compare.py#jcs."
+}
+
+relation CompareModuleKindQGeneratedFromCompareModuleKindQAstAnchor {
+  kind generated_from
+  connects CompareModule -> CompareModuleKindQAstAnchor
+  roles { CompareModule as generated, CompareModuleKindQAstAnchor as syntax }
+  expects CompareModuleKindQAstAnchor fingerprint ast.semantic_subtree_v1("sha256:11663179b35053060201a9842d78af104fdd187257d4a59a09b48dfdc6047749")
+  summary "fn CompareModule.kind_q generated from python function_definition at experiments/shape-1/trials/DRT/compare.py#kind_q."
+}
+
+relation CompareModuleMainGeneratedFromCompareModuleMainAstAnchor {
+  kind generated_from
+  connects CompareModule -> CompareModuleMainAstAnchor
+  roles { CompareModule as generated, CompareModuleMainAstAnchor as syntax }
+  expects CompareModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:acec9d3dbad55a89c3593a94c315abac851af0a292f9353b3ab9a07245ee935c")
+  summary "fn CompareModule.main generated from python function_definition at experiments/shape-1/trials/DRT/compare.py#main."
+}
+
+relation CompareModuleProjGeneratedFromCompareModuleProjAstAnchor {
+  kind generated_from
+  connects CompareModule -> CompareModuleProjAstAnchor
+  roles { CompareModule as generated, CompareModuleProjAstAnchor as syntax }
+  expects CompareModuleProjAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8a85232e17f64640e4826908ebbfe3dbbc87d39c292fcdf3f27e5dd0c633518a")
+  summary "fn CompareModule.proj generated from python function_definition at experiments/shape-1/trials/DRT/compare.py#proj."
+}
+
+relation CompareModuleShortGeneratedFromCompareModuleShortAstAnchor {
+  kind generated_from
+  connects CompareModule -> CompareModuleShortAstAnchor
+  roles { CompareModule as generated, CompareModuleShortAstAnchor as syntax }
+  expects CompareModuleShortAstAnchor fingerprint ast.semantic_subtree_v1("sha256:98e229b2eecb2d51709c6e956990285846dc122220c19ec69fc1442f83cf30d4")
+  summary "fn CompareModule.short generated from python function_definition at experiments/shape-1/trials/DRT/compare.py#short."
+}
+
+implementation CompareModuleImpl {
+  paths {
+    "experiments/shape-1/trials/DRT/compare.py"
+  }
+  conforms_to CompareModule
+}

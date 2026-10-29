@@ -18,10 +18,20 @@ import { Glob } from "bun";
 import { parseShapeModule } from "../../../../packages/shp-checker/src/parser.ts";
 import { normalizeCheckOptions } from "../../../../packages/shp-checker/src/checker/api.ts";
 import { lowerShapeModules } from "../../../../packages/shp-checker/src/checker/lowerer.ts";
-import { attestationKey, checkBindings, checkCoverage } from "../../../../packages/shp-checker/src/checker/rules/coverage.ts";
+import {
+  attestationKey,
+  checkBindings,
+  checkCoverage
+} from "../../../../packages/shp-checker/src/checker/rules/coverage.ts";
 import { globMatches } from "../../../../packages/shp-checker/src/checker/globs.ts";
-import { checkGuardedSources, reevaluationKey } from "../../../../packages/shp-checker/src/checker/rules/guards.ts";
-import type { CheckModuleInput, SemanticDiagnostic } from "../../../../packages/shp-checker/src/checker/model.ts";
+import {
+  checkGuardedSources,
+  reevaluationKey
+} from "../../../../packages/shp-checker/src/checker/rules/guards.ts";
+import type {
+  CheckModuleInput,
+  SemanticDiagnostic
+} from "../../../../packages/shp-checker/src/checker/model.ts";
 
 const REPO = resolve(import.meta.dir, "../../../..");
 const argv = process.argv.slice(2);
@@ -29,7 +39,10 @@ const opt = (k: string): string | undefined => {
   const i = argv.indexOf(`--${k}`);
   return i >= 0 ? argv[i + 1] : undefined;
 };
-const commits = readFileSync(opt("commits") ?? "", "utf8").split("\n").map((s) => s.trim()).filter(Boolean);
+const commits = readFileSync(opt("commits") ?? "", "utf8")
+  .split("\n")
+  .map((s) => s.trim())
+  .filter(Boolean);
 const work = resolve(opt("work") ?? "/tmp/h1-zerox");
 const outPath = opt("out") ?? join(work, "zerox.json");
 /** --model <rev>: read the 0.x model of this revision for every commit (sensitivity: one fixed model) */
@@ -44,7 +57,10 @@ function git(args: string[]): string {
 function materializeShape(rev: string, dir: string): void {
   rmSync(dir, { recursive: true, force: true });
   mkdirSync(dir, { recursive: true });
-  const r = spawnSync("sh", ["-c", `git -C ${JSON.stringify(REPO)} archive ${rev} shape | tar -x -C ${JSON.stringify(dir)}`]);
+  const r = spawnSync("sh", [
+    "-c",
+    `git -C ${JSON.stringify(REPO)} archive ${rev} shape | tar -x -C ${JSON.stringify(dir)}`
+  ]);
   if (r.status !== 0) throw new Error(`archive ${rev}: ${r.stderr.toString()}`);
 }
 
@@ -62,7 +78,8 @@ function parseAll(dir: string, files: string[]): { modules: CheckModuleInput[]; 
   const errors: string[] = [];
   for (const f of files) {
     const parsed = parseShapeModule(readFileSync(join(dir, f), "utf8"), join(dir, f));
-    if (parsed.ok) modules.push({ module: parsed.module, filePath: join(dir, f), origin: "authored" });
+    if (parsed.ok)
+      modules.push({ module: parsed.module, filePath: join(dir, f), origin: "authored" });
     else errors.push(`${f}: ${parsed.diagnostics.length} parse diagnostics`);
   }
   return { modules, errors };
@@ -76,7 +93,13 @@ interface Row {
   changed: string[];
   parseErrors: string[];
   implementations: number;
-  demand: { files: string[]; pairs: number; guards: string[]; bindings: string[]; components: string[] };
+  demand: {
+    files: string[];
+    pairs: number;
+    guards: string[];
+    bindings: string[];
+    components: string[];
+  };
   residual: { files: string[]; guards: string[]; bindings: string[] };
 }
 
@@ -97,9 +120,16 @@ for (const c of commits) {
   const head = parseAll(headDir, shapeFiles(headDir, true));
   const base = parseAll(baseDir, shapeFiles(baseDir, false));
   // base modules carry repository-relative paths so attestation-free texts line up with the head
-  const baseInputs: CheckModuleInput[] = base.modules.map((m) => ({ ...m, filePath: join(headDir, (m.filePath ?? "").slice(baseDir.length + 1)) }));
+  const baseInputs: CheckModuleInput[] = base.modules.map((m) => ({
+    ...m,
+    filePath: join(headDir, (m.filePath ?? "").slice(baseDir.length + 1))
+  }));
   const model = lowerShapeModules(head.modules);
-  const real = normalizeCheckOptions({ baseModules: baseInputs, changedFiles: changed, repoRoot: headDir });
+  const real = normalizeCheckOptions({
+    baseModules: baseInputs,
+    changedFiles: changed,
+    repoRoot: headDir
+  });
   const realBase = real.base;
   if (!realBase) throw new Error("no base summary");
 
@@ -120,16 +150,39 @@ for (const c of commits) {
   const demGuard = checkGuardedSources(model, nonShape, headDir, demandBase);
   // bindings demand: every binding triggered by a changed file, whether or not its docs changed
   const demBind = new Set<string>();
-  for (const d of checkBindings(model, changed, headDir, demandBase)) if (d.kind === "missing_bound_docs_change") demBind.add(d.binding);
+  for (const d of checkBindings(model, changed, headDir, demandBase))
+    if (d.kind === "missing_bound_docs_change") demBind.add(d.binding);
   for (const b of model.bindings.values()) {
     if (changed.some((f) => b.whenChanged.some((e) => globMatches(e.glob, f)))) demBind.add(b.name);
   }
 
-  const files = (ds: SemanticDiagnostic[]): string[] => [...new Set(ds.flatMap((d) => (d.kind === "missing_shape_update" ? [d.changedFile] : [])))].sort();
-  const guards = (ds: SemanticDiagnostic[]): string[] => [...new Set(ds.flatMap((d) => (d.kind === "guarded_source_changed" ? [`${d.guardKind}:${d.guard}@${d.changedFile}`] : [])))].sort();
+  const files = (ds: SemanticDiagnostic[]): string[] =>
+    [
+      ...new Set(ds.flatMap((d) => (d.kind === "missing_shape_update" ? [d.changedFile] : [])))
+    ].sort();
+  const guards = (ds: SemanticDiagnostic[]): string[] =>
+    [
+      ...new Set(
+        ds.flatMap((d) =>
+          d.kind === "guarded_source_changed" ? [`${d.guardKind}:${d.guard}@${d.changedFile}`] : []
+        )
+      )
+    ].sort();
   const conform = new Map(model.implementations.map((i) => [i.name, i.conformsTo ?? i.name]));
-  const comps = (ds: SemanticDiagnostic[]): string[] => [...new Set(ds.flatMap((d) => (d.kind === "missing_shape_update" ? [String(conform.get(d.implementation) ?? d.implementation)] : [])))].sort();
-  const binds = (ds: SemanticDiagnostic[]): string[] => [...new Set(ds.flatMap((d) => (d.kind === "missing_bound_docs_change" ? [d.binding] : [])))].sort();
+  const comps = (ds: SemanticDiagnostic[]): string[] =>
+    [
+      ...new Set(
+        ds.flatMap((d) =>
+          d.kind === "missing_shape_update"
+            ? [String(conform.get(d.implementation) ?? d.implementation)]
+            : []
+        )
+      )
+    ].sort();
+  const binds = (ds: SemanticDiagnostic[]): string[] =>
+    [
+      ...new Set(ds.flatMap((d) => (d.kind === "missing_bound_docs_change" ? [d.binding] : [])))
+    ].sort();
   const row: Row = {
     commit: c,
     parent,
@@ -137,12 +190,21 @@ for (const c of commits) {
     date,
     changed,
     parseErrors: [...head.errors, ...base.errors.map((e) => `base ${e}`)],
-    implementations: model.implementations.filter((i) => i.onChangeRequirement === "shape_update").length,
-    demand: { files: files(demCov), pairs: demCov.filter((d) => d.kind === "missing_shape_update").length, guards: guards(demGuard), bindings: [...demBind].sort(), components: comps(demCov) },
+    implementations: model.implementations.filter((i) => i.onChangeRequirement === "shape_update")
+      .length,
+    demand: {
+      files: files(demCov),
+      pairs: demCov.filter((d) => d.kind === "missing_shape_update").length,
+      guards: guards(demGuard),
+      bindings: [...demBind].sort(),
+      components: comps(demCov)
+    },
     residual: { files: files(resCov), guards: guards(resGuard), bindings: binds(resBind) }
   };
   rows.push(row);
-  process.stderr.write(`${c.slice(0, 7)} changed=${changed.length} demand=${row.demand.files.length}+${row.demand.guards.length}g residual=${row.residual.files.length}+${row.residual.guards.length}g ${row.parseErrors.length ? "PARSE" : ""}\n`);
+  process.stderr.write(
+    `${c.slice(0, 7)} changed=${changed.length} demand=${row.demand.files.length}+${row.demand.guards.length}g residual=${row.residual.files.length}+${row.residual.guards.length}g ${row.parseErrors.length ? "PARSE" : ""}\n`
+  );
   rmSync(join(work, "zx", c.slice(0, 12)), { recursive: true, force: true });
 }
 writeFileSync(outPath, `${JSON.stringify(rows, null, 1)}\n`);

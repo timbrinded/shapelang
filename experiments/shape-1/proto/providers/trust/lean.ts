@@ -85,9 +85,43 @@ export function blankLean(text: string, literals: boolean): string {
   return out.join("");
 }
 
-const DECL_KINDS = new Set(["theorem", "lemma", "def", "abbrev", "instance", "axiom", "opaque", "structure", "inductive", "class"]);
-const MODIFIERS = new Set(["private", "protected", "noncomputable", "partial", "unsafe", "nonrec", "scoped", "local"]);
-const ITEM_MACROS = new Set(["macro", "macro_rules", "elab", "elab_rules", "syntax", "notation", "infix", "infixl", "infixr", "prefix", "postfix", "initialize", "builtin_initialize"]);
+const DECL_KINDS = new Set([
+  "theorem",
+  "lemma",
+  "def",
+  "abbrev",
+  "instance",
+  "axiom",
+  "opaque",
+  "structure",
+  "inductive",
+  "class"
+]);
+const MODIFIERS = new Set([
+  "private",
+  "protected",
+  "noncomputable",
+  "partial",
+  "unsafe",
+  "nonrec",
+  "scoped",
+  "local"
+]);
+const ITEM_MACROS = new Set([
+  "macro",
+  "macro_rules",
+  "elab",
+  "elab_rules",
+  "syntax",
+  "notation",
+  "infix",
+  "infixl",
+  "infixr",
+  "prefix",
+  "postfix",
+  "initialize",
+  "builtin_initialize"
+]);
 const COMMANDS = new Set([
   ...DECL_KINDS,
   ...ITEM_MACROS,
@@ -152,7 +186,13 @@ function lineHeads(bare: string): LineHead[] {
       break;
     }
     const w = /^#?[A-Za-z_]+/.exec(rest);
-    heads.push({ start, body: start + consumed, word: w ? w[0] : rest.slice(0, 1), attrs, modifiers });
+    heads.push({
+      start,
+      body: start + consumed,
+      word: w ? w[0] : rest.slice(0, 1),
+      attrs,
+      modifiers
+    });
   }
   return heads;
 }
@@ -173,14 +213,21 @@ export function scanLean(path: string, text: string): LeanScan {
   const bounds: LineHead[] = [];
   let pendingAttr: LineHead | null = null;
   for (const h of heads) {
-    if (h.word === "" || h.word === "|" || h.word === ")" || h.word === "]" || h.word === "}") continue;
-    const isAttrOnly = h.attrs !== "" && bare.slice(h.body, bare.indexOf("\n", h.body) < 0 ? bare.length : bare.indexOf("\n", h.body)).trim() === "";
+    if (h.word === "" || h.word === "|" || h.word === ")" || h.word === "]" || h.word === "}")
+      continue;
+    const isAttrOnly =
+      h.attrs !== "" &&
+      bare
+        .slice(h.body, bare.indexOf("\n", h.body) < 0 ? bare.length : bare.indexOf("\n", h.body))
+        .trim() === "";
     if (isAttrOnly) {
       pendingAttr = pendingAttr ?? h;
       continue;
     }
     if (!COMMANDS.has(h.word) && h.modifiers.length === 0 && h.attrs === "") continue;
-    bounds.push(pendingAttr ? { ...h, start: pendingAttr.start, attrs: pendingAttr.attrs + h.attrs } : h);
+    bounds.push(
+      pendingAttr ? { ...h, start: pendingAttr.start, attrs: pendingAttr.attrs + h.attrs } : h
+    );
     pendingAttr = null;
   }
   for (let k = 0; k < bounds.length; k += 1) {
@@ -254,7 +301,14 @@ export function scanLean(path: string, text: string): LeanScan {
         break;
       }
     }
-    decls.push({ kind: h.word, name, start: h.start, end, sigEnd, markers: Object.fromEntries(Object.entries(markers).sort((a, b) => cmpStr(a[0], b[0]))) });
+    decls.push({
+      kind: h.word,
+      name,
+      start: h.start,
+      end,
+      sigEnd,
+      markers: Object.fromEntries(Object.entries(markers).sort((a, b) => cmpStr(a[0], b[0])))
+    });
   }
   return { path, code, bare, decls, hatchComplete };
 }
@@ -311,7 +365,8 @@ export function referencedNames(p: LeanProject, text: string, self: string): str
       continue;
     }
     // n.endsWith("." + t): a qualified declaration named by a short reference
-    for (const n of p.byLast.get(t.split(".").pop() ?? t) ?? []) if (n !== self && n.endsWith(`.${t}`)) out.add(n);
+    for (const n of p.byLast.get(t.split(".").pop() ?? t) ?? [])
+      if (n !== self && n.endsWith(`.${t}`)) out.add(n);
     // t.endsWith("." + n): a reference more qualified than the declaration (opened namespaces)
     const segs = t.split(".");
     for (let k = 1; k < segs.length; k += 1) {
@@ -331,10 +386,24 @@ function declRefs(p: LeanProject, n: string): string[] {
   return r;
 }
 
-const DEF_KINDS = new Set(["def", "abbrev", "instance", "axiom", "opaque", "structure", "inductive", "class"]);
+const DEF_KINDS = new Set([
+  "def",
+  "abbrev",
+  "instance",
+  "axiom",
+  "opaque",
+  "structure",
+  "inductive",
+  "class"
+]);
 
 /** Transitive closure of names from a start text, following only `follow` kinds. */
-export function nameCone(p: LeanProject, start: string, startText: string, follow: (kind: string) => boolean): string[] {
+export function nameCone(
+  p: LeanProject,
+  start: string,
+  startText: string,
+  follow: (kind: string) => boolean
+): string[] {
   const seen = new Set<string>();
   const stack = referencedNames(p, startText, start);
   while (stack.length > 0) {
@@ -367,8 +436,16 @@ export function leanIdentities(p: LeanProject): FpIdentity[] {
       kind: "file",
       parent: null,
       digests: [
-        { projection: "file", scheme: "lean.file.syn1", digest: codeDigest("lean.file.syn1", squash(s.code)) },
-        { projection: "own", scheme: "lean.own.syn1", digest: codeDigest("lean.own.syn1", squash(own)) }
+        {
+          projection: "file",
+          scheme: "lean.file.syn1",
+          digest: codeDigest("lean.file.syn1", squash(s.code))
+        },
+        {
+          projection: "own",
+          scheme: "lean.own.syn1",
+          digest: codeDigest("lean.own.syn1", squash(own))
+        }
       ],
       markers: {},
       hatchComplete: s.hatchComplete,
@@ -399,15 +476,24 @@ export function leanIdentities(p: LeanProject): FpIdentity[] {
         })
       ].join("\n");
       const markers: Record<string, number> = {};
-      for (const x of list) for (const [k, n] of Object.entries(x.markers)) markers[k] = (markers[k] ?? 0) + n;
+      for (const x of list)
+        for (const [k, n] of Object.entries(x.markers)) markers[k] = (markers[k] ?? 0) + n;
       out.push({
         id: `${fileId}#${encodeLeanSymbol(name)}`,
         kind: d.kind,
         parent,
         digests: [
           { projection: "own", scheme: "lean.own.syn1", digest: codeDigest("lean.own.syn1", unit) },
-          { projection: "unit", scheme: "lean.unit.syn1", digest: codeDigest("lean.unit.syn1", unit) },
-          { projection: "closure", scheme: "lean.closure.syn1", digest: codeDigest("lean.closure.syn1", closure) }
+          {
+            projection: "unit",
+            scheme: "lean.unit.syn1",
+            digest: codeDigest("lean.unit.syn1", unit)
+          },
+          {
+            projection: "closure",
+            scheme: "lean.closure.syn1",
+            digest: codeDigest("lean.closure.syn1", closure)
+          }
         ],
         markers: Object.fromEntries(Object.entries(markers).sort((a, b) => cmpStr(a[0], b[0]))),
         hatchComplete: s.hatchComplete,
@@ -424,7 +510,10 @@ export function leanIdentities(p: LeanProject): FpIdentity[] {
 /** Parses `#print axioms` output: theorem → axioms (sorted). */
 export function parsePrintAxioms(out: string): Map<string, string[]> {
   const res = new Map<string, string[]>();
-  const flat = out.replace(/\[\s*([^\]]*?)\s*\]/gs, (_m, inner: string) => `[${inner.replace(/\s+/g, " ")}]`);
+  const flat = out.replace(
+    /\[\s*([^\]]*?)\s*\]/gs,
+    (_m, inner: string) => `[${inner.replace(/\s+/g, " ")}]`
+  );
   for (const line of flat.split("\n")) {
     const dep = /^'([^']+)' depends on axioms: \[([^\]]*)\]/.exec(line.trim());
     if (dep) {
@@ -457,19 +546,27 @@ export interface LeanAssumption {
 /** A theorem's assumptions from its axioms: the standard axioms are the toolchain's (tool
  *  lean@<v>); sorryAx and the compiler axioms are hatches at the cone identities whose text holds
  *  the marker (else at the theorem itself); user axioms are hatches at their declaration. */
-export function leanAssumptions(p: LeanProject, theorem: string, axioms: string[], leanVersion: string): { assumptions: LeanAssumption[]; inherited: string[] } {
+export function leanAssumptions(
+  p: LeanProject,
+  theorem: string,
+  axioms: string[],
+  leanVersion: string
+): { assumptions: LeanAssumption[]; inherited: string[] } {
   const out = new Map<string, LeanAssumption>();
   const inherited: string[] = [];
   const thmId = p.identity.get(theorem) ?? `lean:?#${theorem}`;
   const e = p.byName.get(theorem);
-  const cone = e ? nameCone(p, theorem, e.scan.bare.slice(e.decl.start, e.decl.end), () => true) : [];
+  const cone = e
+    ? nameCone(p, theorem, e.scan.bare.slice(e.decl.start, e.decl.end), () => true)
+    : [];
   const withMarker = (keys: string[]): string[] =>
     [theorem, ...cone].filter((n) => {
       const d = p.byName.get(n)?.decl;
       return !!d && keys.some((k) => (d.markers[k] ?? 0) > 0);
     });
   for (const a of axioms) {
-    if (STANDARD_AXIOMS.has(a)) out.set(`lean@${leanVersion}`, { id: `lean@${leanVersion}`, kind: "tool" });
+    if (STANDARD_AXIOMS.has(a))
+      out.set(`lean@${leanVersion}`, { id: `lean@${leanVersion}`, kind: "tool" });
     else if (SORRY_AXIOMS.has(a) || COMPILER_AXIOMS.has(a)) {
       const kind = SORRY_AXIOMS.has(a) ? "sorry" : "native_decide";
       const keys = kind === "sorry" ? ["sorry", "admit"] : ["native_decide"];
@@ -477,7 +574,12 @@ export function leanAssumptions(p: LeanProject, theorem: string, axioms: string[
       if (at.length === 0) out.set(`${thmId}/${kind}`, { id: `${thmId}/${kind}`, kind: "hatch" });
       for (const n of at) {
         const id = p.identity.get(n) as string;
-        const k = (p.byName.get(n)?.decl.markers.admit ?? 0) > 0 && kind === "sorry" && !(p.byName.get(n)?.decl.markers.sorry ?? 0) ? "admit" : kind;
+        const k =
+          (p.byName.get(n)?.decl.markers.admit ?? 0) > 0 &&
+          kind === "sorry" &&
+          !(p.byName.get(n)?.decl.markers.sorry ?? 0)
+            ? "admit"
+            : kind;
         out.set(`${id}/${k}`, { id: `${id}/${k}`, kind: "hatch" });
         if (n !== theorem) inherited.push(n);
       }
@@ -487,5 +589,8 @@ export function leanAssumptions(p: LeanProject, theorem: string, axioms: string[
       else out.set(a, { id: a, kind: "named" });
     }
   }
-  return { assumptions: [...out.values()].sort((x, y) => cmpStr(x.id, y.id)), inherited: sortedUniq(inherited) };
+  return {
+    assumptions: [...out.values()].sort((x, y) => cmpStr(x.id, y.id)),
+    inherited: sortedUniq(inherited)
+  };
 }

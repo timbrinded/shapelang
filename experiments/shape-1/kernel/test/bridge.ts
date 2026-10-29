@@ -21,7 +21,11 @@ function records(list) {
     const r = parseRecord(x);
     if (!r.error) parsed.push(r);
   }
-  return mergeRecords(parsed).map((r) => ({ id: r.id, predicate: { shape: r.shape }, authenticated: r.signers.length > 0 }));
+  return mergeRecords(parsed).map((r) => ({
+    id: r.id,
+    predicate: { shape: r.shape },
+    authenticated: r.signers.length > 0
+  }));
 }
 
 function kernelCase(input) {
@@ -39,34 +43,73 @@ function kernelCase(input) {
   }
   const owners = [];
   if (base && input.mode !== "audit") {
-    for (const c of base.components) for (const g of c.paths) owners.push({ side: "b", glob: g, owner: `${c.q}.*` });
-    for (const c of head.components) for (const g of c.paths) owners.push({ side: "h", glob: g, owner: `${c.q}.*` });
+    for (const c of base.components)
+      for (const g of c.paths) owners.push({ side: "b", glob: g, owner: `${c.q}.*` });
+    for (const c of head.components)
+      for (const g of c.paths) owners.push({ side: "h", glob: g, owner: `${c.q}.*` });
   }
-  const cells = owners.length ? computeCells(owners).cells.filter((c) => typeof c.b === "string" && typeof c.h === "string").map((c) => [c.b, c.h]) : [];
+  const cells = owners.length
+    ? computeCells(owners)
+        .cells.filter((c) => typeof c.b === "string" && typeof c.h === "string")
+        .map((c) => [c.b, c.h])
+    : [];
   return {
     unsupported,
     kcase: {
-      contract: "shape.kernel.case/v1", mode: input.mode, now: Math.max(now, input.base?.committerTime ? toSeconds(input.base.committerTime) : now),
-      change: input.change, authors: [...gv.authors], unmappedBot: gv.unmappedBot,
+      contract: "shape.kernel.case/v1",
+      mode: input.mode,
+      now: Math.max(now, input.base?.committerTime ? toSeconds(input.base.committerTime) : now),
+      change: input.change,
+      authors: [...gv.authors],
+      unmappedBot: gv.unmappedBot,
       head: { revision: input.head.revision, esf: head, manifest: input.head.manifest },
-      base: input.mode === "audit" || !input.base ? null : { revision: input.base.revision, esf: base ?? { shape: { q: "", owner: "" } }, manifest: input.base.manifest },
-      cells, records: records(input.records), reviews, baseRecords: records(input.baseRecords)
+      base:
+        input.mode === "audit" || !input.base
+          ? null
+          : {
+              revision: input.base.revision,
+              esf: base ?? { shape: { q: "", owner: "" } },
+              manifest: input.base.manifest
+            },
+      cells,
+      records: records(input.records),
+      reviews,
+      baseRecords: records(input.baseRecords)
     }
   };
 }
 
-const FIELDS = ["kind", "severity", "tier", "force", "reason", "introduced", "binding", "exploited", "exception", "group"];
+const FIELDS = [
+  "kind",
+  "severity",
+  "tier",
+  "force",
+  "reason",
+  "introduced",
+  "binding",
+  "exploited",
+  "exception",
+  "group"
+];
 
 const fixtures = [
-  ...["audit", "empty-base", "A", "B", "B-weak", "Bprime", "Bsecond", "C", "C-answered"].map((v) => [`ex1 ${v}`, () => F.ex1(v)]),
-  ["ex2", () => F.ex2()], ["ex2 exception+approve", () => F.ex2({ exception: true, approve: true })],
-  ["ex2 approve", () => F.ex2({ approve: true })], ["ex2 exception", () => F.ex2({ exception: true })],
+  ...["audit", "empty-base", "A", "B", "B-weak", "Bprime", "Bsecond", "C", "C-answered"].map(
+    (v) => [`ex1 ${v}`, () => F.ex1(v)]
+  ),
+  ["ex2", () => F.ex2()],
+  ["ex2 exception+approve", () => F.ex2({ exception: true, approve: true })],
+  ["ex2 approve", () => F.ex2({ approve: true })],
+  ["ex2 exception", () => F.ex2({ exception: true })],
   ["ex2 hostMarkers", () => F.ex2({ hostMarkers: true })],
-  ["ex3", () => F.ex3()], ["ex3 judgeLine", () => F.ex3({ judgeLine: true })],
-  ["ex4", () => F.ex4()], ["ex4 complete", () => F.ex4({ complete: true })],
+  ["ex3", () => F.ex3()],
+  ["ex3 judgeLine", () => F.ex3({ judgeLine: true })],
+  ["ex4", () => F.ex4()],
+  ["ex4 complete", () => F.ex4({ complete: true })],
   ["ex4 complete+diagnostics", () => F.ex4({ complete: true, headDiagnostics: true })],
-  ["ex3s2", () => F.ex3s2()], ["ex3s2 harnessEdited", () => F.ex3s2({ harnessEdited: true })],
-  ["ex3s2 dropRecord", () => F.ex3s2({ dropRecord: true })], ["ex3s2 seededClock", () => F.ex3s2({ seededClock: true })],
+  ["ex3s2", () => F.ex3s2()],
+  ["ex3s2 harnessEdited", () => F.ex3s2({ harnessEdited: true })],
+  ["ex3s2 dropRecord", () => F.ex3s2({ dropRecord: true })],
+  ["ex3s2 seededClock", () => F.ex3s2({ seededClock: true })],
   ["ex3s2 removeRefactorSensitive", () => F.ex3s2({ removeRefactorSensitive: true })]
 ];
 
@@ -94,31 +137,57 @@ for (const [name, mk] of fixtures) {
   }
   const diffs = [];
   if (ts.verdict !== lean.verdict) diffs.push(`verdict ts=${ts.verdict} lean=${lean.verdict}`);
-  const tsErr = (ts.errors ?? []).map((e) => e.code).sort().join(",");
-  const leanErr = (lean.errors ?? []).map((e) => e.code).sort().join(",");
+  const tsErr = (ts.errors ?? [])
+    .map((e) => e.code)
+    .sort()
+    .join(",");
+  const leanErr = (lean.errors ?? [])
+    .map((e) => e.code)
+    .sort()
+    .join(",");
   if (tsErr !== leanErr) diffs.push(`errors ts=[${tsErr}] lean=[${leanErr}]`);
   const tsObs = new Map((ts.obligations ?? []).map((o) => [o.key, o]));
   const leanObs = new Map((lean.obligations ?? []).map((o) => [o.key, o]));
   for (const [k, o] of tsObs) {
     const l = leanObs.get(k);
     if (!l) {
-      diffs.push(`only ts: ${o.kind} ${k.slice(0, 19)} ${JSON.stringify(o.subject)} ${o.reason ?? ""}`);
+      diffs.push(
+        `only ts: ${o.kind} ${k.slice(0, 19)} ${JSON.stringify(o.subject)} ${o.reason ?? ""}`
+      );
       continue;
     }
     for (const f of FIELDS) {
       fieldTotal += 1;
       if (JSON.stringify(o[f] ?? null) === JSON.stringify(l[f] ?? null)) fieldAgree += 1;
-      else diffs.push(`${k.slice(0, 19)} ${f} ts=${JSON.stringify(o[f])} lean=${JSON.stringify(l[f])}`);
+      else
+        diffs.push(
+          `${k.slice(0, 19)} ${f} ts=${JSON.stringify(o[f])} lean=${JSON.stringify(l[f])}`
+        );
     }
   }
-  for (const [k, o] of leanObs) if (!tsObs.has(k)) diffs.push(`only lean: ${o.kind} ${k.slice(0, 19)} ${JSON.stringify(o.subject)} ${o.reason ?? ""}`);
-  const tsAns = (ts.answered ?? []).map((a) => a.obligation).sort().join(",");
-  const leanAns = (lean.answered ?? []).map((a) => a.obligation).sort().join(",");
-  if (tsAns !== leanAns) diffs.push(`answered ts=[${tsAns.slice(0, 60)}] lean=[${leanAns.slice(0, 60)}]`);
+  for (const [k, o] of leanObs)
+    if (!tsObs.has(k))
+      diffs.push(
+        `only lean: ${o.kind} ${k.slice(0, 19)} ${JSON.stringify(o.subject)} ${o.reason ?? ""}`
+      );
+  const tsAns = (ts.answered ?? [])
+    .map((a) => a.obligation)
+    .sort()
+    .join(",");
+  const leanAns = (lean.answered ?? [])
+    .map((a) => a.obligation)
+    .sort()
+    .join(",");
+  if (tsAns !== leanAns)
+    diffs.push(`answered ts=[${tsAns.slice(0, 60)}] lean=[${leanAns.slice(0, 60)}]`);
   if (unsupported) diffs.push(`(review line not bridged: ${unsupported})`);
   if (diffs.length === 0) agreeCases += 1;
-  report.push(`${diffs.length === 0 ? "AGREE" : "DIFF "} ${name} (ts ${tsObs.size} obligations, lean ${leanObs.size})`);
+  report.push(
+    `${diffs.length === 0 ? "AGREE" : "DIFF "} ${name} (ts ${tsObs.size} obligations, lean ${leanObs.size})`
+  );
   for (const d of diffs) report.push(`      ${d}`);
 }
 console.log(report.join("\n"));
-console.log(`cases agreeing: ${agreeCases}/${fixtures.length}; shared-obligation fields agreeing: ${fieldAgree}/${fieldTotal}`);
+console.log(
+  `cases agreeing: ${agreeCases}/${fixtures.length}; shared-obligation fields agreeing: ${fieldAgree}/${fieldTotal}`
+);

@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.test.laws_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LawsTestModuleFixtureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/test/laws.test.ts#fixture")
+  fingerprint ast.semantic_subtree_v1("sha256:6668adb739daea9fe3964ea0e6c8f2b51fd3d42beadb8c557e8c1cf0ab901072")
+}
+
+component LawsTestModule : GeneratedCandidate {
+  fn fixture
+    source ts("experiments/shape-1/proto/providers/test/laws.test.ts#fixture")
+    effects unknown
+}
+
+relation LawsTestModuleFixtureGeneratedFromLawsTestModuleFixtureAstAnchor {
+  kind generated_from
+  connects LawsTestModule -> LawsTestModuleFixtureAstAnchor
+  roles { LawsTestModule as generated, LawsTestModuleFixtureAstAnchor as syntax }
+  expects LawsTestModuleFixtureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6668adb739daea9fe3964ea0e6c8f2b51fd3d42beadb8c557e8c1cf0ab901072")
+  summary "fn LawsTestModule.fixture generated from typescript function_declaration at experiments/shape-1/proto/providers/test/laws.test.ts#fixture."
+}
+
+implementation LawsTestModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/test/laws.test.ts"
+  }
+  conforms_to LawsTestModule
+}

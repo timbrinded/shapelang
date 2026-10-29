@@ -50,9 +50,20 @@ const OP_CLASS: Record<string, string> = {
   "??": "logical"
 };
 
-export function mutantsOf(ts: TsFull, path: string, text: string, span: { start: number; end: number }): Mutant[] {
+export function mutantsOf(
+  ts: TsFull,
+  path: string,
+  text: string,
+  span: { start: number; end: number }
+): Mutant[] {
   const K = ts.SyntaxKind;
-  const sf = ts.createSourceFile(path, text, ts.ScriptTarget.Latest as number, true, scriptKindOf(ts, path));
+  const sf = ts.createSourceFile(
+    path,
+    text,
+    ts.ScriptTarget.Latest as number,
+    true,
+    scriptKindOf(ts, path)
+  );
   const out: Mutant[] = [];
   const add = (op: string, start: number, end: number, replacement: string): void => {
     out.push({ id: `${op}@${lineCol(sf, start)}`, op, start, end, replacement });
@@ -66,17 +77,34 @@ export function mutantsOf(ts: TsFull, path: string, text: string, span: { start:
         const rep = SWAPS[opText];
         // string concatenation stays: "+" on a string literal operand is not arithmetic
         const strOperand = (x: TsNode | undefined): boolean =>
-          !!x && (x.kind === K.StringLiteral || x.kind === K.TemplateExpression || x.kind === K.NoSubstitutionTemplateLiteral);
+          !!x &&
+          (x.kind === K.StringLiteral ||
+            x.kind === K.TemplateExpression ||
+            x.kind === K.NoSubstitutionTemplateLiteral);
         if (rep && !(opText === "+" && (strOperand(n.left) || strOperand(n.right)))) {
-          add(`${OP_CLASS[opText] ?? "op"}:${opText}→${rep}`, n.operatorToken.getStart(sf), n.operatorToken.end, rep);
+          add(
+            `${OP_CLASS[opText] ?? "op"}:${opText}→${rep}`,
+            n.operatorToken.getStart(sf),
+            n.operatorToken.end,
+            rep
+          );
         }
       } else if (n.kind === K.TrueKeyword) add("boolean:true→false", start, n.end, "false");
       else if (n.kind === K.FalseKeyword) add("boolean:false→true", start, n.end, "true");
       else if (n.kind === K.NumericLiteral) {
         const raw = text.slice(start, n.end);
         const v = Number(raw.replace(/_/g, ""));
-        if (Number.isSafeInteger(v) && n.parent?.kind !== K.EnumMember && n.parent?.kind !== K.LiteralType) add(`constant:${raw}→${v + 1}`, start, n.end, String(v + 1));
-      } else if (n.kind === K.PrefixUnaryExpression && n.operator === K.ExclamationToken && n.operand) {
+        if (
+          Number.isSafeInteger(v) &&
+          n.parent?.kind !== K.EnumMember &&
+          n.parent?.kind !== K.LiteralType
+        )
+          add(`constant:${raw}→${v + 1}`, start, n.end, String(v + 1));
+      } else if (
+        n.kind === K.PrefixUnaryExpression &&
+        n.operator === K.ExclamationToken &&
+        n.operand
+      ) {
         add("negation:drop", start, n.operand.getStart(sf), "");
       }
     }

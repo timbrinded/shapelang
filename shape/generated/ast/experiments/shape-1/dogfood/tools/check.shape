@@ -1,0 +1,65 @@
+module shape.generated.ast.experiments.shape_1.dogfood.tools.check
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CheckModuleBuildAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/check.ts#build")
+  fingerprint ast.semantic_subtree_v1("sha256:2cef223091dc2edf11e851a61614ee2a18e7e577fc3a6249141c6953b5bf8378")
+}
+
+resource CheckModulePartialSummariesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/check.ts#partialSummaries")
+  fingerprint ast.semantic_subtree_v1("sha256:7ef2a5514c157544836061113efd8b4cd1d463278824301eaa76c4e2bbbdefbd")
+}
+
+resource CheckModuleStep1ModuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/tools/check.ts#step1Module")
+  fingerprint ast.semantic_subtree_v1("sha256:cc6b9a2f96c27dc37eca5d70e8d1cf12bbcf8ab523ebb548e856097be82617fd")
+}
+
+component CheckModule : GeneratedCandidate {
+  fn build
+    source ts("experiments/shape-1/dogfood/tools/check.ts#build")
+    effects unknown
+  fn partialSummaries
+    source ts("experiments/shape-1/dogfood/tools/check.ts#partialSummaries")
+    effects unknown
+  fn step1Module
+    source ts("experiments/shape-1/dogfood/tools/check.ts#step1Module")
+    effects unknown
+}
+
+relation CheckModuleBuildGeneratedFromCheckModuleBuildAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleBuildAstAnchor
+  roles { CheckModule as generated, CheckModuleBuildAstAnchor as syntax }
+  expects CheckModuleBuildAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2cef223091dc2edf11e851a61614ee2a18e7e577fc3a6249141c6953b5bf8378")
+  summary "fn CheckModule.build generated from typescript function_declaration at experiments/shape-1/dogfood/tools/check.ts#build."
+}
+
+relation CheckModulePartialSummariesGeneratedFromCheckModulePartialSummariesAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModulePartialSummariesAstAnchor
+  roles { CheckModule as generated, CheckModulePartialSummariesAstAnchor as syntax }
+  expects CheckModulePartialSummariesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7ef2a5514c157544836061113efd8b4cd1d463278824301eaa76c4e2bbbdefbd")
+  summary "fn CheckModule.partialSummaries generated from typescript function_declaration at experiments/shape-1/dogfood/tools/check.ts#partialSummaries."
+}
+
+relation CheckModuleStep1ModuleGeneratedFromCheckModuleStep1ModuleAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleStep1ModuleAstAnchor
+  roles { CheckModule as generated, CheckModuleStep1ModuleAstAnchor as syntax }
+  expects CheckModuleStep1ModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cc6b9a2f96c27dc37eca5d70e8d1cf12bbcf8ab523ebb548e856097be82617fd")
+  summary "fn CheckModule.step1Module generated from typescript function_declaration at experiments/shape-1/dogfood/tools/check.ts#step1Module."
+}
+
+implementation CheckModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/tools/check.ts"
+  }
+  conforms_to CheckModule
+}

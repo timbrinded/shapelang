@@ -1,0 +1,209 @@
+module shape.generated.ast.experiments.shape_1.spec.vectors.vectors
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource VectorsModuleFactIdAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/spec/vectors/vectors.py#fact_id")
+  fingerprint ast.semantic_subtree_v1("sha256:fc5c17ac7cf57adea6e5bdba09cf483d4731fe5dd7cec122e5028320685a8cd0")
+}
+
+resource VectorsModuleGeneratedFunctionBindingAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/spec/vectors/vectors.py#binding")
+  fingerprint ast.semantic_subtree_v1("sha256:65e9766ccccf8bdad44680d2d0f3743e8cea528f36a24d4788a2f9b820ba4811")
+}
+
+resource VectorsModuleGroupIdAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/spec/vectors/vectors.py#group_id")
+  fingerprint ast.semantic_subtree_v1("sha256:4d707075456d598963517c88aa58d587f406fb25cac2fe2fe1ae422ab05940f1")
+}
+
+resource VectorsModuleHAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/spec/vectors/vectors.py#H")
+  fingerprint ast.semantic_subtree_v1("sha256:47f38ab193784b6f63e0b0b2abd2a408c3753cf47db9c7cbaf4ab03b3aa1cf08")
+}
+
+resource VectorsModuleHexhAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/spec/vectors/vectors.py#hexh")
+  fingerprint ast.semantic_subtree_v1("sha256:af82bde4af212da44943f0298ce12e575753fd9907efad6c0b71336fbd291535")
+}
+
+resource VectorsModuleJcsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/spec/vectors/vectors.py#jcs")
+  fingerprint ast.semantic_subtree_v1("sha256:255aaad5bbb03142d3acc6380a2302f7104c716b65e1790cfeabca5e1193c0ea")
+}
+
+resource VectorsModuleLabelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/spec/vectors/vectors.py#label")
+  fingerprint ast.semantic_subtree_v1("sha256:7ce529323f3744ca927e8ca9b70e7cb085397e449dd8004f0ec3fb4f4621988d")
+}
+
+resource VectorsModuleNfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/spec/vectors/vectors.py#nf")
+  fingerprint ast.semantic_subtree_v1("sha256:f01b96ade9b4e5ae61641ed90384a874655b534c973b51ebe145a16540dc5e43")
+}
+
+resource VectorsModuleNoFloatsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/spec/vectors/vectors.py#no_floats")
+  fingerprint ast.semantic_subtree_v1("sha256:c5dce5e60d9c44a79a63b74f7029fbc0fc465259c5054a951c9bfd54e75c777e")
+}
+
+resource VectorsModuleObKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/spec/vectors/vectors.py#ob_key")
+  fingerprint ast.semantic_subtree_v1("sha256:09607811a741c69790f6a591a225acf50505369530d9bbaecadf0f7fbe45c32d")
+}
+
+resource VectorsModuleRefAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/spec/vectors/vectors.py#ref")
+  fingerprint ast.semantic_subtree_v1("sha256:fe1d2053426713a2a7b6923d5a2a88f6274872d3a36b71d4fc6f9dcdffa0b548")
+}
+
+resource VectorsModuleTemplateNfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/spec/vectors/vectors.py#template_nf")
+  fingerprint ast.semantic_subtree_v1("sha256:26c121e4f3e4690ad8c8ea1fbf3676add6fcd8b2bebc515d1f8df0a4281f6eee")
+}
+
+component VectorsModule : GeneratedCandidate {
+  fn H
+    source python("experiments/shape-1/spec/vectors/vectors.py#H")
+    effects unknown
+  fn fact_id
+    source python("experiments/shape-1/spec/vectors/vectors.py#fact_id")
+    effects unknown
+  fn generatedFunction_binding
+    source python("experiments/shape-1/spec/vectors/vectors.py#binding")
+    effects unknown
+  fn group_id
+    source python("experiments/shape-1/spec/vectors/vectors.py#group_id")
+    effects unknown
+  fn hexh
+    source python("experiments/shape-1/spec/vectors/vectors.py#hexh")
+    effects unknown
+  fn jcs
+    source python("experiments/shape-1/spec/vectors/vectors.py#jcs")
+    effects unknown
+  fn label
+    source python("experiments/shape-1/spec/vectors/vectors.py#label")
+    effects unknown
+  fn nf
+    source python("experiments/shape-1/spec/vectors/vectors.py#nf")
+    effects unknown
+  fn no_floats
+    source python("experiments/shape-1/spec/vectors/vectors.py#no_floats")
+    effects unknown
+  fn ob_key
+    source python("experiments/shape-1/spec/vectors/vectors.py#ob_key")
+    effects unknown
+  fn ref
+    source python("experiments/shape-1/spec/vectors/vectors.py#ref")
+    effects unknown
+  fn template_nf
+    source python("experiments/shape-1/spec/vectors/vectors.py#template_nf")
+    effects unknown
+}
+
+relation VectorsModuleFactIdGeneratedFromVectorsModuleFactIdAstAnchor {
+  kind generated_from
+  connects VectorsModule -> VectorsModuleFactIdAstAnchor
+  roles { VectorsModule as generated, VectorsModuleFactIdAstAnchor as syntax }
+  expects VectorsModuleFactIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fc5c17ac7cf57adea6e5bdba09cf483d4731fe5dd7cec122e5028320685a8cd0")
+  summary "fn VectorsModule.fact_id generated from python function_definition at experiments/shape-1/spec/vectors/vectors.py#fact_id."
+}
+
+relation VectorsModuleGeneratedFunctionBindingGeneratedFromVectorsModuleGeneratedFunctionBindingAstAnchor {
+  kind generated_from
+  connects VectorsModule -> VectorsModuleGeneratedFunctionBindingAstAnchor
+  roles { VectorsModule as generated, VectorsModuleGeneratedFunctionBindingAstAnchor as syntax }
+  expects VectorsModuleGeneratedFunctionBindingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:65e9766ccccf8bdad44680d2d0f3743e8cea528f36a24d4788a2f9b820ba4811")
+  summary "fn VectorsModule.generatedFunction_binding generated from python function_definition at experiments/shape-1/spec/vectors/vectors.py#binding."
+}
+
+relation VectorsModuleGroupIdGeneratedFromVectorsModuleGroupIdAstAnchor {
+  kind generated_from
+  connects VectorsModule -> VectorsModuleGroupIdAstAnchor
+  roles { VectorsModule as generated, VectorsModuleGroupIdAstAnchor as syntax }
+  expects VectorsModuleGroupIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4d707075456d598963517c88aa58d587f406fb25cac2fe2fe1ae422ab05940f1")
+  summary "fn VectorsModule.group_id generated from python function_definition at experiments/shape-1/spec/vectors/vectors.py#group_id."
+}
+
+relation VectorsModuleHGeneratedFromVectorsModuleHAstAnchor {
+  kind generated_from
+  connects VectorsModule -> VectorsModuleHAstAnchor
+  roles { VectorsModule as generated, VectorsModuleHAstAnchor as syntax }
+  expects VectorsModuleHAstAnchor fingerprint ast.semantic_subtree_v1("sha256:47f38ab193784b6f63e0b0b2abd2a408c3753cf47db9c7cbaf4ab03b3aa1cf08")
+  summary "fn VectorsModule.H generated from python function_definition at experiments/shape-1/spec/vectors/vectors.py#H."
+}
+
+relation VectorsModuleHexhGeneratedFromVectorsModuleHexhAstAnchor {
+  kind generated_from
+  connects VectorsModule -> VectorsModuleHexhAstAnchor
+  roles { VectorsModule as generated, VectorsModuleHexhAstAnchor as syntax }
+  expects VectorsModuleHexhAstAnchor fingerprint ast.semantic_subtree_v1("sha256:af82bde4af212da44943f0298ce12e575753fd9907efad6c0b71336fbd291535")
+  summary "fn VectorsModule.hexh generated from python function_definition at experiments/shape-1/spec/vectors/vectors.py#hexh."
+}
+
+relation VectorsModuleJcsGeneratedFromVectorsModuleJcsAstAnchor {
+  kind generated_from
+  connects VectorsModule -> VectorsModuleJcsAstAnchor
+  roles { VectorsModule as generated, VectorsModuleJcsAstAnchor as syntax }
+  expects VectorsModuleJcsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:255aaad5bbb03142d3acc6380a2302f7104c716b65e1790cfeabca5e1193c0ea")
+  summary "fn VectorsModule.jcs generated from python function_definition at experiments/shape-1/spec/vectors/vectors.py#jcs."
+}
+
+relation VectorsModuleLabelGeneratedFromVectorsModuleLabelAstAnchor {
+  kind generated_from
+  connects VectorsModule -> VectorsModuleLabelAstAnchor
+  roles { VectorsModule as generated, VectorsModuleLabelAstAnchor as syntax }
+  expects VectorsModuleLabelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7ce529323f3744ca927e8ca9b70e7cb085397e449dd8004f0ec3fb4f4621988d")
+  summary "fn VectorsModule.label generated from python function_definition at experiments/shape-1/spec/vectors/vectors.py#label."
+}
+
+relation VectorsModuleNfGeneratedFromVectorsModuleNfAstAnchor {
+  kind generated_from
+  connects VectorsModule -> VectorsModuleNfAstAnchor
+  roles { VectorsModule as generated, VectorsModuleNfAstAnchor as syntax }
+  expects VectorsModuleNfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f01b96ade9b4e5ae61641ed90384a874655b534c973b51ebe145a16540dc5e43")
+  summary "fn VectorsModule.nf generated from python function_definition at experiments/shape-1/spec/vectors/vectors.py#nf."
+}
+
+relation VectorsModuleNoFloatsGeneratedFromVectorsModuleNoFloatsAstAnchor {
+  kind generated_from
+  connects VectorsModule -> VectorsModuleNoFloatsAstAnchor
+  roles { VectorsModule as generated, VectorsModuleNoFloatsAstAnchor as syntax }
+  expects VectorsModuleNoFloatsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c5dce5e60d9c44a79a63b74f7029fbc0fc465259c5054a951c9bfd54e75c777e")
+  summary "fn VectorsModule.no_floats generated from python function_definition at experiments/shape-1/spec/vectors/vectors.py#no_floats."
+}
+
+relation VectorsModuleObKeyGeneratedFromVectorsModuleObKeyAstAnchor {
+  kind generated_from
+  connects VectorsModule -> VectorsModuleObKeyAstAnchor
+  roles { VectorsModule as generated, VectorsModuleObKeyAstAnchor as syntax }
+  expects VectorsModuleObKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:09607811a741c69790f6a591a225acf50505369530d9bbaecadf0f7fbe45c32d")
+  summary "fn VectorsModule.ob_key generated from python function_definition at experiments/shape-1/spec/vectors/vectors.py#ob_key."
+}
+
+relation VectorsModuleRefGeneratedFromVectorsModuleRefAstAnchor {
+  kind generated_from
+  connects VectorsModule -> VectorsModuleRefAstAnchor
+  roles { VectorsModule as generated, VectorsModuleRefAstAnchor as syntax }
+  expects VectorsModuleRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fe1d2053426713a2a7b6923d5a2a88f6274872d3a36b71d4fc6f9dcdffa0b548")
+  summary "fn VectorsModule.ref generated from python function_definition at experiments/shape-1/spec/vectors/vectors.py#ref."
+}
+
+relation VectorsModuleTemplateNfGeneratedFromVectorsModuleTemplateNfAstAnchor {
+  kind generated_from
+  connects VectorsModule -> VectorsModuleTemplateNfAstAnchor
+  roles { VectorsModule as generated, VectorsModuleTemplateNfAstAnchor as syntax }
+  expects VectorsModuleTemplateNfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:26c121e4f3e4690ad8c8ea1fbf3676add6fcd8b2bebc515d1f8df0a4281f6eee")
+  summary "fn VectorsModule.template_nf generated from python function_definition at experiments/shape-1/spec/vectors/vectors.py#template_nf."
+}
+
+implementation VectorsModuleImpl {
+  paths {
+    "experiments/shape-1/spec/vectors/vectors.py"
+  }
+  conforms_to VectorsModule
+}

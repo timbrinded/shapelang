@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.proto.test.vectors_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource VectorsTestModuleVectorWorldAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/test/vectors.test.ts#vectorWorld")
+  fingerprint ast.semantic_subtree_v1("sha256:96039bf612b9d102fbdbadba9dc6f6563b394388e818817ac9bd7d5d060fb043")
+}
+
+component VectorsTestModule : GeneratedCandidate {
+  fn vectorWorld
+    source ts("experiments/shape-1/proto/test/vectors.test.ts#vectorWorld")
+    effects unknown
+}
+
+relation VectorsTestModuleVectorWorldGeneratedFromVectorsTestModuleVectorWorldAstAnchor {
+  kind generated_from
+  connects VectorsTestModule -> VectorsTestModuleVectorWorldAstAnchor
+  roles { VectorsTestModule as generated, VectorsTestModuleVectorWorldAstAnchor as syntax }
+  expects VectorsTestModuleVectorWorldAstAnchor fingerprint ast.semantic_subtree_v1("sha256:96039bf612b9d102fbdbadba9dc6f6563b394388e818817ac9bd7d5d060fb043")
+  summary "fn VectorsTestModule.vectorWorld generated from typescript function_declaration at experiments/shape-1/proto/test/vectors.test.ts#vectorWorld."
+}
+
+implementation VectorsTestModuleImpl {
+  paths {
+    "experiments/shape-1/proto/test/vectors.test.ts"
+  }
+  conforms_to VectorsTestModule
+}

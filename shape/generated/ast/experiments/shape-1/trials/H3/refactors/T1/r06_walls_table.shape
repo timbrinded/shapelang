@@ -1,0 +1,225 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r06_walls_table
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R06WallsTableModuleCellKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#cellKey")
+  fingerprint ast.semantic_subtree_v1("sha256:48e80c86ee8465c0e0b842e13fb5c6e79981456e366c0e041594c304177d9b69")
+}
+
+resource R06WallsTableModuleDownYAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#downY")
+  fingerprint ast.semantic_subtree_v1("sha256:f77ef532af83f2df9622e15ed01faac958830c66ae1c0cfa974bca63b10c28cf")
+}
+
+resource R06WallsTableModuleIsWallAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#isWall")
+  fingerprint ast.semantic_subtree_v1("sha256:7d3d6b5f16ba2d1ecd73fd402a0957de40c789a93cfab675fd0a5fd3205e42a6")
+}
+
+resource R06WallsTableModuleIsWonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#isWon")
+  fingerprint ast.semantic_subtree_v1("sha256:1fc01820c39d249759ecb8e878dc2bbb42be54d5c3f09c70ccf2b161059bfb7e")
+}
+
+resource R06WallsTableModuleLeftXAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#leftX")
+  fingerprint ast.semantic_subtree_v1("sha256:d1f1f7ea5db6cc61e2c24dabc031e0b89c2618a490370c8bb8161b243fcfc03d")
+}
+
+resource R06WallsTableModuleMoveToAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#moveTo")
+  fingerprint ast.semantic_subtree_v1("sha256:5e156b6aa97426fb41763c6c9d7c868aea91f744c77f5d997e7af543b65c409d")
+}
+
+resource R06WallsTableModuleOnFlagAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#onFlag")
+  fingerprint ast.semantic_subtree_v1("sha256:b066dc8af4580d22190525b31025c0cc0097e39bcc43ce71fb5d29ba38133402")
+}
+
+resource R06WallsTableModuleReplayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#replay")
+  fingerprint ast.semantic_subtree_v1("sha256:adee12aae531c70809824e54168b5f4dc5182d984699a428d3fa4da898e79518")
+}
+
+resource R06WallsTableModuleRightXAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#rightX")
+  fingerprint ast.semantic_subtree_v1("sha256:fc9f2edc31545f35af8834bc896d24399cafd2f351c24a0f1dd5c6b892ca5b07")
+}
+
+resource R06WallsTableModuleStartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#start")
+  fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+}
+
+resource R06WallsTableModuleStepAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#step")
+  fingerprint ast.semantic_subtree_v1("sha256:537cdc8f3f4447d62362d0989933f699a95eff1861ac6f116f9e411a5a61c54a")
+}
+
+resource R06WallsTableModuleUpYAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#upY")
+  fingerprint ast.semantic_subtree_v1("sha256:1a418a2e1681a424426261475dfa10bbf435b2b0c9c14df56704c2e094b73ad8")
+}
+
+resource R06WallsTableModuleWallCellsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#wallCells")
+  fingerprint ast.semantic_subtree_v1("sha256:2b7563fe07c20eb66590e6ea38cdd812984403fda9d5df2bc9eb46a309bb996f")
+}
+
+component R06WallsTableModule : GeneratedCandidate {
+  fn cellKey
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#cellKey")
+    effects unknown
+  fn downY
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#downY")
+    effects unknown
+  fn isWall
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#isWall")
+    effects unknown
+  fn isWon
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#isWon")
+    effects unknown
+  fn leftX
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#leftX")
+    effects unknown
+  fn moveTo
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#moveTo")
+    effects unknown
+  fn onFlag
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#onFlag")
+    effects unknown
+  fn replay
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#replay")
+    effects unknown
+  fn rightX
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#rightX")
+    effects unknown
+  fn start
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#start")
+    effects unknown
+  fn step
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#step")
+    effects unknown
+  fn upY
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#upY")
+    effects unknown
+  fn wallCells
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#wallCells")
+    effects unknown
+}
+
+relation R06WallsTableModuleCellKeyGeneratedFromR06WallsTableModuleCellKeyAstAnchor {
+  kind generated_from
+  connects R06WallsTableModule -> R06WallsTableModuleCellKeyAstAnchor
+  roles { R06WallsTableModule as generated, R06WallsTableModuleCellKeyAstAnchor as syntax }
+  expects R06WallsTableModuleCellKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:48e80c86ee8465c0e0b842e13fb5c6e79981456e366c0e041594c304177d9b69")
+  summary "fn R06WallsTableModule.cellKey generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#cellKey."
+}
+
+relation R06WallsTableModuleDownYGeneratedFromR06WallsTableModuleDownYAstAnchor {
+  kind generated_from
+  connects R06WallsTableModule -> R06WallsTableModuleDownYAstAnchor
+  roles { R06WallsTableModule as generated, R06WallsTableModuleDownYAstAnchor as syntax }
+  expects R06WallsTableModuleDownYAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f77ef532af83f2df9622e15ed01faac958830c66ae1c0cfa974bca63b10c28cf")
+  summary "fn R06WallsTableModule.downY generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#downY."
+}
+
+relation R06WallsTableModuleIsWallGeneratedFromR06WallsTableModuleIsWallAstAnchor {
+  kind generated_from
+  connects R06WallsTableModule -> R06WallsTableModuleIsWallAstAnchor
+  roles { R06WallsTableModule as generated, R06WallsTableModuleIsWallAstAnchor as syntax }
+  expects R06WallsTableModuleIsWallAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7d3d6b5f16ba2d1ecd73fd402a0957de40c789a93cfab675fd0a5fd3205e42a6")
+  summary "fn R06WallsTableModule.isWall generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#isWall."
+}
+
+relation R06WallsTableModuleIsWonGeneratedFromR06WallsTableModuleIsWonAstAnchor {
+  kind generated_from
+  connects R06WallsTableModule -> R06WallsTableModuleIsWonAstAnchor
+  roles { R06WallsTableModule as generated, R06WallsTableModuleIsWonAstAnchor as syntax }
+  expects R06WallsTableModuleIsWonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fc01820c39d249759ecb8e878dc2bbb42be54d5c3f09c70ccf2b161059bfb7e")
+  summary "fn R06WallsTableModule.isWon generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#isWon."
+}
+
+relation R06WallsTableModuleLeftXGeneratedFromR06WallsTableModuleLeftXAstAnchor {
+  kind generated_from
+  connects R06WallsTableModule -> R06WallsTableModuleLeftXAstAnchor
+  roles { R06WallsTableModule as generated, R06WallsTableModuleLeftXAstAnchor as syntax }
+  expects R06WallsTableModuleLeftXAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d1f1f7ea5db6cc61e2c24dabc031e0b89c2618a490370c8bb8161b243fcfc03d")
+  summary "fn R06WallsTableModule.leftX generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#leftX."
+}
+
+relation R06WallsTableModuleMoveToGeneratedFromR06WallsTableModuleMoveToAstAnchor {
+  kind generated_from
+  connects R06WallsTableModule -> R06WallsTableModuleMoveToAstAnchor
+  roles { R06WallsTableModule as generated, R06WallsTableModuleMoveToAstAnchor as syntax }
+  expects R06WallsTableModuleMoveToAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e156b6aa97426fb41763c6c9d7c868aea91f744c77f5d997e7af543b65c409d")
+  summary "fn R06WallsTableModule.moveTo generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#moveTo."
+}
+
+relation R06WallsTableModuleOnFlagGeneratedFromR06WallsTableModuleOnFlagAstAnchor {
+  kind generated_from
+  connects R06WallsTableModule -> R06WallsTableModuleOnFlagAstAnchor
+  roles { R06WallsTableModule as generated, R06WallsTableModuleOnFlagAstAnchor as syntax }
+  expects R06WallsTableModuleOnFlagAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b066dc8af4580d22190525b31025c0cc0097e39bcc43ce71fb5d29ba38133402")
+  summary "fn R06WallsTableModule.onFlag generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#onFlag."
+}
+
+relation R06WallsTableModuleReplayGeneratedFromR06WallsTableModuleReplayAstAnchor {
+  kind generated_from
+  connects R06WallsTableModule -> R06WallsTableModuleReplayAstAnchor
+  roles { R06WallsTableModule as generated, R06WallsTableModuleReplayAstAnchor as syntax }
+  expects R06WallsTableModuleReplayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:adee12aae531c70809824e54168b5f4dc5182d984699a428d3fa4da898e79518")
+  summary "fn R06WallsTableModule.replay generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#replay."
+}
+
+relation R06WallsTableModuleRightXGeneratedFromR06WallsTableModuleRightXAstAnchor {
+  kind generated_from
+  connects R06WallsTableModule -> R06WallsTableModuleRightXAstAnchor
+  roles { R06WallsTableModule as generated, R06WallsTableModuleRightXAstAnchor as syntax }
+  expects R06WallsTableModuleRightXAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fc9f2edc31545f35af8834bc896d24399cafd2f351c24a0f1dd5c6b892ca5b07")
+  summary "fn R06WallsTableModule.rightX generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#rightX."
+}
+
+relation R06WallsTableModuleStartGeneratedFromR06WallsTableModuleStartAstAnchor {
+  kind generated_from
+  connects R06WallsTableModule -> R06WallsTableModuleStartAstAnchor
+  roles { R06WallsTableModule as generated, R06WallsTableModuleStartAstAnchor as syntax }
+  expects R06WallsTableModuleStartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+  summary "fn R06WallsTableModule.start generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#start."
+}
+
+relation R06WallsTableModuleStepGeneratedFromR06WallsTableModuleStepAstAnchor {
+  kind generated_from
+  connects R06WallsTableModule -> R06WallsTableModuleStepAstAnchor
+  roles { R06WallsTableModule as generated, R06WallsTableModuleStepAstAnchor as syntax }
+  expects R06WallsTableModuleStepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:537cdc8f3f4447d62362d0989933f699a95eff1861ac6f116f9e411a5a61c54a")
+  summary "fn R06WallsTableModule.step generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#step."
+}
+
+relation R06WallsTableModuleUpYGeneratedFromR06WallsTableModuleUpYAstAnchor {
+  kind generated_from
+  connects R06WallsTableModule -> R06WallsTableModuleUpYAstAnchor
+  roles { R06WallsTableModule as generated, R06WallsTableModuleUpYAstAnchor as syntax }
+  expects R06WallsTableModuleUpYAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1a418a2e1681a424426261475dfa10bbf435b2b0c9c14df56704c2e094b73ad8")
+  summary "fn R06WallsTableModule.upY generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#upY."
+}
+
+relation R06WallsTableModuleWallCellsGeneratedFromR06WallsTableModuleWallCellsAstAnchor {
+  kind generated_from
+  connects R06WallsTableModule -> R06WallsTableModuleWallCellsAstAnchor
+  roles { R06WallsTableModule as generated, R06WallsTableModuleWallCellsAstAnchor as syntax }
+  expects R06WallsTableModuleWallCellsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2b7563fe07c20eb66590e6ea38cdd812984403fda9d5df2bc9eb46a309bb996f")
+  summary "fn R06WallsTableModule.wallCells generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts#wallCells."
+}
+
+implementation R06WallsTableModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T1/r06_walls_table.ts"
+  }
+  conforms_to R06WallsTableModule
+}

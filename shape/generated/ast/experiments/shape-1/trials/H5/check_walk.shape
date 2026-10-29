@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.trials.H5.check_walk
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CheckWalkModuleNormAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/check_walk.py#norm")
+  fingerprint ast.semantic_subtree_v1("sha256:edac85421c7932ba67b289663210b0e43fe9ce6bc81bc906732a4a5d93b25bdc")
+}
+
+component CheckWalkModule : GeneratedCandidate {
+  fn norm
+    source python("experiments/shape-1/trials/H5/check_walk.py#norm")
+    effects unknown
+}
+
+relation CheckWalkModuleNormGeneratedFromCheckWalkModuleNormAstAnchor {
+  kind generated_from
+  connects CheckWalkModule -> CheckWalkModuleNormAstAnchor
+  roles { CheckWalkModule as generated, CheckWalkModuleNormAstAnchor as syntax }
+  expects CheckWalkModuleNormAstAnchor fingerprint ast.semantic_subtree_v1("sha256:edac85421c7932ba67b289663210b0e43fe9ce6bc81bc906732a4a5d93b25bdc")
+  summary "fn CheckWalkModule.norm generated from python function_definition at experiments/shape-1/trials/H5/check_walk.py#norm."
+}
+
+implementation CheckWalkModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H5/check_walk.py"
+  }
+  conforms_to CheckWalkModule
+}

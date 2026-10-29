@@ -56,7 +56,7 @@ function applyDeltas(ledger: Ledger, deltas: readonly (readonly [AccountId, numb
     alice: ledger.alice + sums.alice,
     bob: ledger.bob + sums.bob,
     carol: ledger.carol + sums.carol,
-    fee: ledger.fee + sums.fee,
+    fee: ledger.fee + sums.fee
   };
 }
 
@@ -68,7 +68,7 @@ export function transfer(
   ledger: Ledger,
   from: AccountId,
   to: AccountId,
-  amount: number,
+  amount: number
 ): TransferResult {
   if (!Number.isInteger(amount) || amount <= 0) {
     return { ok: false, ledger };
@@ -83,7 +83,7 @@ export function transfer(
   const next = applyDeltas(ledger, [
     [from, -(amount + fee)],
     [to, amount],
-    [FEE_ACCOUNT, fee],
+    [FEE_ACCOUNT, fee]
   ]);
   return { ok: true, ledger: next };
 }

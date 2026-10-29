@@ -14,8 +14,12 @@ import { join } from "node:path";
 export const REPO = "/home/user/shapelang";
 export const TRIAL = join(REPO, "experiments/shape-1/trials/H4");
 
-const fx = (n) => ({ base: join(REPO, "fixtures/loosening", n, "base"), head: join(REPO, "fixtures/loosening", n, "head") });
-const fn = (name, tag = "") => `export function ${name}() {\n  return ${JSON.stringify(name + tag)};\n}\n`;
+const fx = (n) => ({
+  base: join(REPO, "fixtures/loosening", n, "base"),
+  head: join(REPO, "fixtures/loosening", n, "head")
+});
+const fn = (name, tag = "") =>
+  `export function ${name}() {\n  return ${JSON.stringify(name + tag)};\n}\n`;
 
 export const LOOSENING = [
   "claim_misdescribes_code",
@@ -48,12 +52,20 @@ const listRev = { "src/history/list.ts": fn("listRevisions") };
 
 const EXTRA = {
   governed_paths_narrowed: {
-    extra: { base: { "src/share/button.ts": fn("shareButton", "@base") }, head: { "src/share/button.ts": fn("shareButton", "@head") } },
+    extra: {
+      base: { "src/share/button.ts": fn("shareButton", "@base") },
+      head: { "src/share/button.ts": fn("shareButton", "@head") }
+    },
     changed: ["src/share/button.ts", "shape/sharing.shape"]
   },
-  governed_directory_moved: { changed: ["shape/sharing.shape", "src/share/public.ts", "src/sharing/public.ts"] },
+  governed_directory_moved: {
+    changed: ["shape/sharing.shape", "src/share/public.ts", "src/sharing/public.ts"]
+  },
   guarded_fn_edited_in_place: {
-    extra: { base: { "src/editor/autosave.ts": fn("mergeAutosaves", "@base") }, head: { "src/editor/autosave.ts": fn("mergeAutosaves", "@head") } }
+    extra: {
+      base: { "src/editor/autosave.ts": fn("mergeAutosaves", "@base") },
+      head: { "src/editor/autosave.ts": fn("mergeAutosaves", "@head") }
+    }
   },
   memory_and_trait_removed: { extra: { base: autosave, head: autosave } },
   memory_guard_removed: { extra: { base: autosave, head: autosave } },
@@ -73,13 +85,28 @@ export const CASES = [
     flat: true // shape files at the directory top level, not under shape/
   })),
   ...[
-    ["cal1-removal-destructive", { base: store("appendEvent"), head: store("appendEvent", "deleteEvent") }],
+    [
+      "cal1-removal-destructive",
+      { base: store("appendEvent"), head: store("appendEvent", "deleteEvent") }
+    ],
     ["cal2-supported-loosening", {}],
     ["cal3-relocated-rule", { base: store("appendEvent"), head: store("appendEvent") }],
     ["cal4-protected-to-appendonly", { base: store("appendEvent"), head: store("appendEvent") }],
     ["cal5-path-weakened", {}],
     ["cal6-vendored-final-removed", { base: store("appendEvent"), head: store("appendEvent") }],
     ["cal7-generic-attestation", {}],
-    ["cal8-false-completeness", { base: { "src/exp/exporter.ts": fn("exportSnapshot") }, head: { "src/exp/exporter.ts": fn("exportSnapshot") } }]
-  ].map(([n, e]) => ({ id: n, family: "calibration", base: join(TRIAL, "cases", n, "base"), head: join(TRIAL, "cases", n, "head"), extra: e }))
+    [
+      "cal8-false-completeness",
+      {
+        base: { "src/exp/exporter.ts": fn("exportSnapshot") },
+        head: { "src/exp/exporter.ts": fn("exportSnapshot") }
+      }
+    ]
+  ].map(([n, e]) => ({
+    id: n,
+    family: "calibration",
+    base: join(TRIAL, "cases", n, "base"),
+    head: join(TRIAL, "cases", n, "head"),
+    extra: e
+  }))
 ];

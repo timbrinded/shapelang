@@ -36,11 +36,25 @@ describe("Example 1: an agent PR adds a purge to an append-only log", () => {
     expect(o?.severity).toBe("blocking");
     expect(o?.rule).toBe(2);
     expect(o?.claim?.ids).toEqual(["audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"]);
-    expect(o?.subject).toEqual({ code: "ts:src/audit/purge.ts#purgeOldEvents", atom: "HardDelete<audit::AuditEvent>" });
+    expect(o?.subject).toEqual({
+      code: "ts:src/audit/purge.ts#purgeOldEvents",
+      atom: "HardDelete<audit::AuditEvent>"
+    });
     expect(o?.dischargers.map((d) => d.act)).toEqual(["edit-code", "edit-shape"]);
     expect(o?.dischargers[0]?.agentSafe).toBe(true);
-    expect(o?.dischargers[1]?.creates).toEqual({ kind: "loosening", tier: "final", answers: 2, owners: ["audit::AuditTeam", "audit::Platform"] });
-    expect(o?.causes.some((c) => c.type === "claim" && c.id === "sha256:987106a04014478f6935873a3a96a3fc65c384de7b145c679dbf6cc9d082eaa4")).toBe(true);
+    expect(o?.dischargers[1]?.creates).toEqual({
+      kind: "loosening",
+      tier: "final",
+      answers: 2,
+      owners: ["audit::AuditTeam", "audit::Platform"]
+    });
+    expect(
+      o?.causes.some(
+        (c) =>
+          c.type === "claim" &&
+          c.id === "sha256:987106a04014478f6935873a3a96a3fc65c384de7b145c679dbf6cc9d082eaa4"
+      )
+    ).toBe(true);
     expect(o?.budget).toBe("mechanical");
     // coverage met by complete absence-sound entries; the fresh fastCheck record establishes the law
     expect(obsOf(out, "coverage")).toEqual([]);
@@ -52,7 +66,9 @@ describe("Example 1: an agent PR adds a purge to an append-only log", () => {
     const l7 = obsOf(out, "loosening").find((o) => o.subject === "provider audit::sqlEffects");
     expect(l7?.questions).toEqual(["L7"]);
     expect(l7?.tier).toBe("final");
-    expect(out.loosening.find((r) => r.subject === "provider audit::sqlEffects")?.answer).toBe("undecided");
+    expect(out.loosening.find((r) => r.subject === "provider audit::sqlEffects")?.answer).toBe(
+      "undecided"
+    );
     expect(out.verdict).toBe("blocked");
   });
   test("B′: an ungoverned purge still violates the * forbid", () => {
@@ -92,21 +108,56 @@ describe("Example 1: an agent PR adds a purge to an append-only log", () => {
     expect(rows[0]?.affected).toContain('cell:["audit::AuditStore.*","audit::AuditStore.*"]');
     expect(rows[0]?.affected).toContain('cell:["ungoverned","ungoverned"]');
     // the phase-1 approve line names both refs
-    expect(out.summary?.some((s) => s.approve?.includes("bd:8d771e08d86d43b2") && s.approve.includes("bd:2785f31d20281bdd"))).toBe(true);
+    expect(
+      out.summary?.some(
+        (s) =>
+          s.approve?.includes("bd:8d771e08d86d43b2") && s.approve.includes("bd:2785f31d20281bdd")
+      )
+    ).toBe(true);
   });
   test("Variant C: the new complete summary needs call(ts) coverage; with a call observer the group is the vector's", () => {
     const plain = run(ex1("C"));
     expect(obsOf(plain, "coverage").length).toBe(1);
     const inp = ex1("C");
     const K = signerFromSeed("31");
-    const prov: Decl = { decl: "provider", name: "callGraph", produces: ["observation"], observes: ["call(ts)"], sound: ["presence", "absence"], identity: K.identity, implementation: { paths: ["tools/cg.ts"] } };
+    const prov: Decl = {
+      decl: "provider",
+      name: "callGraph",
+      produces: ["observation"],
+      observes: ["call(ts)"],
+      sound: ["presence", "absence"],
+      identity: K.identity,
+      implementation: { paths: ["tools/cg.ts"] }
+    };
     for (const side of [inp.head, inp.base]) side?.source?.modules[0]?.decls.push(prov);
     const es = [
-      { ...cite("ts:src/audit/purge.ts", "own", label("ts:src/audit/purge.ts own, head")), complete: true, deps: [] },
-      { ...cite("ts:src/audit/purge.ts#purgeOldEvents", "unit", EX1.PURGE_UNIT), complete: true, deps: [] }
+      {
+        ...cite("ts:src/audit/purge.ts", "own", label("ts:src/audit/purge.ts own, head")),
+        complete: true,
+        deps: []
+      },
+      {
+        ...cite("ts:src/audit/purge.ts#purgeOldEvents", "unit", EX1.PURGE_UNIT),
+        complete: true,
+        deps: []
+      }
     ];
     inp.records.push(
-      signed({ v: "shape.evidence.v1", kind: "observation", result: "observes", provider: { id: "audit::callGraph", version: "1" }, revision: EX1.head, time: "2026-10-25T09:00:00Z", scope: { root: scopeRoot(es), entries: es }, facts: [], harness: [], assumptions: [] }, [K])
+      signed(
+        {
+          v: "shape.evidence.v1",
+          kind: "observation",
+          result: "observes",
+          provider: { id: "audit::callGraph", version: "1" },
+          revision: EX1.head,
+          time: "2026-10-25T09:00:00Z",
+          scope: { root: scopeRoot(es), entries: es },
+          facts: [],
+          harness: [],
+          assumptions: []
+        },
+        [K]
+      )
     );
     const out = run(inp);
     expect(out.obligations.map((o) => o.group)).toEqual([
@@ -116,7 +167,9 @@ describe("Example 1: an agent PR adds a purge to an append-only log", () => {
   });
   test("Variant C answered: bob and carol discharge both loosenings", () => {
     const out = run(ex1("C-answered"));
-    expect(out.answered.map((a) => a.obligation.slice(0, 19)).sort()).toEqual([C_FORBID, C_AUTH].sort());
+    expect(out.answered.map((a) => a.obligation.slice(0, 19)).sort()).toEqual(
+      [C_FORBID, C_AUTH].sort()
+    );
     expect(out.answered.every((a) => a.as === "discharge")).toBe(true);
     expect(ob(out, C_FORBID)).toBeUndefined();
   });
@@ -128,7 +181,13 @@ describe("Example 1: an agent PR adds a purge to an append-only log", () => {
   });
   test("carol alone cannot discharge the final loosening (two persons)", () => {
     const inp = ex1("C");
-    inp.reviews = [{ identity: 'github("carol")', line: "shape approve bd:8d771e08d86d43b2", change: "github:acme/audit#57" }];
+    inp.reviews = [
+      {
+        identity: 'github("carol")',
+        line: "shape approve bd:8d771e08d86d43b2",
+        change: "github:acme/audit#57"
+      }
+    ];
     expect(run(inp).answered).toEqual([]);
   });
 });
@@ -149,7 +208,9 @@ describe("Example 2: a Verus change adds an assume", () => {
     expect(out.budget.used).toBe(0);
     expect(out.verdict).toBe("blocked");
     // SetContractFaithful's contract did not move: its judgment stays usable
-    expect(out.obligations.some((o) => o.claim?.ids.includes("ironkv::SetContractFaithful"))).toBe(false);
+    expect(out.obligations.some((o) => o.claim?.ids.includes("ironkv::SetContractFaithful"))).toBe(
+      false
+    );
   });
   test("the approve line without the exception answers nothing (A.14.2.6)", () => {
     const out = run(ex2({ approve: true }));
@@ -175,8 +236,12 @@ describe("Example 2: a Verus change adds an assume", () => {
   });
   test("spec defect surfaced: the Hatch clause also forbids boundary-allowed kinds", () => {
     const out = run(ex2());
-    const host = out.obligations.find((o) => (o.subject as { atom?: string } | null)?.atom === "external_body<std::Trust>");
-    expect(host?.claim?.fp).toBe("sha256:dc8454f26ba4a098a6681e766d63ddf9226954a5a5bf8ed9d8148c7b0996fac8");
+    const host = out.obligations.find(
+      (o) => (o.subject as { atom?: string } | null)?.atom === "external_body<std::Trust>"
+    );
+    expect(host?.claim?.fp).toBe(
+      "sha256:dc8454f26ba4a098a6681e766d63ddf9226954a5a5bf8ed9d8148c7b0996fac8"
+    );
     expect(host?.introduced).toBe(false);
     expect(host?.severity).toBe("owed");
   });
@@ -190,7 +255,9 @@ describe("Example 3: a memory whose checkable part became a law", () => {
     expect(u?.severity).toBe("owed");
     expect(u?.tier).toBe("normal");
     expect(u?.dischargers[0]?.act).toBe("judge");
-    expect(u?.dischargers[0]?.command).toBe("shape judge tooling::ShpCli.isoToday/RefactorSensitive/law");
+    expect(u?.dischargers[0]?.command).toBe(
+      "shape judge tooling::ShpCli.isoToday/RefactorSensitive/law"
+    );
   });
   test("Step 1: one shape judge line through the self fallback re-establishes it", () => {
     const out = run(ex3({ judgeLine: true }));
@@ -241,9 +308,13 @@ describe("Example 4: observed drift on a calls relation", () => {
     expect(c?.force).toBe("heuristic");
     expect(c?.introduced).toBe(false);
     expect(c?.severity).toBe("owed");
-    expect(c?.subject).toEqual({ nodes: ["checker::ShapeModelLowerer", "checker::ShapeRuleEngine"] });
+    expect(c?.subject).toEqual({
+      nodes: ["checker::ShapeModelLowerer", "checker::ShapeRuleEngine"]
+    });
     expect(out.budget.used).toBe(1);
-    expect(out.health.unobservable as string[]).toContain("checker::ShapeRuleEngineReadsLoweredFacts");
+    expect(out.health.unobservable as string[]).toContain(
+      "checker::ShapeRuleEngineReadsLoweredFacts"
+    );
   });
   test("closing the set: a new calls relation widens exceptTo; L3 loosened, exploited", () => {
     const out = run(ex4({ complete: true, headDiagnostics: true }));
@@ -251,7 +322,9 @@ describe("Example 4: observed drift on a calls relation", () => {
     expect(l?.questions).toEqual(["L3"]);
     expect(l?.exploited).toBe(true);
     expect(l?.severity).toBe("blocking");
-    expect(l?.counterexample).toEqual([{ from: "checker::ShapeRuleEngine", kind: "calls", to: "checker::ShapeDiagnostics" }]);
+    expect(l?.counterexample).toEqual([
+      { from: "checker::ShapeRuleEngine", kind: "calls", to: "checker::ShapeDiagnostics" }
+    ]);
   });
   test("the maintainer's dismissing answer discharges the heuristic contradiction (self fallback)", () => {
     const inp = ex4();
@@ -259,7 +332,9 @@ describe("Example 4: observed drift on a calls relation", () => {
     const bd = (ob(out0, "ob:6efc5ef79a4f52af")?.binding ?? "").slice(0, 19);
     inp.reviews = [{ identity: 'github("tim")', line: `shape approve ${bd}` }];
     const out = run(inp);
-    expect(out.answered.map((a) => [a.obligation.slice(0, 19), a.self])).toEqual([["ob:6efc5ef79a4f52af", true]]);
+    expect(out.answered.map((a) => [a.obligation.slice(0, 19), a.self])).toEqual([
+      ["ob:6efc5ef79a4f52af", true]
+    ]);
     expect(out.verdict).toBe("pass");
   });
 });

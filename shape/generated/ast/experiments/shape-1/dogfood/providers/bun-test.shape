@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.dogfood.providers.bun_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource BunTestModuleImportClosureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/providers/bun-test.ts#importClosure")
+  fingerprint ast.semantic_subtree_v1("sha256:dee2811517011d9b65c38cf54207e2d554cafa88e2891bdbcfb487a74d46f2bc")
+}
+
+resource BunTestModuleRunLawsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/providers/bun-test.ts#runLaws")
+  fingerprint ast.semantic_subtree_v1("sha256:cb86d0644b1d2559f5b9aee14789afda7b247f18bcdfb41076e39c3601e4080f")
+}
+
+component BunTestModule : GeneratedCandidate {
+  fn importClosure
+    source ts("experiments/shape-1/dogfood/providers/bun-test.ts#importClosure")
+    effects unknown
+  fn runLaws
+    source ts("experiments/shape-1/dogfood/providers/bun-test.ts#runLaws")
+    effects unknown
+}
+
+relation BunTestModuleImportClosureGeneratedFromBunTestModuleImportClosureAstAnchor {
+  kind generated_from
+  connects BunTestModule -> BunTestModuleImportClosureAstAnchor
+  roles { BunTestModule as generated, BunTestModuleImportClosureAstAnchor as syntax }
+  expects BunTestModuleImportClosureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dee2811517011d9b65c38cf54207e2d554cafa88e2891bdbcfb487a74d46f2bc")
+  summary "fn BunTestModule.importClosure generated from typescript function_declaration at experiments/shape-1/dogfood/providers/bun-test.ts#importClosure."
+}
+
+relation BunTestModuleRunLawsGeneratedFromBunTestModuleRunLawsAstAnchor {
+  kind generated_from
+  connects BunTestModule -> BunTestModuleRunLawsAstAnchor
+  roles { BunTestModule as generated, BunTestModuleRunLawsAstAnchor as syntax }
+  expects BunTestModuleRunLawsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cb86d0644b1d2559f5b9aee14789afda7b247f18bcdfb41076e39c3601e4080f")
+  summary "fn BunTestModule.runLaws generated from typescript function_declaration at experiments/shape-1/dogfood/providers/bun-test.ts#runLaws."
+}
+
+implementation BunTestModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/providers/bun-test.ts"
+  }
+  conforms_to BunTestModule
+}

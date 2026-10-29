@@ -37,7 +37,7 @@ export function append(log: AuditLog, entry: NewEntry): AuditLog {
     id: log.entries.length,
     timestamp: entry.timestamp,
     actor: entry.actor,
-    payload: entry.payload,
+    payload: entry.payload
   };
   return { entries: [...log.entries, stored] };
 }
@@ -66,6 +66,6 @@ function redacted(e: Entry): Entry {
 /** Retention purge: redacts the payload of every entry with timestamp + retention <= now. */
 export function purge(log: AuditLog, now: number, retention: number): AuditLog {
   return {
-    entries: log.entries.map((e) => (e.timestamp + retention <= now ? redacted(e) : e)),
+    entries: log.entries.map((e) => (e.timestamp + retention <= now ? redacted(e) : e))
   };
 }

@@ -1,0 +1,116 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [
+  {
+   "code": "E-provider-missing",
+   "subject": "provider audit::fastCheck audit::EventsArePreserved"
+  }
+ ],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:0ee8731661d897e621efbd56e0875beecb7c4b7524920ad681fdc55c8ad187d6",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:ccfcbabf10265d643560fc2bcd0014f9bf15241ce35da1f5e0a269c349e617c0",
+    "ids": [
+     "audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+    ],
+    "tier": "final"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": true,
+   "force": "sound",
+   "group": "g:3bd22abf2e3ea55e7899b281311b1c2700bfb082286d4cf4d43da3b067a2ecd6",
+   "introduced": true,
+   "key": "ob:bb51a88f52f5081e773dabf7f021b863325e003c20a47af0a4e2b8e133f59628",
+   "kind": "contradiction",
+   "owner": "audit::AuditTeam",
+   "questions": null,
+   "reason": null,
+   "severity": "blocking",
+   "subject": {
+    "atom": "HardDelete<audit::AuditEvent>",
+    "code": "ts:src/audit/purge.ts#purgeOldEvents"
+   },
+   "tier": "final",
+   "witness": [
+    "sha256:51ed979304abfea638295c5bec1e63db15cfa26c3425a552f31ae7ca312dc279"
+   ]
+  },
+  {
+   "binding": "bd:395143aefefc528e71db8c424a6968232b59d7306f759007b50f3093cc979f51",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": false,
+   "final": false,
+   "force": null,
+   "group": "g:c0b06644f460b3fe002aaff4ceeae3844e86c29aa077f3c4068ea9013399c323",
+   "introduced": true,
+   "key": "ob:4a5b0267fa8565f29d6ead78a1c0aa3def183da1f4060b901c13ba5ff2242495",
+   "kind": "loosening",
+   "owner": "audit::Platform",
+   "questions": [
+    "L7"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "policy normal",
+   "tier": "normal",
+   "witness": []
+  },
+  {
+   "binding": "bd:2f9437c73bf9730c238061524bcdb1dba8de326f91a286cb8c243a64f6626486",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": false,
+   "final": false,
+   "force": null,
+   "group": "g:da805cd0e14a23a521d677b2a1666cb8091c9d656e064becfdcb6fefe226b59e",
+   "introduced": true,
+   "key": "ob:bfa6d92c0e888a02c3fd6ac13fdbc92cd8fa5af330880cce4429a7bfdafada88",
+   "kind": "loosening",
+   "owner": "audit::Platform",
+   "questions": [
+    "L7"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "policy critical",
+   "tier": "critical",
+   "witness": []
+  },
+  {
+   "binding": "bd:d80f1e0451bfdaddc031d0e06a982bdc420518cefd9cda853cdb9ae2896ff1a7",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3",
+    "ids": [
+     "audit::EventsArePreserved"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:3bd22abf2e3ea55e7899b281311b1c2700bfb082286d4cf4d43da3b067a2ecd6",
+   "introduced": true,
+   "key": "ob:e388df561228b690f4d7907a2c17a85038acbeeb1a82f08101c508e6322252cb",
+   "kind": "unestablished",
+   "owner": "audit::AuditTeam",
+   "questions": null,
+   "reason": "missing",
+   "severity": "blocking",
+   "subject": null,
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

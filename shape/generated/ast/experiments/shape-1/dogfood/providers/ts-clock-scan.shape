@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.dogfood.providers.ts_clock_scan
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource TsClockScanModuleClockScanAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/providers/ts-clock-scan.ts#clockScan")
+  fingerprint ast.semantic_subtree_v1("sha256:317b66ef971b911ddaacb33f16c0ae4113abcfe8ef6e16ac9958d85133f85da3")
+}
+
+component TsClockScanModule : GeneratedCandidate {
+  fn clockScan
+    source ts("experiments/shape-1/dogfood/providers/ts-clock-scan.ts#clockScan")
+    effects unknown
+}
+
+relation TsClockScanModuleClockScanGeneratedFromTsClockScanModuleClockScanAstAnchor {
+  kind generated_from
+  connects TsClockScanModule -> TsClockScanModuleClockScanAstAnchor
+  roles { TsClockScanModule as generated, TsClockScanModuleClockScanAstAnchor as syntax }
+  expects TsClockScanModuleClockScanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:317b66ef971b911ddaacb33f16c0ae4113abcfe8ef6e16ac9958d85133f85da3")
+  summary "fn TsClockScanModule.clockScan generated from typescript function_declaration at experiments/shape-1/dogfood/providers/ts-clock-scan.ts#clockScan."
+}
+
+implementation TsClockScanModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/providers/ts-clock-scan.ts"
+  }
+  conforms_to TsClockScanModule
+}

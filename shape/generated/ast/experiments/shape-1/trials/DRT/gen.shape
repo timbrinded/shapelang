@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.shape_1.trials.DRT.gen
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GenModuleAddReviewsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/gen.ts#addReviews")
+  fingerprint ast.semantic_subtree_v1("sha256:b1c5bd3f6c8d5f30452d745734e6b5aefb27b6469dadf25dbf58351f64bb32a2")
+}
+
+resource GenModuleCiteOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/gen.ts#citeOf")
+  fingerprint ast.semantic_subtree_v1("sha256:9917d2f7b87a1b8d186c4f1d3f36a6fe61b2adcac010c42016551b63ac9f30e8")
+}
+
+resource GenModuleGenCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/gen.ts#genCase")
+  fingerprint ast.semantic_subtree_v1("sha256:491a790060bd3923909c2fec9b309f2282f6dc4cc9ed65ae8e2d1dc62af1d105")
+}
+
+resource GenModuleIsoDayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/gen.ts#isoDay")
+  fingerprint ast.semantic_subtree_v1("sha256:e1503cf0833cf59ef74c70cfcb6b4aeaf73c0ee9af96edc3744a5593f4c605e7")
+}
+
+resource GenModuleIsoTimeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/gen.ts#isoTime")
+  fingerprint ast.semantic_subtree_v1("sha256:e081e1eef5a6a28cf07af697e994ead5d5ebe4aa4f77ad2b8b83e8c57409ad37")
+}
+
+resource GenModuleKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/gen.ts#key")
+  fingerprint ast.semantic_subtree_v1("sha256:a47def76c913221079357dd3cac6920f1f2a01efb4ac15e680f036625e657674")
+}
+
+resource GenModuleMulberry32AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/gen.ts#mulberry32")
+  fingerprint ast.semantic_subtree_v1("sha256:1951a0fa8820e63f4b162a4cb7f8160d5c5b7c6691b3db4389431c4b65d52bda")
+}
+
+component GenModule : GeneratedCandidate {
+  fn addReviews
+    source ts("experiments/shape-1/trials/DRT/gen.ts#addReviews")
+    effects unknown
+  fn citeOf
+    source ts("experiments/shape-1/trials/DRT/gen.ts#citeOf")
+    effects unknown
+  fn genCase
+    source ts("experiments/shape-1/trials/DRT/gen.ts#genCase")
+    effects unknown
+  fn isoDay
+    source ts("experiments/shape-1/trials/DRT/gen.ts#isoDay")
+    effects unknown
+  fn isoTime
+    source ts("experiments/shape-1/trials/DRT/gen.ts#isoTime")
+    effects unknown
+  fn key
+    source ts("experiments/shape-1/trials/DRT/gen.ts#key")
+    effects unknown
+  fn mulberry32
+    source ts("experiments/shape-1/trials/DRT/gen.ts#mulberry32")
+    effects unknown
+}
+
+relation GenModuleAddReviewsGeneratedFromGenModuleAddReviewsAstAnchor {
+  kind generated_from
+  connects GenModule -> GenModuleAddReviewsAstAnchor
+  roles { GenModule as generated, GenModuleAddReviewsAstAnchor as syntax }
+  expects GenModuleAddReviewsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b1c5bd3f6c8d5f30452d745734e6b5aefb27b6469dadf25dbf58351f64bb32a2")
+  summary "fn GenModule.addReviews generated from typescript function_declaration at experiments/shape-1/trials/DRT/gen.ts#addReviews."
+}
+
+relation GenModuleCiteOfGeneratedFromGenModuleCiteOfAstAnchor {
+  kind generated_from
+  connects GenModule -> GenModuleCiteOfAstAnchor
+  roles { GenModule as generated, GenModuleCiteOfAstAnchor as syntax }
+  expects GenModuleCiteOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9917d2f7b87a1b8d186c4f1d3f36a6fe61b2adcac010c42016551b63ac9f30e8")
+  summary "fn GenModule.citeOf generated from typescript function_declaration at experiments/shape-1/trials/DRT/gen.ts#citeOf."
+}
+
+relation GenModuleGenCaseGeneratedFromGenModuleGenCaseAstAnchor {
+  kind generated_from
+  connects GenModule -> GenModuleGenCaseAstAnchor
+  roles { GenModule as generated, GenModuleGenCaseAstAnchor as syntax }
+  expects GenModuleGenCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:491a790060bd3923909c2fec9b309f2282f6dc4cc9ed65ae8e2d1dc62af1d105")
+  summary "fn GenModule.genCase generated from typescript function_declaration at experiments/shape-1/trials/DRT/gen.ts#genCase."
+}
+
+relation GenModuleIsoDayGeneratedFromGenModuleIsoDayAstAnchor {
+  kind generated_from
+  connects GenModule -> GenModuleIsoDayAstAnchor
+  roles { GenModule as generated, GenModuleIsoDayAstAnchor as syntax }
+  expects GenModuleIsoDayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e1503cf0833cf59ef74c70cfcb6b4aeaf73c0ee9af96edc3744a5593f4c605e7")
+  summary "fn GenModule.isoDay generated from typescript function_declaration at experiments/shape-1/trials/DRT/gen.ts#isoDay."
+}
+
+relation GenModuleIsoTimeGeneratedFromGenModuleIsoTimeAstAnchor {
+  kind generated_from
+  connects GenModule -> GenModuleIsoTimeAstAnchor
+  roles { GenModule as generated, GenModuleIsoTimeAstAnchor as syntax }
+  expects GenModuleIsoTimeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e081e1eef5a6a28cf07af697e994ead5d5ebe4aa4f77ad2b8b83e8c57409ad37")
+  summary "fn GenModule.isoTime generated from typescript function_declaration at experiments/shape-1/trials/DRT/gen.ts#isoTime."
+}
+
+relation GenModuleKeyGeneratedFromGenModuleKeyAstAnchor {
+  kind generated_from
+  connects GenModule -> GenModuleKeyAstAnchor
+  roles { GenModule as generated, GenModuleKeyAstAnchor as syntax }
+  expects GenModuleKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a47def76c913221079357dd3cac6920f1f2a01efb4ac15e680f036625e657674")
+  summary "fn GenModule.key generated from typescript function_declaration at experiments/shape-1/trials/DRT/gen.ts#key."
+}
+
+relation GenModuleMulberry32GeneratedFromGenModuleMulberry32AstAnchor {
+  kind generated_from
+  connects GenModule -> GenModuleMulberry32AstAnchor
+  roles { GenModule as generated, GenModuleMulberry32AstAnchor as syntax }
+  expects GenModuleMulberry32AstAnchor fingerprint ast.semantic_subtree_v1("sha256:1951a0fa8820e63f4b162a4cb7f8160d5c5b7c6691b3db4389431c4b65d52bda")
+  summary "fn GenModule.mulberry32 generated from typescript function_declaration at experiments/shape-1/trials/DRT/gen.ts#mulberry32."
+}
+
+implementation GenModuleImpl {
+  paths {
+    "experiments/shape-1/trials/DRT/gen.ts"
+  }
+  conforms_to GenModule
+}

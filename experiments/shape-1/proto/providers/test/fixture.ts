@@ -44,7 +44,15 @@ export function shape(module: string, decls: Decl[], owner = "alice"): SourceDoc
   };
 }
 
-export function input(o: { source: SourceDoc; manifest: Statement; revision: string; records?: unknown[]; mode?: CheckInput["mode"]; base?: CheckInput["base"]; now?: string }): CheckInput {
+export function input(o: {
+  source: SourceDoc;
+  manifest: Statement;
+  revision: string;
+  records?: unknown[];
+  mode?: CheckInput["mode"];
+  base?: CheckInput["base"];
+  now?: string;
+}): CheckInput {
   return {
     contract: "shape.check.input/v1",
     mode: o.mode ?? "audit",

@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.shape_1.dogfood.providers.ts_ident
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource TsIdentModuleAttributeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/providers/ts-ident.ts#attribute")
+  fingerprint ast.semantic_subtree_v1("sha256:a358d9a57720a08df14735990ef0d71cf5df4f64eb3c4729adf6c3a439bac81b")
+}
+
+resource TsIdentModuleIdentsOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/providers/ts-ident.ts#identsOf")
+  fingerprint ast.semantic_subtree_v1("sha256:fd80b9a7bd237a52a9ea2590101d01790a5dd09123a10f60602052065be13a5c")
+}
+
+resource TsIdentModuleLoadTsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/providers/ts-ident.ts#loadTs")
+  fingerprint ast.semantic_subtree_v1("sha256:e50ac8995f12d84211548cc7fc0e2323cbb4f7af4577ea5b4f2f89064493b546")
+}
+
+resource TsIdentModuleScriptKindAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/dogfood/providers/ts-ident.ts#scriptKind")
+  fingerprint ast.semantic_subtree_v1("sha256:4d94280f5c316d11f4d22e18d79a5dd8f5287c5d2c689f30cb92f3bbf76ce74c")
+}
+
+component TsIdentModule : GeneratedCandidate {
+  fn attribute
+    source ts("experiments/shape-1/dogfood/providers/ts-ident.ts#attribute")
+    effects unknown
+  fn identsOf
+    source ts("experiments/shape-1/dogfood/providers/ts-ident.ts#identsOf")
+    effects unknown
+  fn loadTs
+    source ts("experiments/shape-1/dogfood/providers/ts-ident.ts#loadTs")
+    effects unknown
+  fn scriptKind
+    source ts("experiments/shape-1/dogfood/providers/ts-ident.ts#scriptKind")
+    effects unknown
+}
+
+relation TsIdentModuleAttributeGeneratedFromTsIdentModuleAttributeAstAnchor {
+  kind generated_from
+  connects TsIdentModule -> TsIdentModuleAttributeAstAnchor
+  roles { TsIdentModule as generated, TsIdentModuleAttributeAstAnchor as syntax }
+  expects TsIdentModuleAttributeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a358d9a57720a08df14735990ef0d71cf5df4f64eb3c4729adf6c3a439bac81b")
+  summary "fn TsIdentModule.attribute generated from typescript function_declaration at experiments/shape-1/dogfood/providers/ts-ident.ts#attribute."
+}
+
+relation TsIdentModuleIdentsOfGeneratedFromTsIdentModuleIdentsOfAstAnchor {
+  kind generated_from
+  connects TsIdentModule -> TsIdentModuleIdentsOfAstAnchor
+  roles { TsIdentModule as generated, TsIdentModuleIdentsOfAstAnchor as syntax }
+  expects TsIdentModuleIdentsOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fd80b9a7bd237a52a9ea2590101d01790a5dd09123a10f60602052065be13a5c")
+  summary "fn TsIdentModule.identsOf generated from typescript function_declaration at experiments/shape-1/dogfood/providers/ts-ident.ts#identsOf."
+}
+
+relation TsIdentModuleLoadTsGeneratedFromTsIdentModuleLoadTsAstAnchor {
+  kind generated_from
+  connects TsIdentModule -> TsIdentModuleLoadTsAstAnchor
+  roles { TsIdentModule as generated, TsIdentModuleLoadTsAstAnchor as syntax }
+  expects TsIdentModuleLoadTsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e50ac8995f12d84211548cc7fc0e2323cbb4f7af4577ea5b4f2f89064493b546")
+  summary "fn TsIdentModule.loadTs generated from typescript function_declaration at experiments/shape-1/dogfood/providers/ts-ident.ts#loadTs."
+}
+
+relation TsIdentModuleScriptKindGeneratedFromTsIdentModuleScriptKindAstAnchor {
+  kind generated_from
+  connects TsIdentModule -> TsIdentModuleScriptKindAstAnchor
+  roles { TsIdentModule as generated, TsIdentModuleScriptKindAstAnchor as syntax }
+  expects TsIdentModuleScriptKindAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4d94280f5c316d11f4d22e18d79a5dd8f5287c5d2c689f30cb92f3bbf76ce74c")
+  summary "fn TsIdentModule.scriptKind generated from typescript function_declaration at experiments/shape-1/dogfood/providers/ts-ident.ts#scriptKind."
+}
+
+implementation TsIdentModuleImpl {
+  paths {
+    "experiments/shape-1/dogfood/providers/ts-ident.ts"
+  }
+  conforms_to TsIdentModule
+}

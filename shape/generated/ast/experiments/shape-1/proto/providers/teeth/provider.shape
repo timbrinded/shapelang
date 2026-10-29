@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.teeth.provider
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ProviderModuleRunTeethAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/teeth/provider.ts#runTeeth")
+  fingerprint ast.semantic_subtree_v1("sha256:a2b24c14fe21cc09d6a205d55dc534d0fe3e5b8aae74cd0a831693c0f8ad82bf")
+}
+
+resource ProviderModuleTeethStatementAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/teeth/provider.ts#teethStatement")
+  fingerprint ast.semantic_subtree_v1("sha256:88984ba60d996a604b4b83996d1fe1fefd7ed9f001d7bd05812c4fbe30a85158")
+}
+
+component ProviderModule : GeneratedCandidate {
+  fn runTeeth
+    source ts("experiments/shape-1/proto/providers/teeth/provider.ts#runTeeth")
+    effects unknown
+  fn teethStatement
+    source ts("experiments/shape-1/proto/providers/teeth/provider.ts#teethStatement")
+    effects unknown
+}
+
+relation ProviderModuleRunTeethGeneratedFromProviderModuleRunTeethAstAnchor {
+  kind generated_from
+  connects ProviderModule -> ProviderModuleRunTeethAstAnchor
+  roles { ProviderModule as generated, ProviderModuleRunTeethAstAnchor as syntax }
+  expects ProviderModuleRunTeethAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a2b24c14fe21cc09d6a205d55dc534d0fe3e5b8aae74cd0a831693c0f8ad82bf")
+  summary "fn ProviderModule.runTeeth generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/provider.ts#runTeeth."
+}
+
+relation ProviderModuleTeethStatementGeneratedFromProviderModuleTeethStatementAstAnchor {
+  kind generated_from
+  connects ProviderModule -> ProviderModuleTeethStatementAstAnchor
+  roles { ProviderModule as generated, ProviderModuleTeethStatementAstAnchor as syntax }
+  expects ProviderModuleTeethStatementAstAnchor fingerprint ast.semantic_subtree_v1("sha256:88984ba60d996a604b4b83996d1fe1fefd7ed9f001d7bd05812c4fbe30a85158")
+  summary "fn ProviderModule.teethStatement generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/provider.ts#teethStatement."
+}
+
+implementation ProviderModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/teeth/provider.ts"
+  }
+  conforms_to ProviderModule
+}

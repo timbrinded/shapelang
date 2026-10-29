@@ -1,0 +1,138 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:9c56994381a74c4d92f7b3446b958c37a23a6f209e7db01a2452e55849f0ec12",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:29014501f82d8e7a0ecb3f7e9ebc21079eae825ec7e5c759bad4d00b1c225af9",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L1"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "judgment",
+   "force": null,
+   "owner": "audit::AuditTeam",
+   "assignee": null,
+   "group": "g:15818cc49164494df624dd3449a5cda2668d50aad86ceb48f15522b4363f436a",
+   "claim": {
+    "fp": "sha256:5dea5d51cee3bae79bf4e9c821aecd2ff9228ad2230d0917fd206ebd281e3535",
+    "ids": [
+     "audit::NoDeleteInStore"
+    ],
+    "tier": "critical"
+   },
+   "subject": "sha256:5dea5d51cee3bae79bf4e9c821aecd2ff9228ad2230d0917fd206ebd281e3535",
+   "witness": [],
+   "facts": {},
+   "counterexample": "sha256:38da2b2dbeb7179ab8ffc8762d35f805f193ac7f3062d5219cddae16bf06cb6a",
+   "exploited": true,
+   "final": false,
+   "binding": "bd:585287d09d2c9f3c99fb50739377eeb22a02b627a8debf530e52a780306ea80c",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "audit::bob"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "sha256:5dea5d51cee3bae79bf4e9c821aecd2ff9228ad2230d0917fd206ebd281e3535"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [
+  {
+   "question": "L1",
+   "subject": "sha256:5dea5d51cee3bae79bf4e9c821aecd2ff9228ad2230d0917fd206ebd281e3535",
+   "answer": "loosened",
+   "exploited": true,
+   "final": false,
+   "affected": [
+    "cell:[\"audit::AuditStore.*\",\"audit::AuditJobs.*\"]",
+    "cell:[\"audit::AuditStore.*\",\"ungoverned\"]",
+    "ts:src/audit/jobs/purge.ts",
+    "ts:src/audit/jobs/purge.ts#purgeOldEvents"
+   ],
+   "counterexample": "sha256:38da2b2dbeb7179ab8ffc8762d35f805f193ac7f3062d5219cddae16bf06cb6a",
+   "obligation": "ob:29014501f82d8e7a0ecb3f7e9ebc21079eae825ec7e5c759bad4d00b1c225af9"
+  }
+ ],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 2,
+   "den": 2
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [
+   "audit::AuditJobs",
+   "audit::AuditStore"
+  ],
+  "ungoverned": {
+   "num": 2,
+   "den": 6
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [],
+  "baseObservations": "missing",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"audit::AuditStore.*\",\"audit::AuditJobs.*\"]",
+   "cell:[\"audit::AuditStore.*\",\"audit::AuditStore.*\"]",
+   "cell:[\"audit::AuditStore.*\",\"ungoverned\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 1,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

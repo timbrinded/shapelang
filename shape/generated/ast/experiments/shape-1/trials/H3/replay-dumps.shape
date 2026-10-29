@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.replay_dumps
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ReplayDumpsModuleKernelCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/replay-dumps.ts#kernelCase")
+  fingerprint ast.semantic_subtree_v1("sha256:b8cf445d89832154620e0955b484485494d6d753b70cfaa9569a2d457c6eb91e")
+}
+
+resource ReplayDumpsModuleKrecordsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/replay-dumps.ts#krecords")
+  fingerprint ast.semantic_subtree_v1("sha256:83eee9eaa7eb8e40ca53198b86d027e081a316447bad7e8de37dd5789a3788e3")
+}
+
+component ReplayDumpsModule : GeneratedCandidate {
+  fn kernelCase
+    source ts("experiments/shape-1/trials/H3/replay-dumps.ts#kernelCase")
+    effects unknown
+  fn krecords
+    source ts("experiments/shape-1/trials/H3/replay-dumps.ts#krecords")
+    effects unknown
+}
+
+relation ReplayDumpsModuleKernelCaseGeneratedFromReplayDumpsModuleKernelCaseAstAnchor {
+  kind generated_from
+  connects ReplayDumpsModule -> ReplayDumpsModuleKernelCaseAstAnchor
+  roles { ReplayDumpsModule as generated, ReplayDumpsModuleKernelCaseAstAnchor as syntax }
+  expects ReplayDumpsModuleKernelCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b8cf445d89832154620e0955b484485494d6d753b70cfaa9569a2d457c6eb91e")
+  summary "fn ReplayDumpsModule.kernelCase generated from typescript function_declaration at experiments/shape-1/trials/H3/replay-dumps.ts#kernelCase."
+}
+
+relation ReplayDumpsModuleKrecordsGeneratedFromReplayDumpsModuleKrecordsAstAnchor {
+  kind generated_from
+  connects ReplayDumpsModule -> ReplayDumpsModuleKrecordsAstAnchor
+  roles { ReplayDumpsModule as generated, ReplayDumpsModuleKrecordsAstAnchor as syntax }
+  expects ReplayDumpsModuleKrecordsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:83eee9eaa7eb8e40ca53198b86d027e081a316447bad7e8de37dd5789a3788e3")
+  summary "fn ReplayDumpsModule.krecords generated from typescript function_declaration at experiments/shape-1/trials/H3/replay-dumps.ts#krecords."
+}
+
+implementation ReplayDumpsModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/replay-dumps.ts"
+  }
+  conforms_to ReplayDumpsModule
+}

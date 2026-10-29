@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.proto.src.render
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RenderModuleCoreOutputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/render.ts#coreOutput")
+  fingerprint ast.semantic_subtree_v1("sha256:d903d7f8f04e7767f881f5245a97fe8036f26d998a5d016af3a7eaa9723f89b7")
+}
+
+resource RenderModuleRenderDischargerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/render.ts#renderDischarger")
+  fingerprint ast.semantic_subtree_v1("sha256:3de1a6c327e788ecd1ae4c753d7dcaa5a5521fb6832a4db078c0b68acd2a8f36")
+}
+
+resource RenderModuleRenderHumanAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/render.ts#renderHuman")
+  fingerprint ast.semantic_subtree_v1("sha256:870474b69db4c3500e525e50db6fe881e34fe4ad3ebd5f9c4eb89c39380d5914")
+}
+
+resource RenderModuleShortAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/render.ts#short")
+  fingerprint ast.semantic_subtree_v1("sha256:7dea31d00390d8eef1c57e8d84aa831d0862defef8fae021e8fca5c723bb2abd")
+}
+
+resource RenderModuleWhereAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/render.ts#where")
+  fingerprint ast.semantic_subtree_v1("sha256:1b7c48df5b5c716252e77888e333315389a421b96f3fb4052eec163a48a4d4b9")
+}
+
+component RenderModule : GeneratedCandidate {
+  fn coreOutput
+    source ts("experiments/shape-1/proto/src/render.ts#coreOutput")
+    effects unknown
+  fn renderDischarger
+    source ts("experiments/shape-1/proto/src/render.ts#renderDischarger")
+    effects unknown
+  fn renderHuman
+    source ts("experiments/shape-1/proto/src/render.ts#renderHuman")
+    effects unknown
+  fn short
+    source ts("experiments/shape-1/proto/src/render.ts#short")
+    effects unknown
+  fn where
+    source ts("experiments/shape-1/proto/src/render.ts#where")
+    effects unknown
+}
+
+relation RenderModuleCoreOutputGeneratedFromRenderModuleCoreOutputAstAnchor {
+  kind generated_from
+  connects RenderModule -> RenderModuleCoreOutputAstAnchor
+  roles { RenderModule as generated, RenderModuleCoreOutputAstAnchor as syntax }
+  expects RenderModuleCoreOutputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d903d7f8f04e7767f881f5245a97fe8036f26d998a5d016af3a7eaa9723f89b7")
+  summary "fn RenderModule.coreOutput generated from typescript function_declaration at experiments/shape-1/proto/src/render.ts#coreOutput."
+}
+
+relation RenderModuleRenderDischargerGeneratedFromRenderModuleRenderDischargerAstAnchor {
+  kind generated_from
+  connects RenderModule -> RenderModuleRenderDischargerAstAnchor
+  roles { RenderModule as generated, RenderModuleRenderDischargerAstAnchor as syntax }
+  expects RenderModuleRenderDischargerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3de1a6c327e788ecd1ae4c753d7dcaa5a5521fb6832a4db078c0b68acd2a8f36")
+  summary "fn RenderModule.renderDischarger generated from typescript function_declaration at experiments/shape-1/proto/src/render.ts#renderDischarger."
+}
+
+relation RenderModuleRenderHumanGeneratedFromRenderModuleRenderHumanAstAnchor {
+  kind generated_from
+  connects RenderModule -> RenderModuleRenderHumanAstAnchor
+  roles { RenderModule as generated, RenderModuleRenderHumanAstAnchor as syntax }
+  expects RenderModuleRenderHumanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:870474b69db4c3500e525e50db6fe881e34fe4ad3ebd5f9c4eb89c39380d5914")
+  summary "fn RenderModule.renderHuman generated from typescript function_declaration at experiments/shape-1/proto/src/render.ts#renderHuman."
+}
+
+relation RenderModuleShortGeneratedFromRenderModuleShortAstAnchor {
+  kind generated_from
+  connects RenderModule -> RenderModuleShortAstAnchor
+  roles { RenderModule as generated, RenderModuleShortAstAnchor as syntax }
+  expects RenderModuleShortAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7dea31d00390d8eef1c57e8d84aa831d0862defef8fae021e8fca5c723bb2abd")
+  summary "fn RenderModule.short generated from typescript function_declaration at experiments/shape-1/proto/src/render.ts#short."
+}
+
+relation RenderModuleWhereGeneratedFromRenderModuleWhereAstAnchor {
+  kind generated_from
+  connects RenderModule -> RenderModuleWhereAstAnchor
+  roles { RenderModule as generated, RenderModuleWhereAstAnchor as syntax }
+  expects RenderModuleWhereAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1b7c48df5b5c716252e77888e333315389a421b96f3fb4052eec163a48a4d4b9")
+  summary "fn RenderModule.where generated from typescript function_declaration at experiments/shape-1/proto/src/render.ts#where."
+}
+
+implementation RenderModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/render.ts"
+  }
+  conforms_to RenderModule
+}

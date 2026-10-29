@@ -45,11 +45,27 @@ export interface CoverageResult {
   coveredCount: number;
 }
 
-const CHECKER_OPS = new Set(["edge.exists", "edge.forbid", "path.forbid", "cycle.forbid", "authority", "effect.forbid", "effects.upper", "effects.lower"]);
+const CHECKER_OPS = new Set([
+  "edge.exists",
+  "edge.forbid",
+  "path.forbid",
+  "cycle.forbid",
+  "authority",
+  "effect.forbid",
+  "effects.upper",
+  "effects.lower"
+]);
 
 export function computeCoverage(ctx: Ctx, edges: Edge[]): CoverageResult {
   void edges;
-  const empty: CoverageResult = { set: [], obligations: [], vocab: [], needs: new Map(), checked: 0, coveredCount: 0 };
+  const empty: CoverageResult = {
+    set: [],
+    obligations: [],
+    vocab: [],
+    needs: new Map(),
+    checked: 0,
+    coveredCount: 0
+  };
   if (!ctx.hasBase || ctx.baseUnreadable) return empty;
   const W = ctx.Wh;
   const claims = ctx.head.claims.filter((c) => CHECKER_OPS.has(c.op));
@@ -77,9 +93,15 @@ export function computeCoverage(ctx: Ctx, edges: Edge[]): CoverageResult {
   const needs = new Map<string, CoverageNeed[]>();
   const uncovered = new Map<string, { x: string; unmet: CoverageNeed[] }[]>();
   let coveredCount = 0;
-  const entriesAt = (x: string): { provider: string; complete: boolean; producerChanged: boolean }[] =>
+  const entriesAt = (
+    x: string
+  ): { provider: string; complete: boolean; producerChanged: boolean }[] =>
     ancestorsOrSelf(ctx.Mh, x).flatMap((a) =>
-      (ctx.obsEntries.get(a) ?? []).map((e) => ({ provider: e.provider, complete: e.entry.complete, producerChanged: e.producerChanged }))
+      (ctx.obsEntries.get(a) ?? []).map((e) => ({
+        provider: e.provider,
+        complete: e.entry.complete,
+        producerChanged: e.producerChanged
+      }))
     );
   for (const x of [...set].sort(cmpStr)) {
     const info = ctx.Mh.ids.get(x);
@@ -96,7 +118,13 @@ export function computeCoverage(ctx: Ctx, edges: Edge[]): CoverageResult {
         else
           met = entriesAt(x).some((e) => {
             const g = ctx.provs.get(e.provider);
-            return e.complete && !e.producerChanged && !!g && g.absenceB && channelCovered(g.channelsB, ch);
+            return (
+              e.complete &&
+              !e.producerChanged &&
+              !!g &&
+              g.absenceB &&
+              channelCovered(g.channelsB, ch)
+            );
           });
         list.push({ claim: c, channel: ch, met });
       }
@@ -112,23 +140,34 @@ export function computeCoverage(ctx: Ctx, edges: Edge[]): CoverageResult {
   }
   const obligations: CoverageOb[] = [];
   for (const [comp, items] of [...uncovered.entries()].sort((a, b) => cmpStr(a[0], b[0]))) {
-    const baseComp = comp === UNGOVERNED ? null : [...ctx.rho.entries()].find(([, h]) => h === comp)?.[0] ?? comp;
+    const baseComp =
+      comp === UNGOVERNED
+        ? null
+        : ([...ctx.rho.entries()].find(([, h]) => h === comp)?.[0] ?? comp);
     const tb = baseComp ? ctx.gov.components.find((k) => k.q === baseComp)?.tier : undefined;
     const th = comp === UNGOVERNED ? "normal" : (W.compByQ.get(comp)?.tier ?? "normal");
     let tier: Tier = comp === UNGOVERNED ? "normal" : maxTier(th, tb ?? "low");
     const unmet: CoverageOb["unmet"] = [];
-    for (const it of items) for (const n of it.unmet) {
-      const t = tierStar(ctx, n.claim);
-      tier = maxTier(tier, t);
-      unmet.push({ id: it.x, claim: n.claim.fp, channel: n.channel, tier: t });
-    }
-    const owner = comp === UNGOVERNED ? ctx.gov.shape.owner : (ctx.gov.components.find((k) => k.q === baseComp)?.owner ?? W.compByQ.get(comp)?.owner ?? ctx.gov.shape.owner);
+    for (const it of items)
+      for (const n of it.unmet) {
+        const t = tierStar(ctx, n.claim);
+        tier = maxTier(tier, t);
+        unmet.push({ id: it.x, claim: n.claim.fp, channel: n.channel, tier: t });
+      }
+    const owner =
+      comp === UNGOVERNED
+        ? ctx.gov.shape.owner
+        : (ctx.gov.components.find((k) => k.q === baseComp)?.owner ??
+          W.compByQ.get(comp)?.owner ??
+          ctx.gov.shape.owner);
     const finalClaims = sortedUniq(unmet.filter((u) => u.tier === "final").map((u) => u.claim));
     obligations.push({
       subject: comp === UNGOVERNED ? UNGOVERNED : `component ${comp}`,
       component: comp === UNGOVERNED ? null : comp,
       uncovered: items.map((i) => i.x).sort(cmpStr),
-      unmet: unmet.sort((a, b) => cmpStr(`${a.id}|${a.claim}|${a.channel}`, `${b.id}|${b.claim}|${b.channel}`)),
+      unmet: unmet.sort((a, b) =>
+        cmpStr(`${a.id}|${a.claim}|${a.channel}`, `${b.id}|${b.claim}|${b.channel}`)
+      ),
       tier,
       owner,
       unmetFinalOwners: finalClaims,
@@ -155,7 +194,9 @@ export function computeCoverage(ctx: Ctx, edges: Edge[]): CoverageResult {
       const applies = fp.channels.some((t) => {
         const ch = channelAt(t, info);
         if (!ch || !ch.startsWith("effect(")) return false;
-        return subject?.startsWith("verb ") ? channelCovered([ch], `effect(${f.resource})`) : tagKind(ch.slice(7, -1)) === tagKind(f.resource ?? "");
+        return subject?.startsWith("verb ")
+          ? channelCovered([ch], `effect(${f.resource})`)
+          : tagKind(ch.slice(7, -1)) === tagKind(f.resource ?? "");
       });
       if (applies) tier = tier ? maxTier(tier, tierStar(ctx, c)) : tierStar(ctx, c);
     }

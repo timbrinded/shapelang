@@ -89,7 +89,11 @@ export const gen = {
     const chars = [...alphabet];
     return {
       sample: (r, size) => {
-        const n = intIn(r, 0, Math.max(0, Math.min(maxLen, Math.ceil((maxLen * Math.max(size, 1)) / 100))));
+        const n = intIn(
+          r,
+          0,
+          Math.max(0, Math.min(maxLen, Math.ceil((maxLen * Math.max(size, 1)) / 100)))
+        );
         let s = "";
         for (let i = 0; i < n; i += 1) s += chars[r() % chars.length] as string;
         return s;
@@ -104,7 +108,11 @@ export const gen = {
   array<T>(g: Gen<T>, maxLen = 10): Gen<T[]> {
     return {
       sample: (r, size) => {
-        const n = intIn(r, 0, Math.max(0, Math.min(maxLen, Math.ceil((maxLen * Math.max(size, 1)) / 100))));
+        const n = intIn(
+          r,
+          0,
+          Math.max(0, Math.min(maxLen, Math.ceil((maxLen * Math.max(size, 1)) / 100)))
+        );
         const out: T[] = [];
         for (let i = 0; i < n; i += 1) out.push(g.sample(r, size));
         return out;
@@ -113,7 +121,9 @@ export const gen = {
         const out: T[][] = [];
         if (v.length > 0) out.push([]);
         for (let i = 0; i < v.length; i += 1) out.push([...v.slice(0, i), ...v.slice(i + 1)]);
-        for (let i = 0; i < v.length; i += 1) for (const s of g.shrink(v[i] as T).slice(0, 3)) out.push([...v.slice(0, i), s, ...v.slice(i + 1)]);
+        for (let i = 0; i < v.length; i += 1)
+          for (const s of g.shrink(v[i] as T).slice(0, 3))
+            out.push([...v.slice(0, i), s, ...v.slice(i + 1)]);
         return out;
       }
     };
@@ -194,10 +204,14 @@ export function jsonSafe(v: unknown, depth = 0): unknown {
       return String(v);
     case "object": {
       if (Array.isArray(v)) return v.map((x) => jsonSafe(x, depth + 1));
-      if (v instanceof Map) return { $map: [...v.entries()].map(([a, b]) => [jsonSafe(a, depth + 1), jsonSafe(b, depth + 1)]) };
+      if (v instanceof Map)
+        return {
+          $map: [...v.entries()].map(([a, b]) => [jsonSafe(a, depth + 1), jsonSafe(b, depth + 1)])
+        };
       if (v instanceof Set) return { $set: [...v].map((x) => jsonSafe(x, depth + 1)) };
       const out: Record<string, unknown> = {};
-      for (const k of Object.keys(v).sort()) out[k] = jsonSafe((v as Record<string, unknown>)[k], depth + 1);
+      for (const k of Object.keys(v).sort())
+        out[k] = jsonSafe((v as Record<string, unknown>)[k], depth + 1);
       return out;
     }
     default:
@@ -230,7 +244,12 @@ function holds<T>(prop: (v: T) => boolean | void, v: T): { ok: boolean; error?: 
 }
 
 /** Runs a property over seeded samples; on failure shrinks greedily (≤ 500 steps). */
-export function checkProperty<T>(g: Gen<T>, prop: (v: T) => boolean | void, runs: number, seed: number): { ok: true; runs: number } | { ok: false; runs: number; counterexample: T; error?: string } {
+export function checkProperty<T>(
+  g: Gen<T>,
+  prop: (v: T) => boolean | void,
+  runs: number,
+  seed: number
+): { ok: true; runs: number } | { ok: false; runs: number; counterexample: T; error?: string } {
   const r = rng(seed);
   for (let i = 0; i < runs; i += 1) {
     const size = runs <= 1 ? 100 : Math.floor((100 * i) / (runs - 1));
@@ -255,7 +274,9 @@ export function checkProperty<T>(g: Gen<T>, prop: (v: T) => boolean | void, runs
         if (steps >= 500) break;
       }
     }
-    return err === undefined ? { ok: false, runs: i + 1, counterexample: cur } : { ok: false, runs: i + 1, counterexample: cur, error: err };
+    return err === undefined
+      ? { ok: false, runs: i + 1, counterexample: cur }
+      : { ok: false, runs: i + 1, counterexample: cur, error: err };
   }
   return { ok: true, runs };
 }
@@ -266,7 +287,12 @@ function defaultSeed(): number {
 }
 
 /** A property-test law bound to a claim. */
-export function law<T>(claim: string, g: Gen<T>, prop: (v: T) => boolean | void, opts: LawOptions = {}): void {
+export function law<T>(
+  claim: string,
+  g: Gen<T>,
+  prop: (v: T) => boolean | void,
+  opts: LawOptions = {}
+): void {
   const runs = opts.runs ?? 200;
   const seed = opts.seed ?? defaultSeed();
   const name = opts.name ?? "";
@@ -275,14 +301,28 @@ export function law<T>(claim: string, g: Gen<T>, prop: (v: T) => boolean | void,
     `law ${claim}${name ? ` (${name})` : ""}`,
     () => {
       const res = checkProperty(g, prop, runs, seed);
-      const base = { claim, name, file, runs: res.runs, seed, ...(opts.domain ? { domain: opts.domain } : {}) };
+      const base = {
+        claim,
+        name,
+        file,
+        runs: res.runs,
+        seed,
+        ...(opts.domain ? { domain: opts.domain } : {})
+      };
       if (res.ok) {
         report({ ...base, result: "supports" });
         return;
       }
       const ce = jsonSafe(res.counterexample);
-      report({ ...base, result: "contradicts", counterexample: ce, ...(res.error ? { error: res.error } : {}) });
-      throw new Error(`law ${claim} fails on ${JSON.stringify(ce)}${res.error ? `: ${res.error}` : ""}`);
+      report({
+        ...base,
+        result: "contradicts",
+        counterexample: ce,
+        ...(res.error ? { error: res.error } : {})
+      });
+      throw new Error(
+        `law ${claim} fails on ${JSON.stringify(ce)}${res.error ? `: ${res.error}` : ""}`
+      );
     },
     opts.timeout
   );
@@ -290,21 +330,39 @@ export function law<T>(claim: string, g: Gen<T>, prop: (v: T) => boolean | void,
 
 /** A single deterministic example bound to a claim (one run, seed 0). A failing example is a
  *  reproducible counterexample, recorded as {example: <name>}. */
-law.check = (claim: string, fn: () => boolean | void, opts: Omit<LawOptions, "runs" | "seed"> = {}): void => {
+law.check = (
+  claim: string,
+  fn: () => boolean | void,
+  opts: Omit<LawOptions, "runs" | "seed"> = {}
+): void => {
   const name = opts.name ?? "";
   const file = caller();
   test(
     `law ${claim}${name ? ` (${name})` : ""}`,
     () => {
       const h = holds(() => fn(), null);
-      const base = { claim, name, file, runs: 1, seed: 0, ...(opts.domain ? { domain: opts.domain } : {}) };
+      const base = {
+        claim,
+        name,
+        file,
+        runs: 1,
+        seed: 0,
+        ...(opts.domain ? { domain: opts.domain } : {})
+      };
       if (h.ok) {
         report({ ...base, result: "supports" });
         return;
       }
       const ce = { example: name || "check" };
-      report({ ...base, result: "contradicts", counterexample: ce, ...(h.error ? { error: h.error } : {}) });
-      throw new Error(`law ${claim} fails on example ${ce.example}${h.error ? `: ${h.error}` : ""}`);
+      report({
+        ...base,
+        result: "contradicts",
+        counterexample: ce,
+        ...(h.error ? { error: h.error } : {})
+      });
+      throw new Error(
+        `law ${claim} fails on example ${ce.example}${h.error ? `: ${h.error}` : ""}`
+      );
     },
     opts.timeout
   );

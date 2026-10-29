@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T4.r04_rename_helpers
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R04RenameHelpersModuleBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#balance")
+  fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+}
+
+resource R04RenameHelpersModuleCreditAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#credit")
+  fingerprint ast.semantic_subtree_v1("sha256:db331490ca7de97b9ab5ecec58d61b7dd3bfe1f70c67182c554a915ef3e41af8")
+}
+
+resource R04RenameHelpersModuleFeeForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#feeFor")
+  fingerprint ast.semantic_subtree_v1("sha256:43932b3ec2d08e8620e6acb10f280ac62aa6fb2e45cf85c88b0c65f900f0ff2a")
+}
+
+resource R04RenameHelpersModuleRefuseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#refuse")
+  fingerprint ast.semantic_subtree_v1("sha256:d8728ade737f6a9a391257c9c7d70bd4ef463224c1981ac7b53257cd0abdcd7d")
+}
+
+resource R04RenameHelpersModuleTotalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#total")
+  fingerprint ast.semantic_subtree_v1("sha256:d9a6a3d298fbcc063cb0a8e5ce994c2de1789a71d0d2b076c40b54531ce92cba")
+}
+
+resource R04RenameHelpersModuleTransferAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#transfer")
+  fingerprint ast.semantic_subtree_v1("sha256:8ecf049c56e7702ae7dc80329c40cfa45646b925c89d2fe01cf23e790a2ea6bf")
+}
+
+resource R04RenameHelpersModuleWithBalanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#withBalance")
+  fingerprint ast.semantic_subtree_v1("sha256:c8a2dd5456ae7ff5e19660fc690d2b84e5e7175e80eae7d55091ee4f67def802")
+}
+
+component R04RenameHelpersModule : GeneratedCandidate {
+  fn balance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#balance")
+    effects unknown
+  fn credit
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#credit")
+    effects unknown
+  fn feeFor
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#feeFor")
+    effects unknown
+  fn refuse
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#refuse")
+    effects unknown
+  fn total
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#total")
+    effects unknown
+  fn transfer
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#transfer")
+    effects unknown
+  fn withBalance
+    source ts("experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#withBalance")
+    effects unknown
+}
+
+relation R04RenameHelpersModuleBalanceGeneratedFromR04RenameHelpersModuleBalanceAstAnchor {
+  kind generated_from
+  connects R04RenameHelpersModule -> R04RenameHelpersModuleBalanceAstAnchor
+  roles { R04RenameHelpersModule as generated, R04RenameHelpersModuleBalanceAstAnchor as syntax }
+  expects R04RenameHelpersModuleBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5fac458f2e827ee2f1c06580e2eee6ee4e9f3d9aa6f70ae5bef2efb5e9441fcf")
+  summary "fn R04RenameHelpersModule.balance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#balance."
+}
+
+relation R04RenameHelpersModuleCreditGeneratedFromR04RenameHelpersModuleCreditAstAnchor {
+  kind generated_from
+  connects R04RenameHelpersModule -> R04RenameHelpersModuleCreditAstAnchor
+  roles { R04RenameHelpersModule as generated, R04RenameHelpersModuleCreditAstAnchor as syntax }
+  expects R04RenameHelpersModuleCreditAstAnchor fingerprint ast.semantic_subtree_v1("sha256:db331490ca7de97b9ab5ecec58d61b7dd3bfe1f70c67182c554a915ef3e41af8")
+  summary "fn R04RenameHelpersModule.credit generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#credit."
+}
+
+relation R04RenameHelpersModuleFeeForGeneratedFromR04RenameHelpersModuleFeeForAstAnchor {
+  kind generated_from
+  connects R04RenameHelpersModule -> R04RenameHelpersModuleFeeForAstAnchor
+  roles { R04RenameHelpersModule as generated, R04RenameHelpersModuleFeeForAstAnchor as syntax }
+  expects R04RenameHelpersModuleFeeForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:43932b3ec2d08e8620e6acb10f280ac62aa6fb2e45cf85c88b0c65f900f0ff2a")
+  summary "fn R04RenameHelpersModule.feeFor generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#feeFor."
+}
+
+relation R04RenameHelpersModuleRefuseGeneratedFromR04RenameHelpersModuleRefuseAstAnchor {
+  kind generated_from
+  connects R04RenameHelpersModule -> R04RenameHelpersModuleRefuseAstAnchor
+  roles { R04RenameHelpersModule as generated, R04RenameHelpersModuleRefuseAstAnchor as syntax }
+  expects R04RenameHelpersModuleRefuseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d8728ade737f6a9a391257c9c7d70bd4ef463224c1981ac7b53257cd0abdcd7d")
+  summary "fn R04RenameHelpersModule.refuse generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#refuse."
+}
+
+relation R04RenameHelpersModuleTotalGeneratedFromR04RenameHelpersModuleTotalAstAnchor {
+  kind generated_from
+  connects R04RenameHelpersModule -> R04RenameHelpersModuleTotalAstAnchor
+  roles { R04RenameHelpersModule as generated, R04RenameHelpersModuleTotalAstAnchor as syntax }
+  expects R04RenameHelpersModuleTotalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d9a6a3d298fbcc063cb0a8e5ce994c2de1789a71d0d2b076c40b54531ce92cba")
+  summary "fn R04RenameHelpersModule.total generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#total."
+}
+
+relation R04RenameHelpersModuleTransferGeneratedFromR04RenameHelpersModuleTransferAstAnchor {
+  kind generated_from
+  connects R04RenameHelpersModule -> R04RenameHelpersModuleTransferAstAnchor
+  roles { R04RenameHelpersModule as generated, R04RenameHelpersModuleTransferAstAnchor as syntax }
+  expects R04RenameHelpersModuleTransferAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8ecf049c56e7702ae7dc80329c40cfa45646b925c89d2fe01cf23e790a2ea6bf")
+  summary "fn R04RenameHelpersModule.transfer generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#transfer."
+}
+
+relation R04RenameHelpersModuleWithBalanceGeneratedFromR04RenameHelpersModuleWithBalanceAstAnchor {
+  kind generated_from
+  connects R04RenameHelpersModule -> R04RenameHelpersModuleWithBalanceAstAnchor
+  roles { R04RenameHelpersModule as generated, R04RenameHelpersModuleWithBalanceAstAnchor as syntax }
+  expects R04RenameHelpersModuleWithBalanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c8a2dd5456ae7ff5e19660fc690d2b84e5e7175e80eae7d55091ee4f67def802")
+  summary "fn R04RenameHelpersModule.withBalance generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts#withBalance."
+}
+
+implementation R04RenameHelpersModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T4/r04_rename_helpers.ts"
+  }
+  conforms_to R04RenameHelpersModule
+}

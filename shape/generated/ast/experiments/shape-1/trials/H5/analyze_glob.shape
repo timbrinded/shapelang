@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.trials.H5.analyze_glob
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AnalyzeGlobModuleGlobReAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/analyze_glob.py#glob_re")
+  fingerprint ast.semantic_subtree_v1("sha256:235c0424b2c146813b48e3f2e5beca78b3d98419ff590e03dff1e3fc026de10f")
+}
+
+resource AnalyzeGlobModuleInGlobsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H5/analyze_glob.py#in_globs")
+  fingerprint ast.semantic_subtree_v1("sha256:ca1e3a113ab989ae9b38a970e4373df33874bf65775300327b1503ed5f963741")
+}
+
+component AnalyzeGlobModule : GeneratedCandidate {
+  fn glob_re
+    source python("experiments/shape-1/trials/H5/analyze_glob.py#glob_re")
+    effects unknown
+  fn in_globs
+    source python("experiments/shape-1/trials/H5/analyze_glob.py#in_globs")
+    effects unknown
+}
+
+relation AnalyzeGlobModuleGlobReGeneratedFromAnalyzeGlobModuleGlobReAstAnchor {
+  kind generated_from
+  connects AnalyzeGlobModule -> AnalyzeGlobModuleGlobReAstAnchor
+  roles { AnalyzeGlobModule as generated, AnalyzeGlobModuleGlobReAstAnchor as syntax }
+  expects AnalyzeGlobModuleGlobReAstAnchor fingerprint ast.semantic_subtree_v1("sha256:235c0424b2c146813b48e3f2e5beca78b3d98419ff590e03dff1e3fc026de10f")
+  summary "fn AnalyzeGlobModule.glob_re generated from python function_definition at experiments/shape-1/trials/H5/analyze_glob.py#glob_re."
+}
+
+relation AnalyzeGlobModuleInGlobsGeneratedFromAnalyzeGlobModuleInGlobsAstAnchor {
+  kind generated_from
+  connects AnalyzeGlobModule -> AnalyzeGlobModuleInGlobsAstAnchor
+  roles { AnalyzeGlobModule as generated, AnalyzeGlobModuleInGlobsAstAnchor as syntax }
+  expects AnalyzeGlobModuleInGlobsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ca1e3a113ab989ae9b38a970e4373df33874bf65775300327b1503ed5f963741")
+  summary "fn AnalyzeGlobModule.in_globs generated from python function_definition at experiments/shape-1/trials/H5/analyze_glob.py#in_globs."
+}
+
+implementation AnalyzeGlobModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H5/analyze_glob.py"
+  }
+  conforms_to AnalyzeGlobModule
+}

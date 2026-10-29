@@ -38,7 +38,15 @@ function permuteSource(s: SourceDoc | null, r: () => number): SourceDoc | null {
         ...m,
         imports: shuffle(m.imports ?? [], r),
         decls: shuffle(
-          m.decls.map((d) => (d.decl === "component" && d.units ? { ...d, units: shuffle(d.units, r), grants: Array.isArray(d.grants) ? shuffle(d.grants, r) : d.grants } : d)),
+          m.decls.map((d) =>
+            d.decl === "component" && d.units
+              ? {
+                  ...d,
+                  units: shuffle(d.units, r),
+                  grants: Array.isArray(d.grants) ? shuffle(d.grants, r) : d.grants
+                }
+              : d
+          ),
           r
         )
       })),
@@ -47,7 +55,10 @@ function permuteSource(s: SourceDoc | null, r: () => number): SourceDoc | null {
   };
 }
 
-function permuteManifest(st: CheckInput["head"]["manifest"], r: () => number): CheckInput["head"]["manifest"] {
+function permuteManifest(
+  st: CheckInput["head"]["manifest"],
+  r: () => number
+): CheckInput["head"]["manifest"] {
   const p = st.predicate.shape as ManifestPredicate;
   const shuffled = { ...p, tree: shuffle(p.tree, r), entries: shuffle(p.entries, r) };
   // the statement subject is over the sorted predicate, so it is unchanged; keep the shuffled body
@@ -59,8 +70,17 @@ function permuteManifest(st: CheckInput["head"]["manifest"], r: () => number): C
 export function permute(input: CheckInput, seed: number): CheckInput {
   const r = rng(seed);
   const x = clone(input);
-  x.head = { ...x.head, source: permuteSource(x.head.source, r), manifest: permuteManifest(x.head.manifest, r) };
-  if (x.base) x.base = { ...x.base, source: permuteSource(x.base.source, r), manifest: permuteManifest(x.base.manifest, r) };
+  x.head = {
+    ...x.head,
+    source: permuteSource(x.head.source, r),
+    manifest: permuteManifest(x.head.manifest, r)
+  };
+  if (x.base)
+    x.base = {
+      ...x.base,
+      source: permuteSource(x.base.source, r),
+      manifest: permuteManifest(x.base.manifest, r)
+    };
   x.records = shuffle(x.records, r);
   x.baseRecords = shuffle(x.baseRecords, r);
   x.reviews = shuffle(x.reviews, r);

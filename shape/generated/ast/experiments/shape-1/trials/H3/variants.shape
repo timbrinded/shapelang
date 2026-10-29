@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.variants
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource VariantsModuleMutantTagsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/variants.ts#mutantTags")
+  fingerprint ast.semantic_subtree_v1("sha256:e40eeed799a3723711c9306e60c527cb2bfb466f19b30013a2145a311e659c6e")
+}
+
+resource VariantsModulePreCodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/variants.ts#preCode")
+  fingerprint ast.semantic_subtree_v1("sha256:f03d7a146a24a33875376aed7f7fc2f4bc60acbd590b493c7ad4a135d95e4a00")
+}
+
+resource VariantsModuleRefCodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/variants.ts#refCode")
+  fingerprint ast.semantic_subtree_v1("sha256:a225e938471fb3534740b3f0df50ee81bcc99c886628209b5edf8db33e1287a7")
+}
+
+resource VariantsModuleRefactorCodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/variants.ts#refactorCode")
+  fingerprint ast.semantic_subtree_v1("sha256:75c5867ee711ae8d8ef3703d5fdd595e1ba2bc83106b9afa60af9c2ce845f92c")
+}
+
+resource VariantsModuleVariantsOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/variants.ts#variantsOf")
+  fingerprint ast.semantic_subtree_v1("sha256:91381ff0ed5eb47d3e8bda40149b7a70baf60b03836486f1b72f38b412f86701")
+}
+
+component VariantsModule : GeneratedCandidate {
+  fn mutantTags
+    source ts("experiments/shape-1/trials/H3/variants.ts#mutantTags")
+    effects unknown
+  fn preCode
+    source ts("experiments/shape-1/trials/H3/variants.ts#preCode")
+    effects unknown
+  fn refCode
+    source ts("experiments/shape-1/trials/H3/variants.ts#refCode")
+    effects unknown
+  fn refactorCode
+    source ts("experiments/shape-1/trials/H3/variants.ts#refactorCode")
+    effects unknown
+  fn variantsOf
+    source ts("experiments/shape-1/trials/H3/variants.ts#variantsOf")
+    effects unknown
+}
+
+relation VariantsModuleMutantTagsGeneratedFromVariantsModuleMutantTagsAstAnchor {
+  kind generated_from
+  connects VariantsModule -> VariantsModuleMutantTagsAstAnchor
+  roles { VariantsModule as generated, VariantsModuleMutantTagsAstAnchor as syntax }
+  expects VariantsModuleMutantTagsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e40eeed799a3723711c9306e60c527cb2bfb466f19b30013a2145a311e659c6e")
+  summary "fn VariantsModule.mutantTags generated from typescript function_declaration at experiments/shape-1/trials/H3/variants.ts#mutantTags."
+}
+
+relation VariantsModulePreCodeGeneratedFromVariantsModulePreCodeAstAnchor {
+  kind generated_from
+  connects VariantsModule -> VariantsModulePreCodeAstAnchor
+  roles { VariantsModule as generated, VariantsModulePreCodeAstAnchor as syntax }
+  expects VariantsModulePreCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f03d7a146a24a33875376aed7f7fc2f4bc60acbd590b493c7ad4a135d95e4a00")
+  summary "fn VariantsModule.preCode generated from typescript function_declaration at experiments/shape-1/trials/H3/variants.ts#preCode."
+}
+
+relation VariantsModuleRefCodeGeneratedFromVariantsModuleRefCodeAstAnchor {
+  kind generated_from
+  connects VariantsModule -> VariantsModuleRefCodeAstAnchor
+  roles { VariantsModule as generated, VariantsModuleRefCodeAstAnchor as syntax }
+  expects VariantsModuleRefCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a225e938471fb3534740b3f0df50ee81bcc99c886628209b5edf8db33e1287a7")
+  summary "fn VariantsModule.refCode generated from typescript function_declaration at experiments/shape-1/trials/H3/variants.ts#refCode."
+}
+
+relation VariantsModuleRefactorCodeGeneratedFromVariantsModuleRefactorCodeAstAnchor {
+  kind generated_from
+  connects VariantsModule -> VariantsModuleRefactorCodeAstAnchor
+  roles { VariantsModule as generated, VariantsModuleRefactorCodeAstAnchor as syntax }
+  expects VariantsModuleRefactorCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:75c5867ee711ae8d8ef3703d5fdd595e1ba2bc83106b9afa60af9c2ce845f92c")
+  summary "fn VariantsModule.refactorCode generated from typescript function_declaration at experiments/shape-1/trials/H3/variants.ts#refactorCode."
+}
+
+relation VariantsModuleVariantsOfGeneratedFromVariantsModuleVariantsOfAstAnchor {
+  kind generated_from
+  connects VariantsModule -> VariantsModuleVariantsOfAstAnchor
+  roles { VariantsModule as generated, VariantsModuleVariantsOfAstAnchor as syntax }
+  expects VariantsModuleVariantsOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:91381ff0ed5eb47d3e8bda40149b7a70baf60b03836486f1b72f38b412f86701")
+  summary "fn VariantsModule.variantsOf generated from typescript function_declaration at experiments/shape-1/trials/H3/variants.ts#variantsOf."
+}
+
+implementation VariantsModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/variants.ts"
+  }
+  conforms_to VariantsModule
+}

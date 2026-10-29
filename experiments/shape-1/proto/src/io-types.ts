@@ -40,7 +40,10 @@ export interface CheckInput {
   reviews: Review[];
   records: unknown[];
   baseRecords: unknown[];
-  persisted: { base: { path: string; record: unknown }[]; head: { path: string; record: unknown }[] };
+  persisted: {
+    base: { path: string; record: unknown }[];
+    head: { path: string; record: unknown }[];
+  };
   options: { health: boolean; teeth: boolean };
 }
 
@@ -86,7 +89,13 @@ export interface CheckOutput {
   errors: ShapeError[];
   rejected: { record: string; code: string; detail: string }[];
   obligations: ObligationOut[];
-  answered: { obligation: string; records: string[]; self: boolean; exploited: boolean | null; as: "discharge" | "exception-answer" }[];
+  answered: {
+    obligation: string;
+    records: string[];
+    self: boolean;
+    exploited: boolean | null;
+    as: "discharge" | "exception-answer";
+  }[];
   loosening: {
     question: string;
     subject: string;
@@ -98,12 +107,30 @@ export interface CheckOutput {
     obligation: string;
   }[];
   renames: { base: string; head: string; rule: string }[];
-  debt: { obligation: string; exception: string; owner: string; expiresInDays: number; flagged: boolean }[];
+  debt: {
+    obligation: string;
+    exception: string;
+    owner: string;
+    expiresInDays: number;
+    flagged: boolean;
+  }[];
   preexisting: { obligation: string; owner: string }[];
   budget: { limit: number | null; used: number; overflow: string[] };
   health: Record<string, JsonValue>;
   /** phase-1 review lines, per group (display) */
-  summary?: { group: string; tier: Tier; eligible: string[]; approve: string | null; judge: string[]; members: string[] }[];
+  summary?: {
+    group: string;
+    tier: Tier;
+    eligible: string[];
+    approve: string | null;
+    judge: string[];
+    members: string[];
+  }[];
 }
 
-export const EXIT: Record<CheckOutput["verdict"], number> = { pass: 0, owed: 0, blocked: 1, invalid: 2 };
+export const EXIT: Record<CheckOutput["verdict"], number> = {
+  pass: 0,
+  owed: 0,
+  blocked: 1,
+  invalid: 2
+};

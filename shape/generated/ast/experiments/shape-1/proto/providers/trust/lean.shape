@@ -1,0 +1,209 @@
+module shape.generated.ast.experiments.shape_1.proto.providers.trust.lean
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LeanModuleBlankLeanAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/lean.ts#blankLean")
+  fingerprint ast.semantic_subtree_v1("sha256:cedfba6f3f3031842a352421ad268ac18194ec7eb6783a3aa78e6f611c216243")
+}
+
+resource LeanModuleDeclRefsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/lean.ts#declRefs")
+  fingerprint ast.semantic_subtree_v1("sha256:1d6d08b3505adde0e87fbd9ebfbc5e0267aaf67ca355587ee9187fe1350a804a")
+}
+
+resource LeanModuleEncodeLeanSymbolAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/lean.ts#encodeLeanSymbol")
+  fingerprint ast.semantic_subtree_v1("sha256:51c690c0b0b6763cb552321fc5aa9ea0158ae6360518a0411f585cf8d387902a")
+}
+
+resource LeanModuleLeanAssumptionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/lean.ts#leanAssumptions")
+  fingerprint ast.semantic_subtree_v1("sha256:61720251d2f626ee98ce720e85e218315aa443a9cc342d297f3728118d3c8b8f")
+}
+
+resource LeanModuleLeanIdentitiesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/lean.ts#leanIdentities")
+  fingerprint ast.semantic_subtree_v1("sha256:54fea215de23418a4ca34810dc70cef8cf8f17b783616eb06d94e943765d3f86")
+}
+
+resource LeanModuleLeanProjectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/lean.ts#leanProject")
+  fingerprint ast.semantic_subtree_v1("sha256:0330f9052d8c368b66385463709b969fb4e787cea9adf9ce3e5148fc6509b327")
+}
+
+resource LeanModuleLineHeadsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/lean.ts#lineHeads")
+  fingerprint ast.semantic_subtree_v1("sha256:94972f49753a27bea141455ff7dac6513b9615c93d777dfd8aa4565128ee2aae")
+}
+
+resource LeanModuleNameConeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/lean.ts#nameCone")
+  fingerprint ast.semantic_subtree_v1("sha256:9d1c02ba2594472fa4d00f4225026ff1f014ef35eb40912fd0651a55a43aeacc")
+}
+
+resource LeanModuleParsePrintAxiomsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/lean.ts#parsePrintAxioms")
+  fingerprint ast.semantic_subtree_v1("sha256:6763016a519567e06541ae37615174f256db24a29e5cbcce16ff1ab6e31b6ecb")
+}
+
+resource LeanModuleReferencedNamesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/lean.ts#referencedNames")
+  fingerprint ast.semantic_subtree_v1("sha256:8cca2225844f4f13524443c447cfa9894420f7ec5781b7ed9eeb60a672186ffb")
+}
+
+resource LeanModuleScanLeanAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/lean.ts#scanLean")
+  fingerprint ast.semantic_subtree_v1("sha256:c18d165bbfe6dea5b9ef1d2e34ec7d1ef02b1ad3a5e0fd6a876f47be3b91aefb")
+}
+
+resource LeanModuleSquashAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/trust/lean.ts#squash")
+  fingerprint ast.semantic_subtree_v1("sha256:1b158fd36e18604ad28978f6d3c3e2973d5b886de7a96d4ae2e7e635325d6845")
+}
+
+component LeanModule : GeneratedCandidate {
+  fn blankLean
+    source ts("experiments/shape-1/proto/providers/trust/lean.ts#blankLean")
+    effects unknown
+  fn declRefs
+    source ts("experiments/shape-1/proto/providers/trust/lean.ts#declRefs")
+    effects unknown
+  fn encodeLeanSymbol
+    source ts("experiments/shape-1/proto/providers/trust/lean.ts#encodeLeanSymbol")
+    effects unknown
+  fn leanAssumptions
+    source ts("experiments/shape-1/proto/providers/trust/lean.ts#leanAssumptions")
+    effects unknown
+  fn leanIdentities
+    source ts("experiments/shape-1/proto/providers/trust/lean.ts#leanIdentities")
+    effects unknown
+  fn leanProject
+    source ts("experiments/shape-1/proto/providers/trust/lean.ts#leanProject")
+    effects unknown
+  fn lineHeads
+    source ts("experiments/shape-1/proto/providers/trust/lean.ts#lineHeads")
+    effects unknown
+  fn nameCone
+    source ts("experiments/shape-1/proto/providers/trust/lean.ts#nameCone")
+    effects unknown
+  fn parsePrintAxioms
+    source ts("experiments/shape-1/proto/providers/trust/lean.ts#parsePrintAxioms")
+    effects unknown
+  fn referencedNames
+    source ts("experiments/shape-1/proto/providers/trust/lean.ts#referencedNames")
+    effects unknown
+  fn scanLean
+    source ts("experiments/shape-1/proto/providers/trust/lean.ts#scanLean")
+    effects unknown
+  fn squash
+    source ts("experiments/shape-1/proto/providers/trust/lean.ts#squash")
+    effects unknown
+}
+
+relation LeanModuleBlankLeanGeneratedFromLeanModuleBlankLeanAstAnchor {
+  kind generated_from
+  connects LeanModule -> LeanModuleBlankLeanAstAnchor
+  roles { LeanModule as generated, LeanModuleBlankLeanAstAnchor as syntax }
+  expects LeanModuleBlankLeanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cedfba6f3f3031842a352421ad268ac18194ec7eb6783a3aa78e6f611c216243")
+  summary "fn LeanModule.blankLean generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/lean.ts#blankLean."
+}
+
+relation LeanModuleDeclRefsGeneratedFromLeanModuleDeclRefsAstAnchor {
+  kind generated_from
+  connects LeanModule -> LeanModuleDeclRefsAstAnchor
+  roles { LeanModule as generated, LeanModuleDeclRefsAstAnchor as syntax }
+  expects LeanModuleDeclRefsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1d6d08b3505adde0e87fbd9ebfbc5e0267aaf67ca355587ee9187fe1350a804a")
+  summary "fn LeanModule.declRefs generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/lean.ts#declRefs."
+}
+
+relation LeanModuleEncodeLeanSymbolGeneratedFromLeanModuleEncodeLeanSymbolAstAnchor {
+  kind generated_from
+  connects LeanModule -> LeanModuleEncodeLeanSymbolAstAnchor
+  roles { LeanModule as generated, LeanModuleEncodeLeanSymbolAstAnchor as syntax }
+  expects LeanModuleEncodeLeanSymbolAstAnchor fingerprint ast.semantic_subtree_v1("sha256:51c690c0b0b6763cb552321fc5aa9ea0158ae6360518a0411f585cf8d387902a")
+  summary "fn LeanModule.encodeLeanSymbol generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/lean.ts#encodeLeanSymbol."
+}
+
+relation LeanModuleLeanAssumptionsGeneratedFromLeanModuleLeanAssumptionsAstAnchor {
+  kind generated_from
+  connects LeanModule -> LeanModuleLeanAssumptionsAstAnchor
+  roles { LeanModule as generated, LeanModuleLeanAssumptionsAstAnchor as syntax }
+  expects LeanModuleLeanAssumptionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:61720251d2f626ee98ce720e85e218315aa443a9cc342d297f3728118d3c8b8f")
+  summary "fn LeanModule.leanAssumptions generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/lean.ts#leanAssumptions."
+}
+
+relation LeanModuleLeanIdentitiesGeneratedFromLeanModuleLeanIdentitiesAstAnchor {
+  kind generated_from
+  connects LeanModule -> LeanModuleLeanIdentitiesAstAnchor
+  roles { LeanModule as generated, LeanModuleLeanIdentitiesAstAnchor as syntax }
+  expects LeanModuleLeanIdentitiesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:54fea215de23418a4ca34810dc70cef8cf8f17b783616eb06d94e943765d3f86")
+  summary "fn LeanModule.leanIdentities generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/lean.ts#leanIdentities."
+}
+
+relation LeanModuleLeanProjectGeneratedFromLeanModuleLeanProjectAstAnchor {
+  kind generated_from
+  connects LeanModule -> LeanModuleLeanProjectAstAnchor
+  roles { LeanModule as generated, LeanModuleLeanProjectAstAnchor as syntax }
+  expects LeanModuleLeanProjectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0330f9052d8c368b66385463709b969fb4e787cea9adf9ce3e5148fc6509b327")
+  summary "fn LeanModule.leanProject generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/lean.ts#leanProject."
+}
+
+relation LeanModuleLineHeadsGeneratedFromLeanModuleLineHeadsAstAnchor {
+  kind generated_from
+  connects LeanModule -> LeanModuleLineHeadsAstAnchor
+  roles { LeanModule as generated, LeanModuleLineHeadsAstAnchor as syntax }
+  expects LeanModuleLineHeadsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:94972f49753a27bea141455ff7dac6513b9615c93d777dfd8aa4565128ee2aae")
+  summary "fn LeanModule.lineHeads generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/lean.ts#lineHeads."
+}
+
+relation LeanModuleNameConeGeneratedFromLeanModuleNameConeAstAnchor {
+  kind generated_from
+  connects LeanModule -> LeanModuleNameConeAstAnchor
+  roles { LeanModule as generated, LeanModuleNameConeAstAnchor as syntax }
+  expects LeanModuleNameConeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9d1c02ba2594472fa4d00f4225026ff1f014ef35eb40912fd0651a55a43aeacc")
+  summary "fn LeanModule.nameCone generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/lean.ts#nameCone."
+}
+
+relation LeanModuleParsePrintAxiomsGeneratedFromLeanModuleParsePrintAxiomsAstAnchor {
+  kind generated_from
+  connects LeanModule -> LeanModuleParsePrintAxiomsAstAnchor
+  roles { LeanModule as generated, LeanModuleParsePrintAxiomsAstAnchor as syntax }
+  expects LeanModuleParsePrintAxiomsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6763016a519567e06541ae37615174f256db24a29e5cbcce16ff1ab6e31b6ecb")
+  summary "fn LeanModule.parsePrintAxioms generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/lean.ts#parsePrintAxioms."
+}
+
+relation LeanModuleReferencedNamesGeneratedFromLeanModuleReferencedNamesAstAnchor {
+  kind generated_from
+  connects LeanModule -> LeanModuleReferencedNamesAstAnchor
+  roles { LeanModule as generated, LeanModuleReferencedNamesAstAnchor as syntax }
+  expects LeanModuleReferencedNamesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8cca2225844f4f13524443c447cfa9894420f7ec5781b7ed9eeb60a672186ffb")
+  summary "fn LeanModule.referencedNames generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/lean.ts#referencedNames."
+}
+
+relation LeanModuleScanLeanGeneratedFromLeanModuleScanLeanAstAnchor {
+  kind generated_from
+  connects LeanModule -> LeanModuleScanLeanAstAnchor
+  roles { LeanModule as generated, LeanModuleScanLeanAstAnchor as syntax }
+  expects LeanModuleScanLeanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c18d165bbfe6dea5b9ef1d2e34ec7d1ef02b1ad3a5e0fd6a876f47be3b91aefb")
+  summary "fn LeanModule.scanLean generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/lean.ts#scanLean."
+}
+
+relation LeanModuleSquashGeneratedFromLeanModuleSquashAstAnchor {
+  kind generated_from
+  connects LeanModule -> LeanModuleSquashAstAnchor
+  roles { LeanModule as generated, LeanModuleSquashAstAnchor as syntax }
+  expects LeanModuleSquashAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1b158fd36e18604ad28978f6d3c3e2973d5b886de7a96d4ae2e7e635325d6845")
+  summary "fn LeanModule.squash generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/lean.ts#squash."
+}
+
+implementation LeanModuleImpl {
+  paths {
+    "experiments/shape-1/proto/providers/trust/lean.ts"
+  }
+  conforms_to LeanModule
+}

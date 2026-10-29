@@ -1,0 +1,97 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:df247f3819d039026fc2060d31c91e9312e6490f23ff266e47c71d548ad26799",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:c4d86210faece9b17577753baa7e931db05b83da09efbd3fb1202cc8c4264e92",
+    "ids": [
+     "tooling::CheckerNeverReadsClock"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": "sound",
+   "group": "g:058a5f05f8ff352ff3f78710242462f6e2dead22ce7b2b3142ba3c9f8955ebf5",
+   "introduced": true,
+   "key": "ob:be999366aeac4c30e0c9956652062390c3a2d229d399549edf61f83b8a75400d",
+   "kind": "contradiction",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": null,
+   "reason": null,
+   "severity": "blocking",
+   "subject": {
+    "atom": "Read<tooling::WallClock>",
+    "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+   },
+   "tier": "critical",
+   "witness": [
+    "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e"
+   ]
+  },
+  {
+   "binding": "bd:68983f47a15c2ddb45efcaac264747146a5e63dacd11c738c9bb4581728024fd",
+   "budget": "judgment",
+   "claim": {
+    "fp": "sha256:866e06e6bddd0add1cd7a6103d38d09c31bed7b56936712bd6318cd6497ba0f1",
+    "ids": [
+     "tooling::CheckerNeverReadsClock"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": false,
+   "final": false,
+   "force": null,
+   "group": "g:058a5f05f8ff352ff3f78710242462f6e2dead22ce7b2b3142ba3c9f8955ebf5",
+   "introduced": true,
+   "key": "ob:58c4d96ace4f36e5b19a18f615188c3e1884862a67b2ea7110c9288d239d0908",
+   "kind": "loosening",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": [
+    "L1"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "sha256:866e06e6bddd0add1cd7a6103d38d09c31bed7b56936712bd6318cd6497ba0f1",
+   "tier": "critical",
+   "witness": []
+  },
+  {
+   "binding": "bd:f1e3ce893aa6c358fb4887e203f46cb2819d015e8ffc1579f96df86dc994eadf",
+   "budget": "judgment",
+   "claim": {
+    "fp": "sha256:d2a8c04efe08b943cbcaccf643d375c3ead8f7b20a9350a6612b3518dac35899",
+    "ids": [
+     "tooling::ShpCli.isoToday/effects.upper"
+    ],
+    "tier": "normal"
+   },
+   "exception": null,
+   "exploited": false,
+   "final": false,
+   "force": null,
+   "group": "g:93b3e79b8e515115276b6896b0bef1b4ca21b3e59a3ae70d8b755f5fbe341cdb",
+   "introduced": true,
+   "key": "ob:a90e3cee239b1f166cef3b80efac297ae3af7ae6bb2b58d7ee0674652df0c007",
+   "kind": "loosening",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": [
+    "L2"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "sha256:d2a8c04efe08b943cbcaccf643d375c3ead8f7b20a9350a6612b3518dac35899",
+   "tier": "normal",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

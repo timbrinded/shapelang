@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T3.r12_split_retention.retention
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RetentionModuleHasExpiredAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/retention.ts#hasExpired")
+  fingerprint ast.semantic_subtree_v1("sha256:99f16349c12e008aaf976ff20d6fe47855dd7d2a93c4c4de8961dc41c54da6ea")
+}
+
+component RetentionModule : GeneratedCandidate {
+  fn hasExpired
+    source ts("experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/retention.ts#hasExpired")
+    effects unknown
+}
+
+relation RetentionModuleHasExpiredGeneratedFromRetentionModuleHasExpiredAstAnchor {
+  kind generated_from
+  connects RetentionModule -> RetentionModuleHasExpiredAstAnchor
+  roles { RetentionModule as generated, RetentionModuleHasExpiredAstAnchor as syntax }
+  expects RetentionModuleHasExpiredAstAnchor fingerprint ast.semantic_subtree_v1("sha256:99f16349c12e008aaf976ff20d6fe47855dd7d2a93c4c4de8961dc41c54da6ea")
+  summary "fn RetentionModule.hasExpired generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/retention.ts#hasExpired."
+}
+
+implementation RetentionModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T3/r12_split_retention/retention.ts"
+  }
+  conforms_to RetentionModule
+}

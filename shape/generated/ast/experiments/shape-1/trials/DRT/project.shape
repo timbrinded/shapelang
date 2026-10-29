@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.trials.DRT.project
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ProjectModuleProjectOutAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT/project.ts#projectOut")
+  fingerprint ast.semantic_subtree_v1("sha256:458572ba160763d2003a27494122efc40e3bb08445b7655721907a8a442bed7c")
+}
+
+component ProjectModule : GeneratedCandidate {
+  fn projectOut
+    source ts("experiments/shape-1/trials/DRT/project.ts#projectOut")
+    effects unknown
+}
+
+relation ProjectModuleProjectOutGeneratedFromProjectModuleProjectOutAstAnchor {
+  kind generated_from
+  connects ProjectModule -> ProjectModuleProjectOutAstAnchor
+  roles { ProjectModule as generated, ProjectModuleProjectOutAstAnchor as syntax }
+  expects ProjectModuleProjectOutAstAnchor fingerprint ast.semantic_subtree_v1("sha256:458572ba160763d2003a27494122efc40e3bb08445b7655721907a8a442bed7c")
+  summary "fn ProjectModule.projectOut generated from typescript function_declaration at experiments/shape-1/trials/DRT/project.ts#projectOut."
+}
+
+implementation ProjectModuleImpl {
+  paths {
+    "experiments/shape-1/trials/DRT/project.ts"
+  }
+  conforms_to ProjectModule
+}

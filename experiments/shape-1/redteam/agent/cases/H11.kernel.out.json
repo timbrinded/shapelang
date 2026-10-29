@@ -1,0 +1,58 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:ce1794a88ee7186d149940f2d2ef08c1fce9763ce9e670066085658931354b60",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": false,
+   "final": false,
+   "force": null,
+   "group": "g:e98df0b7c8289caf6dac2e08be6885544f575d30cece598e2368bfe278165a0e",
+   "introduced": true,
+   "key": "ob:d91001520fce1a4d661c30b234abb3c6d0851453b833e953a9dc01460453b8eb",
+   "kind": "loosening",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": [
+    "L7"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "provider checker::bunTest",
+   "tier": "critical",
+   "witness": []
+  },
+  {
+   "binding": "bd:b9b34be78875fd8f60d34d325bf86a77350a6d4f9bebfbcd01ab7572d0e7805c",
+   "budget": "judgment",
+   "claim": {
+    "fp": "sha256:8620c3bead39262d509d30d813c84d79db4e1ce51b1dd92c904225082519b8c3",
+    "ids": [
+     "checker::CheckIsDeterministic"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:a5e8cc5973b3b857398b7a97ebecf38c7b0e05913f0bce0ec2dde6d7ce00bdc3",
+   "introduced": true,
+   "key": "ob:79b18d16e2bc560c6c28f3722f151421320a80116886e10f80d3b5e0cab8e4fc",
+   "kind": "unestablished",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": null,
+   "reason": "producer-changed",
+   "severity": "blocking",
+   "subject": null,
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

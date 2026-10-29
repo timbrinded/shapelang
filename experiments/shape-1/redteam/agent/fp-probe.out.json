@@ -1,0 +1,154 @@
+{
+ "typescript": "6.0.2",
+ "results": [
+  {
+   "id": "P1",
+   "name": "imported const from another TS file changes",
+   "target": "ts:src/purge.ts#purgeOld",
+   "spec": "must move: env(x) resolves data by canonical initialiser, transitively, re-exports followed (A.5.7.2, A.12.2.10)",
+   "unitMoved": false,
+   "ownMoved": false,
+   "baseUnit": "sha256:eb3762f4592e5e3c3ca21a61b5d1e8e72353d95cc5886c2e33f92a76ea672e29",
+   "headUnit": "sha256:eb3762f4592e5e3c3ca21a61b5d1e8e72353d95cc5886c2e33f92a76ea672e29",
+   "changedIds": [
+    "ts:src/config.ts"
+   ]
+  },
+  {
+   "id": "P2",
+   "name": "imported JSON data file changes",
+   "target": "ts:src/purge.ts#purgeOld",
+   "spec": "silent: env covers TS data initialisers only; raw data imported into code is outside env (gap)",
+   "unitMoved": false,
+   "ownMoved": false,
+   "baseUnit": "sha256:0d9d92762523d667c9dd1881deae133924bcad858118e52a9cff306902b07839",
+   "headUnit": "sha256:0d9d92762523d667c9dd1881deae133924bcad858118e52a9cff306902b07839",
+   "changedIds": [
+    "raw:src/retention.json"
+   ]
+  },
+  {
+   "id": "P3",
+   "name": "same-file callee body changes",
+   "target": "ts:src/clock.ts#isoToday",
+   "spec": "must not move: functions by identity (A.5.7.2); freshness of the caller relies on deps/coverage",
+   "unitMoved": false,
+   "ownMoved": false,
+   "baseUnit": "sha256:f62fd3c587b222bdb827dc4eef93060a63e2df174501d6e2b250456101204f77",
+   "headUnit": "sha256:f62fd3c587b222bdb827dc4eef93060a63e2df174501d6e2b250456101204f77",
+   "changedIds": [
+    "ts:src/clock.ts",
+    "ts:src/clock.ts#fmt"
+   ]
+  },
+  {
+   "id": "P4",
+   "name": "same-file top-level const changes",
+   "target": "ts:src/purge.ts#purgeOld",
+   "spec": "must move: data by canonical initialiser",
+   "unitMoved": true,
+   "ownMoved": false,
+   "baseUnit": "sha256:32812c6f21f724653e8cac69a56b30b740bebcacda4c362436fd54dfbbb35e27",
+   "headUnit": "sha256:a54b53f215baf1bb8a3915054d8bd176b60188d376a951b5991bc633e2c68ea4",
+   "changedIds": [
+    "ts:src/purge.ts",
+    "ts:src/purge.ts#purgeOld"
+   ]
+  },
+  {
+   "id": "P5",
+   "name": "same-file const used as an object property value with the same key name",
+   "target": "ts:src/purge.ts#purgeOld",
+   "spec": "must move: data by canonical initialiser (free name `days`)",
+   "unitMoved": false,
+   "ownMoved": false,
+   "baseUnit": "sha256:9c91ec566c19cd567d634e01c475c8d05002118246033b01cced55d73ffb708e",
+   "headUnit": "sha256:9c91ec566c19cd567d634e01c475c8d05002118246033b01cced55d73ffb708e",
+   "changedIds": [
+    "ts:src/purge.ts",
+    "ts:src/purge.ts#run"
+   ]
+  },
+  {
+   "id": "P6",
+   "name": "same-file const shadowed by a nested declaration elsewhere in the function",
+   "target": "ts:src/purge.ts#purgeOld",
+   "spec": "must move: the outer use of LIMIT is free",
+   "unitMoved": false,
+   "ownMoved": false,
+   "baseUnit": "sha256:d039906e2d00b3871eb6c95ee9becf1effba9164e76e6efb0c8845061829608f",
+   "headUnit": "sha256:d039906e2d00b3871eb6c95ee9becf1effba9164e76e6efb0c8845061829608f",
+   "changedIds": [
+    "ts:src/purge.ts"
+   ]
+  },
+  {
+   "id": "P7",
+   "name": "string literal NFC to NFD (different run-time string)",
+   "target": "ts:src/match.ts#isCafe",
+   "spec": "must move: literals by value; NFC and NFD strings are different values",
+   "unitMoved": true,
+   "ownMoved": true,
+   "baseUnit": "sha256:82e5239be80d9104717a7ccff19f9dd1305e2a9a3ecb22ff9a1e93d95b39592b",
+   "headUnit": "sha256:d00ee93255779d9f05d07252ca57edd940eafaa838e30bdb82644231dadc87ff",
+   "changedIds": [
+    "ts:src/match.ts",
+    "ts:src/match.ts#isCafe"
+   ]
+  },
+  {
+   "id": "P8",
+   "name": "same-file enum member value changes",
+   "target": "ts:src/purge.ts#purgeOld",
+   "spec": "must move: data by canonical initialiser (an enum is data)",
+   "unitMoved": false,
+   "ownMoved": false,
+   "baseUnit": "sha256:006bb11494e86610d6984385b3b67133571d1e8e967d38c1fd6a0ffd522207e7",
+   "headUnit": "sha256:006bb11494e86610d6984385b3b67133571d1e8e967d38c1fd6a0ffd522207e7",
+   "changedIds": [
+    "ts:src/purge.ts"
+   ]
+  },
+  {
+   "id": "P9",
+   "name": "re-exported const changes behind a barrel",
+   "target": "ts:src/purge.ts#purgeOld",
+   "spec": "must move: re-exports followed, data transitively (A.12.2.10)",
+   "unitMoved": false,
+   "ownMoved": false,
+   "baseUnit": "sha256:e783c8cd14eeee8a4e52ef1f0990d3983bf562e088c8afc1bbe8bd1b55ba1b19",
+   "headUnit": "sha256:e783c8cd14eeee8a4e52ef1f0990d3983bf562e088c8afc1bbe8bd1b55ba1b19",
+   "changedIds": [
+    "ts:src/config/values.ts"
+   ]
+  },
+  {
+   "id": "P10",
+   "name": "control: the function's own body changes",
+   "target": "ts:src/purge.ts#purgeOld",
+   "spec": "must move",
+   "unitMoved": true,
+   "ownMoved": true,
+   "baseUnit": "sha256:c01972fb73b537ee94ad0810a52e673b6b11b5c9c6a603d75209b2a26a918dc0",
+   "headUnit": "sha256:cfdec81ce3a642ac95ec45c3c606f0d63cec9fc5ed49421a11bdc14b52aef6a6",
+   "changedIds": [
+    "ts:src/purge.ts",
+    "ts:src/purge.ts#purgeOld"
+   ]
+  },
+  {
+   "id": "P11",
+   "name": "bigint literal replaced by number literal",
+   "target": "ts:src/ids.ts#isRoot",
+   "spec": "must move: 1n and 1 are different values",
+   "unitMoved": true,
+   "ownMoved": true,
+   "baseUnit": "sha256:88b2844b362806e3afca042f5154aaa6df0367de67e60ec5184267e4ae1269de",
+   "headUnit": "sha256:09619725571e974a964ba1f11d7d8fcb38e8a8da7d99c04e5f2f07b14f6985c1",
+   "changedIds": [
+    "ts:src/ids.ts",
+    "ts:src/ids.ts#isRoot"
+   ]
+  }
+ ]
+}

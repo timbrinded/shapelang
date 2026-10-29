@@ -50,18 +50,32 @@ const source = readModel();
 const esf = elaborateAt(source, NOW);
 const probe = probeSource(source, esf);
 const probeQ = `${probe.modules[0].module}::probe`;
-const probeCode = (r: string): string => `ts.call(${JSON.stringify(`teeth.${r.replace(/::/g, ".")}`)})`;
+const probeCode = (r: string): string =>
+  `ts.call(${JSON.stringify(`teeth.${r.replace(/::/g, ".")}`)})`;
 
 function baseManifest(edited: string[]): unknown {
   const ids = new Set(edited);
-  const entries = pred.entries.map((e) => (ids.has(e.id) ? { ...e, digest: `sha256:${"e".repeat(48)}${e.digest.slice(-16)}` } : e));
+  const entries = pred.entries.map((e) =>
+    ids.has(e.id) ? { ...e, digest: `sha256:${"e".repeat(48)}${e.digest.slice(-16)}` } : e
+  );
   return manifestStatement({ ...pred, revision: BASE_REV, entries });
 }
 const plainBase = baseManifest([]);
 
 function observation(at: string, verb: string, resource: string): unknown {
-  const e = pred.entries.find((x) => x.id === at && x.projection === "unit") ?? pred.entries.find((x) => x.id === at);
-  const entries = [{ id: e.id, projection: e.projection, scheme: e.scheme, digest: e.digest, complete: false, deps: [] }];
+  const e =
+    pred.entries.find((x) => x.id === at && x.projection === "unit") ??
+    pred.entries.find((x) => x.id === at);
+  const entries = [
+    {
+      id: e.id,
+      projection: e.projection,
+      scheme: e.scheme,
+      digest: e.digest,
+      complete: false,
+      deps: []
+    }
+  ];
   return makeStatement({
     v: "shape.evidence.v1",
     kind: "observation",
@@ -97,26 +111,52 @@ const keyOf = (o) => o.key;
 const errKey = (e) => `${e.code} ${e.subject}`;
 const t0 = performance.now();
 const baseOut = derive(input(probe, plainBase, []));
-const baseKeys = new Map(baseOut.obligations.map((o) => [keyOf(o), `${o.severity}|${o.introduced}`]));
+const baseKeys = new Map(
+  baseOut.obligations.map((o) => [keyOf(o), `${o.severity}|${o.introduced}`])
+);
 const baseErrs = new Set(baseOut.errors.map(errKey));
-process.stderr.write(`baseline: ${baseOut.verdict}, ${baseOut.obligations.length} obligations, ${baseOut.errors.length} errors (${((performance.now() - t0) / 1000).toFixed(1)} s)\n`);
+process.stderr.write(
+  `baseline: ${baseOut.verdict}, ${baseOut.obligations.length} obligations, ${baseOut.errors.length} errors (${((performance.now() - t0) / 1000).toFixed(1)} s)\n`
+);
 
 // component -> chosen unit (TS-bound, effects complete), and its file identity
 const compDecl = new Map();
-for (const m of probe.modules) for (const d of m.decls) if (d.decl === "component") compDecl.set(`${m.module}::${d.name}`, { m, d });
+for (const m of probe.modules)
+  for (const d of m.decls)
+    if (d.decl === "component") compDecl.set(`${m.module}::${d.name}`, { m, d });
 const idSet = new Set(pred.entries.map((e) => e.id));
 const comps = [];
 for (const [q, { d }] of [...compDecl].sort((a, b) => (a[0] < b[0] ? -1 : 1))) {
   if (!Array.isArray(d.grants)) continue;
-  const u = (d.units ?? []).filter((x) => x.effects?.mode === "complete" && (x.bind ?? "").startsWith('ts("')).sort((a, b) => (a.name < b.name ? -1 : 1))[0];
+  const u = (d.units ?? [])
+    .filter((x) => x.effects?.mode === "complete" && (x.bind ?? "").startsWith('ts("'))
+    .sort((a, b) => (a.name < b.name ? -1 : 1))[0];
   if (!u) continue;
   const id = `ts:${JSON.parse(u.bind.slice(3, -1))}`;
   if (!idSet.has(id)) continue;
   const tier = esf.components.find((c) => c.q === q)?.tier;
   comps.push({ q, unit: u.name, id, file: `ts:${id.slice(3).split("#")[0]}`, tier });
 }
-const resources = esf.resources.filter((r) => !r.q.startsWith("std::")).map((r) => r.q).sort();
-writeFileSync(join(WORK, "p1-setup.json"), JSON.stringify({ baseline: { verdict: baseOut.verdict, obligations: baseOut.obligations.length, errors: baseOut.errors.length }, comps, resources: resources.length }, null, 1));
+const resources = esf.resources
+  .filter((r) => !r.q.startsWith("std::"))
+  .map((r) => r.q)
+  .sort();
+writeFileSync(
+  join(WORK, "p1-setup.json"),
+  JSON.stringify(
+    {
+      baseline: {
+        verdict: baseOut.verdict,
+        obligations: baseOut.obligations.length,
+        errors: baseOut.errors.length
+      },
+      comps,
+      resources: resources.length
+    },
+    null,
+    1
+  )
+);
 
 function findComp(src, q) {
   const i = q.lastIndexOf("::");
@@ -133,14 +173,18 @@ resources.forEach((r, i) => {
 // rerun, since rows without escalation tracking miss preexisting obligations a code edit escalates
 const RESUME = argv.includes("--resume");
 const done = new Set<string>();
-if (RESUME) for (const f of readdirSync(WORK).filter((x) => /^p1-rows-\d+of\d+\.jsonl$/.test(x))) {
-  for (const l of readFileSync(join(WORK, f), "utf8").split("\n").filter(Boolean)) {
-    const r = JSON.parse(l);
-    if (r.crash || !["G1", "G2"].includes(r.variant)) continue;
-    done.add(`${r.variant}|${r.verb}|${r.resource}`);
+if (RESUME)
+  for (const f of readdirSync(WORK).filter((x) => /^p1-rows-\d+of\d+\.jsonl$/.test(x))) {
+    for (const l of readFileSync(join(WORK, f), "utf8").split("\n").filter(Boolean)) {
+      const r = JSON.parse(l);
+      if (r.crash || !["G1", "G2"].includes(r.variant)) continue;
+      done.add(`${r.variant}|${r.verb}|${r.resource}`);
+    }
   }
-}
-const mine = jobs.filter((j) => !done.has(`${j.v}|${j.verb}|${j.r}`)).filter((_, i) => i % NSHARD === SHARD).slice(0, LIMIT > 0 ? LIMIT : undefined);
+const mine = jobs
+  .filter((j) => !done.has(`${j.v}|${j.verb}|${j.r}`))
+  .filter((_, i) => i % NSHARD === SHARD)
+  .slice(0, LIMIT > 0 ? LIMIT : undefined);
 const out = join(WORK, `p1-rows-${SHARD}of${NSHARD}${RESUME ? "-r2" : ""}.jsonl`);
 if (RESUME && existsSync(out)) throw new Error(`${out} exists`);
 writeFileSync(out, "");
@@ -160,9 +204,17 @@ for (const j of mine) {
   const t = performance.now();
   let row;
   try {
-    const o = derive(input(head, edit ? baseManifest([j.c.id, j.c.file]) : plainBase, fact ? [observation(j.c.id, j.verb, j.r)] : []));
+    const o = derive(
+      input(
+        head,
+        edit ? baseManifest([j.c.id, j.c.file]) : plainBase,
+        fact ? [observation(j.c.id, j.verb, j.r)] : []
+      )
+    );
     // new keys, and existing keys whose severity or introduced flag changed (escalations)
-    const newObs = o.obligations.filter((x) => baseKeys.get(x.key) !== `${x.severity}|${x.introduced}`);
+    const newObs = o.obligations.filter(
+      (x) => baseKeys.get(x.key) !== `${x.severity}|${x.introduced}`
+    );
     const newErrs = o.errors.filter((e) => !baseErrs.has(errKey(e)));
     row = {
       variant: j.v,
@@ -172,12 +224,32 @@ for (const j of mine) {
       tier: j.c.tier,
       verdict: o.verdict,
       errors: newErrs.map((e) => errKey(e)),
-      obligations: newObs.map((x) => ({ escalated: baseKeys.has(x.key), kind: x.kind, severity: x.severity, tier: x.tier, force: x.force, introduced: x.introduced, questions: x.questions, exploited: x.exploited, claim: x.claim?.ids?.[0] ?? null, subject: x.subject, rule: x.rule ?? null })),
+      obligations: newObs.map((x) => ({
+        escalated: baseKeys.has(x.key),
+        kind: x.kind,
+        severity: x.severity,
+        tier: x.tier,
+        force: x.force,
+        introduced: x.introduced,
+        questions: x.questions,
+        exploited: x.exploited,
+        claim: x.claim?.ids?.[0] ?? null,
+        subject: x.subject,
+        rule: x.rule ?? null
+      })),
       ms: Math.round(performance.now() - t)
     };
   } catch (e) {
-    row = { variant: j.v, verb: j.verb, resource: j.r, component: j.c.q, crash: String(e).slice(0, 300) };
+    row = {
+      variant: j.v,
+      verb: j.verb,
+      resource: j.r,
+      component: j.c.q,
+      crash: String(e).slice(0, 300)
+    };
   }
   appendFileSync(out, `${JSON.stringify(row)}\n`);
 }
-process.stderr.write(`done ${mine.length} rows in ${((performance.now() - t0) / 1000).toFixed(0)} s -> ${out}\n`);
+process.stderr.write(
+  `done ${mine.length} rows in ${((performance.now() - t0) / 1000).toFixed(0)} s -> ${out}\n`
+);

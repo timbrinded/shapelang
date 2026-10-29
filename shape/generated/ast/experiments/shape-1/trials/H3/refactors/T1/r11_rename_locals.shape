@@ -1,0 +1,193 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r11_rename_locals
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R11RenameLocalsModuleDownYAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#downY")
+  fingerprint ast.semantic_subtree_v1("sha256:dff1d3461ed37b880bbf14ae64c899b89d7673719e42b17bb6dfa521ada24bec")
+}
+
+resource R11RenameLocalsModuleIsWallAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#isWall")
+  fingerprint ast.semantic_subtree_v1("sha256:1112adfd870072aec16cb7bc8d82c4395d73e83db2900aecf5051ed2d1ca54a4")
+}
+
+resource R11RenameLocalsModuleIsWonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#isWon")
+  fingerprint ast.semantic_subtree_v1("sha256:8ecdb0b7adb7ec434f7b3fd13e98065edf155e0569c46678c39cc01f8fad9c2f")
+}
+
+resource R11RenameLocalsModuleLeftXAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#leftX")
+  fingerprint ast.semantic_subtree_v1("sha256:84aaab7dd1a6b5d10e7879d21d307d4685caaaccf058f59ada3e49cb5089a5fb")
+}
+
+resource R11RenameLocalsModuleMoveToAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#moveTo")
+  fingerprint ast.semantic_subtree_v1("sha256:cce5bf0e70dc63dff7f4e44b9494978c51e1b5951be6980dba0b6c3779898d89")
+}
+
+resource R11RenameLocalsModuleOnFlagAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#onFlag")
+  fingerprint ast.semantic_subtree_v1("sha256:064acb73f95a280e1cc9d0261b51755499d455dfebaf74a849d8d6f922f53721")
+}
+
+resource R11RenameLocalsModuleReplayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#replay")
+  fingerprint ast.semantic_subtree_v1("sha256:4a7c675dd7544a4faf6748e644e674bcfe00d69bf53e315035140351349cfe04")
+}
+
+resource R11RenameLocalsModuleRightXAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#rightX")
+  fingerprint ast.semantic_subtree_v1("sha256:4b2e8c689d6a93094b7b85466fe590023e0f0cacc5c7c2420af87f6b3a1f4963")
+}
+
+resource R11RenameLocalsModuleStartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#start")
+  fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+}
+
+resource R11RenameLocalsModuleStepAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#step")
+  fingerprint ast.semantic_subtree_v1("sha256:7306c72931ece8612e0173b4a7377fe5605ca33efcecd0d83a25d6ab84099e61")
+}
+
+resource R11RenameLocalsModuleUpYAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#upY")
+  fingerprint ast.semantic_subtree_v1("sha256:a0c4489b199a8be39a28537c114e5c1fa059ec828d52f0c0940600efa78899ee")
+}
+
+component R11RenameLocalsModule : GeneratedCandidate {
+  fn downY
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#downY")
+    effects unknown
+  fn isWall
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#isWall")
+    effects unknown
+  fn isWon
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#isWon")
+    effects unknown
+  fn leftX
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#leftX")
+    effects unknown
+  fn moveTo
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#moveTo")
+    effects unknown
+  fn onFlag
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#onFlag")
+    effects unknown
+  fn replay
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#replay")
+    effects unknown
+  fn rightX
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#rightX")
+    effects unknown
+  fn start
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#start")
+    effects unknown
+  fn step
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#step")
+    effects unknown
+  fn upY
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#upY")
+    effects unknown
+}
+
+relation R11RenameLocalsModuleDownYGeneratedFromR11RenameLocalsModuleDownYAstAnchor {
+  kind generated_from
+  connects R11RenameLocalsModule -> R11RenameLocalsModuleDownYAstAnchor
+  roles { R11RenameLocalsModule as generated, R11RenameLocalsModuleDownYAstAnchor as syntax }
+  expects R11RenameLocalsModuleDownYAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dff1d3461ed37b880bbf14ae64c899b89d7673719e42b17bb6dfa521ada24bec")
+  summary "fn R11RenameLocalsModule.downY generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#downY."
+}
+
+relation R11RenameLocalsModuleIsWallGeneratedFromR11RenameLocalsModuleIsWallAstAnchor {
+  kind generated_from
+  connects R11RenameLocalsModule -> R11RenameLocalsModuleIsWallAstAnchor
+  roles { R11RenameLocalsModule as generated, R11RenameLocalsModuleIsWallAstAnchor as syntax }
+  expects R11RenameLocalsModuleIsWallAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1112adfd870072aec16cb7bc8d82c4395d73e83db2900aecf5051ed2d1ca54a4")
+  summary "fn R11RenameLocalsModule.isWall generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#isWall."
+}
+
+relation R11RenameLocalsModuleIsWonGeneratedFromR11RenameLocalsModuleIsWonAstAnchor {
+  kind generated_from
+  connects R11RenameLocalsModule -> R11RenameLocalsModuleIsWonAstAnchor
+  roles { R11RenameLocalsModule as generated, R11RenameLocalsModuleIsWonAstAnchor as syntax }
+  expects R11RenameLocalsModuleIsWonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8ecdb0b7adb7ec434f7b3fd13e98065edf155e0569c46678c39cc01f8fad9c2f")
+  summary "fn R11RenameLocalsModule.isWon generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#isWon."
+}
+
+relation R11RenameLocalsModuleLeftXGeneratedFromR11RenameLocalsModuleLeftXAstAnchor {
+  kind generated_from
+  connects R11RenameLocalsModule -> R11RenameLocalsModuleLeftXAstAnchor
+  roles { R11RenameLocalsModule as generated, R11RenameLocalsModuleLeftXAstAnchor as syntax }
+  expects R11RenameLocalsModuleLeftXAstAnchor fingerprint ast.semantic_subtree_v1("sha256:84aaab7dd1a6b5d10e7879d21d307d4685caaaccf058f59ada3e49cb5089a5fb")
+  summary "fn R11RenameLocalsModule.leftX generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#leftX."
+}
+
+relation R11RenameLocalsModuleMoveToGeneratedFromR11RenameLocalsModuleMoveToAstAnchor {
+  kind generated_from
+  connects R11RenameLocalsModule -> R11RenameLocalsModuleMoveToAstAnchor
+  roles { R11RenameLocalsModule as generated, R11RenameLocalsModuleMoveToAstAnchor as syntax }
+  expects R11RenameLocalsModuleMoveToAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cce5bf0e70dc63dff7f4e44b9494978c51e1b5951be6980dba0b6c3779898d89")
+  summary "fn R11RenameLocalsModule.moveTo generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#moveTo."
+}
+
+relation R11RenameLocalsModuleOnFlagGeneratedFromR11RenameLocalsModuleOnFlagAstAnchor {
+  kind generated_from
+  connects R11RenameLocalsModule -> R11RenameLocalsModuleOnFlagAstAnchor
+  roles { R11RenameLocalsModule as generated, R11RenameLocalsModuleOnFlagAstAnchor as syntax }
+  expects R11RenameLocalsModuleOnFlagAstAnchor fingerprint ast.semantic_subtree_v1("sha256:064acb73f95a280e1cc9d0261b51755499d455dfebaf74a849d8d6f922f53721")
+  summary "fn R11RenameLocalsModule.onFlag generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#onFlag."
+}
+
+relation R11RenameLocalsModuleReplayGeneratedFromR11RenameLocalsModuleReplayAstAnchor {
+  kind generated_from
+  connects R11RenameLocalsModule -> R11RenameLocalsModuleReplayAstAnchor
+  roles { R11RenameLocalsModule as generated, R11RenameLocalsModuleReplayAstAnchor as syntax }
+  expects R11RenameLocalsModuleReplayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4a7c675dd7544a4faf6748e644e674bcfe00d69bf53e315035140351349cfe04")
+  summary "fn R11RenameLocalsModule.replay generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#replay."
+}
+
+relation R11RenameLocalsModuleRightXGeneratedFromR11RenameLocalsModuleRightXAstAnchor {
+  kind generated_from
+  connects R11RenameLocalsModule -> R11RenameLocalsModuleRightXAstAnchor
+  roles { R11RenameLocalsModule as generated, R11RenameLocalsModuleRightXAstAnchor as syntax }
+  expects R11RenameLocalsModuleRightXAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4b2e8c689d6a93094b7b85466fe590023e0f0cacc5c7c2420af87f6b3a1f4963")
+  summary "fn R11RenameLocalsModule.rightX generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#rightX."
+}
+
+relation R11RenameLocalsModuleStartGeneratedFromR11RenameLocalsModuleStartAstAnchor {
+  kind generated_from
+  connects R11RenameLocalsModule -> R11RenameLocalsModuleStartAstAnchor
+  roles { R11RenameLocalsModule as generated, R11RenameLocalsModuleStartAstAnchor as syntax }
+  expects R11RenameLocalsModuleStartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+  summary "fn R11RenameLocalsModule.start generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#start."
+}
+
+relation R11RenameLocalsModuleStepGeneratedFromR11RenameLocalsModuleStepAstAnchor {
+  kind generated_from
+  connects R11RenameLocalsModule -> R11RenameLocalsModuleStepAstAnchor
+  roles { R11RenameLocalsModule as generated, R11RenameLocalsModuleStepAstAnchor as syntax }
+  expects R11RenameLocalsModuleStepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7306c72931ece8612e0173b4a7377fe5605ca33efcecd0d83a25d6ab84099e61")
+  summary "fn R11RenameLocalsModule.step generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#step."
+}
+
+relation R11RenameLocalsModuleUpYGeneratedFromR11RenameLocalsModuleUpYAstAnchor {
+  kind generated_from
+  connects R11RenameLocalsModule -> R11RenameLocalsModuleUpYAstAnchor
+  roles { R11RenameLocalsModule as generated, R11RenameLocalsModuleUpYAstAnchor as syntax }
+  expects R11RenameLocalsModuleUpYAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a0c4489b199a8be39a28537c114e5c1fa059ec828d52f0c0940600efa78899ee")
+  summary "fn R11RenameLocalsModule.upY generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts#upY."
+}
+
+implementation R11RenameLocalsModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T1/r11_rename_locals.ts"
+  }
+  conforms_to R11RenameLocalsModule
+}

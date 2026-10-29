@@ -1,0 +1,57 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [
+  {
+   "code": "E-provider-missing",
+   "subject": "provider audit::sqlEffects"
+  }
+ ],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:1659f0c4216254b44df99883334df26e9638ed80fcb8534e6e990afac8d0859d",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": null,
+   "final": true,
+   "force": null,
+   "group": "g:653ab42b86f21de0466ca752c96582a4f821db00f82f75f772484cbf10b02053",
+   "introduced": true,
+   "key": "ob:f99ad91d0fb961864cea647e6188ac9c56b6d243cb026fee5224db411dfce977",
+   "kind": "coverage",
+   "owner": "audit::AuditTeam",
+   "questions": null,
+   "reason": null,
+   "severity": "blocking",
+   "subject": "component audit::AuditStore",
+   "tier": "final",
+   "witness": []
+  },
+  {
+   "binding": "bd:48d3aa1717085c9beda9b187e939fb438fff57b43763df3c0cdcb72d9c67538d",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": false,
+   "final": true,
+   "force": null,
+   "group": "g:30cfbdae593684828e4e14c6056dd700c2f9a9dc4a8dc985293e45ddf6e27ebe",
+   "introduced": true,
+   "key": "ob:ae867d9fedbd638a8baeee2d00bfce60354cf08f3b841270ec7a2bcbd0ecab1d",
+   "kind": "loosening",
+   "owner": "audit::Platform",
+   "questions": [
+    "L7"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "provider audit::sqlEffects",
+   "tier": "final",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

@@ -1,0 +1,193 @@
+module shape.generated.ast.experiments.shape_1.trials.H3.refactors.T1.r12_expressions
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource R12ExpressionsModuleDownYAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#downY")
+  fingerprint ast.semantic_subtree_v1("sha256:128c88bab7f261d555ba6218ea5feb9d70f6fb87c53940b4ce1ed56c7cdb0ca1")
+}
+
+resource R12ExpressionsModuleIsWallAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#isWall")
+  fingerprint ast.semantic_subtree_v1("sha256:2419e0c94d22022a54711d22b5213647de419734561b15e963d663d100a35a25")
+}
+
+resource R12ExpressionsModuleIsWonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#isWon")
+  fingerprint ast.semantic_subtree_v1("sha256:1fc01820c39d249759ecb8e878dc2bbb42be54d5c3f09c70ccf2b161059bfb7e")
+}
+
+resource R12ExpressionsModuleLeftXAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#leftX")
+  fingerprint ast.semantic_subtree_v1("sha256:e393f14f45fc5a642ccb94f17fcdfcf441400fdc3cd7da3359efc97337c56298")
+}
+
+resource R12ExpressionsModuleMoveToAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#moveTo")
+  fingerprint ast.semantic_subtree_v1("sha256:1448f1ccfb537e37ba03215495520bad45de6d7d424454e8da3f682aa802770f")
+}
+
+resource R12ExpressionsModuleOnFlagAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#onFlag")
+  fingerprint ast.semantic_subtree_v1("sha256:b066dc8af4580d22190525b31025c0cc0097e39bcc43ce71fb5d29ba38133402")
+}
+
+resource R12ExpressionsModuleReplayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#replay")
+  fingerprint ast.semantic_subtree_v1("sha256:cd4088654627d81325e97e265483fa8f8098438ded41e9a62c62ba17ee5cf370")
+}
+
+resource R12ExpressionsModuleRightXAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#rightX")
+  fingerprint ast.semantic_subtree_v1("sha256:bfd956e13a09966513caccbfc9cc5c05076c6b927e9398c210cd3eb2190c5db9")
+}
+
+resource R12ExpressionsModuleStartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#start")
+  fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+}
+
+resource R12ExpressionsModuleStepAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#step")
+  fingerprint ast.semantic_subtree_v1("sha256:61ae610aeeeabf5870209eca57a6ae1a7d57847ff43681c1a59ef12df50dd742")
+}
+
+resource R12ExpressionsModuleUpYAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#upY")
+  fingerprint ast.semantic_subtree_v1("sha256:e1d1855821995e4a40aa7976ff6e90479465cce894427990e1af37f74b8724b6")
+}
+
+component R12ExpressionsModule : GeneratedCandidate {
+  fn downY
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#downY")
+    effects unknown
+  fn isWall
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#isWall")
+    effects unknown
+  fn isWon
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#isWon")
+    effects unknown
+  fn leftX
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#leftX")
+    effects unknown
+  fn moveTo
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#moveTo")
+    effects unknown
+  fn onFlag
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#onFlag")
+    effects unknown
+  fn replay
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#replay")
+    effects unknown
+  fn rightX
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#rightX")
+    effects unknown
+  fn start
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#start")
+    effects unknown
+  fn step
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#step")
+    effects unknown
+  fn upY
+    source ts("experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#upY")
+    effects unknown
+}
+
+relation R12ExpressionsModuleDownYGeneratedFromR12ExpressionsModuleDownYAstAnchor {
+  kind generated_from
+  connects R12ExpressionsModule -> R12ExpressionsModuleDownYAstAnchor
+  roles { R12ExpressionsModule as generated, R12ExpressionsModuleDownYAstAnchor as syntax }
+  expects R12ExpressionsModuleDownYAstAnchor fingerprint ast.semantic_subtree_v1("sha256:128c88bab7f261d555ba6218ea5feb9d70f6fb87c53940b4ce1ed56c7cdb0ca1")
+  summary "fn R12ExpressionsModule.downY generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#downY."
+}
+
+relation R12ExpressionsModuleIsWallGeneratedFromR12ExpressionsModuleIsWallAstAnchor {
+  kind generated_from
+  connects R12ExpressionsModule -> R12ExpressionsModuleIsWallAstAnchor
+  roles { R12ExpressionsModule as generated, R12ExpressionsModuleIsWallAstAnchor as syntax }
+  expects R12ExpressionsModuleIsWallAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2419e0c94d22022a54711d22b5213647de419734561b15e963d663d100a35a25")
+  summary "fn R12ExpressionsModule.isWall generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#isWall."
+}
+
+relation R12ExpressionsModuleIsWonGeneratedFromR12ExpressionsModuleIsWonAstAnchor {
+  kind generated_from
+  connects R12ExpressionsModule -> R12ExpressionsModuleIsWonAstAnchor
+  roles { R12ExpressionsModule as generated, R12ExpressionsModuleIsWonAstAnchor as syntax }
+  expects R12ExpressionsModuleIsWonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fc01820c39d249759ecb8e878dc2bbb42be54d5c3f09c70ccf2b161059bfb7e")
+  summary "fn R12ExpressionsModule.isWon generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#isWon."
+}
+
+relation R12ExpressionsModuleLeftXGeneratedFromR12ExpressionsModuleLeftXAstAnchor {
+  kind generated_from
+  connects R12ExpressionsModule -> R12ExpressionsModuleLeftXAstAnchor
+  roles { R12ExpressionsModule as generated, R12ExpressionsModuleLeftXAstAnchor as syntax }
+  expects R12ExpressionsModuleLeftXAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e393f14f45fc5a642ccb94f17fcdfcf441400fdc3cd7da3359efc97337c56298")
+  summary "fn R12ExpressionsModule.leftX generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#leftX."
+}
+
+relation R12ExpressionsModuleMoveToGeneratedFromR12ExpressionsModuleMoveToAstAnchor {
+  kind generated_from
+  connects R12ExpressionsModule -> R12ExpressionsModuleMoveToAstAnchor
+  roles { R12ExpressionsModule as generated, R12ExpressionsModuleMoveToAstAnchor as syntax }
+  expects R12ExpressionsModuleMoveToAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1448f1ccfb537e37ba03215495520bad45de6d7d424454e8da3f682aa802770f")
+  summary "fn R12ExpressionsModule.moveTo generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#moveTo."
+}
+
+relation R12ExpressionsModuleOnFlagGeneratedFromR12ExpressionsModuleOnFlagAstAnchor {
+  kind generated_from
+  connects R12ExpressionsModule -> R12ExpressionsModuleOnFlagAstAnchor
+  roles { R12ExpressionsModule as generated, R12ExpressionsModuleOnFlagAstAnchor as syntax }
+  expects R12ExpressionsModuleOnFlagAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b066dc8af4580d22190525b31025c0cc0097e39bcc43ce71fb5d29ba38133402")
+  summary "fn R12ExpressionsModule.onFlag generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#onFlag."
+}
+
+relation R12ExpressionsModuleReplayGeneratedFromR12ExpressionsModuleReplayAstAnchor {
+  kind generated_from
+  connects R12ExpressionsModule -> R12ExpressionsModuleReplayAstAnchor
+  roles { R12ExpressionsModule as generated, R12ExpressionsModuleReplayAstAnchor as syntax }
+  expects R12ExpressionsModuleReplayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cd4088654627d81325e97e265483fa8f8098438ded41e9a62c62ba17ee5cf370")
+  summary "fn R12ExpressionsModule.replay generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#replay."
+}
+
+relation R12ExpressionsModuleRightXGeneratedFromR12ExpressionsModuleRightXAstAnchor {
+  kind generated_from
+  connects R12ExpressionsModule -> R12ExpressionsModuleRightXAstAnchor
+  roles { R12ExpressionsModule as generated, R12ExpressionsModuleRightXAstAnchor as syntax }
+  expects R12ExpressionsModuleRightXAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bfd956e13a09966513caccbfc9cc5c05076c6b927e9398c210cd3eb2190c5db9")
+  summary "fn R12ExpressionsModule.rightX generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#rightX."
+}
+
+relation R12ExpressionsModuleStartGeneratedFromR12ExpressionsModuleStartAstAnchor {
+  kind generated_from
+  connects R12ExpressionsModule -> R12ExpressionsModuleStartAstAnchor
+  roles { R12ExpressionsModule as generated, R12ExpressionsModuleStartAstAnchor as syntax }
+  expects R12ExpressionsModuleStartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afe36e0aaaf61b08b263acb1e7209a95a4d5e7b8760caf990c12264876549505")
+  summary "fn R12ExpressionsModule.start generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#start."
+}
+
+relation R12ExpressionsModuleStepGeneratedFromR12ExpressionsModuleStepAstAnchor {
+  kind generated_from
+  connects R12ExpressionsModule -> R12ExpressionsModuleStepAstAnchor
+  roles { R12ExpressionsModule as generated, R12ExpressionsModuleStepAstAnchor as syntax }
+  expects R12ExpressionsModuleStepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:61ae610aeeeabf5870209eca57a6ae1a7d57847ff43681c1a59ef12df50dd742")
+  summary "fn R12ExpressionsModule.step generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#step."
+}
+
+relation R12ExpressionsModuleUpYGeneratedFromR12ExpressionsModuleUpYAstAnchor {
+  kind generated_from
+  connects R12ExpressionsModule -> R12ExpressionsModuleUpYAstAnchor
+  roles { R12ExpressionsModule as generated, R12ExpressionsModuleUpYAstAnchor as syntax }
+  expects R12ExpressionsModuleUpYAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e1d1855821995e4a40aa7976ff6e90479465cce894427990e1af37f74b8724b6")
+  summary "fn R12ExpressionsModule.upY generated from typescript function_declaration at experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts#upY."
+}
+
+implementation R12ExpressionsModuleImpl {
+  paths {
+    "experiments/shape-1/trials/H3/refactors/T1/r12_expressions.ts"
+  }
+  conforms_to R12ExpressionsModule
+}
