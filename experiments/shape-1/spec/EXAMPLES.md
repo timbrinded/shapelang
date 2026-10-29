@@ -19,10 +19,10 @@ Complete, absence-sound entries cover both new identities, so coverage is met; a
 
 **Variant C** (the agent drops `: AppendOnly`, adds the grant and the unit). L1 compares the 7 identities and the cells `cell:["audit::AuditStore.*","audit::AuditStore.*"]` and `cell:["ungoverned","ungoverned"]`:
 
-- the forbid's protection of Update and the five atoms below it fell from final to critical (authority still protects the ungranted ones) or to none (granted atoms; `ungoverned`): `ob:e8ec989a6cf48d9a…`, binding `bd:c5461f6efe0c3685…`, final;
+- the forbid's protection of Update and the five atoms below it fell from final to critical (authority still protects the ungranted ones, and `appendEvent`'s summary all six at `appendEvent`) or to none (granted atoms elsewhere; `ungoverned`): `ob:e8ec989a6cf48d9a…`, binding `bd:a7514dcb4cfb7068…`, final;
 - AuditStore newly permits HardDelete and Update at `purge.ts`, `purgeOldEvents`, `store.ts` and its cell (not at `appendEvent`, bounded by its summary): `ob:ca99c5461b8ff9a8…`, binding `bd:6bca5b3fe0d0787d…`, critical.
 
-Both are exploited and block, in group `g:9f2b9e1c945e6418…`; order class `incomparable` (the new summary also rejects worlds the base admits). Phase 1 prints `shape approve bd:c5461f6efe0c3685 bd:6bca5b3fe0d0787d`; bob writes it and carol (second person for the final one) writes `shape approve bd:c5461f6efe0c3685`; phase 2 discharges both. A push editing `purgeOldEvents` reopens both.
+Both are exploited and block, in group `g:9f2b9e1c945e6418…`; order class `incomparable` (the new summary also rejects worlds the base admits). Phase 1 prints `shape approve bd:a7514dcb4cfb7068 bd:6bca5b3fe0d0787d`; bob writes it and carol (second person for the final one) writes `shape approve bd:a7514dcb4cfb7068`; phase 2 discharges both. A push editing `purgeOldEvents` reopens both.
 
 ## Example 2: a Verus project change adds an `assume`
 

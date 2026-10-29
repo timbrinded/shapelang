@@ -1,4 +1,8 @@
 """Shape 1.0 model v7 (derived from v4 vectors.py; changes: AppendOnly forbids Update; hatch * = declared kinds + Undeclared; v7 L1 deltas; coverage delta pairs):
+M0 errata (2026-10-29, experiments/shape-1/m0/errata.json): Variant C's forbid delta also holds HardDelete and
+Update final>critical (appendEvent's summary protects them at critical); "key ex1.C.authority (also Variant A)"
+is "key ex1.C.authority" (Variant A raises no authority loosening under D17); no_floats also descends into
+tuples and requires ASCII keys.
 Shape 1.0 model v4: conformance vectors for claim NFs, template fingerprints, fact ids,
 obligation keys, bindings, group ids and answer refs, exactly as the record schema (v4) defines them.
 
@@ -30,9 +34,9 @@ def no_floats(v):
         assert -(2**53 - 1) <= v <= 2**53 - 1, v
     if isinstance(v, dict):
         for k, x in v.items():
-            assert isinstance(k, str)
+            assert isinstance(k, str) and k.isascii(), k  # ASCII keys: sort_keys order = JCS order
             no_floats(x)
-    if isinstance(v, list):
+    if isinstance(v, (list, tuple)):  # json.dumps writes a tuple as an array
         for x in v:
             no_floats(x)
 
@@ -196,7 +200,7 @@ out["binding ex1.Bsecond.coverage.ungoverned"] = binding(kBsh, ["raw:src/audit/p
 kCf = ob_key({"kind": "loosening", "subject": fp["ex1.appendonly"]})
 kCa = ob_key({"kind": "loosening", "subject": "component audit::AuditStore"})
 out["key ex1.C.forbid"] = kCf
-out["key ex1.C.authority (also Variant A)"] = kCa
+out["key ex1.C.authority"] = kCa  # not raised in Variant A: the final forbid still blocks the gained atoms (D17)
 CELL_A = 'cell:["audit::AuditStore.*","audit::AuditStore.*"]'
 CELL_U = 'cell:["ungoverned","ungoverned"]'
 ALL_IDS = ["pkgjson:package.json", "raw:bun.lock", "ts:src/audit/purge.ts", "ts:src/audit/purge.ts#purgeOldEvents",
@@ -205,9 +209,13 @@ codeC = [["ts:src/audit/purge.ts", "own", None, purge_file_own],
          ["ts:src/audit/purge.ts#purgeOldEvents", "own", None, purge_fn_own]]
 affected_forbid = ALL_IDS + [CELL_A, CELL_U]
 affected_auth = ["ts:src/audit/purge.ts", "ts:src/audit/purge.ts#purgeOldEvents", "ts:src/audit/store.ts", CELL_A]
+# v7 L1 parts of the removed forbid (A.8.2.3 L1, A.4.4.7 Lvl, D2, D11): every atom of ↓Update falls
+# from final to critical where something still protects it at critical (authority at AuditStore
+# positions for the four ungranted atoms; appendEvent's complete summary {Append} for all six,
+# HardDelete and Update included) and to none elsewhere (granted atoms; ungoverned).
 delta_forbid = ["L1 level %s<audit::AuditEvent> final>%s" % (a, t)
-                for a in ["DropStorage", "LogicalDelete", "Redact", "Truncate"] for t in ["critical", "none"]] + \
-               ["L1 level HardDelete<audit::AuditEvent> final>none", "L1 level Update<audit::AuditEvent> final>none"]
+                for a in ["DropStorage", "HardDelete", "LogicalDelete", "Redact", "Truncate", "Update"]
+                for t in ["critical", "none"]]
 delta_auth = ["L1 authority+ HardDelete<audit::AuditEvent>", "L1 authority+ Update<audit::AuditEvent>"]
 bCf = binding(kCf, affected_forbid, codeC, delta_forbid)
 bCa = binding(kCa, affected_auth, codeC, delta_auth)
