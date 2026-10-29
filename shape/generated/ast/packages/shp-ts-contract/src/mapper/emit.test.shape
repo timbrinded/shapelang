@@ -1,0 +1,65 @@
+module shape.generated.ast.packages.shp_ts_contract.src.mapper.emit_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource EmitTestModuleEmitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/emit.test.ts#emit")
+  fingerprint ast.semantic_subtree_v1("sha256:b3cd0176bca9c09c8f37f675d4224df104de643a37ffd12cf1f140da412a7562")
+}
+
+resource EmitTestModuleGeneratedFunctionModuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/emit.test.ts#module")
+  fingerprint ast.semantic_subtree_v1("sha256:2945104a646d3155a3295b9164178a777ddcaf64322a6a803a37549aa250d7a7")
+}
+
+resource EmitTestModuleRegistrationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/emit.test.ts#registration")
+  fingerprint ast.semantic_subtree_v1("sha256:77788244a65b5f11b8ce6b44de39acabba31f588a282b3b843ed5193857dead0")
+}
+
+component EmitTestModule : GeneratedCandidate {
+  fn emit
+    source ts("packages/shp-ts-contract/src/mapper/emit.test.ts#emit")
+    effects unknown
+  fn generatedFunction_module
+    source ts("packages/shp-ts-contract/src/mapper/emit.test.ts#module")
+    effects unknown
+  fn registration
+    source ts("packages/shp-ts-contract/src/mapper/emit.test.ts#registration")
+    effects unknown
+}
+
+relation EmitTestModuleEmitGeneratedFromEmitTestModuleEmitAstAnchor {
+  kind generated_from
+  connects EmitTestModule -> EmitTestModuleEmitAstAnchor
+  roles { EmitTestModule as generated, EmitTestModuleEmitAstAnchor as syntax }
+  expects EmitTestModuleEmitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b3cd0176bca9c09c8f37f675d4224df104de643a37ffd12cf1f140da412a7562")
+  summary "fn EmitTestModule.emit generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/emit.test.ts#emit."
+}
+
+relation EmitTestModuleGeneratedFunctionModuleGeneratedFromEmitTestModuleGeneratedFunctionModuleAstAnchor {
+  kind generated_from
+  connects EmitTestModule -> EmitTestModuleGeneratedFunctionModuleAstAnchor
+  roles { EmitTestModule as generated, EmitTestModuleGeneratedFunctionModuleAstAnchor as syntax }
+  expects EmitTestModuleGeneratedFunctionModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2945104a646d3155a3295b9164178a777ddcaf64322a6a803a37549aa250d7a7")
+  summary "fn EmitTestModule.generatedFunction_module generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/emit.test.ts#module."
+}
+
+relation EmitTestModuleRegistrationGeneratedFromEmitTestModuleRegistrationAstAnchor {
+  kind generated_from
+  connects EmitTestModule -> EmitTestModuleRegistrationAstAnchor
+  roles { EmitTestModule as generated, EmitTestModuleRegistrationAstAnchor as syntax }
+  expects EmitTestModuleRegistrationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:77788244a65b5f11b8ce6b44de39acabba31f588a282b3b843ed5193857dead0")
+  summary "fn EmitTestModule.registration generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/emit.test.ts#registration."
+}
+
+implementation EmitTestModuleImpl {
+  paths {
+    "packages/shp-ts-contract/src/mapper/emit.test.ts"
+  }
+  conforms_to EmitTestModule
+}

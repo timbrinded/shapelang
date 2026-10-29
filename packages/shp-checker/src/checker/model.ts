@@ -689,6 +689,7 @@ export type FunctionInfo = {
   component: string;
   name: string;
   source?: SourceRefInfo;
+  signature?: SignatureInfo;
   unsafe: boolean;
   effects: EffectSummaryInfo;
   requires: TermInfo[];
@@ -784,6 +785,16 @@ export type RuleInfo = {
     provenance: Provenance;
   }[];
   provenance: Provenance;
+};
+
+/**
+ * A declared implementation-language signature, e.g.
+ * `signature ts("(x: number) => void")`. The checker records the language tag
+ * and the signature text verbatim and never derives effects from either.
+ */
+export type SignatureInfo = {
+  language: string;
+  value: string;
 };
 
 export type SourceRefInfo = {

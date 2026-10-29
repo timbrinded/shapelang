@@ -97,6 +97,7 @@ export type ShapeKeywordNames =
     | "satisfied_by"
     | "satisfies"
     | "sensitive"
+    | "signature"
     | "source"
     | "status"
     | "storage"
@@ -146,6 +147,7 @@ export interface AddFunctionChange extends langium.AstNode {
     effects: EffectsDecl;
     members: Array<FunctionMember>;
     shapeTraits?: ShapeTraitList;
+    signature?: FunctionSignatureDecl;
     source?: SourceDecl;
     target: FunctionTargetName;
     unsafe: boolean;
@@ -157,6 +159,7 @@ export const AddFunctionChange = {
     effects: 'effects',
     members: 'members',
     shapeTraits: 'shapeTraits',
+    signature: 'signature',
     source: 'source',
     target: 'target',
     unsafe: 'unsafe'
@@ -698,6 +701,23 @@ export function isFunctionRequiresDecl(item: unknown): item is FunctionRequiresD
     return reflection.isInstance(item, FunctionRequiresDecl.$type);
 }
 
+export interface FunctionSignatureDecl extends langium.AstNode {
+    readonly $container: AddFunctionChange | FunctionSummary | ModifyFunctionChange;
+    readonly $type: 'FunctionSignatureDecl';
+    language: string;
+    value: string;
+}
+
+export const FunctionSignatureDecl = {
+    $type: 'FunctionSignatureDecl',
+    language: 'language',
+    value: 'value'
+} as const;
+
+export function isFunctionSignatureDecl(item: unknown): item is FunctionSignatureDecl {
+    return reflection.isInstance(item, FunctionSignatureDecl.$type);
+}
+
 export interface FunctionSummary extends langium.AstNode {
     readonly $container: ComponentDecl;
     readonly $type: 'FunctionSummary';
@@ -706,6 +726,7 @@ export interface FunctionSummary extends langium.AstNode {
     members: Array<FunctionMember>;
     name: string;
     shapeTraits?: ShapeTraitList;
+    signature?: FunctionSignatureDecl;
     source?: SourceDecl;
     unsafe: boolean;
 }
@@ -717,6 +738,7 @@ export const FunctionSummary = {
     members: 'members',
     name: 'name',
     shapeTraits: 'shapeTraits',
+    signature: 'signature',
     source: 'source',
     unsafe: 'unsafe'
 } as const;
@@ -894,6 +916,7 @@ export interface ModifyFunctionChange extends langium.AstNode {
     effects: EffectsDecl;
     members: Array<FunctionMember>;
     shapeTraits?: ShapeTraitList;
+    signature?: FunctionSignatureDecl;
     source?: SourceDecl;
     target: FunctionTargetName;
     transforms?: TransformDecl;
@@ -906,6 +929,7 @@ export const ModifyFunctionChange = {
     effects: 'effects',
     members: 'members',
     shapeTraits: 'shapeTraits',
+    signature: 'signature',
     source: 'source',
     target: 'target',
     transforms: 'transforms',
@@ -1971,6 +1995,7 @@ export type ShapeAstType = {
     FingerprintDecl: FingerprintDecl
     FunctionMember: FunctionMember
     FunctionRequiresDecl: FunctionRequiresDecl
+    FunctionSignatureDecl: FunctionSignatureDecl
     FunctionSummary: FunctionSummary
     GrantsDecl: GrantsDecl
     GuardActionDecl: GuardActionDecl
@@ -2076,6 +2101,9 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                 },
                 shapeTraits: {
                     name: AddFunctionChange.shapeTraits
+                },
+                signature: {
+                    name: AddFunctionChange.signature
                 },
                 source: {
                     name: AddFunctionChange.source
@@ -2442,6 +2470,18 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
             },
             superTypes: [FunctionMember.$type]
         },
+        FunctionSignatureDecl: {
+            name: FunctionSignatureDecl.$type,
+            properties: {
+                language: {
+                    name: FunctionSignatureDecl.language
+                },
+                value: {
+                    name: FunctionSignatureDecl.value
+                }
+            },
+            superTypes: []
+        },
         FunctionSummary: {
             name: FunctionSummary.$type,
             properties: {
@@ -2460,6 +2500,9 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                 },
                 shapeTraits: {
                     name: FunctionSummary.shapeTraits
+                },
+                signature: {
+                    name: FunctionSummary.signature
                 },
                 source: {
                     name: FunctionSummary.source
@@ -2588,6 +2631,9 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                 },
                 shapeTraits: {
                     name: ModifyFunctionChange.shapeTraits
+                },
+                signature: {
+                    name: ModifyFunctionChange.signature
                 },
                 source: {
                     name: ModifyFunctionChange.source

@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_checker.src.function_signature_format_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource FunctionSignatureFormatTestModuleFormatAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/function-signature-format.test.ts#format")
+  fingerprint ast.semantic_subtree_v1("sha256:9ef5b458eaa7f440c0e7fdee1b6f1f2f68d879280015f2a066c2c3f2467f21d7")
+}
+
+component FunctionSignatureFormatTestModule : GeneratedCandidate {
+  fn format
+    source ts("packages/shp-checker/src/function-signature-format.test.ts#format")
+    effects unknown
+}
+
+relation FunctionSignatureFormatTestModuleFormatGeneratedFromFunctionSignatureFormatTestModuleFormatAstAnchor {
+  kind generated_from
+  connects FunctionSignatureFormatTestModule -> FunctionSignatureFormatTestModuleFormatAstAnchor
+  roles { FunctionSignatureFormatTestModule as generated, FunctionSignatureFormatTestModuleFormatAstAnchor as syntax }
+  expects FunctionSignatureFormatTestModuleFormatAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9ef5b458eaa7f440c0e7fdee1b6f1f2f68d879280015f2a066c2c3f2467f21d7")
+  summary "fn FunctionSignatureFormatTestModule.format generated from typescript function_declaration at packages/shp-checker/src/function-signature-format.test.ts#format."
+}
+
+implementation FunctionSignatureFormatTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/function-signature-format.test.ts"
+  }
+  conforms_to FunctionSignatureFormatTestModule
+}

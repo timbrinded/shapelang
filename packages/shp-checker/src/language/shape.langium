@@ -145,6 +145,7 @@ FunctionSummary:
     'fn' name=ID
         shapeTraits=ShapeTraitList?
         source=SourceDecl?
+        signature=FunctionSignatureDecl?
         description=DescriptionDecl?
         unsafe?='unsafe'?
         effects=EffectsDecl
@@ -155,6 +156,9 @@ ShapeTraitList:
 
 DescriptionDecl:
     'description' required?='required'? summary=STRING;
+
+FunctionSignatureDecl:
+    'signature' language=ID '(' value=STRING ')';
 
 FunctionMember:
     FunctionRequiresDecl | ReasonDecl | ExpiresDecl;
@@ -256,6 +260,7 @@ AddFunctionChange:
     'add' 'fn' target=FunctionTargetName
         shapeTraits=ShapeTraitList?
         source=SourceDecl?
+        signature=FunctionSignatureDecl?
         description=DescriptionDecl?
         unsafe?='unsafe'?
         effects=EffectsDecl
@@ -266,6 +271,7 @@ ModifyFunctionChange:
         shapeTraits=ShapeTraitList?
         transforms=TransformDecl?
         source=SourceDecl?
+        signature=FunctionSignatureDecl?
         description=DescriptionDecl?
         unsafe?='unsafe'?
         effects=EffectsDecl

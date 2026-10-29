@@ -12,6 +12,7 @@ import type {
   EffectTerm,
   FingerprintDecl,
   FunctionMember,
+  FunctionSignatureDecl,
   FunctionSummary,
   GuardForbidTransformDecl,
   GuardRequireDecl,
@@ -395,6 +396,7 @@ function formatFunction(fn: FunctionSummary | AddFunctionChange): string {
     fn.shapeTraits,
     undefined,
     fn.source,
+    fn.signature,
     fn.description,
     fn.unsafe,
     fn.effects,
@@ -411,6 +413,7 @@ function formatQualifiedFunction(
     fn.shapeTraits,
     isModifyFunctionChange(fn) ? fn.transforms : undefined,
     fn.source,
+    fn.signature,
     fn.description,
     fn.unsafe,
     fn.effects,
@@ -423,6 +426,7 @@ function formatFunctionParts(
   shapeTraits: ShapeTraitList | undefined,
   transforms: TransformDecl | undefined,
   source: SourceDecl | undefined,
+  signature: FunctionSignatureDecl | undefined,
   description: DescriptionDecl | undefined,
   unsafe: boolean,
   effects: FunctionSummary["effects"],
@@ -434,6 +438,9 @@ function formatFunctionParts(
   }
   if (source) {
     lines.push(indent(`source ${formatSource(source)}`));
+  }
+  if (signature) {
+    lines.push(indent(formatSignature(signature)));
   }
   if (description) {
     lines.push(indent(formatDescription(description)));
@@ -470,6 +477,10 @@ function formatShapeTraitList(shapeTraits: ShapeTraitList | undefined): string {
 
 function formatDescription(description: DescriptionDecl): string {
   return `description ${description.required ? "required " : ""}${quote(description.summary)}`;
+}
+
+function formatSignature(signature: FunctionSignatureDecl): string {
+  return `signature ${signature.language}(${quote(signature.value)})`;
 }
 
 function formatEffectEntry(entry: EffectEntry): string {

@@ -18,6 +18,7 @@ import { inspectCommand } from "./commands/inspect/command";
 import { lspCommand } from "./commands/lsp/command";
 import { memoryCommand } from "./commands/memory/command";
 import { obligationsCommand } from "./commands/obligations/command";
+import { tsContractCommand } from "./commands/ts-contract/command";
 import { updateCommand } from "./commands/update/command";
 import type { CliContext } from "./context";
 import { cliExitCode, errorMessage } from "./errors";
@@ -38,6 +39,7 @@ const root = buildRouteMap({
     lsp: lspCommand,
     memory: memoryCommand,
     obligations: obligationsCommand,
+    "ts-contract": tsContractCommand,
     update: updateCommand
   },
   docs: {

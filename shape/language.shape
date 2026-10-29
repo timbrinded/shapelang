@@ -47,7 +47,7 @@ component ShapeGrammar {
   grants Update<SyntaxHighlighting>
   fn generateAst : RefactorSensitive
     source langium("packages/shp-checker/src/language/shape.langium")
-    description "Generates the typed AST and parser grammar, including constrained forbidden path rule members with explicit endpoint and kind fields."
+    description "Generates the typed AST and parser grammar, including constrained forbidden path rule members and optional language-tagged function signatures after source citations."
     effects complete {
       Read<LangiumGrammar>
         evidence langium("packages/shp-checker/src/language/shape.langium")
@@ -62,7 +62,7 @@ component ShapeGrammar {
     }
   fn updateSyntaxHighlighting
     source js("docs-site/src/syntax/shape-language.mjs")
-    description "Keeps documentation highlighting aligned with every reserved Shape keyword, including singular path rules."
+    description "Keeps documentation highlighting aligned with every reserved Shape keyword, including path rules and function signatures."
     effects complete {
       Update<SyntaxHighlighting>
         evidence js("docs-site/src/syntax/shape-language.mjs")
@@ -189,4 +189,16 @@ reevaluation ForbiddenPathParserRechecked {
   decided_on "2026-07-26"
   evidence md("docs-site/src/content/docs/reference/language-syntax.md")
   evidence test("packages/shp-checker/src/parser.test.ts")
+}
+
+reevaluation TypeScriptSignatureGrammarRechecked {
+  satisfies memory GrammarMemoryGuardForms
+  outcome Confirmed
+  summary "Optional signature declarations parse after source on functions and add/modify changes; signature is reserved and highlighted, generated AST files are regenerated, and absent signatures preserve existing syntax."
+  reviewer Codex
+  decided_on "2026-10-27"
+  evidence md("docs-site/src/content/docs/reference/language-syntax.md")
+  evidence test("packages/shp-checker/src/function-signature-format.test.ts")
+  evidence test("packages/shp-checker/src/function-signature-parse.test.ts")
+  evidence ts("packages/shp-checker/src/ast-generation-utils.ts")
 }

@@ -14,6 +14,14 @@ Each check receives the `Model` and the `NormalizedCheckOptions`:
 
 Shared queries that more than one layer needs, such as `deriveFinalForbidsForResource`, `requirementsForTarget`, and `reevaluationValidationReasons`, live in `derivations.ts`.
 
+Optional function `signature` declarations are carried through lowering and
+inspection. A `modify fn` that omits a signature preserves the existing one;
+an explicit replacement still generates the ordinary `target_changed` event
+and its memory obligations. The semantic rule registry does not execute a
+TypeScript compiler or infer effects from a signature. The opt-in
+[TypeScript contract gate](/shapelang/reference/typescript-content-mapping/)
+performs native signature checking separately.
+
 ## Registry
 
 | Order | Function | Module | Diagnostic kinds | Reads options |

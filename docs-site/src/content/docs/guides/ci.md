@@ -55,6 +55,24 @@ jobs:
 
 A push has no base ref, so this job writes an empty list on push. The push run then checks conformance only, because coverage and bindings check nothing with an empty list; pull requests carry the change-set gate. To check pushes as well, diff `${{ github.event.before }}` against `HEAD`. That SHA is all zeros when the push creates the branch, and the diff then fails.
 
+## Optional TypeScript contract gate (source preview)
+
+Projects that opt into native TypeScript content mapping add a separate gate:
+
+```bash
+bun shp ts-contract --config shape/ts-contract.json --run-external-code
+```
+
+This preview requires a source checkout and the pinned TypeScript 7.1 beta setup
+described in [TypeScript content mapping](/shapelang/reference/typescript-content-mapping/).
+It is not included in the `v0.10.0` setup-action example above. Keep the normal
+Shape gate: a matching type signature does not establish effects or architecture.
+
+Run the contract gate against the complete selected-source inventory on every
+CI invocation. A changed-file list or a bare mapper-enabled `tsc` command cannot
+detect every missing contract: deleting a Shape file can remove it from a
+wildcard include. Reviewed configuration selects the sources independently.
+
 ## Approve a rule loosening
 
 `--check-loosening` fails whether or not anyone asked for the loosening, because the checker cannot tell. Sometimes a person did ask: legal requires old revisions to be deleted, so `AppendOnly` has to go. That is a design decision, and the approval belongs somewhere the author of the change cannot write, not in the Shape model. A rationale added in the same pull request does not count, since a coding agent can write one as easily as the rule edit.

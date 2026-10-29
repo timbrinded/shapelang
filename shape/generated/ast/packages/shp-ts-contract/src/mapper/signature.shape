@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_ts_contract.src.mapper.generated_signature
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SignatureModuleValidateSignatureFragmentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/signature.ts#validateSignatureFragment")
+  fingerprint ast.semantic_subtree_v1("sha256:9b2e5e347051adc2ca3beb339822ed8f433afadc453a8dd7aeab6cec4e292bd8")
+}
+
+component SignatureModule : GeneratedCandidate {
+  fn validateSignatureFragment
+    source ts("packages/shp-ts-contract/src/mapper/signature.ts#validateSignatureFragment")
+    effects unknown
+}
+
+relation SignatureModuleValidateSignatureFragmentGeneratedFromSignatureModuleValidateSignatureFragmentAstAnchor {
+  kind generated_from
+  connects SignatureModule -> SignatureModuleValidateSignatureFragmentAstAnchor
+  roles { SignatureModule as generated, SignatureModuleValidateSignatureFragmentAstAnchor as syntax }
+  expects SignatureModuleValidateSignatureFragmentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9b2e5e347051adc2ca3beb339822ed8f433afadc453a8dd7aeab6cec4e292bd8")
+  summary "fn SignatureModule.validateSignatureFragment generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/signature.ts#validateSignatureFragment."
+}
+
+implementation SignatureModuleImpl {
+  paths {
+    "packages/shp-ts-contract/src/mapper/signature.ts"
+  }
+  conforms_to SignatureModule
+}

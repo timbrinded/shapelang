@@ -1,0 +1,30 @@
+{
+  "name": "@shape/shp-ts-contract",
+  "version": "0.0.0",
+  "private": true,
+  "license": "BSD-3-Clause",
+  "type": "module",
+  "exports": {
+    "./gate": "./src/gate/index.ts",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@shape/shp-checker": "workspace:*",
+    "jsonc-parser": "3.3.1",
+    "typescript": "7.1.0-beta"
+  },
+  "typescript": {
+    "contentMapper": {
+      "compilerOptions": [
+        "module",
+        "moduleResolution",
+        "strict",
+        "verbatimModuleSyntax"
+      ],
+      "exec": [
+        "bun",
+        "src/mapper/main.ts"
+      ]
+    }
+  }
+}

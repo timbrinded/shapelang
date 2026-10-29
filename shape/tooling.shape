@@ -426,7 +426,7 @@ component ShapeFormatter {
   grants Update<FormattedShape>
   fn formatShapeModule : RefactorSensitive
     source ts("packages/shp-checker/src/formatter.ts#formatShapeModule")
-    description "Produces canonical declaration and member formatting, including explicit spacing and ordered kind filters for forbidden path rules."
+    description "Produces canonical declaration and member formatting, placing optional signatures after source citations and before descriptions and effects, with stable forbidden path spacing and kind filters."
     effects complete {
       Read<NormalizedShapeReference>
         evidence ts("packages/shp-checker/src/formatter.ts")
@@ -1196,6 +1196,16 @@ reevaluation FormatterSharedStringHelpersRechecked {
   evidence test("packages/shp-checker/src/shape-strings.test.ts")
 }
 
+reevaluation SignatureFormattingRechecked {
+  satisfies memory FormatterCanonicalDiffs
+  outcome Confirmed
+  summary "Function, add-function, and modify-function signatures use one canonical source/signature/description/effects order. Escaped type strings round-trip, repeated formatting is stable, and unsigned functions retain their existing output."
+  reviewer Codex
+  decided_on "2026-10-27"
+  evidence md("docs-site/src/content/docs/reference/language-syntax.md")
+  evidence test("packages/shp-checker/src/function-signature-format.test.ts")
+}
+
 reevaluation SwiftDraftEvidenceRechecked {
   satisfies memory AstGenerationUnknownSafety
   outcome Confirmed
@@ -1204,6 +1214,17 @@ reevaluation SwiftDraftEvidenceRechecked {
   decided_on "2026-09-07"
   evidence test("packages/shp-checker/src/ast-generation-swift.test.ts")
   evidence test("packages/shp-cli/src/index.test.ts")
+}
+
+reevaluation TypeScriptContractDispatchRechecked {
+  satisfies memory CliCommandDispatchOrder
+  outcome Confirmed
+  summary "The explicitly invoked ts-contract command uses its own coverage and native-compiler gate, forwards real native output and exit status, and requires external-code consent. Existing check dispatch and strict Shape effect checking are unchanged."
+  reviewer Codex
+  decided_on "2026-10-27"
+  evidence md("docs-site/src/content/docs/reference/cli.md")
+  evidence test("packages/shp-cli/src/commands/ts-contract/command.test.ts")
+  evidence ts("packages/shp-cli/src/app.ts")
 }
 
 reevaluation UpdateRuntimeAssetsRechecked {

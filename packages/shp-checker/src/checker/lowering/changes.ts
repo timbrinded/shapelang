@@ -23,7 +23,14 @@ import {
   isRuleDecl,
   isTraitDecl
 } from "../../language/generated/ast.ts";
-import type { ComponentInfo, LoweringContext, Model, Provenance, ShapeTarget } from "../model.ts";
+import type {
+  ComponentInfo,
+  FunctionInfo,
+  LoweringContext,
+  Model,
+  Provenance,
+  ShapeTarget
+} from "../model.ts";
 import { functionTarget, splitFunctionTarget, splitQualifiedName } from "../display.ts";
 import { describeProvenance, provenance } from "../provenance.ts";
 import { resolveDeclName, resolveFunctionTargetName } from "../symbols.ts";
@@ -177,7 +184,11 @@ function applyFunctionChangeEntry(
 
   const target = functionTarget(componentName, functionName);
   const before = snapshotChangeTarget(model, target);
-  const fn = lowerFunction(entry, componentName, context, model, `change ${change.name}`);
+  const fn = withPreservedSignature(
+    entry,
+    lowerFunction(entry, componentName, context, model, `change ${change.name}`),
+    component.functions.get(functionName)
+  );
   removeFunctionFacts(model, componentName, functionName);
   component.functions.set(fn.name, fn);
   emitFunctionFacts(fn, model);
@@ -255,6 +266,22 @@ function stageComponentForFunctionChange(
   };
   model.components.set(componentName, stagedComponent);
   return stagedComponent;
+}
+
+/**
+ * A `modify fn` entry restates the function, so an omitted `signature` means
+ * "keep the signature the shape already records" rather than "this function has
+ * none"; a supplied signature replaces it. `add fn` never inherits one.
+ */
+function withPreservedSignature(
+  entry: AddFunctionChange | ModifyFunctionChange,
+  fn: FunctionInfo,
+  existing: FunctionInfo | undefined
+): FunctionInfo {
+  if (!isModifyFunctionChange(entry) || entry.signature || existing?.signature === undefined) {
+    return fn;
+  }
+  return { ...fn, signature: existing.signature };
 }
 
 function transitionAfter(

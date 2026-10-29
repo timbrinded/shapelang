@@ -689,6 +689,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.function_signature_effective_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/function-signature-effective.test.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/function-signature-effective.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.checker.globs",
       "path": "shape/generated/ast/packages/shp-checker/src/checker/globs.shape",
       "sources": [
@@ -938,6 +945,20 @@
       "path": "shape/generated/ast/packages/shp-checker/src/formatter.shape",
       "sources": [
         "packages/shp-checker/src/formatter.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.function_signature_format_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/function-signature-format.test.shape",
+      "sources": [
+        "packages/shp-checker/src/function-signature-format.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.function_signature_parse_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/function-signature-parse.test.shape",
+      "sources": [
+        "packages/shp-checker/src/function-signature-parse.test.ts"
       ]
     },
     {
@@ -1256,6 +1277,27 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.ts_contract.command_test",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/ts-contract/command.test.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/ts-contract/command.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.ts_contract.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/ts-contract/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/ts-contract/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.ts_contract.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/ts-contract/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/ts-contract/impl.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_cli.src.commands.update.command",
       "path": "shape/generated/ast/packages/shp-cli/src/commands/update/command.shape",
       "sources": [
@@ -1379,6 +1421,146 @@
       "path": "shape/generated/ast/packages/shp-cli/src/version.shape",
       "sources": [
         "packages/shp-cli/src/version.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.gate.compiler",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/gate/compiler.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/gate/compiler.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.gate.config",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/gate/config.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/gate/config.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.gate.gate_test",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/gate/gate.test.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/gate/gate.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.gate.index",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/gate/index.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/gate/index.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.gate.inventory",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/gate/inventory.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/gate/inventory.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.gate.native_gate_test",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/gate/native-gate.test.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/gate/native-gate.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.gate.process_test",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/gate/process.test.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/gate/process.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.gate.process",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/gate/process.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/gate/process.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.gate.types",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/gate/types.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/gate/types.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.mapper_type_limits_test",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/mapper-type-limits.test.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/mapper-type-limits.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.mapper.emit_test",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/mapper/emit.test.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/mapper/emit.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.mapper.emit",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/mapper/emit.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/mapper/emit.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.mapper.main",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/mapper/main.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/mapper/main.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.mapper.protocol_test",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/mapper/protocol.test.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/mapper/protocol.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.mapper.protocol",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/mapper/protocol.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/mapper/protocol.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.mapper.signature_test",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/mapper/signature.test.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/mapper/signature.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.mapper.generated_signature",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/mapper/signature.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/mapper/signature.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.mapper.strings",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/mapper/strings.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/mapper/strings.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.native_integration_test",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/native-integration.test.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/native-integration.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.native_test_helpers",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/native-test-helpers.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/native-test-helpers.ts"
       ]
     },
     {

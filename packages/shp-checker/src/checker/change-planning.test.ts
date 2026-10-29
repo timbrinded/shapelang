@@ -4,6 +4,7 @@ import { requireParsed } from "../test-support.ts";
 import { commitPlannedChange, stageModelForChange } from "./change-planning.ts";
 import { lowerShapeModules } from "./lowerer.ts";
 import { planChange } from "./lowering/changes.ts";
+import { checkGuardedChanges } from "./rules/guards.ts";
 import { moduleContext } from "./symbols.ts";
 
 test("plans a guarded change without mutating the effective model", () => {
@@ -64,6 +65,102 @@ test("plans a guarded change without mutating the effective model", () => {
     model.components.get("gateway::Gateway")?.functions.get("writeAudit")?.description
   ).toBeUndefined();
   expect(model.changeEvents).toEqual(plan.events);
+});
+
+test("signature-only edits remain isolated until commit and require memory review", () => {
+  const baseModule = requireParsed(`
+    module gateway
+
+    resource AuditLog
+
+    component Gateway {
+      owns AuditLog
+      grants Append<AuditLog>
+      fn writeAudit
+        signature ts("(entry: number) => void")
+        effects complete {
+          Append<AuditLog>
+        }
+    }
+
+    memory AuditContract : RefactorConstraint<fn Gateway.writeAudit> {
+      applies_to fn Gateway.writeAudit
+      status Explained
+      confidence High
+      summary "Callers depend on the reviewed audit contract."
+      guards { on_change require ReEvaluation<Self> }
+    }
+  `);
+  const changeModule = requireParsed(`
+    module gateway
+
+    change ReturnAuditCount {
+      modify fn Gateway.writeAudit
+        signature ts("(entry: number) => number")
+        effects complete {
+          Append<AuditLog>
+        }
+    }
+  `);
+  const change = changeModule.declarations.find(isChangeDecl);
+  if (!change) {
+    throw new Error("expected a parsed change declaration");
+  }
+
+  const model = lowerShapeModules([baseModule]);
+  const originalFunction = model.components.get("gateway::Gateway")?.functions.get("writeAudit");
+  const context = moduleContext({ module: changeModule });
+  const plan = planChange(change, context, model);
+  const stagedFunction = plan.stagedModel.components
+    .get("gateway::Gateway")
+    ?.functions.get("writeAudit");
+
+  expect(originalFunction?.signature).toEqual({ language: "ts", value: "(entry: number) => void" });
+  expect(stagedFunction).not.toBe(originalFunction);
+  expect(stagedFunction?.signature).toEqual({ language: "ts", value: "(entry: number) => number" });
+  expect(model.components.get("gateway::Gateway")?.functions.get("writeAudit")).toBe(
+    originalFunction
+  );
+  expect(model.changeEvents).toEqual([]);
+  expect(checkGuardedChanges(model)).toEqual([]);
+  expect(plan.events.map(({ kind, target }) => ({ kind, target }))).toEqual([
+    { kind: "target_changed", target: { kind: "fn", name: "gateway::Gateway.writeAudit" } }
+  ]);
+
+  commitPlannedChange(model, plan);
+
+  expect(model.components.get("gateway::Gateway")?.functions.get("writeAudit")).toBe(
+    stagedFunction
+  );
+  expect(originalFunction?.signature?.value).toBe("(entry: number) => void");
+  expect(checkGuardedChanges(model)).toEqual([
+    expect.objectContaining({
+      kind: "guarded_shape_changed",
+      guardKind: "memory",
+      guard: "gateway::AuditContract",
+      targetKind: "fn",
+      target: "gateway::Gateway.writeAudit",
+      missingReevaluation: "reevaluation satisfying memory AuditContract"
+    })
+  ]);
+
+  const reevaluationModule = requireParsed(`
+    module gateway
+
+    reevaluation AuditCountReviewed {
+      satisfies memory AuditContract
+      outcome Replaced
+      summary "Callers now consume the returned audit count."
+      reviewer GatewayTeam
+      decided_on "2026-10-27"
+      evidence test("gateway/audit-count.test.ts")
+    }
+  `);
+  const reviewedModel = lowerShapeModules([baseModule, reevaluationModule]);
+  commitPlannedChange(reviewedModel, planChange(change, context, reviewedModel));
+
+  expect(reviewedModel.changeEvents.map((event) => event.kind)).toEqual(["target_changed"]);
+  expect(checkGuardedChanges(reviewedModel)).toEqual([]);
 });
 
 test("copies every model container mutated by change lowering", () => {

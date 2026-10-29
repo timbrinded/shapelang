@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_ts_contract.src.mapper.emit
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource EmitModuleEmitContractAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/emit.ts#emitContract")
+  fingerprint ast.semantic_subtree_v1("sha256:2600c21d33f259c216b89635fc6c34482918e0c6904fb2ef9a99124e2dffa72d")
+}
+
+component EmitModule : GeneratedCandidate {
+  fn emitContract
+    source ts("packages/shp-ts-contract/src/mapper/emit.ts#emitContract")
+    effects unknown
+}
+
+relation EmitModuleEmitContractGeneratedFromEmitModuleEmitContractAstAnchor {
+  kind generated_from
+  connects EmitModule -> EmitModuleEmitContractAstAnchor
+  roles { EmitModule as generated, EmitModuleEmitContractAstAnchor as syntax }
+  expects EmitModuleEmitContractAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2600c21d33f259c216b89635fc6c34482918e0c6904fb2ef9a99124e2dffa72d")
+  summary "fn EmitModule.emitContract generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/emit.ts#emitContract."
+}
+
+implementation EmitModuleImpl {
+  paths {
+    "packages/shp-ts-contract/src/mapper/emit.ts"
+  }
+  conforms_to EmitModule
+}

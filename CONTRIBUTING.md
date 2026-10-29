@@ -77,7 +77,8 @@ them even when every check passes:
 | `packages/shp-checker/src/language/shape.langium` | The Langium grammar. |
 | `packages/shp-checker/src/language/generated` | Generated Langium artifacts. Regenerate them with `bun run langium:generate`; never hand-edit them. |
 | `packages/shp-cli` | The `shp` command-line wrapper around `@shape/shp-checker`. Each command lives in `src/commands/<command>/` (`command.ts` for flags, `impl.ts` for behaviour) and is registered in `src/app.ts`. The language server is in `src/lsp/`. |
-| `shape/` | Shape's own model of the language, checker, tooling, runtime, and delivery pipeline: `checker.shape`, `delivery.shape`, `incremental-checker.shape`, `language.shape`, `runtime.shape`, and `tooling.shape`. |
+| `packages/shp-ts-contract` | Opt-in source preview of TypeScript 7.1 native content mapping: sibling Shape signatures, a framed mapper process, and an independent selected-source coverage gate. Its tests use the pinned local compiler; see the [content mapping reference](docs-site/src/content/docs/reference/typescript-content-mapping.md). |
+| `shape/` | Shape's own model of the language, checker, tooling, runtime, TypeScript contract adapter, and delivery pipeline: `checker.shape`, `delivery.shape`, `incremental-checker.shape`, `language.shape`, `runtime.shape`, `tooling.shape`, and `typescript.shape`. |
 | `shape/generated/ast/` | Committed generated AST context and its `manifest.json` (see [Generated AST context](#generated-ast-context)). |
 | `fixtures/pass`, `fixtures/fail` | Focused semantic examples used by tests, one directory per case. |
 | `fixtures/changed`, `fixtures/diffs`, `fixtures/projects`, `fixtures/source`, `fixtures/skills` | Changed-file lists, authoring diffs, multi-file projects, analyzer and AST source samples, and the skill release cases (`fixtures/skills/cases.json`). |

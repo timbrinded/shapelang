@@ -10,6 +10,7 @@ The released `shp` binary (version `0.10.0` / tag `v0.10.0`) exposes the command
 | Command | Purpose |
 | --- | --- |
 | [`check`](#shp-check) | Run the semantic checks; with `--changed-files`, also coverage and bindings. |
+| [`ts-contract`](#shp-ts-contract-source-preview) | Source preview: check selected TypeScript files against authored sibling Shape contracts using native TypeScript 7.1. |
 | [`coverage`](#shp-coverage) | Run the semantic checks plus changed-file coverage, without bindings. |
 | [`attest prune`](#shp-attest-prune) | Delete the attestations that are unchanged from a base model. |
 | [`fmt`](#shp-fmt) | Rewrite Shape files in canonical form, or check that they already are. |
@@ -29,6 +30,33 @@ The released `shp` binary (version `0.10.0` / tag `v0.10.0`) exposes the command
 With no file arguments, the commands that read the Shape model (`check`, `coverage`, `fmt`, `explain`, `graph`, `inspect`, `memory`, and `obligations`) read every file matching `shape/**/*.shape` under the working directory. The scan is recursive, sorted, and includes vendored domain packs under `shape/vendor/` (see [Domain Packs](/shapelang/guides/domain-packs/)). Explicit file arguments replace discovery entirely: only the named files are read, so omitting a file drops its declarations and rules from the check.
 
 `analyze --shape-files` and `author --shape-files` never discover; they read only the comma-separated list they are given. `shp lsp` discovers per workspace folder, as described in [its entry](#shp-lsp).
+
+`ts-contract` uses its explicit configuration and a complete selected-source
+inventory, independently of ordinary Shape discovery and changed-file lists.
+
+## shp ts-contract (source preview)
+
+```text
+shp ts-contract --config shape/ts-contract.json --run-external-code
+```
+
+This opt-in source preview is not part of the pinned `v0.10.0` release. From a
+configured source checkout, use `bun shp ts-contract` with the same flags.
+It requires the project-local `typescript@7.1.0-beta` compiler, the
+`@shape/shp-ts-contract` mapper package, Bun and Node. See
+[TypeScript content mapping](/shapelang/reference/typescript-content-mapping/)
+for the configuration, supported contract layout and limits.
+
+`--config` is required. `--run-external-code` explicitly permits running the
+selected compiler and mapper. The command checks every selected source and its
+authored sibling contract, validates compiler and mapper configuration, and then
+runs native TypeScript without emitting application code. It never generates or
+approves the expected signatures. Ordinary `shp check` remains a separate check
+of effects, architecture and review obligations.
+
+Gate diagnostics identify their kind, path and cause. Native compiler output
+retains its stdout/stderr streams and mapped Shape locations. Any failed
+preflight or native check produces a nonzero exit code.
 
 ## Exit codes
 

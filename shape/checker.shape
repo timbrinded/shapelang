@@ -151,7 +151,7 @@ component ShapeChecker {
     }
   fn inspectShapeModules : RefactorSensitive
     source ts("packages/shp-checker/src/checker/inspection.ts#inspectShapeModules")
-    description "Projects the canonically lowered effective model into a versioned, codepoint-sorted JSON data transfer object with qualified identities, authored or generated-AST origin, and no clock-derived fields."
+    description "Projects the canonically lowered effective model into a versioned, codepoint-sorted JSON data transfer object with qualified identities, authored or generated-AST origin, optional authored function signatures, and no clock-derived fields."
     effects complete {
       Append<MachineReadableShapeModel>
         evidence ts("packages/shp-checker/src/checker/inspection.ts#inspectShapeModules")
@@ -216,6 +216,7 @@ component ShapeModelLowerer {
     }
   fn lowerChange : RefactorSensitive
     source ts("packages/shp-checker/src/checker/lowering/changes.ts#lowerChange")
+    description "Stages changes atomically; an omitted modified-function signature preserves the previous signature, while an explicit signature replaces it and still triggers target-change guards."
     effects complete {
       Append<ChangeEventSet>
         evidence ts("packages/shp-checker/src/checker/change-planning.ts")
@@ -239,6 +240,8 @@ component ShapeModelLowerer {
         evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
       Update<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
+      Update<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/model.ts")
     }
   fn lowerImplementation
     source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation")
@@ -1242,4 +1245,27 @@ reevaluation RuleLooseningDiagnosticOutputChecked {
   decided_on "2026-09-28"
   evidence md("docs-site/src/content/docs/reference/diagnostics.md")
   evidence test("packages/shp-checker/src/behavioural/rule-loosening.test.ts")
+}
+
+reevaluation SignatureChangeIsolationRechecked {
+  satisfies memory AtomicChangePlanning
+  outcome Confirmed
+  summary "Signature-only changes preserve isolated staging, target_changed events, and memory obligations. Omitted signatures survive modification; explicit replacements commit only through the existing change planner."
+  reviewer Codex
+  decided_on "2026-10-27"
+  evidence test("packages/shp-checker/src/checker/change-planning.test.ts")
+  evidence test("packages/shp-checker/src/checker/function-signature-effective.test.ts")
+  evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
+  evidence ts("packages/shp-checker/src/checker/model.ts")
+}
+
+reevaluation SignatureInspectionSchemaRechecked {
+  satisfies memory InspectionSchemaContract
+  outcome Confirmed
+  summary "Inspection adds only the authored signature language and value when present. Functions without signatures retain the previous JSON shape, schema version, identity, origin, ordering, and deterministic output."
+  reviewer Codex
+  decided_on "2026-10-27"
+  evidence md("docs-site/src/content/docs/reference/typescript-content-mapping.md")
+  evidence test("packages/shp-checker/src/checker/function-signature-effective.test.ts")
+  evidence ts("packages/shp-checker/src/index.ts")
 }

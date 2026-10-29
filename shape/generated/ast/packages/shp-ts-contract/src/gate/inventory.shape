@@ -1,0 +1,97 @@
+module shape.generated.ast.packages.shp_ts_contract.src.gate.inventory
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource InventoryModuleContractForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/inventory.ts#contractFor")
+  fingerprint ast.semantic_subtree_v1("sha256:39d4616160487f1f5e8263350c652607a561fa393d37109a55225e9571be21fb")
+}
+
+resource InventoryModuleMaySelectDescendantAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/inventory.ts#maySelectDescendant")
+  fingerprint ast.semantic_subtree_v1("sha256:2102b5ccd8038b5eafa91de25f546d9ba0bcaf313a7c5d903b9e8e9f5c0b5fd6")
+}
+
+resource InventoryModuleSelectedSourcesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/inventory.ts#selectedSources")
+  fingerprint ast.semantic_subtree_v1("sha256:c3240076e08058f549410d8ef23c1c6b1883b3f50bb3b5e4603e9267ecdbb89b")
+}
+
+resource InventoryModuleSlashAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/inventory.ts#slash")
+  fingerprint ast.semantic_subtree_v1("sha256:528a5ec276f136e2af305662195cd4c7ff10cd30f3b24372054a3f49be8e6eac")
+}
+
+resource InventoryModuleValidatePairAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/inventory.ts#validatePair")
+  fingerprint ast.semantic_subtree_v1("sha256:0eb398593d5bf3d44745f9efe854d65691f59e753d720086240e51e567ec612c")
+}
+
+component InventoryModule : GeneratedCandidate {
+  fn contractFor
+    source ts("packages/shp-ts-contract/src/gate/inventory.ts#contractFor")
+    effects unknown
+  fn maySelectDescendant
+    source ts("packages/shp-ts-contract/src/gate/inventory.ts#maySelectDescendant")
+    effects unknown
+  fn selectedSources
+    source ts("packages/shp-ts-contract/src/gate/inventory.ts#selectedSources")
+    effects unknown
+  fn slash
+    source ts("packages/shp-ts-contract/src/gate/inventory.ts#slash")
+    effects unknown
+  fn validatePair
+    source ts("packages/shp-ts-contract/src/gate/inventory.ts#validatePair")
+    effects unknown
+}
+
+relation InventoryModuleContractForGeneratedFromInventoryModuleContractForAstAnchor {
+  kind generated_from
+  connects InventoryModule -> InventoryModuleContractForAstAnchor
+  roles { InventoryModule as generated, InventoryModuleContractForAstAnchor as syntax }
+  expects InventoryModuleContractForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:39d4616160487f1f5e8263350c652607a561fa393d37109a55225e9571be21fb")
+  summary "fn InventoryModule.contractFor generated from typescript function_declaration at packages/shp-ts-contract/src/gate/inventory.ts#contractFor."
+}
+
+relation InventoryModuleMaySelectDescendantGeneratedFromInventoryModuleMaySelectDescendantAstAnchor {
+  kind generated_from
+  connects InventoryModule -> InventoryModuleMaySelectDescendantAstAnchor
+  roles { InventoryModule as generated, InventoryModuleMaySelectDescendantAstAnchor as syntax }
+  expects InventoryModuleMaySelectDescendantAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2102b5ccd8038b5eafa91de25f546d9ba0bcaf313a7c5d903b9e8e9f5c0b5fd6")
+  summary "fn InventoryModule.maySelectDescendant generated from typescript function_declaration at packages/shp-ts-contract/src/gate/inventory.ts#maySelectDescendant."
+}
+
+relation InventoryModuleSelectedSourcesGeneratedFromInventoryModuleSelectedSourcesAstAnchor {
+  kind generated_from
+  connects InventoryModule -> InventoryModuleSelectedSourcesAstAnchor
+  roles { InventoryModule as generated, InventoryModuleSelectedSourcesAstAnchor as syntax }
+  expects InventoryModuleSelectedSourcesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c3240076e08058f549410d8ef23c1c6b1883b3f50bb3b5e4603e9267ecdbb89b")
+  summary "fn InventoryModule.selectedSources generated from typescript function_declaration at packages/shp-ts-contract/src/gate/inventory.ts#selectedSources."
+}
+
+relation InventoryModuleSlashGeneratedFromInventoryModuleSlashAstAnchor {
+  kind generated_from
+  connects InventoryModule -> InventoryModuleSlashAstAnchor
+  roles { InventoryModule as generated, InventoryModuleSlashAstAnchor as syntax }
+  expects InventoryModuleSlashAstAnchor fingerprint ast.semantic_subtree_v1("sha256:528a5ec276f136e2af305662195cd4c7ff10cd30f3b24372054a3f49be8e6eac")
+  summary "fn InventoryModule.slash generated from typescript function_declaration at packages/shp-ts-contract/src/gate/inventory.ts#slash."
+}
+
+relation InventoryModuleValidatePairGeneratedFromInventoryModuleValidatePairAstAnchor {
+  kind generated_from
+  connects InventoryModule -> InventoryModuleValidatePairAstAnchor
+  roles { InventoryModule as generated, InventoryModuleValidatePairAstAnchor as syntax }
+  expects InventoryModuleValidatePairAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0eb398593d5bf3d44745f9efe854d65691f59e753d720086240e51e567ec612c")
+  summary "fn InventoryModule.validatePair generated from typescript function_declaration at packages/shp-ts-contract/src/gate/inventory.ts#validatePair."
+}
+
+implementation InventoryModuleImpl {
+  paths {
+    "packages/shp-ts-contract/src/gate/inventory.ts"
+  }
+  conforms_to InventoryModule
+}

@@ -1,0 +1,65 @@
+module shape.generated.ast.packages.shp_ts_contract.src.native_integration_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource NativeIntegrationTestModuleExpectMapperFailureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/native-integration.test.ts#expectMapperFailure")
+  fingerprint ast.semantic_subtree_v1("sha256:f07aa2fa565d2dd2d549d147ae8789b7ed5be1e4e6286e109046a3a60c410d78")
+}
+
+resource NativeIntegrationTestModuleExpectSignatureFailureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/native-integration.test.ts#expectSignatureFailure")
+  fingerprint ast.semantic_subtree_v1("sha256:21f4474bba70884f2531a2076826305ace32f28db5085b4a2ffd379f711c0443")
+}
+
+resource NativeIntegrationTestModuleExpectedPositionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/native-integration.test.ts#expectedPosition")
+  fingerprint ast.semantic_subtree_v1("sha256:7d3d33e5c6d7c5168e7b7f8884b48f7e97a4cabf894d4dac19ed0efee603a36c")
+}
+
+component NativeIntegrationTestModule : GeneratedCandidate {
+  fn expectMapperFailure
+    source ts("packages/shp-ts-contract/src/native-integration.test.ts#expectMapperFailure")
+    effects unknown
+  fn expectSignatureFailure
+    source ts("packages/shp-ts-contract/src/native-integration.test.ts#expectSignatureFailure")
+    effects unknown
+  fn expectedPosition
+    source ts("packages/shp-ts-contract/src/native-integration.test.ts#expectedPosition")
+    effects unknown
+}
+
+relation NativeIntegrationTestModuleExpectMapperFailureGeneratedFromNativeIntegrationTestModuleExpectMapperFailureAstAnchor {
+  kind generated_from
+  connects NativeIntegrationTestModule -> NativeIntegrationTestModuleExpectMapperFailureAstAnchor
+  roles { NativeIntegrationTestModule as generated, NativeIntegrationTestModuleExpectMapperFailureAstAnchor as syntax }
+  expects NativeIntegrationTestModuleExpectMapperFailureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f07aa2fa565d2dd2d549d147ae8789b7ed5be1e4e6286e109046a3a60c410d78")
+  summary "fn NativeIntegrationTestModule.expectMapperFailure generated from typescript function_declaration at packages/shp-ts-contract/src/native-integration.test.ts#expectMapperFailure."
+}
+
+relation NativeIntegrationTestModuleExpectSignatureFailureGeneratedFromNativeIntegrationTestModuleExpectSignatureFailureAstAnchor {
+  kind generated_from
+  connects NativeIntegrationTestModule -> NativeIntegrationTestModuleExpectSignatureFailureAstAnchor
+  roles { NativeIntegrationTestModule as generated, NativeIntegrationTestModuleExpectSignatureFailureAstAnchor as syntax }
+  expects NativeIntegrationTestModuleExpectSignatureFailureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:21f4474bba70884f2531a2076826305ace32f28db5085b4a2ffd379f711c0443")
+  summary "fn NativeIntegrationTestModule.expectSignatureFailure generated from typescript function_declaration at packages/shp-ts-contract/src/native-integration.test.ts#expectSignatureFailure."
+}
+
+relation NativeIntegrationTestModuleExpectedPositionGeneratedFromNativeIntegrationTestModuleExpectedPositionAstAnchor {
+  kind generated_from
+  connects NativeIntegrationTestModule -> NativeIntegrationTestModuleExpectedPositionAstAnchor
+  roles { NativeIntegrationTestModule as generated, NativeIntegrationTestModuleExpectedPositionAstAnchor as syntax }
+  expects NativeIntegrationTestModuleExpectedPositionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7d3d33e5c6d7c5168e7b7f8884b48f7e97a4cabf894d4dac19ed0efee603a36c")
+  summary "fn NativeIntegrationTestModule.expectedPosition generated from typescript function_declaration at packages/shp-ts-contract/src/native-integration.test.ts#expectedPosition."
+}
+
+implementation NativeIntegrationTestModuleImpl {
+  paths {
+    "packages/shp-ts-contract/src/native-integration.test.ts"
+  }
+  conforms_to NativeIntegrationTestModule
+}

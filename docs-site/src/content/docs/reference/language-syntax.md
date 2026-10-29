@@ -42,7 +42,7 @@ An unqualified prelude trait name, such as `AppendOnly`, resolves to the prelude
 
 Every keyword of the grammar is reserved and cannot be used as an identifier, including as a module path segment: `module experiment.evidence` is a parse error. Keywords are lowercase, so capitalized forms such as `Summary` are ordinary identifiers. The 83 keywords are:
 
-`add`, `allow`, `applies_to`, `approver`, `as`, `attest`, `binding`, `callbacks`, `calls`, `candidate`, `change`, `complete`, `component`, `confidence`, `conforms_to`, `connects`, `coordinated_call`, `decided_on`, `description`, `effect`, `effects`, `evidence`, `except`, `expects`, `expires`, `final`, `fingerprint`, `fn`, `forbid`, `grants`, `guards`, `has`, `hypercycle`, `implementation`, `import`, `kind`, `memory`, `modify`, `module`, `observed`, `on_change`, `or`, `outcome`, `over`, `owner`, `owns`, `path`, `paths`, `pin`, `policy`, `protects`, `provides`, `rationale`, `reason`, `reevaluation`, `relation`, `remove`, `require`, `require_changed`, `require_context`, `required`, `requires`, `resource`, `review_by`, `reviewer`, `role`, `roles`, `rule`, `satisfied_by`, `satisfies`, `sensitive`, `source`, `status`, `storage`, `summary`, `trait`, `transform`, `unknown`, `unsafe`, `when`, `when_changed`, `who`, `why`.
+`add`, `allow`, `applies_to`, `approver`, `as`, `attest`, `binding`, `callbacks`, `calls`, `candidate`, `change`, `complete`, `component`, `confidence`, `conforms_to`, `connects`, `coordinated_call`, `decided_on`, `description`, `effect`, `effects`, `evidence`, `except`, `expects`, `expires`, `final`, `fingerprint`, `fn`, `forbid`, `grants`, `guards`, `has`, `hypercycle`, `implementation`, `import`, `kind`, `memory`, `modify`, `module`, `observed`, `on_change`, `or`, `outcome`, `over`, `owner`, `owns`, `path`, `paths`, `pin`, `policy`, `protects`, `provides`, `rationale`, `reason`, `reevaluation`, `relation`, `remove`, `require`, `require_changed`, `require_context`, `required`, `requires`, `resource`, `review_by`, `reviewer`, `role`, `roles`, `rule`, `satisfied_by`, `satisfies`, `sensitive`, `signature`, `source`, `status`, `storage`, `summary`, `trait`, `transform`, `unknown`, `unsafe`, `when`, `when_changed`, `who`, `why`.
 
 A few positions accept specific keywords as values: `kind` and `over` accept `calls`, `callbacks`, `provides`, and `coordinated_call`; a `protects` entry accepts `description`; `satisfies` and `satisfied_by` accept `memory` and `rationale`; and a declaration target accepts its kind keyword.
 
@@ -190,6 +190,7 @@ A function summary lives inside a component, and its members come in this fixed 
 ```text
 fn NAME [: Trait, …]
   [source REF]
+  [signature TAG("TYPE EXPRESSION")]
   [description [required] "TEXT"]
   [unsafe] effects complete { EFFECT [evidence REF] … } | effects unknown
   [requires EFFECT | reason "TEXT" | expires "TEXT"] …
@@ -220,6 +221,7 @@ component RevisionLog {
 | Name | Yes | `fn name` | Unique within its component; a second `fn` with the same name silently replaces the first. |
 | Shape traits | No | `: Trait, Trait` | Each must resolve. |
 | `source` | No | `source REF` | At most one. Counts toward coverage. |
+| `signature` | No | `signature ts("(value: number) => void")` | An independently authored implementation-language type contract. The parser and effective model preserve it; the opt-in [TypeScript content mapper](/shapelang/reference/typescript-content-mapping/) checks agreement with the implementation. It does not establish effects. |
 | `description` | No | `description "TEXT"` or `description required "TEXT"` | `description required ""` and a `RequiresDescription` trait without text fail ([`missing required description`](/shapelang/reference/diagnostics/#error-missing-required-description)). |
 | `unsafe` | No | `unsafe` before `effects` | Requires `reason`, `expires`, and at least one `requires` ([`unsafe effects missing policy metadata`](/shapelang/reference/diagnostics/#error-unsafe-effects-missing-policy-metadata)). |
 | Effects | Yes | `effects complete { … }` or `effects unknown` | Exactly one. Strict checking rejects `effects unknown` in authored modules ([`unknown effects`](/shapelang/reference/diagnostics/#error-unknown-effects)). `effects complete {}` claims no effects. |
@@ -229,6 +231,11 @@ component RevisionLog {
 | `expires` | Only with `unsafe` | `expires "TEXT"` | Not parsed as a date. |
 
 Out-of-order members, a missing effects block, and two effects blocks are parse errors. `shp fmt` prints `unsafe` on the effects line, sorts effect entries, and sorts the trailing members by their text. What complete and unknown summaries claim is explained in [Effect Model](/shapelang/concepts/effect-model/).
+
+`add fn` and `modify fn` accept `signature` in the same position. A `modify fn`
+that omits it preserves the existing signature; a supplied signature replaces
+the previous one. Inspection includes a signature only when one is declared.
+Ordinary `shp check` records the contract without invoking a TypeScript compiler.
 
 ### `relation`
 

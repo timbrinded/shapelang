@@ -1,0 +1,81 @@
+module shape.generated.ast.packages.shp_ts_contract.src.mapper.protocol_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ProtocolTestModuleExpectRpcErrorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.test.ts#expectRpcError")
+  fingerprint ast.semantic_subtree_v1("sha256:e342941a65a6e25442b92a5d25df7b15a4cf2a6ab918c05fa8290865daa8884c")
+}
+
+resource ProtocolTestModuleGeneratedFunctionTransformAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.test.ts#transform")
+  fingerprint ast.semantic_subtree_v1("sha256:ebf2937ef88f9d2af20f47ba4432be2a8e276768b0c370af51cc8703965540c5")
+}
+
+resource ProtocolTestModuleInitializedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.test.ts#initialized")
+  fingerprint ast.semantic_subtree_v1("sha256:40187345db3f6cf9dc1bb3ec2e9f66b6606e2af80190a3c60247b11b0dc03235")
+}
+
+resource ProtocolTestModuleOpenAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.test.ts#open")
+  fingerprint ast.semantic_subtree_v1("sha256:17850c1b6e971a7bd9013d3cceed3929fb920a96e08e2e75e0fbac81cc8fa5e1")
+}
+
+component ProtocolTestModule : GeneratedCandidate {
+  fn expectRpcError
+    source ts("packages/shp-ts-contract/src/mapper/protocol.test.ts#expectRpcError")
+    effects unknown
+  fn generatedFunction_transform
+    source ts("packages/shp-ts-contract/src/mapper/protocol.test.ts#transform")
+    effects unknown
+  fn initialized
+    source ts("packages/shp-ts-contract/src/mapper/protocol.test.ts#initialized")
+    effects unknown
+  fn open
+    source ts("packages/shp-ts-contract/src/mapper/protocol.test.ts#open")
+    effects unknown
+}
+
+relation ProtocolTestModuleExpectRpcErrorGeneratedFromProtocolTestModuleExpectRpcErrorAstAnchor {
+  kind generated_from
+  connects ProtocolTestModule -> ProtocolTestModuleExpectRpcErrorAstAnchor
+  roles { ProtocolTestModule as generated, ProtocolTestModuleExpectRpcErrorAstAnchor as syntax }
+  expects ProtocolTestModuleExpectRpcErrorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e342941a65a6e25442b92a5d25df7b15a4cf2a6ab918c05fa8290865daa8884c")
+  summary "fn ProtocolTestModule.expectRpcError generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/protocol.test.ts#expectRpcError."
+}
+
+relation ProtocolTestModuleGeneratedFunctionTransformGeneratedFromProtocolTestModuleGeneratedFunctionTransformAstAnchor {
+  kind generated_from
+  connects ProtocolTestModule -> ProtocolTestModuleGeneratedFunctionTransformAstAnchor
+  roles { ProtocolTestModule as generated, ProtocolTestModuleGeneratedFunctionTransformAstAnchor as syntax }
+  expects ProtocolTestModuleGeneratedFunctionTransformAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ebf2937ef88f9d2af20f47ba4432be2a8e276768b0c370af51cc8703965540c5")
+  summary "fn ProtocolTestModule.generatedFunction_transform generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/protocol.test.ts#transform."
+}
+
+relation ProtocolTestModuleInitializedGeneratedFromProtocolTestModuleInitializedAstAnchor {
+  kind generated_from
+  connects ProtocolTestModule -> ProtocolTestModuleInitializedAstAnchor
+  roles { ProtocolTestModule as generated, ProtocolTestModuleInitializedAstAnchor as syntax }
+  expects ProtocolTestModuleInitializedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:40187345db3f6cf9dc1bb3ec2e9f66b6606e2af80190a3c60247b11b0dc03235")
+  summary "fn ProtocolTestModule.initialized generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/protocol.test.ts#initialized."
+}
+
+relation ProtocolTestModuleOpenGeneratedFromProtocolTestModuleOpenAstAnchor {
+  kind generated_from
+  connects ProtocolTestModule -> ProtocolTestModuleOpenAstAnchor
+  roles { ProtocolTestModule as generated, ProtocolTestModuleOpenAstAnchor as syntax }
+  expects ProtocolTestModuleOpenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:17850c1b6e971a7bd9013d3cceed3929fb920a96e08e2e75e0fbac81cc8fa5e1")
+  summary "fn ProtocolTestModule.open generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/protocol.test.ts#open."
+}
+
+implementation ProtocolTestModuleImpl {
+  paths {
+    "packages/shp-ts-contract/src/mapper/protocol.test.ts"
+  }
+  conforms_to ProtocolTestModule
+}
