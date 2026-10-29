@@ -5,29 +5,3 @@ trait GeneratedAstAnchor {
 
 trait GeneratedCandidate {
 }
-
-resource NativeIntegrationTestModuleExpectMapperFailureAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-ts-contract/src/native-integration.test.ts#expectMapperFailure")
-  fingerprint ast.semantic_subtree_v1("sha256:f07aa2fa565d2dd2d549d147ae8789b7ed5be1e4e6286e109046a3a60c410d78")
-}
-
-component NativeIntegrationTestModule : GeneratedCandidate {
-  fn expectMapperFailure
-    source ts("packages/shp-ts-contract/src/native-integration.test.ts#expectMapperFailure")
-    effects unknown
-}
-
-relation NativeIntegrationTestModuleExpectMapperFailureGeneratedFromNativeIntegrationTestModuleExpectMapperFailureAstAnchor {
-  kind generated_from
-  connects NativeIntegrationTestModule -> NativeIntegrationTestModuleExpectMapperFailureAstAnchor
-  roles { NativeIntegrationTestModule as generated, NativeIntegrationTestModuleExpectMapperFailureAstAnchor as syntax }
-  expects NativeIntegrationTestModuleExpectMapperFailureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f07aa2fa565d2dd2d549d147ae8789b7ed5be1e4e6286e109046a3a60c410d78")
-  summary "fn NativeIntegrationTestModule.expectMapperFailure generated from typescript function_declaration at packages/shp-ts-contract/src/native-integration.test.ts#expectMapperFailure."
-}
-
-implementation NativeIntegrationTestModuleImpl {
-  paths {
-    "packages/shp-ts-contract/src/native-integration.test.ts"
-  }
-  conforms_to NativeIntegrationTestModule
-}

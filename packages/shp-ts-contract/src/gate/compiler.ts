@@ -1,10 +1,10 @@
 import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
 import { realpath, stat } from "node:fs/promises";
-import { inside, object, readJson, relativePath } from "./config.ts";
-import { fail, MAPPER_PACKAGE, TESTED_TYPESCRIPT_VERSION, type ContractProject } from "./types.ts";
+import { inside, readJson, relativePath } from "./config.ts";
+import { fail, MAPPER_PACKAGE, TESTED_TYPESCRIPT_VERSION } from "./types.ts";
 import { captureProcess, type ProcessOutput } from "./process.ts";
-import { loosensStrictness, STRICT_CHECKING_REQUIRED } from "../mapper/protocol.ts";
+import { loosensStrictness, object, STRICT_CHECKING_REQUIRED } from "../mapper/protocol.ts";
 
 export type Compiler = { node: string; wrapper: string };
 
@@ -47,44 +47,43 @@ export async function resolveCompiler(tsconfig: string): Promise<Compiler> {
       "bin.tsc must remain inside the compiler package.",
       tsconfig
     );
-  try {
-    if (!(await stat(wrapper)).isFile()) throw new Error("not a file");
-  } catch {
+  if (
+    !(await stat(wrapper).then(
+      (info) => info.isFile(),
+      () => false
+    ))
+  )
     fail("invalid_compiler", wrapper, "The compiler's tsc wrapper is unavailable.", tsconfig);
-  }
   const node = Bun.which("node");
   if (!node)
     fail("invalid_compiler", tsconfig, "Node.js must be on PATH to run the compiler wrapper.");
   return { node, wrapper };
 }
 
-export async function validateMapper(project: ContractProject, root: string): Promise<void> {
-  let actualConfig: string;
-  try {
-    actualConfig = await realpath(project.tsconfig);
-  } catch {
-    fail("unreadable_config", project.tsconfig, "Cannot read the project's tsconfig.");
-  }
-  if (actualConfig !== project.tsconfig || !inside(root, actualConfig)) {
+export async function validateMapper(tsconfig: string, root: string): Promise<void> {
+  const actualConfig = await realpath(tsconfig).catch(() =>
+    fail("unreadable_config", tsconfig, "Cannot read the project's tsconfig.")
+  );
+  if (actualConfig !== tsconfig || !inside(root, actualConfig)) {
     fail(
       "unsafe_path",
-      project.tsconfig,
+      tsconfig,
       "tsconfig must be inside repoRoot and cannot traverse symbolic links."
     );
   }
-  const config = await readJson(project.tsconfig, true);
-  if (!object(config)) fail("invalid_config", project.tsconfig, "Expected a tsconfig object.");
+  const config = await readJson(tsconfig, true);
+  if (!object(config)) fail("invalid_config", tsconfig, "Expected a tsconfig object.");
   const registrations = config.contentMappers;
   if (!Array.isArray(registrations) || registrations.length !== 1) {
     fail(
       "invalid_mapper",
-      project.tsconfig,
+      tsconfig,
       "Declare exactly one local contentMappers entry for @shape/shp-ts-contract; inherited-only registration is unsupported."
     );
   }
   const mapper: unknown = registrations[0];
   if (!object(mapper))
-    fail("invalid_mapper", project.tsconfig, "The mapper registration must be an object.");
+    fail("invalid_mapper", tsconfig, "The mapper registration must be an object.");
   const unknown = Object.keys(mapper).filter(
     (key) => !["package", "extensions", "options"].includes(key)
   );
@@ -97,40 +96,40 @@ export async function validateMapper(project: ContractProject, root: string): Pr
   ) {
     fail(
       "invalid_mapper",
-      project.tsconfig,
+      tsconfig,
       'Register only @shape/shp-ts-contract for exactly [".shape"], with package, extensions and options keys.'
     );
   }
   if (!object(mapper.options))
-    fail("invalid_mapper", project.tsconfig, "Mapper options must explicitly declare repoRoot.");
+    fail("invalid_mapper", tsconfig, "Mapper options must explicitly declare repoRoot.");
   if (Object.keys(mapper.options).some((key) => key !== "repoRoot")) {
-    fail("invalid_mapper", project.tsconfig, "The only supported mapper option is repoRoot.");
+    fail("invalid_mapper", tsconfig, "The only supported mapper option is repoRoot.");
   }
   const mapperRoot = resolve(
-    dirname(project.tsconfig),
-    relativePath(mapper.options.repoRoot, project.tsconfig, "mapper repoRoot")
+    dirname(tsconfig),
+    relativePath(mapper.options.repoRoot, tsconfig, "mapper repoRoot")
   );
   if (mapperRoot !== root) {
     fail(
       "invalid_mapper",
-      project.tsconfig,
+      tsconfig,
       "Mapper repoRoot, resolved from the tsconfig directory, must equal the gate's repoRoot."
     );
   }
   // A stale link to another checkout would otherwise check with a different mapper.
   const gatePackage = await realpath(resolve(import.meta.dir, "../.."));
-  const linkedPackage = await nativeMapperPackage(project.tsconfig);
+  const linkedPackage = await nativeMapperPackage(tsconfig);
   if (linkedPackage === undefined) {
     fail(
       "invalid_mapper",
-      project.tsconfig,
+      tsconfig,
       `Cannot find node_modules/${MAPPER_PACKAGE} from this project; link ${gatePackage}, the package this gate runs from.`
     );
   }
   if (linkedPackage !== gatePackage) {
     fail(
       "invalid_mapper",
-      project.tsconfig,
+      tsconfig,
       `This project resolves ${MAPPER_PACKAGE} to ${linkedPackage}, but this gate runs from ${gatePackage}; link the same checkout's package.`
     );
   }
@@ -156,27 +155,28 @@ async function nativeMapperPackage(tsconfig: string): Promise<string | undefined
 
 export async function runCompiler(
   compiler: Compiler,
-  project: ContractProject,
+  tsconfig: string,
   showConfig: boolean
 ): Promise<ProcessOutput> {
   const args = [
     compiler.wrapper,
     "-p",
-    project.tsconfig,
+    tsconfig,
     "--runExternalCode",
     "--pretty",
     "false",
     ...(showConfig ? ["--showConfig"] : ["--noEmit"])
   ];
-  return captureProcess(compiler.node, args, dirname(project.tsconfig));
+  return captureProcess(compiler.node, args, dirname(tsconfig));
 }
 
-export function compilerRoots(output: string, project: ContractProject): Set<string> {
+/** The resolved root files that `tsc --showConfig` reports, after its options are vetted. */
+export function compilerRoots(output: string, tsconfig: string): Set<string> {
   let config: unknown;
   try {
     config = JSON.parse(output);
   } catch {
-    fail("invalid_compiler", project.tsconfig, "Compiler --showConfig did not return JSON.");
+    fail("invalid_compiler", tsconfig, "Compiler --showConfig did not return JSON.");
   }
   if (
     !object(config) ||
@@ -185,24 +185,30 @@ export function compilerRoots(output: string, project: ContractProject): Set<str
   ) {
     fail(
       "invalid_compiler",
-      project.tsconfig,
+      tsconfig,
       "Compiler --showConfig must report its resolved root files."
     );
   }
+  rejectUnsupportedOptions(config, tsconfig);
+  return new Set(config.files.map((file: string) => resolve(dirname(tsconfig), file)));
+}
+
+/** Options that would weaken the comparison or let the contract check a different file. */
+function rejectUnsupportedOptions(config: Record<string, unknown>, tsconfig: string): void {
   if (
     config.references !== undefined &&
     !(Array.isArray(config.references) && config.references.length === 0)
   ) {
     fail(
       "invalid_compiler",
-      project.tsconfig,
+      tsconfig,
       "Version 1 does not support project references: referenced types come from built .d.ts outputs, so the result would depend on whether those builds are current."
     );
   }
   // The mapper refuses the same options; checking here stops before any mapper runs.
   const options = config.compilerOptions;
   if (!object(options) || loosensStrictness(options)) {
-    fail("invalid_compiler", project.tsconfig, STRICT_CHECKING_REQUIRED);
+    fail("invalid_compiler", tsconfig, STRICT_CHECKING_REQUIRED);
   }
   if (
     options.moduleSuffixes !== undefined &&
@@ -212,9 +218,8 @@ export function compilerRoots(output: string, project: ContractProject): Set<str
   ) {
     fail(
       "invalid_compiler",
-      project.tsconfig,
+      tsconfig,
       'moduleSuffixes must be omitted or exactly [""]; other suffixes can redirect a contract import to a different source file from the governed sibling.'
     );
   }
-  return new Set(config.files.map((file: string) => resolve(dirname(project.tsconfig), file)));
 }

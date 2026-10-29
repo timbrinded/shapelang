@@ -14,8 +14,30 @@ export type ContractConfig = {
   projects: ContractProject[];
 };
 
+export type GateDiagnosticKind =
+  | "ambiguous_project"
+  | "compiler_config_failed"
+  | "compiler_failed"
+  | "compiler_not_found"
+  | "compiler_version_mismatch"
+  | "consent_required"
+  | "contract_not_in_project"
+  | "empty_selection"
+  | "gate_failed"
+  | "invalid_compiler"
+  | "invalid_config"
+  | "invalid_contract"
+  | "invalid_mapper"
+  | "missing_contract"
+  | "source_not_in_project"
+  | "unexpected_contract"
+  | "unreadable_config"
+  | "unsafe_path"
+  | "unsupported_compiler"
+  | "unsupported_source";
+
 export type GateDiagnostic = {
-  kind: string;
+  kind: GateDiagnosticKind;
   path: string;
   message: string;
   causedBy: string[];
@@ -43,7 +65,12 @@ export class GateFailure extends Error {
   }
 }
 
-export function fail(kind: string, path: string, message: string, ...causedBy: string[]): never {
+export function fail(
+  kind: GateDiagnosticKind,
+  path: string,
+  message: string,
+  ...causedBy: string[]
+): never {
   throw new GateFailure({ kind, path, message, causedBy });
 }
 

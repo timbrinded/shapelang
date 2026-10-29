@@ -1,8 +1,9 @@
 import { expect } from "bun:test";
-import { mkdir, mkdtemp, open, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { delimiter, dirname, join, resolve } from "node:path";
 import { resolveCompiler, type Compiler } from "./gate/compiler.ts";
+import { captureProcess } from "./gate/process.ts";
 
 const packageRoot = resolve(import.meta.dir, "..");
 const reference = "docs-site/src/content/docs/reference/typescript-content-mapping.md";
@@ -27,26 +28,25 @@ export interface NativeResult {
   diagnostics: NativeDiagnostic[];
 }
 
-export interface ContractEntry {
+interface ContractEntry {
   name: string;
   exported?: string;
   signature: string;
-  effects?: "unknown" | "complete {}";
 }
 
-export function contract(entries: ContractEntry[], prefix = ""): string {
-  return `${prefix}module native.contract\n\ncomponent Math {\n${entries
+export function contract(entries: ContractEntry[]): string {
+  return `module native.contract\n\ncomponent Math {\n${entries
     .map(
       (entry) =>
         `  fn ${entry.name}\n` +
         `    source ts(${JSON.stringify(`src/math.ts#${entry.exported ?? entry.name}`)})\n` +
         `    signature ts(${JSON.stringify(entry.signature)})\n` +
-        `    effects ${entry.effects ?? "unknown"}`
+        "    effects unknown"
     )
     .join("\n")}\n}\n`;
 }
 
-export function parseNativeDiagnostics(output: string): NativeDiagnostic[] {
+function parseNativeDiagnostics(output: string): NativeDiagnostic[] {
   const diagnostics: NativeDiagnostic[] = [];
   for (const line of output.split(/\r?\n/)) {
     const located = /^(.*?)\((\d+),(\d+)\): error ([A-Za-z][\w-]*\d+): (.*)$/.exec(line);
@@ -74,15 +74,12 @@ export function parseNativeDiagnostics(output: string): NativeDiagnostic[] {
   return diagnostics;
 }
 
+/** A temporary project for the pinned compiler; declare it with `await using`. */
 export class NativeFixture {
-  readonly buildInfo: string;
-
   private constructor(
     readonly root: string,
     private readonly compiler: Compiler
-  ) {
-    this.buildInfo = join(root, "native.tsbuildinfo");
-  }
+  ) {}
 
   /** `config.compilerOptions` entries override the defaults; an `undefined` value omits one. */
   static async create(
@@ -150,7 +147,6 @@ export class NativeFixture {
 
   async check(options: { external?: boolean; incremental?: boolean } = {}): Promise<NativeResult> {
     const args = [
-      this.compiler.node,
       this.compiler.wrapper,
       "--pretty",
       "false",
@@ -158,41 +154,21 @@ export class NativeFixture {
       join(this.root, "tsconfig.json")
     ];
     if (options.external !== false) args.push("--runExternalCode");
-    if (options.incremental) args.push("--incremental", "--tsBuildInfoFile", this.buildInfo);
-    const stdoutPath = join(this.root, "compiler.stdout");
-    const stderrPath = join(this.root, "compiler.stderr");
-    const stdoutFile = await open(stdoutPath, "w");
-    const stderrFile = await open(stderrPath, "w");
-    let timeout: ReturnType<typeof setTimeout> | undefined;
-    try {
-      const child = Bun.spawn(args, {
-        cwd: this.root,
-        env: {
-          ...process.env,
-          PATH: `${join(this.root, "bin")}${delimiter}${process.env.PATH ?? ""}`
-        },
-        stdout: stdoutFile.fd,
-        stderr: stderrFile.fd
-      });
-      timeout = setTimeout(() => child.kill(), 20_000);
-      const exitCode = await child.exited;
-      const [stdout, stderr] = await Promise.all([
-        readFile(stdoutPath, "utf8"),
-        readFile(stderrPath, "utf8")
-      ]);
-      return {
-        exitCode,
-        stdout,
-        stderr,
-        diagnostics: parseNativeDiagnostics(`${stdout}\n${stderr}`)
-      };
-    } finally {
-      clearTimeout(timeout);
-      await Promise.all([stdoutFile.close(), stderrFile.close()]);
+    if (options.incremental) {
+      args.push("--incremental", "--tsBuildInfoFile", join(this.root, "native.tsbuildinfo"));
     }
+    // The mapper is launched as `bun`; the fixture's bin directory provides this runtime.
+    const output = await captureProcess(this.compiler.node, args, this.root, {
+      timeoutMs: 20_000,
+      env: {
+        ...process.env,
+        PATH: `${join(this.root, "bin")}${delimiter}${process.env.PATH ?? ""}`
+      }
+    });
+    return { ...output, diagnostics: parseNativeDiagnostics(`${output.stdout}\n${output.stderr}`) };
   }
 
-  async close(): Promise<void> {
+  async [Symbol.asyncDispose](): Promise<void> {
     await rm(this.root, { recursive: true, force: true });
   }
 }
@@ -216,16 +192,7 @@ export function requireNativeDiagnostic(
   return diagnostic;
 }
 
-export function requireContractFailure(result: NativeResult): NativeDiagnostic {
-  return requireNativeDiagnostic(
-    result,
-    (diagnostic) =>
-      diagnostic.file === "src/math.shape" &&
-      (diagnostic.code.startsWith("TS") || diagnostic.code.startsWith("shape-ts"))
-  );
-}
-
-export function expectedPosition(text: string, needle: string): { line: number; column: number } {
+function expectedPosition(text: string, needle: string): { line: number; column: number } {
   const offset = text.indexOf(needle);
   if (offset < 0) throw new Error(`Fixture does not contain ${JSON.stringify(needle)}.`);
   const preceding = text.slice(0, offset);

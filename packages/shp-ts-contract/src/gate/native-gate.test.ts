@@ -48,52 +48,45 @@ test(
     "selected-source-gate"
   ),
   async () => {
-    const fixture = await gateFixture();
-    try {
-      await fixture.write("src/math.ts", "export function answer(): number { return 42; }\n");
-      await fixture.write(".gitignore", "src/ignored.ts\n");
-      const cliPath = fileURLToPath(new URL("../../../shp-cli/src/index.ts", import.meta.url));
-      const command = [
-        process.execPath,
-        cliPath,
-        "ts-contract",
-        "--config",
-        join(fixture.root, "shape-contract.json"),
-        "--run-external-code"
-      ];
-      await fixture.write(
-        "run-cli.ts",
-        [
-          `process.env.PATH = ${JSON.stringify(`${join(fixture.root, "bin")}${delimiter}${process.env.PATH ?? ""}`)};`,
-          `process.argv = ${JSON.stringify(command)};`,
-          `await import(${JSON.stringify(cliPath)});`
-        ].join("\n")
-      );
-      const run = () =>
-        captureProcess(process.execPath, [join(fixture.root, "run-cli.ts")], fixture.root);
-      const matching = await run();
-      expect(matching.exitCode).toBe(0);
-      expect(matching.stderr).toBe("");
-      expect(matching.stdout).toContain("1");
+    await using fixture = await gateFixture();
+    await fixture.write("src/math.ts", "export function answer(): number { return 42; }\n");
+    await fixture.write(".gitignore", "src/ignored.ts\n");
+    const cliPath = fileURLToPath(new URL("../../../shp-cli/src/index.ts", import.meta.url));
+    const command = [
+      process.execPath,
+      cliPath,
+      "ts-contract",
+      "--config",
+      join(fixture.root, "shape-contract.json"),
+      "--run-external-code"
+    ];
+    await fixture.write(
+      "run-cli.ts",
+      [
+        `process.env.PATH = ${JSON.stringify(`${join(fixture.root, "bin")}${delimiter}${process.env.PATH ?? ""}`)};`,
+        `process.argv = ${JSON.stringify(command)};`,
+        `await import(${JSON.stringify(cliPath)});`
+      ].join("\n")
+    );
+    const run = () =>
+      captureProcess(process.execPath, [join(fixture.root, "run-cli.ts")], fixture.root);
+    const matching = await run();
+    expect(matching.exitCode).toBe(0);
+    expect(matching.stderr).toBe("");
+    expect(matching.stdout).toContain("1");
 
-      await fixture.write(
-        "src/math.ts",
-        "export function answer(): string { return 'changed'; }\n"
-      );
-      const mismatch = await run();
-      expect(mismatch.exitCode).not.toBe(0);
-      expect(mismatch.stdout + mismatch.stderr).toContain("src/math.shape(");
-      expect(mismatch.stdout + mismatch.stderr).toContain("TS2344");
+    await fixture.write("src/math.ts", "export function answer(): string { return 'changed'; }\n");
+    const mismatch = await run();
+    expect(mismatch.exitCode).not.toBe(0);
+    expect(mismatch.stdout + mismatch.stderr).toContain("src/math.shape(");
+    expect(mismatch.stdout + mismatch.stderr).toContain("TS2344");
 
-      await fixture.write("src/ignored.ts", "export const newlyAdded = () => true;\n");
-      const missing = await run();
-      expect(missing.exitCode).not.toBe(0);
-      expect(missing.stderr).toContain("missing_contract");
-      expect(missing.stderr).toContain("src/ignored.shape");
-      expect(missing.stdout + missing.stderr).not.toContain("TS2344");
-    } finally {
-      await fixture.close();
-    }
+    await fixture.write("src/ignored.ts", "export const newlyAdded = () => true;\n");
+    const missing = await run();
+    expect(missing.exitCode).not.toBe(0);
+    expect(missing.stderr).toContain("missing_contract");
+    expect(missing.stderr).toContain("src/ignored.shape");
+    expect(missing.stdout + missing.stderr).not.toContain("TS2344");
   },
   30_000
 );
@@ -104,27 +97,23 @@ test(
     "selected-source-gate"
   ),
   async () => {
-    const fixture = await gateFixture({ compilerOptions: { strict: undefined } });
-    try {
-      await fixture.write("src/math.ts", "export function answer(): number { return 42; }\n");
-      const matching = await runGate(fixture);
-      expect(matching).toMatchObject({ ok: true, exitCode: 0, diagnostics: [] });
-      expect(matching.nativeOutputs.find((output) => output.stage === "check")?.exitCode).toBe(0);
+    await using fixture = await gateFixture({ compilerOptions: { strict: undefined } });
+    await fixture.write("src/math.ts", "export function answer(): number { return 42; }\n");
+    const matching = await runGate(fixture);
+    expect(matching).toMatchObject({ ok: true, exitCode: 0, diagnostics: [] });
+    expect(matching.nativeOutputs.find((output) => output.stage === "check")?.exitCode).toBe(0);
 
-      // number | undefined differs from number only under strictNullChecks, so this
-      // failure shows that strict checking is in force without the strict key.
-      await fixture.write(
-        "src/math.ts",
-        "export function answer(): number | undefined { return 42; }\n"
-      );
-      const drift = await runGate(fixture);
-      expect(drift.diagnostics.map((diagnostic) => diagnostic.kind)).toEqual(["compiler_failed"]);
-      const check = drift.nativeOutputs.find((output) => output.stage === "check");
-      expect(check?.exitCode).not.toBe(0);
-      expect(check?.stdout).toMatch(/^src\/math\.shape\(\d+,\d+\): error TS2344: /m);
-    } finally {
-      await fixture.close();
-    }
+    // number | undefined differs from number only under strictNullChecks, so this
+    // failure shows that strict checking is in force without the strict key.
+    await fixture.write(
+      "src/math.ts",
+      "export function answer(): number | undefined { return 42; }\n"
+    );
+    const drift = await runGate(fixture);
+    expect(drift.diagnostics.map((diagnostic) => diagnostic.kind)).toEqual(["compiler_failed"]);
+    const check = drift.nativeOutputs.find((output) => output.stage === "check");
+    expect(check?.exitCode).not.toBe(0);
+    expect(check?.stdout).toMatch(/^src\/math\.shape\(\d+,\d+\): error TS2344: /m);
   },
   60_000
 );
@@ -135,28 +124,24 @@ test(
     "selected-source-gate"
   ),
   async () => {
-    const fixture = await gateFixture({
+    await using fixture = await gateFixture({
       extends: "./tsconfig.base.json",
       compilerOptions: { strict: undefined }
     });
-    try {
-      await fixture.write(
-        "tsconfig.base.json",
-        JSON.stringify({ compilerOptions: { strictNullChecks: false } })
-      );
-      await fixture.write("src/math.ts", "export function answer(): number { return 42; }\n");
-      const result = await runGate(fixture);
-      expect(result.ok).toBe(false);
-      expect(result.diagnostics).toHaveLength(1);
-      expect(result.diagnostics[0]).toMatchObject({
-        kind: "invalid_compiler",
-        path: join(fixture.root, "tsconfig.json")
-      });
-      expect(result.diagnostics[0]?.message).toContain("strictNullChecks");
-      expect(result.nativeOutputs.some((output) => output.stage === "check")).toBe(false);
-    } finally {
-      await fixture.close();
-    }
+    await fixture.write(
+      "tsconfig.base.json",
+      JSON.stringify({ compilerOptions: { strictNullChecks: false } })
+    );
+    await fixture.write("src/math.ts", "export function answer(): number { return 42; }\n");
+    const result = await runGate(fixture);
+    expect(result.ok).toBe(false);
+    expect(result.diagnostics).toHaveLength(1);
+    expect(result.diagnostics[0]).toMatchObject({
+      kind: "invalid_compiler",
+      path: join(fixture.root, "tsconfig.json")
+    });
+    expect(result.diagnostics[0]?.message).toContain("strictNullChecks");
+    expect(result.nativeOutputs.some((output) => output.stage === "check")).toBe(false);
   },
   60_000
 );

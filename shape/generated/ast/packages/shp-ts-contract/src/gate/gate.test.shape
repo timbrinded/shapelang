@@ -13,7 +13,7 @@ resource GateTestModuleCompilerInvocationsAstAnchor : GeneratedAstAnchor {
 
 resource GateTestModuleContractAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/gate/gate.test.ts#contract")
-  fingerprint ast.semantic_subtree_v1("sha256:1eb65ad0783e1d8e716789fa46a56461fa6765dbde861377a892556f7834148b")
+  fingerprint ast.semantic_subtree_v1("sha256:6a1a76a5b6e26f7a88bbdd17fc2a061204c1cbdc33213df97db949305de1b4f4")
 }
 
 resource GateTestModuleExpectNoNativeCheckAstAnchor : GeneratedAstAnchor {
@@ -85,7 +85,7 @@ relation GateTestModuleContractGeneratedFromGateTestModuleContractAstAnchor {
   kind generated_from
   connects GateTestModule -> GateTestModuleContractAstAnchor
   roles { GateTestModule as generated, GateTestModuleContractAstAnchor as syntax }
-  expects GateTestModuleContractAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1eb65ad0783e1d8e716789fa46a56461fa6765dbde861377a892556f7834148b")
+  expects GateTestModuleContractAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6a1a76a5b6e26f7a88bbdd17fc2a061204c1cbdc33213df97db949305de1b4f4")
   summary "fn GateTestModule.contract generated from typescript function_declaration at packages/shp-ts-contract/src/gate/gate.test.ts#contract."
 }
 

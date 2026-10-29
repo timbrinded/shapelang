@@ -63,7 +63,7 @@ resource DeclarationsModuleLowerForbidPatternAstAnchor : GeneratedAstAnchor {
 
 resource DeclarationsModuleLowerFunctionAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerFunction")
-  fingerprint ast.semantic_subtree_v1("sha256:851f6e013898be83a1ef7fd2de9082b606eb652fb7cbe2fa47ac29a920aa61d7")
+  fingerprint ast.semantic_subtree_v1("sha256:0dd5f6a55d5779ebd04cea6174812f2af37da87c7bb3e68dbc93d09f17590f4e")
 }
 
 resource DeclarationsModuleLowerImplementationAstAnchor : GeneratedAstAnchor {
@@ -114,11 +114,6 @@ resource DeclarationsModuleLowerSatisfiedByKindsAstAnchor : GeneratedAstAnchor {
 resource DeclarationsModuleLowerShapeTraitsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerShapeTraits")
   fingerprint ast.semantic_subtree_v1("sha256:dc26649cd20f8eeda1d3e8551d616fdf33567ca0f7e3ee0660ba03725fd669b0")
-}
-
-resource DeclarationsModuleLowerSignatureAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerSignature")
-  fingerprint ast.semantic_subtree_v1("sha256:b44de42b7dd7ff7ba2c652c8d6891413ca8a202bf1df874f86ba673eb1f954d5")
 }
 
 resource DeclarationsModuleLowerSourceRefAstAnchor : GeneratedAstAnchor {
@@ -217,9 +212,6 @@ component DeclarationsModule : GeneratedCandidate {
     effects unknown
   fn lowerShapeTraits
     source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerShapeTraits")
-    effects unknown
-  fn lowerSignature
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerSignature")
     effects unknown
   fn lowerSourceRef
     source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerSourceRef")
@@ -333,7 +325,7 @@ relation DeclarationsModuleLowerFunctionGeneratedFromDeclarationsModuleLowerFunc
   kind generated_from
   connects DeclarationsModule -> DeclarationsModuleLowerFunctionAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerFunctionAstAnchor as syntax }
-  expects DeclarationsModuleLowerFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:851f6e013898be83a1ef7fd2de9082b606eb652fb7cbe2fa47ac29a920aa61d7")
+  expects DeclarationsModuleLowerFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0dd5f6a55d5779ebd04cea6174812f2af37da87c7bb3e68dbc93d09f17590f4e")
   summary "fn DeclarationsModule.lowerFunction generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerFunction."
 }
 
@@ -415,14 +407,6 @@ relation DeclarationsModuleLowerShapeTraitsGeneratedFromDeclarationsModuleLowerS
   roles { DeclarationsModule as generated, DeclarationsModuleLowerShapeTraitsAstAnchor as syntax }
   expects DeclarationsModuleLowerShapeTraitsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dc26649cd20f8eeda1d3e8551d616fdf33567ca0f7e3ee0660ba03725fd669b0")
   summary "fn DeclarationsModule.lowerShapeTraits generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerShapeTraits."
-}
-
-relation DeclarationsModuleLowerSignatureGeneratedFromDeclarationsModuleLowerSignatureAstAnchor {
-  kind generated_from
-  connects DeclarationsModule -> DeclarationsModuleLowerSignatureAstAnchor
-  roles { DeclarationsModule as generated, DeclarationsModuleLowerSignatureAstAnchor as syntax }
-  expects DeclarationsModuleLowerSignatureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b44de42b7dd7ff7ba2c652c8d6891413ca8a202bf1df874f86ba673eb1f954d5")
-  summary "fn DeclarationsModule.lowerSignature generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerSignature."
 }
 
 relation DeclarationsModuleLowerSourceRefGeneratedFromDeclarationsModuleLowerSourceRefAstAnchor {

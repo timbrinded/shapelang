@@ -6,21 +6,6 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
-resource InventoryModuleContractForAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-ts-contract/src/gate/inventory.ts#contractFor")
-  fingerprint ast.semantic_subtree_v1("sha256:39d4616160487f1f5e8263350c652607a561fa393d37109a55225e9571be21fb")
-}
-
-resource InventoryModuleExcludedDirectoriesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-ts-contract/src/gate/inventory.ts#excludedDirectories")
-  fingerprint ast.semantic_subtree_v1("sha256:d6c28c9b3c87a139af28934c5b766147f62904b7c1819f181f5d6b5a6e04206c")
-}
-
-resource InventoryModuleIncludePrefixesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-ts-contract/src/gate/inventory.ts#includePrefixes")
-  fingerprint ast.semantic_subtree_v1("sha256:b35ec5e6101413b600e93cae8f0dea2ce22ba4741b2a4e0bb4b1f2cc70d39320")
-}
-
 resource InventoryModuleMaySelectDescendantAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/gate/inventory.ts#maySelectDescendant")
   fingerprint ast.semantic_subtree_v1("sha256:46a9a65efa35e148045ed68d3e0deada4702dc61dd6b0d56eaaff674c6f1dd51")
@@ -33,34 +18,20 @@ resource InventoryModuleProjectSelectionAstAnchor : GeneratedAstAnchor {
 
 resource InventoryModuleRejectJavaScriptRootsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/gate/inventory.ts#rejectJavaScriptRoots")
-  fingerprint ast.semantic_subtree_v1("sha256:bc0d9a9888dd1ad820380896ff027140ba5477e6a1dace3134c7ec8651a405eb")
+  fingerprint ast.semantic_subtree_v1("sha256:f97485fcda9ccb98c119036f7e355f66fcd16703a5d3ba937d82532c8884026c")
 }
 
 resource InventoryModuleSelectedSourcesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/gate/inventory.ts#selectedSources")
-  fingerprint ast.semantic_subtree_v1("sha256:7661527b151abe8302c57a55e6c631a8660b1b9086537b6afe666f89ba380ef3")
-}
-
-resource InventoryModuleSlashAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-ts-contract/src/gate/inventory.ts#slash")
-  fingerprint ast.semantic_subtree_v1("sha256:528a5ec276f136e2af305662195cd4c7ff10cd30f3b24372054a3f49be8e6eac")
+  fingerprint ast.semantic_subtree_v1("sha256:af06f386a1502bfd17de71ed33058d68bbc88152eeb95bdbefc3a7a853b8ff5a")
 }
 
 resource InventoryModuleValidatePairAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/gate/inventory.ts#validatePair")
-  fingerprint ast.semantic_subtree_v1("sha256:6aa2827678beee85138bec2e51d9b14a4d736e9642c5fc59bce1fd9516aabd25")
+  fingerprint ast.semantic_subtree_v1("sha256:f4e26b612fffd84149220553c90d60f210e6dce8b638a854509b260d0e7f2f99")
 }
 
 component InventoryModule : GeneratedCandidate {
-  fn contractFor
-    source ts("packages/shp-ts-contract/src/gate/inventory.ts#contractFor")
-    effects unknown
-  fn excludedDirectories
-    source ts("packages/shp-ts-contract/src/gate/inventory.ts#excludedDirectories")
-    effects unknown
-  fn includePrefixes
-    source ts("packages/shp-ts-contract/src/gate/inventory.ts#includePrefixes")
-    effects unknown
   fn maySelectDescendant
     source ts("packages/shp-ts-contract/src/gate/inventory.ts#maySelectDescendant")
     effects unknown
@@ -73,36 +44,9 @@ component InventoryModule : GeneratedCandidate {
   fn selectedSources
     source ts("packages/shp-ts-contract/src/gate/inventory.ts#selectedSources")
     effects unknown
-  fn slash
-    source ts("packages/shp-ts-contract/src/gate/inventory.ts#slash")
-    effects unknown
   fn validatePair
     source ts("packages/shp-ts-contract/src/gate/inventory.ts#validatePair")
     effects unknown
-}
-
-relation InventoryModuleContractForGeneratedFromInventoryModuleContractForAstAnchor {
-  kind generated_from
-  connects InventoryModule -> InventoryModuleContractForAstAnchor
-  roles { InventoryModule as generated, InventoryModuleContractForAstAnchor as syntax }
-  expects InventoryModuleContractForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:39d4616160487f1f5e8263350c652607a561fa393d37109a55225e9571be21fb")
-  summary "fn InventoryModule.contractFor generated from typescript function_declaration at packages/shp-ts-contract/src/gate/inventory.ts#contractFor."
-}
-
-relation InventoryModuleExcludedDirectoriesGeneratedFromInventoryModuleExcludedDirectoriesAstAnchor {
-  kind generated_from
-  connects InventoryModule -> InventoryModuleExcludedDirectoriesAstAnchor
-  roles { InventoryModule as generated, InventoryModuleExcludedDirectoriesAstAnchor as syntax }
-  expects InventoryModuleExcludedDirectoriesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d6c28c9b3c87a139af28934c5b766147f62904b7c1819f181f5d6b5a6e04206c")
-  summary "fn InventoryModule.excludedDirectories generated from typescript function_declaration at packages/shp-ts-contract/src/gate/inventory.ts#excludedDirectories."
-}
-
-relation InventoryModuleIncludePrefixesGeneratedFromInventoryModuleIncludePrefixesAstAnchor {
-  kind generated_from
-  connects InventoryModule -> InventoryModuleIncludePrefixesAstAnchor
-  roles { InventoryModule as generated, InventoryModuleIncludePrefixesAstAnchor as syntax }
-  expects InventoryModuleIncludePrefixesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b35ec5e6101413b600e93cae8f0dea2ce22ba4741b2a4e0bb4b1f2cc70d39320")
-  summary "fn InventoryModule.includePrefixes generated from typescript function_declaration at packages/shp-ts-contract/src/gate/inventory.ts#includePrefixes."
 }
 
 relation InventoryModuleMaySelectDescendantGeneratedFromInventoryModuleMaySelectDescendantAstAnchor {
@@ -125,7 +69,7 @@ relation InventoryModuleRejectJavaScriptRootsGeneratedFromInventoryModuleRejectJ
   kind generated_from
   connects InventoryModule -> InventoryModuleRejectJavaScriptRootsAstAnchor
   roles { InventoryModule as generated, InventoryModuleRejectJavaScriptRootsAstAnchor as syntax }
-  expects InventoryModuleRejectJavaScriptRootsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bc0d9a9888dd1ad820380896ff027140ba5477e6a1dace3134c7ec8651a405eb")
+  expects InventoryModuleRejectJavaScriptRootsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f97485fcda9ccb98c119036f7e355f66fcd16703a5d3ba937d82532c8884026c")
   summary "fn InventoryModule.rejectJavaScriptRoots generated from typescript function_declaration at packages/shp-ts-contract/src/gate/inventory.ts#rejectJavaScriptRoots."
 }
 
@@ -133,23 +77,15 @@ relation InventoryModuleSelectedSourcesGeneratedFromInventoryModuleSelectedSourc
   kind generated_from
   connects InventoryModule -> InventoryModuleSelectedSourcesAstAnchor
   roles { InventoryModule as generated, InventoryModuleSelectedSourcesAstAnchor as syntax }
-  expects InventoryModuleSelectedSourcesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7661527b151abe8302c57a55e6c631a8660b1b9086537b6afe666f89ba380ef3")
+  expects InventoryModuleSelectedSourcesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:af06f386a1502bfd17de71ed33058d68bbc88152eeb95bdbefc3a7a853b8ff5a")
   summary "fn InventoryModule.selectedSources generated from typescript function_declaration at packages/shp-ts-contract/src/gate/inventory.ts#selectedSources."
-}
-
-relation InventoryModuleSlashGeneratedFromInventoryModuleSlashAstAnchor {
-  kind generated_from
-  connects InventoryModule -> InventoryModuleSlashAstAnchor
-  roles { InventoryModule as generated, InventoryModuleSlashAstAnchor as syntax }
-  expects InventoryModuleSlashAstAnchor fingerprint ast.semantic_subtree_v1("sha256:528a5ec276f136e2af305662195cd4c7ff10cd30f3b24372054a3f49be8e6eac")
-  summary "fn InventoryModule.slash generated from typescript function_declaration at packages/shp-ts-contract/src/gate/inventory.ts#slash."
 }
 
 relation InventoryModuleValidatePairGeneratedFromInventoryModuleValidatePairAstAnchor {
   kind generated_from
   connects InventoryModule -> InventoryModuleValidatePairAstAnchor
   roles { InventoryModule as generated, InventoryModuleValidatePairAstAnchor as syntax }
-  expects InventoryModuleValidatePairAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6aa2827678beee85138bec2e51d9b14a4d736e9642c5fc59bce1fd9516aabd25")
+  expects InventoryModuleValidatePairAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f4e26b612fffd84149220553c90d60f210e6dce8b638a854509b260d0e7f2f99")
   summary "fn InventoryModule.validatePair generated from typescript function_declaration at packages/shp-ts-contract/src/gate/inventory.ts#validatePair."
 }
 

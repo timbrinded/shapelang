@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource ProcessModuleCaptureProcessAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/gate/process.ts#captureProcess")
-  fingerprint ast.semantic_subtree_v1("sha256:3c1b98b261f3b4e63496e7c60f828816b47402f2cf4908d57d083276e0829bbb")
+  fingerprint ast.semantic_subtree_v1("sha256:207a1915d1ed36da6073a0fab4439196a8fcd0cfb25697501fd59b737fc94195")
 }
 
 component ProcessModule : GeneratedCandidate {
@@ -21,7 +21,7 @@ relation ProcessModuleCaptureProcessGeneratedFromProcessModuleCaptureProcessAstA
   kind generated_from
   connects ProcessModule -> ProcessModuleCaptureProcessAstAnchor
   roles { ProcessModule as generated, ProcessModuleCaptureProcessAstAnchor as syntax }
-  expects ProcessModuleCaptureProcessAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3c1b98b261f3b4e63496e7c60f828816b47402f2cf4908d57d083276e0829bbb")
+  expects ProcessModuleCaptureProcessAstAnchor fingerprint ast.semantic_subtree_v1("sha256:207a1915d1ed36da6073a0fab4439196a8fcd0cfb25697501fd59b737fc94195")
   summary "fn ProcessModule.captureProcess generated from typescript function_declaration at packages/shp-ts-contract/src/gate/process.ts#captureProcess."
 }
 

@@ -8,22 +8,17 @@ trait GeneratedCandidate {
 
 resource NativeFixtureAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture")
-  fingerprint ast.semantic_subtree_v1("sha256:aecce7564dd0c162d372bf7cd4c2c9aebeadc2cc0f683d77441a373da44ca667")
+  fingerprint ast.semantic_subtree_v1("sha256:cc6c7d380eead50bda56c31009ff6bcb8895f5e2dfb4dcc8a44facd4995ceccd")
 }
 
 resource NativeFixtureCheckAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture.check")
-  fingerprint ast.semantic_subtree_v1("sha256:536ce346d6e519e432c96ae416f7c873161c4628d686f381786b4e3a0b7cbaa1")
-}
-
-resource NativeFixtureCloseAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture.close")
-  fingerprint ast.semantic_subtree_v1("sha256:06c343a8a2e735df89aaeffc022a425163e64ac5005f2eae1b03f623f6cf5cb5")
+  fingerprint ast.semantic_subtree_v1("sha256:945652a1505faa076e60b049a8c3067bf9f05e0dd5c5e439f6e00c357090dbec")
 }
 
 resource NativeFixtureConstructorAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture.constructor")
-  fingerprint ast.semantic_subtree_v1("sha256:558e6b59461c1317632f8d15d0d8906b20dcce31421d95b87b8f05133a923aba")
+  fingerprint ast.semantic_subtree_v1("sha256:5b99fcbb87ed1c58fd0f7bef08573c7bf91c295c3ef8f00d91abf653c63d052c")
 }
 
 resource NativeFixtureCreateAstAnchor : GeneratedAstAnchor {
@@ -36,6 +31,11 @@ resource NativeFixtureGeneratedFunctionRemoveAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:f5fd727193f51b952b8f8798a9a7c617d20dbc5a1bd2d72e423db35834ffeb76")
 }
 
+resource NativeFixtureSymbolAsyncDisposeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture.[Symbol.asyncDispose]")
+  fingerprint ast.semantic_subtree_v1("sha256:01f8b1928b728526405a93428fe0b0540f9ab4385fe0e742048b0e9da6285cff")
+}
+
 resource NativeFixtureWriteAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture.write")
   fingerprint ast.semantic_subtree_v1("sha256:e775817d3b110a0d0cf392571084124717d1b1c3a7de0b0aa723d82dfc984a5d")
@@ -43,7 +43,7 @@ resource NativeFixtureWriteAstAnchor : GeneratedAstAnchor {
 
 resource NativeTestHelpersModuleContractAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/native-test-helpers.ts#contract")
-  fingerprint ast.semantic_subtree_v1("sha256:fca2ebd8a039d5f6f68639902b2a3df54629e5a19bb011a536fa50b4a7c6e7d3")
+  fingerprint ast.semantic_subtree_v1("sha256:973b256cf88600b6622234f86242301cc7105f0a17a4fa135c672ae5da1d33e5")
 }
 
 resource NativeTestHelpersModuleDiagnosticAtAstAnchor : GeneratedAstAnchor {
@@ -68,7 +68,7 @@ resource NativeTestHelpersModuleExpectSignatureFailureAstAnchor : GeneratedAstAn
 
 resource NativeTestHelpersModuleExpectedPositionAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/native-test-helpers.ts#expectedPosition")
-  fingerprint ast.semantic_subtree_v1("sha256:cbce06ddb345a08329dc337ae783123379265bbb5e4ef2611d2064d7f67bc23e")
+  fingerprint ast.semantic_subtree_v1("sha256:7d3d33e5c6d7c5168e7b7f8884b48f7e97a4cabf894d4dac19ed0efee603a36c")
 }
 
 resource NativeTestHelpersModuleLockedIntendedAstAnchor : GeneratedAstAnchor {
@@ -78,12 +78,7 @@ resource NativeTestHelpersModuleLockedIntendedAstAnchor : GeneratedAstAnchor {
 
 resource NativeTestHelpersModuleParseNativeDiagnosticsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/native-test-helpers.ts#parseNativeDiagnostics")
-  fingerprint ast.semantic_subtree_v1("sha256:e0901c6b6cefd325352152f6f35dc170b2df7271f2d7dcdc84d57062ac7ccc04")
-}
-
-resource NativeTestHelpersModuleRequireContractFailureAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-ts-contract/src/native-test-helpers.ts#requireContractFailure")
-  fingerprint ast.semantic_subtree_v1("sha256:c4a37b6fbb1e3c9ac95f5bb6c9044a81093444b5f33b24b8483b8d71077240a1")
+  fingerprint ast.semantic_subtree_v1("sha256:2e7970efaf5169a74f63a124892d2fec3db53c000fc6e071dd6702152a9ac199")
 }
 
 resource NativeTestHelpersModuleRequireNativeDiagnosticAstAnchor : GeneratedAstAnchor {
@@ -92,11 +87,11 @@ resource NativeTestHelpersModuleRequireNativeDiagnosticAstAnchor : GeneratedAstA
 }
 
 component NativeFixture : GeneratedCandidate {
+  fn _Symbol_asyncDispose_
+    source ts("packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture.[Symbol.asyncDispose]")
+    effects unknown
   fn check
     source ts("packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture.check")
-    effects unknown
-  fn close
-    source ts("packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture.close")
     effects unknown
   fn constructor
     source ts("packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture.constructor")
@@ -137,9 +132,6 @@ component NativeTestHelpersModule : GeneratedCandidate {
   fn parseNativeDiagnostics
     source ts("packages/shp-ts-contract/src/native-test-helpers.ts#parseNativeDiagnostics")
     effects unknown
-  fn requireContractFailure
-    source ts("packages/shp-ts-contract/src/native-test-helpers.ts#requireContractFailure")
-    effects unknown
   fn requireNativeDiagnostic
     source ts("packages/shp-ts-contract/src/native-test-helpers.ts#requireNativeDiagnostic")
     effects unknown
@@ -149,23 +141,15 @@ relation NativeFixtureCheckGeneratedFromNativeFixtureCheckAstAnchor {
   kind generated_from
   connects NativeFixture -> NativeFixtureCheckAstAnchor
   roles { NativeFixture as generated, NativeFixtureCheckAstAnchor as syntax }
-  expects NativeFixtureCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:536ce346d6e519e432c96ae416f7c873161c4628d686f381786b4e3a0b7cbaa1")
+  expects NativeFixtureCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:945652a1505faa076e60b049a8c3067bf9f05e0dd5c5e439f6e00c357090dbec")
   summary "fn NativeFixture.check generated from typescript method_definition at packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture.check."
-}
-
-relation NativeFixtureCloseGeneratedFromNativeFixtureCloseAstAnchor {
-  kind generated_from
-  connects NativeFixture -> NativeFixtureCloseAstAnchor
-  roles { NativeFixture as generated, NativeFixtureCloseAstAnchor as syntax }
-  expects NativeFixtureCloseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:06c343a8a2e735df89aaeffc022a425163e64ac5005f2eae1b03f623f6cf5cb5")
-  summary "fn NativeFixture.close generated from typescript method_definition at packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture.close."
 }
 
 relation NativeFixtureConstructorGeneratedFromNativeFixtureConstructorAstAnchor {
   kind generated_from
   connects NativeFixture -> NativeFixtureConstructorAstAnchor
   roles { NativeFixture as generated, NativeFixtureConstructorAstAnchor as syntax }
-  expects NativeFixtureConstructorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:558e6b59461c1317632f8d15d0d8906b20dcce31421d95b87b8f05133a923aba")
+  expects NativeFixtureConstructorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5b99fcbb87ed1c58fd0f7bef08573c7bf91c295c3ef8f00d91abf653c63d052c")
   summary "fn NativeFixture.constructor generated from typescript method_definition at packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture.constructor."
 }
 
@@ -181,7 +165,7 @@ relation NativeFixtureGeneratedFromNativeFixtureAstAnchor {
   kind generated_from
   connects NativeFixture -> NativeFixtureAstAnchor
   roles { NativeFixture as generated, NativeFixtureAstAnchor as syntax }
-  expects NativeFixtureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aecce7564dd0c162d372bf7cd4c2c9aebeadc2cc0f683d77441a373da44ca667")
+  expects NativeFixtureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cc6c7d380eead50bda56c31009ff6bcb8895f5e2dfb4dcc8a44facd4995ceccd")
   summary "component NativeFixture generated from typescript class_declaration at packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture."
 }
 
@@ -191,6 +175,14 @@ relation NativeFixtureGeneratedFunctionRemoveGeneratedFromNativeFixtureGenerated
   roles { NativeFixture as generated, NativeFixtureGeneratedFunctionRemoveAstAnchor as syntax }
   expects NativeFixtureGeneratedFunctionRemoveAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f5fd727193f51b952b8f8798a9a7c617d20dbc5a1bd2d72e423db35834ffeb76")
   summary "fn NativeFixture.generatedFunction_remove generated from typescript method_definition at packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture.remove."
+}
+
+relation NativeFixtureSymbolAsyncDisposeGeneratedFromNativeFixtureSymbolAsyncDisposeAstAnchor {
+  kind generated_from
+  connects NativeFixture -> NativeFixtureSymbolAsyncDisposeAstAnchor
+  roles { NativeFixture as generated, NativeFixtureSymbolAsyncDisposeAstAnchor as syntax }
+  expects NativeFixtureSymbolAsyncDisposeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:01f8b1928b728526405a93428fe0b0540f9ab4385fe0e742048b0e9da6285cff")
+  summary "fn NativeFixture._Symbol_asyncDispose_ generated from typescript method_definition at packages/shp-ts-contract/src/native-test-helpers.ts#NativeFixture.[Symbol.asyncDispose]."
 }
 
 relation NativeFixtureWriteGeneratedFromNativeFixtureWriteAstAnchor {
@@ -205,7 +197,7 @@ relation NativeTestHelpersModuleContractGeneratedFromNativeTestHelpersModuleCont
   kind generated_from
   connects NativeTestHelpersModule -> NativeTestHelpersModuleContractAstAnchor
   roles { NativeTestHelpersModule as generated, NativeTestHelpersModuleContractAstAnchor as syntax }
-  expects NativeTestHelpersModuleContractAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fca2ebd8a039d5f6f68639902b2a3df54629e5a19bb011a536fa50b4a7c6e7d3")
+  expects NativeTestHelpersModuleContractAstAnchor fingerprint ast.semantic_subtree_v1("sha256:973b256cf88600b6622234f86242301cc7105f0a17a4fa135c672ae5da1d33e5")
   summary "fn NativeTestHelpersModule.contract generated from typescript function_declaration at packages/shp-ts-contract/src/native-test-helpers.ts#contract."
 }
 
@@ -245,7 +237,7 @@ relation NativeTestHelpersModuleExpectedPositionGeneratedFromNativeTestHelpersMo
   kind generated_from
   connects NativeTestHelpersModule -> NativeTestHelpersModuleExpectedPositionAstAnchor
   roles { NativeTestHelpersModule as generated, NativeTestHelpersModuleExpectedPositionAstAnchor as syntax }
-  expects NativeTestHelpersModuleExpectedPositionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cbce06ddb345a08329dc337ae783123379265bbb5e4ef2611d2064d7f67bc23e")
+  expects NativeTestHelpersModuleExpectedPositionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7d3d33e5c6d7c5168e7b7f8884b48f7e97a4cabf894d4dac19ed0efee603a36c")
   summary "fn NativeTestHelpersModule.expectedPosition generated from typescript function_declaration at packages/shp-ts-contract/src/native-test-helpers.ts#expectedPosition."
 }
 
@@ -261,16 +253,8 @@ relation NativeTestHelpersModuleParseNativeDiagnosticsGeneratedFromNativeTestHel
   kind generated_from
   connects NativeTestHelpersModule -> NativeTestHelpersModuleParseNativeDiagnosticsAstAnchor
   roles { NativeTestHelpersModule as generated, NativeTestHelpersModuleParseNativeDiagnosticsAstAnchor as syntax }
-  expects NativeTestHelpersModuleParseNativeDiagnosticsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e0901c6b6cefd325352152f6f35dc170b2df7271f2d7dcdc84d57062ac7ccc04")
+  expects NativeTestHelpersModuleParseNativeDiagnosticsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2e7970efaf5169a74f63a124892d2fec3db53c000fc6e071dd6702152a9ac199")
   summary "fn NativeTestHelpersModule.parseNativeDiagnostics generated from typescript function_declaration at packages/shp-ts-contract/src/native-test-helpers.ts#parseNativeDiagnostics."
-}
-
-relation NativeTestHelpersModuleRequireContractFailureGeneratedFromNativeTestHelpersModuleRequireContractFailureAstAnchor {
-  kind generated_from
-  connects NativeTestHelpersModule -> NativeTestHelpersModuleRequireContractFailureAstAnchor
-  roles { NativeTestHelpersModule as generated, NativeTestHelpersModuleRequireContractFailureAstAnchor as syntax }
-  expects NativeTestHelpersModuleRequireContractFailureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c4a37b6fbb1e3c9ac95f5bb6c9044a81093444b5f33b24b8483b8d71077240a1")
-  summary "fn NativeTestHelpersModule.requireContractFailure generated from typescript function_declaration at packages/shp-ts-contract/src/native-test-helpers.ts#requireContractFailure."
 }
 
 relation NativeTestHelpersModuleRequireNativeDiagnosticGeneratedFromNativeTestHelpersModuleRequireNativeDiagnosticAstAnchor {

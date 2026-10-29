@@ -52,9 +52,7 @@ type __ShapeNone<Label extends string, Keys extends PropertyKey> = [Keys] extend
 // A missing or noncallable export, or an unsupported signature, is reported by its own
 // assertion, so the comparison yields unknown there instead of a second diagnostic.
 const REGISTRATION_HELPERS = `type __ShapeEqual<X, Y> = __ShapeAny<X> extends true ? __ShapeAny<Y> : __ShapeAny<Y> extends true ? false :
-  (<T>() => T extends X ? 1 : 2) extends (<T>() => T extends Y ? 1 : 2)
-    ? ((<T>() => T extends Y ? 1 : 2) extends (<T>() => T extends X ? 1 : 2) ? true : false)
-    : false;
+  (<T>() => T extends X ? 1 : 2) extends (<T>() => T extends Y ? 1 : 2) ? true : false;
 type __ShapeRegistered<M, K extends string, Source extends string> = K extends __ShapePotentialKeys<M> ? true :
   __ShapeExists<M, K> extends true ? \`Shape source anchor: export '\${K}' of \${Source} is not callable; remove this fn or anchor it to a callable export\`
   : \`Shape source anchor: \${Source} has no export named '\${K}'; correct the anchor or restore the export\`;
@@ -64,8 +62,8 @@ type __ShapeCompared<M, K extends string, Reviewed> = K extends __ShapePotential
 type __ShapeFound<M, K extends string, Reviewed> = K extends keyof M
   ? (__ShapeCompared<M, K, Reviewed> extends true ? { export: K; signature: M[K]; exact: __ShapeEqual<M[K], Reviewed> } : unknown)
   : unknown;
-type __ShapeReviewed<M, K extends string, Reviewed> = K extends keyof M
-  ? (__ShapeCompared<M, K, Reviewed> extends true ? (__ShapeEqual<M[K], Reviewed> extends true ? unknown : { export: K; signature: Reviewed; exact: true }) : unknown)
+type __ShapeReviewed<M, K extends string, Reviewed> = __ShapeFound<M, K, Reviewed> extends { exact: false }
+  ? { export: K; signature: Reviewed; exact: true }
   : unknown;
 type __ShapeConform<Found extends Reviewed, Reviewed> = Found;
 `;
@@ -80,11 +78,18 @@ export function rejectedTransform(diagnostics: MapperDiagnostic[]): TransformRes
   return { text: "export {};\n", extension: ".ts", mappings: [], diagnostics };
 }
 
-/** Pure transform: the TypeScript compiler supplies export facts through virtual types. */
-export function emitContract(input: EmitInput): TransformResult {
+export type CheckedContract =
+  | { ok: true; expectedSource: string; registrations: Registration[] }
+  | { ok: false; diagnostics: MapperDiagnostic[] };
+
+/** Validates an authored sibling contract and collects its signature registrations. */
+export function checkContract(input: EmitInput): CheckedContract {
   const diagnostics: MapperDiagnostic[] = [];
-  const fileSpan = contractStart(input.content);
-  const reject = (code: number, messageText: string, at: Span = fileSpan): void => {
+  const reject = (
+    code: number,
+    messageText: string,
+    at: Span = contractStart(input.content)
+  ): void => {
     diagnostics.push({ code, messageText, ...at });
   };
   const path = relative(input.repoRoot, input.fileName).replaceAll("\\", "/");
@@ -100,22 +105,23 @@ export function emitContract(input: EmitInput): TransformResult {
       1007,
       "A contract must be an authored .shape file inside repoRoot, paired with a .ts implementation."
     );
-    return rejectedTransform(diagnostics);
+    return { ok: false, diagnostics };
   }
   const parsed = parseShapeModule(input.content, input.fileName);
   if (!parsed.ok) {
     const lines = input.content.split("\n");
-    for (const diagnostic of parsed.diagnostics) {
-      const before = lines.slice(0, Math.max(0, (diagnostic.line ?? 1) - 1));
-      const start =
-        before.reduce((sum, line) => sum + line.length + 1, 0) +
-        Math.max(0, (diagnostic.column ?? 1) - 1);
-      reject(1001, `Cannot parse the authored Shape contract: ${diagnostic.message}`, {
-        start: Math.min(start, input.content.length),
-        length: 1
+    for (const { line = 1, column = 1, message } of parsed.diagnostics) {
+      const offset =
+        lines.slice(0, Math.max(0, line - 1)).reduce((sum, text) => sum + text.length + 1, 0) +
+        Math.max(0, column - 1);
+      const start = Math.min(offset, input.content.length);
+      // A span must lie inside the contract, so an error at its very end covers nothing.
+      reject(1001, `Cannot parse the authored Shape contract: ${message}`, {
+        start,
+        length: start < input.content.length ? 1 : 0
       });
     }
-    return rejectedTransform(diagnostics);
+    return { ok: false, diagnostics };
   }
   if (
     isGeneratedAstModuleName(parsed.module.name ?? "") ||
@@ -145,13 +151,14 @@ export function emitContract(input: EmitInput): TransformResult {
         reject(1003, NUMERIC_ESCAPE, span(fn.source.$cstNode));
         continue;
       }
-      const source = fn.source?.ref.path;
-      const anchor = source?.indexOf("#") ?? -1;
-      const exported = anchor >= 0 ? source?.slice(anchor + 1) : undefined;
+      const source = fn.source?.ref.path ?? "";
+      const hash = source.indexOf("#");
+      const exported = source.slice(hash + 1);
       if (
         !fn.source ||
         !["ts", "typescript"].includes(fn.source.ref.language) ||
-        source?.slice(0, anchor) !== expectedSource ||
+        hash < 0 ||
+        source.slice(0, hash) !== expectedSource ||
         !exported ||
         ["\r", "\n", "\0"].some((character) => exported.includes(character))
       ) {
@@ -199,7 +206,23 @@ export function emitContract(input: EmitInput): TransformResult {
       });
     }
   }
-  if (diagnostics.length) return rejectedTransform(diagnostics);
+  return diagnostics.length
+    ? { ok: false, diagnostics }
+    : { ok: true, expectedSource, registrations };
+}
+
+/** Pure transform: the TypeScript compiler supplies export facts through virtual types. */
+export function emitContract(input: EmitInput): TransformResult {
+  const checked = checkContract(input);
+  return checked.ok
+    ? renderAssertions(checked, contractStart(input.content))
+    : rejectedTransform(checked.diagnostics);
+}
+
+function renderAssertions(
+  { expectedSource, registrations }: { expectedSource: string; registrations: Registration[] },
+  fileSpan: Span
+): TransformResult {
   const mappings: SpanMapping[] = [];
   let text = "";
   const append = (line: string, at: Span): void => {
@@ -242,5 +265,5 @@ export function emitContract(input: EmitInput): TransformResult {
   for (const [index, entry] of registrations.entries()) {
     append(`type __ShapeExpected${index} = [(${entry.signature})];`, entry.span);
   }
-  return { text, extension: ".ts", mappings, diagnostics };
+  return { text, extension: ".ts", mappings, diagnostics: [] };
 }

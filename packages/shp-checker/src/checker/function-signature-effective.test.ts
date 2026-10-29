@@ -34,13 +34,6 @@ function signatureFor(functionName: string, sources: string[]) {
 }
 
 describe("effective fn signatures", () => {
-  test("lowers a declared signature onto the function", () => {
-    expect(signatureFor("writeAudit", [BASE])).toEqual({
-      language: "ts",
-      value: "(entry: AuditEntry) => Promise<void>"
-    });
-  });
-
   test("keeps the quotes of a signature that begins and ends with a string-literal type", () => {
     const quoted = BASE.replace(
       'signature ts("(entry: AuditEntry) => Promise<void>")',

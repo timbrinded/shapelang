@@ -44,7 +44,7 @@ export function parseShapeModule(
     lexerDiagnostic(error, filePath)
   );
   const parserErrors = document.parseResult.parserErrors.map((error) =>
-    parserDiagnostic(error, filePath)
+    parserDiagnostic(error, filePath, source)
   );
   const diagnostics = [...lexerErrors, ...parserErrors];
 
@@ -74,14 +74,21 @@ function lexerDiagnostic(error: unknown, filePath: string): ParseDiagnostic {
   };
 }
 
-function parserDiagnostic(error: unknown, filePath: string): ParseDiagnostic {
+function parserDiagnostic(error: unknown, filePath: string, source: string): ParseDiagnostic {
   const token = recordProperty(error, "token");
+  const line = numberProperty(token, "startLine");
+  const column = numberProperty(token, "startColumn");
+  if (line !== undefined && column !== undefined) {
+    return { kind: "parse", filePath, message: messageProperty(error), line, column };
+  }
+  // The end-of-input token has no position; the error is at the end of the source.
+  const lines = source.split("\n");
   return {
     kind: "parse",
     filePath,
     message: messageProperty(error),
-    line: numberProperty(token, "startLine"),
-    column: numberProperty(token, "startColumn")
+    line: lines.length,
+    column: (lines.at(-1)?.length ?? 0) + 1
   };
 }
 
@@ -102,7 +109,9 @@ function stringProperty(value: unknown, key: string): string | undefined {
 
 function numberProperty(value: unknown, key: string): number | undefined {
   const propertyValue = isRecord(value) ? value[key] : undefined;
-  return typeof propertyValue === "number" ? propertyValue : undefined;
+  return typeof propertyValue === "number" && Number.isFinite(propertyValue)
+    ? propertyValue
+    : undefined;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

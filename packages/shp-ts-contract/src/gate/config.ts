@@ -7,7 +7,7 @@ import {
   type Node,
   type ParseError
 } from "jsonc-parser";
-import { Glob } from "bun";
+import { object } from "../mapper/protocol.ts";
 import {
   fail,
   compareText,
@@ -15,10 +15,6 @@ import {
   type ContractConfig,
   type ContractProject
 } from "./types.ts";
-
-export function object(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-}
 
 export function keys(
   value: Record<string, unknown>,
@@ -32,12 +28,9 @@ export function keys(
 }
 
 export async function readJson(path: string, jsonc = false): Promise<unknown> {
-  let text: string;
-  try {
-    text = await readFile(path, "utf8");
-  } catch {
-    fail("unreadable_config", path, "Cannot read the configuration file.");
-  }
+  const text = await readFile(path, "utf8").catch(() =>
+    fail("unreadable_config", path, "Cannot read the configuration file.")
+  );
   const errors: ParseError[] = [];
   const tree = parseTree(text, errors, { allowTrailingComma: jsonc, disallowComments: !jsonc });
   const first = errors[0];
@@ -86,7 +79,9 @@ export function relativePath(value: unknown, path: string, label: string): strin
   return value;
 }
 
-function patterns(value: unknown, path: string, label: string, required: boolean): string[] {
+/** An include must select something; an exclude may be empty. */
+function patterns(value: unknown, path: string, label: "include" | "exclude"): string[] {
+  const required = label === "include";
   if (!Array.isArray(value) || (required && value.length === 0)) {
     fail(
       "invalid_config",
@@ -105,11 +100,6 @@ function patterns(value: unknown, path: string, label: string, required: boolean
         path,
         `${label} cannot negate a glob or traverse parent/current segments.`
       );
-    }
-    try {
-      new Glob(pattern);
-    } catch {
-      fail("invalid_config", path, `Invalid glob ${JSON.stringify(pattern)}.`);
     }
     return pattern;
   });
@@ -130,13 +120,10 @@ export async function loadConfig(configPath: string): Promise<ContractConfig> {
   if (data.version !== 1)
     fail("invalid_config", configPath, "Only configuration version 1 is supported.");
   const rootInput = relativePath(data.repoRoot, configPath, "repoRoot");
-  let repoRoot: string;
-  try {
-    repoRoot = await realpath(resolve(dirname(configPath), rootInput));
-    if (!(await stat(repoRoot)).isDirectory()) throw new Error("not a directory");
-  } catch {
+  const missingRoot = (): never =>
     fail("invalid_config", configPath, "repoRoot must resolve to an existing directory.");
-  }
+  const repoRoot = await realpath(resolve(dirname(configPath), rootInput)).catch(missingRoot);
+  if (!(await stat(repoRoot).then((info) => info.isDirectory(), missingRoot))) missingRoot();
   if (!object(data.compiler)) fail("invalid_config", configPath, "compiler must be an object.");
   keys(data.compiler, ["package", "version"], configPath);
   if (
@@ -177,8 +164,8 @@ export async function loadConfig(configPath: string): Promise<ContractConfig> {
     return {
       name: entry.name,
       tsconfig,
-      include: patterns(entry.include, configPath, "include", true),
-      exclude: patterns(entry.exclude ?? [], configPath, "exclude", false)
+      include: patterns(entry.include, configPath, "include"),
+      exclude: patterns(entry.exclude ?? [], configPath, "exclude")
     };
   });
   return {

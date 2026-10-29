@@ -13,7 +13,7 @@ resource FunctionSignatureFormatTestModuleFormatAstAnchor : GeneratedAstAnchor {
 
 resource FunctionSignatureFormatTestModuleSignatureValueAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/function-signature-format.test.ts#signatureValue")
-  fingerprint ast.semantic_subtree_v1("sha256:a7c859038f89c863fa39f120551b65f2eec1f27af981f6926f4ce71ef236b427")
+  fingerprint ast.semantic_subtree_v1("sha256:cea1a06e848630b1bfa7d7793b2105337029304b02d538745c000a045840b828")
 }
 
 component FunctionSignatureFormatTestModule : GeneratedCandidate {
@@ -37,7 +37,7 @@ relation FunctionSignatureFormatTestModuleSignatureValueGeneratedFromFunctionSig
   kind generated_from
   connects FunctionSignatureFormatTestModule -> FunctionSignatureFormatTestModuleSignatureValueAstAnchor
   roles { FunctionSignatureFormatTestModule as generated, FunctionSignatureFormatTestModuleSignatureValueAstAnchor as syntax }
-  expects FunctionSignatureFormatTestModuleSignatureValueAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7c859038f89c863fa39f120551b65f2eec1f27af981f6926f4ce71ef236b427")
+  expects FunctionSignatureFormatTestModuleSignatureValueAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cea1a06e848630b1bfa7d7793b2105337029304b02d538745c000a045840b828")
   summary "fn FunctionSignatureFormatTestModule.signatureValue generated from typescript function_declaration at packages/shp-checker/src/function-signature-format.test.ts#signatureValue."
 }
 

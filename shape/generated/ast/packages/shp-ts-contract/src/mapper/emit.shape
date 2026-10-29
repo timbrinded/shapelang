@@ -6,6 +6,11 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource EmitModuleCheckContractAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/emit.ts#checkContract")
+  fingerprint ast.semantic_subtree_v1("sha256:eaa97a44794bf2459d95576f30ced42ee578d304a7937d13f5d2a25cd5e65870")
+}
+
 resource EmitModuleContractStartAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/mapper/emit.ts#contractStart")
   fingerprint ast.semantic_subtree_v1("sha256:cdfc247e36693156376a4ae07c7512162cedca5cd8534386e75afe8331c5dcfd")
@@ -13,7 +18,7 @@ resource EmitModuleContractStartAstAnchor : GeneratedAstAnchor {
 
 resource EmitModuleEmitContractAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/mapper/emit.ts#emitContract")
-  fingerprint ast.semantic_subtree_v1("sha256:88b339b2a7934add95e0373d23772bf8ddfb417e4ac47d8613eac94ad2c364f2")
+  fingerprint ast.semantic_subtree_v1("sha256:3b20772e37bbdd60eaf7ec446becc7c6ce15d8c998ce43bd50a47f017b6c7850")
 }
 
 resource EmitModuleRejectedTransformAstAnchor : GeneratedAstAnchor {
@@ -21,7 +26,15 @@ resource EmitModuleRejectedTransformAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:ab3af572f0069f36705828f3f30ac5d87759cbc6db57f987e0435213b6c9166f")
 }
 
+resource EmitModuleRenderAssertionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/emit.ts#renderAssertions")
+  fingerprint ast.semantic_subtree_v1("sha256:bebcabb41226f182b66d44a1d1139123415ea0d3e70653a896bf5596d6735bdd")
+}
+
 component EmitModule : GeneratedCandidate {
+  fn checkContract
+    source ts("packages/shp-ts-contract/src/mapper/emit.ts#checkContract")
+    effects unknown
   fn contractStart
     source ts("packages/shp-ts-contract/src/mapper/emit.ts#contractStart")
     effects unknown
@@ -31,6 +44,17 @@ component EmitModule : GeneratedCandidate {
   fn rejectedTransform
     source ts("packages/shp-ts-contract/src/mapper/emit.ts#rejectedTransform")
     effects unknown
+  fn renderAssertions
+    source ts("packages/shp-ts-contract/src/mapper/emit.ts#renderAssertions")
+    effects unknown
+}
+
+relation EmitModuleCheckContractGeneratedFromEmitModuleCheckContractAstAnchor {
+  kind generated_from
+  connects EmitModule -> EmitModuleCheckContractAstAnchor
+  roles { EmitModule as generated, EmitModuleCheckContractAstAnchor as syntax }
+  expects EmitModuleCheckContractAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eaa97a44794bf2459d95576f30ced42ee578d304a7937d13f5d2a25cd5e65870")
+  summary "fn EmitModule.checkContract generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/emit.ts#checkContract."
 }
 
 relation EmitModuleContractStartGeneratedFromEmitModuleContractStartAstAnchor {
@@ -45,7 +69,7 @@ relation EmitModuleEmitContractGeneratedFromEmitModuleEmitContractAstAnchor {
   kind generated_from
   connects EmitModule -> EmitModuleEmitContractAstAnchor
   roles { EmitModule as generated, EmitModuleEmitContractAstAnchor as syntax }
-  expects EmitModuleEmitContractAstAnchor fingerprint ast.semantic_subtree_v1("sha256:88b339b2a7934add95e0373d23772bf8ddfb417e4ac47d8613eac94ad2c364f2")
+  expects EmitModuleEmitContractAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3b20772e37bbdd60eaf7ec446becc7c6ce15d8c998ce43bd50a47f017b6c7850")
   summary "fn EmitModule.emitContract generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/emit.ts#emitContract."
 }
 
@@ -55,6 +79,14 @@ relation EmitModuleRejectedTransformGeneratedFromEmitModuleRejectedTransformAstA
   roles { EmitModule as generated, EmitModuleRejectedTransformAstAnchor as syntax }
   expects EmitModuleRejectedTransformAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ab3af572f0069f36705828f3f30ac5d87759cbc6db57f987e0435213b6c9166f")
   summary "fn EmitModule.rejectedTransform generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/emit.ts#rejectedTransform."
+}
+
+relation EmitModuleRenderAssertionsGeneratedFromEmitModuleRenderAssertionsAstAnchor {
+  kind generated_from
+  connects EmitModule -> EmitModuleRenderAssertionsAstAnchor
+  roles { EmitModule as generated, EmitModuleRenderAssertionsAstAnchor as syntax }
+  expects EmitModuleRenderAssertionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bebcabb41226f182b66d44a1d1139123415ea0d3e70653a896bf5596d6735bdd")
+  summary "fn EmitModule.renderAssertions generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/emit.ts#renderAssertions."
 }
 
 implementation EmitModuleImpl {

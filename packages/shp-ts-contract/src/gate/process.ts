@@ -11,11 +11,9 @@ export async function captureProcess(
   command: string,
   args: string[],
   cwd: string,
-  options: { timeoutMs?: number } = {}
+  options: { timeoutMs?: number; env?: NodeJS.ProcessEnv } = {}
 ): Promise<ProcessOutput> {
   const timeoutMs = options.timeoutMs ?? 120_000;
-  if (!Number.isFinite(timeoutMs) || timeoutMs <= 0)
-    throw new RangeError("Compiler timeout must be a positive finite number.");
   const temporary = await mkdtemp(join(tmpdir(), "shp-ts-compiler-"));
   const outputPath = join(temporary, "stdout");
   const errorPath = join(temporary, "stderr");
@@ -34,6 +32,7 @@ export async function captureProcess(
       const child = spawn(command, args, {
         cwd,
         detached: processGroup,
+        env: options.env,
         stdio: ["ignore", outputFd, errorFd]
       });
       const terminate = (): void => {

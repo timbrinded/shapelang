@@ -86,6 +86,14 @@ describe("pure TypeScript contract transform", () => {
     ).toBe(1002);
   });
 
+  test("a parse error at the end of input is an empty span at the end of the contract", () => {
+    // The compiler rejects a whole transform whose span runs past the contract.
+    const content = "module app\ncomponent Api {\n";
+    expect(emit(content).diagnostics).toEqual([
+      expect.objectContaining({ code: 1001, start: content.length, length: 0 })
+    ]);
+  });
+
   test("Shape imports and changes cannot be silently ignored", () => {
     expect(emit("module app\nimport other.contract\ncomponent Api {}\n").diagnostics[0]?.code).toBe(
       1002

@@ -57,7 +57,7 @@ component TypeScriptContractGate {
     }
   fn runTsContractGate
     source ts("packages/shp-ts-contract/src/gate/index.ts#runTsContractGate")
-    description "An opt-in filesystem census requires a regular authored sibling contract for every selected .ts source, including new and ignored files, and reads source anchors as the Shape parser decodes them. Paths are also matched under their .ts spelling, so .tsx, .mts, .cts and .d.ts files and allowJs JavaScript roots in the selected tree are unsupported until explicitly excluded. Before invoking native checks with explicit external-code consent, it checks the exact compiler version, strict checking with strict true or omitted, the absence of project references, the mapper registration, that the mapper directory native TypeScript loads, the nearest node_modules link at or above the tsconfig regardless of tsconfig paths or package exports, is the package of the checkout running the gate, and the resolved roots. Native diagnostics and failures are preserved."
+    description "An opt-in filesystem census requires a regular authored sibling contract for every selected .ts source, including new and ignored files, and rejects any contract the mapper's own validation would reject before a native run. Paths are also matched under their .ts spelling, so .tsx, .mts, .cts and .d.ts files and allowJs JavaScript roots in the selected tree are unsupported until explicitly excluded. Before invoking native checks with explicit external-code consent, it checks the exact compiler version, strict checking with strict true or omitted, the absence of project references, the mapper registration, that the mapper directory native TypeScript loads, the nearest node_modules link at or above the tsconfig regardless of tsconfig paths or package exports, is the package of the checkout running the gate, and the resolved roots. Native diagnostics and failures are preserved."
     effects complete {
       Append<TypeScriptContractDiagnostics>
         evidence ts("packages/shp-ts-contract/src/gate/index.ts")
@@ -91,7 +91,7 @@ component TypeScriptContractMapper {
   grants Update<MapperProjectState>
   fn emitContract
     source ts("packages/shp-ts-contract/src/mapper/emit.ts#emitContract")
-    description "Purely translates authored sibling Shape signatures, read as the Shape parser decodes them, into type-only TypeScript assertions; numeric string escapes, which the parser reads as plain letters, are rejected. Any-detection keeps the compared type out of conditional check and extends positions, and equality settles top-level any first, so an export of the compiler's error type counts as uncertain and fails its signature instead of satisfying every assertion. Signature equality, registered export existence at the source anchor, and labelled callable export coverage that lists the offending exports, including optional members of an export = object, are separate assertions, and the sibling import maps to the contract's first character; malformed, unsigned, generated, imported, and changed contracts fail explicitly."
+    description "Purely translates authored sibling Shape signatures, read as the Shape parser decodes them, into type-only TypeScript assertions; numeric string escapes, which the parser reads as plain letters, are rejected. Any-detection keeps the compared type out of conditional check and extends positions, and equality settles top-level any first, so an export of the compiler's error type counts as uncertain and fails its signature instead of satisfying every assertion. Signature equality, registered export existence at the source anchor, and labelled callable export coverage that lists the offending exports, including optional members of an export = object, are separate assertions, and the sibling import maps to the contract's first character; malformed, unsigned, generated, imported, and changed contracts fail explicitly. Its validation step, checkContract, is shared with the gate."
     effects complete {
       Append<TypeScriptContractDiagnostics>
         evidence ts("packages/shp-ts-contract/src/mapper/emit.ts")
@@ -143,13 +143,7 @@ relation TypeScriptCliUsesGate {
 relation TypeScriptGateUsesMapper {
   kind calls
   connects TypeScriptContractGate -> TypeScriptContractMapper
-  summary "The pinned compiler launches the registered mapper only after the explicit external-code gate."
-}
-
-relation TypeScriptGateUsesParser {
-  kind calls
-  connects TypeScriptContractGate -> ShapeParser
-  summary "The selected-source census parses each sibling contract to validate its source anchors."
+  summary "The gate applies the mapper's contract validation in process; the pinned compiler launches the registered mapper only after the explicit external-code gate."
 }
 
 relation TypeScriptMapperUsesParser {

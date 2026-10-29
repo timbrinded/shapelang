@@ -62,6 +62,7 @@ function contract(source = "src/a.ts"): string {
 component Api {
   fn f
     source ts("${source}#f")
+    signature ts("() => number")
     effects complete {}
 }
 `;
@@ -267,17 +268,13 @@ describe("TypeScript contract gate unit tests", () => {
     expect(result.projects[0]?.sources).toHaveLength(1);
   });
 
-  test.each([".tsx", ".mts", ".cts", ".d.ts"])(
-    "rejects matched unsupported source extension %s",
-    async (extension) => {
-      const f = await fixture();
-      f.config.projects[0]!.include = ["src/**/*"];
-      await f.saveConfig();
-      await put(f.root, `src/unsupported${extension}`, "export const unsupported = 1;\n");
-      const diagnostic = requireFailure(await f.run(), "unsupported_source");
-      expect(diagnostic.path).toBe(join(f.root, `src/unsupported${extension}`));
-    }
-  );
+  // .tsx, .mts and .cts siblings are covered by the rename test below.
+  test("rejects a selected declaration file", async () => {
+    const f = await fixture();
+    await put(f.root, "src/unsupported.d.ts", "export const unsupported = 1;\n");
+    const diagnostic = requireFailure(await f.run(), "unsupported_source");
+    expect(diagnostic.path).toBe(join(f.root, "src/unsupported.d.ts"));
+  });
 
   test("requires project-local TypeScript rather than falling back to a global executable", async () => {
     const f = await fixture();
@@ -375,23 +372,37 @@ describe("TypeScript contract gate unit tests", () => {
       );
       expect(await f.run()).toMatchObject({ ok: true, exitCode: 0, diagnostics: [] });
 
-      // Shape strings decode an unknown escape to its character: this anchor reads src/u0061.ts.
+      // An escape the Shape reader knows is compared after decoding: \a reads as a.
+      await put(
+        f.root,
+        "src/a.shape",
+        contract().replace('source ts("src/a.ts#f")', 'source ts("src/\\a.ts#f")')
+      );
+      expect(await f.run()).toMatchObject({ ok: true, exitCode: 0, diagnostics: [] });
+
+      // \u and \x would decode to plain letters, so they are refused rather than misread.
       await put(
         f.root,
         "src/a.shape",
         contract().replace('source ts("src/a.ts#f")', 'source ts("src/\\u0061.ts#f")')
       );
-      const diagnostic = requireFailure(await f.run(), "mismatched_source");
+      const diagnostic = requireFailure(await f.run(), "invalid_contract");
       expect(diagnostic.path).toBe(join(f.root, "src/a.shape"));
       expect(diagnostic.causedBy).toEqual([join(f.root, "src/a.ts")]);
-      expect(diagnostic.message).toContain('ts("src/a.ts#exportName")');
+      // The anchor's text starts at line 4, column 16 of the contract.
+      expect(diagnostic.message).toStartWith(
+        "4:16 shape-ts1003: Shape strings read \\u and \\x escapes"
+      );
     }
   );
 
   test("rejects a contract that describes another source file", async () => {
     const f = await fixture();
     await put(f.root, "src/a.shape", contract("src/another.ts"));
-    requireFailure(await f.run(), "mismatched_source");
+    const diagnostic = requireFailure(await f.run(), "invalid_contract");
+    expect(diagnostic.message).toContain(
+      '4:16 shape-ts1003: Api.f needs a source anchor ts("src/a.ts#exportName")'
+    );
     await expectNoNativeCheck(f.root);
   });
 
@@ -408,8 +419,9 @@ describe("TypeScript contract gate unit tests", () => {
       "src/a.shape",
       contract().replace("module app", "module shape.generated.ast.app")
     );
-    const diagnostic = requireFailure(await f.run(), "generated_contract");
+    const diagnostic = requireFailure(await f.run(), "invalid_contract");
     expect(diagnostic.path).toBe(join(f.root, "src/a.shape"));
+    expect(diagnostic.message).toStartWith("1:1 shape-ts1002: Generated AST drafts");
     await expectNoNativeCheck(f.root);
   });
 
@@ -446,15 +458,11 @@ describe("TypeScript contract gate unit tests", () => {
     expect(await f.run()).toMatchObject({ ok: true, exitCode: 0, diagnostics: [] });
   });
 
-  test.each([
-    { strict: false },
-    { strict: true, noCheck: true },
-    { strict: true, strictFunctionTypes: false },
-    { strict: true, strictNullChecks: false },
-    { strictNullChecks: false }
-  ])("rejects compiler options that disable contract checking %#", async (options) => {
+  // The options themselves are the mapper's shared predicate (protocol.test.ts); the gate
+  // applies it to the resolved configuration before any mapper runs.
+  test("rejects compiler options that disable contract checking", async () => {
     const f = await fixture();
-    f.state.compilerOptions = options;
+    f.state.compilerOptions = { strict: false };
     await f.saveState();
     requireFailure(await f.run(), "invalid_compiler");
     await expectNoNativeCheck(f.root);

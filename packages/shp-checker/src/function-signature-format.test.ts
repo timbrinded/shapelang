@@ -1,12 +1,10 @@
 import { describe, expect, test } from "bun:test";
 import { formatShapeSource } from "./formatter.ts";
 import { isComponentDecl, isFunctionSummary } from "./language/generated/ast.ts";
-import { parseShapeModule } from "./parser.ts";
+import { requireParsed } from "./test-support.ts";
 
 function signatureValue(source: string): string | undefined {
-  const parsed = parseShapeModule(source);
-  if (!parsed.ok) throw new Error(parsed.diagnostics.map(({ message }) => message).join("\n"));
-  return parsed.module.declarations.find(isComponentDecl)?.members.find(isFunctionSummary)
+  return requireParsed(source).declarations.find(isComponentDecl)?.members.find(isFunctionSummary)
     ?.signature?.value;
 }
 
@@ -54,6 +52,7 @@ describe("fn signature formatting", () => {
           transform ExtractHelper
           source ts("src/gateway.ts#writeAudit")
           signature ts("(entry: AuditEntry) => Promise<void>")
+          description "Appends one audit entry."
           effects unknown
         add fn Gateway.appendAudit
           signature ts("(entry: AuditEntry) => void")
@@ -64,7 +63,8 @@ describe("fn signature formatting", () => {
     expect(formatted).toContain(
       [
         '    source ts("src/gateway.ts#writeAudit")',
-        '    signature ts("(entry: AuditEntry) => Promise<void>")'
+        '    signature ts("(entry: AuditEntry) => Promise<void>")',
+        '    description "Appends one audit entry."'
       ].join("\n")
     );
     expect(formatted).toContain('    signature ts("(entry: AuditEntry) => void")');

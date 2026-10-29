@@ -9,7 +9,6 @@ import type {
   EffectsDecl,
   EffectTerm,
   FingerprintDecl,
-  FunctionSignatureDecl,
   ImplementationDecl,
   ResourceDecl,
   RuleDecl,
@@ -68,7 +67,6 @@ import type {
   Provenance,
   RuleInfo,
   ShapeTarget,
-  SignatureInfo,
   SourceRefInfo,
   TermInfo,
   TraitContextRequirement
@@ -694,7 +692,9 @@ export function lowerFunction(
     component: componentName,
     name: functionName,
     source,
-    signature: fn.signature ? lowerSignature(fn.signature) : undefined,
+    signature: fn.signature
+      ? { language: fn.signature.language, value: fn.signature.value }
+      : undefined,
     unsafe: fn.unsafe,
     effects: lowerEffects(
       fn.effects,
@@ -988,17 +988,6 @@ export function lowerSourceRef(source: { ref: SourceRef }): SourceRefInfo {
   return {
     language: source.ref.language,
     path: unquoteShapeString(source.ref.path)
-  };
-}
-
-/**
- * Carries a declared signature through unchanged. This is plumbing only: the
- * text is never parsed for types and never contributes effects.
- */
-export function lowerSignature(signature: FunctionSignatureDecl): SignatureInfo {
-  return {
-    language: signature.language,
-    value: signature.value
   };
 }
 

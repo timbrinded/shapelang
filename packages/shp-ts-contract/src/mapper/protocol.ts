@@ -1,7 +1,7 @@
 import { dirname, isAbsolute, resolve } from "node:path";
-import { contractStart, emitContract, rejectedTransform } from "./emit.ts";
+import { contractStart, emitContract, rejectedTransform, type TransformResult } from "./emit.ts";
 
-function object(value: unknown): value is Record<string, unknown> {
+export function object(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
@@ -31,6 +31,48 @@ export class RpcError extends Error {
 }
 
 type Project = { repoRoot: string } | { error: string };
+type OptionDiagnostic = { path: string[]; code: number; messageText: string };
+
+/** Resolves a project's repoRoot from the compiler-supplied openProject parameters. */
+function projectOptions(
+  input: Record<string, unknown>
+): { repoRoot: string } | { optionDiagnostics: OptionDiagnostic[] } {
+  const errors: OptionDiagnostic[] = [];
+  const report = (path: string[], messageText: string): void => {
+    errors.push({ path, code: 1006, messageText });
+  };
+  const options = input.options ?? {};
+  let root = ".";
+  if (!object(options)) report([], "Mapper options must be an object containing only repoRoot.");
+  else {
+    for (const key of Object.keys(options).sort()) {
+      if (key !== "repoRoot")
+        report([key], `Unknown mapper option ${key}; only repoRoot is supported.`);
+    }
+    if (options.repoRoot !== undefined) {
+      if (
+        typeof options.repoRoot !== "string" ||
+        !options.repoRoot ||
+        options.repoRoot.includes("\0")
+      )
+        report(["repoRoot"], "repoRoot must be a nonempty path string.");
+      else root = options.repoRoot;
+    }
+  }
+  const configFileName = input.configFileName;
+  if (typeof configFileName !== "string" || !isAbsolute(configFileName)) {
+    report([], "Version 1 requires a configured project with an absolute configFileName.");
+  }
+  const compiler = input.compilerOptions;
+  if (!object(compiler)) {
+    report([], "The compiler must supply the project's compiler options.");
+  } else if (loosensStrictness(compiler)) {
+    report([], STRICT_CHECKING_REQUIRED);
+  }
+  return errors.length || typeof configFileName !== "string"
+    ? { optionDiagnostics: errors }
+    : { repoRoot: resolve(dirname(configFileName), root) };
+}
 
 /** Only explicit, static project options affect transforms; no project files are read. */
 export class MapperSession {
@@ -55,76 +97,48 @@ export class MapperSession {
       throw new RpcError(-32602, "A nonempty projectHandle is required.");
     }
     const handle = input.projectHandle;
-    if (method === "openProject") {
-      if (this.#projects.has(handle))
-        throw new RpcError(-32602, `Project handle ${handle} is already open.`);
-      const errors: { path: string[]; code: number; messageText: string }[] = [];
-      const report = (path: string[], messageText: string): void => {
-        errors.push({ path, code: 1006, messageText });
-      };
-      const options = input.options ?? {};
-      if (!object(options))
-        report([], "Mapper options must be an object containing only repoRoot.");
-      else {
-        for (const key of Object.keys(options).sort()) {
-          if (key !== "repoRoot")
-            report([key], `Unknown mapper option ${key}; only repoRoot is supported.`);
-        }
-        if (
-          options.repoRoot !== undefined &&
-          (typeof options.repoRoot !== "string" ||
-            !options.repoRoot ||
-            options.repoRoot.includes("\0"))
-        ) {
-          report(["repoRoot"], "repoRoot must be a nonempty path string.");
-        }
-      }
-      const configFileName =
-        typeof input.configFileName === "string" && isAbsolute(input.configFileName)
-          ? input.configFileName
-          : undefined;
-      if (configFileName === undefined) {
-        report([], "Version 1 requires a configured project with an absolute configFileName.");
-      }
-      const compiler = input.compilerOptions;
-      if (!object(compiler)) {
-        report([], "The compiler must supply the project's compiler options.");
-      } else if (loosensStrictness(compiler)) {
-        report([], STRICT_CHECKING_REQUIRED);
-      }
-      // The second and third conditions only narrow types: each already reported an error.
-      if (errors.length || !object(options) || configFileName === undefined) {
-        this.#projects.set(handle, { error: errors.map((error) => error.messageText).join(" ") });
-        return { optionDiagnostics: errors };
-      }
-      const root = typeof options.repoRoot === "string" ? options.repoRoot : ".";
-      this.#projects.set(handle, { repoRoot: resolve(dirname(configFileName), root) });
-      return {};
-    }
+    if (method === "openProject") return this.#openProject(handle, input);
     const project = this.#projects.get(handle);
     if (!project) throw new RpcError(-32602, `Unknown or closed project handle ${handle}.`);
     if (method === "closeProject") {
       this.#projects.delete(handle);
       return null;
     }
-    if (typeof input.fileName !== "string" || typeof input.content !== "string") {
-      throw new RpcError(-32602, "transform requires fileName and content strings.");
-    }
-    if ("error" in project) {
-      return rejectedTransform([
-        {
-          code: 1006,
-          messageText: `Invalid mapper project options: ${project.error}`,
-          ...contractStart(input.content)
-        }
-      ]);
-    }
-    return emitContract({
-      fileName: input.fileName,
-      content: input.content,
-      repoRoot: project.repoRoot
-    });
+    return transform(project, input);
   }
+
+  #openProject(handle: string, input: Record<string, unknown>): unknown {
+    if (this.#projects.has(handle))
+      throw new RpcError(-32602, `Project handle ${handle} is already open.`);
+    const options = projectOptions(input);
+    if ("optionDiagnostics" in options) {
+      const error = options.optionDiagnostics.map(({ messageText }) => messageText).join(" ");
+      this.#projects.set(handle, { error });
+      return options;
+    }
+    this.#projects.set(handle, options);
+    return {};
+  }
+}
+
+function transform(project: Project, input: Record<string, unknown>): TransformResult {
+  if (typeof input.fileName !== "string" || typeof input.content !== "string") {
+    throw new RpcError(-32602, "transform requires fileName and content strings.");
+  }
+  if ("error" in project) {
+    return rejectedTransform([
+      {
+        code: 1006,
+        messageText: `Invalid mapper project options: ${project.error}`,
+        ...contractStart(input.content)
+      }
+    ]);
+  }
+  return emitContract({
+    fileName: input.fileName,
+    content: input.content,
+    repoRoot: project.repoRoot
+  });
 }
 
 export type RpcReply = { jsonrpc: "2.0"; id: string | number | null } & (

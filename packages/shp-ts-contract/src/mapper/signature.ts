@@ -43,25 +43,23 @@ export function validateSignatureFragment(value: string): string | undefined {
       case SyntaxKind.TemplateMiddle:
       case SyntaxKind.TemplateTail:
         return "Signature template substitutions are not supported.";
+      // Each opening delimiter records the closing token it requires.
       case SyntaxKind.OpenParenToken:
+        delimiters.push(SyntaxKind.CloseParenToken);
+        break;
       case SyntaxKind.OpenBracketToken:
+        delimiters.push(SyntaxKind.CloseBracketToken);
+        break;
       case SyntaxKind.OpenBraceToken:
-        delimiters.push(token);
+        delimiters.push(SyntaxKind.CloseBraceToken);
         break;
       case SyntaxKind.CloseParenToken:
       case SyntaxKind.CloseBracketToken:
-      case SyntaxKind.CloseBraceToken: {
-        const expected =
-          token === SyntaxKind.CloseParenToken
-            ? SyntaxKind.OpenParenToken
-            : token === SyntaxKind.CloseBracketToken
-              ? SyntaxKind.OpenBracketToken
-              : SyntaxKind.OpenBraceToken;
-        if (delimiters.pop() !== expected) {
+      case SyntaxKind.CloseBraceToken:
+        if (delimiters.pop() !== token) {
           return "Signature contains unmatched or incorrectly nested delimiters.";
         }
         break;
-      }
       case SyntaxKind.SemicolonToken:
         if (delimiters.length === 0) {
           return "Signature cannot contain a top-level semicolon.";

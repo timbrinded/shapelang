@@ -1,28 +1,12 @@
-import { lstat, readFile, readdir, realpath, stat } from "node:fs/promises";
+import { lstat, readFile, readdir, stat } from "node:fs/promises";
 import { join, relative } from "node:path";
 import { Glob } from "bun";
-import { isGeneratedAstModuleName, parseShapeModule } from "@shape/shp-checker";
+import { checkContract } from "../mapper/emit.ts";
 import { inside } from "./config.ts";
-import { compareText, fail, GateFailure, type ContractProject } from "./types.ts";
-
-export function slash(path: string): string {
-  return path.replaceAll("\\", "/");
-}
-
-/** The literal leading text of each include, before its first glob character. */
-function includePrefixes(project: ContractProject): string[] {
-  return project.include.map((pattern) => pattern.split(/[?*[{]/, 1)[0] ?? "");
-}
+import { compareText, fail, type ContractProject } from "./types.ts";
 
 function maySelectDescendant(path: string, prefixes: string[]): boolean {
   return prefixes.some((prefix) => prefix.startsWith(`${path}/`) || `${path}/`.startsWith(prefix));
-}
-
-/** Literal directories that an exclude ending in `/**` or `/**\/*` removes entirely. */
-function excludedDirectories(project: ContractProject): string[] {
-  return project.exclude
-    .map((pattern) => /^(.*)\/\*\*(?:\/\*)?$/.exec(pattern)?.[1])
-    .filter((prefix): prefix is string => prefix !== undefined && !/[?*[{]/.test(prefix));
 }
 
 const TYPESCRIPT_VARIANT = /\.(?:tsx|mts|cts)$/;
@@ -49,35 +33,35 @@ function projectSelection(project: ContractProject, renamed: RegExp): (path: str
 /** Reads the filesystem, not Git or compiler inputs: new and ignored files count. */
 export async function selectedSources(root: string, project: ContractProject): Promise<string[]> {
   const selected = projectSelection(project, TYPESCRIPT_VARIANT);
-  const includes = includePrefixes(project);
-  const excludes = excludedDirectories(project);
+  // The literal leading text of each include, before its first glob character.
+  const includes = project.include.map((pattern) => pattern.split(/[?*[{]/, 1)[0] ?? "");
+  // Literal directories that an exclude ending in `/**` or `/**/*` removes entirely.
+  const excludes = project.exclude
+    .map((pattern) => /^(.*)\/\*\*(?:\/\*)?$/.exec(pattern)?.[1])
+    .filter((prefix): prefix is string => prefix !== undefined && !/[?*[{]/.test(prefix));
   const excludedSubtree = (path: string): boolean =>
     excludes.some((prefix) => path === prefix || path.startsWith(`${prefix}/`));
   const files: string[] = [];
   const walk = async (directory: string, parent: string): Promise<void> => {
-    let entries;
-    try {
-      entries = await readdir(directory, { withFileTypes: true });
-    } catch {
+    const entries = await readdir(directory, { withFileTypes: true }).catch(() =>
       fail(
         "unsafe_path",
         directory,
         "Cannot inspect a directory in the governed filesystem.",
         project.tsconfig
-      );
-    }
+      )
+    );
     for (const entry of entries.sort((left, right) => compareText(left.name, right.name))) {
       if (entry.name === ".git" || entry.name === "node_modules") continue;
       const absolute = join(directory, entry.name);
       const path = parent ? `${parent}/${entry.name}` : entry.name;
       if (excludedSubtree(path)) continue;
       if (entry.isSymbolicLink()) {
-        let directoryLink = false;
-        try {
-          directoryLink = (await stat(absolute)).isDirectory();
-        } catch {
-          // A selected dangling link is still a missing governed input.
-        }
+        // A selected dangling link is still a missing governed input.
+        const directoryLink = await stat(absolute).then(
+          (info) => info.isDirectory(),
+          () => false
+        );
         if (selected(path) || (directoryLink && maySelectDescendant(path, includes))) {
           fail(
             "unsafe_path",
@@ -123,7 +107,10 @@ export function rejectJavaScriptRoots(
   const selected = projectSelection(project, JAVASCRIPT);
   const file = [...roots]
     .filter(
-      (path) => JAVASCRIPT.test(path) && inside(root, path) && selected(slash(relative(root, path)))
+      (path) =>
+        JAVASCRIPT.test(path) &&
+        inside(root, path) &&
+        selected(relative(root, path).replaceAll("\\", "/"))
     )
     .sort(compareText)[0];
   if (file) {
@@ -136,77 +123,35 @@ export function rejectJavaScriptRoots(
   }
 }
 
-export function contractFor(source: string): string {
-  return `${source.slice(0, -3)}.shape`;
-}
-
+/** Requires a regular sibling contract that the mapper will accept, before any compiler runs. */
 export async function validatePair(root: string, source: string): Promise<string> {
-  const contract = contractFor(source);
-  try {
-    const info = await lstat(contract);
-    if (info.isSymbolicLink() || !info.isFile()) {
-      fail(
-        "unsafe_path",
-        contract,
-        "A sibling contract must be a regular file, not a symbolic link.",
-        source
-      );
-    }
-  } catch (error) {
-    if (error instanceof GateFailure) throw error;
+  const contract = `${source.slice(0, -3)}.shape`;
+  const info = await lstat(contract).catch(() =>
     fail(
       "missing_contract",
       contract,
       "Every governed .ts file requires a sibling .shape contract.",
       source
-    );
-  }
-  const canonical = await realpath(contract);
-  if (!inside(root, canonical))
-    fail("unsafe_path", contract, "The contract resolves outside repoRoot.", source);
-  const parsed = parseShapeModule(await readFile(contract, "utf8"), contract);
-  if (!parsed.ok) {
+    )
+  );
+  if (info.isSymbolicLink() || !info.isFile()) {
     fail(
-      "invalid_contract",
+      "unsafe_path",
       contract,
-      parsed.diagnostics.map((diagnostic) => diagnostic.message).join("; "),
+      "A sibling contract must be a regular file, not a symbolic link.",
       source
     );
   }
-  const contractPath = slash(relative(root, contract));
-  if (
-    isGeneratedAstModuleName(parsed.module.name ?? "") ||
-    contractPath.startsWith("shape/generated/ast/")
-  ) {
-    fail(
-      "generated_contract",
-      contract,
-      "Generated AST drafts cannot serve as authored TypeScript contracts.",
-      source
-    );
-  }
-  const expected = slash(relative(root, source));
-  for (const component of parsed.module.declarations) {
-    if (component.$type !== "ComponentDecl") continue;
-    for (const fn of component.members) {
-      if (fn.$type !== "FunctionSummary") continue;
-      // Read the value Langium decoded, as shp check and shp fmt do.
-      const citation = fn.source?.ref;
-      const path = citation?.path;
-      if (
-        !citation ||
-        !["ts", "typescript"].includes(citation.language) ||
-        path?.split("#", 1)[0] !== expected ||
-        !path.includes("#")
-      ) {
-        fail(
-          "mismatched_source",
-          contract,
-          `${component.name}.${fn.name} must cite ts(${JSON.stringify(`${expected}#exportName`)}) in its sibling source.`,
-          source
-        );
-      }
-    }
+  // The mapper's own validation, so the gate stops on any contract the mapper would reject.
+  const content = await readFile(contract, "utf8");
+  const checked = checkContract({ fileName: contract, content, repoRoot: root });
+  if (!checked.ok) {
+    const located = checked.diagnostics.map(({ code, messageText, start }) => {
+      const preceding = content.slice(0, start);
+      const column = start - preceding.lastIndexOf("\n");
+      return `${preceding.split("\n").length}:${column} shape-ts${code}: ${messageText}`;
+    });
+    fail("invalid_contract", contract, located.join("; "), source);
   }
   return contract;
 }

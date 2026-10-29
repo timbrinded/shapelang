@@ -312,7 +312,9 @@ status. The released `shp` binary does not provide this preview command.
 The gate's `repoRoot` is relative to its configuration file. Project paths and
 source selectors are relative to that repository root. The gate checks the
 selected source inventory independently of contract discovery, rejects missing
-contracts and unsupported compiler setup, then runs native contract checking.
+contracts, contracts the mapper would reject (reported as `invalid_contract`
+with each problem's line, column and `shape-ts` code), and unsupported compiler
+setup, then runs native contract checking.
 The selected compiler package and version are explicit; this feature does not
 upgrade the repository's ordinary compiler or silently fall back to another
 version. The gate checks that the resolved compiler package is named

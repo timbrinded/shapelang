@@ -168,6 +168,16 @@ memory ParseDocumentContract : RefactorConstraint<fn ShapeParser.parseShapeModul
   }
 }
 
+reevaluation EndOfInputParsePositionRechecked {
+  satisfies memory ParseDocumentContract
+  outcome Confirmed
+  summary "Parse diagnostics keep their messages and order. An error at the end of input, whose token carries no position, is now reported at the end of the source instead of NaN, so checker, editor and mapper consumers receive a finite location. Document state, source URI, references and syntax are unchanged."
+  reviewer ShapeMaintainers
+  decided_on "2026-10-29"
+  evidence test("packages/shp-checker/src/parser.test.ts")
+  evidence ts("packages/shp-checker/src/parser.ts")
+}
+
 reevaluation ForbiddenPathGrammarRechecked {
   satisfies memory GrammarMemoryGuardForms
   outcome Confirmed

@@ -23,7 +23,7 @@ resource TypesModuleErrorTextAstAnchor : GeneratedAstAnchor {
 
 resource TypesModuleFailAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/gate/types.ts#fail")
-  fingerprint ast.semantic_subtree_v1("sha256:9276d6764dcb789f1b3486ccfa66051c8a065c2058adac0cc6a670ac83cab77f")
+  fingerprint ast.semantic_subtree_v1("sha256:a06d0c4fbc8f6fb7af97dc64f688c22638186ec14ec21890cea991bc8286c02c")
 }
 
 component GateFailure : GeneratedCandidate {
@@ -69,7 +69,7 @@ relation TypesModuleFailGeneratedFromTypesModuleFailAstAnchor {
   kind generated_from
   connects TypesModule -> TypesModuleFailAstAnchor
   roles { TypesModule as generated, TypesModuleFailAstAnchor as syntax }
-  expects TypesModuleFailAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9276d6764dcb789f1b3486ccfa66051c8a065c2058adac0cc6a670ac83cab77f")
+  expects TypesModuleFailAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a06d0c4fbc8f6fb7af97dc64f688c22638186ec14ec21890cea991bc8286c02c")
   summary "fn TypesModule.fail generated from typescript function_declaration at packages/shp-ts-contract/src/gate/types.ts#fail."
 }
 

@@ -15,7 +15,8 @@ import {
   GateFailure,
   type ContractProject,
   type GateDiagnostic,
-  type GateResult
+  type GateResult,
+  type NativeOutput
 } from "./types.ts";
 
 export type { GateDiagnostic, GateResult, NativeOutput } from "./types.ts";
@@ -26,47 +27,48 @@ export type RunTsContractGateOptions = {
   runExternalCode: boolean;
 };
 
+type GateRun = { root: string; configPath: string; nativeOutputs: NativeOutput[] };
+type PreparedProject = { project: ContractProject; compiler: Compiler };
+
 /** Separate opt-in gate; ordinary Shape checks never execute source or compiler code. */
 export async function runTsContractGate(options: RunTsContractGateOptions): Promise<GateResult> {
   const configPath = resolve(options.configPath);
-  const result: GateResult = {
-    ok: false,
-    exitCode: 1,
-    diagnostics: [],
-    nativeOutputs: [],
-    projects: []
-  };
   if (!options.runExternalCode) {
-    result.exitCode = 2;
-    result.diagnostics.push({
-      kind: "consent_required",
-      path: configPath,
-      message:
-        "Pass --run-external-code to authorize the project-local compiler and native content mapper.",
-      causedBy: []
-    });
-    return result;
+    return {
+      ok: false,
+      exitCode: 2,
+      diagnostics: [
+        {
+          kind: "consent_required",
+          path: configPath,
+          message:
+            "Pass --run-external-code to authorize the project-local compiler and native content mapper.",
+          causedBy: []
+        }
+      ],
+      nativeOutputs: [],
+      projects: []
+    };
   }
+  const diagnostics: GateDiagnostic[] = [];
+  const nativeOutputs: NativeOutput[] = [];
+  const projects: GateResult["projects"] = [];
   const record = (error: unknown, path: string): void => {
-    result.diagnostics.push(
+    diagnostics.push(
       error instanceof GateFailure
         ? error.diagnostic
-        : {
-            kind: "gate_failed",
-            path,
-            message: errorText(error),
-            causedBy: [configPath]
-          }
+        : { kind: "gate_failed", path, message: errorText(error), causedBy: [configPath] }
     );
   };
   try {
     const config = await loadConfig(configPath);
+    const run: GateRun = { root: config.repoRoot, configPath, nativeOutputs };
     const owners = new Map<string, string>();
-    const ready: { project: ContractProject; compiler: Compiler }[] = [];
+    const ready: PreparedProject[] = [];
     for (const project of config.projects) {
       try {
         const sources = await selectedSources(config.repoRoot, project);
-        result.projects.push({ name: project.name, sources });
+        projects.push({ name: project.name, sources });
         for (const source of sources) {
           const owner = owners.get(source);
           if (owner)
@@ -78,65 +80,18 @@ export async function runTsContractGate(options: RunTsContractGateOptions): Prom
             );
           owners.set(source, project.name);
         }
-        const contracts: string[] = [];
-        for (const source of sources) contracts.push(await validatePair(config.repoRoot, source));
-        await validateMapper(project, config.repoRoot);
-        const compiler = await resolveCompiler(project.tsconfig);
-        const shown = await runCompiler(compiler, project, true);
-        if (shown.exitCode !== 0) {
-          result.nativeOutputs.push({ project: project.name, stage: "config", ...shown });
-          fail(
-            "compiler_config_failed",
-            project.tsconfig,
-            "The pinned compiler could not resolve this project; native diagnostics follow.",
-            configPath
-          );
-        }
-        const roots = compilerRoots(shown.stdout, project);
-        rejectJavaScriptRoots(config.repoRoot, project, roots);
-        for (const source of sources) {
-          if (!roots.has(source))
-            fail(
-              "source_not_in_project",
-              source,
-              "Governed source must be a resolved compiler root file, not merely a transitive import.",
-              project.tsconfig
-            );
-        }
-        for (const contract of contracts) {
-          if (!roots.has(contract))
-            fail(
-              "contract_not_in_project",
-              contract,
-              "Sibling contract must be a resolved compiler root file; include it explicitly or with a matching include pattern.",
-              project.tsconfig
-            );
-        }
-        const selectedContracts = new Set(contracts);
-        const unexpectedContract = [...roots]
-          .filter((path) => path.endsWith(".shape") && !selectedContracts.has(path))
-          .sort(compareText)[0];
-        if (unexpectedContract) {
-          fail(
-            "unexpected_contract",
-            unexpectedContract,
-            `This .shape compiler root has no governed sibling source in project ${project.name}; remove it from the project or explicitly include its source in the gate's scope.`,
-            project.tsconfig,
-            configPath
-          );
-        }
-        ready.push({ project, compiler });
+        ready.push(await prepareProject(run, project, sources));
       } catch (error) {
         record(error, project.tsconfig);
       }
     }
     // Complete every inventory/configuration check before executing any mapper.
-    if (result.diagnostics.length === 0) {
+    if (diagnostics.length === 0) {
       for (const { project, compiler } of ready) {
-        const checked = await runCompiler(compiler, project, false);
-        result.nativeOutputs.push({ project: project.name, stage: "check", ...checked });
+        const checked = await runCompiler(compiler, project.tsconfig, false);
+        nativeOutputs.push({ project: project.name, stage: "check", ...checked });
         if (checked.exitCode !== 0) {
-          result.diagnostics.push({
+          diagnostics.push({
             kind: "compiler_failed",
             path: project.tsconfig,
             message: `Native TypeScript contract checking failed with exit ${checked.exitCode}; native diagnostics follow.`,
@@ -148,15 +103,70 @@ export async function runTsContractGate(options: RunTsContractGateOptions): Prom
   } catch (error) {
     record(error, configPath);
   }
-  result.diagnostics.sort(
+  diagnostics.sort(
     (left, right) =>
       compareText(left.path, right.path) ||
       compareText(left.kind, right.kind) ||
       compareText(left.message, right.message)
   );
-  result.ok = result.diagnostics.length === 0;
-  result.exitCode = result.ok ? 0 : 1;
-  return result;
+  const ok = diagnostics.length === 0;
+  return { ok, exitCode: ok ? 0 : 1, diagnostics, nativeOutputs, projects };
+}
+
+/** Every inventory and configuration check for one project; no mapper runs here. */
+async function prepareProject(
+  run: GateRun,
+  project: ContractProject,
+  sources: string[]
+): Promise<PreparedProject> {
+  const contracts: string[] = [];
+  for (const source of sources) contracts.push(await validatePair(run.root, source));
+  await validateMapper(project.tsconfig, run.root);
+  const compiler = await resolveCompiler(project.tsconfig);
+  const shown = await runCompiler(compiler, project.tsconfig, true);
+  if (shown.exitCode !== 0) {
+    run.nativeOutputs.push({ project: project.name, stage: "config", ...shown });
+    fail(
+      "compiler_config_failed",
+      project.tsconfig,
+      "The pinned compiler could not resolve this project; native diagnostics follow.",
+      run.configPath
+    );
+  }
+  const roots = compilerRoots(shown.stdout, project.tsconfig);
+  rejectJavaScriptRoots(run.root, project, roots);
+  const missingSource = sources.find((source) => !roots.has(source));
+  if (missingSource) {
+    fail(
+      "source_not_in_project",
+      missingSource,
+      "Governed source must be a resolved compiler root file, not merely a transitive import.",
+      project.tsconfig
+    );
+  }
+  const missingContract = contracts.find((contract) => !roots.has(contract));
+  if (missingContract) {
+    fail(
+      "contract_not_in_project",
+      missingContract,
+      "Sibling contract must be a resolved compiler root file; include it explicitly or with a matching include pattern.",
+      project.tsconfig
+    );
+  }
+  const selectedContracts = new Set(contracts);
+  const unexpectedContract = [...roots]
+    .filter((path) => path.endsWith(".shape") && !selectedContracts.has(path))
+    .sort(compareText)[0];
+  if (unexpectedContract) {
+    fail(
+      "unexpected_contract",
+      unexpectedContract,
+      `This .shape compiler root has no governed sibling source in project ${project.name}; remove it from the project or explicitly include its source in the gate's scope.`,
+      project.tsconfig,
+      run.configPath
+    );
+  }
+  return { project, compiler };
 }
 
 export function formatGateDiagnostics(diagnostics: readonly GateDiagnostic[]): string {
