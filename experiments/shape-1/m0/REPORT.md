@@ -61,7 +61,7 @@ These are the starting points for M1 and M2.
 | Path | Contents |
 |---|---|
 | `REGISTERED.md` | Exit criteria for M0, M1, M2 and M5, dated 2026-10-29 |
-| `hexcheck.py` | The hash check (`python3 -I experiments/shape-1/m0/hexcheck.py`) |
+| `hexcheck.py`, `hexcheck-errata.json` | The hash check (`python3 -I experiments/shape-1/m0/hexcheck.py`) and its staged measurements and errata |
 | `vectors/<id>/` | Inputs (`*.input.json`) and `expected.json` for each vector |
 | `vectors/check.ts` | The runner: `bun experiments/shape-1/m0/vectors/check.ts [--impl proto\|kernel]` |
 | `vectors/V6_DIFFERS.json` | Per vector, where version 6 reads the inputs differently |
