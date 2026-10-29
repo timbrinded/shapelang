@@ -1,0 +1,126 @@
+{
+ "vector": "cell-pairs-universe",
+ "title": "L1 compares cells, including the universe cell (ungoverned, ungoverned) when no component has globs, and a glob narrowing loosens exactly the new (K.*, ungoverned) cell",
+ "decides": [
+  "A.8.1.4",
+  "A.8.2.3",
+  "A.8.3.2",
+  "A.7.2.2",
+  "A.8.1.3"
+ ],
+ "cases": [
+  {
+   "case": "no-globs-star-forbid-removed",
+   "input": "no-globs-star-forbid-removed.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: DefaultPolicy normal blocks latent loosening"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:3c127b86760e528b4003d73f253f6ee496ae42410c3387e81b6b318867f554eb"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "loosening",
+      "subject": "sha256:506f79cc76d45bf5ef3238875c3eb7c503d4149fa9036305760dbdc2275dea29",
+      "questions": [
+       "L1"
+      ],
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "normal",
+      "exploited": false,
+      "binding": "bd:4585bb9b695330398d83dba65523a7ae33196d9f959c793676d07961e4a9f489"
+     },
+     "why": "A.8.1.4: with no component globs the only cell is the universe cell (ungoverned, ungoverned), which L1 compares like every identity; removing the * forbid demotes the six atoms of ↓Update from normal to none everywhere (A.8.2.3 L1, one part, delta per atom); A.7.2.2: affected = demoted positions and cells, no code changed"
+    },
+    {
+     "in": "loosening",
+     "select": {
+      "question": "L1"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "sha256:506f79cc76d45bf5ef3238875c3eb7c503d4149fa9036305760dbdc2275dea29",
+      "answer": "loosened",
+      "affected": [
+       "cell:[\"ungoverned\",\"ungoverned\"]",
+       "raw:README.md",
+       "ts:src/a.ts",
+       "ts:src/a.ts#f"
+      ],
+      "exploited": false,
+      "obligation": "ob:3c127b86760e528b4003d73f253f6ee496ae42410c3387e81b6b318867f554eb"
+     },
+     "why": "A.8.3.2: L1 affected = demoted positions, the universe cell included (DRT HB1)"
+    },
+    {
+     "in": "order",
+     "select": {},
+     "check": "equals",
+     "value": "looser",
+     "why": "A.8.1.3 [D17]: forward loosened, reverse pass implied"
+    }
+   ]
+  },
+  {
+   "case": "glob-narrowed",
+   "input": "glob-narrowed.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:ca8dd9c94bcbc88881bdfd3abb62d9e08ae3bd3b51df2db7e6c7d92ceb86a563"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "sha256:79e90ba3ad9eab15c75f565119ce92915c4df1eca3d251aa31942717f1af53f3",
+      "questions": [
+       "L1"
+      ],
+      "severity": "blocking",
+      "tier": "normal",
+      "binding": "bd:82ff9c77ddb1bc7dc8791e2bba6979a7f9379a58217a5bca5500df9e81617b84"
+     },
+     "why": "A.8.1.4: narrowing K's glob from src/**/*.ts to src/k/**/*.ts creates the cell (K.*, ungoverned) of future files such as src/a.ts, where the forbid's protection falls from normal to none; the universe cell and (K.*, K.*) keep their levels and the identities stay in K"
+    },
+    {
+     "in": "loosening",
+     "select": {
+      "question": "L1"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "sha256:79e90ba3ad9eab15c75f565119ce92915c4df1eca3d251aa31942717f1af53f3",
+      "answer": "loosened",
+      "affected": [
+       "cell:[\"m::K.*\",\"ungoverned\"]"
+      ],
+      "obligation": "ob:ca8dd9c94bcbc88881bdfd3abb62d9e08ae3bd3b51df2db7e6c7d92ceb86a563"
+     },
+     "why": "A.8.3.2: only the (K.*, ungoverned) cell is demoted"
+    },
+    {
+     "in": "order",
+     "select": {},
+     "check": "equals",
+     "value": "looser",
+     "why": "A.8.1.3"
+    }
+   ]
+  }
+ ]
+}

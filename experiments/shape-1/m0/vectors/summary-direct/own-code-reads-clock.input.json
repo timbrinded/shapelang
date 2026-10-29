@@ -1,0 +1,533 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "sd",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/sd.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Sd",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "StoreTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "Clock",
+       "bind": [
+        "ts.call(\"Date.now\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Store",
+       "owner": "StoreTeam",
+       "paths": [
+        "src/store/**"
+       ],
+       "units": [
+        {
+         "name": "format",
+         "bind": "ts(\"src/store/fmt.ts#format\")",
+         "effects": {
+          "mode": "complete",
+          "atoms": []
+         }
+        },
+        {
+         "name": "stamp",
+         "bind": "ts(\"src/store/fmt.ts#stamp\")"
+        }
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "clockScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(ts.call(\"Date.now\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "identity": "ed25519(\"ece129580f3b97b378a211db3d41ec47a03b69750f367233ac48d239738d5bb5\")",
+       "implementation": {
+        "digest": "sha256:8e6aa5f287d1dddf2637da583c14156e012fc223b38eea034d86365e557d3a7d"
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "callGraph",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "call(ts)"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "identity": "ed25519(\"725286ce39e11bfb8dcc3d43e45cf8262d548027d1c5bf94258d9743576ec9de\")",
+       "implementation": {
+        "digest": "sha256:86e3003f6e69ffc5a25d682f9b60409ad822a56ec91fe91eae97c6ef51b9c475"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "2778567d030d8b083ad9d41dbd800d23db5de04bb0c0033382c61afd7b33d551"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/sd.shape",
+       "mode": "100644",
+       "blob": "39dfe0e2b439206133c132862e840885bce0dd4c"
+      },
+      {
+       "path": "src/store/fmt.ts",
+       "mode": "100644",
+       "blob": "43469e104b95e78fa21e63528ba0c02d4cbfdbd1"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/store/fmt.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:b6b998db43ad67206e7a265c756b13880ba042c9295e2de2600c64db13fc2311",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/fmt.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:281c856779f5c6834367bceb56659e05a79f55be6eae64cffd4c1495e4cc3dec",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/fmt.ts#format",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:29d2f31c5676566eab51657876271681e2db3c1d96a5886e72d8684c98cd5fe2",
+       "kind": "function",
+       "parent": "ts:src/store/fmt.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/fmt.ts#format",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:728a74c2fad78ff7a7acbc8701b163883244bb3da99a4408b989b6d8617847a7",
+       "kind": "function",
+       "parent": "ts:src/store/fmt.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/fmt.ts#stamp",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:71d5f67a8b2a349f6c151f22bc92c4a134f4bf1cf08506ccb1e75f27f4eef5f4",
+       "kind": "function",
+       "parent": "ts:src/store/fmt.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/fmt.ts#stamp",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:1b2e5fc9658e814d9f6d2a93bf5a5fe19c7203eac6a692c09901573aa62c4574",
+       "kind": "function",
+       "parent": "ts:src/store/fmt.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "sd",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/sd.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Sd",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "StoreTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "Clock",
+       "bind": [
+        "ts.call(\"Date.now\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Store",
+       "owner": "StoreTeam",
+       "paths": [
+        "src/store/**"
+       ],
+       "units": [
+        {
+         "name": "format",
+         "bind": "ts(\"src/store/fmt.ts#format\")",
+         "effects": {
+          "mode": "complete",
+          "atoms": []
+         }
+        },
+        {
+         "name": "stamp",
+         "bind": "ts(\"src/store/fmt.ts#stamp\")"
+        }
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "clockScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(ts.call(\"Date.now\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "identity": "ed25519(\"ece129580f3b97b378a211db3d41ec47a03b69750f367233ac48d239738d5bb5\")",
+       "implementation": {
+        "digest": "sha256:8e6aa5f287d1dddf2637da583c14156e012fc223b38eea034d86365e557d3a7d"
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "callGraph",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "call(ts)"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "identity": "ed25519(\"725286ce39e11bfb8dcc3d43e45cf8262d548027d1c5bf94258d9743576ec9de\")",
+       "implementation": {
+        "digest": "sha256:86e3003f6e69ffc5a25d682f9b60409ad822a56ec91fe91eae97c6ef51b9c475"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "2e4b0d1cbe4862477f858b48f4ca0f9a46937251563261c0d325457daa82c2df"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/sd.shape",
+       "mode": "100644",
+       "blob": "39dfe0e2b439206133c132862e840885bce0dd4c"
+      },
+      {
+       "path": "src/store/fmt.ts",
+       "mode": "100644",
+       "blob": "43469e104b95e78fa21e63528ba0c02d4cbfdbd1"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/store/fmt.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:6c0da76c2160b6615efec254484d7d3f2bdcd8a1f94c9aba40008a0d6b76b03f",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/fmt.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:281c856779f5c6834367bceb56659e05a79f55be6eae64cffd4c1495e4cc3dec",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/fmt.ts#format",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:01a82564c5131a3a91425e4efe3978d4df639daa596fc6e7c823b2958c8e4b21",
+       "kind": "function",
+       "parent": "ts:src/store/fmt.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/fmt.ts#format",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:13397e4dde70fbd044280cda3253b5d45ae70ac0d15286a7c41801fe4bf11659",
+       "kind": "function",
+       "parent": "ts:src/store/fmt.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/fmt.ts#stamp",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:71d5f67a8b2a349f6c151f22bc92c4a134f4bf1cf08506ccb1e75f27f4eef5f4",
+       "kind": "function",
+       "parent": "ts:src/store/fmt.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/fmt.ts#stamp",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:1b2e5fc9658e814d9f6d2a93bf5a5fe19c7203eac6a692c09901573aa62c4574",
+       "kind": "function",
+       "parent": "ts:src/store/fmt.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"acme-code-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfT0JTRVJWRVMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJvYnNlcnZhdGlvbiJ9fV0sInByb2R1Y2VyIjp7ImFubm90YXRpb25zIjp7InNoYXBlLnByb3ZpZGVyIjoic2Q6OmNsb2NrU2NhbiIsInZlcnNpb24iOiIxLjAuMCJ9LCJ1cmkiOiJzZDo6Y2xvY2tTY2FuIn0sInNoYXBlIjp7ImFzc3VtcHRpb25zIjpbXSwiZmFjdHMiOlt7ImF0IjoidHM6c3JjL3N0b3JlL2ZtdC50cyNzdGFtcCIsIm4iOjEsInJlc291cmNlIjoidHMuY2FsbChcIkRhdGUubm93XCIpIiwidHlwZSI6ImVmZmVjdCIsInZlcmIiOiJSZWFkIn0seyJhdCI6InRzOnNyYy9zdG9yZS9mbXQudHMjZm9ybWF0IiwibiI6MSwicmVzb3VyY2UiOiJ0cy5jYWxsKFwiRGF0ZS5ub3dcIikiLCJ0eXBlIjoiZWZmZWN0IiwidmVyYiI6IlJlYWQifV0sImhhcm5lc3MiOltdLCJraW5kIjoib2JzZXJ2YXRpb24iLCJwcm92aWRlciI6eyJpZCI6InNkOjpjbG9ja1NjYW4iLCJ2ZXJzaW9uIjoiMS4wLjAifSwicmVzdWx0Ijoib2JzZXJ2ZXMiLCJyZXZpc2lvbiI6IjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIiLCJzY29wZSI6eyJlbnRyaWVzIjpbeyJjb21wbGV0ZSI6dHJ1ZSwiZGVwcyI6W10sImRpZ2VzdCI6InNoYTI1NjpiNmI5OThkYjQzYWQ2NzIwNmU3YTI2NWM3NTZiMTM4ODBiYTA0MmM5Mjk1ZTJkZTI2MDBjNjRkYjEzZmMyMzExIiwiaWQiOiJ0czpzcmMvc3RvcmUvZm10LnRzIiwicHJvamVjdGlvbiI6ImZpbGUiLCJzY2hlbWUiOiJ0cy5maWxlLnYxIn0seyJjb21wbGV0ZSI6dHJ1ZSwiZGVwcyI6W10sImRpZ2VzdCI6InNoYTI1Njo3MjhhNzRjMmZhZDc4ZmY3YTdhY2JjODcwMWIxNjM4ODMyNDRiYjNkYTk5YTQ0MDhiOTg5YjZkODYxNzg0N2E3IiwiaWQiOiJ0czpzcmMvc3RvcmUvZm10LnRzI2Zvcm1hdCIsInByb2plY3Rpb24iOiJ1bml0Iiwic2NoZW1lIjoidHMudW5pdC52MiJ9LHsiY29tcGxldGUiOnRydWUsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6MWIyZTVmYzk2NThlODE0ZDlmNmQyYTkzYmY1YTVmZTE5YzcyMDNlYWM2YTY5MmMwOTkwMTU3M2FhNjJjNDU3NCIsImlkIjoidHM6c3JjL3N0b3JlL2ZtdC50cyNzdGFtcCIsInByb2plY3Rpb24iOiJ1bml0Iiwic2NoZW1lIjoidHMudW5pdC52MiJ9XSwicm9vdCI6InNoYTI1Njo5OTI2YmM4OWI5NDgwYzYxZTgxNWM4ZmQwYTY5MjYwMzk5N2NlODMwNWI0ZjllYjc0OTkzODI0NzI3ZjFiYTA4In0sInRpbWUiOiIyMDI2LTEwLTI1VDA5OjAwOjAwWiIsInYiOiJzaGFwZS5ldmlkZW5jZS52MSJ9fSwicHJlZGljYXRlVHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9hdHRlc3RhdGlvbi9zY2FpL2F0dHJpYnV0ZS1yZXBvcnQvdjAuMyIsInN1YmplY3QiOlt7ImRpZ2VzdCI6eyJzaGEyNTYiOiI5OTI2YmM4OWI5NDgwYzYxZTgxNWM4ZmQwYTY5MjYwMzk5N2NlODMwNWI0ZjllYjc0OTkzODI0NzI3ZjFiYTA4In0sIm5hbWUiOiJzaGFwZTpzY29wZS9zZDo6Y2xvY2tTY2FuLzIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIifV19",
+   "signatures": [
+    {
+     "keyid": "ece129580f3b97b378a211db3d41ec47a03b69750f367233ac48d239738d5bb5",
+     "sig": "F0UiwJ8gXSS2lQTeCgfkEMCp+Rpz0JbwcxjLd/5Gjl9CaZSE8J6vdy8CwGJsQwkIIm5lQuapF/x2Xyk8lgv3Cw=="
+    }
+   ]
+  },
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfT0JTRVJWRVMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJvYnNlcnZhdGlvbiJ9fV0sInByb2R1Y2VyIjp7ImFubm90YXRpb25zIjp7InNoYXBlLnByb3ZpZGVyIjoic2Q6OmNhbGxHcmFwaCIsInZlcnNpb24iOiIxLjAuMCJ9LCJ1cmkiOiJzZDo6Y2FsbEdyYXBoIn0sInNoYXBlIjp7ImFzc3VtcHRpb25zIjpbXSwiZmFjdHMiOltdLCJoYXJuZXNzIjpbXSwia2luZCI6Im9ic2VydmF0aW9uIiwicHJvdmlkZXIiOnsiaWQiOiJzZDo6Y2FsbEdyYXBoIiwidmVyc2lvbiI6IjEuMC4wIn0sInJlc3VsdCI6Im9ic2VydmVzIiwicmV2aXNpb24iOiIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyIiwic2NvcGUiOnsiZW50cmllcyI6W3siY29tcGxldGUiOnRydWUsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6YjZiOTk4ZGI0M2FkNjcyMDZlN2EyNjVjNzU2YjEzODgwYmEwNDJjOTI5NWUyZGUyNjAwYzY0ZGIxM2ZjMjMxMSIsImlkIjoidHM6c3JjL3N0b3JlL2ZtdC50cyIsInByb2plY3Rpb24iOiJmaWxlIiwic2NoZW1lIjoidHMuZmlsZS52MSJ9LHsiY29tcGxldGUiOnRydWUsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6NzI4YTc0YzJmYWQ3OGZmN2E3YWNiYzg3MDFiMTYzODgzMjQ0YmIzZGE5OWE0NDA4Yjk4OWI2ZDg2MTc4NDdhNyIsImlkIjoidHM6c3JjL3N0b3JlL2ZtdC50cyNmb3JtYXQiLCJwcm9qZWN0aW9uIjoidW5pdCIsInNjaGVtZSI6InRzLnVuaXQudjIifSx7ImNvbXBsZXRlIjp0cnVlLCJkZXBzIjpbXSwiZGlnZXN0Ijoic2hhMjU2OjFiMmU1ZmM5NjU4ZTgxNGQ5ZjZkMmE5M2JmNWE1ZmUxOWM3MjAzZWFjNmE2OTJjMDk5MDE1NzNhYTYyYzQ1NzQiLCJpZCI6InRzOnNyYy9zdG9yZS9mbXQudHMjc3RhbXAiLCJwcm9qZWN0aW9uIjoidW5pdCIsInNjaGVtZSI6InRzLnVuaXQudjIifV0sInJvb3QiOiJzaGEyNTY6OTkyNmJjODliOTQ4MGM2MWU4MTVjOGZkMGE2OTI2MDM5OTdjZTgzMDViNGY5ZWI3NDk5MzgyNDcyN2YxYmEwOCJ9LCJ0aW1lIjoiMjAyNi0xMC0yNVQwOTowMDowMFoiLCJ2Ijoic2hhcGUuZXZpZGVuY2UudjEifX0sInByZWRpY2F0ZVR5cGUiOiJodHRwczovL2luLXRvdG8uaW8vYXR0ZXN0YXRpb24vc2NhaS9hdHRyaWJ1dGUtcmVwb3J0L3YwLjMiLCJzdWJqZWN0IjpbeyJkaWdlc3QiOnsic2hhMjU2IjoiOTkyNmJjODliOTQ4MGM2MWU4MTVjOGZkMGE2OTI2MDM5OTdjZTgzMDViNGY5ZWI3NDk5MzgyNDcyN2YxYmEwOCJ9LCJuYW1lIjoic2hhcGU6c2NvcGUvc2Q6OmNhbGxHcmFwaC8yMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyIn1dfQ==",
+   "signatures": [
+    {
+     "keyid": "725286ce39e11bfb8dcc3d43e45cf8262d548027d1c5bf94258d9743576ec9de",
+     "sig": "vRJUKnzbY+930AjBcKtsnNXlrk6ZztLkaYauEZl+UcUYDGP0s523++tBidwXBgIW8VS9H2P8AQDNM9xONn4qAg=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

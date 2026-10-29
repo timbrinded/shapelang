@@ -1,0 +1,482 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "b2",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/b2.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "B2",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "template",
+       "name": "LatencyAtMost",
+       "params": [
+        [
+         "F",
+         "unit"
+        ],
+        [
+         "Budget",
+         "value"
+        ]
+       ],
+       "body": [
+        {
+         "law": {
+          "evidence": {
+           "level": "tested"
+          }
+         }
+        }
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Store",
+       "owner": "Maint",
+       "paths": [
+        "src/store/**"
+       ],
+       "units": [
+        {
+         "name": "appendEvent",
+         "bind": "ts(\"src/store/append.ts#appendEvent\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "AppendFast",
+       "template": {
+        "name": "LatencyAtMost",
+        "args": [
+         "Store.appendEvent",
+         "250ms"
+        ]
+       },
+       "evidence": {
+        "level": "tested",
+        "by": [
+         "fastCheck"
+        ]
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "fastCheck",
+       "produces": [
+        "test"
+       ],
+       "decides": [
+        "template LatencyAtMost"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "implementation": {
+        "digest": "sha256:c71664421ebd835aac82c92367f0d6182e6f8ca446b93c51bd8809f83787a51d"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "6644b781b23fbc1bdfc153ad768c7cd34c81769b0ad8417b3e5f3060a4b66234"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "819c9cd73116f09abd5074464b35bf3e7e964301"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/b2.shape",
+       "mode": "100644",
+       "blob": "229774f8ff312f1b236829a24849a1c68cb4e8a9"
+      },
+      {
+       "path": "src/store/append.ts",
+       "mode": "100644",
+       "blob": "6c5aa15c10c53f7a28886a5f8a79a565b7b27251"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:ab6c9729ad6b5008f1c339623a1b2e03c84c1c7c7ff64a20d5fb17685806adb1",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:566411a58836bb90f5bb38b39b2125786d496c8ed3f683a9f66ddcc56de18b1a",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "ts:src/store/append.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:7b1ae28ab93ccce9d1ccb1c3adf3ab2f605333c3848f5bb17d106a607a630821",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/append.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:cf834b2f2a11fec75d91e04041374680f11ab844bfe41216429109d76ef8bdb8",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/append.ts#appendEvent",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:0de724388bded22fd4bb4c7152e243f0599e1c8b60a24c4c94ef3f0cdb72a792",
+       "kind": "function",
+       "parent": "ts:src/store/append.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/append.ts#appendEvent",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:493828c736b70753b2ebbb5fec8dd1d7b176fcc6fe1efda0a6356c06d18cdd9e",
+       "kind": "function",
+       "parent": "ts:src/store/append.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "b2",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/b2.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "B2",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "template",
+       "name": "LatencyAtMost",
+       "params": [
+        [
+         "F",
+         "unit"
+        ],
+        [
+         "Budget",
+         "value"
+        ]
+       ],
+       "body": [
+        {
+         "law": {
+          "evidence": {
+           "level": "tested"
+          }
+         }
+        }
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Store",
+       "owner": "Maint",
+       "paths": [
+        "src/store/**"
+       ],
+       "units": [
+        {
+         "name": "appendEvent",
+         "bind": "ts(\"src/store/append.ts#appendEvent\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "AppendFast",
+       "template": {
+        "name": "LatencyAtMost",
+        "args": [
+         "Store.appendEvent",
+         "250ms"
+        ]
+       },
+       "evidence": {
+        "level": "tested",
+        "by": [
+         "fastCheck"
+        ]
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "fastCheck",
+       "produces": [
+        "test"
+       ],
+       "decides": [
+        "template LatencyAtMost"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "implementation": {
+        "digest": "sha256:c71664421ebd835aac82c92367f0d6182e6f8ca446b93c51bd8809f83787a51d"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "b793275356fbebee83a543d55d449eb76933156ec063c6fd5ea85bc8553f646e"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "45cf922c503a48d6b39913974f92ba2c96278700"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/b2.shape",
+       "mode": "100644",
+       "blob": "229774f8ff312f1b236829a24849a1c68cb4e8a9"
+      },
+      {
+       "path": "src/store/append.ts",
+       "mode": "100644",
+       "blob": "6c5aa15c10c53f7a28886a5f8a79a565b7b27251"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:367576cfe8ca2ffe767b736daa0766208c7073313d7fac70aadad4e6073ad9e9",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:85772526989076e8c36b83a7aeaff8dd888cfd69be6c8f0975d7b2495d31ac3c",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "ts:src/store/append.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:7b1ae28ab93ccce9d1ccb1c3adf3ab2f605333c3848f5bb17d106a607a630821",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/append.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:cf834b2f2a11fec75d91e04041374680f11ab844bfe41216429109d76ef8bdb8",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/append.ts#appendEvent",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:0de724388bded22fd4bb4c7152e243f0599e1c8b60a24c4c94ef3f0cdb72a792",
+       "kind": "function",
+       "parent": "ts:src/store/append.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/store/append.ts#appendEvent",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:493828c736b70753b2ebbb5fec8dd1d7b176fcc6fe1efda0a6356c06d18cdd9e",
+       "kind": "function",
+       "parent": "ts:src/store/append.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"tim\")",
+   "verified": true,
+   "bot": false
+  }
+ ],
+ "reviews": [],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

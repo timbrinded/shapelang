@@ -1,0 +1,141 @@
+{
+ "vector": "coverage-binding-pairs",
+ "title": "A coverage binding hashes its unmet (claim fp, channel) pairs, so an answer for one gap does not discharge a coverage obligation whose unmet pairs grew",
+ "decides": [
+  "A.7.2.2",
+  "A.12.8.6",
+  "A.7.6.4",
+  "A.7.6.5",
+  "D22"
+ ],
+ "cases": [
+  {
+   "case": "one-unmet-pair",
+   "input": "one-unmet-pair.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: critical blocks coverage"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage",
+      "key": "ob:534ecddc3e9f3c3c879cc54d599b9d0523ec5184eeb474d8d340ebc19664b5bd"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "component cb::Store",
+      "tier": "critical",
+      "severity": "blocking",
+      "introduced": true,
+      "owner": "cb::StoreTeam",
+      "binding": "bd:fc30a72b64af3c9525e2bd492e08ff39b51a043558b7fad32961333a8cc5b1b4"
+     },
+     "why": "A.7.4.2-3: save needs (NoClock, effect(ts.call(\"Date.now\"))) and (NoRand, effect(ts.call(\"Math.random\"))), both observable; clockScan's complete entry meets the first, randScan's entry is incomplete; A.7.2.2 delta ['<NoRand fp> effect(ts.call(\"Math.random\"))']"
+    }
+   ]
+  },
+  {
+   "case": "two-unmet-pairs",
+   "input": "two-unmet-pairs.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: critical blocks coverage"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage",
+      "key": "ob:534ecddc3e9f3c3c879cc54d599b9d0523ec5184eeb474d8d340ebc19664b5bd"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "component cb::Store",
+      "tier": "critical",
+      "severity": "blocking",
+      "introduced": true,
+      "owner": "cb::StoreTeam",
+      "binding": "bd:733ab0bb4c1dba73cda4a7e4cabf3c0b7d52dc1d8d19567f3fabb2f2bbaa2437"
+     },
+     "why": "A.7.2.2, A.12.8.6 [D22]: same key and code, but the delta now lists both unmet pairs, so the binding differs from one-unmet-pair"
+    }
+   ]
+  },
+  {
+   "case": "two-unmet-pairs-old-answer",
+   "input": "two-unmet-pairs-old-answer.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: the coverage obligation stays open"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage",
+      "key": "ob:534ecddc3e9f3c3c879cc54d599b9d0523ec5184eeb474d8d340ebc19664b5bd"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "component cb::Store",
+      "tier": "critical",
+      "severity": "blocking",
+      "introduced": true,
+      "owner": "cb::StoreTeam",
+      "binding": "bd:733ab0bb4c1dba73cda4a7e4cabf3c0b7d52dc1d8d19567f3fabb2f2bbaa2437"
+     },
+     "why": "A.7.6.4: kate's ref is the one-unmet-pair binding's prefix, which begins no open obligation's binding, so it expands to nothing"
+    },
+    {
+     "in": "answered",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.7.6.4: an unexpanded ref answers nothing"
+    }
+   ]
+  },
+  {
+   "case": "two-unmet-pairs-answered",
+   "input": "two-unmet-pairs-answered.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.7.6.5: the coverage obligation is discharged and nothing else is open"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.7.5.2: discharged obligations move to answered"
+    },
+    {
+     "in": "answered",
+     "select": {
+      "obligation": "ob:534ecddc3e9f3c3c879cc54d599b9d0523ec5184eeb474d8d340ebc19664b5bd"
+     },
+     "check": "fields",
+     "value": {
+      "as": "discharge"
+     },
+     "why": "A.7.6.5: kate (StoreTeam, base owner of Store and owner* of both unmet claims) is an eligible non-author person for every answer item; the pairs are critical, so one person suffices"
+    }
+   ]
+  }
+ ]
+}

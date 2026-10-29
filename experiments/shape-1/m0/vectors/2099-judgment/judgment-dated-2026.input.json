@@ -1,0 +1,496 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Owners"
+      },
+      {
+       "decl": "actor",
+       "name": "Owners",
+       "kind": "team",
+       "members": [
+        "alice",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")",
+        "ed25519(\"a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "devAgent",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"dev-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "K",
+       "paths": [
+        "src/**/*.ts"
+       ],
+       "units": [
+        {
+         "name": "u"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "Guard",
+       "on": [
+        "unit K.u"
+       ],
+       "informal": "u keeps the rounding rule recorded in the design note."
+      },
+      {
+       "decl": "exception",
+       "name": "GuardWaived",
+       "waives": [
+        "unestablished"
+       ],
+       "target": "law Guard",
+       "owner": "Owners",
+       "expires": "2026-12-15"
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "860c6afbe745e67e5774606dbb2f68cad5f5dc808f68f082d0b95180cf9838b5"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "54bac9622c12a075e3d2adc94e3a6aabfb4acc16"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "009e16d87a7de930a9e15c1f81ee826271891ac5"
+      },
+      {
+       "path": "shape/evidence/a5/a50c43ae406ecb8eeb1fc1121bc6d714e4c12bb811001dc26b788955cad857cc.json",
+       "mode": "100644",
+       "blob": "5dde39a789f3e4a16dac25511ddbdcd0d7f7b56e"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "93814b738bd578b7cba5415fea96286218e4e3c3"
+      },
+      {
+       "path": "src/k.ts",
+       "mode": "100644",
+       "blob": "6a750cd580510213ba3d1448b3a2324fd7e944b9"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:78b3ae1f4866c23797af1eda87a31cc85a645b92d608cd4826ffefc6184e0e7e",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:40d8222064bdb0f4f7709f707d1adecd587bb0347064340995a5b188849b2834",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/k.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:ac96e77bfff5bba9e141266cda2933a032779168726f8882f2f123beb14b8bc0",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/k.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:b940e45cd247771c0c25f7b06ae0e1d47782a6ae37c16d97973eaeb92d6c7e57",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/k.ts#u",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:2a037769d8a3c9a9ded78cd3bcb9ce044f01a73e747ed4142c057eb5010ea91c",
+       "kind": "function",
+       "parent": "ts:src/k.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/k.ts#u",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:645acb4b831317c9406a269816302ac271fbf01613736734a2b0a062a878da28",
+       "kind": "function",
+       "parent": "ts:src/k.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Owners"
+      },
+      {
+       "decl": "actor",
+       "name": "Owners",
+       "kind": "team",
+       "members": [
+        "alice",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")",
+        "ed25519(\"a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "devAgent",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"dev-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "K",
+       "paths": [
+        "src/**/*.ts"
+       ],
+       "units": [
+        {
+         "name": "u"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "Guard",
+       "on": [
+        "unit K.u"
+       ],
+       "informal": "u keeps the rounding rule recorded in the design note."
+      },
+      {
+       "decl": "exception",
+       "name": "GuardWaived",
+       "waives": [
+        "unestablished"
+       ],
+       "target": "law Guard",
+       "owner": "Owners",
+       "expires": "2026-12-15"
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "74eae3ccfdfb0dbcb888c5bdd928bcf9de89c74f6e2ac905ccdf5a73c0f13e6e"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "d960dbb896e7d299d3d8421cd1dce427d4ae26be"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "009e16d87a7de930a9e15c1f81ee826271891ac5"
+      },
+      {
+       "path": "shape/evidence/a5/a50c43ae406ecb8eeb1fc1121bc6d714e4c12bb811001dc26b788955cad857cc.json",
+       "mode": "100644",
+       "blob": "5dde39a789f3e4a16dac25511ddbdcd0d7f7b56e"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "93814b738bd578b7cba5415fea96286218e4e3c3"
+      },
+      {
+       "path": "src/k.ts",
+       "mode": "100644",
+       "blob": "6a750cd580510213ba3d1448b3a2324fd7e944b9"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:eb5bfc4a817bf50d831930c1cc40e94c8ed0b79679c403222fe666501aac5d3e",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:041d6fb3f4902d2d7bc75b7e1bdb0c58e867b513c1eec1de60184a097fd1a92d",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/k.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:ac96e77bfff5bba9e141266cda2933a032779168726f8882f2f123beb14b8bc0",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/k.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:b940e45cd247771c0c25f7b06ae0e1d47782a6ae37c16d97973eaeb92d6c7e57",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/k.ts#u",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:2a037769d8a3c9a9ded78cd3bcb9ce044f01a73e747ed4142c057eb5010ea91c",
+       "kind": "function",
+       "parent": "ts:src/k.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/k.ts#u",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:645acb4b831317c9406a269816302ac271fbf01613736734a2b0a062a878da28",
+       "kind": "function",
+       "parent": "ts:src/k.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/app#7"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"dev-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [
+   {
+    "path": "shape/evidence/a5/a50c43ae406ecb8eeb1fc1121bc6d714e4c12bb811001dc26b788955cad857cc.json",
+    "record": {
+     "payloadType": "application/vnd.in-toto+json",
+     "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfU1VQUE9SVFMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJqdWRnbWVudCJ9fV0sInNoYXBlIjp7ImNsYWltIjp7ImZwIjoic2hhMjU2Ojk0YTc5YjQ1NjQ1N2ZlYmJlZjRmYTU3YTFmMjUzZGZjZDdjMjg5OWVmYWQwMGY1NTZhZDc2YWM5MWJhM2U5OWYiLCJpZCI6Im06Okd1YXJkIn0sImNvZGUiOlt7ImRpZ2VzdCI6InNoYTI1Njo2NDVhY2I0YjgzMTMxN2M5NDA2YTI2OTgxNjMwMmFjMjcxZmJmMDE2MTM3MzY3MzRhMmIwYTA2MmE4NzhkYTI4IiwiaWQiOiJ0czpzcmMvay50cyN1IiwicHJvamVjdGlvbiI6InVuaXQiLCJzY2hlbWUiOiJ0cy51bml0LnYyIn1dLCJqdWRnZSI6Im06OmFsaWNlIiwia2luZCI6Imp1ZGdtZW50IiwicHJvdmlkZXIiOm51bGwsInJlc3VsdCI6InN1cHBvcnRzIiwicmV2aXNpb24iOiIxMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExIiwidGltZSI6IjIwMjYtMDktMDFUMDk6MDA6MDBaIiwidiI6InNoYXBlLmV2aWRlbmNlLnYxIn19LCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9pbi10b3RvLmlvL2F0dGVzdGF0aW9uL3NjYWkvYXR0cmlidXRlLXJlcG9ydC92MC4zIiwic3ViamVjdCI6W3siZGlnZXN0Ijp7InNoYTI1NiI6Ijk0YTc5YjQ1NjQ1N2ZlYmJlZjRmYTU3YTFmMjUzZGZjZDdjMjg5OWVmYWQwMGY1NTZhZDc2YWM5MWJhM2U5OWYifSwibmFtZSI6InNoYXBlOmNsYWltL206Okd1YXJkIn0seyJhbm5vdGF0aW9ucyI6eyJzaGFwZS5zY2hlbWUiOiJ0cy51bml0LnYyIn0sImRpZ2VzdCI6eyJzaGEyNTYiOiI2NDVhY2I0YjgzMTMxN2M5NDA2YTI2OTgxNjMwMmFjMjcxZmJmMDE2MTM3MzY3MzRhMmIwYTA2MmE4NzhkYTI4In0sIm5hbWUiOiJzaGFwZTpjb2RlL3RzOnNyYy9rLnRzI3VAdW5pdCJ9XX0=",
+     "signatures": [
+      {
+       "keyid": "a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff",
+       "sig": "Kuw4myJVsUOnpsbYg3igLdPmCcwA6GxqyPNnbECHYFEX32rxWvMTjsjt7PqWFIqFcUT/+6LvoS7L2Iafk9tMCQ=="
+      }
+     ]
+    }
+   }
+  ],
+  "head": [
+   {
+    "path": "shape/evidence/a5/a50c43ae406ecb8eeb1fc1121bc6d714e4c12bb811001dc26b788955cad857cc.json",
+    "record": {
+     "payloadType": "application/vnd.in-toto+json",
+     "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfU1VQUE9SVFMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJqdWRnbWVudCJ9fV0sInNoYXBlIjp7ImNsYWltIjp7ImZwIjoic2hhMjU2Ojk0YTc5YjQ1NjQ1N2ZlYmJlZjRmYTU3YTFmMjUzZGZjZDdjMjg5OWVmYWQwMGY1NTZhZDc2YWM5MWJhM2U5OWYiLCJpZCI6Im06Okd1YXJkIn0sImNvZGUiOlt7ImRpZ2VzdCI6InNoYTI1Njo2NDVhY2I0YjgzMTMxN2M5NDA2YTI2OTgxNjMwMmFjMjcxZmJmMDE2MTM3MzY3MzRhMmIwYTA2MmE4NzhkYTI4IiwiaWQiOiJ0czpzcmMvay50cyN1IiwicHJvamVjdGlvbiI6InVuaXQiLCJzY2hlbWUiOiJ0cy51bml0LnYyIn1dLCJqdWRnZSI6Im06OmFsaWNlIiwia2luZCI6Imp1ZGdtZW50IiwicHJvdmlkZXIiOm51bGwsInJlc3VsdCI6InN1cHBvcnRzIiwicmV2aXNpb24iOiIxMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExIiwidGltZSI6IjIwMjYtMDktMDFUMDk6MDA6MDBaIiwidiI6InNoYXBlLmV2aWRlbmNlLnYxIn19LCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9pbi10b3RvLmlvL2F0dGVzdGF0aW9uL3NjYWkvYXR0cmlidXRlLXJlcG9ydC92MC4zIiwic3ViamVjdCI6W3siZGlnZXN0Ijp7InNoYTI1NiI6Ijk0YTc5YjQ1NjQ1N2ZlYmJlZjRmYTU3YTFmMjUzZGZjZDdjMjg5OWVmYWQwMGY1NTZhZDc2YWM5MWJhM2U5OWYifSwibmFtZSI6InNoYXBlOmNsYWltL206Okd1YXJkIn0seyJhbm5vdGF0aW9ucyI6eyJzaGFwZS5zY2hlbWUiOiJ0cy51bml0LnYyIn0sImRpZ2VzdCI6eyJzaGEyNTYiOiI2NDVhY2I0YjgzMTMxN2M5NDA2YTI2OTgxNjMwMmFjMjcxZmJmMDE2MTM3MzY3MzRhMmIwYTA2MmE4NzhkYTI4In0sIm5hbWUiOiJzaGFwZTpjb2RlL3RzOnNyYy9rLnRzI3VAdW5pdCJ9XX0=",
+     "signatures": [
+      {
+       "keyid": "a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff",
+       "sig": "Kuw4myJVsUOnpsbYg3igLdPmCcwA6GxqyPNnbECHYFEX32rxWvMTjsjt7PqWFIqFcUT/+6LvoS7L2Iafk9tMCQ=="
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

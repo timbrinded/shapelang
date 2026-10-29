@@ -1,0 +1,750 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "modules": [
+    {
+     "module": "checker",
+     "imports": [
+      "std"
+     ],
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Checker",
+       "owner": "ShapeMaintainers"
+      },
+      {
+       "decl": "actor",
+       "name": "ShapeMaintainers",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "ShapeChecker",
+       "paths": [
+        "packages/shp-checker/src/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "ShapeRuleEngine",
+       "paths": [
+        "packages/shp-checker/src/checker/derivations.ts",
+        "packages/shp-checker/src/checker/rules/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "ShapeModelLowerer",
+       "paths": [
+        "packages/shp-checker/src/checker/lowering/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "ShapeDiagnostics",
+       "paths": [
+        "packages/shp-checker/src/checker/diagnostics/**/*.ts"
+       ]
+      },
+      {
+       "decl": "relation",
+       "name": "ShapeRuleEngineReadsLoweredFacts",
+       "kind": "calls",
+       "connects": [
+        "ShapeRuleEngine",
+        "ShapeModelLowerer"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "no_runtime_dependency_cycles",
+       "clauses": [
+        {
+         "forbid": "cycle",
+         "over": [
+          "calls"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "tsCallGraph",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "call(ts)"
+       ],
+       "sound": [],
+       "identity": "ed25519(\"3ee2a8a7283cb2fd728943daa127ef09e483071a8b4bc699ba4522f09b14cfde\")",
+       "implementation": {
+        "paths": [
+         "tools/callgraph.ts"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "d95857210068294409da2a81c5769c44cec1f93fe689087405652be62db0800c"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "packages/shp-checker/src/checker/derivations.ts",
+       "mode": "100644",
+       "blob": "988581500eb3dd5b182203859741a709339b9f6a"
+      },
+      {
+       "path": "packages/shp-checker/src/checker/diagnostics/report.ts",
+       "mode": "100644",
+       "blob": "5dc4946cd8b4a0a62b7416848f7f0fc4baf39d88"
+      },
+      {
+       "path": "packages/shp-checker/src/checker/lowering/context.ts",
+       "mode": "100644",
+       "blob": "56e1ed28db3cfa7edc8fc026375e2ffadd77b5e5"
+      },
+      {
+       "path": "packages/shp-checker/src/checker/lowering/extra.ts",
+       "mode": "100644",
+       "blob": "6a742c7c4e28863ed9c147316fb247a02a04137c"
+      },
+      {
+       "path": "packages/shp-checker/src/checker/lowering/facts.ts",
+       "mode": "100644",
+       "blob": "a83ac7c6c28aecc07563ca6ed613d73cf5be5f53"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "15781d1dc0894b73f646ba95d43b054450ae159c"
+      },
+      {
+       "path": "shape/checker.shape",
+       "mode": "100644",
+       "blob": "6289bd638e7c3b18ed7ca46134bc1b456f6ce1cc"
+      },
+      {
+       "path": "tools/callgraph.ts",
+       "mode": "100644",
+       "blob": "abbf9dabe43cd8533c62a10f6c53431470f77749"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:80fed0355b1cf4dc952d7df6333cb9874f51932658b4c3d9c667157484088d8d",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:8b60b499f7a3e1a9f0936257c6019bebf03d958211b6ddbd76af72d278b7f399",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requirementsForTarget",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:3c852b4e8b62b6d4e2cdc6bcd69629f11a8d7dbc21a68435e6f3780f47d338a7",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requirementsForTarget",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:537fa6e55b711998b839c268212cfb084b59c6cf6a0e60bfefe6a12ad7bdc4c3",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requiresReevaluation",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:4a13baf360d4419af05e2f6699a40ff7f2c02e2641e3bd016b5e228671766421",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requiresReevaluation",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:a1d8c2ed58a8bb5fec7e539cc83fb429603a875805d11055ba12f731792a94e1",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:dc307a134a6f8e562c6019a4927d3ea7fa13ca39596c5b201413d2430683cf02",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:b5b6707bf6c4ff83771c42ca6bf93c671587c2707c9cd4a755a4e475c6810351",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/diagnostics/report.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:8c7d0ac7d02a5d07d42ced01f5b874ff3c4a9213cdef21b6dce707ddd986103e",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/diagnostics/report.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:b4924283e50e8fe4523a188ff0ecb271b826ef48367c41625241124ea934dc90",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/lowering/context.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:b7eb9149b0b6a29e595ac6b78cc50ba67c348b0cdf8b9f98163cb2c4a184bf7f",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/lowering/context.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:7d928675310b2988d01599e7a6b5e4a5bdbf44fcd140c4dc60ef780aedddf696",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/lowering/extra.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:96cbed822d26b095834fab747ab04f8e35444cebe07c0abc4b9cf7a5907a40f7",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/lowering/extra.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:58b47df2e0d6d1f8b0035fcd2ead4d654928aca3a1fdbdf5f97a90dea305f4ca",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/lowering/facts.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:c5deeee77905fc3d458f49524b9db36e3c899565ce9f47f4b91cd9f02802a514",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/lowering/facts.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:95b5e35b91eae9cab92cb11ddb493b317ca0fedc7042d623ef1fec090daa97fb",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:tools/callgraph.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:f7d3ed99b4a5eb68afcdb175dc87adf2ff4f4ab5156b08bec11953445be677f1",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:tools/callgraph.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:092712ca0e96389b0da490d14349684ae4c032fdfa6c047bc5fd91a19b78d524",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "modules": [
+    {
+     "module": "checker",
+     "imports": [
+      "std"
+     ],
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Checker",
+       "owner": "ShapeMaintainers"
+      },
+      {
+       "decl": "actor",
+       "name": "ShapeMaintainers",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "ShapeChecker",
+       "paths": [
+        "packages/shp-checker/src/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "ShapeRuleEngine",
+       "paths": [
+        "packages/shp-checker/src/checker/derivations.ts",
+        "packages/shp-checker/src/checker/rules/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "ShapeModelLowerer",
+       "paths": [
+        "packages/shp-checker/src/checker/lowering/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "ShapeDiagnostics",
+       "paths": [
+        "packages/shp-checker/src/checker/diagnostics/**/*.ts"
+       ]
+      },
+      {
+       "decl": "relation",
+       "name": "ShapeRuleEngineReadsLoweredFacts",
+       "kind": "calls",
+       "connects": [
+        "ShapeRuleEngine",
+        "ShapeModelLowerer"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "no_runtime_dependency_cycles",
+       "clauses": [
+        {
+         "forbid": "cycle",
+         "over": [
+          "calls"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "tsCallGraph",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "call(ts)"
+       ],
+       "sound": [],
+       "identity": "ed25519(\"3ee2a8a7283cb2fd728943daa127ef09e483071a8b4bc699ba4522f09b14cfde\")",
+       "implementation": {
+        "paths": [
+         "tools/callgraph.ts"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "8541b47599dc4f40be4466e850bb4b2db92aa379b80b1d81bf883a609cbc6628"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "packages/shp-checker/src/checker/derivations.ts",
+       "mode": "100644",
+       "blob": "988581500eb3dd5b182203859741a709339b9f6a"
+      },
+      {
+       "path": "packages/shp-checker/src/checker/diagnostics/report.ts",
+       "mode": "100644",
+       "blob": "5dc4946cd8b4a0a62b7416848f7f0fc4baf39d88"
+      },
+      {
+       "path": "packages/shp-checker/src/checker/lowering/context.ts",
+       "mode": "100644",
+       "blob": "56e1ed28db3cfa7edc8fc026375e2ffadd77b5e5"
+      },
+      {
+       "path": "packages/shp-checker/src/checker/lowering/facts.ts",
+       "mode": "100644",
+       "blob": "a83ac7c6c28aecc07563ca6ed613d73cf5be5f53"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "15781d1dc0894b73f646ba95d43b054450ae159c"
+      },
+      {
+       "path": "shape/checker.shape",
+       "mode": "100644",
+       "blob": "6289bd638e7c3b18ed7ca46134bc1b456f6ce1cc"
+      },
+      {
+       "path": "tools/callgraph.ts",
+       "mode": "100644",
+       "blob": "abbf9dabe43cd8533c62a10f6c53431470f77749"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:80fed0355b1cf4dc952d7df6333cb9874f51932658b4c3d9c667157484088d8d",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:8b60b499f7a3e1a9f0936257c6019bebf03d958211b6ddbd76af72d278b7f399",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requirementsForTarget",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:3c852b4e8b62b6d4e2cdc6bcd69629f11a8d7dbc21a68435e6f3780f47d338a7",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requirementsForTarget",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:537fa6e55b711998b839c268212cfb084b59c6cf6a0e60bfefe6a12ad7bdc4c3",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requiresReevaluation",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:4a13baf360d4419af05e2f6699a40ff7f2c02e2641e3bd016b5e228671766421",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requiresReevaluation",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:a1d8c2ed58a8bb5fec7e539cc83fb429603a875805d11055ba12f731792a94e1",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:dc307a134a6f8e562c6019a4927d3ea7fa13ca39596c5b201413d2430683cf02",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:b5b6707bf6c4ff83771c42ca6bf93c671587c2707c9cd4a755a4e475c6810351",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/diagnostics/report.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:8c7d0ac7d02a5d07d42ced01f5b874ff3c4a9213cdef21b6dce707ddd986103e",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/diagnostics/report.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:b4924283e50e8fe4523a188ff0ecb271b826ef48367c41625241124ea934dc90",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/lowering/context.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:b7eb9149b0b6a29e595ac6b78cc50ba67c348b0cdf8b9f98163cb2c4a184bf7f",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/lowering/context.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:7d928675310b2988d01599e7a6b5e4a5bdbf44fcd140c4dc60ef780aedddf696",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/lowering/facts.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:c5deeee77905fc3d458f49524b9db36e3c899565ce9f47f4b91cd9f02802a514",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/lowering/facts.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:95b5e35b91eae9cab92cb11ddb493b317ca0fedc7042d623ef1fec090daa97fb",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:tools/callgraph.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:f7d3ed99b4a5eb68afcdb175dc87adf2ff4f4ab5156b08bec11953445be677f1",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:tools/callgraph.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:092712ca0e96389b0da490d14349684ae4c032fdfa6c047bc5fd91a19b78d524",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:smoothbrains/shapelang#201"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"tim\")",
+   "verified": true,
+   "bot": false
+  }
+ ],
+ "reviews": [],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfT0JTRVJWRVMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJvYnNlcnZhdGlvbiJ9fV0sInByb2R1Y2VyIjp7ImFubm90YXRpb25zIjp7InNoYXBlLnByb3ZpZGVyIjoiY2hlY2tlcjo6dHNDYWxsR3JhcGgiLCJ2ZXJzaW9uIjoiMS4wLjAifSwidXJpIjoiY2hlY2tlcjo6dHNDYWxsR3JhcGgifSwic2hhcGUiOnsiYXNzdW1wdGlvbnMiOltdLCJmYWN0cyI6W3siYXQiOiJ0czpwYWNrYWdlcy9zaHAtY2hlY2tlci9zcmMvY2hlY2tlci9sb3dlcmluZy9mYWN0cy50cyIsInRvIjoidHM6cGFja2FnZXMvc2hwLWNoZWNrZXIvc3JjL2NoZWNrZXIvZGVyaXZhdGlvbnMudHMjcmVxdWlyZW1lbnRzRm9yVGFyZ2V0IiwidHlwZSI6ImNhbGwifSx7ImF0IjoidHM6cGFja2FnZXMvc2hwLWNoZWNrZXIvc3JjL2NoZWNrZXIvbG93ZXJpbmcvZmFjdHMudHMiLCJ0byI6InRzOnBhY2thZ2VzL3NocC1jaGVja2VyL3NyYy9jaGVja2VyL2Rlcml2YXRpb25zLnRzI3NoYXBlVHJhaXRCZWFyZXJzIiwidHlwZSI6ImNhbGwifSx7ImF0IjoidHM6cGFja2FnZXMvc2hwLWNoZWNrZXIvc3JjL2NoZWNrZXIvbG93ZXJpbmcvY29udGV4dC50cyIsInRvIjoidHM6cGFja2FnZXMvc2hwLWNoZWNrZXIvc3JjL2NoZWNrZXIvZGVyaXZhdGlvbnMudHMjcmVxdWlyZXNSZWV2YWx1YXRpb24iLCJ0eXBlIjoiY2FsbCJ9LHsiYXQiOiJ0czpwYWNrYWdlcy9zaHAtY2hlY2tlci9zcmMvY2hlY2tlci9sb3dlcmluZy9leHRyYS50cyIsInRvIjoidHM6cGFja2FnZXMvc2hwLWNoZWNrZXIvc3JjL2NoZWNrZXIvZGVyaXZhdGlvbnMudHMjcmVxdWlyZXNSZWV2YWx1YXRpb24iLCJ0eXBlIjoiY2FsbCJ9XSwiaGFybmVzcyI6W10sImtpbmQiOiJvYnNlcnZhdGlvbiIsInByb3ZpZGVyIjp7ImlkIjoiY2hlY2tlcjo6dHNDYWxsR3JhcGgiLCJ2ZXJzaW9uIjoiMS4wLjAifSwicmVzdWx0Ijoib2JzZXJ2ZXMiLCJyZXZpc2lvbiI6IjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIiLCJzY29wZSI6eyJlbnRyaWVzIjpbeyJjb21wbGV0ZSI6ZmFsc2UsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6YzVkZWVlZTc3OTA1ZmMzZDQ1OGY0OTUyNGI5ZGIzNmUzYzg5OTU2NWNlOWY0N2Y0YjkxY2Q5ZjAyODAyYTUxNCIsImlkIjoidHM6cGFja2FnZXMvc2hwLWNoZWNrZXIvc3JjL2NoZWNrZXIvbG93ZXJpbmcvZmFjdHMudHMiLCJwcm9qZWN0aW9uIjoiZmlsZSIsInNjaGVtZSI6InRzLmZpbGUudjEifSx7ImNvbXBsZXRlIjpmYWxzZSwiZGVwcyI6W10sImRpZ2VzdCI6InNoYTI1NjpiN2ViOTE0OWIwYjZhMjllNTk1YWM2Yjc4Y2M1MGJhNjdjMzQ4YjBjZGY4YjlmOTgxNjNjYjJjNGExODRiZjdmIiwiaWQiOiJ0czpwYWNrYWdlcy9zaHAtY2hlY2tlci9zcmMvY2hlY2tlci9sb3dlcmluZy9jb250ZXh0LnRzIiwicHJvamVjdGlvbiI6ImZpbGUiLCJzY2hlbWUiOiJ0cy5maWxlLnYxIn0seyJjb21wbGV0ZSI6ZmFsc2UsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6ODBmZWQwMzU1YjFjZjRkYzk1MmQ3ZGY2MzMzY2I5ODc0ZjUxOTMyNjU4YjRjM2Q5YzY2NzE1NzQ4NDA4OGQ4ZCIsImlkIjoidHM6cGFja2FnZXMvc2hwLWNoZWNrZXIvc3JjL2NoZWNrZXIvZGVyaXZhdGlvbnMudHMiLCJwcm9qZWN0aW9uIjoiZmlsZSIsInNjaGVtZSI6InRzLmZpbGUudjEifSx7ImNvbXBsZXRlIjpmYWxzZSwiZGVwcyI6W10sImRpZ2VzdCI6InNoYTI1Njo5NmNiZWQ4MjJkMjZiMDk1ODM0ZmFiNzQ3YWIwNGY4ZTM1NDQ0Y2ViZTA3YzBhYmM0YjljZjdhNTkwN2E0MGY3IiwiaWQiOiJ0czpwYWNrYWdlcy9zaHAtY2hlY2tlci9zcmMvY2hlY2tlci9sb3dlcmluZy9leHRyYS50cyIsInByb2plY3Rpb24iOiJmaWxlIiwic2NoZW1lIjoidHMuZmlsZS52MSJ9XSwicm9vdCI6InNoYTI1Njo4ZmM0ODI4MDc4YzIyM2Q0ODExODllNTY5NTIyZGZlYjI4ZTYyOTE3ZDJiNmRlNjAxMjgzNjRlZGVkYzBlMmI3In0sInRpbWUiOiIyMDI2LTEwLTI1VDA5OjAwOjAwWiIsInYiOiJzaGFwZS5ldmlkZW5jZS52MSJ9fSwicHJlZGljYXRlVHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9hdHRlc3RhdGlvbi9zY2FpL2F0dHJpYnV0ZS1yZXBvcnQvdjAuMyIsInN1YmplY3QiOlt7ImRpZ2VzdCI6eyJzaGEyNTYiOiI4ZmM0ODI4MDc4YzIyM2Q0ODExODllNTY5NTIyZGZlYjI4ZTYyOTE3ZDJiNmRlNjAxMjgzNjRlZGVkYzBlMmI3In0sIm5hbWUiOiJzaGFwZTpzY29wZS9jaGVja2VyOjp0c0NhbGxHcmFwaC8yMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyIn1dfQ==",
+   "signatures": [
+    {
+     "keyid": "3ee2a8a7283cb2fd728943daa127ef09e483071a8b4bc699ba4522f09b14cfde",
+     "sig": "tr3O/nS+Rl5U8vxyVdZovS/UffGGvgNzDBzx99RV/J78472de3lwe3w69dOePh34wUprDcGQgJH8pVVonZuvCw=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

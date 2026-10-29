@@ -1,0 +1,112 @@
+{
+ "vector": "refutation-introduced",
+ "title": "A refuted lower bound is introduced when its footprint meets the code delta or a usable base-revision record reported the missing fact; otherwise it is preexisting",
+ "decides": [
+  "A.7.3.3",
+  "A.4.4.14",
+  "A.4.4.8",
+  "D7"
+ ],
+ "cases": [
+  {
+   "case": "call-removed",
+   "input": "call-removed.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7: an introduced sound contradiction blocks"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:777a831c111358c86e1190286bbe88c4cc909df7a5a860b44b21d628b50ce9f0"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:10d79b14858b17111ff0afb8370d8af77785b6f5c46691865437a8527da5bae5",
+      "subject": null,
+      "force": "sound",
+      "tier": "normal",
+      "owner": "rf::RulesTeam",
+      "introduced": true,
+      "severity": "blocking"
+     },
+     "why": "A.4.4.14: every footprint identity of Rules has a complete call(ts) entry from an absence-sound observer and the Rules->Lower call is absent: refuted, always sound, subject null (A.4.4.8); A.7.3.3 [D7]: evaluate is in the footprint and in the code delta"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "A.7.4.2: lower bounds need no coverage; no other claim"
+    }
+   ]
+  },
+  {
+   "case": "refuted-at-base-control",
+   "input": "refuted-at-base-control.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 6"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:777a831c111358c86e1190286bbe88c4cc909df7a5a860b44b21d628b50ce9f0"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:10d79b14858b17111ff0afb8370d8af77785b6f5c46691865437a8527da5bae5",
+      "subject": null,
+      "force": "sound",
+      "tier": "normal",
+      "owner": "rf::RulesTeam",
+      "introduced": false,
+      "severity": "owed"
+     },
+     "why": "A.7.3.3: no footprint identity changed (only README) and the base-revision record never reported the call"
+    }
+   ]
+  },
+  {
+   "case": "base-reported-unchanged-code",
+   "input": "base-reported-unchanged-code.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:777a831c111358c86e1190286bbe88c4cc909df7a5a860b44b21d628b50ce9f0"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:10d79b14858b17111ff0afb8370d8af77785b6f5c46691865437a8527da5bae5",
+      "subject": null,
+      "force": "sound",
+      "tier": "normal",
+      "owner": "rf::RulesTeam",
+      "introduced": true,
+      "severity": "blocking"
+     },
+     "why": "A.7.3.3 [D7]: the footprint is unchanged, but a usable base-revision record (citing the unchanged base digests) reported the now-missing call"
+    }
+   ]
+  }
+ ]
+}

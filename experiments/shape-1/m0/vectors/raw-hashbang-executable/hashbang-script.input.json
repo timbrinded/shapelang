@@ -1,0 +1,486 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "audit",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/audit.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "AuditService",
+       "owner": "Platform"
+      },
+      {
+       "decl": "actor",
+       "name": "Platform",
+       "kind": "team",
+       "members": [
+        "alice",
+        "carol"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "AuditTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "alice",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "AuditEvent",
+       "attach": [
+        {
+         "name": "AppendOnly"
+        }
+       ],
+       "owner": "AuditTeam",
+       "tier": "final",
+       "bind": [
+        "pg.table(\"audit_events\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "AuditStore",
+       "owner": "AuditTeam",
+       "tier": "critical",
+       "paths": [
+        "src/audit/**/*.ts"
+       ],
+       "grants": [
+        "Append<AuditEvent>",
+        "Read<AuditEvent>"
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "sqlEffects",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(pg.table(\"*\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "depsComplete": true,
+       "identity": "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")",
+       "implementation": {
+        "digest": "sha256:5a1e0f00c0ffee00000000000000000000000000000000000000000000000231"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "0b9c98a359ea94ba529e804307cca33d6db1193d270f2a175dda94ef87597190"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/audit.shape",
+       "mode": "100644",
+       "blob": "f615960aef8a8958f103b708b89af27de8420223"
+      },
+      {
+       "path": "src/audit/purge",
+       "mode": "100644",
+       "blob": "442be692abd4c1ff88d4c26e3d247fb4e89d0f2a"
+      },
+      {
+       "path": "src/audit/store.ts",
+       "mode": "100644",
+       "blob": "2c608e886f0f0997d3a0c86a8c0f02f10c3ccddc"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:src/audit/purge",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:a0ee0576276fabb9d5d37bee54a19c0807ce9602562000b8e0aa791e865664cb",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": false
+      },
+      {
+       "id": "raw:src/audit/purge",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:3ac844630b0675916d833e499388be019c827e2165342f3e4318f49ad88db87c",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": false
+      },
+      {
+       "id": "ts:src/audit/store.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:8267db779963da308a0016e16a5c45f652e0359ee91afe0174847aff97eb7c3e",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/audit/store.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:c31b69e1b7b6ee092f63d1eece767922217650bed596d3d44e264a8ca1cd0cfb",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/audit/store.ts#appendEvent",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:fea12341e28d2f4f6dd5379142ed3b077175ea58158a5e0c2768c3512593d4da",
+       "kind": "function",
+       "parent": "ts:src/audit/store.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/audit/store.ts#appendEvent",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:b9211daf3dfa60300ad070456cc384a6cdf3d7a44c47ae5044f4aafdbc370a4b",
+       "kind": "function",
+       "parent": "ts:src/audit/store.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "audit",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/audit.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "AuditService",
+       "owner": "Platform"
+      },
+      {
+       "decl": "actor",
+       "name": "Platform",
+       "kind": "team",
+       "members": [
+        "alice",
+        "carol"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "AuditTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "alice",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "AuditEvent",
+       "attach": [
+        {
+         "name": "AppendOnly"
+        }
+       ],
+       "owner": "AuditTeam",
+       "tier": "final",
+       "bind": [
+        "pg.table(\"audit_events\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "AuditStore",
+       "owner": "AuditTeam",
+       "tier": "critical",
+       "paths": [
+        "src/audit/**/*.ts"
+       ],
+       "grants": [
+        "Append<AuditEvent>",
+        "Read<AuditEvent>"
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "sqlEffects",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(pg.table(\"*\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "depsComplete": true,
+       "identity": "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")",
+       "implementation": {
+        "digest": "sha256:5a1e0f00c0ffee00000000000000000000000000000000000000000000000231"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "ceacee0750b8d736c340376c27cd9beb2e33c0fb71d1478bd864070b7e41c026"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/audit.shape",
+       "mode": "100644",
+       "blob": "f615960aef8a8958f103b708b89af27de8420223"
+      },
+      {
+       "path": "src/audit/store.ts",
+       "mode": "100644",
+       "blob": "2c608e886f0f0997d3a0c86a8c0f02f10c3ccddc"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/audit/store.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:8267db779963da308a0016e16a5c45f652e0359ee91afe0174847aff97eb7c3e",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/audit/store.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:c31b69e1b7b6ee092f63d1eece767922217650bed596d3d44e264a8ca1cd0cfb",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/audit/store.ts#appendEvent",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:fea12341e28d2f4f6dd5379142ed3b077175ea58158a5e0c2768c3512593d4da",
+       "kind": "function",
+       "parent": "ts:src/audit/store.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/audit/store.ts#appendEvent",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:b9211daf3dfa60300ad070456cc384a6cdf3d7a44c47ae5044f4aafdbc370a4b",
+       "kind": "function",
+       "parent": "ts:src/audit/store.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"acme-code-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfT0JTRVJWRVMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJvYnNlcnZhdGlvbiJ9fV0sInByb2R1Y2VyIjp7ImFubm90YXRpb25zIjp7InNoYXBlLnByb3ZpZGVyIjoiYXVkaXQ6OnNxbEVmZmVjdHMiLCJ2ZXJzaW9uIjoiMi4zLjEifSwidXJpIjoiYXVkaXQ6OnNxbEVmZmVjdHMifSwic2hhcGUiOnsiYXNzdW1wdGlvbnMiOltdLCJmYWN0cyI6W3siYXQiOiJ0czpzcmMvYXVkaXQvc3RvcmUudHMjYXBwZW5kRXZlbnQiLCJuIjoxLCJyZXNvdXJjZSI6InBnLnRhYmxlKFwiYXVkaXRfZXZlbnRzXCIpIiwidHlwZSI6ImVmZmVjdCIsInZlcmIiOiJBcHBlbmQifV0sImhhcm5lc3MiOltdLCJraW5kIjoib2JzZXJ2YXRpb24iLCJwcm92aWRlciI6eyJpZCI6ImF1ZGl0OjpzcWxFZmZlY3RzIiwidmVyc2lvbiI6IjIuMy4xIn0sInJlc3VsdCI6Im9ic2VydmVzIiwicmV2aXNpb24iOiIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyIiwic2NvcGUiOnsiZW50cmllcyI6W3siY29tcGxldGUiOnRydWUsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6ODI2N2RiNzc5OTYzZGEzMDhhMDAxNmUxNmE1YzQ1ZjY1MmUwMzU5ZWU5MWFmZTAxNzQ4NDdhZmY5N2ViN2MzZSIsImlkIjoidHM6c3JjL2F1ZGl0L3N0b3JlLnRzIiwicHJvamVjdGlvbiI6ImZpbGUiLCJzY2hlbWUiOiJ0cy5maWxlLnYxIn0seyJjb21wbGV0ZSI6dHJ1ZSwiZGVwcyI6W10sImRpZ2VzdCI6InNoYTI1NjpiOTIxMWRhZjNkZmE2MDMwMGFkMDcwNDU2Y2MzODRhNmNkZjNkN2E0NGM0N2FlNTA0NGY0YWFmZGJjMzcwYTRiIiwiaWQiOiJ0czpzcmMvYXVkaXQvc3RvcmUudHMjYXBwZW5kRXZlbnQiLCJwcm9qZWN0aW9uIjoidW5pdCIsInNjaGVtZSI6InRzLnVuaXQudjIifV0sInJvb3QiOiJzaGEyNTY6NmVhYzhiMjBlMjU1OWE1NjQ2ZDBmMzdkYmU1NmY2ODVjNTRmYzUwMjQyZjU1ZDBjNzMzODg2ZmE1Y2QwNDEzNiJ9LCJ0aW1lIjoiMjAyNi0xMC0yNVQwOTowMDowMFoiLCJ2Ijoic2hhcGUuZXZpZGVuY2UudjEifX0sInByZWRpY2F0ZVR5cGUiOiJodHRwczovL2luLXRvdG8uaW8vYXR0ZXN0YXRpb24vc2NhaS9hdHRyaWJ1dGUtcmVwb3J0L3YwLjMiLCJzdWJqZWN0IjpbeyJkaWdlc3QiOnsic2hhMjU2IjoiNmVhYzhiMjBlMjU1OWE1NjQ2ZDBmMzdkYmU1NmY2ODVjNTRmYzUwMjQyZjU1ZDBjNzMzODg2ZmE1Y2QwNDEzNiJ9LCJuYW1lIjoic2hhcGU6c2NvcGUvYXVkaXQ6OnNxbEVmZmVjdHMvMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMiJ9XX0=",
+   "signatures": [
+    {
+     "keyid": "9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483",
+     "sig": "+Fya9OByG9fdY5zRAm555VFXdI4xoCMAiUMHW73l2O1wQyXk3VYWb4GdswnxHYWQ5NqdthBcVwTs5yCDGv6VCQ=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

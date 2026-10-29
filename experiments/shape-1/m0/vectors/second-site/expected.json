@@ -1,0 +1,141 @@
+{
+ "vector": "second-site",
+ "title": "A second site under a subject with older sites is new by site count (n), and a site at another identity gets its own key; neither hides behind the older fact id",
+ "decides": [
+  "A.7.3.1",
+  "A.7.3.3",
+  "A.4.4.8",
+  "D15"
+ ],
+ "cases": [
+  {
+   "case": "second-site",
+   "input": "second-site.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7: introduced sound contradiction"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:fd3fe21fb1d263df2d620530513f491aec20c6ca716719af3c879bef23d134a3"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:79e90ba3ad9eab15c75f565119ce92915c4df1eca3d251aa31942717f1af53f3",
+      "subject": {
+       "code": "ts:src/k/w.ts#write",
+       "atom": "Update<m::Rec>"
+      },
+      "introduced": true,
+      "severity": "blocking",
+      "force": "sound",
+      "tier": "normal",
+      "binding": "bd:35cc6a255e0b553df0a99c156b4580b190a081caae09f9f7e23df02b2f9ed1eb",
+      "witness": [
+       "sha256:36c10133eadcc3fe657cfb61f07457acbb241f8ffb2db2f0707308524d79183a"
+      ]
+     },
+     "why": "A.7.3.1 [D15]: write is in Δcode and the only base-revision entry reports the fact with n_b = 1 < n_h = 2, so the fact is new and the contradiction introduced (A.7.3.3); the second site shares the first's fact id and subject but does not hide behind it; binding (write, own) as the affected finest change (A.7.2.2)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.4.2 [D3]: effect(pg.table(\"records\")) is unobservable (sqlScan is presence-only) and the tier is normal"
+    }
+   ]
+  },
+  {
+   "case": "same-count",
+   "input": "same-count.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 6: the contradiction is preexisting"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:fd3fe21fb1d263df2d620530513f491aec20c6ca716719af3c879bef23d134a3"
+     },
+     "check": "fields",
+     "value": {
+      "introduced": false,
+      "severity": "owed",
+      "force": "sound",
+      "tier": "normal",
+      "binding": "bd:35cc6a255e0b553df0a99c156b4580b190a081caae09f9f7e23df02b2f9ed1eb"
+     },
+     "why": "A.7.3.1: write changed but a usable base-revision entry reports the fact with n_b = 1 >= n_h = 1, so the fact is not new and the contradiction is preexisting; the binding still carries the edited write (A.7.2.2)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.4.2 [D3]: unobservable channel, tier normal"
+    }
+   ]
+  },
+  {
+   "case": "other-identity",
+   "input": "other-identity.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7 for the new site's introduced sound contradiction"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:6e39163a93c6751cd5ea22bc78496880b665676990457114dbd7f8c5191a5a77"
+     },
+     "check": "fields",
+     "value": {
+      "subject": {
+       "code": "ts:src/k/w.ts#write2",
+       "atom": "Update<m::Rec>"
+      },
+      "introduced": true,
+      "severity": "blocking",
+      "force": "sound",
+      "binding": "bd:9cda2dc30bac7b323749f23f46c2c9acbafee47ce013ba248ca734f4ec730b7f",
+      "group": "g:7035c6770c6df4d2c1b5a3de967dc1698eeb6ca1571d3dfa05b3367939fee64b"
+     },
+     "why": "A.4.4.8: {code, atom} keys per site, so write2 has its own key; new identity, fact new (A.7.3.1), introduced"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:fd3fe21fb1d263df2d620530513f491aec20c6ca716719af3c879bef23d134a3"
+     },
+     "check": "fields",
+     "value": {
+      "introduced": false,
+      "severity": "owed",
+      "binding": "bd:2375e5673178d98b0031296ae7905b1c856c2f4a387285ee379793c6cd743e30",
+      "group": "g:1c47442fd5aaa299d0c60a9d435ae2a2e43ad22d62d3dfa668cca909cb0750a0"
+     },
+     "why": "A.7.3.1: write unchanged, so its fact is not new; preexisting (rule 6); the two obligations share no support fact and no affected finest change, so separate groups (A.7.2.3)"
+    }
+   ]
+  }
+ ]
+}

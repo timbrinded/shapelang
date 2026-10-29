@@ -1,0 +1,163 @@
+{
+ "vector": "scc-merge",
+ "title": "A new edge that merges a preexisting SCC introduces the merged SCC's contradiction even though its canonical witness is the old cycle; a call that lifts to no edge keeps the old SCC preexisting",
+ "decides": [
+  "A.7.3.3",
+  "A.4.4.11",
+  "A.4.4.8",
+  "A.4.4.10",
+  "A.7.2.2",
+  "D5"
+ ],
+ "cases": [
+  {
+   "case": "merge",
+   "input": "merge.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7: an introduced sound contradiction blocks (tier normal, so rule 2 does not apply)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction"
+     },
+     "check": "count",
+     "value": 1,
+     "why": "A.4.4.8: one key per non-trivial SCC of E|calls; the head has the single SCC {A,B,C}"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:01bb1b7a263ab54bb036595154f1714cac2722f589d7ce4b113601f131060f68"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:d1d638be608c2992cf53437af4abd104b9bad53c9d3b7a6fd89ffb5198e3f159",
+      "subject": {
+       "nodes": [
+        "m::A",
+        "m::B",
+        "m::C"
+       ]
+      },
+      "introduced": true,
+      "severity": "blocking",
+      "force": "sound",
+      "tier": "normal",
+      "binding": "bd:c3ed2bb708138fd7742337ed62dbea42f39a16cd657e0ad68c394962bafb03df",
+      "group": "g:533913412cdb47a5abfc7fa2dc39a7eb6ad5b1d0f5f4933d3a21df628c421f92"
+     },
+     "why": "A.7.3.3 [D5] with A.4.4.11 (supports decide introduced): Supp of the merged SCC holds the lifted edge C->A, whose only fact (at the new fc2) is new (A.7.3.1), so the contradiction is introduced although the canonical witness is the old cycle A->B->A; binding = support code fa, fb, fb2, fc2 plus (fc2, own) as the affected finest change (A.7.2.2); sound: callScan is presence-sound (A.4.4.13); tier* normal (A.6.2.3)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:01bb1b7a263ab54bb036595154f1714cac2722f589d7ce4b113601f131060f68",
+      "witness": "sha256:3bccd8beb7293db0b4644106e43f86f4aac67dd4baacac7fd6e4120fd6d033a8"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.15.4 and A.4.4.10: the witness is the canonical least cycle through the least node m::A, i.e. A->B->A (2 observed facts before 3), so the new fact is in the support but not in the witness"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:01bb1b7a263ab54bb036595154f1714cac2722f589d7ce4b113601f131060f68",
+      "witness": "sha256:58e03bc2a609d209704c41b5630281a6e3c72d610a3a12687f813f341d259903"
+     },
+     "check": "count",
+     "value": 1,
+     "why": "A.4.4.10: the canonical witness A->B->A contains the fact fa->fb"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:b4a8b0bc2d232c9ad369efac33c1c6887fcc7740b1b7afb470a43bfc11d28a2c"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.4.4.8: subjects are the head's SCCs; {A,B} is no longer an SCC"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.4.2 [D3]: call(ts) is not observable (callScan is not absence-sound in the base) and the claim's tier is not final, so no pair is needed"
+    }
+   ]
+  },
+  {
+   "case": "no-merge",
+   "input": "no-merge.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 6: only a non-introduced obligation remains"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:b4a8b0bc2d232c9ad369efac33c1c6887fcc7740b1b7afb470a43bfc11d28a2c"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:d1d638be608c2992cf53437af4abd104b9bad53c9d3b7a6fd89ffb5198e3f159",
+      "subject": {
+       "nodes": [
+        "m::A",
+        "m::B"
+       ]
+      },
+      "introduced": false,
+      "severity": "owed",
+      "force": "sound",
+      "tier": "normal",
+      "binding": "bd:87687cf243ba09ea91fff4bfab82c3d6b3ae53ad23f4bb605cc759d7101bce99",
+      "group": "g:fc18e9ae94ec70e67d07289fb2e43d6068a7c9517c418ab880369efa901f14fb"
+     },
+     "why": "A.7.3.3 [D5]: no supporting lifted edge of {A,B} is new (fc2's call stays inside C and lifts to no edge, A.4.4.2), so preexisting; binding = support code fa, fb with no affected finest change (A.7.2.2)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:01bb1b7a263ab54bb036595154f1714cac2722f589d7ce4b113601f131060f68"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.4.4.8: without C->A there is no SCC {A,B,C}"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.4.2 [D3]: call(ts) is unobservable and the tier is not final"
+    },
+    {
+     "in": "preexisting",
+     "select": {
+      "obligation": "ob:b4a8b0bc2d232c9ad369efac33c1c6887fcc7740b1b7afb470a43bfc11d28a2c"
+     },
+     "check": "count",
+     "value": 1,
+     "why": "A.7.7.2: an open non-introduced obligation is listed as preexisting"
+    }
+   ]
+  }
+ ]
+}

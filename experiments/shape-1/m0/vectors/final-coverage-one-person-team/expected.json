@@ -1,0 +1,82 @@
+{
+ "vector": "final-coverage-one-person-team",
+ "title": "Final coverage needs two distinct eligible persons even when claim owner = component owner = a one-person team; bob alone cannot discharge it, bob plus a shape-owner person can",
+ "decides": [
+  "A.6.3.4",
+  "A.7.6.5",
+  "A.7.1.3",
+  "A.7.5.1",
+  "D11"
+ ],
+ "cases": [
+  {
+   "case": "bob-only",
+   "input": "bob-only.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 4: coverage with an unmet final pair blocks until two eligible persons answer"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage",
+      "key": "ob:f99ad91d0fb961864cea647e6188ac9c56b6d243cb026fee5224db411dfce977"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "component audit::AuditStore",
+      "tier": "final",
+      "severity": "blocking",
+      "introduced": true,
+      "owner": "audit::AuditTeam",
+      "binding": "bd:3dc865076264f85eb7774f015024350b63d0aede67ed3156fadb99bcb6b52f6b",
+      "group": "g:653ab42b86f21de0466ca752c96582a4f821db00f82f75f772484cbf10b02053"
+     },
+     "why": "A.4.5.3: purge.sh (on the script list, attributed to AuditStore.* by src/audit/**) is a raw executable carrying pg.table; unmet pairs (AppendOnly forbid, final) and (authority, critical); A.7.4.4 tier final; owner K's base owner AuditTeam"
+    },
+    {
+     "in": "answered",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.6.3.4 [D11]: two distinct persons are needed who together cover the claims' owner* (AuditTeam), K's base owner (AuditTeam) and the base shape owner (Platform); bob alone is one person"
+    }
+   ]
+  },
+  {
+   "case": "bob-and-carol",
+   "input": "bob-and-carol.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.7.6.5: the coverage obligation is discharged and nothing else is open"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.7.5.2: discharged obligations move to answered"
+    },
+    {
+     "in": "answered",
+     "select": {
+      "obligation": "ob:f99ad91d0fb961864cea647e6188ac9c56b6d243cb026fee5224db411dfce977"
+     },
+     "check": "fields",
+     "value": {
+      "as": "discharge"
+     },
+     "why": "A.6.3.4 vector: claim owner = K's owner = the one-person team AuditTeam needs bob and a person of the shape owner; carol (Platform, not an author) is that person"
+    }
+   ]
+  }
+ ]
+}

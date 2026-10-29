@@ -1,0 +1,207 @@
+{
+ "_doc": "M0 errata, input problems, ambiguities and notes, in discovery order. Ambiguities and spec problems are settled before M1 (see m0/REPORT.md).",
+ "items": [
+  {
+   "source": "M0 tooling (hash check)",
+   "kind": "erratum",
+   "file": "experiments/shape-1/spec/vectors/vectors.py",
+   "location": "delta_forbid (Example 1 Variant C; feeds binding ex1.C.forbid, ref ex1.C.forbid, answer subject digest ex1.C bob/carol)",
+   "old": "[\"L1 level %s<audit::AuditEvent> final>%s\" % (a, t) for a in [DropStorage, LogicalDelete, Redact, Truncate] for t in [critical, none]] + [\"L1 level HardDelete<audit::AuditEvent> final>none\", \"L1 level Update<audit::AuditEvent> final>none\"] (10 deltas)",
+   "new": "[\"L1 level %s<audit::AuditEvent> final>%s\" % (a, t) for a in [DropStorage, HardDelete, LogicalDelete, Redact, Truncate, Update] for t in [critical, none]] (12 deltas). Values: binding ex1.C.forbid bd:c5461f6efe0c3685… -> bd:a7514dcb4cfb7068eb51a981fe81680557d8c8d2e219c890c9eb09294d0ae084; ref bd:c5461f6efe0c3685 -> bd:a7514dcb4cfb7068; bob subject digest 42f99c616949bb00… -> sha256:032ab91f227efdd58843dd1c64ba1c1ffb5f82c30731c08f36e9fdc9c23d8314; carol d2b30d796d2ea18e… -> sha256:ee776f8f2ec7de3755051239298b8a0f0a1bb281ba69b060e942e0df8dd0ffdb",
+   "reason": "vectors.py wrong. A.8.2.3 L1: one part per base forbid f, position x and atom a with Lvl_h(x)(a) < tier_b(f), delta 'L1 level <atom> <tier_b>><tier_h>'; deltas are unions over parts (A.8.2.1); A.4.4.7 Lvl includes u's summary when a is not in S(u), and A.8.2.3 / D2 count a unit's own complete summary as protection. Syntax §1: appendEvent has 'effects complete { Append<AuditEvent> }' in AuditStore, tier critical, so in the Variant C head HardDelete and Update at appendEvent are protected only by that summary, at critical. Base AppendOnly had them at final. appendEvent was already listed in affected (a demoted position, A.8.3.2), but its two final>critical parts were missing."
+  },
+  {
+   "source": "M0 tooling (hash check)",
+   "kind": "erratum",
+   "file": "experiments/shape-1/spec/EXAMPLES.md",
+   "location": "Example 1, Variant C, first bullet (line 22)",
+   "old": "fell from final to critical (authority still protects the ungranted ones) or to none (granted atoms; `ungoverned`): `ob:e8ec989a6cf48d9a…`, binding `bd:c5461f6efe0c3685…`, final;",
+   "new": "fell from final to critical (authority still protects the ungranted ones, and `appendEvent`'s summary all six at `appendEvent`) or to none (granted atoms elsewhere; `ungoverned`): `ob:e8ec989a6cf48d9a…`, binding `bd:a7514dcb4cfb7068…`, final;",
+   "reason": "Document wrong, following the first erratum (A.8.2.3 L1, A.4.4.7, D2): granted atoms at appendEvent fall to critical, not none, and the binding hashes the corrected delta (A.7.2.2, A.12.8.6)."
+  },
+  {
+   "source": "M0 tooling (hash check)",
+   "kind": "erratum",
+   "file": "experiments/shape-1/spec/EXAMPLES.md",
+   "location": "Example 1, Variant C, approve lines (line 25)",
+   "old": "Phase 1 prints `shape approve bd:c5461f6efe0c3685 bd:6bca5b3fe0d0787d`; ... carol ... writes `shape approve bd:c5461f6efe0c3685`",
+   "new": "Phase 1 prints `shape approve bd:a7514dcb4cfb7068 bd:6bca5b3fe0d0787d`; ... carol ... writes `shape approve bd:a7514dcb4cfb7068`",
+   "reason": "Document wrong. A ref is bd: plus the first 16 hex of the current binding (A.12.1.6, A.7.6.4); the forbid's binding changed with the first erratum."
+  },
+  {
+   "source": "M0 tooling (hash check)",
+   "kind": "erratum",
+   "file": "experiments/shape-1/spec/ANNEX.md",
+   "location": "A.14.1.8",
+   "old": "about {github:acme/audit#57, [bd:6bca5b3fe0d0787d, bd:c5461f6efe0c3685]}, subject digest 42f99c616949bb00; carol's d2b30d796d2ea18e.",
+   "new": "about {github:acme/audit#57, [bd:6bca5b3fe0d0787d, bd:a7514dcb4cfb7068]}, subject digest 032ab91f227efdd5; carol's ee776f8f2ec7de37.",
+   "reason": "Document wrong. The answer subject digest is H(about) with about.refs sorted (A.12.1.7); the refs and digests follow from the first erratum. This line is outside the registered A.12.11 scope; hexcheck --extras checks it."
+  },
+  {
+   "source": "M0 tooling (hash check)",
+   "kind": "erratum",
+   "file": "experiments/shape-1/spec/vectors/vectors.py",
+   "location": "vector name of kCa",
+   "old": "out[\"key ex1.C.authority (also Variant A)\"] = kCa",
+   "new": "out[\"key ex1.C.authority\"] = kCa",
+   "reason": "vectors.py wrong; this is the one mismatch the first hexcheck run reported. The text names the key only as Variant C's authority loosening. EXAMPLES Variant A: 'L1 is implied, since the final forbid still excludes HardDelete and Update'. A.8.2.3 L1 [D17]: 'an atom gained in A that a forbid still blocks is no part'. So under version 7, Variant A raises no loosening of component AuditStore, and the name carried a version 6 reading. The value is unchanged."
+  },
+  {
+   "source": "M0 tooling (hash check)",
+   "kind": "erratum",
+   "file": "experiments/shape-1/spec/vectors/vectors.py",
+   "location": "no_floats",
+   "old": "descends into dict and list only; asserts isinstance(k, str) for keys",
+   "new": "descends into dict, list and tuple; asserts isinstance(k, str) and k.isascii() for keys",
+   "reason": "vectors.py gap. A.0.4 and the M0 exit require that vectors.py assert no floats. json.dumps serialises tuples as arrays, but the assertion skipped them, so a tuple-held float would have been hashed unchecked. The docstring's json.dumps(sort_keys) = RFC 8785 equivalence needs ASCII keys (JCS sorts by UTF-16 code units), and nothing asserted that. No current hashed value had either form: no printed value changes and vectors.json is byte-identical."
+  },
+  {
+   "source": "adjudicate vectors-A",
+   "kind": "input problem",
+   "item": "input:provider-direction (no-provider-edit, drop-presence, drop-absence): RJ14",
+   "decision": "blind",
+   "reading": "A.12.6 RJ14 ('an effect fact without n from a presence-sound observer'); A.5.2.1; A.12.5.2; A.12.8.4; RECORDS §2 and §3 (Example 1's fact carries n: 1); RFC D15. A.5.2.13: rejected records do not count as supplied, so the unfixed input would also have raised E-provider-missing.",
+   "annex_wording": "",
+   "ambiguity": false
+  },
+  {
+   "source": "adjudicate vectors-A",
+   "kind": "input problem",
+   "item": "input:undeclared-hatch-kind/undeclared-kind-in-boundary (marker kind eslint_disable)",
+   "decision": "author",
+   "reading": "A.3.4.5 defines the lift to Undeclared<Trust> only for registry kinds. Syntax §4 std declares every kind A.12.2.8 lists (11 kinds; Example 2 counts twelve forbids), so a std-importing shape cannot leave a registry 1.0 kind undeclared, and imports are all-or-nothing (syntax §2 File ::= … ('import' QName)*). A.3.4.4 and A.12.2.8 say what a conforming builder counts, A.12.7.5 lists the conditions that make a manifest invalid and does not include unknown marker kinds, and A.10.1 E-unknown covers shape text only. The text therefore does not decide a non-registry marker. RFC D1 makes Undeclared a fail-closed catch-all, and with std 1.0 that clause can only ever see kinds std does not declare, for example kinds a later registry adds. Lifting to Undeclared<Trust> is the reading most consistent with D1.",
+   "annex_wording": "A.3.4.5 (add): \"A manifest marker whose kind the shape does not declare for the identity's language, including a kind outside the checker's registry version, lifts to Undeclared<Trust>; it is never dropped and never makes the manifest invalid. With std 1.0 and registry 1.0 every registry kind is declared, so the Undeclared clause sees only such kinds. Vector: a ts marker of a kind std does not declare, inside a boundary allowing ts_ignore, raises one sound contradiction against effect.forbid(Undeclared<std::Trust>, [*], []).\"",
+   "ambiguity": true
+  },
+  {
+   "source": "adjudicate vectors-A",
+   "kind": "input problem",
+   "item": "input:all vectors-A (shape.source.v1 stand-in instead of RECORDS §4 files/commit/packs/trustRoots; unsigned bare manifests)",
+   "decision": "neither",
+   "reading": "RECORDS §4 and A.12.7.1 define the input as files [{path, text}] plus commit, packs and trustRoots, and the vectors-A inputs do not conform to that. The same stand-in is used by spec/example-inputs, by m0/golden/inputs, and by m0/vectors/check.ts, whose kernel route requires head.source (FORMAT.md). Unsigned manifests are allowed when the base names no manifest identity (A.5.2.17: health lists them as unauthenticated). Rewriting 27 vectors here would split them from the golden set and the runner. This is a programme-level deviation that M0 sign-off has to accept, or that M1 has to cover with a converter. It is not a defect of these vectors.",
+   "annex_wording": "Not annex: add to m0/vectors/FORMAT.md: \"Inputs use the prototype's shape.source.v1 stand-in (head/base.source, no commit, packs or trustRoots). A version 7 checker is run on them through the stand-in reader, or through a converter to RECORDS §4 files that M1 supplies; the stand-in carries no meaning beyond records §4.\"",
+   "ambiguity": false
+  },
+  {
+   "source": "adjudicate vectors-A",
+   "kind": "input problem",
+   "item": "input:claim judgments supplied in records (barrel-import, guard-helper-edit, preview-equals-change, approve-without-exception, allowed-hatch-at-boundary)",
+   "decision": "neither",
+   "reading": "No RJ rule rejects a judgment in records, and RJ11 restricts only persisted records. RJ07 names an 'unsigned judgment' separately from a 'persisted record'. A.6.3.3 refers to judgments 'that the relay produced in this run'. A.5.3.5 and A.5.4 do not depend on persistence. D28 and A.7.6.8 concern review lines without a relay, which make no judgment. Neither D28's 'always a persisted record' nor A.7.6.3's 'committed as conforming record files' says whether phase 2 reads those files through records or through persisted.head, so the text leaves room for the strict reading the blind agent raised. Reading persisted records only would change Example 2's golden output.",
+   "annex_wording": "A.12.7.1 (add): \"records may hold claim judgments signed by their judge or by a base-declared relay; they are validated (RJ01-RJ10, RJ12-RJ14) and evaluated exactly as the same statement in persisted.head would be. D28 concerns review lines only: a shape judge or shape reject line without a relay makes no judgment.\"",
+   "ambiguity": true
+  },
+  {
+   "source": "adjudicate vectors-A",
+   "kind": "input fix",
+   "file": "/home/user/shapelang/experiments/shape-1/m0/vectors/provider-direction/no-provider-edit.input.json",
+   "change": "records[0] (audit::sqlEffects observation): \"n\": 1 added to both effect facts (HardDelete at purge.ts#purgeOldEvents, Append at store.ts#appendEvent) and DSSE re-signed with signerFromSeed(\"01\"), keyid 4cb5abf6ad79fbf5…, the provider's base identity. Record id sha256:358a637db4da2c29db18078fddc9a66bb4783251249669e1d9f87328dc4ff449 becomes sha256:85b714f74c48f471180badd032a50189cb367b8655271cc5a65255e5b91c5a78. The diff touches only lines 376 (payload) and 380 (sig); the scope root and subjects are unchanged. New file sha256 c5d3569a683e807dc6e43f0f6b77930eead35bc78cca90054bfc62fc8328dc76.",
+   "reason": "A.12.6 RJ14 / A.5.2.1 / A.12.5.2 [D15]: sqlEffects is presence-sound in the base, so an effect fact without n gets the record rejected, and the vector could not exercise A.14.1.5"
+  },
+  {
+   "source": "adjudicate vectors-A",
+   "kind": "input fix",
+   "file": "/home/user/shapelang/experiments/shape-1/m0/vectors/provider-direction/drop-presence.input.json",
+   "change": "Same edit to records[0], with the same new record id sha256:85b714f74c48f471…. New file sha256 618d18453d0953812372e81458fb8198817dcc9a89e28706188eda76effcf358.",
+   "reason": "Same as above (RJ14 [D15])"
+  },
+  {
+   "source": "adjudicate vectors-A",
+   "kind": "input fix",
+   "file": "/home/user/shapelang/experiments/shape-1/m0/vectors/provider-direction/drop-absence.input.json",
+   "change": "Same edit to records[0], with the same new record id sha256:85b714f74c48f471…. New file sha256 495ecc7416338b0efb28fd7260932475e105a1c4dfb1ebe6caf544bc88eb6de7.",
+   "reason": "Same as above (RJ14 [D15])"
+  },
+  {
+   "source": "adjudicate vectors-B",
+   "kind": "ambiguity",
+   "item": "hosted-closure-weakened/closure-moved/2",
+   "reading": "A.8.3.1 (second clause) with A.8.3.2 (L4: affected = Req identities, counterexample none, channels none); A.8.2.1-2 and A.4.1.3 (part tier = subject tier_b = critical, inherited from DelegationMap); A.9.5 (DefaultPolicy critical blocks coverage); A.6.1.5 (set is in Δcode and is a finest change: unit, closure, contract and own digests all moved); A.5.6.4, A.4.3.8, A.8.2.3 [D13] (no heir, so undecided). The meaning of '(none: all count)' is recorded in spec/CRITIC_DECISIONS.md #56 (minimality-r2-EM2-8): 'channel-less questions treating every such identity as uncovered'. #112 and #123 add: 'unknown use counts where the tier blocks coverage'.",
+   "annex_wording": "A.8.3.1 Exploited iff the counterexample is realised (a head-world fact or a W_eval path), or the tier blocks coverage (or is final) and an affected changed identity is uncovered on the question's channels observable by A.4.5.6. A question with no channels (L4) counts every affected changed identity as uncovered, whether or not it has a coverage need; A.7.4.5's vacuous coverage does not apply, since unknown use counts as use."
+  },
+  {
+   "source": "adjudicate h4",
+   "kind": "ambiguity",
+   "item": "renamed_component_and_narrowed_rule",
+   "reading": "A.8.1.3 (silent on combining); A.8.1.6; A.6.1.4; A.5.6.4; A.8.4.2; A.8.3.1; RFC D17 (reverse pass gives the class, evidence 30/33 under the H4 class rule); A.8.6; ROADMAP M5 H4′ (≤ 2 abstentions, renames without was)",
+   "annex_wording": "Add to A.8.1.3: 'A pass answers loosened if any of its parts is loosened, else undecided if any part is undecided, else implied. The class is undecided when the forward pass is undecided. Otherwise it is looser (forward loosened, reverse not loosened), incomparable (both loosened), tighter (forward implied, reverse loosened) or equivalent (forward implied, reverse not loosened). A reverse part that is undecided under A.8.1.6 never makes the head tighter; its diagnostic suggests the was line.'"
+  },
+  {
+   "source": "adjudicate h4",
+   "kind": "ambiguity",
+   "item": "trait_removed_from_resource",
+   "reading": "A.11.1(e) (silent on where 'at tier final' is written); A.4.1.3 (std templates carry no tier; attachments take no claim meta, syntax §2); A.11.1 preamble and D19 (mints nothing 0.x did not enforce); A.8.2.3 L1 and L7; D18; A.8.3.1; A.7.5.1 rule 4; consistent with Example 1 Variant C (forbid part, no L7)",
+   "annex_wording": "Add to A.11.1(e): 'The tier that forbid final or the prelude AppendOnly yields belongs to the migrated claim and is never written on the bearer. A local template keeps the clause as forbid final. Where the clause cannot carry the tier (a std template, A.4.1.3, or a tier lowered to critical), migrate writes the attachment as a rule, e.g. `rule Revision_NoHardDelete = std::NoHardDelete<Revision> { owner <Revision's owner> tier final }`, and reports the rewrite. A migrated resource or component keeps its 0.x tier (normal, or critical when sensitive). Dropping such a trait is therefore one L1 part on the forbid at its base tier and no L7 tier part.'"
+  },
+  {
+   "source": "adjudicate h4",
+   "kind": "ambiguity",
+   "item": "guard-policy-removal",
+   "reading": "A.11.1(e); A.4.1.3; D19; A.8.1.4; A.8.2.3 L1 and L7; A.8.3.1; A.7.5.1 rule 4",
+   "annex_wording": "Same A.11.1(e) sentence as for trait_removed_from_resource: the migrated tier belongs to the claim (a rule form for std templates), never to the bearer, so no L7 tier part arises."
+  },
+  {
+   "source": "adjudicate h4",
+   "kind": "ambiguity",
+   "item": "cal1-removal-destructive",
+   "reading": "A.11.1(a),(d),(e); A.4.1.3; D19; A.8.2.3 L1 and L7; A.4.4.4; A.8.3.1; A.7.5.1 rule 4",
+   "annex_wording": "Same A.11.1(e) sentence as for trait_removed_from_resource."
+  },
+  {
+   "source": "adjudicate h4",
+   "kind": "ambiguity",
+   "item": "cal2-supported-loosening",
+   "reading": "A.11.1(e),(g); A.4.1.3; A.4.7.2; A.8.2.3 L1 and L7; A.8.3.1; A.7.5.1 rule 4",
+   "annex_wording": "Same A.11.1(e) sentence as for trait_removed_from_resource."
+  },
+  {
+   "source": "adjudicate h2",
+   "kind": "ambiguity",
+   "item": "S07/A",
+   "reading": "A.4.4.11 ('Supports decide introduced'; cycle support = facts of K-edges in the SCC); A.7.3.1; A.7.3.3 [D5]; core §7.3; A.4.4.13; A.7.5.1 rule 7; RFC D5; ROADMAP M5 H2′ (the 11 arm-A drifts unflagged by construction exclude S07 and S08)",
+   "annex_wording": "A.7.3.3, replace 'a structure contradiction whose witness needs a new lifted edge [D5]' with: 'a structure contradiction whose support (A.4.4.11) holds a new lifted edge (one all of whose supporting facts are new). This holds even when its subject key existed at base or its canonical witness avoids that edge: an edge added inside an existing SCC, or on an off-path cycle in a path forbid's support, introduces; a new call along an existing lifted edge, or one lifting to no edge, does not [D5].' Make the same edit in core §7.3 ('its support holds a new lifted edge')."
+  },
+  {
+   "source": "adjudicate h2",
+   "kind": "ambiguity",
+   "item": "S08/A",
+   "reading": "A.4.4.11; A.7.3.1; A.7.3.3 [D5]; core §7.3; A.4.4.13; A.7.5.1 rules 7 and 9; A.5.3.4 [D4]; RFC D5; ROADMAP M5 H2′",
+   "annex_wording": "Same as S07/A: in A.7.3.3 (and core §7.3) read 'whose support (A.4.4.11) holds a new lifted edge (all its supporting facts new), even when the subject key existed at base or the canonical witness avoids that edge; an edge added inside an existing SCC introduces, a new call along an existing lifted edge does not [D5]'."
+  },
+  {
+   "source": "author golden",
+   "kind": "EXAMPLES.md note",
+   "text": "No value disagrees. Of the 43 distinct 16-hex values in spec/EXAMPLES.md, 42 appear in the goldens of the scenarios they describe. The 43rd, external_body 9dbce5edea4f3d2e, appears in none, which is correct: that clause raises nothing (A.14.2.6). Of A.14's 17 values, 032ab91f227efdd5 and ee776f8f2ec7de37 are the subject digests of the ex1-C-answered relay records and match. The others are input digests, or values no input carries: the non-representative call facts 2b03bf…/3aae2a…, the equivalence record b94ba363…/5f0d0c1e…, and the retired Hatch clause dc8454f2…."
+  },
+  {
+   "source": "author golden",
+   "kind": "EXAMPLES.md note",
+   "text": "Example 3 Step 1 says one judge line 'makes the relay commit a judgment; the next run passes', but neither the Step 1 shape nor the v6 input declares a relay. Under D28 (A.7.6.8) that line would be unrecorded and the run would stay owed. The example text is right: A.11.5's acceptance test expects 'one persisted judgment, then pass'. So the input was changed to declare tooling::reviews and carry its claim judgment."
+  },
+  {
+   "source": "author golden",
+   "kind": "EXAMPLES.md note",
+   "text": "Example 1's base is syntax §1, whose fastCheck implementation binds pkgjson(\"package.json#scripts.test\"). A.14.1.1 says the base package.json has no scripts, so that identity would not exist. The inputs keep v6's implementation paths. No output depends on this, because package.json and bun.lock never change, but the text should reconcile the two."
+  },
+  {
+   "source": "author golden",
+   "kind": "EXAMPLES.md note",
+   "text": "'Empty base: owed' (Example 1, and A.11.5 'empty base on syntax §1: owed') against the literal L7 rule in A.8.2.3. The head names a manifest identity that the empty base lacks. Read literally, 'undecided iff … the manifest identity changed' gives an undecided L7 on subject shape at critical, which DefaultPolicy blocks. The golden follows EXAMPLES and A.11.5, reading D18's 'skips what an empty base cannot say' as covering every field of the missing shape declaration. The normative L7 text exempts only owners and should say this."
+  },
+  {
+   "source": "author golden",
+   "kind": "EXAMPLES.md note",
+   "text": "Variant B: EXAMPLES says only 'authority a cause', and v6 printed 4 causes. A.14.1.3 lists 5, the last being 'AppendOnly (tier final; Lvl_b final at AuditStore.*)'. The golden follows A.14.1.3 and adds the forbid claim as the root cause."
+  },
+  {
+   "source": "author golden",
+   "kind": "EXAMPLES.md note",
+   "text": "Variant C prints the phase-1 line as 'shape approve bd:a7514dcb4cfb7068 bd:6bca5b3fe0d0787d', which is not codepoint order, while A.14.1.8 sorts about.refs. This is cosmetic: command is not core output, and the relayed records use the sorted order."
+  },
+  {
+   "source": "author golden",
+   "kind": "EXAMPLES.md note",
+   "text": "'After Step 2: a refactor of isoToday is covered by tsClockScan and raises no judgment obligation' is not exercised by any input. In the ex3-step2 inputs RefactorSensitive is still attached, so a refactor would stale ann's judgment and raise unestablished(stale), a judgment-class obligation. The sentence holds only if Step 2 includes the RefactorSensitive removal; the text should say so."
+  }
+ ]
+}

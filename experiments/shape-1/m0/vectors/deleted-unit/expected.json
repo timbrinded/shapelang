@@ -1,0 +1,112 @@
+{
+ "vector": "deleted-unit",
+ "title": "Deleting a bound file together with its unit gives a defined verdict (pass, or an L4 question when a law on the unit is removed), while keeping the unit is a head E-unbound",
+ "decides": [
+  "A.6.4.3",
+  "A.6.4.6",
+  "A.8.2.3",
+  "A.0.7"
+ ],
+ "cases": [
+  {
+   "case": "file-and-unit-deleted",
+   "input": "file-and-unit-deleted.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.6.4.6: deleted bound file and unit give a defined verdict, here pass"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.6.4.1: nothing in the base errors; the head has no unit left to bind"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.6.4.3: the base unit's binding resolves over M_h to ∅ (identity and file gone), so its summary protects no position and L1 has no part (A.8.2.3); L2 is retired (A.0.7)"
+    },
+    {
+     "in": "loosening",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.8.2.3: summaries are decided by L1 only"
+    }
+   ]
+  },
+  {
+   "case": "file-deleted-unit-kept",
+   "input": "file-deleted-unit-kept.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 1"
+    },
+    {
+     "in": "errors",
+     "select": {
+      "code": "E-unbound"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "unit m::K.u"
+     },
+     "why": "A.3.3.2: the head keeps unit u with no identity named u; A.15.1 subject"
+    }
+   ]
+  },
+  {
+   "case": "file-unit-and-law-deleted",
+   "input": "file-unit-and-law-deleted.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: latent loosening at normal"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:75b618c791e1b6728812f0de5344b775c6d15f42229dac06759bc3035c6020cd"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "loosening",
+      "subject": "sha256:dd4356b552f7357d5a5a92dab7985c0f46a227d739c227a6fb56008bc3a130d7",
+      "questions": [
+       "L4"
+      ],
+      "severity": "blocking",
+      "tier": "normal",
+      "introduced": true,
+      "exploited": false,
+      "binding": "bd:44d1baaeecd5231b1f62033408a84431cd817d23c57f3db83745e3cde7f7edd1"
+     },
+     "why": "A.8.2.3 L4: a removed law is loosened; A.8.3.2: L4 affected = Req identities, empty because the base binding resolves to ∅ (A.6.4.3); delta 'L4 removed' (A.12.8.7)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "loosening"
+     },
+     "check": "count",
+     "value": 1,
+     "why": "L2 is retired (A.0.7): the removed summary raises no part"
+    }
+   ]
+  }
+ ]
+}

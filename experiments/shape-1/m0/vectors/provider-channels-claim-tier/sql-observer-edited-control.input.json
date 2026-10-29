@@ -1,0 +1,523 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "prov",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/prov.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Prov",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "ann",
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "EngineTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "ann",
+       "kind": "person",
+       "identities": [
+        "github(\"ann\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "Clock",
+       "bind": [
+        "ts.call(\"Date.now\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "Orders",
+       "bind": [
+        "pg.table(\"orders\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Engine",
+       "owner": "EngineTeam",
+       "paths": [
+        "src/engine/**"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "NoClock",
+       "owner": "EngineTeam",
+       "tier": "low",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "Read<Clock>",
+         "within": [
+          "component Engine"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "OrdersKept",
+       "owner": "EngineTeam",
+       "tier": "final",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "HardDelete<Orders>"
+        }
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "clockScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(ts.call(\"Date.now\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "implementation": {
+        "digest": "sha256:c5d7ffeba09400428f912baf9b23efd4a36bf6d77a2619ec458ae1da8a755582"
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "sqlScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(pg.table(\"*\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "depsComplete": true,
+       "implementation": {
+        "digest": "sha256:4c813c01b83496db2dd2886fb04f27c8226bf2286d916e49b6531ef07e5a2dc8"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "2f46e0eddc6d8098db263f5c23bb9ad74dc6b3e8ecca8bd7fffde5442cc0951b"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/prov.shape",
+       "mode": "100644",
+       "blob": "9a72ce84d09422e8582d77448cdbfb5a618106ed"
+      },
+      {
+       "path": "src/engine/run.ts",
+       "mode": "100644",
+       "blob": "3323bbf6ca96224912b009dca37ed6d2a4ad45a8"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/engine/run.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:8377c2a02d50e7b927dd9532a2297401deb7c8f55950a73c54ec3892794758c7",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/run.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:de25a0cc8e58421c0dc2d539631091d9a71eae08df11225d6a66eec8ac9dd85e",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/run.ts#run",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:58ae7236bbe7ae2d3de13a72b1a07dd8ae959a4fa4b35c6ee7f11c5a44336e25",
+       "kind": "function",
+       "parent": "ts:src/engine/run.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/run.ts#run",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:24d39df0213b6f499a3ddafccf0b6c6d7ee3adbe01e2cb0b97b4758d7cb3b74c",
+       "kind": "function",
+       "parent": "ts:src/engine/run.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "prov",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/prov.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Prov",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "ann",
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "EngineTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "ann",
+       "kind": "person",
+       "identities": [
+        "github(\"ann\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "Clock",
+       "bind": [
+        "ts.call(\"Date.now\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "Orders",
+       "bind": [
+        "pg.table(\"orders\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Engine",
+       "owner": "EngineTeam",
+       "paths": [
+        "src/engine/**"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "NoClock",
+       "owner": "EngineTeam",
+       "tier": "low",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "Read<Clock>",
+         "within": [
+          "component Engine"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "OrdersKept",
+       "owner": "EngineTeam",
+       "tier": "final",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "HardDelete<Orders>"
+        }
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "clockScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(ts.call(\"Date.now\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "implementation": {
+        "digest": "sha256:c5d7ffeba09400428f912baf9b23efd4a36bf6d77a2619ec458ae1da8a755582"
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "sqlScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(pg.table(\"*\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "implementation": {
+        "digest": "sha256:4c813c01b83496db2dd2886fb04f27c8226bf2286d916e49b6531ef07e5a2dc8"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "0d67f1cf3860af7c1f47ea988b061921cfbe94bdfabfd65c8ec01754ca7c880d"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/prov.shape",
+       "mode": "100644",
+       "blob": "61fbcc9b740f9410442d8e022e692be24a6e7d0d"
+      },
+      {
+       "path": "src/engine/run.ts",
+       "mode": "100644",
+       "blob": "3323bbf6ca96224912b009dca37ed6d2a4ad45a8"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/engine/run.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:8377c2a02d50e7b927dd9532a2297401deb7c8f55950a73c54ec3892794758c7",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/run.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:de25a0cc8e58421c0dc2d539631091d9a71eae08df11225d6a66eec8ac9dd85e",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/run.ts#run",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:58ae7236bbe7ae2d3de13a72b1a07dd8ae959a4fa4b35c6ee7f11c5a44336e25",
+       "kind": "function",
+       "parent": "ts:src/engine/run.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/run.ts#run",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:24d39df0213b6f499a3ddafccf0b6c6d7ee3adbe01e2cb0b97b4758d7cb3b74c",
+       "kind": "function",
+       "parent": "ts:src/engine/run.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"acme-code-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

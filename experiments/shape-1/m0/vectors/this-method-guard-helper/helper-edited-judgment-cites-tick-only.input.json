@@ -1,0 +1,537 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "cli",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/cli.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "CliShape",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "CliTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"bf544b7d3acc4628bfe6335e63e07e5806482086f0b6488e744d7ac586466b15\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Cli",
+       "owner": "CliTeam",
+       "tier": "critical",
+       "paths": [
+        "src/cli/**"
+       ],
+       "units": [
+        {
+         "name": "tick",
+         "bind": "ts(\"src/cli/clock.ts#Clock.tick\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "TickGuard",
+       "on": [
+        "unit Cli.tick"
+       ],
+       "informal": "tick renders the time only through Clock.format."
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "516ad7d0ffadcebb3889d505465a8800cb9b0509c402be11c3d3ba389491df1b"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/cli.shape",
+       "mode": "100644",
+       "blob": "b4f1e83fe8207f050febf40a071bdf430b6f3c03"
+      },
+      {
+       "path": "src/cli/clock.ts",
+       "mode": "100644",
+       "blob": "6dc01d27aaffcadbb476f3691acb3a30f34eea1f"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/cli/clock.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:1d5371942529f93ca41f14f9ddf659fe95953888f74cfdeb917e4bcb96844abc",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:85d89b073bbefe634090e621b24bd60a9727895718d4027a869f023b845a007e",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:45ea73c7fb2dc5a660a851cdcd6479dc227b2bb9290025f56de0f023ebda0986",
+       "kind": "class",
+       "parent": "ts:src/cli/clock.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:1c16f26bae931fdfc824e38a4db5dd7833b4f6c715b4a14564d0da0b49cf0469",
+       "kind": "class",
+       "parent": "ts:src/cli/clock.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock.format",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:f7b5d29bfbb7125f6b89f863551981ea2317e09575029f3f94a6085b3f1a4414",
+       "kind": "method",
+       "parent": "ts:src/cli/clock.ts#Clock",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock.format",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:77f286cc75ee2d920592fda28a34b45c81feb06589e0f8b0bf34f0f5c94ae262",
+       "kind": "method",
+       "parent": "ts:src/cli/clock.ts#Clock",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock.parse",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:5e078c0cb3a2a3ad1ab122a7b42373014db55e55bb9e8f25a464b5ecff059136",
+       "kind": "method",
+       "parent": "ts:src/cli/clock.ts#Clock",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock.parse",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:042eb11f2361d9c2d74961915423f1a6255e2098f415ddb3972d4acd6802f58b",
+       "kind": "method",
+       "parent": "ts:src/cli/clock.ts#Clock",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock.tick",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:4bb16d9f30fb16c5ab900e8ce3a6ec5a016e1562d724e74398aa5479690026ba",
+       "kind": "method",
+       "parent": "ts:src/cli/clock.ts#Clock",
+       "refs": [
+        "ts:src/cli/clock.ts#Clock.format"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock.tick",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:6237d4a1f47987233d1a6142998b1c2af34b9c6d5f7bdbc0f0b04f484cce3791",
+       "kind": "method",
+       "parent": "ts:src/cli/clock.ts#Clock",
+       "refs": [
+        "ts:src/cli/clock.ts#Clock.format"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "cli",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/cli.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "CliShape",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "CliTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"bf544b7d3acc4628bfe6335e63e07e5806482086f0b6488e744d7ac586466b15\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Cli",
+       "owner": "CliTeam",
+       "tier": "critical",
+       "paths": [
+        "src/cli/**"
+       ],
+       "units": [
+        {
+         "name": "tick",
+         "bind": "ts(\"src/cli/clock.ts#Clock.tick\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "TickGuard",
+       "on": [
+        "unit Cli.tick"
+       ],
+       "informal": "tick renders the time only through Clock.format."
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "d5fbc6a7349418bc2c2f6673498f907efc7dcd7f3caf0afc79c3c42b7ffd6044"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/cli.shape",
+       "mode": "100644",
+       "blob": "b4f1e83fe8207f050febf40a071bdf430b6f3c03"
+      },
+      {
+       "path": "src/cli/clock.ts",
+       "mode": "100644",
+       "blob": "6dc01d27aaffcadbb476f3691acb3a30f34eea1f"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/cli/clock.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:d23a50d1a2fbc08d30cc09d06f9368b927cf8432fd543f959ff26ee67589f082",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:85d89b073bbefe634090e621b24bd60a9727895718d4027a869f023b845a007e",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:45ea73c7fb2dc5a660a851cdcd6479dc227b2bb9290025f56de0f023ebda0986",
+       "kind": "class",
+       "parent": "ts:src/cli/clock.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:1c16f26bae931fdfc824e38a4db5dd7833b4f6c715b4a14564d0da0b49cf0469",
+       "kind": "class",
+       "parent": "ts:src/cli/clock.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock.format",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:7dba61d6ce62ba4be7f5dd9ac9cc913f486822d423455f53dc2eefe60eebb7cb",
+       "kind": "method",
+       "parent": "ts:src/cli/clock.ts#Clock",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock.format",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:ce62e03ed316c1177c342944c5423c30d7d9aebd9e37f9785c84887775d5e5f6",
+       "kind": "method",
+       "parent": "ts:src/cli/clock.ts#Clock",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock.parse",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:5e078c0cb3a2a3ad1ab122a7b42373014db55e55bb9e8f25a464b5ecff059136",
+       "kind": "method",
+       "parent": "ts:src/cli/clock.ts#Clock",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock.parse",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:042eb11f2361d9c2d74961915423f1a6255e2098f415ddb3972d4acd6802f58b",
+       "kind": "method",
+       "parent": "ts:src/cli/clock.ts#Clock",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock.tick",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:4bb16d9f30fb16c5ab900e8ce3a6ec5a016e1562d724e74398aa5479690026ba",
+       "kind": "method",
+       "parent": "ts:src/cli/clock.ts#Clock",
+       "refs": [
+        "ts:src/cli/clock.ts#Clock.format"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/clock.ts#Clock.tick",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:6237d4a1f47987233d1a6142998b1c2af34b9c6d5f7bdbc0f0b04f484cce3791",
+       "kind": "method",
+       "parent": "ts:src/cli/clock.ts#Clock",
+       "refs": [
+        "ts:src/cli/clock.ts#Clock.format"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"acme-code-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfU1VQUE9SVFMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJqdWRnbWVudCJ9fV0sInNoYXBlIjp7ImNsYWltIjp7ImZwIjoic2hhMjU2OjgxMGZkNWYxOGQyYmE5ZDQzMTk0ZDgwMjdjMGUxYmNiZDY4NjFhOGJmMjgxMjNjNTY1ZDJhYmMwZTAxODJiNDIiLCJpZCI6ImNsaTo6VGlja0d1YXJkIn0sImNvZGUiOlt7ImRpZ2VzdCI6InNoYTI1Njo2MjM3ZDRhMWY0Nzk4NzIzM2QxYTYxNDI5OThiMWMyYWYzNGI5YzZkNWY3YmRiYzBmMGIwNGY0ODRjY2UzNzkxIiwiaWQiOiJ0czpzcmMvY2xpL2Nsb2NrLnRzI0Nsb2NrLnRpY2siLCJwcm9qZWN0aW9uIjoidW5pdCIsInNjaGVtZSI6InRzLnVuaXQudjIifV0sImp1ZGdlIjoiY2xpOjpib2IiLCJraW5kIjoianVkZ21lbnQiLCJwcm92aWRlciI6bnVsbCwicmVzdWx0Ijoic3VwcG9ydHMiLCJyZXZpc2lvbiI6IjExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTEiLCJ0aW1lIjoiMjAyNi0xMC0wMVQwOTowMDowMFoiLCJ2Ijoic2hhcGUuZXZpZGVuY2UudjEifX0sInByZWRpY2F0ZVR5cGUiOiJodHRwczovL2luLXRvdG8uaW8vYXR0ZXN0YXRpb24vc2NhaS9hdHRyaWJ1dGUtcmVwb3J0L3YwLjMiLCJzdWJqZWN0IjpbeyJkaWdlc3QiOnsic2hhMjU2IjoiODEwZmQ1ZjE4ZDJiYTlkNDMxOTRkODAyN2MwZTFiY2JkNjg2MWE4YmYyODEyM2M1NjVkMmFiYzBlMDE4MmI0MiJ9LCJuYW1lIjoic2hhcGU6Y2xhaW0vY2xpOjpUaWNrR3VhcmQifSx7ImFubm90YXRpb25zIjp7InNoYXBlLnNjaGVtZSI6InRzLnVuaXQudjIifSwiZGlnZXN0Ijp7InNoYTI1NiI6IjYyMzdkNGExZjQ3OTg3MjMzZDFhNjE0Mjk5OGIxYzJhZjM0YjljNmQ1ZjdiZGJjMGYwYjA0ZjQ4NGNjZTM3OTEifSwibmFtZSI6InNoYXBlOmNvZGUvdHM6c3JjL2NsaS9jbG9jay50cyNDbG9jay50aWNrQHVuaXQifV19",
+   "signatures": [
+    {
+     "keyid": "bf544b7d3acc4628bfe6335e63e07e5806482086f0b6488e744d7ac586466b15",
+     "sig": "cug80UGVLPQFjshDaoapcYZP88WR/TVLwSakSFZ8D+MN7sPT/2LVSFBHFLxz+ff1jofA5Xn1RkGa0gG0ro2yBA=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

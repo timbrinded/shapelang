@@ -1,0 +1,530 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Owners"
+      },
+      {
+       "decl": "actor",
+       "name": "Owners",
+       "kind": "team",
+       "members": [
+        "alice",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")",
+        "ed25519(\"a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "devAgent",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"dev-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Kv",
+       "paths": [
+        "src/**/*.rs"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "NoHatches",
+       "template": {
+        "name": "HatchesStayAtBoundaries",
+        "args": []
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "61c3d044c590b55524768817788cdfedf8f9323580de6a3cf9b62f9542c2087c"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "da698408829a99fe313d784495f8deb23e6ee4c5"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "03ec90325452e1525253d9e5316f2e198f14b62f"
+      },
+      {
+       "path": "src/kv.rs",
+       "mode": "100644",
+       "blob": "1de719eb6015f242cfae8fecde9662f10b763869"
+      }
+     ],
+     "entries": [
+      {
+       "id": "verus:src/kv.rs",
+       "projection": "file",
+       "scheme": "verus.file.v1",
+       "digest": "sha256:e423f21ca591a38ddd01c3dab9ede1bd43b467b12950b10c109af26590ed76d6",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/kv.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:2793f697b6ec63d4ab3174fe76146100a9fb12027aa251818df9498b69ede997",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::get",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:170654739213d963e77c4fe6adf617b42a4e70ca25758bedd6ada683e56fef9b",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "external_body": 1
+       }
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::get",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:0ba79e073474ea545c905ef9142941a7c1480fba53e6631f490f58f72c638c89",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "external_body": 1
+       }
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::get",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:3b7dc3cd5b4594292c103167f919d1b86f76fe0f7fe6ebac1de9a6953508e998",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "external_body": 1
+       }
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::get",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:7d437a312feda87880ae3c11f9778b65fb84d3167851487598ab4b5cc444e017",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "external_body": 1
+       }
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::put",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:33d9661554fa30109b3795ebc53fb42b6a97bd2cbb33327406d74f50a8dd1ca4",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::put",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:454b105ef95f53036078fbb497a048c1019bdd0eb1e015ec39bb5f356275ea4d",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::put",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:29d2952b4aedc30636f19d2523080c90a6e719094973f060edde7194b72b8127",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::put",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:332edbd00c5dcdce75b0d2625ad4b59d1c72f99ad93d7a12c63fc296143350d4",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Owners"
+      },
+      {
+       "decl": "actor",
+       "name": "Owners",
+       "kind": "team",
+       "members": [
+        "alice",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")",
+        "ed25519(\"a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "devAgent",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"dev-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Kv",
+       "paths": [
+        "src/**/*.rs"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "NoHatches",
+       "template": {
+        "name": "HatchesStayAtBoundaries",
+        "args": []
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "593b605241fa577b88072859637124546e01f79f7addbc5e459eb912c11dfbf1"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "da698408829a99fe313d784495f8deb23e6ee4c5"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "03ec90325452e1525253d9e5316f2e198f14b62f"
+      },
+      {
+       "path": "src/kv.rs",
+       "mode": "100644",
+       "blob": "4620efa655e79ccac97952c0718bfd3ca8d92291"
+      }
+     ],
+     "entries": [
+      {
+       "id": "verus:src/kv.rs",
+       "projection": "file",
+       "scheme": "verus.file.v1",
+       "digest": "sha256:c5c03481d2c02ec113c373fb35b9d5ad908910ab19af03ed05fd4094444e836f",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/kv.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:2793f697b6ec63d4ab3174fe76146100a9fb12027aa251818df9498b69ede997",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::get",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:170654739213d963e77c4fe6adf617b42a4e70ca25758bedd6ada683e56fef9b",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "external_body": 1
+       }
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::get",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:0ba79e073474ea545c905ef9142941a7c1480fba53e6631f490f58f72c638c89",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "external_body": 1
+       }
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::get",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:3b7dc3cd5b4594292c103167f919d1b86f76fe0f7fe6ebac1de9a6953508e998",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "external_body": 1
+       }
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::get",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:7d437a312feda87880ae3c11f9778b65fb84d3167851487598ab4b5cc444e017",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "external_body": 1
+       }
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::put",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:33d9661554fa30109b3795ebc53fb42b6a97bd2cbb33327406d74f50a8dd1ca4",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::put",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:454b105ef95f53036078fbb497a048c1019bdd0eb1e015ec39bb5f356275ea4d",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::put",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:f29a2cae82611465939bc3354f17154d5772fb3679948cbb1f82f8846f4e866c",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/kv.rs#Kv::put",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:9a6e416342d6729ec31d12244691c890e3b2ea9222a7fb07950dc796ca606254",
+       "kind": "function",
+       "parent": "verus:src/kv.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/app#7"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"dev-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

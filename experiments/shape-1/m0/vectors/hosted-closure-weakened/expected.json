@@ -1,0 +1,99 @@
+{
+ "vector": "hosted-closure-weakened",
+ "title": "A hosted law whose statement closure digest moved has no heir, so L4 is undecided even when a fresh proof establishes the head law",
+ "decides": [
+  "A.5.6.4",
+  "A.4.3.8",
+  "A.8.2.3",
+  "A.6.2.1",
+  "D13"
+ ],
+ "cases": [
+  {
+   "case": "closure-moved",
+   "input": "closure-moved.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: L4 undecided and latent at critical; DefaultPolicy critical blocks latent loosening"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "loosening",
+      "key": "ob:d4f2c02cf2adc0561e410780a539c79b35cc5bc29dc1b2ebd7557ecc115ff434"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "sha256:1530a47742eae207216d89237f1da8fc04b5683de702b864687436e690002b1c",
+      "questions": [
+       "L4"
+      ],
+      "tier": "critical",
+      "severity": "blocking",
+      "introduced": true,
+      "owner": "kv::KvTeam",
+      "binding": "bd:185d27416b67ba49f7478f5c4ef68c93ec4f8f3e6c3b8c2b5590d25017110e40",
+      "claim.fp": "sha256:1530a47742eae207216d89237f1da8fc04b5683de702b864687436e690002b1c"
+     },
+     "why": "A.5.6.4 [D13]: hosted laws are ⊒ only with closure digests ≡ between M_b and M_h, so H(c_b) = ∅ (A.6.2.1); A.8.2.3 L4 undecided (closure change awaiting an implies record or answer), delta 'L4 head <fp>'; A.8.2.2 tier_b critical (inherited from DelegationMap); A.7.2.2 binding: affected Req identities [set], (set, own) of the finest change"
+    },
+    {
+     "in": "loosening",
+     "select": {
+      "question": "L4",
+      "subject": "sha256:1530a47742eae207216d89237f1da8fc04b5683de702b864687436e690002b1c"
+     },
+     "check": "fields",
+     "value": {
+      "answer": "undecided",
+      "exploited": true,
+      "affected": [
+       "verus:src/map.rs#set"
+      ]
+     },
+     "why": "A.8.3.2: L4 affected = Req identities; A.8.3.1: no counterexample and set lies under no constraining claim, so it is covered vacuously (A.7.4.5) and the part is not exploited"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.5.3.7: the fresh head-revision proof cites set@unit and set@closure and supports the head law, which is Sat"
+    }
+   ]
+  },
+  {
+   "case": "closure-equal",
+   "input": "closure-equal.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.5.6.4: equal NF and ≡ closure digests give an heir, so L4 is implied (A.8.2.3)"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "no loosening; the proof establishes the law"
+    },
+    {
+     "in": "loosening",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.8.2.3: L4 implied"
+    }
+   ]
+  }
+ ]
+}

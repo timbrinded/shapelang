@@ -1,0 +1,147 @@
+{
+ "vector": "final-law-single-judgment",
+ "title": "A claim judgment of a final informal law needs two distinct eligible persons, no agent: one judgment, or a person plus an agent, leaves it unestablished",
+ "decides": [
+  "A.5.3.7",
+  "A.6.3.3",
+  "A.6.3.4",
+  "A.5.4.3",
+  "D11"
+ ],
+ "cases": [
+  {
+   "case": "no-judgment",
+   "input": "no-judgment.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: tier final uses critical's policy, whose blocks include unestablished"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:9275df0f0a63e79e5c0cbdc560fd0c88890b7892245b53858054da06b67018d3"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:50fdaa1763a54a27595646744c97c2a299ed3034e7103213aa6eec0dc76421ac",
+      "reason": "missing",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "final",
+      "owner": "fl::CliTeam",
+      "binding": "bd:1074f51caff46360cfbec0cdcced8d5c8c639e8d4cfc4fb7cddb1d087970a5bb"
+     },
+     "why": "A.5.3.7 no judgment; A.5.4.3 reason missing; A.7.3.3 Req (isoToday@unit) meets the code delta, so introduced; A.7.2.2 binding cites every Req pair"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "no other claim is checker-decided"
+    }
+   ]
+  },
+  {
+   "case": "one-person",
+   "input": "one-person.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9 as in no-judgment"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:9275df0f0a63e79e5c0cbdc560fd0c88890b7892245b53858054da06b67018d3"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:50fdaa1763a54a27595646744c97c2a299ed3034e7103213aa6eec0dc76421ac",
+      "reason": "missing",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "final",
+      "owner": "fl::CliTeam",
+      "binding": "bd:1074f51caff46360cfbec0cdcced8d5c8c639e8d4cfc4fb7cddb1d087970a5bb"
+     },
+     "why": "A.5.3.7 [D11]: tier*(c) final needs supporting judgments from two distinct eligible persons; bob's usable judgment holds no reason under A.5.4.3, so the reason stays missing"
+    },
+    {
+     "in": "rejected",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.12.6: bob's judgment is signed by an identity of his base actor"
+    }
+   ]
+  },
+  {
+   "case": "person-and-agent",
+   "input": "person-and-agent.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9 as in no-judgment"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:9275df0f0a63e79e5c0cbdc560fd0c88890b7892245b53858054da06b67018d3"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:50fdaa1763a54a27595646744c97c2a299ed3034e7103213aa6eec0dc76421ac",
+      "reason": "missing",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "final",
+      "owner": "fl::CliTeam",
+      "binding": "bd:1074f51caff46360cfbec0cdcced8d5c8c639e8d4cfc4fb7cddb1d087970a5bb"
+     },
+     "why": "A.6.3.3: j is never an agent for any act on a final claim (final ignores agents), so reviewBot is ineligible although the Strict critical judges list agents; only one eligible person remains (A.5.3.7)"
+    },
+    {
+     "in": "rejected",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.12.6 RJ09: reviewBot is a known agent with an operator; its record is valid but ineligible"
+    }
+   ]
+  },
+  {
+   "case": "two-persons",
+   "input": "two-persons.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.5.3.7: two distinct eligible persons judged the final law; nothing else is open"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.6.3.4: bob (base owner CliTeam) and carol (base shape owner Platform, also listed in the critical judges) are two distinct eligible non-author persons, so the law is Sat"
+    }
+   ]
+  }
+ ]
+}

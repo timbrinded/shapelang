@@ -1,0 +1,127 @@
+{
+ "vector": "base-failing-law-counterexample",
+ "title": "A law already failing at base is introduced again only when the head's counterexample differs (assertion or inputs); an equal counterexample stays preexisting",
+ "decides": [
+  "A.7.3.3",
+  "§7.3",
+  "A.5.5.1",
+  "A.7.1.5",
+  "D4"
+ ],
+ "cases": [
+  {
+   "case": "different-inputs",
+   "input": "different-inputs.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7: introduced sound contradiction"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:f101e55b35ddc9a227af31af0e0d85c988711d47fda3c444e211bbd8a3a28096"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:637e40d404d12dc99da6674b89accd01ea7371c48855050f3aa1fddea2c6755d",
+      "subject": null,
+      "force": "sound",
+      "tier": "critical",
+      "owner": "bf::EngineTeam",
+      "binding": "bd:480c3cd93de6155ad5292c2b20c578f3f0461edbd085ecec360712c26bb9e44e",
+      "introduced": true,
+      "severity": "blocking"
+     },
+     "why": "A.5.5.1: a presence-sound test's counterexample is a sound contradiction (subject null, A.12.8.5); A.7.3.3 [D4]: Req (check@unit) meets the delta and the base record's counterexample has other inputs ({x: 3} vs {x: 4}); A.7.2.2 code lists every Req pair"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.1.5, T9: a sound contradiction suppresses unestablished"
+    }
+   ]
+  },
+  {
+   "case": "equal-counterexample-other-seed",
+   "input": "equal-counterexample-other-seed.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 6"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:f101e55b35ddc9a227af31af0e0d85c988711d47fda3c444e211bbd8a3a28096"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:637e40d404d12dc99da6674b89accd01ea7371c48855050f3aa1fddea2c6755d",
+      "subject": null,
+      "force": "sound",
+      "tier": "critical",
+      "owner": "bf::EngineTeam",
+      "binding": "bd:480c3cd93de6155ad5292c2b20c578f3f0461edbd085ecec360712c26bb9e44e",
+      "introduced": false,
+      "severity": "owed"
+     },
+     "why": "A.7.3.3 [D4]: a usable base-revision record of the same base-declared provider made this contradiction with an equal counterexample (equal assertion and inputs; the seed is not compared), so it is not introduced"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.1.5"
+    }
+   ]
+  },
+  {
+   "case": "different-assertion",
+   "input": "different-assertion.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:f101e55b35ddc9a227af31af0e0d85c988711d47fda3c444e211bbd8a3a28096"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:637e40d404d12dc99da6674b89accd01ea7371c48855050f3aa1fddea2c6755d",
+      "subject": null,
+      "force": "sound",
+      "tier": "critical",
+      "owner": "bf::EngineTeam",
+      "binding": "bd:480c3cd93de6155ad5292c2b20c578f3f0461edbd085ecec360712c26bb9e44e",
+      "introduced": true,
+      "severity": "blocking"
+     },
+     "why": "A.7.3.3: equal inputs but a different assertion is a different counterexample"
+    }
+   ]
+  }
+ ]
+}

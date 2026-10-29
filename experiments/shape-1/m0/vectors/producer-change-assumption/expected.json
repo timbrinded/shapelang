@@ -1,0 +1,113 @@
+{
+ "vector": "producer-change-assumption",
+ "title": "A producer change cannot mask an undeclared assumption: with both, the reason is assumption and an approve line discharges nothing; with the producer change alone it is answerable",
+ "decides": [
+  "A.5.4.1",
+  "A.5.4.3",
+  "A.5.4.6",
+  "A.7.6.5",
+  "A.7.2.2",
+  "D9"
+ ],
+ "cases": [
+  {
+   "case": "assume-and-lockfile-bump-approved",
+   "input": "assume-and-lockfile-bump-approved.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: critical blocks unestablished"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:565281480d16f09ff9495efcedd14d555f461a052dd4adc6b013b06342f565a5"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:d3c2e593e6a2f042e038a3db19d80a53781e4375cf8f5909f339bb7438ddaa4f",
+      "reason": "assumption",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "binding": "bd:9b9ef99041425da68cbad716db0663750a3e313d643bffa5fe6a581c30f7b542"
+     },
+     "why": "A.5.4.1 [D9]: per record the first match among stale, expired, assumption, weak, producer-changed is assumption (the undeclared assume in the proof's cone), and producer change is reported only for an otherwise usable record; A.5.4.3: the law reason is assumption; A.7.2.2: affected adds implementation finest changes only when producer-changed, so Cargo.lock is not in the binding"
+    },
+    {
+     "in": "answered",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.7.6.5: dana's ref expands to an obligation with reason assumption, which has no answer discharger, and there is no exception (A.7.6.6)"
+    }
+   ]
+  },
+  {
+   "case": "lockfile-bump-only",
+   "input": "lockfile-bump-only.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:565281480d16f09ff9495efcedd14d555f461a052dd4adc6b013b06342f565a5"
+     },
+     "check": "fields",
+     "value": {
+      "reason": "producer-changed",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "binding": "bd:3af169bbd19fa50f7c23096bf0739bb18adc1da6ead4217dd6bafc54b5ade218"
+     },
+     "why": "A.5.4.1: the implementation (Cargo.lock) meets Δcode and the record is otherwise usable, so producer-changed; introduced by reason (A.7.3.3); binding affected adds the implementation finest change Cargo.lock (A.7.2.2)"
+    }
+   ]
+  },
+  {
+   "case": "lockfile-bump-approved",
+   "input": "lockfile-bump-approved.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "the producer-changed answer is accepted and the re-evaluated law is Sat"
+    },
+    {
+     "in": "answered",
+     "select": {
+      "obligation": "ob:565281480d16f09ff9495efcedd14d555f461a052dd4adc6b013b06342f565a5"
+     },
+     "check": "fields",
+     "value": {
+      "as": "discharge",
+      "self": false
+     },
+     "why": "A.7.6.5: a producer-changed obligation has an answer discharger and dana (KvTeam, not an author, a person) is eligible at critical (A.6.3.3); A.5.4.6: the law is re-evaluated with the record not producer-changed, and no reason remains"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.5.4.6: nothing remains open"
+    }
+   ]
+  }
+ ]
+}

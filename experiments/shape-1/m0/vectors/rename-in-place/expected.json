@@ -1,0 +1,98 @@
+{
+ "vector": "rename-in-place",
+ "title": "A base unit binding to a function renamed in place follows the file's new identities, so rebinding the unit elsewhere drops jurisdiction at the renamed code (L6 loosened at g)",
+ "decides": [
+  "A.6.4.3",
+  "A.6.4.6",
+  "A.8.2.3",
+  "A.8.3.2"
+ ],
+ "cases": [
+  {
+   "case": "rebound-to-h",
+   "input": "rebound-to-h.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: DefaultPolicy normal blocks latent loosening"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:303a1a953cd152c5263009b495177d3799f48cba69edb1b266ba4c8f281df3a6"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "loosening",
+      "subject": "sha256:d8bc0b08cf64df2a10aec2ef2ed9b061076ef0657777292520c70ad61f6747c5",
+      "claim.fp": "sha256:d8bc0b08cf64df2a10aec2ef2ed9b061076ef0657777292520c70ad61f6747c5",
+      "questions": [
+       "L6"
+      ],
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "normal",
+      "exploited": false
+     },
+     "why": "A.6.4.3: the base unit's binding (src/a.ts#f, deleted) resolves over M_h to the new identities of its file, {g, h}; the head binds u to h, so g moves from u to K.*; A.8.2.3 L6: g's base law-member tuple of UIsPure (on unit K.u) is not dominated at g in the head, so L6 is loosened with the law as subject (A.8.2.1, A.15.2); not exploited (no forbidden fact, tier normal does not block coverage, A.8.3.1)"
+    },
+    {
+     "in": "loosening",
+     "select": {
+      "question": "L6"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "sha256:d8bc0b08cf64df2a10aec2ef2ed9b061076ef0657777292520c70ad61f6747c5",
+      "answer": "loosened",
+      "affected": [
+       "ts:src/a.ts#g"
+      ],
+      "exploited": false,
+      "obligation": "ob:303a1a953cd152c5263009b495177d3799f48cba69edb1b266ba4c8f281df3a6"
+     },
+     "why": "A.6.4.6 vector: f renamed to g in place with the unit rebound to h gives L6 loosened at g; A.8.3.2: L6 affected = dropped identities (h keeps its tuple)"
+    },
+    {
+     "in": "loosening",
+     "select": {
+      "question": "L4"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.8.2.3 L3-L4: the law has an equal-NF heir"
+    }
+   ]
+  },
+  {
+   "case": "rebound-to-g",
+   "input": "rebound-to-g.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "nothing is loosened"
+    },
+    {
+     "in": "loosening",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.6.4.3: the base binding resolves to {g}, the head binds u to g, so no position changes attribution (A.8.2.3 L6)"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "the declared-level law is Sat (A.5.3.7) and nothing else applies"
+    }
+   ]
+  }
+ ]
+}

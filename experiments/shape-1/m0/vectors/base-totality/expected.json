@@ -1,0 +1,133 @@
+{
+ "vector": "base-totality",
+ "title": "The base never makes the verdict invalid: an unreadable base gives only L0 (blocking, subject shape), base shape errors are lenient defects, and the same defect in the head is a blocking head error",
+ "decides": [
+  "A.6.4.1",
+  "A.6.4.2",
+  "A.6.4.5",
+  "A.8.2.2",
+  "A.10.1",
+  "A.10.2"
+ ],
+ "cases": [
+  {
+   "case": "unreadable-base",
+   "input": "unreadable-base.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 3: L0 blocks until the base shape owner answers"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.6.4.1, A.10.2: the base never makes the verdict invalid and shape errors apply to the head only"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:620fe93c78ec81a3ddd10e1ca9ac7a42817bd9d1dfe6eef715091250f96d48d5"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "loosening",
+      "subject": "shape",
+      "questions": [
+       "L0"
+      ],
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "claim": null,
+      "binding": "bd:cae720168cac846335f0a7d17bcb7fad3e57a60ff2309606bb2fe7a43e89851d"
+     },
+     "why": "A.6.4.5: unparsable base gives L0 undecided with subject shape; A.8.2.2: subject shape has tier critical; A.15.2: claim null for a non-claim subject; A.8.3.2: L0 affected is empty; A.12.8.7 delta 'L0 unreadable'"
+    },
+    {
+     "in": "loosening",
+     "select": {
+      "question": "L0"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "shape",
+      "answer": "undecided",
+      "exploited": false,
+      "obligation": "ob:620fe93c78ec81a3ddd10e1ca9ac7a42817bd9d1dfe6eef715091250f96d48d5"
+     },
+     "why": "A.6.4.5: L0 undecided; A.8.3.2: L0 is never exploited"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "A.6.4.5: L1-L7 and coverage are skipped for this run, and no record contradicts anything"
+    }
+   ]
+  },
+  {
+   "case": "base-shape-errors",
+   "input": "base-shape-errors.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.6.4.1-2: base defects (an unbound unit, a forbid on an undeclared resource) are lenient base failures, not errors; nothing else is owed"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.6.4.1: shape errors apply to the head only"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.6.4.2: the defective base items elaborate to empty bindings or are dropped as baseDefects; A.7.4.2 [D3]: the forbid's channel effect(pg.table(\"t\")) is unobservable (no provider), so the edited f needs no coverage"
+    }
+   ]
+  },
+  {
+   "case": "head-shape-error",
+   "input": "head-shape-error.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 1: errors block; A.10.1: a shape error is not malformed input, so not invalid"
+    },
+    {
+     "in": "errors",
+     "select": {
+      "code": "E-unbound"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "unit m::K.g"
+     },
+     "why": "A.3.3.2: a default-name unit with no matching identity is E-unbound in the head; A.15.1: subject '<kind> Q'"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "A.6.4.1: only the head's error is reported"
+    }
+   ]
+  }
+ ]
+}

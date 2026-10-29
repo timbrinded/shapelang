@@ -1,0 +1,480 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "emp",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/emp.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Emp",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "CliTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "EmptyTeam",
+       "kind": "team",
+       "members": [
+        "erin"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "erin",
+       "kind": "person",
+       "identities": [
+        "github(\"erin\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Empty",
+       "owner": "EmptyTeam",
+       "tier": "critical",
+       "paths": [
+        "src/empty/**"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Cli",
+       "owner": "CliTeam",
+       "tier": "critical",
+       "paths": [
+        "src/cli/**"
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "Documented",
+       "on": [
+        "component Empty"
+       ],
+       "informal": "The component's behaviour is documented.",
+       "tier": "critical"
+      },
+      {
+       "decl": "exception",
+       "name": "CliWaiver",
+       "waives": [
+        "unestablished"
+       ],
+       "target": "component Cli",
+       "owner": "CliTeam",
+       "expires": "2026-12-01"
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "528d660899050873ef718c9843b0f6d165ab7c2fd5b5b08e2e1b41a21de8b070"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "819c9cd73116f09abd5074464b35bf3e7e964301"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/emp.shape",
+       "mode": "100644",
+       "blob": "5086f95f64d70b8faadfc228ef03fa1105668613"
+      },
+      {
+       "path": "src/cli/main.ts",
+       "mode": "100644",
+       "blob": "bc5ca185636d608d2d091ae129656eb0004fa53e"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:6e5b6baab11227906cf17fb04c25049676f0f97d7a180c63b65ad975e6201eb2",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:9e033235a0956558099ca6fa85b2d2bd876fd7cff273c1b8abe10546a9bde7a4",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "ts:src/cli/main.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:6a7199ac7e0427a988106721949dba2ba6fb8aae8f360ecccb4ce19712085b28",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/main.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:4b43ab8bf25cd59e46c78263bfcde66f759e8974b4ce0623730f4caddacc7516",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/main.ts#main",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:f3dc60dc789915bb2e21bba1141e8827f416e542edfdcf2b254ff7c297cdd4b6",
+       "kind": "function",
+       "parent": "ts:src/cli/main.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/main.ts#main",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:c3064121004296309fc255036b4dc9836d6fdac46f6f1d7f011fb86ebe0f8956",
+       "kind": "function",
+       "parent": "ts:src/cli/main.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "emp",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/emp.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Emp",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "CliTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "EmptyTeam",
+       "kind": "team",
+       "members": [
+        "erin"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "erin",
+       "kind": "person",
+       "identities": [
+        "github(\"erin\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Empty",
+       "owner": "EmptyTeam",
+       "tier": "critical",
+       "paths": [
+        "src/empty/**"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Cli",
+       "owner": "CliTeam",
+       "tier": "critical",
+       "paths": [
+        "src/cli/**"
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "Documented",
+       "on": [
+        "component Empty"
+       ],
+       "informal": "The component's behaviour is documented.",
+       "tier": "critical"
+      },
+      {
+       "decl": "exception",
+       "name": "CliWaiver",
+       "waives": [
+        "unestablished"
+       ],
+       "target": "component Cli",
+       "owner": "CliTeam",
+       "expires": "2026-12-01"
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "4054d23d8faa451399a9d9906904f4bc5870a07e928759ec2e7285f9a170581f"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "45cf922c503a48d6b39913974f92ba2c96278700"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/emp.shape",
+       "mode": "100644",
+       "blob": "5086f95f64d70b8faadfc228ef03fa1105668613"
+      },
+      {
+       "path": "src/cli/main.ts",
+       "mode": "100644",
+       "blob": "bc5ca185636d608d2d091ae129656eb0004fa53e"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:a282880b24dfac0ad85f41830cf3426e13301c0b2a6f3b9cfc6db82e529a8954",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:c524c00e63580337151ed5014f991bcfd6f71170e97e5a6e230de91e1e6748c5",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "ts:src/cli/main.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:6a7199ac7e0427a988106721949dba2ba6fb8aae8f360ecccb4ce19712085b28",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/main.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:4b43ab8bf25cd59e46c78263bfcde66f759e8974b4ce0623730f4caddacc7516",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/main.ts#main",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:f3dc60dc789915bb2e21bba1141e8827f416e542edfdcf2b254ff7c297cdd4b6",
+       "kind": "function",
+       "parent": "ts:src/cli/main.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/main.ts#main",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:c3064121004296309fc255036b4dc9836d6fdac46f6f1d7f011fb86ebe0f8956",
+       "kind": "function",
+       "parent": "ts:src/cli/main.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"tim\")",
+   "verified": true,
+   "bot": false
+  }
+ ],
+ "reviews": [],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

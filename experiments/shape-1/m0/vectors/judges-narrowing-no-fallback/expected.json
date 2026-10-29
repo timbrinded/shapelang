@@ -1,0 +1,90 @@
+{
+ "vector": "judges-narrowing-no-fallback",
+ "title": "Narrowing the judges in the head cannot switch on the self fallback: it reads the base judges alone, so an author's answer stays ineligible while a base that names a second judge exists",
+ "decides": [
+  "A.6.2.6",
+  "A.6.3.3",
+  "A.5.4.6",
+  "D12"
+ ],
+ "cases": [
+  {
+   "case": "base-judges-name-bob",
+   "input": "base-judges-name-bob.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:85e169c4b02653f162d80cacabd140736c5347d43698224dc3f16455de0d8ac3",
+      "reason": "producer-changed",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "binding": "bd:2d5ebb7807c14352f21581d3e583d0c1ffb211adfc35f3f7a3f8aa25f156fe33"
+     },
+     "why": "A.5.4.1: the implementation bunfig.toml meets Δcode, so producer-changed; binding affected adds that finest change (A.7.2.2)"
+    },
+    {
+     "in": "answered",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.6.2.6 [D12], A.6.3.3: tim is an author, and the self fallback reads the base judges alone: base critical judges are owner and bob, so tim is not the only base person eligible by role and the head's narrowing to owner cannot switch the fallback on (T2')"
+    },
+    {
+     "in": "loosening",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.8.2.3 L7: judges_h ⊆ judges_b is no weakening"
+    }
+   ]
+  },
+  {
+   "case": "base-judges-owner-only",
+   "input": "base-judges-owner-only.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "tim's self answer accepts the producer change and the law is re-evaluated Sat (A.5.4.6)"
+    },
+    {
+     "in": "answered",
+     "select": {
+      "obligation": "ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"
+     },
+     "check": "fields",
+     "value": {
+      "as": "discharge",
+      "self": true
+     },
+     "why": "A.6.3.3: with base critical judges [owner], tim is the only base person eligible by role, o involves no final item and no author is an unmapped bot, so the fallback admits him; self answers are marked"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.5.4.6"
+    }
+   ]
+  }
+ ]
+}

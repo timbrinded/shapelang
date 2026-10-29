@@ -1,0 +1,282 @@
+{
+ "vector": "provider-direction",
+ "title": "Weakening an observer in the PR cannot lower severity: dropping presence keeps the contradiction sound, dropping absence keeps the coverage need but cannot meet it; either edit is a final L7 question",
+ "decides": [
+  "A.14.1.5",
+  "A.6.2.6",
+  "A.4.5.6",
+  "A.7.4.2",
+  "A.7.4.3",
+  "A.8.2.2",
+  "A.8.2.3",
+  "D3"
+ ],
+ "cases": [
+  {
+   "case": "no-provider-edit",
+   "input": "no-provider-edit.input.json",
+   "assert": [
+    {
+     "in": "rejected",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.12.6 RJ14, A.5.2.1, A.12.5.2 [D15]: sqlEffects is presence-sound and now reports n on both effect facts, so its observation is accepted; no record is rejected"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.5.2.13: the authenticated observer and test provider each supply an accepted, correctly signed head record; the base names no manifest identity (A.5.2.17), so no E-provider-missing; the head elaborates cleanly"
+    },
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 2: an introduced sound contradiction with tier* final"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:98ff6f5f02010232b459f9b228f17abb7f78b90094b40b37a3e9a12bb3c32fd2"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:3fe8f5ac7169085e744c2b83e26fdd5285328148b8300b68510efd4de6b0aef8",
+      "subject": {
+       "code": "ts:src/audit/purge.ts#purgeOldEvents",
+       "atom": "HardDelete<audit::AuditEvent>"
+      },
+      "introduced": true,
+      "severity": "blocking",
+      "force": "sound",
+      "tier": "final",
+      "binding": "bd:1c907a8a119dd310a06e0e9ec876c2db0f003b4c1a33ca0b9d3d851b3e2d72c9",
+      "group": "g:e49eeaef1d87eb9aae889d4019cf944a91aeb22e46ef77341f2cf8aef85d314b"
+     },
+     "why": "EXAMPLES Example 1 Variant B: AppendOnly (forbid Update, D13) excludes HardDelete at AuditStore.*; sound (A.4.4.13, A.6.2.6 (a)), introduced (new fact, A.7.3.1, A.7.3.2: no baseRecords), tier* final (A.6.2.3), rule 2; key, binding and group are vectors.py's ex1.B values (alone in its group, A.7.2.3)"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "Example 1 Variant B: complete entries absence-sound in base and head meet coverage at purge.ts and purgeOldEvents (A.7.4.3), and the fresh fastCheck record cites the grown Req and establishes the law (A.5.3.7, A.14.1.4)"
+    },
+    {
+     "in": "loosening",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.8.2.3: base and head shapes are identical, so no question fires"
+    }
+   ]
+  },
+  {
+   "case": "drop-presence",
+   "input": "drop-presence.input.json",
+   "assert": [
+    {
+     "in": "rejected",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.12.6 RJ14, A.5.2.1, A.12.5.2 [D15]: sqlEffects is presence-sound and now reports n on both effect facts, so its observation is accepted; no record is rejected"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.5.2.13: the authenticated observer and test provider each supply an accepted, correctly signed head record; the base names no manifest identity (A.5.2.17), so no E-provider-missing; the head elaborates cleanly"
+    },
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rules 2 and 4"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:98ff6f5f02010232b459f9b228f17abb7f78b90094b40b37a3e9a12bb3c32fd2"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:3fe8f5ac7169085e744c2b83e26fdd5285328148b8300b68510efd4de6b0aef8",
+      "subject": {
+       "code": "ts:src/audit/purge.ts#purgeOldEvents",
+       "atom": "HardDelete<audit::AuditEvent>"
+      },
+      "introduced": true,
+      "severity": "blocking",
+      "force": "sound",
+      "tier": "final",
+      "binding": "bd:1c907a8a119dd310a06e0e9ec876c2db0f003b4c1a33ca0b9d3d851b3e2d72c9"
+     },
+     "why": "A.6.2.6 (a): contradiction force reads presence from base or head, so dropping presence in the head keeps the contradiction sound (A.14.1.5); introduced and final as in Variant B"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:98ff6f5f02010232b459f9b228f17abb7f78b90094b40b37a3e9a12bb3c32fd2"
+     },
+     "check": "fields",
+     "value": {
+      "group": "g:e49eeaef1d87eb9aae889d4019cf944a91aeb22e46ef77341f2cf8aef85d314b"
+     },
+     "why": "A.7.2.3 [D10]: the L7 loosening has no realising fact and no affected identity (A.8.3.2), and the contradiction's causes (A.14.1.3) name no changed base item, so the contradiction stays alone in g ex1.B"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:ae867d9fedbd638a8baeee2d00bfce60354cf08f3b841270ec7a2bcbd0ecab1d"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "loosening",
+      "subject": "provider audit::sqlEffects",
+      "claim": null,
+      "questions": [
+       "L7"
+      ],
+      "severity": "blocking",
+      "tier": "final",
+      "introduced": true,
+      "owner": "audit::Platform"
+     },
+     "why": "A.8.2.3 L7: a changed provider field (soundness) is undecided; A.8.2.2: provider subject tier = highest base tier of claims whose channels meet its own (AppendOnly's final forbid), answerer the base shape owner; A.7.3.3: loosenings are introduced; A.7.5.1 rule 4; A.15.2 claim null"
+    },
+    {
+     "in": "loosening",
+     "select": {
+      "question": "L7"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "provider audit::sqlEffects",
+      "answer": "undecided",
+      "exploited": false,
+      "final": true,
+      "affected": [],
+      "obligation": "ob:ae867d9fedbd638a8baeee2d00bfce60354cf08f3b841270ec7a2bcbd0ecab1d"
+     },
+     "why": "A.8.2.3 L7 undecided; A.8.3.2: L7 has no affected positions and is never exploited"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.4.3: sqlEffects stays absence-sound in base and head, so its usable complete entries for purge.ts and purgeOldEvents meet every need"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 2,
+     "why": "the contradiction and the L7 loosening only: coverage is met and the law is established"
+    }
+   ]
+  },
+  {
+   "case": "drop-absence",
+   "input": "drop-absence.input.json",
+   "assert": [
+    {
+     "in": "rejected",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.12.6 RJ14, A.5.2.1, A.12.5.2 [D15]: sqlEffects is presence-sound and now reports n on both effect facts, so its observation is accepted; no record is rejected"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.5.2.13: the authenticated observer and test provider each supply an accepted, correctly signed head record; the base names no manifest identity (A.5.2.17), so no E-provider-missing; the head elaborates cleanly"
+    },
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rules 2 and 4"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:98ff6f5f02010232b459f9b228f17abb7f78b90094b40b37a3e9a12bb3c32fd2"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:3fe8f5ac7169085e744c2b83e26fdd5285328148b8300b68510efd4de6b0aef8",
+      "subject": {
+       "code": "ts:src/audit/purge.ts#purgeOldEvents",
+       "atom": "HardDelete<audit::AuditEvent>"
+      },
+      "introduced": true,
+      "severity": "blocking",
+      "force": "sound",
+      "tier": "final",
+      "binding": "bd:1c907a8a119dd310a06e0e9ec876c2db0f003b4c1a33ca0b9d3d851b3e2d72c9"
+     },
+     "why": "A.6.2.6 (a): presence is kept (and base ∨ head would keep it anyway), so the contradiction stays sound"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:f99ad91d0fb961864cea647e6188ac9c56b6d243cb026fee5224db411dfce977"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "coverage",
+      "subject": "component audit::AuditStore",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "final",
+      "owner": "audit::AuditTeam",
+      "binding": "bd:68a9ae4674fb6556bd95ebd7fce4b09ce398092d75be1851fd5fea4972904b93"
+     },
+     "why": "A.4.5.6 [D3]: observability reads the base, where sqlEffects is absence-sound on effect(pg.table(\"*\")), so purge.ts and purgeOldEvents still need (AppendOnly, effect(pg.table(\"audit_events\"))) and (authority(AuditStore), same channel) (A.7.4.2 vector); A.7.4.3: meeting needs absence in base and head, which the head dropped, so both pairs stay unmet; A.7.4.4: tier max(critical, final); owner AuditStore's base owner (A.14.1.5); rule 4; binding delta '<fp> <channel>' per unmet pair (A.7.2.2, A.12.8.6)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:ae867d9fedbd638a8baeee2d00bfce60354cf08f3b841270ec7a2bcbd0ecab1d"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "loosening",
+      "subject": "provider audit::sqlEffects",
+      "claim": null,
+      "questions": [
+       "L7"
+      ],
+      "severity": "blocking",
+      "tier": "final",
+      "introduced": true,
+      "owner": "audit::Platform"
+     },
+     "why": "A.8.2.3 L7 undecided on a changed provider field; final and answered by the base shape owner by A.8.2.2; rule 4"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 3,
+     "why": "the contradiction, the AuditStore coverage obligation and the L7 loosening; the law is established"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,499 @@
+[
+ {
+  "reviewer": 1,
+  "file": "ex1-A",
+  "severity": "minor",
+  "clause": "A.15.1 [D22], A.4.4.12",
+  "problem": "The E-conduct subject is JCS({claim: 3fe8f5ac…, kind: 'contradiction', subject: {atom, code}, v: 'shape.obligation.v1'}). A.15.1 says only 'subject the key's JSON', which can also be read as the subject key {code, atom} alone, or as {claim, subject}. The v6 prototype printed '<claim id> <subject JSON>' and the kernel prints 'unit <u>'. The chosen reading is the most literal one and keeps (code, subject) unique, but no clause, vector or erratum fixes it, so M1 cannot get it from the text. Record it in errata.json."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-A",
+  "severity": "minor",
+  "clause": "A.10.3; records §5 (budget {limit, used, overflow})",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. The text gives budget one shape and does not fix the type of either copy (the quirk comes from the v6 prototype). Pick one encoding (an integer, like used, fits A.10.3) and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-A",
+  "severity": "minor",
+  "clause": "A.12.7.6; records §4 (files, not source)",
+  "problem": "inputDigest hashes common.py's canonical_input of the prototype-only shape.source.v1 form. That form sorts decls by kind+name then JCS, sorts some string sets (component paths/grants/allows, actor members/identities, provider observes/decides/produces/sound, note about, imports) but not others (provider implementation.paths, unit effect atoms), and drops module 'file'. A.12.7.6 fixes orders only for the records §4 lists, so the value cannot be derived from the text. Measured: 0/21 digests equal H(JCS(raw input)), and 10/21 differ between record-id order (golden) and the v6 prototype's JCS order. Record the canonical form before freezing."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-B",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-B",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-B-weak-observer",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-B-weak-observer",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-Bprime",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-Bprime",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-Bsecond",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-Bsecond",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-C",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-C",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-C-answered",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-C-answered",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Here the record-id order differs from the v6 prototype's JCS order. Record the form."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-audit",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-audit",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-empty-base",
+  "severity": "minor",
+  "clause": "A.5.2.17, A.8.2.3 L7 [D18], A.12.8.7",
+  "problem": "The head names manifest ed25519(\"3ab9cc26…\") and the empty base names none. A.5.2.17 makes a head edit of that field an L7 question, and L7 is undecided when 'the manifest identity changed'. The empty-base exemption, however, names only owners and pack items. The golden raises no L7 'shape' question (order 'tighter'). That fits D18's intent ('skips what an empty base cannot say', build/core #7), but the text does not say so. Record the reading."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-empty-base",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex1-empty-base",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex2",
+  "severity": "minor",
+  "clause": "A.3.2.6, A.5.7.2, A.5.3.4 [D4, D27]; A.14.2.2; EXAMPLES Example 2 item 3",
+  "problem": "(This is a guess at intent.) Every manifest entry has refs [], but the proof's deps cite verus:…#StrictlyOrderedVec::insert at contract (A.14.2.2: a callee contract). insert is a function of set's own component. If env(set) resolves to insert, A.5.3.4 adds (insert, contract) to SetContractFaithful's judgment Req. dana's judgment cites set alone, so it would be stale and a third obligation would appear. The golden's 2 obligations hold only if refs(set) = []. EXAMPLES item 3 ('set and the DelegationMap functions it references') reads as if such functions exist. Either state that set references nothing, or add insert to refs and to the judgment's code. As built, no golden exercises D4's Refs° closure."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex2",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex2",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex2-approve-only",
+  "severity": "minor",
+  "clause": "A.3.2.6, A.5.3.4 [D4]; A.14.2.2",
+  "problem": "Same refs [] question as ex2: the outcome holds only if set references nothing, despite the proof's dep on StrictlyOrderedVec::insert."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex2-approve-only",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex2-approve-only",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex2-exception-approve",
+  "severity": "minor",
+  "clause": "A.12.10.1, A.7.6.8, records §5",
+  "problem": "answered[].records holds 'review:5f62d3b48c30dc6b' (16 hex of H(review object)) for a CI-supplied approve line. A review line without a relay is not a record, and no clause defines this reference: it is the v6 prototype's convention. Define the encoding or record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex2-exception-approve",
+  "severity": "minor",
+  "clause": "A.3.2.6, A.5.3.4 [D4]; A.14.2.2",
+  "problem": "Same refs [] question as ex2."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex2-exception-approve",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex2-exception-approve",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex3-step1",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget (used is 1 in both). Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex3-step1",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex3-step1-judged",
+  "severity": "minor",
+  "clause": "A.7.6.3, A.5.8.2, A.11.5 [D28]",
+  "problem": "The relay's claim judgment sha256:eb55ae24bbc74007 is supplied only in records: persisted.head is [] and the head tree holds no shape/evidence/eb/55ae24….json. A.7.6.3 has the relay commit claim judgments as conforming record files, D28 says a claim judgment is always a persisted record, and A.11.5's acceptance test is 'one persisted judgment, then pass'. The verdict would not change but inputDigest would, and the evidence-path rule is not exercised. The other judgments in the examples also arrive only through records (the v6 convention), so the input is consistent with the set."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex3-step1-judged",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex3-step1-judged",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex3-step2",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex3-step2",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex3-step2-harness-edited",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex3-step2-harness-edited",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex3-step2-record-dropped",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex3-step2-record-dropped",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex3-step2-refactor-sensitive-removed",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex3-step2-refactor-sensitive-removed",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex3-step2-seeded-clock",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget. Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex3-step2-seeded-clock",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex4",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget (used is 1 in both). Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex4",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex4-closing-the-set",
+  "severity": "minor",
+  "clause": "A.10.3; records §5",
+  "problem": "budget.overflow is [] at the top level but 0 in health.budget (used is 1 in both). Pick one encoding and record it."
+ },
+ {
+  "reviewer": 1,
+  "file": "ex4-closing-the-set",
+  "severity": "minor",
+  "clause": "A.12.7.6",
+  "problem": "inputDigest depends on the unwritten canonical form of the prototype source profile (see ex1-A). Record it."
+ },
+ {
+  "reviewer": 2,
+  "file": "ex1-A",
+  "severity": "minor",
+  "problem": "The E-conduct subject is the JCS of the obligation-key preimage {claim, kind:\"contradiction\", subject, v:\"shape.obligation.v1\"}. A.15.1 says one error per (claim fp, subject key), with the subject being 'the key's JSON'. That phrase is also naturally read as the JSON of that pair, {claim, subject}, without kind or v. Both readings fit the text, and M1/M2 must reproduce these bytes exactly, so the chosen reading should be recorded (errata or M0 notes) before sign-off. The rest checks out: tighter order, no coverage obligation (no call channel), no L1 authority+ part (the final Update forbid still excludes HardDelete and Update), coverage 2/2, blocked by rule 1.",
+  "clause": "A.15.1 [D22], A.4.4.12, A.12.8.5"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex1-A",
+  "severity": "minor",
+  "problem": "The E-conduct causes are [declared fact d09a9720…, code purgeOldEvents] and do not include the forbid claim. Every v7 contradiction in the set gains its own claim as root cause, so the two patterns are inconsistent. The text does not fix the causes for errors.",
+  "clause": "A.7.1.2, A.10.1"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex1-B",
+  "severity": "minor",
+  "problem": "Input fidelity, no effect on output: fastCheck's implementation is still the v6 paths [package.json, bun.lock, bunfig.toml]. Syntax §1 (v7) binds pkgjson(\"package.json#scripts.test\") plus bun.lock and bunfig.toml. The same holds in all nine Example 1 inputs. package.json is unchanged in every scenario, so no producer change arises.",
+  "clause": "syntax §1, A.5.2.6 [D9]"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex1-Bsecond",
+  "severity": "minor",
+  "problem": "A.7.1.3 lists the coverage discharger 'bind or declare', and A.12.10.2's act set has no 'bind'. The golden maps it to act 'declare'. 'edit-shape' is an equally defensible mapping, and M1 must match the bytes, so the mapping should be recorded. Everything else checks out: key, binding bd:55aeb9df71bf26a0 with delta '<fp> effect(pg.table(\"audit_events\"))', final tier, blocking, eligible [bob, carol], coverage 0/1, purge.sh executable.",
+  "clause": "A.7.1.3, A.12.10.2"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex1-C-answered",
+  "severity": "minor",
+  "problem": "Input fidelity, no effect on output: the relay answer records carry judge, identity, revision and about, but no review-line text. A.7.6.3 says the relay emits answers with the 'text pinned'. Subject digests 032ab91f227efdd5 and ee776f8f2ec7de37 and the signatures verify.",
+  "clause": "A.7.6.3, A.14.1.8"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex1-empty-base",
+  "severity": "minor",
+  "problem": "The lower-requirement discharger of the preexisting law obligation says it creates {kind loosening, tier critical, answers 1, owners [audit::AuditTeam]}. The base is empty, so it holds no base item, and lowering a head-only law's requirement raises no loosening. 'creates' should be null here. This is a v6 carry-over (the prototype always sets it).",
+  "clause": "A.8.2.1, A.8.2.3 L7 [D18], A.12.10.2"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex1-empty-base",
+  "severity": "minor",
+  "problem": "Input inconsistency: base.source is {modules: []}, but the base manifest tree lists shape.lock and shape/audit.shape with the same blobs as the head. Under the v7 contract the shape files are checked against blob ids, so the base would be the full syntax §1 shape. The output's baseDefects [\"E-parse shape\"] comes from the prototype treating the missing declaration as a parse defect. The text treats an empty base as a valid mode, not as unparsable (which would be L0). The verdict (owed, law preexisting missing) is right either way.",
+  "clause": "A.3.1.1, A.12.7.3, A.6.1.6, A.6.4.2, A.6.4.5"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex2",
+  "severity": "minor",
+  "problem": "Every manifest entry has refs []. The deltas justify this as 'no identity … resolves a free name to another', but the proof record lists verus:…#StrictlyOrderedVec::insert at contract as a callee contract dep (A.14.2.2). If set's env resolves insert, A.5.3.4 [D4] adds (insert, contract) to SetContractFaithful's judgment Req, and dana's set-only judgment would be stale (partly uncited): a third, preexisting owed obligation. refs [] is the reading that keeps EXAMPLES item 3 ('the judgment stays usable') true. It is asserted, not derived, so record it (for example: Verus method-call callees are not Refs° free names). The same applies to ex2-approve-only and ex2-exception-approve.",
+  "clause": "A.5.3.4 [D4], A.5.7.2, A.12.7.5, A.14.2.2-3"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex2-approve-only",
+  "severity": "minor",
+  "problem": "Same refs [] reading as ex2: Req(SetContractFaithful) depends on whether set's refs include StrictlyOrderedVec::insert.",
+  "clause": "A.5.3.4 [D4], A.14.2.2"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex2-exception-approve",
+  "severity": "minor",
+  "problem": "answered[].records holds \"review:5f62d3b48c30dc6b\", which is the prototype's encoding ('review:' plus the first 16 hex of H(review object)) for a CI-supplied approve line. The text defines no reference format for review lines in answered.records, so this is a byte-level choice M1/M2 must copy.",
+  "clause": "A.12.10.1, A.7.6.8, A.7.5.2"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex2-exception-approve",
+  "severity": "minor",
+  "problem": "Same refs [] reading as ex2.",
+  "clause": "A.5.3.4 [D4], A.14.2.2"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex3-step1",
+  "severity": "minor",
+  "problem": "Inherited input defect: the head manifest moves freshness.ts's own digest (1cf66289→cd88e322) but leaves its file digest unchanged (67f2d0b7). Under v7 the opposite holds: editing the nested isoToday leaves the file's own unchanged (nested identities replaced by path-free names) and moves the file digest. Because of this, freshness.ts counts as a finest change and health.coverage is {2,2}. With v7-consistent digests it would be {1,1}. The obligation, key, binding and group are unaffected.",
+  "clause": "A.3.2.5 [D6], A.5.7.2 [D8], A.6.1.5, A.7.4.1"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex3-step1-judged",
+  "severity": "minor",
+  "problem": "Same freshness.ts own/file digest inconsistency as ex3-step1. Here too health.coverage would be {1,1} instead of {2,2}.",
+  "clause": "A.3.2.5 [D6], A.5.7.2 [D8]"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex3-step1-judged",
+  "severity": "minor",
+  "problem": "The relay's claim judgment (sha256:eb55ae24bbc74007) is in records, and persisted.head is []. A.7.6.3, A.5.8.2 and A.11.5 ('one persisted judgment, then pass') say the relay commits claim judgments under shape/evidence/. The verdict (pass) and health.self are unaffected; only inputDigest would change.",
+  "clause": "A.7.6.3, A.5.8.2, A.11.5 [D28]"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex3-step2",
+  "severity": "minor",
+  "problem": "Input fidelity, no effect on output: bunTest's implementation is paths [bunfig.toml, package.json, bun.lock]. A.14.3.3 gives pkgjson(\"package.json#scripts.test\"), bunfig.toml and bun.lock. The same holds in all step-2 inputs.",
+  "clause": "A.14.3.3, A.5.2.6 [D9]"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex3-step2-harness-edited",
+  "severity": "minor",
+  "problem": "Inherited input defect, no effect on output: determinism.test.ts's own digest moves (ea6b2702→a4bf9fc4) while its file digest stays 50669ab0. A harness edit must move the file digest. The producer-changed result, the dischargers [answer(ann), exception(ann), lower-requirement] and binding bd:c42a951fc2acb6de are unaffected.",
+  "clause": "A.5.7.2 [D8], A.3.2.5"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex3-step2-record-dropped",
+  "severity": "minor",
+  "problem": "Same determinism.test.ts own/file digest inconsistency as harness-edited. No effect on output.",
+  "clause": "A.5.7.2 [D8]"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex3-step2-seeded-clock",
+  "severity": "minor",
+  "problem": "Inherited input defect: guards.ts's own digest moves (7fcb8986→b5a15eac) while its file digest is unchanged (6f66d2c8). Under v7 only checkFreshness is a finest change, so health.coverage would be {1,1}, not {2,2}. The contradiction is unaffected: key ob:d4218b3063c6f1b9, binding, group, the authority cause plus the rule claim as root, and n:1.",
+  "clause": "A.3.2.5 [D6], A.5.7.2 [D8], A.7.4.1"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex4",
+  "severity": "minor",
+  "problem": "The heuristic contradiction's first discharger (answer/dismissal) has agentSafe false. DefaultPolicy normal judges include agents, and A.6.3.3 bars agents only from loosenings, exception answers, producer-changed answers and final claims. The golden also assigns the group to agents (assignee \"agents\", budget used 1), and ex3-step1's judge discharger is agentSafe true under the same criterion. The prototype hard-codes false for dismissals.",
+  "clause": "A.6.3.3, A.7.1.4, A.10.3"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex4",
+  "severity": "minor",
+  "problem": "Input fidelity, no effect on output: the base and head manifests carry the same revision 6666…. A.6.1.2 makes the base the head's first parent.",
+  "clause": "A.6.1.2, A.12.7.5"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex4-closing-the-set",
+  "severity": "minor",
+  "problem": "Same agentSafe false on the dismissal of the preexisting heuristic cycle contradiction, which is assigned to agents.",
+  "clause": "A.6.3.3, A.7.1.4, A.10.3"
+ },
+ {
+  "reviewer": 2,
+  "file": "ex4-closing-the-set",
+  "severity": "minor",
+  "problem": "Same identical base and head revision (6666…) as ex4.",
+  "clause": "A.6.1.2"
+ }
+]

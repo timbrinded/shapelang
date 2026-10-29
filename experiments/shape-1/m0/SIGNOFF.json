@@ -1,0 +1,5553 @@
+{
+ "_doc": "One entry per frozen item. signers are workflow agent labels (agent sign-offs, not human). An item passes the M0 sign-off rule when it has two signers, at least one of whom wrote no part of it (blind, reviewer, adjudicator).",
+ "date": "2026-10-29",
+ "items": [
+  {
+   "artifact": "vector",
+   "item": "scc-merge/merge/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "scc-merge/merge/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "scc-merge/merge/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "scc-merge/merge/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "scc-merge/merge/4",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "scc-merge/merge/5",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "scc-merge/merge/6",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "scc-merge/no-merge/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "scc-merge/no-merge/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "scc-merge/no-merge/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "scc-merge/no-merge/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "scc-merge/no-merge/4",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "second-site/second-site/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "second-site/second-site/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "second-site/second-site/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "second-site/same-count/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "second-site/same-count/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "second-site/same-count/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "second-site/other-identity/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "second-site/other-identity/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "second-site/other-identity/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "off-path-cycle/all-old/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "off-path-cycle/all-old/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "off-path-cycle/all-old/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "off-path-cycle/all-old/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "off-path-cycle/new-off-path-edge/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "off-path-cycle/new-off-path-edge/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "off-path-cycle/new-off-path-edge/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-totality/unreadable-base/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-totality/unreadable-base/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-totality/unreadable-base/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-totality/unreadable-base/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-totality/unreadable-base/4",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-totality/base-shape-errors/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-totality/base-shape-errors/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-totality/base-shape-errors/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-totality/head-shape-error/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-totality/head-shape-error/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-totality/head-shape-error/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "rename-in-place/rebound-to-h/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "rename-in-place/rebound-to-h/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "rename-in-place/rebound-to-h/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "rename-in-place/rebound-to-h/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "rename-in-place/rebound-to-g/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "rename-in-place/rebound-to-g/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "rename-in-place/rebound-to-g/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "two-level-admit/admit-two-levels-down/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "two-level-admit/admit-two-levels-down/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "two-level-admit/admit-two-levels-down/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "two-level-admit/admit-unreachable/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "two-level-admit/admit-unreachable/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/no-provider-edit/0",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/no-provider-edit/1",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/no-provider-edit/2",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/no-provider-edit/3",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/no-provider-edit/4",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/no-provider-edit/5",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-presence/0",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-presence/1",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-presence/2",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-presence/3",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-presence/4",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-presence/5",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-presence/6",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-presence/7",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-presence/8",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-absence/0",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-absence/1",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-absence/2",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-absence/3",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-absence/4",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-absence/5",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-direction/drop-absence/6",
+   "signers": [
+    "adjudicate vectors-A",
+    "blind vectors-A rederived"
+   ],
+   "basis": "rederived after input fix; blind re-derivation agreed"
+  },
+  {
+   "artifact": "vector",
+   "item": "dropped-harness/record-present/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "dropped-harness/record-present/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "dropped-harness/record-present/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "dropped-harness/record-dropped/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "dropped-harness/record-dropped/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "dropped-harness/record-dropped/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "dropped-harness/harness-field-dropped/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "dropped-harness/harness-field-dropped/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "dropped-harness/harness-field-dropped/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "dropped-harness/harness-field-dropped/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "undeclared-hatch-kind/undeclared-kind-in-boundary/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "undeclared-hatch-kind/undeclared-kind-in-boundary/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "undeclared-hatch-kind/undeclared-kind-in-boundary/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "undeclared-hatch-kind/undeclared-kind-in-boundary/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "undeclared-hatch-kind/declared-allowed-kind-in-boundary/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "undeclared-hatch-kind/declared-allowed-kind-in-boundary/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "2099-judgment/judgment-dated-2099/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "2099-judgment/judgment-dated-2099/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "2099-judgment/judgment-dated-2099/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "2099-judgment/judgment-dated-2099/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "2099-judgment/judgment-dated-2099/4",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "2099-judgment/judgment-dated-2026/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "2099-judgment/judgment-dated-2026/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "2099-judgment/judgment-dated-2026/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "2099-judgment/judgment-dated-2026/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "cell-pairs-universe/no-globs-star-forbid-removed/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "cell-pairs-universe/no-globs-star-forbid-removed/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "cell-pairs-universe/no-globs-star-forbid-removed/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "cell-pairs-universe/no-globs-star-forbid-removed/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "cell-pairs-universe/glob-narrowed/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "cell-pairs-universe/glob-narrowed/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "cell-pairs-universe/glob-narrowed/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "cell-pairs-universe/glob-narrowed/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "barrel-import/helper-behind-barrel-edited/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "barrel-import/helper-behind-barrel-edited/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "barrel-import/unimported-reexport-edited/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "barrel-import/unimported-reexport-edited/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "barrel-import/barrel-repointed/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "barrel-import/barrel-repointed/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "deleted-unit/file-and-unit-deleted/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "deleted-unit/file-and-unit-deleted/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "deleted-unit/file-and-unit-deleted/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "deleted-unit/file-and-unit-deleted/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "deleted-unit/file-deleted-unit-kept/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "deleted-unit/file-deleted-unit-kept/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "deleted-unit/file-unit-and-law-deleted/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "deleted-unit/file-unit-and-law-deleted/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "deleted-unit/file-unit-and-law-deleted/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "approve-without-exception/approve-only/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "approve-without-exception/approve-only/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "approve-without-exception/approve-only/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "approve-without-exception/approve-only/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "approve-without-exception/approve-only/4",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "approve-without-exception/approve-only/5",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "approve-without-exception/exception-and-approve/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "approve-without-exception/exception-and-approve/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "approve-without-exception/exception-and-approve/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "approve-without-exception/exception-and-approve/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "approve-without-exception/exception-and-approve/4",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "approve-without-exception/exception-and-approve/5",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "approve-without-exception/exception-and-approve/6",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "approve-without-exception/exception-and-approve/7",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "heuristic-failing-test/unsound-provider/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "heuristic-failing-test/unsound-provider/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "heuristic-failing-test/unsound-provider/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "heuristic-failing-test/presence-sound-provider/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "heuristic-failing-test/presence-sound-provider/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "heuristic-failing-test/presence-sound-provider/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "preview-equals-change/change-with-judgment-and-answer/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "preview-equals-change/change-with-judgment-and-answer/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "preview-equals-change/change-with-judgment-and-answer/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "preview-equals-change/preview-with-judgment-and-answer/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "preview-equals-change/preview-with-judgment-and-answer/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "preview-equals-change/preview-with-judgment-and-answer/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "preview-equals-change/preview-with-judgment-and-answer/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "preview-equals-change/preview-with-judgment-and-answer/4",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "preview-equals-change/change-without-judgment-and-answer/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "preview-equals-change/change-without-judgment-and-answer/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "preview-equals-change/change-without-judgment-and-answer/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "preview-equals-change/change-without-judgment-and-answer/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "preview-equals-change/change-without-judgment-and-answer/4",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "allowed-hatch-at-boundary/change-base-unchanged/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "allowed-hatch-at-boundary/change-base-unchanged/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "allowed-hatch-at-boundary/change-base-unchanged/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "allowed-hatch-at-boundary/change-base-unchanged/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "allowed-hatch-at-boundary/audit-base/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "allowed-hatch-at-boundary/audit-base/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "allowed-hatch-at-boundary/audit-base/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "allowed-hatch-at-boundary/audit-base/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "new-call-existing-edge/call-on-existing-edge/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "new-call-existing-edge/call-on-existing-edge/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "new-call-existing-edge/call-on-existing-edge/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "new-call-existing-edge/call-creating-the-edge/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "new-call-existing-edge/call-creating-the-edge/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "new-call-existing-edge/call-creating-the-edge/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "callee-bug-unit-law/callee-edited/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "callee-bug-unit-law/callee-edited/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "callee-bug-unit-law/callee-edited/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "callee-bug-unit-law/unrelated-edit/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "callee-bug-unit-law/unrelated-edit/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "guard-helper-edit/helper-edited/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "guard-helper-edit/helper-edited/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "guard-helper-edit/unreferenced-function-edited/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "guard-helper-edit/unreferenced-function-edited/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "trusted-body-edit/trusted-body-edited/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "trusted-body-edit/trusted-body-edited/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "trusted-body-edit/trusted-body-edited/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "trusted-body-edit/other-function-edited/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "trusted-body-edit/other-function-edited/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "producer-change-assumption/assume-and-lockfile-bump-approved/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "producer-change-assumption/assume-and-lockfile-bump-approved/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "producer-change-assumption/assume-and-lockfile-bump-approved/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "producer-change-assumption/lockfile-bump-only/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "producer-change-assumption/lockfile-bump-only/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "producer-change-assumption/lockfile-bump-approved/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "producer-change-assumption/lockfile-bump-approved/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "producer-change-assumption/lockfile-bump-approved/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "head-only-provider/head-only-record-and-approve/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "head-only-provider/head-only-record-and-approve/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "head-only-provider/head-only-record-and-approve/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "head-only-provider/head-only-record-and-approve/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "head-only-provider/no-head-only-provider/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "head-only-provider/no-head-only-provider/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "head-only-provider/no-head-only-provider/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "head-only-provider/no-head-only-provider/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "moved-harness-stale/harness-digest-moved/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "moved-harness-stale/harness-digest-moved/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "moved-harness-stale/harness-digest-moved/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "moved-harness-stale/harness-digest-current/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "moved-harness-stale/harness-digest-current/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-law-admit/final-law/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-law-admit/final-law/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-law-admit/critical-law/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-law-admit/critical-law/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "judges-narrowing-no-fallback/base-judges-name-bob/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "judges-narrowing-no-fallback/base-judges-name-bob/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "judges-narrowing-no-fallback/base-judges-name-bob/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "judges-narrowing-no-fallback/base-judges-name-bob/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "judges-narrowing-no-fallback/base-judges-owner-only/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "judges-narrowing-no-fallback/base-judges-owner-only/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "judges-narrowing-no-fallback/base-judges-owner-only/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "code-moved-lower-tier/moved-by-glob/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "code-moved-lower-tier/moved-by-glob/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "code-moved-lower-tier/moved-by-glob/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "code-moved-lower-tier/moved-by-glob/3",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "code-moved-lower-tier/moved-by-glob/4",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "code-moved-lower-tier/kept-in-vault/0",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "code-moved-lower-tier/kept-in-vault/1",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "code-moved-lower-tier/kept-in-vault/2",
+   "signers": [
+    "author vectors-A",
+    "blind vectors-A"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/unrelated-change/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/unrelated-change/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/unrelated-change/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/unrelated-change/3",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/unrelated-change/4",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/unrelated-change/5",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/tier-lowered/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/tier-lowered/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/tier-lowered/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/tier-lowered/3",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/tier-lowered/4",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/tier-lowered/5",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/tier-lowered/6",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/tier-lowered/7",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/tier-lowered-answered/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/tier-lowered-answered/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/tier-lowered-answered/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/tier-lowered-answered/3",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-drift-tier-lowered/tier-lowered-answered/4",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-law-single-judgment/no-judgment/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-law-single-judgment/no-judgment/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-law-single-judgment/no-judgment/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-law-single-judgment/one-person/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-law-single-judgment/one-person/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-law-single-judgment/one-person/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-law-single-judgment/person-and-agent/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-law-single-judgment/person-and-agent/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-law-single-judgment/person-and-agent/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-law-single-judgment/two-persons/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-law-single-judgment/two-persons/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "empty-req/law-on-empty-component/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "empty-req/law-on-empty-component/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "empty-req/law-on-empty-component/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "empty-req/law-on-cli-control/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "empty-req/law-on-cli-control/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "empty-req/law-on-cli-control/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "string-ordered-parameter/string-at-leq/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "string-ordered-parameter/string-at-leq/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "string-ordered-parameter/integer-at-leq/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "string-ordered-parameter/integer-at-leq/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "string-ordered-parameter/string-at-unordered/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "string-ordered-parameter/string-at-unordered/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "fact-without-n/sound-equal-n/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "fact-without-n/sound-equal-n/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "fact-without-n/sound-equal-n/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "fact-without-n/sound-more-n/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "fact-without-n/sound-more-n/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "fact-without-n/sound-base-without-n/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "fact-without-n/sound-base-without-n/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "fact-without-n/sound-base-without-n/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "fact-without-n/heuristic-without-n/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "fact-without-n/heuristic-without-n/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "fact-without-n/heuristic-without-n/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "fact-without-n/heuristic-equal-n/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "fact-without-n/heuristic-equal-n/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "append-only-update/ungoverned-update/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "append-only-update/ungoverned-update/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "append-only-update/ungoverned-update/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "append-only-update/ungoverned-redact/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "append-only-update/ungoverned-redact/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "append-only-update/ungoverned-redact/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "append-only-update/ungoverned-read/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "append-only-update/ungoverned-read/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "hosted-closure-weakened/closure-moved/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "hosted-closure-weakened/closure-moved/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "hosted-closure-weakened/closure-moved/2",
+   "signers": [
+    "adjudicate vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "adjudicated (blind): A.8.3.1 (second clause) with A.8.3.2 (L4: affected = Req identities, counterexample none, channels none); A.8.2.1-2 and A.4.1.3 (part tier = subject tier_b = critical, inherited from DelegationMap); A.9.5 (DefaultPolicy critical blocks coverage); A.6.1.5 (set is in Δcode and is a finest change: unit"
+  },
+  {
+   "artifact": "vector",
+   "item": "hosted-closure-weakened/closure-moved/3",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "hosted-closure-weakened/closure-equal/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "hosted-closure-weakened/closure-equal/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "hosted-closure-weakened/closure-equal/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "dependency-macro/statement-macro-from-dependency/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "dependency-macro/statement-macro-from-dependency/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "dependency-macro/statement-macro-from-dependency/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "dependency-macro/statement-macro-from-dependency/3",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "dependency-macro/plain-edit-control/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "dependency-macro/plain-edit-control/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "coverage-binding-pairs/one-unmet-pair/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "coverage-binding-pairs/one-unmet-pair/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "coverage-binding-pairs/two-unmet-pairs/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "coverage-binding-pairs/two-unmet-pairs/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "coverage-binding-pairs/two-unmet-pairs-old-answer/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "coverage-binding-pairs/two-unmet-pairs-old-answer/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "coverage-binding-pairs/two-unmet-pairs-old-answer/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "coverage-binding-pairs/two-unmet-pairs-answered/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "coverage-binding-pairs/two-unmet-pairs-answered/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "coverage-binding-pairs/two-unmet-pairs-answered/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "refutation-introduced/call-removed/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "refutation-introduced/call-removed/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "refutation-introduced/call-removed/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "refutation-introduced/refuted-at-base-control/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "refutation-introduced/refuted-at-base-control/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "refutation-introduced/base-reported-unchanged-code/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "refutation-introduced/base-reported-unchanged-code/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "summary-direct/callee-reads-clock/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "summary-direct/callee-reads-clock/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "summary-direct/own-code-reads-clock/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "summary-direct/own-code-reads-clock/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "summary-direct/own-code-reads-clock/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "in-tree-non-builtin-macro/dependency-function-macro/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "in-tree-non-builtin-macro/dependency-function-macro/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "in-tree-non-builtin-macro/dependency-function-macro/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "in-tree-non-builtin-macro/std-builtin-macro-control/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "in-tree-non-builtin-macro/std-builtin-macro-control/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "raw-hashbang-executable/hashbang-script/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "raw-hashbang-executable/hashbang-script/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "raw-hashbang-executable/hashbang-script/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "raw-hashbang-executable/no-hashbang-data-control/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "raw-hashbang-executable/no-hashbang-data-control/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "attribute-macro-out-dir-include/dependency-attribute-macro/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "attribute-macro-out-dir-include/dependency-attribute-macro/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "attribute-macro-out-dir-include/include-out-dir/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "attribute-macro-out-dir-include/include-out-dir/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "attribute-macro-out-dir-include/builtin-attribute-control/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "attribute-macro-out-dir-include/builtin-attribute-control/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "include-in-tree-literal/include-file-with-marker/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "include-in-tree-literal/include-file-with-marker/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "include-in-tree-literal/include-file-with-marker/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "include-in-tree-literal/include-file-with-marker/3",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "include-in-tree-literal/include-marker-free-control/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "include-in-tree-literal/include-marker-free-control/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "head-drops-absence/absence-dropped/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "head-drops-absence/absence-dropped/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "head-drops-absence/absence-dropped/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "head-drops-absence/absence-dropped/3",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "head-drops-absence/absence-dropped/4",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "head-drops-absence/absence-kept-control/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "head-drops-absence/absence-kept-control/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-coverage-one-person-team/bob-only/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-coverage-one-person-team/bob-only/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-coverage-one-person-team/bob-only/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-coverage-one-person-team/bob-and-carol/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-coverage-one-person-team/bob-and-carol/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "final-coverage-one-person-team/bob-and-carol/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "directory-move/moved-unedited/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "directory-move/moved-unedited/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "directory-move/moved-unedited/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "directory-move/moved-unedited/3",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "directory-move/moved-and-edited/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "directory-move/moved-and-edited/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "directory-move/moved-and-edited/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "two-exceptions-earliest-expiry/both-active/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "two-exceptions-earliest-expiry/both-active/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "two-exceptions-earliest-expiry/both-active/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "two-exceptions-earliest-expiry/earliest-expired/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "two-exceptions-earliest-expiry/earliest-expired/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "two-exceptions-earliest-expiry/earliest-expired/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "equal-fp-merge/highest-tier-owner/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "equal-fp-merge/highest-tier-owner/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "equal-fp-merge/highest-tier-owner/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "equal-fp-merge/tied-tiers-least-id/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "equal-fp-merge/tied-tiers-least-id/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "equal-fp-merge/tied-tiers-least-id/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-channels-claim-tier/clock-observer-edited/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-channels-claim-tier/clock-observer-edited/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-channels-claim-tier/clock-observer-edited/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-channels-claim-tier/clock-observer-edited/3",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-channels-claim-tier/sql-observer-edited-control/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "provider-channels-claim-tier/sql-observer-edited-control/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "this-method-guard-helper/helper-edited/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "this-method-guard-helper/helper-edited/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "this-method-guard-helper/helper-edited-judgment-cites-tick-only/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "this-method-guard-helper/helper-edited-judgment-cites-tick-only/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "this-method-guard-helper/unreferenced-method-edited-control/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "this-method-guard-helper/unreferenced-method-edited-control/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-failing-law-counterexample/different-inputs/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-failing-law-counterexample/different-inputs/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-failing-law-counterexample/different-inputs/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-failing-law-counterexample/equal-counterexample-other-seed/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-failing-law-counterexample/equal-counterexample-other-seed/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-failing-law-counterexample/equal-counterexample-other-seed/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-failing-law-counterexample/different-assertion/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "base-failing-law-counterexample/different-assertion/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "judge-line-without-relay/judge-line/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "judge-line-without-relay/judge-line/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "judge-line-without-relay/judge-line/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "judge-line-without-relay/self-signed-record-control/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "judge-line-without-relay/self-signed-record-control/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "unsigned-manifest-identity/head-unsigned/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "unsigned-manifest-identity/head-unsigned/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "unsigned-manifest-identity/head-unsigned/2",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "unsigned-manifest-identity/head-wrong-signer/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "unsigned-manifest-identity/head-wrong-signer/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "unsigned-manifest-identity/both-signed-control/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "unsigned-manifest-identity/both-signed-control/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "unsigned-manifest-identity/no-identity-control/0",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "vector",
+   "item": "unsigned-manifest-identity/no-identity-control/1",
+   "signers": [
+    "author vectors-B",
+    "blind vectors-B"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "claim_misdescribes_code",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "draft_trait_removed",
+   "signers": [
+    "adjudicate h4",
+    "blind h4"
+   ],
+   "basis": "adjudicated (blind): A.11.1(e); A.4.1.3; A.11.1 preamble and D19; A.8.2.3 L1 and L7; A.8.2.1; D18; A.8.3.1; A.7.5.1 rule 4"
+  },
+  {
+   "artifact": "h4",
+   "item": "effects_unknown",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "governed_directory_moved",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "governed_paths_narrowed",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "grant_added",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "guarded_fn_edited_in_place",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "memory_and_trait_removed",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "memory_guard_removed",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "path_rule_narrowed",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "path_rule_removed",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "read_only_function_added",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "relation_left_out",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "renamed_component",
+   "signers": [
+    "adjudicate h4",
+    "blind h4"
+   ],
+   "basis": "adjudicated (blind): A.8.1.6 (undecided parts may be exploited); A.8.2.1 (exploited if any part is); A.8.3.1; A.7.1.1 (exploited field); A.6.1.4"
+  },
+  {
+   "artifact": "h4",
+   "item": "renamed_component_and_narrowed_rule",
+   "signers": [
+    "adjudicate h4",
+    "author h4"
+   ],
+   "basis": "adjudicated (author): A.8.1.3 (silent on combining); A.8.1.6; A.6.1.4; A.5.6.4; A.8.4.2; A.8.3.1; RFC D17 (reverse pass gives the class, evidence 30/33 under the H4 class rule); A.8.6; ROADMAP M5 H4′ (≤ 2 abstentions, renames without was)"
+  },
+  {
+   "artifact": "h4",
+   "item": "resource_renamed_trait_dropped",
+   "signers": [
+    "adjudicate h4",
+    "blind h4"
+   ],
+   "basis": "adjudicated (blind): A.6.1.4; A.8.1.6; A.8.2.3 L1 and L7 ('a matched item's tier fell'); A.11.1(d),(e); D19; A.8.3.1; A.7.5.1 rule 4"
+  },
+  {
+   "artifact": "h4",
+   "item": "resource_renamed_trait_kept",
+   "signers": [
+    "adjudicate h4",
+    "blind h4"
+   ],
+   "basis": "adjudicated (blind): A.8.2.1 (tier = subject's; exploited if any part is); A.8.2.2 (base claim tier_b); A.7.1.1 (final field); A.7.5.1 rule 4; A.8.1.6; A.8.3.1"
+  },
+  {
+   "artifact": "h4",
+   "item": "rule_added",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "rule_and_trait_removed_together",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "rule_moved_between_files",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "rule_removed",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "trait_removed_from_resource",
+   "signers": [
+    "adjudicate h4",
+    "blind h4"
+   ],
+   "basis": "adjudicated (blind): A.11.1(e) (silent on where 'at tier final' is written); A.4.1.3 (std templates carry no tier; attachments take no claim meta, syntax §2); A.11.1 preamble and D19 (mints nothing 0.x did not enforce); A.8.2.3 L1 and L7; D18; A.8.3.1; A.7.5.1 rule 4; consistent with Example 1 Variant C (forbid part, no"
+  },
+  {
+   "artifact": "h4",
+   "item": "unused_rule_removed",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "guard-policy-removal",
+   "signers": [
+    "adjudicate h4",
+    "blind h4"
+   ],
+   "basis": "adjudicated (blind): A.11.1(e); A.4.1.3; D19; A.8.1.4; A.8.2.3 L1 and L7; A.8.3.1; A.7.5.1 rule 4"
+  },
+  {
+   "artifact": "h4",
+   "item": "guard-equivalent-relocation",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "cal1-removal-destructive",
+   "signers": [
+    "adjudicate h4",
+    "blind h4"
+   ],
+   "basis": "adjudicated (blind): A.11.1(a),(d),(e); A.4.1.3; D19; A.8.2.3 L1 and L7; A.4.4.4; A.8.3.1; A.7.5.1 rule 4"
+  },
+  {
+   "artifact": "h4",
+   "item": "cal2-supported-loosening",
+   "signers": [
+    "adjudicate h4",
+    "blind h4"
+   ],
+   "basis": "adjudicated (blind): A.11.1(e),(g); A.4.1.3; A.4.7.2; A.8.2.3 L1 and L7; A.8.3.1; A.7.5.1 rule 4"
+  },
+  {
+   "artifact": "h4",
+   "item": "cal3-relocated-rule",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "cal4-protected-to-appendonly",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "cal5-path-weakened",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "cal6-vendored-final-removed",
+   "signers": [
+    "adjudicate h4",
+    "blind h4"
+   ],
+   "basis": "adjudicated (blind): A.11.1(e),(k); A.4.1.3; A.8.2.3 L1 and L7; D18; A.8.3.1; A.8.3.2; A.7.5.1 rule 4"
+  },
+  {
+   "artifact": "h4",
+   "item": "cal7-generic-attestation",
+   "signers": [
+    "author h4",
+    "blind h4"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h4",
+   "item": "cal8-false-completeness",
+   "signers": [
+    "adjudicate h4",
+    "blind h4"
+   ],
+   "basis": "adjudicated (blind): A.8.2.3 L1 (definition of T); A.4.4.7 (S(u) includes TrustAtoms); A.4.4.2 and A.3.3.9 (no lift without res_S); A.8.1.3; D2"
+  },
+  {
+   "artifact": "h2",
+   "item": "S01/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S01/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S02/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S02/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S03/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S03/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S04/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S04/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S05/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S05/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S06/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S06/X",
+   "signers": [
+    "adjudicate h2",
+    "author h2"
+   ],
+   "basis": "adjudicated (author): A.4.2.3; A.7.3.1; A.7.3.3 [D5]; A.4.4.11; A.4.4.13; A.7.5.1 rule 7; A.7.2.1; A.12.10.5 (obligations by severity, kind, key); trials/H2/classify.py selection (new key, blocking, sound, kind, then output order)"
+  },
+  {
+   "artifact": "h2",
+   "item": "S07/A",
+   "signers": [
+    "adjudicate h2",
+    "author h2"
+   ],
+   "basis": "adjudicated (author): A.4.4.11 ('Supports decide introduced'; cycle support = facts of K-edges in the SCC); A.7.3.1; A.7.3.3 [D5]; core §7.3; A.4.4.13; A.7.5.1 rule 7; RFC D5; ROADMAP M5 H2′ (the 11 arm-A drifts unflagged by construction exclude S07 and S08)"
+  },
+  {
+   "artifact": "h2",
+   "item": "S07/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S08/A",
+   "signers": [
+    "adjudicate h2",
+    "author h2"
+   ],
+   "basis": "adjudicated (author): A.4.4.11; A.7.3.1; A.7.3.3 [D5]; core §7.3; A.4.4.13; A.7.5.1 rules 7 and 9; A.5.3.4 [D4]; RFC D5; ROADMAP M5 H2′"
+  },
+  {
+   "artifact": "h2",
+   "item": "S08/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S09/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S09/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S10/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S10/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S11/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S11/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S12/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "S12/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "R01/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "R01/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "R02/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "R02/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "R03/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "R03/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "R04/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "R04/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "R05/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "R05/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "R06/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "R06/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "R07/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "R07/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E01/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E01/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E02/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E02/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E03/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E03/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E04/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E04/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E05/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E05/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E06/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E06/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E07/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E07/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E08/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E08/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E09/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E09/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E10/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E10/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E11/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E11/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E12/A",
+   "signers": [
+    "adjudicate h2",
+    "author h2"
+   ],
+   "basis": "adjudicated (author): records §2 (coverage key subject \"component Q\", no claim) and §5; A.7.4.2-4; A.4.5.6 [D3]; A.7.4.3; A.15.9; A.12.4; A.5.2.1; A.5.2.5; A.7.3.3; A.7.5.1 rule 9"
+  },
+  {
+   "artifact": "h2",
+   "item": "E12/X",
+   "signers": [
+    "adjudicate h2",
+    "author h2"
+   ],
+   "basis": "adjudicated (author): records §2 and §5; A.7.4.2-4; A.4.5.1 [D2]; A.4.5.6 [D3]; A.7.4.3; A.7.5.1 rule 9"
+  },
+  {
+   "artifact": "h2",
+   "item": "E13/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E13/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E14/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E14/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E15/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E15/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E16/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E16/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E17/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E17/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E18/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "E18/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "M01/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "M01/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "M02/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "M02/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "M03/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "M03/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "M04/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "M04/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "M05/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "M05/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "M06/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "M06/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "N01/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "N01/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "N02/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "N02/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "N03/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "N03/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "N04/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "N04/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "N05/A",
+   "signers": [
+    "adjudicate h2",
+    "blind h2"
+   ],
+   "basis": "adjudicated (blind): A.3.3.2; A.10.1; A.15.1 (E-unbound subject '<kind> Q'; errors sort by (code, subject)); A.12.10.5; A.7.5.1 rule 1"
+  },
+  {
+   "artifact": "h2",
+   "item": "N05/X",
+   "signers": [
+    "adjudicate h2",
+    "blind h2"
+   ],
+   "basis": "adjudicated (blind): A.3.3.2; A.10.1; A.15.1; A.12.10.5; A.7.5.1 rule 1"
+  },
+  {
+   "artifact": "h2",
+   "item": "N06/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "N06/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "N07/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "N07/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L01/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L01/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L02/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L02/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L03/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L03/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L04/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L04/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L05/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L05/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L06/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L06/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L07/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L07/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L08/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L08/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L09/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L09/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L10/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L10/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L11/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L11/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L12/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "L12/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C00/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C00/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C01/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C01/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C02/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C02/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C03/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C03/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C04/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C04/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C05/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C05/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C06/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C06/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C07/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C07/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C08/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C08/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C09/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C09/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C10/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C10/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C11/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C11/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C12/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C12/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C13/A",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "h2",
+   "item": "C13/X",
+   "signers": [
+    "author h2",
+    "blind h2"
+   ],
+   "basis": "independent derivations agree"
+  },
+  {
+   "artifact": "golden",
+   "item": "ex1-A",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 5
+  },
+  {
+   "artifact": "golden",
+   "item": "ex1-B",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 3
+  },
+  {
+   "artifact": "golden",
+   "item": "ex1-B-weak-observer",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 2
+  },
+  {
+   "artifact": "golden",
+   "item": "ex1-Bprime",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 2
+  },
+  {
+   "artifact": "golden",
+   "item": "ex1-Bsecond",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 3
+  },
+  {
+   "artifact": "golden",
+   "item": "ex1-C",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 2
+  },
+  {
+   "artifact": "golden",
+   "item": "ex1-C-answered",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 3
+  },
+  {
+   "artifact": "golden",
+   "item": "ex1-audit",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 2
+  },
+  {
+   "artifact": "golden",
+   "item": "ex1-empty-base",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 5
+  },
+  {
+   "artifact": "golden",
+   "item": "ex2",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 4
+  },
+  {
+   "artifact": "golden",
+   "item": "ex2-approve-only",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 4
+  },
+  {
+   "artifact": "golden",
+   "item": "ex2-exception-approve",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 6
+  },
+  {
+   "artifact": "golden",
+   "item": "ex3-step1",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 3
+  },
+  {
+   "artifact": "golden",
+   "item": "ex3-step1-judged",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 5
+  },
+  {
+   "artifact": "golden",
+   "item": "ex3-step2",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 3
+  },
+  {
+   "artifact": "golden",
+   "item": "ex3-step2-harness-edited",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 3
+  },
+  {
+   "artifact": "golden",
+   "item": "ex3-step2-record-dropped",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 3
+  },
+  {
+   "artifact": "golden",
+   "item": "ex3-step2-refactor-sensitive-removed",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 2
+  },
+  {
+   "artifact": "golden",
+   "item": "ex3-step2-seeded-clock",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 3
+  },
+  {
+   "artifact": "golden",
+   "item": "ex4",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 4
+  },
+  {
+   "artifact": "golden",
+   "item": "ex4-closing-the-set",
+   "signers": [
+    "review golden #1",
+    "review golden #2"
+   ],
+   "basis": "both independent reviewers ok; 0 must-fix",
+   "minor_issues": 4
+  }
+ ]
+}

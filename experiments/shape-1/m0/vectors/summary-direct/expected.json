@@ -1,0 +1,80 @@
+{
+ "vector": "summary-direct",
+ "title": "A complete summary bounds the unit's own code only: a callee's effect does not contradict the caller's summary, the caller's own effect does",
+ "decides": [
+  "A.4.4.2",
+  "A.4.2.1",
+  "A.4.5.1",
+  "§4.1",
+  "D2"
+ ],
+ "cases": [
+  {
+   "case": "callee-reads-clock",
+   "input": "callee-reads-clock.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "D2, A.4.4.2: Xd(format) holds only facts at format's own code; the Read is at stamp, which belongs to unit stamp (no summary)"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.4.5.1 [D2]: effects.upper has no call channel, and format's effect channel is met by clockScan's complete entry"
+    }
+   ]
+  },
+  {
+   "case": "own-code-reads-clock",
+   "input": "own-code-reads-clock.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7: introduced sound contradiction"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "key": "ob:adcafda3a5f311c9917e8154f337c8f7e081675231eb69738ce7f8f153d8733e"
+     },
+     "check": "fields",
+     "value": {
+      "claim.fp": "sha256:a626973e26001d0d6858baa495c0983519fce5fb6efa21eb8507845a82ff6e74",
+      "subject": {
+       "code": "ts:src/store/fmt.ts#format",
+       "atom": "Read<sd::Clock>"
+      },
+      "force": "sound",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "normal",
+      "owner": "sd::StoreTeam",
+      "binding": "bd:cde2a9f84450bc64ad274a68e5ffd47aab902ac1df47cfdcf8222bb643507257",
+      "witness": [
+       "sha256:088ca86299c3c81aab926100bfb2519a6843b1e5bd8fcdb7ececbaac24169adb"
+      ]
+     },
+     "why": "A.4.2.1: Xd(format) ⊄ cl(∅); A.4.4.8 subject {code, atom} for effects.upper; A.7.3.1 new fact at changed format; tier and owner from Store (normal, StoreTeam)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction"
+     },
+     "check": "count",
+     "value": 1,
+     "why": "D2: stamp's own Read is attributed to stamp, which no summary bounds, so it raises nothing"
+    }
+   ]
+  }
+ ]
+}

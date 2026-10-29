@@ -1,0 +1,94 @@
+{
+ "vector": "attribute-macro-out-dir-include",
+ "title": "A dependency attribute macro, and include! of OUT_DIR (non-literal, out-of-tree) code, make an identity not hatch-complete, raising hatch(rust) coverage; a builtin attribute does not",
+ "decides": [
+  "A.3.4.4",
+  "A.12.2.8",
+  "A.7.4.3",
+  "D20"
+ ],
+ "cases": [
+  {
+   "case": "dependency-attribute-macro",
+   "input": "dependency-attribute-macro.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: critical blocks coverage"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage",
+      "key": "ob:0cb0f86f8883391644e93bcce2b116cbbe3e2628ca14e3197b374cb55eb68b72"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "component crate2::Parser",
+      "tier": "critical",
+      "severity": "blocking",
+      "introduced": true,
+      "owner": "crate2::ParserTeam",
+      "group": "g:750787ed67f1165967c22862ac6a2f8dec4511c29127a79d7d22aa68e346d066",
+      "binding": "bd:deda8a328457f0fc5874090602b74872f9e26e47eb0f094541e93c0fc71a2876"
+     },
+     "why": "A.3.4.4 [D20]: #[tracing::instrument] is a macro in attribute position, neither a built-in attribute nor defined in the tree, so parse is not hatch-complete; unmet (NoUnsafe fp, hatch(rust)) at the finest change parse"
+    }
+   ]
+  },
+  {
+   "case": "include-out-dir",
+   "input": "include-out-dir.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: critical blocks coverage"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage",
+      "key": "ob:0cb0f86f8883391644e93bcce2b116cbbe3e2628ca14e3197b374cb55eb68b72"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "component crate2::Parser",
+      "tier": "critical",
+      "severity": "blocking",
+      "introduced": true,
+      "owner": "crate2::ParserTeam",
+      "group": "g:750787ed67f1165967c22862ac6a2f8dec4511c29127a79d7d22aa68e346d066",
+      "binding": "bd:999ca1013ef9a1db18a428aeb06d0a9cdf93f2c3306b2597a5086c0f22fae68f"
+     },
+     "why": "A.3.4.4, A.12.2.8 [D20]: include! is excluded from the builtin list and counts as in-tree code only with a string-literal path to an in-tree hatch-complete file; concat!(env!(\"OUT_DIR\"), …) is neither, so the file identity rust:src/tables.rs (its own text changed) is not hatch-complete"
+    }
+   ]
+  },
+  {
+   "case": "builtin-attribute-control",
+   "input": "builtin-attribute-control.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.12.2.8: #[inline] is a built-in attribute, so parse stays hatch-complete"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "need met"
+    }
+   ]
+  }
+ ]
+}

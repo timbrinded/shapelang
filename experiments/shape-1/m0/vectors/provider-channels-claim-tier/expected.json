@@ -1,0 +1,94 @@
+{
+ "vector": "provider-channels-claim-tier",
+ "title": "A provider loosening's subject tier is the highest base tier of the claims whose T(c) meets the provider's channels, not of every claim",
+ "decides": [
+  "A.8.2.2",
+  "A.5.2.3",
+  "A.8.2.3",
+  "D22"
+ ],
+ "cases": [
+  {
+   "case": "clock-observer-edited",
+   "input": "clock-observer-edited.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 9: L7 is never exploited, and DefaultPolicy low blocks nothing"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "loosening",
+      "key": "ob:13b71a047617686d5f4de762330d1b4d490dd539982b35122cdfa77145846096"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "provider prov::clockScan",
+      "questions": [
+       "L7"
+      ],
+      "tier": "low",
+      "severity": "owed",
+      "introduced": true,
+      "owner": "prov::Maint"
+     },
+     "why": "A.8.2.3 L7: a provider field (depsComplete) changed: undecided; A.8.2.2 [D22]: clockScan's effect(ts.call(\"Date.now\")) meets only NoClock's T(c) (low); OrdersKept's effect(pg.table(\"orders\")) does not match (A.5.2.3), so the final claim does not count; answerer the base shape owner"
+    },
+    {
+     "in": "loosening",
+     "select": {
+      "question": "L7",
+      "subject": "provider prov::clockScan"
+     },
+     "check": "fields",
+     "value": {
+      "answer": "undecided"
+     },
+     "why": "A.8.2.3 L7: another provider field changed"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "no code changed"
+    }
+   ]
+  },
+  {
+   "case": "sql-observer-edited-control",
+   "input": "sql-observer-edited-control.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 4: a final loosening blocks until two persons answer"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "loosening",
+      "key": "ob:34ff0ac92f5ad84f41396819c91713b696432e062ad84031a11076f9e5a064d9"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "provider prov::sqlScan",
+      "questions": [
+       "L7"
+      ],
+      "tier": "final",
+      "severity": "blocking",
+      "owner": "prov::Maint"
+     },
+     "why": "A.8.2.2: sqlScan's effect(pg.table(\"*\")) meets OrdersKept's effect(pg.table(\"orders\")) (final)"
+    }
+   ]
+  }
+ ]
+}

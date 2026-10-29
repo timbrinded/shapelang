@@ -1,0 +1,612 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Owners"
+      },
+      {
+       "decl": "actor",
+       "name": "Owners",
+       "kind": "team",
+       "members": [
+        "alice",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")",
+        "ed25519(\"a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "devAgent",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"dev-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Core",
+       "tier": "critical",
+       "paths": [
+        "src/**/*.ts"
+       ],
+       "units": [
+        {
+         "name": "run"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "RunIsDeterministic",
+       "template": {
+        "name": "Deterministic",
+        "args": [
+         "Core.run"
+        ]
+       },
+       "tier": "critical",
+       "evidence": {
+        "level": "tested",
+        "by": [
+         "bunTest"
+        ]
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "bunTest",
+       "produces": [
+        "test"
+       ],
+       "decides": [
+        "template Deterministic"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "depsComplete": true,
+       "implementation": {
+        "digest": "sha256:7451c462041e183dcb0254140ad37f54856310a75d24c81c7ef17b1c93c1d684"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "fbdea2598b086d3d2c6e63685f77fcd0822a39cccd0d8953d31a9d871ee2143e"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "d8e45233f7bab504c265f73ea801c88dd9d1f6cd"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "76ba332e1a24f0fb4b5a4a0951cb6189ec352908"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "bda3c86e663fa4d5da5070201cdd7a06e3adc664"
+      },
+      {
+       "path": "src/core.ts",
+       "mode": "100644",
+       "blob": "5b04520a1fcd21e2e91626674fa4d182da9a442d"
+      },
+      {
+       "path": "test/run.test.ts",
+       "mode": "100644",
+       "blob": "1f9a857c04d23a122548e5461b60157d5d9c78a2"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:a3da24f7a738ced640dc99357ff281329deb8b737cea6d64c7f2b27a60917b1d",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:1582b59a3f8d5adb578f6e96cb45af914f8dec5114d54edd6513b9a592f6a6ab",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:91f94938dba0dee7ca1fb8cd21de77b44ff186b3653e50ad3840b34348299de6",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:cfaf3b09063bddddc77867ff7bdcb149b290946c8bb7f409580e2ae12ac794d0",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts#run",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:4920d08e7fc835959c78ca82bbaad5362d93a49abf9b5a454e5ae179d3656ea9",
+       "kind": "function",
+       "parent": "ts:src/core.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts#run",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:d5c63df1ad68ae7cdf33b77e6ea1164341f0d27396e99b93029b8e677707f1c3",
+       "kind": "function",
+       "parent": "ts:src/core.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:test/run.test.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:0658eeb148198201f6c9b2d8fa3ee884c639f67f34ee22c592197947ccce713f",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:test/run.test.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:2b929a0f13ac996d2e7181ebe8c0dc5beb8367682f5e23b2477bd46c5d37d609",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Owners"
+      },
+      {
+       "decl": "actor",
+       "name": "Owners",
+       "kind": "team",
+       "members": [
+        "alice",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")",
+        "ed25519(\"a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "devAgent",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"dev-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Core",
+       "tier": "critical",
+       "paths": [
+        "src/**/*.ts"
+       ],
+       "units": [
+        {
+         "name": "run"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "RunIsDeterministic",
+       "template": {
+        "name": "Deterministic",
+        "args": [
+         "Core.run"
+        ]
+       },
+       "tier": "critical",
+       "evidence": {
+        "level": "tested",
+        "by": [
+         "bunTest"
+        ]
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "bunTest",
+       "produces": [
+        "test"
+       ],
+       "decides": [
+        "template Deterministic"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "depsComplete": true,
+       "implementation": {
+        "digest": "sha256:7451c462041e183dcb0254140ad37f54856310a75d24c81c7ef17b1c93c1d684"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "79402563ead41ae2ebb35574ee39b6139502ab1545323a6f3326d56874454ce2"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "fc4fde293fd2ab39a9cf7d53f74756b258111f91"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "76ba332e1a24f0fb4b5a4a0951cb6189ec352908"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "bda3c86e663fa4d5da5070201cdd7a06e3adc664"
+      },
+      {
+       "path": "src/core.ts",
+       "mode": "100644",
+       "blob": "5b04520a1fcd21e2e91626674fa4d182da9a442d"
+      },
+      {
+       "path": "test/run.test.ts",
+       "mode": "100644",
+       "blob": "1f9a857c04d23a122548e5461b60157d5d9c78a2"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:3041cef1a4e12f34b1ed68990e7b1656add478e08da526591ce809328770e785",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:5fb53137b479151db4fa8488548fc13180e1757872bbbba919f980859d790a45",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:91f94938dba0dee7ca1fb8cd21de77b44ff186b3653e50ad3840b34348299de6",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:cfaf3b09063bddddc77867ff7bdcb149b290946c8bb7f409580e2ae12ac794d0",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts#run",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:4920d08e7fc835959c78ca82bbaad5362d93a49abf9b5a454e5ae179d3656ea9",
+       "kind": "function",
+       "parent": "ts:src/core.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts#run",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:d5c63df1ad68ae7cdf33b77e6ea1164341f0d27396e99b93029b8e677707f1c3",
+       "kind": "function",
+       "parent": "ts:src/core.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:test/run.test.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:0658eeb148198201f6c9b2d8fa3ee884c639f67f34ee22c592197947ccce713f",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:test/run.test.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:2b929a0f13ac996d2e7181ebe8c0dc5beb8367682f5e23b2477bd46c5d37d609",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/app#7"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"dev-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [
+  {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:claim/m::RunIsDeterministic",
+     "digest": {
+      "sha256": "85e169c4b02653f162d80cacabd140736c5347d43698224dc3f16455de0d8ac3"
+     }
+    },
+    {
+     "name": "shape:code/ts:src/core.ts#run@unit",
+     "digest": {
+      "sha256": "d5c63df1ad68ae7cdf33b77e6ea1164341f0d27396e99b93029b8e677707f1c3"
+     },
+     "annotations": {
+      "shape.scheme": "ts.unit.v2"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/test-result/v0.1",
+   "predicate": {
+    "result": "PASSED",
+    "configuration": [],
+    "url": "",
+    "passedTests": [],
+    "warnedTests": [],
+    "failedTests": [],
+    "shape": {
+     "v": "shape.evidence.v1",
+     "kind": "test",
+     "result": "supports",
+     "provider": {
+      "id": "m::bunTest",
+      "version": "1.0.0"
+     },
+     "revision": "a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0",
+     "time": "2026-10-20T10:00:00Z",
+     "claim": {
+      "id": "m::RunIsDeterministic",
+      "fp": "sha256:85e169c4b02653f162d80cacabd140736c5347d43698224dc3f16455de0d8ac3"
+     },
+     "code": [
+      {
+       "id": "ts:src/core.ts#run",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:d5c63df1ad68ae7cdf33b77e6ea1164341f0d27396e99b93029b8e677707f1c3"
+      }
+     ],
+     "deps": [],
+     "harness": [
+      {
+       "id": "ts:test/run.test.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:2b929a0f13ac996d2e7181ebe8c0dc5beb8367682f5e23b2477bd46c5d37d609"
+      }
+     ],
+     "assumptions": [],
+     "bound": {
+      "runs": 100
+     }
+    }
+   }
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

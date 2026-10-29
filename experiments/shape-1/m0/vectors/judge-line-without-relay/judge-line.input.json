@@ -1,0 +1,401 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "jl",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/jl.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Jl",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "CliTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"bf544b7d3acc4628bfe6335e63e07e5806482086f0b6488e744d7ac586466b15\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Cli",
+       "owner": "CliTeam",
+       "paths": [
+        "src/cli/**"
+       ],
+       "units": [
+        {
+         "name": "isoToday",
+         "bind": "ts(\"src/cli/fresh.ts#isoToday\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "IsoGuard",
+       "on": [
+        "unit Cli.isoToday"
+       ],
+       "informal": "isoToday reads the clock once, at the CLI boundary."
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "7ce3bcf52c51643ca3aaf4a8c97bc5749abd0ee2f6665fff501dbe6b29bea85d"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/jl.shape",
+       "mode": "100644",
+       "blob": "b87f2140e6dbca190c3350140ff70be815357d6a"
+      },
+      {
+       "path": "src/cli/fresh.ts",
+       "mode": "100644",
+       "blob": "ec17ae8e668624500a4c2d333a30c895783573da"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/cli/fresh.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:12533e76614bee352d26418b453c33faf482a160c79e2ff65bfb0acdb6f4d6de",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:e8c68c01812ac7183111c652af20fd282d0186ff539c5080b86f4096402f0e8f",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts#isoToday",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:ecf1dda6168cdea09e9f32cf064ea02e991d3684f6087a527c5d8b0385ef7aa7",
+       "kind": "function",
+       "parent": "ts:src/cli/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts#isoToday",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:01fab1b019c423a37b3675c293c6360420eb8f807fb4a62fbdb21bbf7d167c24",
+       "kind": "function",
+       "parent": "ts:src/cli/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "jl",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/jl.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Jl",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "CliTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"bf544b7d3acc4628bfe6335e63e07e5806482086f0b6488e744d7ac586466b15\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Cli",
+       "owner": "CliTeam",
+       "paths": [
+        "src/cli/**"
+       ],
+       "units": [
+        {
+         "name": "isoToday",
+         "bind": "ts(\"src/cli/fresh.ts#isoToday\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "IsoGuard",
+       "on": [
+        "unit Cli.isoToday"
+       ],
+       "informal": "isoToday reads the clock once, at the CLI boundary."
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "966e27102c3b6c7bcf14806d22e8aee86de80689eb8589a7ac3e0099ba32e95c"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/jl.shape",
+       "mode": "100644",
+       "blob": "b87f2140e6dbca190c3350140ff70be815357d6a"
+      },
+      {
+       "path": "src/cli/fresh.ts",
+       "mode": "100644",
+       "blob": "ec17ae8e668624500a4c2d333a30c895783573da"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/cli/fresh.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:424ad843ff0f8ca45c1782b8649d58317b9ed1722ab8d7131d4f380d80a436f7",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:e8c68c01812ac7183111c652af20fd282d0186ff539c5080b86f4096402f0e8f",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts#isoToday",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:f1c597c54699cfef068275044020e0117d1abefd01b264a6be2fab7efe19e7e7",
+       "kind": "function",
+       "parent": "ts:src/cli/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts#isoToday",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:90d57eecf35ff2d9b8fac30a965bebc34a3b402b8bcc8c12d86b852b3d8af2c3",
+       "kind": "function",
+       "parent": "ts:src/cli/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"acme-code-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [
+  {
+   "identity": "github(\"bob\")",
+   "line": "shape judge jl::IsoGuard",
+   "change": "github:acme/repo#1"
+  }
+ ],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfU1VQUE9SVFMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJqdWRnbWVudCJ9fV0sInNoYXBlIjp7ImNsYWltIjp7ImZwIjoic2hhMjU2OmJhNmEzMjM0ZGQzOTEzOTU0MWU2ZjFjZDI0ZWQ1ZGFiM2RkMjhlMGQ5YjYxNDFlZjU0MzIwZmQ2NDhmMTZlN2QiLCJpZCI6ImpsOjpJc29HdWFyZCJ9LCJjb2RlIjpbeyJkaWdlc3QiOiJzaGEyNTY6OTBkNTdlZWNmMzVmZjJkOWI4ZmFjMzBhOTY1YmViYzM0YTNiNDAyYjhiY2M4YzEyZDg2Yjg1MmIzZDhhZjJjMyIsImlkIjoidHM6c3JjL2NsaS9mcmVzaC50cyNpc29Ub2RheSIsInByb2plY3Rpb24iOiJ1bml0Iiwic2NoZW1lIjoidHMudW5pdC52MiJ9XSwianVkZ2UiOiJqbDo6Ym9iIiwia2luZCI6Imp1ZGdtZW50IiwicHJvdmlkZXIiOm51bGwsInJlc3VsdCI6InN1cHBvcnRzIiwicmV2aXNpb24iOiIxMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExIiwidGltZSI6IjIwMjYtMTAtMDFUMDk6MDA6MDBaIiwidiI6InNoYXBlLmV2aWRlbmNlLnYxIn19LCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9pbi10b3RvLmlvL2F0dGVzdGF0aW9uL3NjYWkvYXR0cmlidXRlLXJlcG9ydC92MC4zIiwic3ViamVjdCI6W3siZGlnZXN0Ijp7InNoYTI1NiI6ImJhNmEzMjM0ZGQzOTEzOTU0MWU2ZjFjZDI0ZWQ1ZGFiM2RkMjhlMGQ5YjYxNDFlZjU0MzIwZmQ2NDhmMTZlN2QifSwibmFtZSI6InNoYXBlOmNsYWltL2psOjpJc29HdWFyZCJ9LHsiYW5ub3RhdGlvbnMiOnsic2hhcGUuc2NoZW1lIjoidHMudW5pdC52MiJ9LCJkaWdlc3QiOnsic2hhMjU2IjoiOTBkNTdlZWNmMzVmZjJkOWI4ZmFjMzBhOTY1YmViYzM0YTNiNDAyYjhiY2M4YzEyZDg2Yjg1MmIzZDhhZjJjMyJ9LCJuYW1lIjoic2hhcGU6Y29kZS90czpzcmMvY2xpL2ZyZXNoLnRzI2lzb1RvZGF5QHVuaXQifV19",
+   "signatures": [
+    {
+     "keyid": "bf544b7d3acc4628bfe6335e63e07e5806482086f0b6488e744d7ac586466b15",
+     "sig": "69QIjG9K3z0GX6wPV38wOqNtOXzssMfW7qH8Fry9rTbQeH7Q8FiXOLxweWgQjvP28pH3xntWdV+4DABYNRz9Ag=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

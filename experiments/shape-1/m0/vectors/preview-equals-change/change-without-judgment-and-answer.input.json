@@ -1,0 +1,411 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Owners"
+      },
+      {
+       "decl": "actor",
+       "name": "Owners",
+       "kind": "team",
+       "members": [
+        "alice",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")",
+        "ed25519(\"a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "devAgent",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"dev-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "Res",
+       "bind": [
+        "pg.table(\"ledger\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "K",
+       "paths": [
+        "src/**/*.ts"
+       ],
+       "units": [
+        {
+         "name": "u"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "Guard",
+       "on": [
+        "unit K.u"
+       ],
+       "informal": "u formats amounts with the ledger's rounding rule."
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "1d72a95352f5d32460ed2f07f5142395a474a8c99e29a0a5a29c2ef19b155de7"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "93edcf752987030857c9ded8c0b06c0294d13388"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "aa840a7c43e3d540d4d9fee4385119d866d35741"
+      },
+      {
+       "path": "src/k.ts",
+       "mode": "100644",
+       "blob": "8ff9cda883fa5418fb76cae23ca3514c2d708385"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/k.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:85ef40403196aaeaffb2c19ef28fb9ac0f74f217d0162ff29288633fda171e39",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/k.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:b295b33cdd99ef3a1613c7acbffef7e346ff9e39842df321362aa9eac289f8ef",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/k.ts#u",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:1288dd308d971d8d12ce56edc9aec65e3af5a9c93d848e47a03983e93cff1407",
+       "kind": "function",
+       "parent": "ts:src/k.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/k.ts#u",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:0c1e255cd80da375627f24b9e31f229d3aa467299b337c0bedc2a03548b76c81",
+       "kind": "function",
+       "parent": "ts:src/k.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Owners"
+      },
+      {
+       "decl": "actor",
+       "name": "Owners",
+       "kind": "team",
+       "members": [
+        "alice",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")",
+        "ed25519(\"a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "devAgent",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"dev-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "Res",
+       "bind": [
+        "pg.table(\"ledger\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "K",
+       "paths": [
+        "src/**/*.ts"
+       ],
+       "units": [
+        {
+         "name": "u"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "Guard",
+       "on": [
+        "unit K.u"
+       ],
+       "informal": "u formats amounts with the ledger's rounding rule."
+      },
+      {
+       "decl": "rule",
+       "name": "NoExport",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "Export<Res>",
+         "within": [
+          "component K"
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "1774953ec2031c02e21c470956753ace48ffb1bdc06a6f03954d8f20933d52b8"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "7d254e9a50fbd77ce5541f29f2dd0427fad04f04"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "a9e984cab052021e23b733e922c9f3564cc409e5"
+      },
+      {
+       "path": "src/k.ts",
+       "mode": "100644",
+       "blob": "8ff9cda883fa5418fb76cae23ca3514c2d708385"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/k.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:85ef40403196aaeaffb2c19ef28fb9ac0f74f217d0162ff29288633fda171e39",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/k.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:b295b33cdd99ef3a1613c7acbffef7e346ff9e39842df321362aa9eac289f8ef",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/k.ts#u",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:1288dd308d971d8d12ce56edc9aec65e3af5a9c93d848e47a03983e93cff1407",
+       "kind": "function",
+       "parent": "ts:src/k.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/k.ts#u",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:0c1e255cd80da375627f24b9e31f229d3aa467299b337c0bedc2a03548b76c81",
+       "kind": "function",
+       "parent": "ts:src/k.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/app#7"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"dev-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

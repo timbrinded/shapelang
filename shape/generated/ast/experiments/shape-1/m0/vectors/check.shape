@@ -1,0 +1,385 @@
+module shape.generated.ast.experiments.shape_1.m0.vectors.check
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CheckModuleBriefAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#brief")
+  fingerprint ast.semantic_subtree_v1("sha256:2e42e1785977138b09e8b4032eee8829c774ced6eb77aa92c3d7d8c995085348")
+}
+
+resource CheckModuleCanonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#canon")
+  fingerprint ast.semantic_subtree_v1("sha256:af02ae83f4f75dd3d5b5fa27fba6283d42078e907898a03a1cec50de66e09a84")
+}
+
+resource CheckModuleDescribeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#describe")
+  fingerprint ast.semantic_subtree_v1("sha256:5e1b55796081e597531e694a6b1749265b673e3d242c4947108a260d2dddbede")
+}
+
+resource CheckModuleEvaluateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#evaluate")
+  fingerprint ast.semantic_subtree_v1("sha256:b39fdd30c2d4416bb8f9d864660a7f55f92eb50ee70b2b16a25d2eb84aa9d291")
+}
+
+resource CheckModuleFmtErrAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#fmtErr")
+  fingerprint ast.semantic_subtree_v1("sha256:1b8cbd20f293160cb5d62538a4c1b17b0365f0aec066c948be7dbd6dec1af973")
+}
+
+resource CheckModuleIsObjectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#isObject")
+  fingerprint ast.semantic_subtree_v1("sha256:7baf593be82f16cba06c55dbf85fc96a5b7eb30495bbe6a25707640c9f55cc4d")
+}
+
+resource CheckModuleKernelGapAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#kernelGap")
+  fingerprint ast.semantic_subtree_v1("sha256:07e4cd62d5797180d7996ed8bcb03ced99c41900eba29bc7a95c15a138e4d7b2")
+}
+
+resource CheckModuleLoadVectorsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#loadVectors")
+  fingerprint ast.semantic_subtree_v1("sha256:e0ab09676166b320c6b0a24d288fb4fb1a8ab83fb6f5e34e89dc7634a51f6732")
+}
+
+resource CheckModuleLookupAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#lookup")
+  fingerprint ast.semantic_subtree_v1("sha256:a54b58ec9cd0853855ccf362e1a04cffa0e5663d2a71761b585c1ac719fc6dcd")
+}
+
+resource CheckModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#main")
+  fingerprint ast.semantic_subtree_v1("sha256:3d940fd62079de87ad85cd623d51b0d07b737fe794963b09fb2eb331de1977e9")
+}
+
+resource CheckModuleMeetsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#meets")
+  fingerprint ast.semantic_subtree_v1("sha256:fcf9618ddd8db8cc5a6131971c90e6533c0e224ca43d65fb3d30f681402096af")
+}
+
+resource CheckModuleMutateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#mutate")
+  fingerprint ast.semantic_subtree_v1("sha256:8191e3b9ce1d577ef7beefece7ef2eb74098c8de8d8b0bbb9f329380e4f1f776")
+}
+
+resource CheckModuleMutateValueAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#mutateValue")
+  fingerprint ast.semantic_subtree_v1("sha256:3b214ff18e95da38c253863b7f194183579bd50e87af6aa824c02b7cb7f4a0ea")
+}
+
+resource CheckModuleReadInputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#readInput")
+  fingerprint ast.semantic_subtree_v1("sha256:6d86168a63395b47e70c13ff0febbb2b21be89eaf5c4a19846dbae763b4a896f")
+}
+
+resource CheckModuleRunAllAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#runAll")
+  fingerprint ast.semantic_subtree_v1("sha256:87b155fb9e663f726965ed555b00d9f2a8e0186a9bd7d99b68f2be044670f512")
+}
+
+resource CheckModuleRunCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#runCase")
+  fingerprint ast.semantic_subtree_v1("sha256:570c48ed740007a46e0141daa6883f6423d8397b942384e63e6a1c93c24cc495")
+}
+
+resource CheckModuleRunCommandAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#runCommand")
+  fingerprint ast.semantic_subtree_v1("sha256:896bfea4980f2abcac9783184529fc9f4891c753979e710818ca94a9e04a0a59")
+}
+
+resource CheckModuleRunKernelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#runKernel")
+  fingerprint ast.semantic_subtree_v1("sha256:49957fd70f5df04904f6f8129b9b436db30df3503bd30bdf5e19b365da5175f7")
+}
+
+resource CheckModuleSelfTestFormatAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#selfTestFormat")
+  fingerprint ast.semantic_subtree_v1("sha256:ebe1a9fbafc2fa4772c0e64603d40862cd0bf741bbab4d9306bf5c1941d40ec2")
+}
+
+resource CheckModuleShortAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#short")
+  fingerprint ast.semantic_subtree_v1("sha256:96f25b05e059d18ed78b738a11b259100083048a6313a25b45ecd62c18e701dd")
+}
+
+resource CheckModuleUsageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#usage")
+  fingerprint ast.semantic_subtree_v1("sha256:9683beb8c1f69c43bc1966f2e441e27c2e74fa989afb4c547dd3707d57f7d8e1")
+}
+
+resource CheckModuleValidateAssertionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#validateAssertion")
+  fingerprint ast.semantic_subtree_v1("sha256:6f8ed79c562bc09df6c9bae51ec361d2bda6a9ccc07f6caaaf10d9644ba3b6f0")
+}
+
+resource CheckModuleValidateVectorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/vectors/check.ts#validateVector")
+  fingerprint ast.semantic_subtree_v1("sha256:f0eee59c0764ba507d7e861bd9368370a6133acf39f568314d1ba3b275092b98")
+}
+
+component CheckModule : GeneratedCandidate {
+  fn brief
+    source ts("experiments/shape-1/m0/vectors/check.ts#brief")
+    effects unknown
+  fn canon
+    source ts("experiments/shape-1/m0/vectors/check.ts#canon")
+    effects unknown
+  fn describe
+    source ts("experiments/shape-1/m0/vectors/check.ts#describe")
+    effects unknown
+  fn evaluate
+    source ts("experiments/shape-1/m0/vectors/check.ts#evaluate")
+    effects unknown
+  fn fmtErr
+    source ts("experiments/shape-1/m0/vectors/check.ts#fmtErr")
+    effects unknown
+  fn isObject
+    source ts("experiments/shape-1/m0/vectors/check.ts#isObject")
+    effects unknown
+  fn kernelGap
+    source ts("experiments/shape-1/m0/vectors/check.ts#kernelGap")
+    effects unknown
+  fn loadVectors
+    source ts("experiments/shape-1/m0/vectors/check.ts#loadVectors")
+    effects unknown
+  fn lookup
+    source ts("experiments/shape-1/m0/vectors/check.ts#lookup")
+    effects unknown
+  fn main
+    source ts("experiments/shape-1/m0/vectors/check.ts#main")
+    effects unknown
+  fn meets
+    source ts("experiments/shape-1/m0/vectors/check.ts#meets")
+    effects unknown
+  fn mutate
+    source ts("experiments/shape-1/m0/vectors/check.ts#mutate")
+    effects unknown
+  fn mutateValue
+    source ts("experiments/shape-1/m0/vectors/check.ts#mutateValue")
+    effects unknown
+  fn readInput
+    source ts("experiments/shape-1/m0/vectors/check.ts#readInput")
+    effects unknown
+  fn runAll
+    source ts("experiments/shape-1/m0/vectors/check.ts#runAll")
+    effects unknown
+  fn runCase
+    source ts("experiments/shape-1/m0/vectors/check.ts#runCase")
+    effects unknown
+  fn runCommand
+    source ts("experiments/shape-1/m0/vectors/check.ts#runCommand")
+    effects unknown
+  fn runKernel
+    source ts("experiments/shape-1/m0/vectors/check.ts#runKernel")
+    effects unknown
+  fn selfTestFormat
+    source ts("experiments/shape-1/m0/vectors/check.ts#selfTestFormat")
+    effects unknown
+  fn short
+    source ts("experiments/shape-1/m0/vectors/check.ts#short")
+    effects unknown
+  fn usage
+    source ts("experiments/shape-1/m0/vectors/check.ts#usage")
+    effects unknown
+  fn validateAssertion
+    source ts("experiments/shape-1/m0/vectors/check.ts#validateAssertion")
+    effects unknown
+  fn validateVector
+    source ts("experiments/shape-1/m0/vectors/check.ts#validateVector")
+    effects unknown
+}
+
+relation CheckModuleBriefGeneratedFromCheckModuleBriefAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleBriefAstAnchor
+  roles { CheckModule as generated, CheckModuleBriefAstAnchor as syntax }
+  expects CheckModuleBriefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2e42e1785977138b09e8b4032eee8829c774ced6eb77aa92c3d7d8c995085348")
+  summary "fn CheckModule.brief generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#brief."
+}
+
+relation CheckModuleCanonGeneratedFromCheckModuleCanonAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleCanonAstAnchor
+  roles { CheckModule as generated, CheckModuleCanonAstAnchor as syntax }
+  expects CheckModuleCanonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:af02ae83f4f75dd3d5b5fa27fba6283d42078e907898a03a1cec50de66e09a84")
+  summary "fn CheckModule.canon generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#canon."
+}
+
+relation CheckModuleDescribeGeneratedFromCheckModuleDescribeAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleDescribeAstAnchor
+  roles { CheckModule as generated, CheckModuleDescribeAstAnchor as syntax }
+  expects CheckModuleDescribeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e1b55796081e597531e694a6b1749265b673e3d242c4947108a260d2dddbede")
+  summary "fn CheckModule.describe generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#describe."
+}
+
+relation CheckModuleEvaluateGeneratedFromCheckModuleEvaluateAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleEvaluateAstAnchor
+  roles { CheckModule as generated, CheckModuleEvaluateAstAnchor as syntax }
+  expects CheckModuleEvaluateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b39fdd30c2d4416bb8f9d864660a7f55f92eb50ee70b2b16a25d2eb84aa9d291")
+  summary "fn CheckModule.evaluate generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#evaluate."
+}
+
+relation CheckModuleFmtErrGeneratedFromCheckModuleFmtErrAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleFmtErrAstAnchor
+  roles { CheckModule as generated, CheckModuleFmtErrAstAnchor as syntax }
+  expects CheckModuleFmtErrAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1b8cbd20f293160cb5d62538a4c1b17b0365f0aec066c948be7dbd6dec1af973")
+  summary "fn CheckModule.fmtErr generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#fmtErr."
+}
+
+relation CheckModuleIsObjectGeneratedFromCheckModuleIsObjectAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleIsObjectAstAnchor
+  roles { CheckModule as generated, CheckModuleIsObjectAstAnchor as syntax }
+  expects CheckModuleIsObjectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7baf593be82f16cba06c55dbf85fc96a5b7eb30495bbe6a25707640c9f55cc4d")
+  summary "fn CheckModule.isObject generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#isObject."
+}
+
+relation CheckModuleKernelGapGeneratedFromCheckModuleKernelGapAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleKernelGapAstAnchor
+  roles { CheckModule as generated, CheckModuleKernelGapAstAnchor as syntax }
+  expects CheckModuleKernelGapAstAnchor fingerprint ast.semantic_subtree_v1("sha256:07e4cd62d5797180d7996ed8bcb03ced99c41900eba29bc7a95c15a138e4d7b2")
+  summary "fn CheckModule.kernelGap generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#kernelGap."
+}
+
+relation CheckModuleLoadVectorsGeneratedFromCheckModuleLoadVectorsAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleLoadVectorsAstAnchor
+  roles { CheckModule as generated, CheckModuleLoadVectorsAstAnchor as syntax }
+  expects CheckModuleLoadVectorsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e0ab09676166b320c6b0a24d288fb4fb1a8ab83fb6f5e34e89dc7634a51f6732")
+  summary "fn CheckModule.loadVectors generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#loadVectors."
+}
+
+relation CheckModuleLookupGeneratedFromCheckModuleLookupAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleLookupAstAnchor
+  roles { CheckModule as generated, CheckModuleLookupAstAnchor as syntax }
+  expects CheckModuleLookupAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a54b58ec9cd0853855ccf362e1a04cffa0e5663d2a71761b585c1ac719fc6dcd")
+  summary "fn CheckModule.lookup generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#lookup."
+}
+
+relation CheckModuleMainGeneratedFromCheckModuleMainAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleMainAstAnchor
+  roles { CheckModule as generated, CheckModuleMainAstAnchor as syntax }
+  expects CheckModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3d940fd62079de87ad85cd623d51b0d07b737fe794963b09fb2eb331de1977e9")
+  summary "fn CheckModule.main generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#main."
+}
+
+relation CheckModuleMeetsGeneratedFromCheckModuleMeetsAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleMeetsAstAnchor
+  roles { CheckModule as generated, CheckModuleMeetsAstAnchor as syntax }
+  expects CheckModuleMeetsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fcf9618ddd8db8cc5a6131971c90e6533c0e224ca43d65fb3d30f681402096af")
+  summary "fn CheckModule.meets generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#meets."
+}
+
+relation CheckModuleMutateGeneratedFromCheckModuleMutateAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleMutateAstAnchor
+  roles { CheckModule as generated, CheckModuleMutateAstAnchor as syntax }
+  expects CheckModuleMutateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8191e3b9ce1d577ef7beefece7ef2eb74098c8de8d8b0bbb9f329380e4f1f776")
+  summary "fn CheckModule.mutate generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#mutate."
+}
+
+relation CheckModuleMutateValueGeneratedFromCheckModuleMutateValueAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleMutateValueAstAnchor
+  roles { CheckModule as generated, CheckModuleMutateValueAstAnchor as syntax }
+  expects CheckModuleMutateValueAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3b214ff18e95da38c253863b7f194183579bd50e87af6aa824c02b7cb7f4a0ea")
+  summary "fn CheckModule.mutateValue generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#mutateValue."
+}
+
+relation CheckModuleReadInputGeneratedFromCheckModuleReadInputAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleReadInputAstAnchor
+  roles { CheckModule as generated, CheckModuleReadInputAstAnchor as syntax }
+  expects CheckModuleReadInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6d86168a63395b47e70c13ff0febbb2b21be89eaf5c4a19846dbae763b4a896f")
+  summary "fn CheckModule.readInput generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#readInput."
+}
+
+relation CheckModuleRunAllGeneratedFromCheckModuleRunAllAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleRunAllAstAnchor
+  roles { CheckModule as generated, CheckModuleRunAllAstAnchor as syntax }
+  expects CheckModuleRunAllAstAnchor fingerprint ast.semantic_subtree_v1("sha256:87b155fb9e663f726965ed555b00d9f2a8e0186a9bd7d99b68f2be044670f512")
+  summary "fn CheckModule.runAll generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#runAll."
+}
+
+relation CheckModuleRunCaseGeneratedFromCheckModuleRunCaseAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleRunCaseAstAnchor
+  roles { CheckModule as generated, CheckModuleRunCaseAstAnchor as syntax }
+  expects CheckModuleRunCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:570c48ed740007a46e0141daa6883f6423d8397b942384e63e6a1c93c24cc495")
+  summary "fn CheckModule.runCase generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#runCase."
+}
+
+relation CheckModuleRunCommandGeneratedFromCheckModuleRunCommandAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleRunCommandAstAnchor
+  roles { CheckModule as generated, CheckModuleRunCommandAstAnchor as syntax }
+  expects CheckModuleRunCommandAstAnchor fingerprint ast.semantic_subtree_v1("sha256:896bfea4980f2abcac9783184529fc9f4891c753979e710818ca94a9e04a0a59")
+  summary "fn CheckModule.runCommand generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#runCommand."
+}
+
+relation CheckModuleRunKernelGeneratedFromCheckModuleRunKernelAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleRunKernelAstAnchor
+  roles { CheckModule as generated, CheckModuleRunKernelAstAnchor as syntax }
+  expects CheckModuleRunKernelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:49957fd70f5df04904f6f8129b9b436db30df3503bd30bdf5e19b365da5175f7")
+  summary "fn CheckModule.runKernel generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#runKernel."
+}
+
+relation CheckModuleSelfTestFormatGeneratedFromCheckModuleSelfTestFormatAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleSelfTestFormatAstAnchor
+  roles { CheckModule as generated, CheckModuleSelfTestFormatAstAnchor as syntax }
+  expects CheckModuleSelfTestFormatAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ebe1a9fbafc2fa4772c0e64603d40862cd0bf741bbab4d9306bf5c1941d40ec2")
+  summary "fn CheckModule.selfTestFormat generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#selfTestFormat."
+}
+
+relation CheckModuleShortGeneratedFromCheckModuleShortAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleShortAstAnchor
+  roles { CheckModule as generated, CheckModuleShortAstAnchor as syntax }
+  expects CheckModuleShortAstAnchor fingerprint ast.semantic_subtree_v1("sha256:96f25b05e059d18ed78b738a11b259100083048a6313a25b45ecd62c18e701dd")
+  summary "fn CheckModule.short generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#short."
+}
+
+relation CheckModuleUsageGeneratedFromCheckModuleUsageAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleUsageAstAnchor
+  roles { CheckModule as generated, CheckModuleUsageAstAnchor as syntax }
+  expects CheckModuleUsageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9683beb8c1f69c43bc1966f2e441e27c2e74fa989afb4c547dd3707d57f7d8e1")
+  summary "fn CheckModule.usage generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#usage."
+}
+
+relation CheckModuleValidateAssertionGeneratedFromCheckModuleValidateAssertionAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleValidateAssertionAstAnchor
+  roles { CheckModule as generated, CheckModuleValidateAssertionAstAnchor as syntax }
+  expects CheckModuleValidateAssertionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6f8ed79c562bc09df6c9bae51ec361d2bda6a9ccc07f6caaaf10d9644ba3b6f0")
+  summary "fn CheckModule.validateAssertion generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#validateAssertion."
+}
+
+relation CheckModuleValidateVectorGeneratedFromCheckModuleValidateVectorAstAnchor {
+  kind generated_from
+  connects CheckModule -> CheckModuleValidateVectorAstAnchor
+  roles { CheckModule as generated, CheckModuleValidateVectorAstAnchor as syntax }
+  expects CheckModuleValidateVectorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f0eee59c0764ba507d7e861bd9368370a6133acf39f568314d1ba3b275092b98")
+  summary "fn CheckModule.validateVector generated from typescript function_declaration at experiments/shape-1/m0/vectors/check.ts#validateVector."
+}
+
+implementation CheckModuleImpl {
+  paths {
+    "experiments/shape-1/m0/vectors/check.ts"
+  }
+  conforms_to CheckModule
+}

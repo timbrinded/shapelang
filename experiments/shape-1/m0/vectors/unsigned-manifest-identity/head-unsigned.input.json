@@ -1,0 +1,230 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "mf",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/mf.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Mf",
+       "owner": "Maint",
+       "manifest": "ed25519(\"35c6ce1e6d4635b67264ce44d96488c258ef954d7692265955f039f062f469ab\")"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Core",
+       "owner": "Maint",
+       "paths": [
+        "src/**"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "e633318487f0dac68ea1c759b1d67434805a060a7a3002d1de100fd3df43a34d"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/mf.shape",
+       "mode": "100644",
+       "blob": "31628fa3048c8505cb35c9b836e1b69f3d0406be"
+      },
+      {
+       "path": "src/core.ts",
+       "mode": "100644",
+       "blob": "ca63476998b8e291a104e359e9e3675844bc6c37"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/core.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:bd0329d8198fd0763ce583d6806f3fc09ee330f0c6b9a4793d76542e6e73b985",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:e4f86180427907f28487c79391e9ce6a6fa8cb28c6fae096960d684f41b89be2",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts#ping",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:e0aba2b211e85d93ed8d3c748dd2f0baabe7193e4d088defbd9222b82c474b14",
+       "kind": "function",
+       "parent": "ts:src/core.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/core.ts#ping",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:f8505484fce36bbd0dd308fd269c03f6c08b5266bbaf9af3f47368d5a0306d26",
+       "kind": "function",
+       "parent": "ts:src/core.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "mf",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/mf.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Mf",
+       "owner": "Maint",
+       "manifest": "ed25519(\"35c6ce1e6d4635b67264ce44d96488c258ef954d7692265955f039f062f469ab\")"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Core",
+       "owner": "Maint",
+       "paths": [
+        "src/**"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfTUFOSUZFU1QifV0sInNoYXBlIjp7ImVudHJpZXMiOlt7ImRpZ2VzdCI6InNoYTI1NjoxNzZhMTZhMjQ4ZTI3NmFiM2FmY2JhY2M0YzdlMGUwNzc5NTg3ODkxYTgxYjhkYTVhZGIwMjM1OTk4ZDE1ZTM5IiwiZXhlY3V0YWJsZSI6dHJ1ZSwiaGF0Y2hDb21wbGV0ZSI6dHJ1ZSwiaWQiOiJ0czpzcmMvY29yZS50cyIsImtpbmQiOiJmaWxlIiwicGFyZW50IjpudWxsLCJwcm9qZWN0aW9uIjoiZmlsZSIsInJlZnMiOltdLCJzY2hlbWUiOiJ0cy5maWxlLnYxIn0seyJkaWdlc3QiOiJzaGEyNTY6ZTRmODYxODA0Mjc5MDdmMjg0ODdjNzkzOTFlOWNlNmE2ZmE4Y2IyOGM2ZmFlMDk2OTYwZDY4NGY0MWI4OWJlMiIsImV4ZWN1dGFibGUiOnRydWUsImhhdGNoQ29tcGxldGUiOnRydWUsImlkIjoidHM6c3JjL2NvcmUudHMiLCJraW5kIjoiZmlsZSIsInBhcmVudCI6bnVsbCwicHJvamVjdGlvbiI6Im93biIsInJlZnMiOltdLCJzY2hlbWUiOiJ0cy5vd24udjIifSx7ImRpZ2VzdCI6InNoYTI1NjphZjUwZjcxYzdjMDhiNGM4NGYyNTc4ZWQyMGZlMmVjNjMxYmVlYjMyNzhkOWE5ZmUyOWM1NTRhZjBkZjJhZTYwIiwiZXhlY3V0YWJsZSI6dHJ1ZSwiaGF0Y2hDb21wbGV0ZSI6dHJ1ZSwiaWQiOiJ0czpzcmMvY29yZS50cyNwaW5nIiwia2luZCI6ImZ1bmN0aW9uIiwicGFyZW50IjoidHM6c3JjL2NvcmUudHMiLCJwcm9qZWN0aW9uIjoib3duIiwicmVmcyI6W10sInNjaGVtZSI6InRzLm93bi52MiJ9LHsiZGlnZXN0Ijoic2hhMjU2OmE2ZGNkZjA5MDM4NDMxZjI2MzgzYjc2ZTdkOWUwY2YxMjFmZTk2NDQxNDQzMWZmZTM5ZWM5MDNlNzdiZTkxZWQiLCJleGVjdXRhYmxlIjp0cnVlLCJoYXRjaENvbXBsZXRlIjp0cnVlLCJpZCI6InRzOnNyYy9jb3JlLnRzI3BpbmciLCJraW5kIjoiZnVuY3Rpb24iLCJwYXJlbnQiOiJ0czpzcmMvY29yZS50cyIsInByb2plY3Rpb24iOiJ1bml0IiwicmVmcyI6W10sInNjaGVtZSI6InRzLnVuaXQudjIifV0sInJldmlzaW9uIjoiMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMSIsInRyZWUiOlt7ImJsb2IiOiJlOGU3ZDZiYzg4ZmRiNjJhODg3NWVmMTFiOTc0ZTI0MmEyNGY4OGRiIiwibW9kZSI6IjEwMDY0NCIsInBhdGgiOiJzaGFwZS5sb2NrIn0seyJibG9iIjoiMzE2MjhmYTMwNDhjODUwNWNiMzVjOWI4MzZlMWI2OWYzZDA0MDZiZSIsIm1vZGUiOiIxMDA2NDQiLCJwYXRoIjoic2hhcGUvbWYuc2hhcGUifSx7ImJsb2IiOiJjYTYzNDc2OTk4YjhlMjkxYTEwNGUzNTllOWUzNjc1ODQ0YmM2YzM3IiwibW9kZSI6IjEwMDY0NCIsInBhdGgiOiJzcmMvY29yZS50cyJ9XSwidiI6InNoYXBlLm1hbmlmZXN0LnYxIn19LCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9pbi10b3RvLmlvL2F0dGVzdGF0aW9uL3NjYWkvYXR0cmlidXRlLXJlcG9ydC92MC4zIiwic3ViamVjdCI6W3siZGlnZXN0Ijp7InNoYTI1NiI6Ijk4OGE2NjBlN2IwYzI2NGJiNTA3NjMyMDkzMTU5ZTAxYjU4OTg2Zjk0NjE2MTc4NTdhY2I1YmM5NzhjMWNhYWMifSwibmFtZSI6InNoYXBlOm1hbmlmZXN0LzExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTEifV19",
+   "signatures": [
+    {
+     "keyid": "35c6ce1e6d4635b67264ce44d96488c258ef954d7692265955f039f062f469ab",
+     "sig": "3DiN6hon/O8QaaQGtbgVPAGlzxtYym0GUANQVTlW/wFyrAi1yXe6D2bCSCvZmYt9j9K7U5GgfCc7lFOeY1uWBA=="
+    }
+   ]
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"tim\")",
+   "verified": true,
+   "bot": false
+  }
+ ],
+ "reviews": [],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

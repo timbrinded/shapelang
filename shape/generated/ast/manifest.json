@@ -675,6 +675,48 @@
       ]
     },
     {
+      "module": "shape.generated.ast.experiments.shape_1.m0.golden.tools.common",
+      "path": "shape/generated/ast/experiments/shape-1/m0/golden/tools/common.shape",
+      "sources": [
+        "experiments/shape-1/m0/golden/tools/common.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.m0.golden.tools.deltas",
+      "path": "shape/generated/ast/experiments/shape-1/m0/golden/tools/deltas.shape",
+      "sources": [
+        "experiments/shape-1/m0/golden/tools/deltas.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.m0.golden.tools.gen",
+      "path": "shape/generated/ast/experiments/shape-1/m0/golden/tools/gen.shape",
+      "sources": [
+        "experiments/shape-1/m0/golden/tools/gen.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.m0.golden.tools.vec",
+      "path": "shape/generated/ast/experiments/shape-1/m0/golden/tools/vec.shape",
+      "sources": [
+        "experiments/shape-1/m0/golden/tools/vec.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.m0.hexcheck",
+      "path": "shape/generated/ast/experiments/shape-1/m0/hexcheck.shape",
+      "sources": [
+        "experiments/shape-1/m0/hexcheck.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.m0.vectors.check",
+      "path": "shape/generated/ast/experiments/shape-1/m0/vectors/check.shape",
+      "sources": [
+        "experiments/shape-1/m0/vectors/check.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.experiments.shape_1.proto.examples.fixtures",
       "path": "shape/generated/ast/experiments/shape-1/proto/examples/fixtures.shape",
       "sources": [

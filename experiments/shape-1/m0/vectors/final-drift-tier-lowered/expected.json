@@ -1,0 +1,245 @@
+{
+ "vector": "final-drift-tier-lowered",
+ "title": "Preexisting final drift is owed, never debt and never blocking; lowering the drifted forbid's tier is a two-person final loosening and leaves tier* final until answered",
+ "decides": [
+  "A.7.5.1",
+  "A.6.2.3",
+  "A.4.6.7",
+  "A.8.2.3",
+  "D11"
+ ],
+ "cases": [
+  {
+   "case": "unrelated-change",
+   "input": "unrelated-change.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rules 2 and 6 [D11]: the only obligation is a non-introduced final contradiction, which is owed"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:87e5c35b301889b6bd11d1f189fcc9ea7dbfe855626fd0167ca5b20b33416e68"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:2e3aa713724acf57a6262abbd90407112a60d1d7decaa849f6a731e9d0b92850",
+      "subject": {
+       "code": "ts:src/engine/fresh.ts#checkFreshness",
+       "atom": "Read<fd::SystemClock>"
+      },
+      "force": "sound",
+      "introduced": false,
+      "severity": "owed",
+      "tier": "final",
+      "owner": "fd::EngineTeam",
+      "exception": null,
+      "binding": "bd:9a6e73b586075196715e448311e261a01b5129d19ec6dea38b65e1c05ad350d3",
+      "group": "g:188dbf7d354417d61668517d92ae3d6e1c5c935fd1dc8c1ac780fd535f209f1c",
+      "witness": [
+       "sha256:e9bbc63f59f26116d94bcd3f1988b07ed80036799ef5aae8ca772efe60e8fc76"
+      ]
+     },
+     "why": "A.7.3.1: checkFreshness is not in the code delta, so the observed fact is not new (A.7.3.3: not introduced); A.6.2.3 tier* = max(final, Lvl_b final); A.7.5.1 rule 6 owed; A.7.2.2 binding: support code [checkFreshness], no finest change, empty delta"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "A.7.4.1: README is raw data with no channel under any claim; nothing else is raised"
+    },
+    {
+     "in": "loosening",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.8.2: base and head shapes are identical"
+    },
+    {
+     "in": "preexisting",
+     "select": {
+      "obligation": "ob:2e3aa713724acf57a6262abbd90407112a60d1d7decaa849f6a731e9d0b92850"
+     },
+     "check": "fields",
+     "value": {
+      "owner": "fd::EngineTeam"
+     },
+     "why": "A.7.7.2, A.12.10.1: the non-introduced open contradiction is listed as preexisting with owner*"
+    },
+    {
+     "in": "debt",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.7.5.1 rule 5: no exception matches"
+    }
+   ]
+  },
+  {
+   "case": "tier-lowered",
+   "input": "tier-lowered.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 4: a final loosening blocks until two eligible persons answer"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:87e5c35b301889b6bd11d1f189fcc9ea7dbfe855626fd0167ca5b20b33416e68"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:2e3aa713724acf57a6262abbd90407112a60d1d7decaa849f6a731e9d0b92850",
+      "introduced": false,
+      "severity": "owed",
+      "tier": "final",
+      "exception": null,
+      "force": "sound"
+     },
+     "why": "A.6.2.3 [D11]: tier* = max(tier_h critical, Lvl_b(Engine.check)(Read) final) = final with no two-person answer; A.4.6.7: no exception matches an obligation with tier*(o) final, so DriftWaiver is inert; A.7.5.1 rule 6 owed (preexisting final drift is owed, never debt)"
+    },
+    {
+     "in": "debt",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.7.5.1 last sentence and A.4.6.7: preexisting final drift is never debt"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.4.6.7: E-exception only when the target claim's head tier is final; ClockFree's head tier is critical"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "loosening",
+      "key": "ob:497b8519afe20d324d09f87e1f2d715920a4e2f2901f394b0b702cea0727153d"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "sha256:87e5c35b301889b6bd11d1f189fcc9ea7dbfe855626fd0167ca5b20b33416e68",
+      "questions": [
+       "L1",
+       "L7"
+      ],
+      "tier": "final",
+      "severity": "blocking",
+      "introduced": true,
+      "owner": "fd::EngineTeam",
+      "binding": "bd:5ceb0ab01a13b8607fa8f8e03cf0a49f34abc53f6890b29bab1ef6b5edc14c99",
+      "claim.fp": "sha256:87e5c35b301889b6bd11d1f189fcc9ea7dbfe855626fd0167ca5b20b33416e68",
+      "claim.tier": "final"
+     },
+     "why": "A.8.2.1: one obligation for the base claim; L1 (A.8.2.3: Lvl_h(checkFreshness) of Read and Export falls final>critical) and L7 (tier of a base claim with an heir fell); A.8.2.2 tier = tier_b final; A.7.2.2 binding over affected [checkFreshness], no code (no finest change) and delta ['L1 level Export<fd::SystemClock> final>critical', 'L1 level Read<fd::SystemClock> final>critical', 'L7 tier \"final\" \"critical\"']; A.15.2 claim field of the base claim"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 2,
+     "why": "only the drift contradiction and the loosening are raised"
+    },
+    {
+     "in": "loosening",
+     "select": {
+      "question": "L1",
+      "subject": "sha256:87e5c35b301889b6bd11d1f189fcc9ea7dbfe855626fd0167ca5b20b33416e68"
+     },
+     "check": "fields",
+     "value": {
+      "answer": "loosened",
+      "affected": [
+       "ts:src/engine/fresh.ts#checkFreshness"
+      ],
+      "final": true
+     },
+     "why": "A.8.2.3 L1 (exact): the demoted position is checkFreshness (att = Engine.check, no cell for a unit); A.8.3.2 affected = demoted positions"
+    },
+    {
+     "in": "loosening",
+     "select": {
+      "question": "L7",
+      "subject": "sha256:87e5c35b301889b6bd11d1f189fcc9ea7dbfe855626fd0167ca5b20b33416e68"
+     },
+     "check": "fields",
+     "value": {
+      "answer": "loosened",
+      "affected": [],
+      "final": true
+     },
+     "why": "A.8.2.3 L7: a base claim with heirs has no heir with tier >= (loosened, not undecided); A.8.3.2 L7 affected is empty"
+    }
+   ]
+  },
+  {
+   "case": "tier-lowered-answered",
+   "input": "tier-lowered-answered.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1: the final loosening is discharged by two persons and the drift is owed"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "loosening"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.5.2: discharged obligations move to answered"
+    },
+    {
+     "in": "answered",
+     "select": {
+      "obligation": "ob:497b8519afe20d324d09f87e1f2d715920a4e2f2901f394b0b702cea0727153d"
+     },
+     "check": "fields",
+     "value": {
+      "as": "discharge"
+     },
+     "why": "A.7.6.5, A.6.3.4: bob (EngineTeam, the base owner) and carol (Platform, the base shape owner) are two distinct eligible non-author persons answering the final loosening's binding ref"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:87e5c35b301889b6bd11d1f189fcc9ea7dbfe855626fd0167ca5b20b33416e68"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:2e3aa713724acf57a6262abbd90407112a60d1d7decaa849f6a731e9d0b92850",
+      "tier": "critical",
+      "introduced": false,
+      "severity": "owed",
+      "exception": null
+     },
+     "why": "A.6.2.3 last sentence [D11]: a base claim whose final loosening two persons answered in this run contributes tier_h (critical) of its heir instead, so tier* = critical; A.7.5.1 rule 6 owed"
+    },
+    {
+     "in": "debt",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.7.5.1 rule 5: no exception is declared in this case"
+    }
+   ]
+  }
+ ]
+}

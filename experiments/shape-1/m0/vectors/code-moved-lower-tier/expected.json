@@ -1,0 +1,120 @@
+{
+ "vector": "code-moved-lower-tier",
+ "title": "Moving code by glob from a final component to a low-tier one with equal grants lowers the authority level per position: an L1 loosening of component Vault at final, not a silent pass",
+ "decides": [
+  "A.4.4.7",
+  "A.8.2.3",
+  "A.8.2.2",
+  "A.8.3.1",
+  "A.7.4.2",
+  "D11"
+ ],
+ "cases": [
+  {
+   "case": "moved-by-glob",
+   "input": "moved-by-glob.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 4: a final loosening blocks until two eligible persons answer"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:5ba6021e051f6a8c272e71d0e83b8e956905035b5fdb4a82e58b4bb584551fa6"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "loosening",
+      "subject": "component m::Vault",
+      "claim": null,
+      "questions": [
+       "L1"
+      ],
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "final",
+      "owner": "m::VaultTeam",
+      "exploited": true,
+      "binding": "bd:72752d482ec40f0ccbeb34ed7476a19fcd9e981fe7d53d96b821a735c4fff0eb"
+     },
+     "why": "A.4.4.7 [D11]: Lvl includes authority(comp(u))'s tier for atoms outside A(u); moving src/vault/purge/** from Vault (final) to Scratch (low) lowers that level at p.ts, purge and the (Vault.*, Scratch.*) cell, so A.8.2.3 L1 has one part per base component, subject component Vault, delta 'L1 authority final>low', tier and answerer Vault's base tier and owner (A.8.2.2); exploited: tier final and the affected new identities are uncovered on the unobservable effect(pg.table(\"ledger\")) channel (A.8.3.1, none observable: all count)"
+    },
+    {
+     "in": "loosening",
+     "select": {
+      "question": "L1"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "component m::Vault",
+      "answer": "loosened",
+      "affected": [
+       "cell:[\"m::Vault.*\",\"m::Scratch.*\"]",
+       "ts:src/vault/purge/p.ts",
+       "ts:src/vault/purge/p.ts#purge"
+      ],
+      "obligation": "ob:5ba6021e051f6a8c272e71d0e83b8e956905035b5fdb4a82e58b4bb584551fa6"
+     },
+     "why": "A.8.3.2: L1 affected = demoted positions and cells"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.4.2: at Scratch.* the authority pair's tier* is low and the channel unobservable, so no need"
+    },
+    {
+     "in": "order",
+     "select": {},
+     "check": "equals",
+     "value": "looser",
+     "why": "A.8.1.3"
+    }
+   ]
+  },
+  {
+   "case": "kept-in-vault",
+   "input": "kept-in-vault.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 4: coverage with an unmet final pair"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:004b1235c86d9b8878f0f78eed74d122e0dafe2994bed3400bb1ed60bd50e204"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "coverage",
+      "subject": "component m::Vault",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "final",
+      "owner": "m::VaultTeam",
+      "binding": "bd:491b0624184402214421f6b86d45fb9a4be5bc7fa98d013f3a11d2a5cb4c28b3"
+     },
+     "why": "A.7.4.2: new code under final authority(Vault) needs effect(pg.table(\"ledger\")) although unobservable, since tier*(c, x) is final; nothing meets it (A.7.4.3); A.7.4.4 tier final; owner Vault's base owner"
+    },
+    {
+     "in": "loosening",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "the shape is unchanged"
+    }
+   ]
+  }
+ ]
+}

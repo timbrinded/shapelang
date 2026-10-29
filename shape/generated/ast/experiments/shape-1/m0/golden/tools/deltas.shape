@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.m0.golden.tools.deltas
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource DeltasModuleCommonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/deltas.py#common")
+  fingerprint ast.semantic_subtree_v1("sha256:7fb036f8fbe3f18c592e0a9ceaa4c21098593037defd448dcbbb398df392d5ec")
+}
+
+resource DeltasModuleOrderAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/deltas.py#order")
+  fingerprint ast.semantic_subtree_v1("sha256:fd8a0c5599eab9e0cf879f97b673770de9daf4710f3ed83594db0abf506374f4")
+}
+
+component DeltasModule : GeneratedCandidate {
+  fn common
+    source python("experiments/shape-1/m0/golden/tools/deltas.py#common")
+    effects unknown
+  fn order
+    source python("experiments/shape-1/m0/golden/tools/deltas.py#order")
+    effects unknown
+}
+
+relation DeltasModuleCommonGeneratedFromDeltasModuleCommonAstAnchor {
+  kind generated_from
+  connects DeltasModule -> DeltasModuleCommonAstAnchor
+  roles { DeltasModule as generated, DeltasModuleCommonAstAnchor as syntax }
+  expects DeltasModuleCommonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7fb036f8fbe3f18c592e0a9ceaa4c21098593037defd448dcbbb398df392d5ec")
+  summary "fn DeltasModule.common generated from python function_definition at experiments/shape-1/m0/golden/tools/deltas.py#common."
+}
+
+relation DeltasModuleOrderGeneratedFromDeltasModuleOrderAstAnchor {
+  kind generated_from
+  connects DeltasModule -> DeltasModuleOrderAstAnchor
+  roles { DeltasModule as generated, DeltasModuleOrderAstAnchor as syntax }
+  expects DeltasModuleOrderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fd8a0c5599eab9e0cf879f97b673770de9daf4710f3ed83594db0abf506374f4")
+  summary "fn DeltasModule.order generated from python function_definition at experiments/shape-1/m0/golden/tools/deltas.py#order."
+}
+
+implementation DeltasModuleImpl {
+  paths {
+    "experiments/shape-1/m0/golden/tools/deltas.py"
+  }
+  conforms_to DeltasModule
+}

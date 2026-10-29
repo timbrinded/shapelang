@@ -1,0 +1,225 @@
+{
+ "vector": "fact-without-n",
+ "title": "An observed fact without n counts as unknown and is new; a presence-sound observer's effect fact without n is rejected (RJ14)",
+ "decides": [
+  "A.7.3.1",
+  "A.12.6 RJ14",
+  "A.12.8.4",
+  "A.5.2.1",
+  "D15"
+ ],
+ "cases": [
+  {
+   "case": "sound-equal-n",
+   "input": "sound-equal-n.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 6: the contradiction is not introduced"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:d19246f45f95a9f2545e199d3406b9dbeb4220a1c22b9229f55bd45ca44af097"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:874d751fba66a075618ccb4745406120c0e7b80be8e1d54c5b0a31dbb5bcf5ab",
+      "subject": {
+       "code": "ts:src/engine/fresh.ts#checkFreshness",
+       "atom": "Read<fn::SystemClock>"
+      },
+      "tier": "critical",
+      "binding": "bd:f7ed1f6b002955a3eea9395d9f59187fd7c3d8c585f344345e8cc07fc1d376c9",
+      "witness": [
+       "sha256:e9bbc63f59f26116d94bcd3f1988b07ed80036799ef5aae8ca772efe60e8fc76"
+      ],
+      "force": "sound",
+      "introduced": false,
+      "severity": "owed"
+     },
+     "why": "A.7.3.1: a usable base-revision entry reports the fact with n_b = 1 >= n_h = 1, both present, so it is not new"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.4.3: met by the head's complete entry from an observer absence-sound in base and head"
+    }
+   ]
+  },
+  {
+   "case": "sound-more-n",
+   "input": "sound-more-n.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7: an introduced sound contradiction blocks"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:d19246f45f95a9f2545e199d3406b9dbeb4220a1c22b9229f55bd45ca44af097"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:874d751fba66a075618ccb4745406120c0e7b80be8e1d54c5b0a31dbb5bcf5ab",
+      "subject": {
+       "code": "ts:src/engine/fresh.ts#checkFreshness",
+       "atom": "Read<fn::SystemClock>"
+      },
+      "tier": "critical",
+      "binding": "bd:f7ed1f6b002955a3eea9395d9f59187fd7c3d8c585f344345e8cc07fc1d376c9",
+      "witness": [
+       "sha256:e9bbc63f59f26116d94bcd3f1988b07ed80036799ef5aae8ca772efe60e8fc76"
+      ],
+      "force": "sound",
+      "introduced": true,
+      "severity": "blocking"
+     },
+     "why": "A.7.3.1: n_b = 1 < n_h = 2 (a second site), so the fact is new; A.7.3.3 introduced"
+    }
+   ]
+  },
+  {
+   "case": "sound-base-without-n",
+   "input": "sound-base-without-n.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7: an introduced sound contradiction blocks"
+    },
+    {
+     "in": "rejected",
+     "select": {
+      "record": "sha256:d6a80fe433245d605dc51b39f48eda543c7bfee9eb12bc67375676e3f178e7c1"
+     },
+     "check": "fields",
+     "value": {
+      "code": "RJ14"
+     },
+     "why": "A.12.6 RJ14 [D15]: an effect fact without n from a presence-sound observer is rejected (listed by id, no force)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:d19246f45f95a9f2545e199d3406b9dbeb4220a1c22b9229f55bd45ca44af097"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:874d751fba66a075618ccb4745406120c0e7b80be8e1d54c5b0a31dbb5bcf5ab",
+      "subject": {
+       "code": "ts:src/engine/fresh.ts#checkFreshness",
+       "atom": "Read<fn::SystemClock>"
+      },
+      "tier": "critical",
+      "binding": "bd:f7ed1f6b002955a3eea9395d9f59187fd7c3d8c585f344345e8cc07fc1d376c9",
+      "witness": [
+       "sha256:e9bbc63f59f26116d94bcd3f1988b07ed80036799ef5aae8ca772efe60e8fc76"
+      ],
+      "force": "sound",
+      "introduced": true,
+      "severity": "blocking"
+     },
+     "why": "A.7.3.1, A.7.3.2: no usable base-revision entry reports the fact (the base record is rejected), so the fact at changed code is new"
+    }
+   ]
+  },
+  {
+   "case": "heuristic-without-n",
+   "input": "heuristic-without-n.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 7: a heuristic contradiction is owed"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:d19246f45f95a9f2545e199d3406b9dbeb4220a1c22b9229f55bd45ca44af097"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:874d751fba66a075618ccb4745406120c0e7b80be8e1d54c5b0a31dbb5bcf5ab",
+      "subject": {
+       "code": "ts:src/engine/fresh.ts#checkFreshness",
+       "atom": "Read<fn::SystemClock>"
+      },
+      "tier": "critical",
+      "binding": "bd:f7ed1f6b002955a3eea9395d9f59187fd7c3d8c585f344345e8cc07fc1d376c9",
+      "witness": [
+       "sha256:e9bbc63f59f26116d94bcd3f1988b07ed80036799ef5aae8ca772efe60e8fc76"
+      ],
+      "force": "heuristic",
+      "introduced": true,
+      "severity": "owed"
+     },
+     "why": "A.7.3.1 [D15]: n is missing on both sides, which counts as unknown, hence new; A.5.5.1 heuristic (absence-only observer); RJ14 does not apply to a non-presence-sound observer"
+    },
+    {
+     "in": "rejected",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.12.6 RJ14 covers presence-sound observers only"
+    }
+   ]
+  },
+  {
+   "case": "heuristic-equal-n",
+   "input": "heuristic-equal-n.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 6: not introduced"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:d19246f45f95a9f2545e199d3406b9dbeb4220a1c22b9229f55bd45ca44af097"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:874d751fba66a075618ccb4745406120c0e7b80be8e1d54c5b0a31dbb5bcf5ab",
+      "subject": {
+       "code": "ts:src/engine/fresh.ts#checkFreshness",
+       "atom": "Read<fn::SystemClock>"
+      },
+      "tier": "critical",
+      "binding": "bd:f7ed1f6b002955a3eea9395d9f59187fd7c3d8c585f344345e8cc07fc1d376c9",
+      "witness": [
+       "sha256:e9bbc63f59f26116d94bcd3f1988b07ed80036799ef5aae8ca772efe60e8fc76"
+      ],
+      "force": "heuristic",
+      "introduced": false,
+      "severity": "owed"
+     },
+     "why": "A.7.3.1: n_b = 1 >= n_h = 1, both present, so the fact is not new"
+    }
+   ]
+  }
+ ]
+}

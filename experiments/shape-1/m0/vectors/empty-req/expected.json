@@ -1,0 +1,87 @@
+{
+ "vector": "empty-req",
+ "title": "A law whose Req is empty is vacuously Sat and never attributed to a component, so a component exception cannot match it",
+ "decides": [
+  "A.5.3.7",
+  "A.4.6.4",
+  "A.4.6.5",
+  "A.15.8",
+  "D14"
+ ],
+ "cases": [
+  {
+   "case": "law-on-empty-component",
+   "input": "law-on-empty-component.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.5.3.7 [D14]: Req(c) = ∅ makes the law Sat (vacuous, listed in health only)"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.5.3.7 [D14]: no unestablished obligation for a vacuous law"
+    },
+    {
+     "in": "debt",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.4.6.4 [D14]: a law obligation is attributed to K only when Req ≠ ∅; CliWaiver matches nothing (inert, A.4.6.9)"
+    }
+   ]
+  },
+  {
+   "case": "law-on-cli-control",
+   "input": "law-on-cli-control.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 5: the only obligation is matched, non-introduced, owed debt"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:11b1f9586d8c5ba962436d9bce93c3a2092a259b284e847c0812ca7eb24abeef"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:a45af40784ffbd99a25ea03e5324d5fbc89882811989c4332a5aa8eec8256ae6",
+      "reason": "missing",
+      "introduced": false,
+      "severity": "owed",
+      "tier": "critical",
+      "owner": "emp::CliTeam",
+      "exception": "emp::CliWaiver"
+     },
+     "why": "A.5.4.3 missing (no judgment); A.7.3.3 Req (Cli's code) does not meet the delta (only README moved); A.4.6.4-5 attributed to Cli (∅ ≠ Req ⊆ code(Cli)), kind unestablished listed; A.7.6.7 exception set once it takes effect"
+    },
+    {
+     "in": "debt",
+     "select": {
+      "obligation": "ob:a45af40784ffbd99a25ea03e5324d5fbc89882811989c4332a5aa8eec8256ae6"
+     },
+     "check": "fields",
+     "value": {
+      "exceptions": [
+       "emp::CliWaiver"
+      ],
+      "exception": "emp::CliWaiver",
+      "owner": "emp::CliTeam",
+      "expiresInDays": 37
+     },
+     "why": "A.7.7.1, A.15.7: debt row from the only matching exception; expiresInDays = ceil((2026-12-01T00:00Z - 2026-10-25T12:00Z)/86400) = ceil(36.5) = 37"
+    }
+   ]
+  }
+ ]
+}

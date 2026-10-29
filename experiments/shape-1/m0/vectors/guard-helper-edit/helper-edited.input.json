@@ -1,0 +1,505 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Owners"
+      },
+      {
+       "decl": "actor",
+       "name": "Owners",
+       "kind": "team",
+       "members": [
+        "alice",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")",
+        "ed25519(\"a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "devAgent",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"dev-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Retention",
+       "tier": "critical",
+       "paths": [
+        "src/**/*.ts"
+       ],
+       "units": [
+        {
+         "name": "isoToday",
+         "attach": [
+          {
+           "name": "RefactorSensitive"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "note",
+       "name": "ClockAtBoundary",
+       "kind": "memory",
+       "about": [
+        "unit Retention.isoToday"
+       ],
+       "text": "isoToday reads the clock once and formats it as a UTC calendar date."
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "0cb8c6def03b8d50689baaaa20ebcab0ae70c8694a75fd493e662fb99518f95c"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e9f97895eea43f960f897f72f5d76a7ff0d15eb9"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "d0ec3c29556ea22c61ec2a0ed893cbc4a2578a2d"
+      },
+      {
+       "path": "src/date.ts",
+       "mode": "100644",
+       "blob": "ab403beafcbee6064cb92237dbb02b47034fe8e2"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/date.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:4e034afc6d9dadba5a6091a978c8e5fb683160f4d206f871998372898c039fe2",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/date.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:d859eec0afc9ee07c7d1b6bded4b88faae0c5049b3a79f75f9eaec178e0a8dcc",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/date.ts#fmt",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:3dfa61ed8f298806d3aa1223a20a8876ac713e6e74cb0ee34ad3364debd4dc26",
+       "kind": "function",
+       "parent": "ts:src/date.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/date.ts#fmt",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:b802277741fd397d29596d618eaf4340f325666a30a3150b26d2ec1412e40e1d",
+       "kind": "function",
+       "parent": "ts:src/date.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/date.ts#isoToday",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:3b1bf47893f9a40f765f95564e0b2757204337fd6fb714a2fd7d5caa9e3c5e18",
+       "kind": "function",
+       "parent": "ts:src/date.ts",
+       "refs": [
+        "ts:src/date.ts#fmt"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/date.ts#isoToday",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:a1f7cfc37cb26510691d8a12141e9a77ee0ac4f09bdea5be8c1a85f496c2ab64",
+       "kind": "function",
+       "parent": "ts:src/date.ts",
+       "refs": [
+        "ts:src/date.ts#fmt"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/date.ts#other",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:db61167bf2bfa0af3c1a6d081c04b7e5dc88701ddd62f3364de850fb4459645d",
+       "kind": "function",
+       "parent": "ts:src/date.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/date.ts#other",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:85df779ecff969d4e4d3ca4b859f42d59cf557e1220720fe5beb34257bbad81a",
+       "kind": "function",
+       "parent": "ts:src/date.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Owners"
+      },
+      {
+       "decl": "actor",
+       "name": "Owners",
+       "kind": "team",
+       "members": [
+        "alice",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")",
+        "ed25519(\"a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "devAgent",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"dev-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Retention",
+       "tier": "critical",
+       "paths": [
+        "src/**/*.ts"
+       ],
+       "units": [
+        {
+         "name": "isoToday",
+         "attach": [
+          {
+           "name": "RefactorSensitive"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "note",
+       "name": "ClockAtBoundary",
+       "kind": "memory",
+       "about": [
+        "unit Retention.isoToday"
+       ],
+       "text": "isoToday reads the clock once and formats it as a UTC calendar date."
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "4df9692aef39320fc3837730f1cb265e5a566001b0fe5931f5ac7d7844fa66ed"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e9f97895eea43f960f897f72f5d76a7ff0d15eb9"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "d0ec3c29556ea22c61ec2a0ed893cbc4a2578a2d"
+      },
+      {
+       "path": "src/date.ts",
+       "mode": "100644",
+       "blob": "67cee6c6961b0fbd6c934cfa311c052ba17e2d12"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/date.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:c1258462652799f061ceb214b1e6a3fad68133bc53ae1b6f0ca49ac16b004c99",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/date.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:d859eec0afc9ee07c7d1b6bded4b88faae0c5049b3a79f75f9eaec178e0a8dcc",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/date.ts#fmt",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:bc718b7724ce65a9928019993a04561ab43b1dc78cfcb9a513fdbca079dd4d01",
+       "kind": "function",
+       "parent": "ts:src/date.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/date.ts#fmt",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:3e6cfbb0f3987a134528218ad53847fd898713f26b6867058620790918d15ea1",
+       "kind": "function",
+       "parent": "ts:src/date.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/date.ts#isoToday",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:3b1bf47893f9a40f765f95564e0b2757204337fd6fb714a2fd7d5caa9e3c5e18",
+       "kind": "function",
+       "parent": "ts:src/date.ts",
+       "refs": [
+        "ts:src/date.ts#fmt"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/date.ts#isoToday",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:a1f7cfc37cb26510691d8a12141e9a77ee0ac4f09bdea5be8c1a85f496c2ab64",
+       "kind": "function",
+       "parent": "ts:src/date.ts",
+       "refs": [
+        "ts:src/date.ts#fmt"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/date.ts#other",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:db61167bf2bfa0af3c1a6d081c04b7e5dc88701ddd62f3364de850fb4459645d",
+       "kind": "function",
+       "parent": "ts:src/date.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/date.ts#other",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:85df779ecff969d4e4d3ca4b859f42d59cf557e1220720fe5beb34257bbad81a",
+       "kind": "function",
+       "parent": "ts:src/date.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/app#7"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"dev-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfU1VQUE9SVFMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJqdWRnbWVudCJ9fV0sInNoYXBlIjp7ImNsYWltIjp7ImZwIjoic2hhMjU2OjU3OTMyMmIzZDg5NjczOTM2ZWE2NmE0NjU2MjU3MThhMmEwM2Y1MjE2ZGQyMTMzNzY0YmFhNDNlZmEzM2E3OGUiLCJpZCI6Im06OlJldGVudGlvbi5pc29Ub2RheS9SZWZhY3RvclNlbnNpdGl2ZS9sYXcifSwiY29kZSI6W3siZGlnZXN0Ijoic2hhMjU2OmExZjdjZmMzN2NiMjY1MTA2OTFkOGExMjE0MWU5YTc3ZWUwYWM0ZjA5YmRlYTViZThjMWE4NWY0OTZjMmFiNjQiLCJpZCI6InRzOnNyYy9kYXRlLnRzI2lzb1RvZGF5IiwicHJvamVjdGlvbiI6InVuaXQiLCJzY2hlbWUiOiJ0cy51bml0LnYyIn0seyJkaWdlc3QiOiJzaGEyNTY6M2U2Y2ZiYjBmMzk4N2ExMzQ1MjgyMThhZDUzODQ3ZmQ4OTg3MTNmMjZiNjg2NzA1ODYyMDc5MDkxOGQxNWVhMSIsImlkIjoidHM6c3JjL2RhdGUudHMjZm10IiwicHJvamVjdGlvbiI6InVuaXQiLCJzY2hlbWUiOiJ0cy51bml0LnYyIn1dLCJqdWRnZSI6Im06OmFsaWNlIiwia2luZCI6Imp1ZGdtZW50IiwicHJvdmlkZXIiOm51bGwsInJlc3VsdCI6InN1cHBvcnRzIiwicmV2aXNpb24iOiIxMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExIiwidGltZSI6IjIwMjYtMDktMDFUMDk6MDA6MDBaIiwidiI6InNoYXBlLmV2aWRlbmNlLnYxIn19LCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9pbi10b3RvLmlvL2F0dGVzdGF0aW9uL3NjYWkvYXR0cmlidXRlLXJlcG9ydC92MC4zIiwic3ViamVjdCI6W3siZGlnZXN0Ijp7InNoYTI1NiI6IjU3OTMyMmIzZDg5NjczOTM2ZWE2NmE0NjU2MjU3MThhMmEwM2Y1MjE2ZGQyMTMzNzY0YmFhNDNlZmEzM2E3OGUifSwibmFtZSI6InNoYXBlOmNsYWltL206OlJldGVudGlvbi5pc29Ub2RheS9SZWZhY3RvclNlbnNpdGl2ZS9sYXcifSx7ImFubm90YXRpb25zIjp7InNoYXBlLnNjaGVtZSI6InRzLnVuaXQudjIifSwiZGlnZXN0Ijp7InNoYTI1NiI6IjNlNmNmYmIwZjM5ODdhMTM0NTI4MjE4YWQ1Mzg0N2ZkODk4NzEzZjI2YjY4NjcwNTg2MjA3OTA5MThkMTVlYTEifSwibmFtZSI6InNoYXBlOmNvZGUvdHM6c3JjL2RhdGUudHMjZm10QHVuaXQifSx7ImFubm90YXRpb25zIjp7InNoYXBlLnNjaGVtZSI6InRzLnVuaXQudjIifSwiZGlnZXN0Ijp7InNoYTI1NiI6ImExZjdjZmMzN2NiMjY1MTA2OTFkOGExMjE0MWU5YTc3ZWUwYWM0ZjA5YmRlYTViZThjMWE4NWY0OTZjMmFiNjQifSwibmFtZSI6InNoYXBlOmNvZGUvdHM6c3JjL2RhdGUudHMjaXNvVG9kYXlAdW5pdCJ9XX0=",
+   "signatures": [
+    {
+     "keyid": "a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff",
+     "sig": "PyhipFsOLk9re+o/VqqZOcwALYLUp1UxUT/N9HXBtHSrJhNXHROAUa+RUl7LxukVUF0h/y9eCwHgz35NjOpnDg=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

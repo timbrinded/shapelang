@@ -1,0 +1,104 @@
+{
+ "vector": "head-drops-absence",
+ "title": "A head that drops absence from the observer keeps the coverage need (observability reads the base) but cannot meet it (base ∧ head), so final coverage is raised and blocks",
+ "decides": [
+  "A.4.5.6",
+  "A.7.4.2",
+  "A.7.4.3",
+  "A.6.2.6",
+  "A.14.1.5",
+  "D3"
+ ],
+ "cases": [
+  {
+   "case": "absence-dropped",
+   "input": "absence-dropped.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 4: final coverage and a final loosening block until two persons answer"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage",
+      "key": "ob:f99ad91d0fb961864cea647e6188ac9c56b6d243cb026fee5224db411dfce977"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "component audit::AuditStore",
+      "tier": "final",
+      "severity": "blocking",
+      "introduced": true,
+      "owner": "audit::AuditTeam",
+      "binding": "bd:5b387eeae50ce5e8ca07a44e02f968da3376699cb6f4f1cb96db4ed5042cae62"
+     },
+     "why": "A.7.4.2 [D3]: appendEvent (a finest change) needs (AppendOnly forbid, effect(pg.table(\"audit_events\"))), final, and (authority(AuditStore), same channel), observable from the base declaration; A.7.4.3: meeting needs absence in base and head (A.6.2.6 (b)), so no entry meets either; A.7.4.4 tier max(critical, final); A.7.2.2 delta lists both pairs"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "loosening",
+      "key": "ob:ae867d9fedbd638a8baeee2d00bfce60354cf08f3b841270ec7a2bcbd0ecab1d"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "provider audit::sqlEffects",
+      "questions": [
+       "L7"
+      ],
+      "tier": "final",
+      "severity": "blocking",
+      "introduced": true,
+      "owner": "audit::Platform"
+     },
+     "why": "A.8.2.3 L7: a provider field (absence) changed: undecided; A.8.2.2: provider tier = highest base tier of claims whose channels meet effect(pg.table(\"*\")) = final; answerer the base shape owner; A.14.1.5"
+    },
+    {
+     "in": "loosening",
+     "select": {
+      "question": "L7",
+      "subject": "provider audit::sqlEffects"
+     },
+     "check": "fields",
+     "value": {
+      "answer": "undecided"
+     },
+     "why": "A.8.2.3 L7: another provider field changed, so undecided"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "Append at appendEvent is granted and outside ↓Update"
+    }
+   ]
+  },
+  {
+   "case": "absence-kept-control",
+   "input": "absence-kept-control.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.7.4.3: sqlEffects is absence-sound in base and head, and its complete head entry meets both pairs"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "nothing open"
+    }
+   ]
+  }
+ ]
+}

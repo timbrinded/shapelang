@@ -1,0 +1,62 @@
+{
+ "vector": "guard-helper-edit",
+ "title": "A guard (RefactorSensitive judgment) goes stale when a same-file helper its unit references changes, and stays usable when an unreferenced function changes",
+ "decides": [
+  "A.5.3.4",
+  "A.5.4.1",
+  "A.7.3.3",
+  "D4"
+ ],
+ "cases": [
+  {
+   "case": "helper-edited",
+   "input": "helper-edited.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: critical blocks unestablished"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:aed859084e777949dd8d62e7914b95b3e7996ab97d5e549b17d54b6b0e779568"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:579322b3d89673936ea66a465625718a2a03f5216dd2133764baa43efa33a78e",
+      "reason": "stale",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "binding": "bd:36ee5119bdc68b2e02d8e0c9a8999685474ed8eeabd7874b6e973a56b4ceeced"
+     },
+     "why": "A.5.3.4 [D4]: Req of the RefactorSensitive judgment on unit isoToday adds fmt, a function of Retention reachable through Refs°; fmt's unit digest moved, so the judgment is stale (A.5.4.1) and, Req meeting Δcode, introduced (A.7.3.3); tier critical from Retention (A.4.1.3)"
+    }
+   ]
+  },
+  {
+   "case": "unreferenced-function-edited",
+   "input": "unreferenced-function-edited.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "the judgment stays usable"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.5.3.4: other is not referenced by isoToday, so Req = {isoToday, fmt} is unchanged"
+    }
+   ]
+  }
+ ]
+}

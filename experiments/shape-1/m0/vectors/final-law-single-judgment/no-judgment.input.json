@@ -1,0 +1,508 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "fl",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/fl.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "FL",
+       "owner": "Platform",
+       "policy": "Strict"
+      },
+      {
+       "decl": "actor",
+       "name": "Platform",
+       "kind": "team",
+       "members": [
+        "carol"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "CliTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"bf544b7d3acc4628bfe6335e63e07e5806482086f0b6488e744d7ac586466b15\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")",
+        "ed25519(\"435fb811a614598b6ef93cf4194c8cf7e8a91bfe62398c167c053c9fe2dd3675\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "reviewBot",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"review-bot[bot]\")",
+        "ed25519(\"e9b0ba3290083f68a135500899383e1330f8c07bb1917f2751bc1d2a2ef9b9d5\")"
+       ]
+      },
+      {
+       "decl": "policy",
+       "name": "Strict",
+       "tiers": {
+        "low": {
+         "floor": "declared",
+         "maxAge": 365,
+         "judges": [
+          "owner",
+          "agents"
+         ]
+        },
+        "normal": {
+         "floor": "declared",
+         "blocks": [
+          "latent-loosening"
+         ],
+         "maxAge": 365,
+         "judges": [
+          "owner",
+          "agents"
+         ]
+        },
+        "critical": {
+         "floor": "tested",
+         "blocks": [
+          "unestablished",
+          "coverage",
+          "latent-loosening"
+         ],
+         "maxAge": 90,
+         "judges": [
+          "owner",
+          "agents",
+          "Platform"
+         ]
+        }
+       }
+      },
+      {
+       "decl": "component",
+       "name": "Cli",
+       "owner": "CliTeam",
+       "tier": "critical",
+       "paths": [
+        "src/cli/**"
+       ],
+       "units": [
+        {
+         "name": "isoToday",
+         "bind": "ts(\"src/cli/fresh.ts#isoToday\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "IsoGuard",
+       "on": [
+        "unit Cli.isoToday"
+       ],
+       "informal": "isoToday is the only clock read in the CLI.",
+       "owner": "CliTeam",
+       "tier": "final"
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "6602c337fb80d6ef412a8d2deaae81e00b8e1d53c73b0b742d8df8379e2335bb"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/fl.shape",
+       "mode": "100644",
+       "blob": "0495932e3dd88556a918e1842e495386c77cf41b"
+      },
+      {
+       "path": "src/cli/fresh.ts",
+       "mode": "100644",
+       "blob": "ec17ae8e668624500a4c2d333a30c895783573da"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/cli/fresh.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:a8d31c25ff41e56e08a1d3810b390711f76ec758183c77d625339757c9deabff",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:acb3f58f67dee6e17ddad5ca0efcfa28f2048197f7d3ccaa0f1b382eb26525a1",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts#isoToday",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:17b0f8337d078a761c8ca8bca5fde751b81c2923a69e3218671dbe47c3763169",
+       "kind": "function",
+       "parent": "ts:src/cli/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts#isoToday",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:7ed01525dc5a09b8ac032b1e5730d2532453acdb1511ed20be1fad632cf7d01b",
+       "kind": "function",
+       "parent": "ts:src/cli/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "fl",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/fl.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "FL",
+       "owner": "Platform",
+       "policy": "Strict"
+      },
+      {
+       "decl": "actor",
+       "name": "Platform",
+       "kind": "team",
+       "members": [
+        "carol"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "CliTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"bf544b7d3acc4628bfe6335e63e07e5806482086f0b6488e744d7ac586466b15\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")",
+        "ed25519(\"435fb811a614598b6ef93cf4194c8cf7e8a91bfe62398c167c053c9fe2dd3675\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "reviewBot",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"review-bot[bot]\")",
+        "ed25519(\"e9b0ba3290083f68a135500899383e1330f8c07bb1917f2751bc1d2a2ef9b9d5\")"
+       ]
+      },
+      {
+       "decl": "policy",
+       "name": "Strict",
+       "tiers": {
+        "low": {
+         "floor": "declared",
+         "maxAge": 365,
+         "judges": [
+          "owner",
+          "agents"
+         ]
+        },
+        "normal": {
+         "floor": "declared",
+         "blocks": [
+          "latent-loosening"
+         ],
+         "maxAge": 365,
+         "judges": [
+          "owner",
+          "agents"
+         ]
+        },
+        "critical": {
+         "floor": "tested",
+         "blocks": [
+          "unestablished",
+          "coverage",
+          "latent-loosening"
+         ],
+         "maxAge": 90,
+         "judges": [
+          "owner",
+          "agents",
+          "Platform"
+         ]
+        }
+       }
+      },
+      {
+       "decl": "component",
+       "name": "Cli",
+       "owner": "CliTeam",
+       "tier": "critical",
+       "paths": [
+        "src/cli/**"
+       ],
+       "units": [
+        {
+         "name": "isoToday",
+         "bind": "ts(\"src/cli/fresh.ts#isoToday\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "IsoGuard",
+       "on": [
+        "unit Cli.isoToday"
+       ],
+       "informal": "isoToday is the only clock read in the CLI.",
+       "owner": "CliTeam",
+       "tier": "final"
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "fba1d687fc560af995d740a3ba4dc42c19410526d98a4e144a0c7ea6164d4aed"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/fl.shape",
+       "mode": "100644",
+       "blob": "0495932e3dd88556a918e1842e495386c77cf41b"
+      },
+      {
+       "path": "src/cli/fresh.ts",
+       "mode": "100644",
+       "blob": "ec17ae8e668624500a4c2d333a30c895783573da"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/cli/fresh.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:5678482ca9ad4a092ff58679e034c4dbf9094b58ae530c58fb2a73264eb92481",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:acb3f58f67dee6e17ddad5ca0efcfa28f2048197f7d3ccaa0f1b382eb26525a1",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts#isoToday",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:f80f64b879560eac0f88f8444919b856c901ffb825d22c9b7a89967d0f27d566",
+       "kind": "function",
+       "parent": "ts:src/cli/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts#isoToday",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:2c7301d62d3fdaba94e34cc75951b9cda011fb47ea1625f7766812799b9430f1",
+       "kind": "function",
+       "parent": "ts:src/cli/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"acme-code-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

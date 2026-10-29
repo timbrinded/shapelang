@@ -1,0 +1,103 @@
+{
+ "vector": "directory-move",
+ "title": "A directory move of unedited files keeps own digests, relocates every identity, yields no finest change and no new hatch fact",
+ "decides": [
+  "A.6.1.5",
+  "A.7.3.1",
+  "A.3.2.5",
+  "A.7.4.1",
+  "D6"
+ ],
+ "cases": [
+  {
+   "case": "moved-unedited",
+   "input": "moved-unedited.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 6: the relocated drift is not introduced"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "key": "ob:3fc43dec79a5799bf8ac0d18b88229af1e6324bcb19911804dc3d54af1b2dabc"
+     },
+     "check": "fields",
+     "value": {
+      "claim.fp": "sha256:1584bb88c66cbc8b0a51502299e8e8ca660d8cfeba2e7f93a99491072752a6d4",
+      "subject": {
+       "code": "verus:src/new/lib.rs#f",
+       "atom": "assume<std::Trust>"
+      },
+      "force": "sound",
+      "introduced": false,
+      "severity": "owed",
+      "tier": "critical",
+      "binding": "bd:d867ed0847f254997234006cf6e100b05436f699ace71048862f929bbe5b01bd",
+      "witness": [
+       "sha256:de014383e8c97178ce55972db70c8909e7713f87e9c38b7b4a3b03d8293c2ca2"
+      ]
+     },
+     "why": "A.6.1.5 [D6]: new src/new/lib.rs#f is relocated from deleted src/old/lib.rs#f (same kind, language and own digest, unique), so it is no finest change; A.7.3.1: the hatch fact is not new since M_b lists 1 assume marker at the relocation source; A.7.2.2 binding: affected [new f], no finest change"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.4.1: no finest change, no changed observed dependency, no footprint growth"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "only the relocated drift"
+    }
+   ]
+  },
+  {
+   "case": "moved-and-edited",
+   "input": "moved-and-edited.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7: introduced sound contradiction"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "key": "ob:3fc43dec79a5799bf8ac0d18b88229af1e6324bcb19911804dc3d54af1b2dabc"
+     },
+     "check": "fields",
+     "value": {
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "binding": "bd:756a844eb01350624ba07a83e2625d4a0af6be1cada4bd3b59e588dfc5158946"
+     },
+     "why": "A.6.1.5: f's own digest moved, so it is not relocated and is a finest change; A.7.3.1: its hatch fact is new; A.7.2.2 code (new f, own, null, head)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.4.3: f is hatch-complete"
+    }
+   ]
+  }
+ ]
+}

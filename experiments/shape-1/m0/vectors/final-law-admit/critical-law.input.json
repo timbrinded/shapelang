@@ -1,0 +1,607 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Platform"
+      },
+      {
+       "decl": "actor",
+       "name": "Platform",
+       "kind": "team",
+       "members": [
+        "erin"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "KvTeam",
+       "kind": "team",
+       "members": [
+        "dana"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "dana",
+       "kind": "person",
+       "identities": [
+        "github(\"dana\")",
+        "ed25519(\"50533aeddd2b51dcef494cef8e5dc7a67f078d81916c132a914888f709018fc7\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "erin",
+       "kind": "person",
+       "identities": [
+        "github(\"erin\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "frank",
+       "kind": "person",
+       "identities": [
+        "github(\"frank\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "kvAgent",
+       "kind": "agent",
+       "operator": "frank",
+       "identities": [
+        "github(\"kv-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "DMap",
+       "owner": "KvTeam",
+       "tier": "critical",
+       "paths": [
+        "src/dmap.rs"
+       ],
+       "boundary": true,
+       "allows": [
+        "admit"
+       ],
+       "units": [
+        {
+         "name": "set",
+         "bind": "verus(\"src/dmap.rs#set\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "SetSpec",
+       "on": [
+        "unit DMap.set"
+       ],
+       "statement": "verus(\"src/dmap.rs#set\")",
+       "tier": "critical",
+       "evidence": {
+        "level": "proven",
+        "by": [
+         "verus"
+        ]
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "verus",
+       "produces": [
+        "proof"
+       ],
+       "decides": [
+        "statements verus"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "identity": "ed25519(\"eeb191178d3a8d7d2927d112b7de6817a2d884af44172ecfc3cf8653989e9f01\")",
+       "trusts": [
+        [
+         "z3",
+         "4.12.5"
+        ]
+       ],
+       "implementation": {
+        "paths": [
+         "Cargo.lock"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "6fb94503d07691a267a32b35b77bcedca616786d4fb443e677a352802f7d1f6e"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "Cargo.lock",
+       "mode": "100644",
+       "blob": "261edb80fbbd973b7d06c0b3d86d2dae77bbea28"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "bf8e4488bdb733b36c2ea46cbcd85d9c4c1a0d5d"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "5ce10bafacefd71c1eaecc909e40bc5c9af9cc68"
+      },
+      {
+       "path": "src/dmap.rs",
+       "mode": "100644",
+       "blob": "4dd577247667cedb5923b026d20babbda7961f05"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:Cargo.lock",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:17af02f99889395696a5d385ad2248f898ce34d8c831ae6bc0c5af397a9819c8",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:Cargo.lock",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:2fc975f120d3abb3ae09001ff2fb9922f50099a8c2f3b1cff5503f35a83fac1f",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/dmap.rs",
+       "projection": "file",
+       "scheme": "verus.file.v1",
+       "digest": "sha256:1415d172b0c93793a476625c161e104a355232b9d70347011b55949c35e3e9d0",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/dmap.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:2f11e54656597e243fbf738900cd58075d4ebbb77eb7e5413f08290075cfb276",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:b5187a6d31dddd70c190acdbd7ca7f8cb751b550ddaa9b18172f90a1fc83522b",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "admit": 1
+       }
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:a426b7da81fd5ce67c33f94f7dd54c1f4cdedd640e77d5d0bee7020deb8396d6",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "admit": 1
+       }
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:13068322fa9f44f3cd5093b3d093bb39094d191f891cc11d630c8689bc3dfbae",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "admit": 1
+       }
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:8f15da9af666e554a38ea6df9ee6a4ba84ebbd03a10ec30052e09fe2d152f809",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "admit": 1
+       }
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Platform"
+      },
+      {
+       "decl": "actor",
+       "name": "Platform",
+       "kind": "team",
+       "members": [
+        "erin"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "KvTeam",
+       "kind": "team",
+       "members": [
+        "dana"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "dana",
+       "kind": "person",
+       "identities": [
+        "github(\"dana\")",
+        "ed25519(\"50533aeddd2b51dcef494cef8e5dc7a67f078d81916c132a914888f709018fc7\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "erin",
+       "kind": "person",
+       "identities": [
+        "github(\"erin\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "frank",
+       "kind": "person",
+       "identities": [
+        "github(\"frank\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "kvAgent",
+       "kind": "agent",
+       "operator": "frank",
+       "identities": [
+        "github(\"kv-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "DMap",
+       "owner": "KvTeam",
+       "tier": "critical",
+       "paths": [
+        "src/dmap.rs"
+       ],
+       "boundary": true,
+       "allows": [
+        "admit"
+       ],
+       "units": [
+        {
+         "name": "set",
+         "bind": "verus(\"src/dmap.rs#set\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "SetSpec",
+       "on": [
+        "unit DMap.set"
+       ],
+       "statement": "verus(\"src/dmap.rs#set\")",
+       "tier": "critical",
+       "evidence": {
+        "level": "proven",
+        "by": [
+         "verus"
+        ]
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "verus",
+       "produces": [
+        "proof"
+       ],
+       "decides": [
+        "statements verus"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "identity": "ed25519(\"eeb191178d3a8d7d2927d112b7de6817a2d884af44172ecfc3cf8653989e9f01\")",
+       "trusts": [
+        [
+         "z3",
+         "4.12.5"
+        ]
+       ],
+       "implementation": {
+        "paths": [
+         "Cargo.lock"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "b5e684bd188231de440793de965f1531904523d28851823a3e6e5da53248c98d"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "Cargo.lock",
+       "mode": "100644",
+       "blob": "261edb80fbbd973b7d06c0b3d86d2dae77bbea28"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "bf8e4488bdb733b36c2ea46cbcd85d9c4c1a0d5d"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "5ce10bafacefd71c1eaecc909e40bc5c9af9cc68"
+      },
+      {
+       "path": "src/dmap.rs",
+       "mode": "100644",
+       "blob": "2bdd9385ab765b521ce0ec40b54a302b263df1d0"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:Cargo.lock",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:17af02f99889395696a5d385ad2248f898ce34d8c831ae6bc0c5af397a9819c8",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:Cargo.lock",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:2fc975f120d3abb3ae09001ff2fb9922f50099a8c2f3b1cff5503f35a83fac1f",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/dmap.rs",
+       "projection": "file",
+       "scheme": "verus.file.v1",
+       "digest": "sha256:3378b0087ae50596221dc1924a63c71277ec344ffd0138da99b127f500556830",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/dmap.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:2f11e54656597e243fbf738900cd58075d4ebbb77eb7e5413f08290075cfb276",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:b5187a6d31dddd70c190acdbd7ca7f8cb751b550ddaa9b18172f90a1fc83522b",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "admit": 1
+       }
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:a426b7da81fd5ce67c33f94f7dd54c1f4cdedd640e77d5d0bee7020deb8396d6",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "admit": 1
+       }
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:3b44cea79bb12dd996da7bc67c23abe0527fad9fa2e64ac0e6802c6a48b15f9e",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "admit": 1
+       }
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:150ba86bb70da4371d7dd02fff77d63196b582e3f7b40a28d31f1239aef5f46f",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "admit": 1
+       }
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/app#7"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"kv-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfU1VQUE9SVFMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJwcm9vZiJ9fV0sInByb2R1Y2VyIjp7ImFubm90YXRpb25zIjp7InNoYXBlLnByb3ZpZGVyIjoibTo6dmVydXMiLCJ2ZXJzaW9uIjoiMS4wLjAifSwidXJpIjoibTo6dmVydXMifSwic2hhcGUiOnsiYXNzdW1wdGlvbnMiOlt7ImlkIjoidmVydXM6c3JjL2RtYXAucnMjc2V0L2FkbWl0Iiwia2luZCI6ImhhdGNoIn0seyJpZCI6InozQDQuMTIuNSIsImtpbmQiOiJ0b29sIn1dLCJib3VuZCI6eyJybGltaXQiOjEwfSwiY2xhaW0iOnsiZnAiOiJzaGEyNTY6ZDNjMmU1OTNlNmEyZjA0MmUwMzhhM2RiMTlkODBhNTM3ODFlNDM3NWNmOGY1OTA5ZjMzOWJiNzQzOGRkYWE0ZiIsImlkIjoibTo6U2V0U3BlYyJ9LCJjb2RlIjpbeyJkaWdlc3QiOiJzaGEyNTY6OGYxNWRhOWFmNjY2ZTU1NGEzOGVhNmRmOWVlNmE0YmE4NGViYmQwM2ExMGVjMzAwNTJlMDlmZTJkMTUyZjgwOSIsImlkIjoidmVydXM6c3JjL2RtYXAucnMjc2V0IiwicHJvamVjdGlvbiI6InVuaXQiLCJzY2hlbWUiOiJ2ZXJ1cy51bml0LnYyIn0seyJkaWdlc3QiOiJzaGEyNTY6YjUxODdhNmQzMWRkZGQ3MGMxOTBhY2RiZDdjYTdmOGNiNzUxYjU1MGRkYWE5YjE4MTcyZjkwYTFmYzgzNTIyYiIsImlkIjoidmVydXM6c3JjL2RtYXAucnMjc2V0IiwicHJvamVjdGlvbiI6ImNsb3N1cmUiLCJzY2hlbWUiOiJ2ZXJ1cy5jbG9zdXJlLnZpci52MiJ9XSwiZGVwcyI6W10sImhhcm5lc3MiOltdLCJraW5kIjoicHJvb2YiLCJwcm92aWRlciI6eyJpZCI6Im06OnZlcnVzIiwidmVyc2lvbiI6IjEuMC4wIn0sInJlc3VsdCI6InN1cHBvcnRzIiwicmV2aXNpb24iOiIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyIiwidGltZSI6IjIwMjYtMTAtMjVUMTA6MDA6MDBaIiwidiI6InNoYXBlLmV2aWRlbmNlLnYxIn19LCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9pbi10b3RvLmlvL2F0dGVzdGF0aW9uL3NjYWkvYXR0cmlidXRlLXJlcG9ydC92MC4zIiwic3ViamVjdCI6W3siZGlnZXN0Ijp7InNoYTI1NiI6ImQzYzJlNTkzZTZhMmYwNDJlMDM4YTNkYjE5ZDgwYTUzNzgxZTQzNzVjZjhmNTkwOWYzMzliYjc0MzhkZGFhNGYifSwibmFtZSI6InNoYXBlOmNsYWltL206OlNldFNwZWMifSx7ImFubm90YXRpb25zIjp7InNoYXBlLnNjaGVtZSI6InZlcnVzLmNsb3N1cmUudmlyLnYyIn0sImRpZ2VzdCI6eyJzaGEyNTYiOiJiNTE4N2E2ZDMxZGRkZDcwYzE5MGFjZGJkN2NhN2Y4Y2I3NTFiNTUwZGRhYTliMTgxNzJmOTBhMWZjODM1MjJiIn0sIm5hbWUiOiJzaGFwZTpjb2RlL3ZlcnVzOnNyYy9kbWFwLnJzI3NldEBjbG9zdXJlIn0seyJhbm5vdGF0aW9ucyI6eyJzaGFwZS5zY2hlbWUiOiJ2ZXJ1cy51bml0LnYyIn0sImRpZ2VzdCI6eyJzaGEyNTYiOiI4ZjE1ZGE5YWY2NjZlNTU0YTM4ZWE2ZGY5ZWU2YTRiYTg0ZWJiZDAzYTEwZWMzMDA1MmUwOWZlMmQxNTJmODA5In0sIm5hbWUiOiJzaGFwZTpjb2RlL3ZlcnVzOnNyYy9kbWFwLnJzI3NldEB1bml0In1dfQ==",
+   "signatures": [
+    {
+     "keyid": "eeb191178d3a8d7d2927d112b7de6817a2d884af44172ecfc3cf8653989e9f01",
+     "sig": "P6jhp7yALeLQsQ0BBpWFJKTYBzSk9bzTbnmDM33qw3+xDIb5R4ZXg4AaBEArm1fWTxWAdI2qoUMs+yxqkW3NDA=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

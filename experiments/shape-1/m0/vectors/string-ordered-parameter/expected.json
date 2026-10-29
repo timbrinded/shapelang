@@ -1,0 +1,73 @@
+{
+ "vector": "string-ordered-parameter",
+ "title": "A string argument at a template parameter ordered leq or geq is E-template; integers there, and strings at unordered parameters, are accepted",
+ "decides": [
+  "A.4.3.5",
+  "A.13.2",
+  "D13"
+ ],
+ "cases": [
+  {
+   "case": "string-at-leq",
+   "input": "string-at-leq.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.10.1, A.10.2: a head shape error blocks (exit 1); it does not make the input invalid"
+    },
+    {
+     "in": "errors",
+     "select": {
+      "code": "E-template"
+     },
+     "check": "count",
+     "value": 1,
+     "why": "A.4.3.5 [D13]: \"250ms\" at Budget, ordered by leq, is E-template; one error for the one instance"
+    }
+   ]
+  },
+  {
+   "case": "integer-at-leq",
+   "input": "integer-at-leq.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 6: the law is unestablished(missing), preexisting (Req unchanged), owed"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.4.3.5: a safe integer at a leq-ordered parameter is well-formed"
+    }
+   ]
+  },
+  {
+   "case": "string-at-unordered",
+   "input": "string-at-unordered.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 6 as in integer-at-leq"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.4.3.5: strings order only by equality, which is the default (equal) order, so a string at an unordered value parameter is well-formed"
+    }
+   ]
+  }
+ ]
+}

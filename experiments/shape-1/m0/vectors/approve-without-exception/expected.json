@@ -1,0 +1,190 @@
+{
+ "vector": "approve-without-exception",
+ "title": "Example 2's approve line without the exception discharges neither the sound hatch contradiction nor the assumption obligation (blocked); with the exception both become debt",
+ "decides": [
+  "A.14.2.6",
+  "A.7.6.5",
+  "A.7.6.6",
+  "A.7.6.7",
+  "A.4.6.6",
+  "A.7.7.1",
+  "D1"
+ ],
+ "cases": [
+  {
+   "case": "approve-only",
+   "input": "approve-only.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.14.2.6: the approve line answers nothing, so both obligations stay open and blocking"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:815d7ebb9678dbead1b3bef2195fa49bbf807b46d53827e5a944e8009cfc4403"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "contradiction",
+      "introduced": true,
+      "severity": "blocking",
+      "force": "sound",
+      "tier": "critical",
+      "binding": "bd:2ea660886d27e5e3e377c2e500e48bcb542e347d272df45c3ca3a92e4491972a",
+      "group": "g:f16ee5b2da967ed85fed5a5b7527502f641bd97d0d74292f7e9eaa67b0cda56a",
+      "exception": null
+     },
+     "why": "Example 2 step 1: sound introduced hatch contradiction; A.7.6.5/A.7.6.7: a sound contradiction has no answer discharger"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "unestablished",
+      "reason": "assumption",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "binding": "bd:1da36a42e325dc5acd89366516a304d11c2ce32f9dba52dc6934ad33a2c0535d",
+      "group": "g:f16ee5b2da967ed85fed5a5b7527502f641bd97d0d74292f7e9eaa67b0cda56a",
+      "exception": null
+     },
+     "why": "Example 2 step 2; A.7.6.5: reason assumption has no answer discharger, and without a matching exception the ref is no exception answer (A.7.6.6)"
+    },
+    {
+     "in": "answered",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.7.6.5: neither ref discharges"
+    },
+    {
+     "in": "debt",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.4.6.5: no exception, no match"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "subject.code": "verus:ironkv/src/host_t.rs#Host::send"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.14.2.6 [D1]: HostTrusted's allowed external_body markers raise nothing"
+    }
+   ]
+  },
+  {
+   "case": "exception-and-approve",
+   "input": "exception-and-approve.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 5: both obligations are exception-answered debt"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:815d7ebb9678dbead1b3bef2195fa49bbf807b46d53827e5a944e8009cfc4403"
+     },
+     "check": "fields",
+     "value": {
+      "severity": "owed",
+      "exception": "ironkv::SetAssumeAccepted",
+      "binding": "bd:2ea660886d27e5e3e377c2e500e48bcb542e347d272df45c3ca3a92e4491972a"
+     },
+     "why": "A.4.6.6, A.7.6.6: matched, introduced, exception-answered by dana (IronKvTeam, not an author): debt"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d"
+     },
+     "check": "fields",
+     "value": {
+      "severity": "owed",
+      "exception": "ironkv::SetAssumeAccepted",
+      "reason": "assumption",
+      "binding": "bd:1da36a42e325dc5acd89366516a304d11c2ce32f9dba52dc6934ad33a2c0535d"
+     },
+     "why": "A.4.6.6, A.7.6.6"
+    },
+    {
+     "in": "answered",
+     "select": {
+      "obligation": "ob:815d7ebb9678dbead1b3bef2195fa49bbf807b46d53827e5a944e8009cfc4403"
+     },
+     "check": "fields",
+     "value": {
+      "as": "exception-answer"
+     },
+     "why": "A.7.5.2: exception-answered obligations are listed in answered as exception-answer"
+    },
+    {
+     "in": "answered",
+     "select": {
+      "obligation": "ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d"
+     },
+     "check": "fields",
+     "value": {
+      "as": "exception-answer"
+     },
+     "why": "A.7.5.2"
+    },
+    {
+     "in": "debt",
+     "select": {
+      "obligation": "ob:815d7ebb9678dbead1b3bef2195fa49bbf807b46d53827e5a944e8009cfc4403"
+     },
+     "check": "fields",
+     "value": {
+      "exceptions": [
+       "ironkv::SetAssumeAccepted"
+      ],
+      "exception": "ironkv::SetAssumeAccepted",
+      "owner": "ironkv::IronKvTeam",
+      "expiresInDays": 51
+     },
+     "why": "A.7.7.1: expiresInDays = ceil((2026-12-15 - 2026-10-25T12:00Z)/86400) = 51 (Example 2); owner = the exception's owner (A.15.7)"
+    },
+    {
+     "in": "debt",
+     "select": {
+      "obligation": "ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d"
+     },
+     "check": "fields",
+     "value": {
+      "exceptions": [
+       "ironkv::SetAssumeAccepted"
+      ],
+      "exception": "ironkv::SetAssumeAccepted",
+      "owner": "ironkv::IronKvTeam",
+      "expiresInDays": 51
+     },
+     "why": "A.7.7.1"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "subject.code": "verus:ironkv/src/host_t.rs#Host::send"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.14.2.6 [D1]"
+    }
+   ]
+  }
+ ]
+}

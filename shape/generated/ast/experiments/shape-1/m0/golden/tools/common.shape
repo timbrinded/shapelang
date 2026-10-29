@@ -1,0 +1,353 @@
+module shape.generated.ast.experiments.shape_1.m0.golden.tools.common
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CommonModuleCanonDeclAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#_canon_decl")
+  fingerprint ast.semantic_subtree_v1("sha256:7fac64fe8f8b983c36d2ac76b2dbff9d3e8ad9cb8d46f07f312dcda3d36767e0")
+}
+
+resource CommonModuleCanonManifestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#_canon_manifest")
+  fingerprint ast.semantic_subtree_v1("sha256:e31cbadf174067f861a48cbc4cfd2a3da3cbb92a27616e9d857922a685ced10b")
+}
+
+resource CommonModuleCanonSourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#_canon_source")
+  fingerprint ast.semantic_subtree_v1("sha256:19d4a4a2ceb39c136b5510506a7ea36140e55c0f52f076504ddbb983e8d0b4ac")
+}
+
+resource CommonModuleCanonicalInputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#canonical_input")
+  fingerprint ast.semantic_subtree_v1("sha256:3dc5b53f32b119425542d146d8c0fd0e0bee72ccd64ff8931cb7cb1510ff5acc")
+}
+
+resource CommonModuleCheckGroupsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#check_groups")
+  fingerprint ast.semantic_subtree_v1("sha256:efcd743aff3ea662569c9a56c554c3aaeda676161f126c0c99a94fc84bcb93de")
+}
+
+resource CommonModuleClaimRefAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#claim_ref")
+  fingerprint ast.semantic_subtree_v1("sha256:b795dee99dfc5755e4e308297c53092a98e7c84d7d8b3107218d66eea9340e7c")
+}
+
+resource CommonModuleCreatesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#creates")
+  fingerprint ast.semantic_subtree_v1("sha256:88d6b75cf6263e6bb6214a9b88c3512cbc114d5e62c9a00294849725a2d056c4")
+}
+
+resource CommonModuleDeclKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#_decl_key")
+  fingerprint ast.semantic_subtree_v1("sha256:ea8ae0c58d8d0b845e715e45a50120eac9a5d7541c3d4d68e86ca0d19e84d20f")
+}
+
+resource CommonModuleDeclaredOnlyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#declared_only")
+  fingerprint ast.semantic_subtree_v1("sha256:5f98b17b9645401becde117ab2a78e7e99a63f0e2aea72b585fd06933f2d38f3")
+}
+
+resource CommonModuleDisAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#dis")
+  fingerprint ast.semantic_subtree_v1("sha256:56548c20984e099bc76836ffb30f9aa2540a7f662db3766ba5a37ff3926f9b85")
+}
+
+resource CommonModuleFpOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#fp_of")
+  fingerprint ast.semantic_subtree_v1("sha256:7a719a2ece00082926628c8ac608dc9a185b15456a7a64d448789c984c234732")
+}
+
+resource CommonModuleHealthAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#health")
+  fingerprint ast.semantic_subtree_v1("sha256:80336a362e461d8536ab555b7427cd3ba32317ea333bc2cabecb0dbdcf235f59")
+}
+
+resource CommonModuleInputDigestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#input_digest")
+  fingerprint ast.semantic_subtree_v1("sha256:97f7508948f78d4377735205ba985b9f640fa406af790c557aae9e148bb74fc7")
+}
+
+resource CommonModuleJcsSAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#_jcs_s")
+  fingerprint ast.semantic_subtree_v1("sha256:7b2d6a32f597bcb7ca5d39175edc77a06ac4e90966934f79de99ec4884477be3")
+}
+
+resource CommonModuleObligationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#obligation")
+  fingerprint ast.semantic_subtree_v1("sha256:3eb88dae76236efac7d022a23d95cc4247309b0d21f86c470bacef1af2732220")
+}
+
+resource CommonModuleOutputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#output")
+  fingerprint ast.semantic_subtree_v1("sha256:cd14b6115be48d5eb5dd2fad63c3e57f923759614d694813ea7a06995bab116f")
+}
+
+resource CommonModuleRecordIdAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#record_id")
+  fingerprint ast.semantic_subtree_v1("sha256:b986e68a008b4704c84735d3417e08fb7d18ec06d7d9b26319542f9d19718d2c")
+}
+
+resource CommonModuleSerialiseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#serialise")
+  fingerprint ast.semantic_subtree_v1("sha256:d80b705b7c18d843442f77fa5c98c86e4b77d16e43f399dfe22071fc0470ef1c")
+}
+
+resource CommonModuleSortObligationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#sort_obligations")
+  fingerprint ast.semantic_subtree_v1("sha256:2dbd13dbbff31a78d1f257d52203eb294bf4cb137558ddc4c6d9a5e40dd16d77")
+}
+
+resource CommonModuleSortedSetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#_sorted_set")
+  fingerprint ast.semantic_subtree_v1("sha256:5c00917a4f14054c6bcc7e660a2437ca027cf315b4a316a5803867318cb8034b")
+}
+
+resource CommonModuleStatementOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#statement_of")
+  fingerprint ast.semantic_subtree_v1("sha256:b375a39207efbdd6ca3877b0375282ec36628f883f768c1fa70d9b4a5a79570b")
+}
+
+component CommonModule : GeneratedCandidate {
+  fn _canon_decl
+    source python("experiments/shape-1/m0/golden/tools/common.py#_canon_decl")
+    effects unknown
+  fn _canon_manifest
+    source python("experiments/shape-1/m0/golden/tools/common.py#_canon_manifest")
+    effects unknown
+  fn _canon_source
+    source python("experiments/shape-1/m0/golden/tools/common.py#_canon_source")
+    effects unknown
+  fn _decl_key
+    source python("experiments/shape-1/m0/golden/tools/common.py#_decl_key")
+    effects unknown
+  fn _jcs_s
+    source python("experiments/shape-1/m0/golden/tools/common.py#_jcs_s")
+    effects unknown
+  fn _sorted_set
+    source python("experiments/shape-1/m0/golden/tools/common.py#_sorted_set")
+    effects unknown
+  fn canonical_input
+    source python("experiments/shape-1/m0/golden/tools/common.py#canonical_input")
+    effects unknown
+  fn check_groups
+    source python("experiments/shape-1/m0/golden/tools/common.py#check_groups")
+    effects unknown
+  fn claim_ref
+    source python("experiments/shape-1/m0/golden/tools/common.py#claim_ref")
+    effects unknown
+  fn creates
+    source python("experiments/shape-1/m0/golden/tools/common.py#creates")
+    effects unknown
+  fn declared_only
+    source python("experiments/shape-1/m0/golden/tools/common.py#declared_only")
+    effects unknown
+  fn dis
+    source python("experiments/shape-1/m0/golden/tools/common.py#dis")
+    effects unknown
+  fn fp_of
+    source python("experiments/shape-1/m0/golden/tools/common.py#fp_of")
+    effects unknown
+  fn health
+    source python("experiments/shape-1/m0/golden/tools/common.py#health")
+    effects unknown
+  fn input_digest
+    source python("experiments/shape-1/m0/golden/tools/common.py#input_digest")
+    effects unknown
+  fn obligation
+    source python("experiments/shape-1/m0/golden/tools/common.py#obligation")
+    effects unknown
+  fn output
+    source python("experiments/shape-1/m0/golden/tools/common.py#output")
+    effects unknown
+  fn record_id
+    source python("experiments/shape-1/m0/golden/tools/common.py#record_id")
+    effects unknown
+  fn serialise
+    source python("experiments/shape-1/m0/golden/tools/common.py#serialise")
+    effects unknown
+  fn sort_obligations
+    source python("experiments/shape-1/m0/golden/tools/common.py#sort_obligations")
+    effects unknown
+  fn statement_of
+    source python("experiments/shape-1/m0/golden/tools/common.py#statement_of")
+    effects unknown
+}
+
+relation CommonModuleCanonDeclGeneratedFromCommonModuleCanonDeclAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleCanonDeclAstAnchor
+  roles { CommonModule as generated, CommonModuleCanonDeclAstAnchor as syntax }
+  expects CommonModuleCanonDeclAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7fac64fe8f8b983c36d2ac76b2dbff9d3e8ad9cb8d46f07f312dcda3d36767e0")
+  summary "fn CommonModule._canon_decl generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#_canon_decl."
+}
+
+relation CommonModuleCanonManifestGeneratedFromCommonModuleCanonManifestAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleCanonManifestAstAnchor
+  roles { CommonModule as generated, CommonModuleCanonManifestAstAnchor as syntax }
+  expects CommonModuleCanonManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e31cbadf174067f861a48cbc4cfd2a3da3cbb92a27616e9d857922a685ced10b")
+  summary "fn CommonModule._canon_manifest generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#_canon_manifest."
+}
+
+relation CommonModuleCanonSourceGeneratedFromCommonModuleCanonSourceAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleCanonSourceAstAnchor
+  roles { CommonModule as generated, CommonModuleCanonSourceAstAnchor as syntax }
+  expects CommonModuleCanonSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:19d4a4a2ceb39c136b5510506a7ea36140e55c0f52f076504ddbb983e8d0b4ac")
+  summary "fn CommonModule._canon_source generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#_canon_source."
+}
+
+relation CommonModuleCanonicalInputGeneratedFromCommonModuleCanonicalInputAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleCanonicalInputAstAnchor
+  roles { CommonModule as generated, CommonModuleCanonicalInputAstAnchor as syntax }
+  expects CommonModuleCanonicalInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3dc5b53f32b119425542d146d8c0fd0e0bee72ccd64ff8931cb7cb1510ff5acc")
+  summary "fn CommonModule.canonical_input generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#canonical_input."
+}
+
+relation CommonModuleCheckGroupsGeneratedFromCommonModuleCheckGroupsAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleCheckGroupsAstAnchor
+  roles { CommonModule as generated, CommonModuleCheckGroupsAstAnchor as syntax }
+  expects CommonModuleCheckGroupsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:efcd743aff3ea662569c9a56c554c3aaeda676161f126c0c99a94fc84bcb93de")
+  summary "fn CommonModule.check_groups generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#check_groups."
+}
+
+relation CommonModuleClaimRefGeneratedFromCommonModuleClaimRefAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleClaimRefAstAnchor
+  roles { CommonModule as generated, CommonModuleClaimRefAstAnchor as syntax }
+  expects CommonModuleClaimRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b795dee99dfc5755e4e308297c53092a98e7c84d7d8b3107218d66eea9340e7c")
+  summary "fn CommonModule.claim_ref generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#claim_ref."
+}
+
+relation CommonModuleCreatesGeneratedFromCommonModuleCreatesAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleCreatesAstAnchor
+  roles { CommonModule as generated, CommonModuleCreatesAstAnchor as syntax }
+  expects CommonModuleCreatesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:88d6b75cf6263e6bb6214a9b88c3512cbc114d5e62c9a00294849725a2d056c4")
+  summary "fn CommonModule.creates generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#creates."
+}
+
+relation CommonModuleDeclKeyGeneratedFromCommonModuleDeclKeyAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleDeclKeyAstAnchor
+  roles { CommonModule as generated, CommonModuleDeclKeyAstAnchor as syntax }
+  expects CommonModuleDeclKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ea8ae0c58d8d0b845e715e45a50120eac9a5d7541c3d4d68e86ca0d19e84d20f")
+  summary "fn CommonModule._decl_key generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#_decl_key."
+}
+
+relation CommonModuleDeclaredOnlyGeneratedFromCommonModuleDeclaredOnlyAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleDeclaredOnlyAstAnchor
+  roles { CommonModule as generated, CommonModuleDeclaredOnlyAstAnchor as syntax }
+  expects CommonModuleDeclaredOnlyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5f98b17b9645401becde117ab2a78e7e99a63f0e2aea72b585fd06933f2d38f3")
+  summary "fn CommonModule.declared_only generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#declared_only."
+}
+
+relation CommonModuleDisGeneratedFromCommonModuleDisAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleDisAstAnchor
+  roles { CommonModule as generated, CommonModuleDisAstAnchor as syntax }
+  expects CommonModuleDisAstAnchor fingerprint ast.semantic_subtree_v1("sha256:56548c20984e099bc76836ffb30f9aa2540a7f662db3766ba5a37ff3926f9b85")
+  summary "fn CommonModule.dis generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#dis."
+}
+
+relation CommonModuleFpOfGeneratedFromCommonModuleFpOfAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleFpOfAstAnchor
+  roles { CommonModule as generated, CommonModuleFpOfAstAnchor as syntax }
+  expects CommonModuleFpOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7a719a2ece00082926628c8ac608dc9a185b15456a7a64d448789c984c234732")
+  summary "fn CommonModule.fp_of generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#fp_of."
+}
+
+relation CommonModuleHealthGeneratedFromCommonModuleHealthAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleHealthAstAnchor
+  roles { CommonModule as generated, CommonModuleHealthAstAnchor as syntax }
+  expects CommonModuleHealthAstAnchor fingerprint ast.semantic_subtree_v1("sha256:80336a362e461d8536ab555b7427cd3ba32317ea333bc2cabecb0dbdcf235f59")
+  summary "fn CommonModule.health generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#health."
+}
+
+relation CommonModuleInputDigestGeneratedFromCommonModuleInputDigestAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleInputDigestAstAnchor
+  roles { CommonModule as generated, CommonModuleInputDigestAstAnchor as syntax }
+  expects CommonModuleInputDigestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:97f7508948f78d4377735205ba985b9f640fa406af790c557aae9e148bb74fc7")
+  summary "fn CommonModule.input_digest generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#input_digest."
+}
+
+relation CommonModuleJcsSGeneratedFromCommonModuleJcsSAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleJcsSAstAnchor
+  roles { CommonModule as generated, CommonModuleJcsSAstAnchor as syntax }
+  expects CommonModuleJcsSAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7b2d6a32f597bcb7ca5d39175edc77a06ac4e90966934f79de99ec4884477be3")
+  summary "fn CommonModule._jcs_s generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#_jcs_s."
+}
+
+relation CommonModuleObligationGeneratedFromCommonModuleObligationAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleObligationAstAnchor
+  roles { CommonModule as generated, CommonModuleObligationAstAnchor as syntax }
+  expects CommonModuleObligationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3eb88dae76236efac7d022a23d95cc4247309b0d21f86c470bacef1af2732220")
+  summary "fn CommonModule.obligation generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#obligation."
+}
+
+relation CommonModuleOutputGeneratedFromCommonModuleOutputAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleOutputAstAnchor
+  roles { CommonModule as generated, CommonModuleOutputAstAnchor as syntax }
+  expects CommonModuleOutputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cd14b6115be48d5eb5dd2fad63c3e57f923759614d694813ea7a06995bab116f")
+  summary "fn CommonModule.output generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#output."
+}
+
+relation CommonModuleRecordIdGeneratedFromCommonModuleRecordIdAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleRecordIdAstAnchor
+  roles { CommonModule as generated, CommonModuleRecordIdAstAnchor as syntax }
+  expects CommonModuleRecordIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b986e68a008b4704c84735d3417e08fb7d18ec06d7d9b26319542f9d19718d2c")
+  summary "fn CommonModule.record_id generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#record_id."
+}
+
+relation CommonModuleSerialiseGeneratedFromCommonModuleSerialiseAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleSerialiseAstAnchor
+  roles { CommonModule as generated, CommonModuleSerialiseAstAnchor as syntax }
+  expects CommonModuleSerialiseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d80b705b7c18d843442f77fa5c98c86e4b77d16e43f399dfe22071fc0470ef1c")
+  summary "fn CommonModule.serialise generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#serialise."
+}
+
+relation CommonModuleSortObligationsGeneratedFromCommonModuleSortObligationsAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleSortObligationsAstAnchor
+  roles { CommonModule as generated, CommonModuleSortObligationsAstAnchor as syntax }
+  expects CommonModuleSortObligationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2dbd13dbbff31a78d1f257d52203eb294bf4cb137558ddc4c6d9a5e40dd16d77")
+  summary "fn CommonModule.sort_obligations generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#sort_obligations."
+}
+
+relation CommonModuleSortedSetGeneratedFromCommonModuleSortedSetAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleSortedSetAstAnchor
+  roles { CommonModule as generated, CommonModuleSortedSetAstAnchor as syntax }
+  expects CommonModuleSortedSetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5c00917a4f14054c6bcc7e660a2437ca027cf315b4a316a5803867318cb8034b")
+  summary "fn CommonModule._sorted_set generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#_sorted_set."
+}
+
+relation CommonModuleStatementOfGeneratedFromCommonModuleStatementOfAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleStatementOfAstAnchor
+  roles { CommonModule as generated, CommonModuleStatementOfAstAnchor as syntax }
+  expects CommonModuleStatementOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b375a39207efbdd6ca3877b0375282ec36628f883f768c1fa70d9b4a5a79570b")
+  summary "fn CommonModule.statement_of generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#statement_of."
+}
+
+implementation CommonModuleImpl {
+  paths {
+    "experiments/shape-1/m0/golden/tools/common.py"
+  }
+  conforms_to CommonModule
+}

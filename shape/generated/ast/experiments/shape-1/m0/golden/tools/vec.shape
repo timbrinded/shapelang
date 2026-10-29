@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.shape_1.m0.golden.tools.vec
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource VecModuleLoadAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/vec.py#load")
+  fingerprint ast.semantic_subtree_v1("sha256:b3cb88c85341755904c9788a8aa3c68295adc969bab9d69ff9b2b12130d97e8d")
+}
+
+component VecModule : GeneratedCandidate {
+  fn load
+    source python("experiments/shape-1/m0/golden/tools/vec.py#load")
+    effects unknown
+}
+
+relation VecModuleLoadGeneratedFromVecModuleLoadAstAnchor {
+  kind generated_from
+  connects VecModule -> VecModuleLoadAstAnchor
+  roles { VecModule as generated, VecModuleLoadAstAnchor as syntax }
+  expects VecModuleLoadAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b3cb88c85341755904c9788a8aa3c68295adc969bab9d69ff9b2b12130d97e8d")
+  summary "fn VecModule.load generated from python function_definition at experiments/shape-1/m0/golden/tools/vec.py#load."
+}
+
+implementation VecModuleImpl {
+  paths {
+    "experiments/shape-1/m0/golden/tools/vec.py"
+  }
+  conforms_to VecModule
+}

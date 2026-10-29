@@ -1,0 +1,1525 @@
+{
+ "_doc": "Version 7 expected outcome of the 76 H2 seeds per arm (M0). Fields: class (hit|preexisting|flag-only|miss; controls clean|coverage|blocked), kind, claim, severity, why, v6_change. Frozen 2026-10-29; sign-offs in m0/SIGNOFF.json.",
+ "rows": [
+  {
+   "seed": "S01",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::AnalyzerStaysAdvisory",
+   "severity": "blocking",
+   "why": "compareAnalyzerHintsToShape -> checkShapeModules creates the lifted edge ShapeAnalyzer->ShapeChecker, absent at base, all of whose supporting facts are new (A.7.3.1), so the path.forbid contradiction is introduced (A.7.3.3 [D5]); tsCalls is presence-sound, so it is sound and blocks (A.7.5.1 rule 7). No coverage: call(ts) has no absence-sound base provider and analyzer-shape.ts's clock entry is complete (A.4.5.6, A.7.4.2 [D3]). AnalyzerDocumented is also introduced, owed (normal, rule 9).",
+   "v6_change": "Same class and claim. D2 removes the 29 transitive effects.upper contradictions (compareAnalyzerHintsToShape x16, reviewShapeAuthoringProposal x13) and D3 the owed coverage on ShapeAnalyzer."
+  },
+  {
+   "seed": "S01",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::AnalyzerStaysAdvisory",
+   "severity": "blocking",
+   "why": "As arm A. The same new edge also violates ShapeAnalyzer/relations.complete-calls (A.4.2.3: ShapeAnalyzer declares calls only to ShapeStringHelpers), introduced by the new lifted edge (D5). call(ts) is observable in X, but every tsCalls entry is complete, so the need is met (A.7.4.3). AnalyzerDocumented's base judgment goes stale, owed.",
+   "v6_change": "v6 matched compareAnalyzerHintsToShape/effects.upper (transitive). D2 makes summaries direct, so the match is the path forbid plus relations.complete. D3 removes the coverage."
+  },
+  {
+   "seed": "S02",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::AnalyzerStaysAdvisory",
+   "severity": "blocking",
+   "why": "compareAnalyzerHintsToShape -> getCompletions adds the new lifted edge ShapeAnalyzer->ShapeEditorServices. With the existing EditorServices->ShapeChecker edge, the pair (ShapeAnalyzer, ShapeChecker) has a 2-hop path whose support holds a new lifted edge (A.4.4.11, A.7.3.3 [D5]). Sound, so it blocks (rule 7).",
+   "v6_change": "Same match. D2 removes 8 transitive summary contradictions and D3 the coverage."
+  },
+  {
+   "seed": "S02",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::AnalyzerStaysAdvisory",
+   "severity": "blocking",
+   "why": "As arm A, plus ShapeAnalyzer/relations.complete-calls for Analyzer->EditorServices (A.4.2.3, D5). The call(ts) need is met by complete tsCalls entries.",
+   "v6_change": "v6 matched compareAnalyzerHintsToShape/effects.upper. D2 moves the match to the path forbid; D3 removes coverage."
+  },
+  {
+   "seed": "S03",
+   "arm": "A",
+   "class": "flag-only",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "Bun.spawnSync names no code identity, so tsCalls reports no call fact and ExperimentalSemanticKernelIsolation is not contradicted; proc.exec has no carriers (A.12.4). The edit moves inspect/impl.ts#inspect, which puts CliDocumented (DocumentedBy on ShpCli, Req = ShpCli code) in Delta-code: it is introduced as unestablished (missing), owed at normal (A.7.3.3 [D4], rule 9). No coverage, since call(ts) is unobservable and the clock entry is complete (D3).",
+   "v6_change": "v6 flag-only via owed coverage plus CliDocumented. D3 removes the coverage; the class is unchanged."
+  },
+  {
+   "seed": "S03",
+   "arm": "X",
+   "class": "flag-only",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "No call fact (external spawn), so neither the isolation path nor ShpCli/relations.complete is contradicted. The call(ts) need is met by complete tsCalls entries (A.7.4.3). CliDocumented's base judgment is stale (cited ShpCli digests moved, A.5.4.1), introduced, owed.",
+   "v6_change": "v6 flag-only via coverage owed. D3 removes coverage; the class is unchanged."
+  },
+  {
+   "seed": "S04",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.runtime::ExperimentalSemanticKernelIsolation",
+   "severity": "blocking",
+   "why": "inspect -> createKernelRequestV1 adds the new lifted edge ShpCli->ExperimentalSemanticKernelHarness. With the declared Harness->Kernel edge (W_decl), the witness ShpCli->Harness->Kernel holds a new observed fact. It is therefore a contradiction, not E-structure (A.4.4.12), and it is introduced (A.7.3.3 [D5]). Sound, so rule 7 blocks. CliDocumented is introduced, owed.",
+   "v6_change": "Same match. D2 removes 2 inspectShapeModel/effects.upper transitive contradictions; D3 removes coverage."
+  },
+  {
+   "seed": "S04",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.runtime::ExperimentalSemanticKernelIsolation",
+   "severity": "blocking",
+   "why": "As arm A, plus ShpCli/relations.complete-calls for ShpCli->Harness, an undeclared target (A.4.2.3, D5).",
+   "v6_change": "Same match; D2 and D3 as in arm A."
+  },
+  {
+   "seed": "S05",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::no_runtime_dependency_cycles",
+   "severity": "blocking",
+   "why": "createShapeServices -> parseShapeModule adds the lifted edge ShapeGrammar->ShapeParser. With ShapeParser->ShapeGrammar this forms a new SCC {ShapeGrammar, ShapeParser} whose support holds a new lifted edge (A.4.4.8, A.4.4.11, A.7.3.3 [D5]); sound, rule 7. Unrelated extras: language/shape-module.ts is a dep of the contradicting FormatterCanonicalGraphRules and FormatterFlattensGroupedContext records, so both are introduced through the record cone (A.5.4.4, A.7.3.3 [D4]) and block; GrammarDocumented is owed.",
+   "v6_change": "Same match. D4 adds the 2 formatter-law contradictions, since the harness has no base-revision bunTest record for the counterexample clause; D3 removes coverage."
+  },
+  {
+   "seed": "S05",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::no_runtime_dependency_cycles",
+   "severity": "blocking",
+   "why": "As arm A, plus ShapeGrammar/relations.complete-calls: ShapeGrammar declares no calls relation (A.4.2.3, D5).",
+   "v6_change": "Same match; D3 and D4 as in arm A."
+  },
+  {
+   "seed": "S06",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::no_runtime_dependency_cycles",
+   "severity": "blocking",
+   "why": "normalizeShapePath -> formatShapeSource adds the lifted edge ShapeStringHelpers->ShapeFormatter. With Formatter->StringHelpers this forms a new SCC {ShapeStringHelpers, ShapeFormatter} with a new lifted edge (A.7.3.3 [D5]). The old checker SCC keeps its preexisting key. Unrelated extras: shape-strings.ts is a dep of the 2 failing formatter-law records, which are introduced and block (A.7.3.3 [D4]).",
+   "v6_change": "Same match. D2 removes the 103 transitive effects.upper contradictions; D5 ends the 41 owed->blocking flips (fact-level newness); D4 adds the 2 formatter-law contradictions; D3 removes coverage."
+  },
+  {
+   "seed": "S06",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::ShapeStringHelpers/relations.complete-calls",
+   "severity": "blocking",
+   "why": "ShapeStringHelpers declares no calls relation, so the new lifted edge to ShapeFormatter violates the edge forbid (A.4.2.3), introduced (D5); the new cycle is also raised as in arm A.",
+   "v6_change": "Same match. D2 removes the 103 summary contradictions; D5 ends the flips; D4 adds the formatter laws."
+  },
+  {
+   "seed": "S07",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::no_runtime_dependency_cycles",
+   "severity": "blocking",
+   "why": "localNameOf -> normalizeCheckOptions adds the lifted edge ShapeDiagnostics->ShapeChecker, absent at base. Diagnostics is already in the base checker SCC (through the declared Diagnostics->RuleEngine edge), so the key is unchanged. The SCC's support (every calls edge in it, A.4.4.11) now holds a lifted edge whose facts are all new, so the contradiction is introduced (A.7.3.3 [D5], with 'supports decide introduced'). Sound, rule 7. Extra: the formatDiagnostics guard (normal; its D4 Req includes display.ts#localNameOf) is owed.",
+   "v6_change": "v6 flipped the old key through fact newness; v7 keeps it introduced through a new lifted edge (D5). Under a 'witness needs a new edge' reading, the base SCC needs none and the class would be preexisting (see spec problems). D2 removes 118 summary contradictions."
+  },
+  {
+   "seed": "S07",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::ShapeDiagnostics/relations.complete-calls",
+   "severity": "blocking",
+   "why": "ShapeDiagnostics declares calls only to ShapeRuleEngine, so the new lifted edge to ShapeChecker violates the edge forbid. This is introduced regardless of the SCC reading (A.4.2.3, A.7.3.3 [D5]). The cycle is raised as in arm A. Extra: the edit changes code(ShapeDiagnostics), so the base refutation of ShapeDiagnosticsReadsRuleOutput is re-introduced and blocks (A.7.3.3 [D7]).",
+   "v6_change": "Same match. D2 removes 118 summary contradictions; D7 adds the re-introduced refutation."
+  },
+  {
+   "seed": "S08",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::no_runtime_dependency_cycles",
+   "severity": "blocking",
+   "why": "buildGuardContexts -> checkBindings adds the lifted edge ShapeRuleEngine->ShapeBindings, absent at base, inside the base SCC. It is introduced because its support holds a new lifted edge (A.4.4.11, A.7.3.3 [D5]). Extras: the checkGuardedChanges guard (critical; its Req includes buildGuardContexts, A.5.3.4 [D4]) is unestablished (missing) and blocks (rule 9); RuleEngineDocumented is owed.",
+   "v6_change": "v6 flipped the old key through fact newness; the support reading of D5 keeps it introduced (a witness reading would give preexisting). D2 removes 4 summary contradictions; D4 adds the guard."
+  },
+  {
+   "seed": "S08",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::ShapeRuleEngine/relations.complete-calls",
+   "severity": "blocking",
+   "why": "RuleEngine declares calls only to Lowerer, PreludeRegistry and StringHelpers, so the new edge to ShapeBindings violates the edge forbid (A.4.2.3, D5). Extras: the cycle as in arm A; the checkGuardedChanges guard goes stale and blocks; the base refutation of ShapeRuleEngineReadsLoweredFacts is re-introduced (D7).",
+   "v6_change": "Same match. D2 and D4 as in arm A; D7 adds the re-introduced refutation."
+  },
+  {
+   "seed": "S09",
+   "arm": "A",
+   "class": "flag-only",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "reviewGuardedTargets -> formatShapeSource adds ShapeAuthoring->ShapeFormatter. No forbid covers it, Formatter does not reach Authoring (no cycle), and summaries bound only their own code (A.4.2.1 [D2]), so nothing contradicts. Only AuthoringDocumented is introduced, owed (rule 9). This is one of the 11 drifts expected by construction.",
+   "v6_change": "v6 caught it through 3 transitive reviewShapeAuthoringProposal/effects.upper contradictions. D2 retires them and D3 the coverage, so it is now unflagged."
+  },
+  {
+   "seed": "S09",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ShapeAuthoring/relations.complete-calls",
+   "severity": "blocking",
+   "why": "ShapeAuthoring's declared call targets exclude ShapeFormatter, so the new lifted edge violates the edge forbid (A.4.2.3, A.7.3.3 [D5]). Sound, rule 7.",
+   "v6_change": "Same match. D2 removes the transitive summaries."
+  },
+  {
+   "seed": "S10",
+   "arm": "A",
+   "class": "miss",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "startShapeLanguageServer -> parseShapeModule adds ShapeLanguageServer->ShapeParser. No forbid or cycle covers it, summaries are direct (D2), ShapeLanguageServer carries no law, and call(ts) is unobservable (A.4.5.6 [D3]). Nothing is introduced. Expected by construction.",
+   "v6_change": "v6 hit via 2 transitive serve/effects.upper contradictions (D2) and coverage (D3); now nothing."
+  },
+  {
+   "seed": "S10",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ShapeLanguageServer/relations.complete-calls",
+   "severity": "blocking",
+   "why": "ShapeLanguageServer declares calls only to ShapeEditorServices; the new lifted edge to ShapeParser violates the edge forbid (A.4.2.3, D5); rule 7.",
+   "v6_change": "Same match. D2 removes the summaries."
+  },
+  {
+   "seed": "S11",
+   "arm": "A",
+   "class": "miss",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "getCompletions -> analyzeSourceText adds ShapeEditorServices->ShapeAnalyzer. No forbid or cycle covers it (Analyzer does not reach EditorServices; AnalyzerStaysAdvisory concerns paths out of Analyzer), summaries are direct (D2), EditorServices carries no law, and call(ts) is unobservable (D3). Nothing is introduced.",
+   "v6_change": "v6 hit via 4 transitive summary contradictions (D2) plus coverage (D3); now nothing."
+  },
+  {
+   "seed": "S11",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ShapeEditorServices/relations.complete-calls",
+   "severity": "blocking",
+   "why": "Analyzer is not among EditorServices' declared call targets (A.4.2.3, D5). Extra: the edit changes code(ShapeEditorServices), so the base refutation of ShapeEditorUsesPreludeRegistry is re-introduced and blocks (D7).",
+   "v6_change": "Same match. D2 removes summaries; D7 adds the refutation."
+  },
+  {
+   "seed": "S12",
+   "arm": "A",
+   "class": "miss",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "createKernelRequestV1 -> formatShapeSource adds Harness->ShapeFormatter. No forbid or cycle covers it, the harness carries no law (ExperimentalKernelDocumented is on ExperimentalSemanticKernel), summaries are direct (D2), and call(ts) is unobservable (D3). Nothing is introduced.",
+   "v6_change": "v6 hit via 13 low-tier transitive summary contradictions (D2); now nothing."
+  },
+  {
+   "seed": "S12",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.runtime::ExperimentalSemanticKernelHarness/relations.complete-calls",
+   "severity": "blocking",
+   "why": "The harness declares calls only to ShapeChecker and the kernel; the new lifted edge to ShapeFormatter violates the edge forbid (A.4.2.3, D5). It is low tier, but rule 7 blocks every introduced sound contradiction.",
+   "v6_change": "Same match. D2 removes the summaries."
+  },
+  {
+   "seed": "R01",
+   "arm": "A",
+   "class": "flag-only",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "ShapeCheckerUsesBindings is now unrealised, but refutation needs an absence-sound complete call entry (A.4.4.14) and tsCalls is presence-only; lower bounds need no coverage (A.7.4.2 [D3]). The edit moves checkLoweredShapeModel, so the critical guards checkLoweredShapeModel/RefactorSensitive and checkShapeModules/RefactorSensitive (whose D4 Req includes checkLoweredShapeModel, A.5.3.4) are introduced as unestablished (missing) and block (rule 9). Expected by construction.",
+   "v6_change": "v6 flag-only via blocking critical coverage plus the guard. D3 removes the coverage and D4 adds the checkShapeModules guard; the class is unchanged."
+  },
+  {
+   "seed": "R01",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::ShapeCheckerUsesBindings",
+   "severity": "blocking",
+   "why": "tsCalls is absence-sound with complete entries over all of code(ShapeChecker), and the ShapeChecker->ShapeBindings call is absent, so the relation is refuted, which is always sound (A.4.4.14). It is introduced because a footprint identity (api.ts#checkLoweredShapeModel) is in Delta-code and the base tsCalls record reported the fact (A.7.3.3 [D7]). Rule 7 blocks.",
+   "v6_change": "v6: refuted but preexisting and owed (rule 6). D7 makes it introduced and blocking."
+  },
+  {
+   "seed": "R02",
+   "arm": "A",
+   "class": "miss",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "No refutation (tsCalls is presence-only, A.4.4.14), lower bounds raise no coverage (D3), and ShapeEditorServices carries no law (FormatterEditorDocumented's Req is ShapeFormatter's code). Nothing is introduced.",
+   "v6_change": "v6 flag-only via owed coverage. D3 removes it, so the class falls to miss."
+  },
+  {
+   "seed": "R02",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ShapeEditorUsesFormatter",
+   "severity": "blocking",
+   "why": "The only EditorServices->Formatter call is gone and the complete absence-sound tsCalls entries refute the relation (A.4.4.14). formatOnSave is in Delta-code and the base had reported the fact, so it is introduced (A.7.3.3 [D7]); rule 7. The same footprint change also re-introduces the base refutation of ShapeEditorUsesPreludeRegistry.",
+   "v6_change": "v6: preexisting and owed. D7 makes it introduced and blocking."
+  },
+  {
+   "seed": "R03",
+   "arm": "A",
+   "class": "flag-only",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "No refutation without an absence-sound call observer and no coverage for lower bounds (D3). The fmt edit puts CliDocumented in Delta-code: unestablished (missing), introduced, owed (normal, rule 9).",
+   "v6_change": "v6 flag-only via owed coverage plus CliDocumented. D3 removes the coverage; the class is unchanged."
+  },
+  {
+   "seed": "R03",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ShpCliUsesFormatter",
+   "severity": "blocking",
+   "why": "ShpCli->Formatter had 1 call fact, now absent; refuted (A.4.4.14) and introduced by footprint change and the base report (A.7.3.3 [D7]); rule 7.",
+   "v6_change": "v6: preexisting and owed. D7 makes it introduced and blocking."
+  },
+  {
+   "seed": "R04",
+   "arm": "A",
+   "class": "flag-only",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "The inlining in derivations.ts#requiresReevaluation removes the only RuleEngine->PreludeRegistry call, but there is no refutation in arm A. requiresReevaluation is in the D4 Req of the critical guards checkGuardedChanges and checkGuardedSources (A.5.3.4), so both are introduced as unestablished (missing) and block (rule 9). RuleEngineDocumented is owed.",
+   "v6_change": "v6 flag-only via blocking critical coverage. D3 removes coverage and D4 adds the 2 guards; still blocked, and the class is unchanged."
+  },
+  {
+   "seed": "R04",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::ShapeRuleEngineUsesPreludeRegistry",
+   "severity": "blocking",
+   "why": "Refuted by the complete tsCalls entries (A.4.4.14) and introduced (footprint in Delta-code, base reported the fact; A.7.3.3 [D7]). Extras: the guards go stale and block; the base refutation of ShapeRuleEngineReadsLoweredFacts is re-introduced.",
+   "v6_change": "v6: preexisting and owed. D7 makes it introduced and blocking."
+  },
+  {
+   "seed": "R05",
+   "arm": "A",
+   "class": "flag-only",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "critic.ts#hasReevaluationGuard changes, but there is no refutation and no coverage (D3). AuthoringDocumented is introduced as unestablished (missing), owed (normal).",
+   "v6_change": "v6 flag-only via owed coverage. D3 removes it; the class is unchanged."
+  },
+  {
+   "seed": "R05",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ShapeAuthoringUsesPreludeRegistry",
+   "severity": "blocking",
+   "why": "The single Authoring->PreludeRegistry call is gone; refuted (A.4.4.14) and introduced (A.7.3.3 [D7]); rule 7.",
+   "v6_change": "v6: preexisting and owed. D7 makes it introduced and blocking."
+  },
+  {
+   "seed": "R06",
+   "arm": "A",
+   "class": "flag-only",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "incremental.ts#normalizeDocuments changes, but there is no refutation and no coverage (D3). IncrementalCheckerDocumented is introduced as unestablished (missing), owed. The tested laws on ShapeIncrementalChecker.check stay supported.",
+   "v6_change": "v6 flag-only via blocking critical coverage. D3 removes it, so the verdict is now owed; the class is unchanged."
+  },
+  {
+   "seed": "R06",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker.incremental::ShapeIncrementalCheckerUsesStringHelpers",
+   "severity": "blocking",
+   "why": "The single Incremental->StringHelpers call is gone; refuted (A.4.4.14) and introduced (A.7.3.3 [D7]); rule 7.",
+   "v6_change": "v6: preexisting and owed. D7 makes it introduced and blocking."
+  },
+  {
+   "seed": "R07",
+   "arm": "A",
+   "class": "flag-only",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "'void startShapeLanguageServer' is a reference, not a call (§3), so the relation is unrealised but not refutable in A. lsp/impl.ts is ShpCli code, so CliDocumented is introduced, owed.",
+   "v6_change": "v6 flag-only via owed coverage. D3 removes it; the class is unchanged."
+  },
+  {
+   "seed": "R07",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ShpCliUsesLanguageServer",
+   "severity": "blocking",
+   "why": "No ShpCli->LanguageServer call fact remains (references are not calls); refuted (A.4.4.14) and introduced (A.7.3.3 [D7]); rule 7.",
+   "v6_change": "v6: preexisting and owed. D7 makes it introduced and blocking."
+  },
+  {
+   "seed": "E01",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "A new Read<SystemClock> fact at guards.ts#checkFreshness (tsClockScan, presence-sound, with n) at changed code with no base report (A.7.3.1). It is excluded by CheckerNeverReadsClock, checkFreshness's direct summary and ShapeRuleEngine's authority. tier* is critical for each (Lvl_b, A.6.2.3 [D11]), so the single {code, atom} obligation goes to the forbid (A.4.4.7, §4.2) and the others become causes. Sound, rule 7.",
+   "v6_change": "v6 matched checkFreshness/effects.upper as a separate {unit, atom} obligation. v7 raises one {code, atom} obligation against the forbid (A.4.4.7-8, D2). D3 removes coverage."
+  },
+  {
+   "seed": "E01",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "As arm A (same clock records). Extra: the edit changes code(ShapeRuleEngine), so the base refutation of ShapeRuleEngineReadsLoweredFacts is re-introduced (D7).",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "E02",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "New Date() in lowerChange gives a new fact, excluded by the critical forbid, lowerChange's summary and the Lowerer authority; the forbid comes first (A.4.4.7). Extras: the lowerChange guard (critical) is missing and blocks; ChangeTransitionsYieldNormalizedGuardEvents (normal, inconclusive) is owed.",
+   "v6_change": "v6 matched lowerChange/effects.upper. D2 removes the 17 transitive summary contradictions on callers, and the match moves to the forbid."
+  },
+  {
+   "seed": "E02",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "As arm A. The guard is stale; the Lowerer base refutations (UsesPreludeRegistry, UsesParser) are re-introduced (D7).",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "E03",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "performance.now at shape-strings.ts#normalizeShapePath (ShapeStringHelpers.*, no unit, so no summary). It is excluded by the forbid and by authority, forbid first (A.4.4.7); new fact, sound, rule 7. Extra: shape-strings.ts is a dep of the 2 failing formatter-law records, which are re-introduced and block (A.7.3.3 [D4]).",
+   "v6_change": "Same claim. D2 removes 26 transitive summaries; D4 adds the formatter laws; D3 removes coverage."
+  },
+  {
+   "seed": "E03",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "E04",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "process.hrtime in compareShapeDiagnostics (ShapeDiagnostics is normal). The critical forbid sets Lvl_b to critical, so tier* is critical for all excluding claims, and the forbid comes first (A.6.2.3, A.4.4.7). New, sound, rule 7.",
+   "v6_change": "Same claim. D2 folds the summary into causes; D3 removes coverage."
+  },
+  {
+   "seed": "E04",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "As arm A. The base refutation of ShapeDiagnosticsReadsRuleOutput is re-introduced (D7).",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "E05",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "Date.now in the unit ShapeIncrementalChecker.check: excluded by the forbid (critical), the summary and authority; forbid first; new, sound, rule 7. IncrementalCheckerDocumented is owed.",
+   "v6_change": "Same claim. D2 makes check/effects.upper a cause, not a second obligation."
+  },
+  {
+   "seed": "E05",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "E06",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ClockReadOnlyAtCliBoundary",
+   "severity": "blocking",
+   "why": "The forbid, formatShapeModule's summary and the Formatter authority are all normal: equal tier*, forbid first (A.4.4.7); new, sound, rule 7. Extra: formatShapeModule, the Req of FormatterCanonicalGraphRules and FormatterFlattensGroupedContext, moved. Both contradict at head as at base, and with no base-revision bunTest record they are introduced and block (A.7.3.3 [D4]). FormatterEditorDocumented is owed.",
+   "v6_change": "v6 matched formatShapeModule/effects.upper. D2 makes the summary a cause of the forbid's obligation and removes 7 transitive summary contradictions."
+  },
+  {
+   "seed": "E06",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ClockReadOnlyAtCliBoundary",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "E07",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ClockReadOnlyAtCliBoundary",
+   "severity": "blocking",
+   "why": "performance.now in analyzeSourceText: excluded by the forbid, the summary and authority (all normal), forbid first; new, sound, rule 7. AnalyzerDocumented is owed.",
+   "v6_change": "Same claim. D2 removes the transitive reviewShapeAuthoringProposal summary contradiction; D3 removes coverage."
+  },
+  {
+   "seed": "E07",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ClockReadOnlyAtCliBoundary",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "E08",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ClockReadOnlyAtCliBoundary",
+   "severity": "blocking",
+   "why": "Date.now at inspect/impl.ts#inspect (unit ShpCli.inspectShapeModel). ShpCli grants Read<SystemClock>, so authority does not exclude it; the forbid excepts only isoToday and main; the summary lacks the atom. Forbid first (A.4.4.7); new, sound, rule 7. CliDocumented is owed.",
+   "v6_change": "Same claim. D3 removes coverage."
+  },
+  {
+   "seed": "E08",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ClockReadOnlyAtCliBoundary",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "E09",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.delivery::DocsSite/authority",
+   "severity": "blocking",
+   "why": "A top-level new Date() in the DocsSite.* test file gives a new fact, excluded only by DocsSite's authority (low; no clock forbid covers DocsSite). Sound, so rule 7 blocks at any tier.",
+   "v6_change": "Same claim. D3 removes the coverage."
+  },
+  {
+   "seed": "E09",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.delivery::DocsSite/authority",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "E10",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ClockReadOnlyAtCliBoundary",
+   "severity": "blocking",
+   "why": "The excluding claims are ClockReadOnlyAtCliBoundary (normal), parseShapeModule's summary (critical) and ShapeParser's authority (critical). tier* = max(tier_h, Lvl_b) is critical for all three (A.6.2.3 [D11]), so op order puts the forbid first and it carries tier critical (A.4.4.7). Extras: the parseShapeModule guard (critical) is missing and blocks; parser.ts is a dep of the failing formatter-law records, so those are introduced (D4).",
+   "v6_change": "v6 matched ShapeParser/authority, because the critical authority outranked the normal forbid by head tier. D11's tier* makes the tiers equal and the forbid wins. D2 removes 20 summaries."
+  },
+  {
+   "seed": "E10",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ClockReadOnlyAtCliBoundary",
+   "severity": "blocking",
+   "why": "As arm A; the guard is stale.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "E11",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "Date.now in the unit isReevaluationRequirement (ShapePreludeRegistry, critical): the forbid comes first (A.4.4.7); new, sound, rule 7.",
+   "v6_change": "v6 matched isReevaluationRequirement/effects.upper. D2 makes the summary a cause and removes 20 transitive summaries."
+  },
+  {
+   "seed": "E11",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "E12",
+   "arm": "A",
+   "class": "hit",
+   "kind": "coverage",
+   "claim": "component shape.checker::ShapeChecker",
+   "severity": "blocking",
+   "why": "The alias read yields no fact and makes tsClockScan's api.ts entry incomplete. staleAttestationPruner and api.ts are finest changes under CheckerNeverReadsClock, the unit's summary and ShapeChecker's authority, whose effect(ts.call(...)) channels are observable (tsClockScan is absence-sound in the base, A.4.5.6 [D3]) and unmet (A.7.4.3). Coverage for ShapeChecker is raised at critical and blocks (ShapePolicy critical blocks coverage, rule 9). The seed lists this coverage.",
+   "v6_change": "Unchanged: this is the designed coverage case, and D3 keeps it because the clock channel is observable."
+  },
+  {
+   "seed": "E12",
+   "arm": "X",
+   "class": "hit",
+   "kind": "coverage",
+   "claim": "component shape.checker::ShapeChecker",
+   "severity": "blocking",
+   "why": "As arm A. The call(ts) pairs are met by complete tsCalls entries; the clock pairs stay unmet.",
+   "v6_change": "Unchanged."
+  },
+  {
+   "seed": "E13",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::no_runtime_dependency_cycles",
+   "severity": "blocking",
+   "why": "explainShapeModules -> ShpCli.isoToday adds the lifted edge ShapeChecker->ShpCli. With ShpCli->ShapeChecker, the checker SCC merges with ShpCli, ShapeLanguageServer and ShapeEditorServices into a new key whose support holds the new lifted edge (A.7.3.3 [D5]; SCC-merge vector). There is no summary contradiction: the clock read is isoToday's own code, and explainShapeModules' summary bounds only its own atoms (A.4.2.1 [D2]).",
+   "v6_change": "v6 matched explainShapeModules/effects.upper through a call hop. D2 retires that, and the cycle (already raised in v6) is the match."
+  },
+  {
+   "seed": "E13",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::no_runtime_dependency_cycles",
+   "severity": "blocking",
+   "why": "As arm A, plus ShapeChecker/relations.complete-calls for ShapeChecker->ShpCli (A.4.2.3, D5).",
+   "v6_change": "As arm A (D2)."
+  },
+  {
+   "seed": "E14",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "Date.now at the new identity coverage.ts#coverageClock (ShapeRuleEngine.*): new fact, excluded by the forbid and by authority, forbid first. checkCoverage's summary is not contradicted (direct, D2). Extras: the checkCoverage guard (critical) is missing and blocks; 2 Property laws on checkCoverage and RuleEngineDocumented are owed.",
+   "v6_change": "Same claim. D2 drops the call-hop checkCoverage/effects.upper contradiction."
+  },
+  {
+   "seed": "E14",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "As arm A. The ShapeRuleEngineReadsLoweredFacts refutation is re-introduced (D7).",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "E15",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "globalThis.Date.now canonicalises to ts.call(\"Date.now\") (A.12.4): a new fact at coverage.ts#checkBindings (ShapeBindings unit), forbid first (A.4.4.7), sound, rule 7. Extras: the checkBindings guard (critical) blocks; 3 Property laws are owed.",
+   "v6_change": "v6 matched checkBindings/effects.upper. D2 makes it a cause and removes 11 transitive summaries."
+  },
+  {
+   "seed": "E15",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckerNeverReadsClock",
+   "severity": "blocking",
+   "why": "As arm A. The ShapeBindings base refutations (UsesStringHelpers, ReadLoweredFacts) are re-introduced (D7).",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "E16",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.runtime::ExperimentalSemanticKernelHarness.createKernelRequestV1/effects.upper",
+   "severity": "blocking",
+   "why": "No clock forbid covers the harness. The new fact is excluded by the unit's direct summary and by the harness authority (both low), and summaries come before authority (A.4.4.7). Sound, so it blocks at low tier (rule 7).",
+   "v6_change": "Same claim. D2 removes the transitive benchmarkCandidateFingerprintPrototype and runKernelE2e summaries; D3 removes coverage."
+  },
+  {
+   "seed": "E16",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.runtime::ExperimentalSemanticKernelHarness.createKernelRequestV1/effects.upper",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "E17",
+   "arm": "A",
+   "class": "flag-only",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "writeFileSync acts on fs.path, a kind with no carriers (A.3.3.9, A.12.4), and nothing observes it, so there is no fact and no coverage (D3). The edit moves formatShapeModule, the Req of the two formatter laws that fail at base. With no base-revision bunTest record, the counterexample clause cannot apply, so both are introduced and block (A.7.3.3 [D4], rule 7); they are unrelated to the drift. FormatterEditorDocumented is owed.",
+   "v6_change": "v6 flag-only via coverage plus the same 2 flipped formatter laws. D3 removes the coverage; the class and the blocked verdict are unchanged."
+  },
+  {
+   "seed": "E17",
+   "arm": "X",
+   "class": "flag-only",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "As arm A (FormatterEditorDocumented stale, owed).",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "E18",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ClockReadOnlyAtCliBoundary",
+   "severity": "blocking",
+   "why": "New Date() in generateShapeUpdateDraft: excluded by the forbid, the summary and authority (all normal), forbid first; new, sound, rule 7. The generateShapeUpdateDraft guard (normal) is owed.",
+   "v6_change": "Same claim. D2 removes the buildShapeAuthoringBundle transitive summary."
+  },
+  {
+   "seed": "E18",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ClockReadOnlyAtCliBoundary",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "M01",
+   "arm": "A",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.checker::ShapeRuleEngine.checkFreshness",
+   "severity": "blocking",
+   "why": "The unit binds guards.ts#checkFreshness, which is absent from M_h (A.3.3.2), giving E-unbound (rule 1). The moved function is unchanged, so it is relocated (A.6.1.5 [D6]): its call facts are not new and no lifted edge is new, and the base cycle stays preexisting (D5). FreshnessEnforcesOnlyIsoDates has an empty Req (A.15.15), and bunTest supplies no record (E-provider-missing, A.5.2.13).",
+   "v6_change": "Same class. D5/D6 stop v6's owed->blocking flip of the old cycle; D3 removes coverage."
+  },
+  {
+   "seed": "M01",
+   "arm": "X",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.checker::ShapeRuleEngine.checkFreshness",
+   "severity": "blocking",
+   "why": "As arm A. RuleEngine/relations.complete stays preexisting because the relocated facts are not new (D5, D6), but ShapeRuleEngineReadsLoweredFacts is re-introduced (D7).",
+   "v6_change": "v6 also flipped RuleEngine/relations.complete to blocking; D5/D6 remove that."
+  },
+  {
+   "seed": "M02",
+   "arm": "A",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.checker::ShapeStringHelpers.unquoteShapeString",
+   "severity": "blocking",
+   "why": "The bound identity shape-strings.ts#unquoteShapeString is gone (A.3.3.2), so rule 1 applies. The function is relocated to formatter.ts (D6). Extra: both formatter.ts and shape-strings.ts changed, so the failing formatter laws are re-introduced (D4). The unquoteShapeString guard is vacuous (A.15.15).",
+   "v6_change": "Same class. D3 removes the 2 coverage obligations; D4 adds the formatter laws."
+  },
+  {
+   "seed": "M02",
+   "arm": "X",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.checker::ShapeStringHelpers.unquoteShapeString",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "M03",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ClockReadOnlyAtCliBoundary",
+   "severity": "blocking",
+   "why": "The moved function gains an 'export' modifier, so its own text differs and it is not relocated (A.6.1.5 [D6]). windows.ts#replaceWindowsBinary is a new identity in ShpCli.*, and its Date.now fact is new (A.7.3.1). UpdateTempTokenReadsClock names impl.ts#replaceWindowsBinary, and exceptions match by identity (A.4.6.5), so it now matches nothing (inert). Sound, rule 7. If a canonicaliser dropped 'export', D6 would relocate the fact (n_b = n_h) and the class would be preexisting.",
+   "v6_change": "Outcome unchanged. D6 relocation does not apply because the moved text changed."
+  },
+  {
+   "seed": "M03",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ClockReadOnlyAtCliBoundary",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "M04",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ClockReadOnlyAtCliBoundary",
+   "severity": "blocking",
+   "why": "isoToday is edited as it moves (import alias, return type), so it is not relocated (D6). shape-files.ts#isoToday is new ShpCli.* code, and the except clause names the now-unbound unit isoToday, so the new fact violates the forbid. Introduced, rule 7. E-unbound for ShpCli.isoToday also blocks (rule 1).",
+   "v6_change": "Same match."
+  },
+  {
+   "seed": "M04",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::ClockReadOnlyAtCliBoundary",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "M05",
+   "arm": "A",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.checker::ShapePreludeRegistry.isReevaluationRequirement",
+   "severity": "blocking",
+   "why": "The bound identity has moved to ungoverned reevaluation.ts, giving E-unbound (rule 1). Ungoverned code is only under the hatch clauses, whose hatch(ts) need is met by hatchComplete, so there is no coverage (A.7.4.3 [D3]). Extra: requiresReevaluation's unit digest moves (env resolves to the new identity), so the RuleEngine guards block (D4).",
+   "v6_change": "Same class. D3 removes the blocking ungoverned coverage."
+  },
+  {
+   "seed": "M05",
+   "arm": "X",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.checker::ShapePreludeRegistry.isReevaluationRequirement",
+   "severity": "blocking",
+   "why": "As arm A. The RuleEngine->PreludeRegistry and Authoring->PreludeRegistry calls now end in ungoverned code, whose edges are dropped (A.4.4.2), so those relations are refuted and introduced (the base reported the facts, D7). These are unrelated and blocking.",
+   "v6_change": "As arm A; D7 adds the refutations."
+  },
+  {
+   "seed": "M06",
+   "arm": "A",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.tooling::ShapeEditorServices.getEditorDiagnostics",
+   "severity": "blocking",
+   "why": "getEditorDiagnostics moves unchanged, so it is relocated (A.6.1.5 [D6]). Its call facts (to checkShapeModules, parseShapeModule and diagnosticToEditorDiagnostic) were reported at the relocation source with n_b >= n_h, so they are not new (A.7.3.1: lifting changes never make facts new). The lifted edge ShapeAnalyzer->ShapeChecker is therefore not new, and AnalyzerStaysAdvisory is preexisting and owed (rule 6). The seed is flagged by E-unbound alone (rule 1).",
+   "v6_change": "v6 matched AnalyzerStaysAdvisory as introduced. D6 relocation makes it preexisting; the class is unchanged because of E-unbound."
+  },
+  {
+   "seed": "M06",
+   "arm": "X",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.tooling::ShapeEditorServices.getEditorDiagnostics",
+   "severity": "blocking",
+   "why": "As arm A. The new ShapeAnalyzer/relations.complete subjects are preexisting too (relocated facts). The edit to editor.ts re-introduces the ShapeEditorUsesPreludeRegistry refutation (D7).",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "N01",
+   "arm": "A",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.checker::ShapeRuleEngine.checkCoverage",
+   "severity": "blocking",
+   "why": "The rename leaves the explicit bind unresolved, giving E-unbound (rule 1). The laws on checkCoverage have an empty Req (A.15.15). The base binding renames in place (A.6.4.3) while the head is unbound, so L1/L6 loosenings of the unit's summary are raised as well.",
+   "v6_change": "Same class."
+  },
+  {
+   "seed": "N01",
+   "arm": "X",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.checker::ShapeRuleEngine.checkCoverage",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "N02",
+   "arm": "A",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.tooling::ShapeFormatter.formatShapeModule",
+   "severity": "blocking",
+   "why": "E-unbound (rule 1). The formatter laws on the unbound unit are vacuous (A.15.15), so no formatter-law contradiction is raised.",
+   "v6_change": "Same class. D3 removes coverage."
+  },
+  {
+   "seed": "N02",
+   "arm": "X",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.tooling::ShapeFormatter.formatShapeModule",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "N03",
+   "arm": "A",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.tooling::ShpCli.isoToday",
+   "severity": "blocking",
+   "why": "E-unbound (rule 1). freshness.ts is outside ShpCli's path globs, so the renamed currentIsoDay binds no unit and is ungoverned (A.3.3.5). No claim covers its clock read, so the seed's expected contradiction at currentIsoDay cannot arise. The base binding renames in place (A.6.4.3), so loosenings are raised.",
+   "v6_change": "Same outcome. v6's report attributed the missing contradiction to a rename hint; under v7 it follows from attribution."
+  },
+  {
+   "seed": "N03",
+   "arm": "X",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.tooling::ShpCli.isoToday",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "N04",
+   "arm": "A",
+   "class": "flag-only",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "ts.type has no carriers, and resource codes are not checked against the manifest (A.3.3.9, A.12.4; open question 14), so there is no error. ast-generation.ts and ast-generation-types.ts are ShapeAstGenerator files, so AstGeneratorDocumented is introduced as unestablished (missing), owed.",
+   "v6_change": "v6 flag-only via owed coverage. D3 removes it; the class is unchanged."
+  },
+  {
+   "seed": "N04",
+   "arm": "X",
+   "class": "flag-only",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "As arm A (AstGeneratorDocumented stale, owed).",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "N05",
+   "arm": "A",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.checker::ShapePreludeRegistry.definePreludeMetadata",
+   "severity": "blocking",
+   "why": "After prelude.ts moves to prelude-registry.ts, neither bound identity is in M_h. definePreludeMetadata binds ts:packages/shp-checker/src/prelude.ts, and isReevaluationRequirement binds ts:packages/shp-checker/src/prelude.ts#isReevaluationRequirement. Both units are therefore E-unbound (A.3.3.2, A.10.1), with subject 'unit Q' (A.15.1). Relocation (A.6.1.5 [D6]) governs facts and finest changes, not bindings. Errors block (A.7.5.1 rule 1). Both errors match the seed's expectation, and the row names the first in core output order. Errors sort by (code, subject) (A.12.10.5, A.15.1), and definePreludeMetadata sorts before isReevaluationRequirement. The moved file falls outside the component's literal path glob and becomes ungoverned (A.3.3.5).",
+   "v6_change": "Same two errors as version 6; the class is unchanged. Only the side obligations change: coverage is now asked only on observable channels (D3)."
+  },
+  {
+   "seed": "N05",
+   "arm": "X",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.checker::ShapePreludeRegistry.definePreludeMetadata",
+   "severity": "blocking",
+   "why": "As in arm A. The arm-X additions (relations complete, absence-sound tsCalls, judgments) add no error and leave both E-unbound errors in place (A.3.3.2, A.10.1, A.15.1). Rule 1 blocks. The row names the first error by (code, subject) (A.12.10.5), which is definePreludeMetadata. The import rewrites change files of other components; the effects of that are not part of this row.",
+   "v6_change": "As in arm A."
+  },
+  {
+   "seed": "N06",
+   "arm": "A",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.tooling::ShapeAnalyzer.compareAnalyzerHintsToShape",
+   "severity": "blocking",
+   "why": "E-unbound (rule 1), with in-place rename loosenings (A.6.4.3). The DocumentedBy laws of ShapeAnalyzer, ShapeAuthoring and ShpCli are owed.",
+   "v6_change": "Same class. D3 removes 3 coverage obligations."
+  },
+  {
+   "seed": "N06",
+   "arm": "X",
+   "class": "hit",
+   "kind": "error",
+   "claim": "E-unbound unit shape.tooling::ShapeAnalyzer.compareAnalyzerHintsToShape",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "N07",
+   "arm": "A",
+   "class": "hit",
+   "kind": "unestablished",
+   "claim": "shape.tooling::CliDocumented",
+   "severity": "owed",
+   "why": "The Doc parameter raw cli.md is deleted, so CliDocumented's Req meets 'deleted' (A.7.3.3 [D4]). There is no judgment in arm A, so the reason is missing; normal tier does not block unestablished (rule 9). No error is defined for a code target absent from M_h, so the seed's expected error cannot arise.",
+   "v6_change": "Unchanged."
+  },
+  {
+   "seed": "N07",
+   "arm": "X",
+   "class": "hit",
+   "kind": "unestablished",
+   "claim": "shape.tooling::CliDocumented",
+   "severity": "owed",
+   "why": "The base judgment cites the deleted identity, so it is stale (A.5.4.1), introduced, and owed at normal.",
+   "v6_change": "Unchanged."
+  },
+  {
+   "seed": "L01",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::FormatterIdempotent",
+   "severity": "blocking",
+   "why": "The head bunTest record contradicts. Req (formatShapeModule at unit) is in Delta-code, so it is introduced (A.7.3.3), sound (presence) and blocking (rule 7). The 2 formatter laws failing at base are re-introduced as well (no base-revision record, D4).",
+   "v6_change": "Same match."
+  },
+  {
+   "seed": "L01",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::FormatterIdempotent",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "Same match."
+  },
+  {
+   "seed": "L02",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::FreshnessEnforcesOnlyIsoDates",
+   "severity": "blocking",
+   "why": "The test contradicts; Req (checkFreshness) moved, so it is introduced; critical, sound, rule 7.",
+   "v6_change": "Same match."
+  },
+  {
+   "seed": "L02",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::FreshnessEnforcesOnlyIsoDates",
+   "severity": "blocking",
+   "why": "As arm A. ShapeRuleEngineReadsLoweredFacts is re-introduced (D7).",
+   "v6_change": "Same match."
+  },
+  {
+   "seed": "L03",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::InspectionCodepointOrder",
+   "severity": "blocking",
+   "why": "The test contradicts; Req (inspectShapeModules) moved, so it is introduced, sound, rule 7. The inspectShapeModules guard (critical) also blocks.",
+   "v6_change": "Same match."
+  },
+  {
+   "seed": "L03",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::InspectionCodepointOrder",
+   "severity": "blocking",
+   "why": "As arm A (the guard is stale).",
+   "v6_change": "Same match."
+  },
+  {
+   "seed": "L04",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::InspectionCodepointOrder",
+   "severity": "blocking",
+   "why": "Req (inspectShapeModules at unit) is unchanged, because env lists compareCodepointStrings by identity only (A.5.7.2). But the cone of the contradicting record (its deps include shape-strings.ts at file, and the call closure includes compareCodepointStrings, A.5.4.4) meets Delta-code, so it is introduced (A.7.3.3 [D4], callee-bug vector). Critical, sound, rule 7.",
+   "v6_change": "v6: right obligation but preexisting and owed. D4's record cone makes it introduced and blocking."
+  },
+  {
+   "seed": "L04",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::InspectionCodepointOrder",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A (D4)."
+  },
+  {
+   "seed": "L05",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::SourcePathRulesShared",
+   "severity": "blocking",
+   "why": "The test contradicts; Req (normalizeShapeSourcePath) moved, so it is introduced, critical and blocking. The formatter laws are re-introduced (D4).",
+   "v6_change": "Same match."
+  },
+  {
+   "seed": "L05",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::SourcePathRulesShared",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "Same match."
+  },
+  {
+   "seed": "L06",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::SourcePathRulesShared",
+   "severity": "blocking",
+   "why": "The edit is in the same-file callee normalizeShapePath, so Req's unit digest is unchanged (env by identity). The contradicting record's cone (shape-strings.ts dep) meets Delta-code, so it is introduced (A.7.3.3 [D4]); critical, sound, rule 7.",
+   "v6_change": "v6: preexisting and owed. D4 makes it introduced and blocking."
+  },
+  {
+   "seed": "L06",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::SourcePathRulesShared",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A (D4)."
+  },
+  {
+   "seed": "L07",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::UpdateDraftsPreferUnknown",
+   "severity": "blocking",
+   "why": "A same-file helper of generateShapeUpdateDraft changes, so Req is unchanged, but the contradicting record's cone (authoring.ts dep) meets Delta-code (A.7.3.3 [D4]). It is a normal-tier sound contradiction, which rule 7 still blocks. The generateShapeUpdateDraft guard is owed.",
+   "v6_change": "v6: preexisting and owed. D4 makes it introduced and blocking."
+  },
+  {
+   "seed": "L07",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.tooling::UpdateDraftsPreferUnknown",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A (D4)."
+  },
+  {
+   "seed": "L08",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckIsDeterministic",
+   "severity": "blocking",
+   "why": "The head test contradicts. Req (checkShapeModules at unit) is unchanged, but the record's cone (api.ts dep) meets Delta-code, so it is introduced (A.7.3.3 [D4]); critical, sound, rule 7. The critical guards checkLoweredShapeModel/RefactorSensitive (Req moved) and checkShapeModules/RefactorSensitive (whose D4 Req includes checkLoweredShapeModel) are missing and block too (rule 9).",
+   "v6_change": "v6 matched the guard, and the CheckIsDeterministic contradiction was preexisting and owed. D4 introduces it and adds the checkShapeModules guard."
+  },
+  {
+   "seed": "L08",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker::CheckIsDeterministic",
+   "severity": "blocking",
+   "why": "As arm A (the guards are stale).",
+   "v6_change": "As arm A (D4)."
+  },
+  {
+   "seed": "L09",
+   "arm": "A",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+   "severity": "blocking",
+   "why": "The test contradicts; Req (check) moved, so it is introduced, critical, rule 7.",
+   "v6_change": "Same match."
+  },
+  {
+   "seed": "L09",
+   "arm": "X",
+   "class": "hit",
+   "kind": "contradiction",
+   "claim": "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "Same match."
+  },
+  {
+   "seed": "L10",
+   "arm": "A",
+   "class": "hit",
+   "kind": "unestablished",
+   "claim": "shape.checker::ShapeChecker.checkLoweredShapeModel/RefactorSensitive/law",
+   "severity": "blocking",
+   "why": "The guard's Req (checkLoweredShapeModel at unit) moved. With no judgment the reason is missing, it is introduced (A.7.3.3), and it is critical, so rule 9 blocks. The checkShapeModules guard (D4 Req) also blocks; CheckIsDeterministic still holds.",
+   "v6_change": "Same match. D4 adds the checkShapeModules guard."
+  },
+  {
+   "seed": "L10",
+   "arm": "X",
+   "class": "hit",
+   "kind": "unestablished",
+   "claim": "shape.checker::ShapeChecker.checkLoweredShapeModel/RefactorSensitive/law",
+   "severity": "blocking",
+   "why": "The base judgment's cited unit digest moved, so it is stale (A.5.4.1), introduced, critical, rule 9.",
+   "v6_change": "Same match."
+  },
+  {
+   "seed": "L11",
+   "arm": "A",
+   "class": "hit",
+   "kind": "unestablished",
+   "claim": "shape.checker::ShapeRuleEngine.checkGuardedChanges/RefactorSensitive/law",
+   "severity": "blocking",
+   "why": "checkGuardedChanges' unit digest moved. The critical guard is missing and blocks (rule 9). Its 4 untested Property laws (normal; bunTest inconclusive, so missing) are introduced and owed.",
+   "v6_change": "Same match."
+  },
+  {
+   "seed": "L11",
+   "arm": "X",
+   "class": "hit",
+   "kind": "unestablished",
+   "claim": "shape.checker::ShapeRuleEngine.checkGuardedChanges/RefactorSensitive/law",
+   "severity": "blocking",
+   "why": "The guard is stale, critical, rule 9. ShapeRuleEngineReadsLoweredFacts is re-introduced (D7).",
+   "v6_change": "Same match."
+  },
+  {
+   "seed": "L12",
+   "arm": "A",
+   "class": "flag-only",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "SourcePathRulesShared is still supported, because the generator samples only :12 and :3-9, so the law is Sat. The edit to shape-strings.ts meets the cone of the 2 base-failing formatter-law records, so they are re-introduced and block (A.7.3.3 [D4]), unrelated to the drift. No coverage (D3).",
+   "v6_change": "v6 flag-only via blocking critical coverage. D3 removes that and D4 adds the formatter laws; the class and the blocked verdict are unchanged."
+  },
+  {
+   "seed": "L12",
+   "arm": "X",
+   "class": "flag-only",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "C00",
+   "arm": "A",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "No edit: Delta-code is empty, so nothing is introduced (A.7.3.3); verdict owed (preexisting only).",
+   "v6_change": "Unchanged."
+  },
+  {
+   "seed": "C00",
+   "arm": "X",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "As arm A.",
+   "v6_change": "Unchanged."
+  },
+  {
+   "seed": "C01",
+   "arm": "A",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "A '//' comment with no @ or tool keyword is inert (A.12.2.9), and every projection, file included, ignores it (A.3.2.5, A.5.7.2 [D8]). Delta-code is empty.",
+   "v6_change": "Unchanged."
+  },
+  {
+   "seed": "C01",
+   "arm": "X",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "As arm A.",
+   "v6_change": "Unchanged."
+  },
+  {
+   "seed": "C02",
+   "arm": "A",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "Line breaks and a blank line change no canonical text: file digests are formatting-insensitive too (A.5.7.2 [D8]). Delta-code is empty.",
+   "v6_change": "v6 reopened RuleEngineDocumented through the file digest (owed); D8 removes it."
+  },
+  {
+   "seed": "C02",
+   "arm": "X",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "As arm A.",
+   "v6_change": "Unchanged (v6 X was already clean)."
+  },
+  {
+   "seed": "C03",
+   "arm": "A",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "README.md is ungoverned raw data: no channel applies (A.4.5.3) and no Req cites it.",
+   "v6_change": "Unchanged."
+  },
+  {
+   "seed": "C03",
+   "arm": "X",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "As arm A.",
+   "v6_change": "Unchanged."
+  },
+  {
+   "seed": "C04",
+   "arm": "A",
+   "class": "blocked",
+   "kind": "contradiction",
+   "claim": "shape.tooling::FormatterCanonicalGraphRules",
+   "severity": "blocking",
+   "why": "The local rename moves formatShapeModule's own and unit digests, meeting the Req of FormatterCanonicalGraphRules and FormatterFlattensGroupedContext, which contradict at head exactly as at base. The counterexample clause needs a usable base-revision bunTest record, and the H2 harness supplies observer base records only, so both are introduced sound contradictions and block (A.7.3.3 [D4], rule 7). With base bunTest records (equal seed, inputs and assertion) they would be preexisting and owed, and C04 clean, as D4 predicts. No coverage (D3).",
+   "v6_change": "Blocked in v6 by the same 2 flips plus coverage. D3 removes the coverage; D4's clause cannot act without base test records."
+  },
+  {
+   "seed": "C04",
+   "arm": "X",
+   "class": "blocked",
+   "kind": "contradiction",
+   "claim": "shape.tooling::FormatterCanonicalGraphRules",
+   "severity": "blocking",
+   "why": "As arm A. ShapeFormatter has no unrealised relation, so there is no refutation.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "C05",
+   "arm": "A",
+   "class": "blocked",
+   "kind": "contradiction",
+   "claim": "shape.tooling::FormatterCanonicalGraphRules",
+   "severity": "blocking",
+   "why": "shape-strings.ts's file digest moves, and it is a dep, at file, of both failing formatter-law records, so their cone meets Delta-code. Both are introduced and block (A.5.4.4, A.7.3.3 [D4]); there is no base-revision bunTest record. SourcePathRulesShared stays supported; the unquoteShapeString guard's Req is untouched; the clock entry is complete, so no coverage (D3). Clean with base test records.",
+   "v6_change": "v6 was blocked by critical coverage. D3 removes that, but D4's record cone blocks it instead."
+  },
+  {
+   "seed": "C05",
+   "arm": "X",
+   "class": "blocked",
+   "kind": "contradiction",
+   "claim": "shape.tooling::FormatterCanonicalGraphRules",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "C06",
+   "arm": "A",
+   "class": "blocked",
+   "kind": "contradiction",
+   "claim": "shape.tooling::FormatterCanonicalGraphRules",
+   "severity": "blocking",
+   "why": "Reordering top-level functions keeps every function digest but moves shape-strings.ts's file and own digests (order is not formatting), so the failing formatter laws' cone meets Delta-code (A.7.3.3 [D4]); they block. No coverage: the file's clock entry is complete (D3).",
+   "v6_change": "v6 was blocked by critical file-level coverage. D3 removes it, and D4's cone blocks instead."
+  },
+  {
+   "seed": "C06",
+   "arm": "X",
+   "class": "blocked",
+   "kind": "contradiction",
+   "claim": "shape.tooling::FormatterCanonicalGraphRules",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "C07",
+   "arm": "A",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "checkFreshness changes and isPastDue is new. FreshnessEnforcesOnlyIsoDates stays supported, and no guard's D4 Req includes checkFreshness (A.5.3.4). Only RuleEngineDocumented is introduced, unestablished (missing), owed at normal (rule 9). No coverage: the clock entry is complete and call(ts) is unobservable (D3). Nothing blocks.",
+   "v6_change": "v6 was blocked by critical coverage; D3 removes it."
+  },
+  {
+   "seed": "C07",
+   "arm": "X",
+   "class": "blocked",
+   "kind": "contradiction",
+   "claim": "shape.checker::ShapeRuleEngineReadsLoweredFacts",
+   "severity": "blocking",
+   "why": "edge.exists ShapeRuleEngine->ShapeModelLowerer is unrealised and refuted at base (absence-sound, complete tsCalls). The edit changes footprint identities in code(ShapeRuleEngine) (checkFreshness, and the new isPastDue), so A.7.3.3 [D7] makes the preexisting refutation introduced; sound, rule 7. No clause exempts a refutation the base already had.",
+   "v6_change": "v6 was blocked by coverage. D3 removes it, but D7 re-introduces the base refutation."
+  },
+  {
+   "seed": "C08",
+   "arm": "A",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "The clock read is in ungoverned code. No clock claim covers ungoverned code; only the hatch clauses do, and hatch(ts) is met by hatchComplete (A.7.4.3).",
+   "v6_change": "Unchanged."
+  },
+  {
+   "seed": "C08",
+   "arm": "X",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "As arm A. Structure footprints are governed code only (A.4.5.1).",
+   "v6_change": "Unchanged."
+  },
+  {
+   "seed": "C09",
+   "arm": "A",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "Read<SystemClock> at ShpCli.main is in P(main): ShpCli grants it, the forbid excepts main, and main's summary lists it (A.4.4.7). There is no contradiction, and it ends main's base effects.lower refutation. main/RefactorSensitive, the 3 untested Property laws on main and CliDocumented are introduced unestablished, all normal and owed; there is no coverage and nothing blocks.",
+   "v6_change": "v6 had owed coverage; D3 removes it. The owed unestablished obligations remain (see spec problems: no class for them)."
+  },
+  {
+   "seed": "C09",
+   "arm": "X",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "As arm A, with the judged laws stale and owed. ShpCli's relations are all realised, so there is no refutation.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "C10",
+   "arm": "A",
+   "class": "blocked",
+   "kind": "contradiction",
+   "claim": "shape.tooling::FormatterCanonicalGraphRules",
+   "severity": "blocking",
+   "why": "The indent->indentText rename changes formatter.ts's text (helper and callers), so the file digest moves. formatter.ts is a dep of both failing formatter-law records, so the cone meets Delta-code and both are introduced and block (A.7.3.3 [D4]); there is no base-revision bunTest record. FormatterEditorDocumented is owed; no coverage (D3).",
+   "v6_change": "v6 flag-only, with owed coverage only (Req unchanged, so no flip). D3 removes the coverage, and D4's record cone now blocks it."
+  },
+  {
+   "seed": "C10",
+   "arm": "X",
+   "class": "blocked",
+   "kind": "contradiction",
+   "claim": "shape.tooling::FormatterCanonicalGraphRules",
+   "severity": "blocking",
+   "why": "As arm A.",
+   "v6_change": "As arm A."
+  },
+  {
+   "seed": "C11",
+   "arm": "A",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "guides/ci.md is raw data in DocsSite: no channel applies (A.4.5.3) and no law names it.",
+   "v6_change": "Unchanged."
+  },
+  {
+   "seed": "C11",
+   "arm": "X",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "DocsSiteUsesGrammar is not refuted under A.4.4.14, because code(DocsSite) contains .md identities with no applicable channel and no tsCalls entry. If such identities were skipped, as the v6 prototype did, D7 would re-introduce that refutation here and block.",
+   "v6_change": "Unchanged under the literal reading."
+  },
+  {
+   "seed": "C12",
+   "arm": "A",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "Whitespace in shape/checker.shape changes no claim, and the file is not governed code.",
+   "v6_change": "Unchanged."
+  },
+  {
+   "seed": "C12",
+   "arm": "X",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "As arm A.",
+   "v6_change": "Unchanged."
+  },
+  {
+   "seed": "C13",
+   "arm": "A",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "The new test file's call to localNameOf runs along the existing ShapeChecker->ShapeDiagnostics lifted edge (18 base facts), so no lifted edge is new and the base SCC stays preexisting (A.7.3.3 [D5]). The file's clock entry is complete, so no coverage (D3).",
+   "v6_change": "v6 was blocked by the cycle flipping owed->blocking plus critical coverage. D5 and D3 remove both; this matches D5's prediction."
+  },
+  {
+   "seed": "C13",
+   "arm": "X",
+   "class": "clean",
+   "kind": null,
+   "claim": null,
+   "severity": null,
+   "why": "As arm A. The edge is declared (ShapeCheckerUsesDiagnostics), ShapeChecker has no unrealised relation, and the call(ts) need is met.",
+   "v6_change": "As arm A."
+  }
+ ]
+}

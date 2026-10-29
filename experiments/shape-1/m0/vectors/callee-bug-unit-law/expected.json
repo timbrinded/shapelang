@@ -1,0 +1,78 @@
+{
+ "vector": "callee-bug-unit-law",
+ "title": "A bug in a callee introduces the unit law's contradiction through the contradicting record's cone (refs), though Req is unchanged; an edit outside the cone leaves it preexisting",
+ "decides": [
+  "A.7.3.3",
+  "A.5.4.4",
+  "D4"
+ ],
+ "cases": [
+  {
+   "case": "callee-edited",
+   "input": "callee-edited.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:63e1f0afd6e5926075cdc077bde32550aa83ba3e0915e58595d22591c5822d49"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:6e432aa74fd0a9022c64a3a6f3f5f1dab158f701a03d600ce4c937677eedae0c",
+      "subject": null,
+      "force": "sound",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "binding": "bd:da3515ee892d314d9407cdf14407692a1e4291fdfd6db290219cfd6636ac5e34"
+     },
+     "why": "A.7.3.3 [D4]: Req (total@unit) did not move, but the cone of the contradicting record (total closed under Refs°, reaching round) meets Δcode at the edited callee, so the sound contradiction is introduced; no base-revision record made it, so the counterexample clause does not apply"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.1.5: the sound contradiction suppresses unestablished"
+    }
+   ]
+  },
+  {
+   "case": "unrelated-edit",
+   "input": "unrelated-edit.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 6"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:63e1f0afd6e5926075cdc077bde32550aa83ba3e0915e58595d22591c5822d49"
+     },
+     "check": "fields",
+     "value": {
+      "force": "sound",
+      "introduced": false,
+      "severity": "owed",
+      "tier": "critical"
+     },
+     "why": "A.7.3.3: neither Req nor the contradicting record's cone (total, round) meets Δcode (only other.ts changed), so the contradiction is preexisting"
+    }
+   ]
+  }
+ ]
+}

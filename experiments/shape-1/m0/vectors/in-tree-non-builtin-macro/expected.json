@@ -1,0 +1,71 @@
+{
+ "vector": "in-tree-non-builtin-macro",
+ "title": "An in-tree Rust function invoking a non-builtin (dependency) macro is not hatch-complete, so hatch(rust) coverage is raised; a std macro keeps it hatch-complete",
+ "decides": [
+  "A.3.4.4",
+  "A.12.2.8",
+  "A.4.5.2",
+  "A.7.4.3",
+  "D20"
+ ],
+ "cases": [
+  {
+   "case": "dependency-function-macro",
+   "input": "dependency-function-macro.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: critical blocks coverage"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage",
+      "key": "ob:0f79685ae13fbe6e937bbceb492f1e6f131a0b57886db63c5dbd381e3e36d087"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "component crate::Parser",
+      "tier": "critical",
+      "severity": "blocking",
+      "introduced": true,
+      "owner": "crate::ParserTeam",
+      "binding": "bd:b8e8aa6476425c5f925017af4b525a3d729e0f6b6d4fb3b05e55b1382d19e896",
+      "group": "g:6f69325beec72c5001526dd4c1b341cc06cda47774a585df9d860e89d32f1e4c"
+     },
+     "why": "A.12.2.8: log::info! is not a std, core or alloc macro and is not defined in the tree, so parse is not hatch-complete (A.3.4.4); chan(unsafe<Trust>) = hatch(bend), hatch(rust) (A.4.5.2, std: unsafe in bend and rust), of which hatch(rust) applies; A.7.2.2 delta '<fp> hatch(rust)'"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "no marker, so no hatch fact"
+    }
+   ]
+  },
+  {
+   "case": "std-builtin-macro-control",
+   "input": "std-builtin-macro-control.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.12.2.8: println! is a builtin std macro, so parse stays hatch-complete and hatch(rust) is met"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "need met"
+    }
+   ]
+  }
+ ]
+}

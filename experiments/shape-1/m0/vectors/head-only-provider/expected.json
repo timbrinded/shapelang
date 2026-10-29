@@ -1,0 +1,101 @@
+{
+ "vector": "head-only-provider",
+ "title": "A head-only provider's supporting record holds no reason, so the law stays unestablished(missing) with the same key and binding as without it, and an approve line answers nothing",
+ "decides": [
+  "A.5.1.3",
+  "A.5.4.3",
+  "A.6.2.6",
+  "A.7.6.5",
+  "D9"
+ ],
+ "cases": [
+  {
+   "case": "head-only-record-and-approve",
+   "input": "head-only-record-and-approve.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: critical blocks unestablished"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:85e169c4b02653f162d80cacabd140736c5347d43698224dc3f16455de0d8ac3",
+      "reason": "missing",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "binding": "bd:cfb36d1667f9b935e31a2dd5832575b0171a8f95cd94efc7a4673095b30bb4d0"
+     },
+     "why": "A.5.1.3 [D9]: a record of a provider the base does not declare never establishes and holds no reason; A.5.4.3: so the reason is missing, not producer-changed or weak; introduced since Req meets Δcode (A.7.3.3); binding without producer-change additions (A.7.2.2)"
+    },
+    {
+     "in": "answered",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.7.6.5: reason missing has no answer discharger"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.5.2.13: bunTest declares no identity, so no E-provider-missing"
+    }
+   ]
+  },
+  {
+   "case": "no-head-only-provider",
+   "input": "no-head-only-provider.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: critical blocks unestablished"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:85e169c4b02653f162d80cacabd140736c5347d43698224dc3f16455de0d8ac3",
+      "reason": "missing",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "binding": "bd:cfb36d1667f9b935e31a2dd5832575b0171a8f95cd94efc7a4673095b30bb4d0"
+     },
+     "why": "A.5.1.3 [D9]: a record of a provider the base does not declare never establishes and holds no reason; A.5.4.3: so the reason is missing, not producer-changed or weak; introduced since Req meets Δcode (A.7.3.3); binding without producer-change additions (A.7.2.2)"
+    },
+    {
+     "in": "answered",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.7.6.5: reason missing has no answer discharger"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.5.2.13: bunTest declares no identity, so no E-provider-missing"
+    }
+   ]
+  }
+ ]
+}

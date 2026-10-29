@@ -1,0 +1,919 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Owners"
+      },
+      {
+       "decl": "actor",
+       "name": "Owners",
+       "kind": "team",
+       "members": [
+        "alice",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")",
+        "ed25519(\"a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "devAgent",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"dev-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "S",
+       "paths": [
+        "src/s/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "M",
+       "paths": [
+        "src/m/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "X",
+       "paths": [
+        "src/x/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Y",
+       "paths": [
+        "src/y/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "T",
+       "paths": [
+        "src/t/**/*.ts"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "NoPathST",
+       "clauses": [
+        {
+         "forbid": "path",
+         "from": [
+          "S"
+         ],
+         "to": [
+          "T"
+         ],
+         "over": [
+          "calls"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "callScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "call(ts)"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "identity": "ed25519(\"bf544b7d3acc4628bfe6335e63e07e5806482086f0b6488e744d7ac586466b15\")",
+       "implementation": {
+        "digest": "sha256:c2409f656d4bfdb92c9fe194c628800efcd3bb07607b357395ece6b62e53ec83"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "362dbf2f8c976ba177f483a294d070ff3f1ed0bc726ff51abae5b8262037c199"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "34139391556acbfce1b7f270f1c1c88a7fe8805c"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "0bfaaf6b0e85be20fb7452769cbc261c0dbdcaeb"
+      },
+      {
+       "path": "src/m/m.ts",
+       "mode": "100644",
+       "blob": "13a2373a09c5c6f9ec56863e38f89f602d126e50"
+      },
+      {
+       "path": "src/s/s.ts",
+       "mode": "100644",
+       "blob": "73f9ce4ce18e1c655fcb9a9ef9231572e41a2347"
+      },
+      {
+       "path": "src/t/t.ts",
+       "mode": "100644",
+       "blob": "4e4479e0149b4fa45956b467295dd1689c4efc34"
+      },
+      {
+       "path": "src/x/x.ts",
+       "mode": "100644",
+       "blob": "e1c0f075d7a715ee24411ecd88757d4b58fdacca"
+      },
+      {
+       "path": "src/y/y.ts",
+       "mode": "100644",
+       "blob": "bbe8f9c2882ee7c0e8c980c1ded0006b2c42d8ec"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/m/m.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:561f6dc0d3acb142b7ecef4203717740cf99021cf8b052f9ed899da9a51e61e7",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/m/m.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:0ad902cb9e0b1df1bbec6f773722cad0c595ef4dbcf57a0668c76168949f020c",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/m/m.ts#fm",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:5e7e3487564e71c319d92e033f644e87eae6d2b19bbf2f83d1e8e8c58cbc7a32",
+       "kind": "function",
+       "parent": "ts:src/m/m.ts",
+       "refs": [
+        "ts:src/t/t.ts#ft",
+        "ts:src/x/x.ts#fx"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/m/m.ts#fm",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:b44cbe86baed906d94b2eab3b2e15156ab803aaa1928f04a9302a34c41c12f1e",
+       "kind": "function",
+       "parent": "ts:src/m/m.ts",
+       "refs": [
+        "ts:src/t/t.ts#ft",
+        "ts:src/x/x.ts#fx"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/s/s.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:9770af6cb167b34538d13bca75dc7ecaa7dea8de2a92854bf14861a09b1ac5d9",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/s/s.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:a9cd1b3baa0c73f6ca2e6beccf08ec55f7da933d897ae3a99af9e58362e583bc",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/s/s.ts#fs",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:177071d8ecb218976732d1150d452c51f3546af69c1e816c7e9f6836b7fb57e9",
+       "kind": "function",
+       "parent": "ts:src/s/s.ts",
+       "refs": [
+        "ts:src/m/m.ts#fm"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/s/s.ts#fs",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:c87e62cbd7e59815f94f5bebea30a4e6f8a7aa955e0012007ecc52a932ce26e2",
+       "kind": "function",
+       "parent": "ts:src/s/s.ts",
+       "refs": [
+        "ts:src/m/m.ts#fm"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/t/t.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:a110715be95bd0b63347371fda7248414ae0240fff81bc0aee06dcc816a1042c",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/t/t.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:8670908efd3747da722cdcc901a8f1f291a0ea502b96a22ae2cb4bc711d69173",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/t/t.ts#ft",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:3609f8e4aa65e3dacf4dac903a6b0221488f7bf9756a19ea48c3c5da60a8a992",
+       "kind": "function",
+       "parent": "ts:src/t/t.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/t/t.ts#ft",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:cab6733cbbf02166f452528fedbe008c632233b8d37101a1d8d626522612d7bb",
+       "kind": "function",
+       "parent": "ts:src/t/t.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/x/x.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:81f7674da327cbe3ae5e6d0a5b412306ab8a692bcd5ee62b2b92e0a3d2c2a720",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/x/x.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:a376655e29ff655383321a73c52fa0b576543ed5ed5c37fb5ba078859ad09937",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/x/x.ts#fx",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:ae210210098e99d71cb8667fcba30538b4f038b183fde2cc1bca513dba0ed8a0",
+       "kind": "function",
+       "parent": "ts:src/x/x.ts",
+       "refs": [
+        "ts:src/y/y.ts#fy"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/x/x.ts#fx",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:822b25bf50c853935286057973381196fde6b2a1ebef85f397812f69e7553ca3",
+       "kind": "function",
+       "parent": "ts:src/x/x.ts",
+       "refs": [
+        "ts:src/y/y.ts#fy"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/y/y.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:ad97d8eae79477d573660dea3c33d4dd8101db1e2a107a1806feba72d777629d",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/y/y.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:6a95ccf3f03ebb844bebd99e904d7d8869efe69f315d02469266eca3873459cc",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/y/y.ts#fy",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:58a5d5db6f9b6c016934bcf718b084da46d79e3e1bce8cc363a90d15d1e6cf07",
+       "kind": "function",
+       "parent": "ts:src/y/y.ts",
+       "refs": [
+        "ts:src/m/m.ts#fm"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/y/y.ts#fy",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:5a5dcec5e3ecf8f194b2630dcd94e03f70df5bbec3f52f7a13ddac405cda4d31",
+       "kind": "function",
+       "parent": "ts:src/y/y.ts",
+       "refs": [
+        "ts:src/m/m.ts#fm"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Owners"
+      },
+      {
+       "decl": "actor",
+       "name": "Owners",
+       "kind": "team",
+       "members": [
+        "alice",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")",
+        "ed25519(\"a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "devAgent",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"dev-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "S",
+       "paths": [
+        "src/s/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "M",
+       "paths": [
+        "src/m/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "X",
+       "paths": [
+        "src/x/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Y",
+       "paths": [
+        "src/y/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "T",
+       "paths": [
+        "src/t/**/*.ts"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "NoPathST",
+       "clauses": [
+        {
+         "forbid": "path",
+         "from": [
+          "S"
+         ],
+         "to": [
+          "T"
+         ],
+         "over": [
+          "calls"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "callScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "call(ts)"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "identity": "ed25519(\"bf544b7d3acc4628bfe6335e63e07e5806482086f0b6488e744d7ac586466b15\")",
+       "implementation": {
+        "digest": "sha256:c2409f656d4bfdb92c9fe194c628800efcd3bb07607b357395ece6b62e53ec83"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "2e3bc25bda4a8eaeff285559c7fde9a9972a7ab229ef879e58379bb7e82820c9"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "34139391556acbfce1b7f270f1c1c88a7fe8805c"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "0bfaaf6b0e85be20fb7452769cbc261c0dbdcaeb"
+      },
+      {
+       "path": "src/m/m.ts",
+       "mode": "100644",
+       "blob": "13a2373a09c5c6f9ec56863e38f89f602d126e50"
+      },
+      {
+       "path": "src/s/s.ts",
+       "mode": "100644",
+       "blob": "73f9ce4ce18e1c655fcb9a9ef9231572e41a2347"
+      },
+      {
+       "path": "src/t/t.ts",
+       "mode": "100644",
+       "blob": "4e4479e0149b4fa45956b467295dd1689c4efc34"
+      },
+      {
+       "path": "src/x/x.ts",
+       "mode": "100644",
+       "blob": "57bdc1d00a36256d23af62876b5ce341fb7980a1"
+      },
+      {
+       "path": "src/y/y.ts",
+       "mode": "100644",
+       "blob": "bbe8f9c2882ee7c0e8c980c1ded0006b2c42d8ec"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/m/m.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:561f6dc0d3acb142b7ecef4203717740cf99021cf8b052f9ed899da9a51e61e7",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/m/m.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:0ad902cb9e0b1df1bbec6f773722cad0c595ef4dbcf57a0668c76168949f020c",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/m/m.ts#fm",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:5e7e3487564e71c319d92e033f644e87eae6d2b19bbf2f83d1e8e8c58cbc7a32",
+       "kind": "function",
+       "parent": "ts:src/m/m.ts",
+       "refs": [
+        "ts:src/t/t.ts#ft",
+        "ts:src/x/x.ts#fx"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/m/m.ts#fm",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:b44cbe86baed906d94b2eab3b2e15156ab803aaa1928f04a9302a34c41c12f1e",
+       "kind": "function",
+       "parent": "ts:src/m/m.ts",
+       "refs": [
+        "ts:src/t/t.ts#ft",
+        "ts:src/x/x.ts#fx"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/s/s.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:9770af6cb167b34538d13bca75dc7ecaa7dea8de2a92854bf14861a09b1ac5d9",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/s/s.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:a9cd1b3baa0c73f6ca2e6beccf08ec55f7da933d897ae3a99af9e58362e583bc",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/s/s.ts#fs",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:177071d8ecb218976732d1150d452c51f3546af69c1e816c7e9f6836b7fb57e9",
+       "kind": "function",
+       "parent": "ts:src/s/s.ts",
+       "refs": [
+        "ts:src/m/m.ts#fm"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/s/s.ts#fs",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:c87e62cbd7e59815f94f5bebea30a4e6f8a7aa955e0012007ecc52a932ce26e2",
+       "kind": "function",
+       "parent": "ts:src/s/s.ts",
+       "refs": [
+        "ts:src/m/m.ts#fm"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/t/t.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:a110715be95bd0b63347371fda7248414ae0240fff81bc0aee06dcc816a1042c",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/t/t.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:8670908efd3747da722cdcc901a8f1f291a0ea502b96a22ae2cb4bc711d69173",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/t/t.ts#ft",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:3609f8e4aa65e3dacf4dac903a6b0221488f7bf9756a19ea48c3c5da60a8a992",
+       "kind": "function",
+       "parent": "ts:src/t/t.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/t/t.ts#ft",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:cab6733cbbf02166f452528fedbe008c632233b8d37101a1d8d626522612d7bb",
+       "kind": "function",
+       "parent": "ts:src/t/t.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/x/x.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:2fd3000f2f0ce2a05dbb7e548499cbe776511348657d72b601100887e09e18bd",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/x/x.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:a376655e29ff655383321a73c52fa0b576543ed5ed5c37fb5ba078859ad09937",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/x/x.ts#fx",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:7fc8b5c64973b4a32d36938f43bb2f70270672ecd11881cf384127f39950d528",
+       "kind": "function",
+       "parent": "ts:src/x/x.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/x/x.ts#fx",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:4c47ac27d21f06bf2c928a260194ff706e76c003339bc3d8606cb4f54b4525d0",
+       "kind": "function",
+       "parent": "ts:src/x/x.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/y/y.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:ad97d8eae79477d573660dea3c33d4dd8101db1e2a107a1806feba72d777629d",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/y/y.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:6a95ccf3f03ebb844bebd99e904d7d8869efe69f315d02469266eca3873459cc",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/y/y.ts#fy",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:58a5d5db6f9b6c016934bcf718b084da46d79e3e1bce8cc363a90d15d1e6cf07",
+       "kind": "function",
+       "parent": "ts:src/y/y.ts",
+       "refs": [
+        "ts:src/m/m.ts#fm"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/y/y.ts#fy",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:5a5dcec5e3ecf8f194b2630dcd94e03f70df5bbec3f52f7a13ddac405cda4d31",
+       "kind": "function",
+       "parent": "ts:src/y/y.ts",
+       "refs": [
+        "ts:src/m/m.ts#fm"
+       ],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/app#7"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"dev-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfT0JTRVJWRVMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJvYnNlcnZhdGlvbiJ9fV0sInByb2R1Y2VyIjp7ImFubm90YXRpb25zIjp7InNoYXBlLnByb3ZpZGVyIjoibTo6Y2FsbFNjYW4iLCJ2ZXJzaW9uIjoiMS4wLjAifSwidXJpIjoibTo6Y2FsbFNjYW4ifSwic2hhcGUiOnsiYXNzdW1wdGlvbnMiOltdLCJmYWN0cyI6W3siYXQiOiJ0czpzcmMvcy9zLnRzI2ZzIiwibiI6MSwidG8iOiJ0czpzcmMvbS9tLnRzI2ZtIiwidHlwZSI6ImNhbGwifSx7ImF0IjoidHM6c3JjL20vbS50cyNmbSIsIm4iOjEsInRvIjoidHM6c3JjL3gveC50cyNmeCIsInR5cGUiOiJjYWxsIn0seyJhdCI6InRzOnNyYy94L3gudHMjZngiLCJuIjoxLCJ0byI6InRzOnNyYy95L3kudHMjZnkiLCJ0eXBlIjoiY2FsbCJ9LHsiYXQiOiJ0czpzcmMveS95LnRzI2Z5IiwibiI6MSwidG8iOiJ0czpzcmMvbS9tLnRzI2ZtIiwidHlwZSI6ImNhbGwifSx7ImF0IjoidHM6c3JjL20vbS50cyNmbSIsIm4iOjEsInRvIjoidHM6c3JjL3QvdC50cyNmdCIsInR5cGUiOiJjYWxsIn1dLCJoYXJuZXNzIjpbXSwia2luZCI6Im9ic2VydmF0aW9uIiwicHJvdmlkZXIiOnsiaWQiOiJtOjpjYWxsU2NhbiIsInZlcnNpb24iOiIxLjAuMCJ9LCJyZXN1bHQiOiJvYnNlcnZlcyIsInJldmlzaW9uIjoiMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMiIsInNjb3BlIjp7ImVudHJpZXMiOlt7ImNvbXBsZXRlIjpmYWxzZSwiZGVwcyI6W10sImRpZ2VzdCI6InNoYTI1NjpjODdlNjJjYmQ3ZTU5ODE1Zjk0ZjViZWJlYTMwYTRlNmY4YTdhYTk1NWUwMDEyMDA3ZWNjNTJhOTMyY2UyNmUyIiwiaWQiOiJ0czpzcmMvcy9zLnRzI2ZzIiwicHJvamVjdGlvbiI6InVuaXQiLCJzY2hlbWUiOiJ0cy51bml0LnYyIn0seyJjb21wbGV0ZSI6ZmFsc2UsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6YjQ0Y2JlODZiYWVkOTA2ZDk0YjJlYWIzYjJlMTUxNTZhYjgwM2FhYTE5MjhmMDRhOTMwMmEzNGM0MWMxMmYxZSIsImlkIjoidHM6c3JjL20vbS50cyNmbSIsInByb2plY3Rpb24iOiJ1bml0Iiwic2NoZW1lIjoidHMudW5pdC52MiJ9LHsiY29tcGxldGUiOmZhbHNlLCJkZXBzIjpbXSwiZGlnZXN0Ijoic2hhMjU2OjgyMmIyNWJmNTBjODUzOTM1Mjg2MDU3OTczMzgxMTk2ZmRlNmIyYTFlYmVmODVmMzk3ODEyZjY5ZTc1NTNjYTMiLCJpZCI6InRzOnNyYy94L3gudHMjZngiLCJwcm9qZWN0aW9uIjoidW5pdCIsInNjaGVtZSI6InRzLnVuaXQudjIifSx7ImNvbXBsZXRlIjpmYWxzZSwiZGVwcyI6W10sImRpZ2VzdCI6InNoYTI1Njo1YTVkY2VjNWUzZWNmOGYxOTRiMjYzMGRjZDk0ZTAzZjcwZGY1YmJlYzNmNTJmN2ExM2RkYWM0MDVjZGE0ZDMxIiwiaWQiOiJ0czpzcmMveS95LnRzI2Z5IiwicHJvamVjdGlvbiI6InVuaXQiLCJzY2hlbWUiOiJ0cy51bml0LnYyIn0seyJjb21wbGV0ZSI6ZmFsc2UsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6Y2FiNjczM2NiYmYwMjE2NmY0NTI1MjhmZWRiZTAwOGM2MzIyMzNiOGQzNzEwMWExZDhkNjI2NTIyNjEyZDdiYiIsImlkIjoidHM6c3JjL3QvdC50cyNmdCIsInByb2plY3Rpb24iOiJ1bml0Iiwic2NoZW1lIjoidHMudW5pdC52MiJ9XSwicm9vdCI6InNoYTI1NjpkMjc1OGEyNmE1NDY1NjE3OGRmYmM2NzI4NzJiZmY0YjgyMzQyZmYyYWY1ZjM0N2U4ODU3ZDgzZjk2NzZjMWNkIn0sInRpbWUiOiIyMDI2LTEwLTI1VDEwOjAwOjAwWiIsInYiOiJzaGFwZS5ldmlkZW5jZS52MSJ9fSwicHJlZGljYXRlVHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9hdHRlc3RhdGlvbi9zY2FpL2F0dHJpYnV0ZS1yZXBvcnQvdjAuMyIsInN1YmplY3QiOlt7ImRpZ2VzdCI6eyJzaGEyNTYiOiJkMjc1OGEyNmE1NDY1NjE3OGRmYmM2NzI4NzJiZmY0YjgyMzQyZmYyYWY1ZjM0N2U4ODU3ZDgzZjk2NzZjMWNkIn0sIm5hbWUiOiJzaGFwZTpzY29wZS9tOjpjYWxsU2Nhbi8yMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyIn1dfQ==",
+   "signatures": [
+    {
+     "keyid": "bf544b7d3acc4628bfe6335e63e07e5806482086f0b6488e744d7ac586466b15",
+     "sig": "lzzjRM+1KvWY+mV5+YzQ/aa+6T+BaX2ux+MxY3eX97IolQqRlIjfA7Fxk3RJW+4S4teXzeE2fLouRBYNQlMwAg=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

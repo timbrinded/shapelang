@@ -48,7 +48,7 @@ resource VectorsModuleNfAstAnchor : GeneratedAstAnchor {
 
 resource VectorsModuleNoFloatsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/spec/vectors/vectors.py#no_floats")
-  fingerprint ast.semantic_subtree_v1("sha256:c5dce5e60d9c44a79a63b74f7029fbc0fc465259c5054a951c9bfd54e75c777e")
+  fingerprint ast.semantic_subtree_v1("sha256:0536dcf00f060657ffad907ec708feeec6d6df3d451ed53ec63bd91512f196cf")
 }
 
 resource VectorsModuleObKeyAstAnchor : GeneratedAstAnchor {
@@ -173,7 +173,7 @@ relation VectorsModuleNoFloatsGeneratedFromVectorsModuleNoFloatsAstAnchor {
   kind generated_from
   connects VectorsModule -> VectorsModuleNoFloatsAstAnchor
   roles { VectorsModule as generated, VectorsModuleNoFloatsAstAnchor as syntax }
-  expects VectorsModuleNoFloatsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c5dce5e60d9c44a79a63b74f7029fbc0fc465259c5054a951c9bfd54e75c777e")
+  expects VectorsModuleNoFloatsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0536dcf00f060657ffad907ec708feeec6d6df3d451ed53ec63bd91512f196cf")
   summary "fn VectorsModule.no_floats generated from python function_definition at experiments/shape-1/spec/vectors/vectors.py#no_floats."
 }
 

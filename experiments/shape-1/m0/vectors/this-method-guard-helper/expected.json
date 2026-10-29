@@ -1,0 +1,95 @@
+{
+ "vector": "this-method-guard-helper",
+ "title": "A guard's Req includes the methods its unit reaches through this.m (manifest refs), so editing the helper stales the guard and introduces the obligation",
+ "decides": [
+  "A.5.3.4",
+  "A.12.2.10",
+  "A.3.2.6",
+  "A.7.3.3",
+  "D4"
+ ],
+ "cases": [
+  {
+   "case": "helper-edited",
+   "input": "helper-edited.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: DefaultPolicy critical blocks unestablished"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:810fd5f18d2ba9d43194d8027c0e1bcbd6861a8bf28123c565d2abc0e0182b42"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:37a8ac43f27f7b69be7c5e169e101e18cec847eaf0f94d1419d2103df72902b2",
+      "reason": "stale",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "owner": "cli::CliTeam",
+      "binding": "bd:53810ed1dce7a7bb1caef157aa96ff06ea1a58d512a40ac921f17ef7a41bc698"
+     },
+     "why": "A.12.2.10 [D4]: this.format() in tick resolves to method Clock.format, listed in tick's manifest refs; A.5.3.4: Req for a judgment on unit tick = (tick, unit) plus (format, unit); the judgment's format digest moved: stale (A.5.4.1); A.7.3.3: (format, unit) is in the delta, so introduced; A.7.2.2 code lists both Req pairs"
+    }
+   ]
+  },
+  {
+   "case": "helper-edited-judgment-cites-tick-only",
+   "input": "helper-edited-judgment-cites-tick-only.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:810fd5f18d2ba9d43194d8027c0e1bcbd6861a8bf28123c565d2abc0e0182b42"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:37a8ac43f27f7b69be7c5e169e101e18cec847eaf0f94d1419d2103df72902b2",
+      "reason": "stale",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "owner": "cli::CliTeam",
+      "binding": "bd:53810ed1dce7a7bb1caef157aa96ff06ea1a58d512a40ac921f17ef7a41bc698"
+     },
+     "why": "A.5.3.5, A.5.4.1: a judgment citing tick alone omits part of Req (format), which gives stale; A.7.3.3 introduced as Req meets the delta"
+    }
+   ]
+  },
+  {
+   "case": "unreferenced-method-edited-control",
+   "input": "unreferenced-method-edited-control.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.5.3.4: Clock.parse is not reachable from tick through refs, so Req is unchanged and bob's judgment stays usable"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "the law is Sat"
+    }
+   ]
+  }
+ ]
+}

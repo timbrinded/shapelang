@@ -1,0 +1,105 @@
+{
+ "vector": "off-path-cycle",
+ "title": "A path forbid's support includes edges of an off-path cycle (s->m->x->y->m->t gives all five), which decide the binding and introducedness while the witness stays s->m->t",
+ "decides": [
+  "A.4.4.11",
+  "A.4.4.8",
+  "A.4.4.10",
+  "A.15.4",
+  "A.7.2.2",
+  "A.7.3.3"
+ ],
+ "cases": [
+  {
+   "case": "all-old",
+   "input": "all-old.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 6"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:6c88941d7de1881eb128ea61efdc115a00251291a0fa2241958d1f317e1e6358"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:c5469e1c4add5cf48b33c86ee651acc7a42e73d81f1bd7d59e7b46ad7fecbdc6",
+      "subject": {
+       "from": "m::S",
+       "to": "m::T"
+      },
+      "introduced": false,
+      "severity": "owed",
+      "force": "sound",
+      "tier": "normal",
+      "binding": "bd:aa0c4d7f730f01a4afc85696f03162554cf434a128cc8d52a7a7d2819d1a89f3"
+     },
+     "why": "A.4.4.11 vector s->m->x->y->m->t: Supp holds all five edges, so the binding's affected code is the at-identities of all five facts (fs, fm, fx, fy), including the off-path cycle m->x->y->m; nothing changed, so code is empty and the obligation preexisting (A.7.2.2, A.7.3.3)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:6c88941d7de1881eb128ea61efdc115a00251291a0fa2241958d1f317e1e6358",
+      "witness": "sha256:400945f2f7179d902d83bb169e972c2247db93fb679c4928922344b8a9cf0a80"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.15.4: the witness is the canonical path s->m->t, never the support"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:6c88941d7de1881eb128ea61efdc115a00251291a0fa2241958d1f317e1e6358",
+      "witness": "sha256:856ef9034d0db31c55df7adbf70f052394bcc728e199cca4fba9433021769414"
+     },
+     "check": "count",
+     "value": 1,
+     "why": "A.4.4.10: the canonical witness s->m->t contains m->t"
+    }
+   ]
+  },
+  {
+   "case": "new-off-path-edge",
+   "input": "new-off-path-edge.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:6c88941d7de1881eb128ea61efdc115a00251291a0fa2241958d1f317e1e6358"
+     },
+     "check": "fields",
+     "value": {
+      "introduced": true,
+      "severity": "blocking",
+      "force": "sound",
+      "tier": "normal",
+      "binding": "bd:9e444ff155f346f6d06b72a4988f6cd6948641d311776d39eb42ec21d85119d6"
+     },
+     "why": "A.4.4.11 (supports decide introduced, path support over-approximated, only more conservative): the new lifted edge X->Y (its only fact at the edited fx is new, A.7.3.1) lies on the off-path cycle inside Supp, so the contradiction is introduced; binding adds (fx, own) as the affected finest change (A.7.2.2)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.4.2 [D3]: call(ts) is unobservable and the tier normal"
+    }
+   ]
+  }
+ ]
+}

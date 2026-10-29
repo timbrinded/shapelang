@@ -1,0 +1,72 @@
+{
+ "vector": "raw-hashbang-executable",
+ "title": "A raw file starting with #! is executable (manifest flag), so it carries pg.table and needs final coverage that no observer can meet; the same text without #! is data",
+ "decides": [
+  "A.3.2.4",
+  "A.12.4",
+  "A.4.5.3",
+  "A.7.4.2",
+  "A.7.4.4",
+  "D27"
+ ],
+ "cases": [
+  {
+   "case": "hashbang-script",
+   "input": "hashbang-script.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 4: coverage with an unmet final pair blocks until two eligible persons answer"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage",
+      "key": "ob:155fa0bf253e0793716dee7451858de84676f017da2d47ee65a8e9d24a457c67"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "ungoverned",
+      "tier": "final",
+      "severity": "blocking",
+      "introduced": true,
+      "owner": "audit::Platform",
+      "binding": "bd:f326c1b92999bd03aff45c0fdb1badd6bb158adae9c3ed375aa2137e7a4c03ce",
+      "group": "g:fdf59b2a05cecc685dba5b0c44e29994aab562d82f3144f0420064662a288e64"
+     },
+     "why": "A.3.2.4 [D27]: raw:src/audit/purge starts with #! and the manifest flags it executable, making it a raw carrier (A.12.4: pg.table lists raw executables); A.4.5.3 effect(pg.table(\"audit_events\")) applies; the forbid (scope *) covers ungoverned at final, so the pair is needed (A.7.4.2) and no observer reads raw files (§7.4); A.7.4.4 tier max(normal, final); owner of ungoverned is the shape owner (A.3.3.5)"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "no fact is observed at the script"
+    }
+   ]
+  },
+  {
+   "case": "no-hashbang-data-control",
+   "input": "no-hashbang-data-control.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.4.5.3: raw data (no #!, not on the script list, mode 100644, executable false) carries no channel"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.7.4.5: code under no applicable channel is covered vacuously"
+    }
+   ]
+  }
+ ]
+}

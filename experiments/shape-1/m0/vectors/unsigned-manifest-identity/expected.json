@@ -1,0 +1,106 @@
+{
+ "vector": "unsigned-manifest-identity",
+ "title": "When the base shape names a manifest identity, an unsigned or wrongly signed head manifest is E-provider-missing (subject manifest), never invalid",
+ "decides": [
+  "A.5.2.17",
+  "A.5.2.13",
+  "A.15.1",
+  "§5.1",
+  "D27"
+ ],
+ "cases": [
+  {
+   "case": "head-unsigned",
+   "input": "head-unsigned.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.10.1: E-provider-missing is an input-integrity error, which blocks (exit 1, not invalid)"
+    },
+    {
+     "in": "errors",
+     "select": {
+      "code": "E-provider-missing",
+      "subject": "manifest"
+     },
+     "check": "count",
+     "value": 1,
+     "why": "A.5.2.17 [D27]: the base names manifest ed25519(...); the head manifest is unsigned; A.15.1 subject 'manifest'"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "the base manifest is signed by the identity; nothing else is wrong"
+    }
+   ]
+  },
+  {
+   "case": "head-wrong-signer",
+   "input": "head-wrong-signer.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.10.1"
+    },
+    {
+     "in": "errors",
+     "select": {
+      "code": "E-provider-missing",
+      "subject": "manifest"
+     },
+     "check": "count",
+     "value": 1,
+     "why": "A.5.2.17: a manifest signed by a key other than the base manifest identity is E-provider-missing"
+    }
+   ]
+  },
+  {
+   "case": "both-signed-control",
+   "input": "both-signed-control.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.5.2.17: both manifests are DSSE-signed by the base manifest identity"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "no error"
+    }
+   ]
+  },
+  {
+   "case": "no-identity-control",
+   "input": "no-identity-control.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.5.2.17: without a base manifest identity both manifests are listed unauthenticated in health, no error"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "no error"
+    }
+   ]
+  }
+ ]
+}

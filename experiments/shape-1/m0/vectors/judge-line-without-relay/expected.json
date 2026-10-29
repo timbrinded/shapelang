@@ -1,0 +1,70 @@
+{
+ "vector": "judge-line-without-relay",
+ "title": "Without a relay a shape judge line makes no claim judgment (unrecorded); a judgment record signed by the judge does",
+ "decides": [
+  "A.7.6.8",
+  "A.5.8.1",
+  "§7.6",
+  "D28"
+ ],
+ "cases": [
+  {
+   "case": "judge-line",
+   "input": "judge-line.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 9: normal does not block unestablished"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:ba6a3234dd39139541e6f1cd24ed5dab3dd28e0d9b6141ef54320fd648f16e7d"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:588ac5407f25d53a489bed27f2d2b12c356c489e1b311d2234a6ee314c8e4014",
+      "reason": "stale",
+      "introduced": true,
+      "severity": "owed",
+      "tier": "normal",
+      "owner": "jl::CliTeam",
+      "binding": "bd:452872429ea65a330fbe3afcee773ac91649611430437b6085751a6e5c0aeb5e"
+     },
+     "why": "A.7.6.8 [D28]: with no base-declared relay, bob's 'shape judge jl::IsoGuard' line makes no judgment (counted unrecorded in health); bob's base judgment cites the old isoToday digest: stale (A.5.4.1); Req meets the delta: introduced"
+    },
+    {
+     "in": "answered",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.7.6.8: a judge line is not an answer"
+    }
+   ]
+  },
+  {
+   "case": "self-signed-record-control",
+   "input": "self-signed-record-control.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.5.8.1, A.7.6.8: bob's judgment record signed with his base identity establishes the law"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "Sat"
+    }
+   ]
+  }
+ ]
+}

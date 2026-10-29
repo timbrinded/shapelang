@@ -1,0 +1,167 @@
+{
+ "vector": "preview-equals-change",
+ "title": "Preview's core output equals change mode's on the same signed input with judgment records and answers removed",
+ "decides": [
+  "A.12.7.2",
+  "A.7.6.5",
+  "A.5.3.7"
+ ],
+ "cases": [
+  {
+   "case": "change-with-judgment-and-answer",
+   "input": "change-with-judgment-and-answer.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "the answer discharges the loosening and the judgment establishes the law"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.7.6.5: alice (base owner Owners, not an author) answers the L1 loosening; A.5.3.7: the judgment establishes Guard"
+    },
+    {
+     "in": "answered",
+     "select": {
+      "obligation": "ob:b950dcb21750fb86923b40b4e0d8b8f2da0996823ad90b8ad906754d1d9161b1"
+     },
+     "check": "fields",
+     "value": {
+      "as": "discharge",
+      "self": false
+     },
+     "why": "A.7.5.2: discharged obligations move to answered"
+    }
+   ]
+  },
+  {
+   "case": "preview-with-judgment-and-answer",
+   "input": "preview-with-judgment-and-answer.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.12.7.2: preview ignores judgments and answers, so the result equals change mode without them: the latent loosening blocks (rule 9)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:b950dcb21750fb86923b40b4e0d8b8f2da0996823ad90b8ad906754d1d9161b1"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "loosening",
+      "subject": "sha256:14b2bded5eaf8da1529dc0ac0a3e61a39e09706e06a584985c799f74ebdb8a99",
+      "questions": [
+       "L1"
+      ],
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "normal",
+      "binding": "bd:3265bbf187ac9db1a05c248a77572a3ee8b8cdfb1643d1dc47aa1391a537bcb5"
+     },
+     "why": "A.8.2.3 L1: removing the forbid demotes Export<Res> at K's positions and cell from normal to none; binding over the demoted positions and the cell (A.7.2.2)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:1d5399a57ef66438478ef11b12be6469a93495ce6ef2ddb7bc0e9252aa45a682"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "unestablished",
+      "reason": "missing",
+      "introduced": false,
+      "severity": "owed",
+      "tier": "normal",
+      "binding": "bd:5f2501beda62bf7ac7ed5a1f3bfbe26cbf316b5c9d872aaab083da959e4cf1eb"
+     },
+     "why": "A.5.4.3: with the judgment ignored or absent no record holds a reason; Req unchanged, so preexisting (A.7.3.3, rule 6)"
+    },
+    {
+     "in": "answered",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.12.7.2: answers and reviews are ignored in preview / absent in the stripped change"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 2,
+     "why": "only the loosening and the unestablished law remain"
+    }
+   ]
+  },
+  {
+   "case": "change-without-judgment-and-answer",
+   "input": "change-without-judgment-and-answer.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.12.7.2: preview ignores judgments and answers, so the result equals change mode without them: the latent loosening blocks (rule 9)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:b950dcb21750fb86923b40b4e0d8b8f2da0996823ad90b8ad906754d1d9161b1"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "loosening",
+      "subject": "sha256:14b2bded5eaf8da1529dc0ac0a3e61a39e09706e06a584985c799f74ebdb8a99",
+      "questions": [
+       "L1"
+      ],
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "normal",
+      "binding": "bd:3265bbf187ac9db1a05c248a77572a3ee8b8cdfb1643d1dc47aa1391a537bcb5"
+     },
+     "why": "A.8.2.3 L1: removing the forbid demotes Export<Res> at K's positions and cell from normal to none; binding over the demoted positions and the cell (A.7.2.2)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:1d5399a57ef66438478ef11b12be6469a93495ce6ef2ddb7bc0e9252aa45a682"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "unestablished",
+      "reason": "missing",
+      "introduced": false,
+      "severity": "owed",
+      "tier": "normal",
+      "binding": "bd:5f2501beda62bf7ac7ed5a1f3bfbe26cbf316b5c9d872aaab083da959e4cf1eb"
+     },
+     "why": "A.5.4.3: with the judgment ignored or absent no record holds a reason; Req unchanged, so preexisting (A.7.3.3, rule 6)"
+    },
+    {
+     "in": "answered",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.12.7.2: answers and reviews are ignored in preview / absent in the stripped change"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 2,
+     "why": "only the loosening and the unestablished law remain"
+    }
+   ]
+  }
+ ]
+}

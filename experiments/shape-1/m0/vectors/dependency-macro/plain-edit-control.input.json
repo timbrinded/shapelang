@@ -1,0 +1,500 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "dm",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/dm.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Hatchy",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "erin"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "KvTeam",
+       "kind": "team",
+       "members": [
+        "dana"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "ParserTeam",
+       "kind": "team",
+       "members": [
+        "pat"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "GenTeam",
+       "kind": "team",
+       "members": [
+        "gus"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "dana",
+       "kind": "person",
+       "identities": [
+        "github(\"dana\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "erin",
+       "kind": "person",
+       "identities": [
+        "github(\"erin\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "gus",
+       "kind": "person",
+       "identities": [
+        "github(\"gus\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "pat",
+       "kind": "person",
+       "identities": [
+        "github(\"pat\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "erin",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "DelegationMap",
+       "owner": "KvTeam",
+       "tier": "critical",
+       "paths": [
+        "src/map.rs"
+       ],
+       "units": [
+        {
+         "name": "set",
+         "bind": "verus(\"src/map.rs#set\")"
+        }
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "NoAssume",
+       "owner": "KvTeam",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "assume<Trust>"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "9a922bcef8901e7c816662fb945d938e96e030b67aa5aec8d6637cb6cdaf7067"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/dm.shape",
+       "mode": "100644",
+       "blob": "85c6cbd1a3bbddc166c250c56238b7b98be45158"
+      },
+      {
+       "path": "src/map.rs",
+       "mode": "100644",
+       "blob": "0643f120665f7e0829acb9e17cf1c6877b9c42e3"
+      }
+     ],
+     "entries": [
+      {
+       "id": "verus:src/map.rs",
+       "projection": "file",
+       "scheme": "verus.file.v1",
+       "digest": "sha256:03433b1d7429c279e92be6277f43f49bdc52af1c0aa86417ad12d9e6f1305951",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/map.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:c7e4659edd77aae7237a38a0da8dfb34a91770b38fa1994115529c9d721905ea",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/map.rs#set",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:74560d6b775a75a078ef140c02f058ccca7b055b01e6bcbd8e9bbe54863f82e7",
+       "kind": "function",
+       "parent": "verus:src/map.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/map.rs#set",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:2ea5a1fbda187b9af0af544672c6770d22785d8d0c4e5832df752f1af88838ae",
+       "kind": "function",
+       "parent": "verus:src/map.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/map.rs#set",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:8a046d7716b4e484dba766859ca4451525f54e56b3dad75b1decaa7f786d5119",
+       "kind": "function",
+       "parent": "verus:src/map.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/map.rs#set",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:505564b913bc1af21af123ff3428c19671bd10a283ab50cc1d52e54d77a6b446",
+       "kind": "function",
+       "parent": "verus:src/map.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "dm",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/dm.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Hatchy",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "erin"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "KvTeam",
+       "kind": "team",
+       "members": [
+        "dana"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "ParserTeam",
+       "kind": "team",
+       "members": [
+        "pat"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "GenTeam",
+       "kind": "team",
+       "members": [
+        "gus"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "dana",
+       "kind": "person",
+       "identities": [
+        "github(\"dana\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "erin",
+       "kind": "person",
+       "identities": [
+        "github(\"erin\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "gus",
+       "kind": "person",
+       "identities": [
+        "github(\"gus\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "pat",
+       "kind": "person",
+       "identities": [
+        "github(\"pat\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "erin",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "DelegationMap",
+       "owner": "KvTeam",
+       "tier": "critical",
+       "paths": [
+        "src/map.rs"
+       ],
+       "units": [
+        {
+         "name": "set",
+         "bind": "verus(\"src/map.rs#set\")"
+        }
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "NoAssume",
+       "owner": "KvTeam",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "assume<Trust>"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "79211c528ae146e551c3c8f5c906699a85572566b64d377e627bb247ae0c73ce"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/dm.shape",
+       "mode": "100644",
+       "blob": "85c6cbd1a3bbddc166c250c56238b7b98be45158"
+      },
+      {
+       "path": "src/map.rs",
+       "mode": "100644",
+       "blob": "5b7e4b9247a6054eff4e28d77a9edf43d7546fa3"
+      }
+     ],
+     "entries": [
+      {
+       "id": "verus:src/map.rs",
+       "projection": "file",
+       "scheme": "verus.file.v1",
+       "digest": "sha256:f9206295292b3d5e8485ac1cd244b80021b739237a5b36e984803687b6fb67bb",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/map.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:c7e4659edd77aae7237a38a0da8dfb34a91770b38fa1994115529c9d721905ea",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/map.rs#set",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:094f8fd5010a8cfdd93f9974799b03cd92bf53a39518fff6d87e0a11dc875566",
+       "kind": "function",
+       "parent": "verus:src/map.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/map.rs#set",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:2ea5a1fbda187b9af0af544672c6770d22785d8d0c4e5832df752f1af88838ae",
+       "kind": "function",
+       "parent": "verus:src/map.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/map.rs#set",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:305496e5041c821ff2b0d6a969a33068d0560a2f40b3760f1c08e2f5360a4744",
+       "kind": "function",
+       "parent": "verus:src/map.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/map.rs#set",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:d84e41aacd16c8f539c9d5be8896d029a7a3d308ead2738ae1766ee4ba49c581",
+       "kind": "function",
+       "parent": "verus:src/map.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"acme-code-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

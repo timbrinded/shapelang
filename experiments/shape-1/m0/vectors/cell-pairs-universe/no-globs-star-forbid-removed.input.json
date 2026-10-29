@@ -1,0 +1,422 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Owners"
+      },
+      {
+       "decl": "actor",
+       "name": "Owners",
+       "kind": "team",
+       "members": [
+        "alice",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")",
+        "ed25519(\"a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "devAgent",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"dev-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "Rec",
+       "bind": [
+        "pg.table(\"records\")"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "6b49e6275b719351627cc6c9deb2ae6548b9af8d0038fa9cf06d7892c52c62de"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "2c9443c847664ae32862c4cb4194c1335849cbe9"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "df3395740fe08556736af014b4c6fc761ec55999"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "4f7817dbdd976e82cc9bd9949537adad16b410e6"
+      },
+      {
+       "path": "src/a.ts",
+       "mode": "100644",
+       "blob": "8759641bb2a925eadf1c3948f4469034bea7086a"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:9dd3b777b542e51e060c24a36f70f619d9bfeb77598269d0020e082d52a1425b",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:97644fec0da18c1b569ff8217d177ffc5c353741430db68e325ddb7454ee0547",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/a.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:06af42bb41b213cac734487f236e88b1281b39296da2792778efa65d217767eb",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/a.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:c3ea0d83cecfaca2c59c603a8de0cc98bf77aabc1cc1ad01bf2dffab9d3dec19",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/a.ts#f",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:b71eaeadb49cd162655e742f6625adc2fcaa5554772747dcb5053017a57e4d25",
+       "kind": "function",
+       "parent": "ts:src/a.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/a.ts#f",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:33481b445688a277f532b10875c28835c02b646391194d2b3e4da4e3a3d81330",
+       "kind": "function",
+       "parent": "ts:src/a.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Owners"
+      },
+      {
+       "decl": "actor",
+       "name": "Owners",
+       "kind": "team",
+       "members": [
+        "alice",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")",
+        "ed25519(\"a513e30c7f65275b0efbb044d7512795756014e3acadee8534831a8b193543ff\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")",
+        "ed25519(\"9f56c0954467b62f3e8cac52b9cf07e22e8601dadee414f458ad90965269b483\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "devAgent",
+       "kind": "agent",
+       "operator": "carol",
+       "identities": [
+        "github(\"dev-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "Rec",
+       "bind": [
+        "pg.table(\"records\")"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "NoUpdate",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "Update<Rec>"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "1c2e994231c182ede2c8a4558694e7b31ac5b3f2a5272d8761aea890cb0ac05b"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "2c9443c847664ae32862c4cb4194c1335849cbe9"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "ea2fb3fa15801c0209cf4c4661169b86e135d660"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "4cdd581650864fce86486e1b1b37a6a8e138a8be"
+      },
+      {
+       "path": "src/a.ts",
+       "mode": "100644",
+       "blob": "8759641bb2a925eadf1c3948f4469034bea7086a"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:9dd3b777b542e51e060c24a36f70f619d9bfeb77598269d0020e082d52a1425b",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:97644fec0da18c1b569ff8217d177ffc5c353741430db68e325ddb7454ee0547",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/a.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:06af42bb41b213cac734487f236e88b1281b39296da2792778efa65d217767eb",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/a.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:c3ea0d83cecfaca2c59c603a8de0cc98bf77aabc1cc1ad01bf2dffab9d3dec19",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/a.ts#f",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:b71eaeadb49cd162655e742f6625adc2fcaa5554772747dcb5053017a57e4d25",
+       "kind": "function",
+       "parent": "ts:src/a.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/a.ts#f",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:33481b445688a277f532b10875c28835c02b646391194d2b3e4da4e3a3d81330",
+       "kind": "function",
+       "parent": "ts:src/a.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/app#7"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"dev-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

@@ -1,0 +1,89 @@
+{
+ "vector": "include-in-tree-literal",
+ "title": "include! of a string-literal in-tree hatch-complete file keeps the includer hatch-complete and counts the included markers at the includer",
+ "decides": [
+  "A.3.4.4",
+  "A.12.2.8",
+  "A.7.3.1",
+  "D20"
+ ],
+ "cases": [
+  {
+   "case": "include-file-with-marker",
+   "input": "include-file-with-marker.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7: an introduced sound contradiction blocks"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "key": "ob:a55f0503287e4150b3e9da221a327346ee3e316880f7c3250557ceb5d0cf218d"
+     },
+     "check": "fields",
+     "value": {
+      "claim.fp": "sha256:e7d64d2d0572de3526727ee7fcad96cf6aee12cecbd8cd203497929f39adbcbf",
+      "subject": {
+       "code": "rust:src/parser/mod.rs#parse",
+       "atom": "unsafe<std::Trust>"
+      },
+      "force": "sound",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "owner": "crate3::ParserTeam",
+      "binding": "bd:37d9a8e323be810083943ba858878f683f97100a1e71f717f905eefcb3c8abcd",
+      "group": "g:e750675250f88eeec370b7cc6fd7d73b84a63c7065193eafaa33cc93d0f9bdc6",
+      "witness": [
+       "sha256:e147781d7292888cf744d33e2922c50e0f6ebd7691878bd0e3d29ee6286b84ee"
+      ]
+     },
+     "why": "A.3.4.4 [D20]: include!(\"../gen/tables.rs\") is a literal in-tree path to a hatch-complete file, so its unsafe marker is counted at parse (markers {unsafe: 1}); the fact is sound (manifest, A.4.4.5) and new (parse is a finest change, A.7.3.1); NoUnsafeInParser covers Parser.*"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.4.3: parse is hatch-complete, so hatch(rust) is met"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "subject.code": "rust:src/gen/tables.rs"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "the included file's own marker lies in Gen, outside the forbid's scope"
+    }
+   ]
+  },
+  {
+   "case": "include-marker-free-control",
+   "input": "include-marker-free-control.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.3.4.4: the included in-tree file has no marker, so nothing is counted at parse"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "no hatch fact at parse; hatch-complete"
+    }
+   ]
+  }
+ ]
+}

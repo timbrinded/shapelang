@@ -1,0 +1,470 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "merge",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/merge.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Merge",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "CliTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "TeamA",
+       "kind": "team",
+       "members": [
+        "ann"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "TeamZ",
+       "kind": "team",
+       "members": [
+        "zed"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "ann",
+       "kind": "person",
+       "identities": [
+        "github(\"ann\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "zed",
+       "kind": "person",
+       "identities": [
+        "github(\"zed\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Cli",
+       "owner": "CliTeam",
+       "paths": [
+        "src/cli/**"
+       ],
+       "units": [
+        {
+         "name": "isoToday",
+         "bind": "ts(\"src/cli/fresh.ts#isoToday\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "GuardA",
+       "on": [
+        "unit Cli.isoToday"
+       ],
+       "informal": "isoToday reads the clock only at the CLI boundary.",
+       "owner": "TeamA",
+       "tier": "critical"
+      },
+      {
+       "decl": "law",
+       "name": "GuardZ",
+       "on": [
+        "unit Cli.isoToday"
+       ],
+       "informal": "isoToday reads the clock only at the CLI boundary.",
+       "owner": "TeamZ",
+       "tier": "critical"
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "8baf0815317e7a0941cbca0a5bbbae16e5f7613e9c28192daf4e6c1d569565c1"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/merge.shape",
+       "mode": "100644",
+       "blob": "6b3b8e4dec0a3a78b26309759b9b6613445e8ae6"
+      },
+      {
+       "path": "src/cli/fresh.ts",
+       "mode": "100644",
+       "blob": "ec17ae8e668624500a4c2d333a30c895783573da"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/cli/fresh.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:add52425b64ee10b31811ee33299ff2c8e3e42a5f7f3b1f928df6cf1d273bfd2",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:16b9208fb3b4d2fbcfe6e4a7779bdc1c9783eaaf0dc0e52c7e5ec780738a1f27",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts#isoToday",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:13efcdb5c3944e8b4d4657d81082979e2931a20d37af0ef040b5c8aa0825df5d",
+       "kind": "function",
+       "parent": "ts:src/cli/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts#isoToday",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:16d5b53fff1ce6f5f6312786741b9ee6cf0193036dfc19599f3874b652ce3539",
+       "kind": "function",
+       "parent": "ts:src/cli/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "merge",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/merge.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Merge",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "CliTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "TeamA",
+       "kind": "team",
+       "members": [
+        "ann"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "TeamZ",
+       "kind": "team",
+       "members": [
+        "zed"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "ann",
+       "kind": "person",
+       "identities": [
+        "github(\"ann\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "zed",
+       "kind": "person",
+       "identities": [
+        "github(\"zed\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Cli",
+       "owner": "CliTeam",
+       "paths": [
+        "src/cli/**"
+       ],
+       "units": [
+        {
+         "name": "isoToday",
+         "bind": "ts(\"src/cli/fresh.ts#isoToday\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "GuardA",
+       "on": [
+        "unit Cli.isoToday"
+       ],
+       "informal": "isoToday reads the clock only at the CLI boundary.",
+       "owner": "TeamA",
+       "tier": "critical"
+      },
+      {
+       "decl": "law",
+       "name": "GuardZ",
+       "on": [
+        "unit Cli.isoToday"
+       ],
+       "informal": "isoToday reads the clock only at the CLI boundary.",
+       "owner": "TeamZ",
+       "tier": "critical"
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "f957852effae999203d5cf448741732038a084282d57c9f6f2dbf66219015451"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/merge.shape",
+       "mode": "100644",
+       "blob": "6b3b8e4dec0a3a78b26309759b9b6613445e8ae6"
+      },
+      {
+       "path": "src/cli/fresh.ts",
+       "mode": "100644",
+       "blob": "ec17ae8e668624500a4c2d333a30c895783573da"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/cli/fresh.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:6a6e7884b460229307d96ae447dc9288a19d13d8f4651352c3cc88b570616831",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:16b9208fb3b4d2fbcfe6e4a7779bdc1c9783eaaf0dc0e52c7e5ec780738a1f27",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts#isoToday",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:d5914199e667182c17de2695b89b603b82f829d2f306a86acdc82c1e388a575d",
+       "kind": "function",
+       "parent": "ts:src/cli/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/cli/fresh.ts#isoToday",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:3a8413d7bc811efc5999efaa663a03e1b8a384c377395dad81a75e5c74dc5443",
+       "kind": "function",
+       "parent": "ts:src/cli/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"acme-code-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

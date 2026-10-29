@@ -1,0 +1,510 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "bf",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/bf.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Bf",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "EngineTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Engine",
+       "owner": "EngineTeam",
+       "tier": "critical",
+       "paths": [
+        "src/engine/**"
+       ],
+       "units": [
+        {
+         "name": "check",
+         "bind": "ts(\"src/engine/check.ts#check\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "CheckDeterministic",
+       "template": {
+        "name": "Deterministic",
+        "args": [
+         "Engine.check"
+        ]
+       },
+       "evidence": {
+        "level": "tested",
+        "by": [
+         "unitTest"
+        ]
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "unitTest",
+       "produces": [
+        "test"
+       ],
+       "decides": [
+        "template Deterministic"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "identity": "ed25519(\"f50c59b6fc2a06a346083815ca4a6da7ac88c2d9fa3e567a921bec70f8e975a0\")",
+       "implementation": {
+        "digest": "sha256:e9f4aa75e2202f2e91473708fb0f5c1b2d5c726b4a7b6aec0e79739ae65cc063"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "2ceec2d18be407206bbc9c245193d1b2369e3d7353b40cd2cd4752ad79f7e9ea"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/bf.shape",
+       "mode": "100644",
+       "blob": "d1671b32861e3bd0d82136bd02f8ed694068f46d"
+      },
+      {
+       "path": "src/engine/check.ts",
+       "mode": "100644",
+       "blob": "f20de87bfee3e53a7d2a15bfb977a6254d8da01f"
+      },
+      {
+       "path": "test/engine/check.test.ts",
+       "mode": "100644",
+       "blob": "eeb4dd12f9d97056d3696a8a3077c1745cb45689"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/engine/check.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:b6cb1fd02ffc074fa3a4740305398c11988031c5508df5882c8bac3d981a94dc",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/check.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:4913dbe121c8a93cd2b85d260ce26ac76ab5c68ab729ff50ef6d589f1b611bb8",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/check.ts#check",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:961df739fd351710c739a47d162ea212d1152676a63ece9416f12cfe656daa33",
+       "kind": "function",
+       "parent": "ts:src/engine/check.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/check.ts#check",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:95df443edfef41abfd29cbf29b220e1ed985e785f67ce00fda32502bafec8ba9",
+       "kind": "function",
+       "parent": "ts:src/engine/check.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:test/engine/check.test.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:2d8990c074478b50538a1faa7f7ccd0d57095810d9b4d921b00833fa193cb9f5",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:test/engine/check.test.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:5987e63b8068f46f72781a30d5b12370b4a3c99f50b519931e351463fc872a91",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "bf",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/bf.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Bf",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "EngineTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Engine",
+       "owner": "EngineTeam",
+       "tier": "critical",
+       "paths": [
+        "src/engine/**"
+       ],
+       "units": [
+        {
+         "name": "check",
+         "bind": "ts(\"src/engine/check.ts#check\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "CheckDeterministic",
+       "template": {
+        "name": "Deterministic",
+        "args": [
+         "Engine.check"
+        ]
+       },
+       "evidence": {
+        "level": "tested",
+        "by": [
+         "unitTest"
+        ]
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "unitTest",
+       "produces": [
+        "test"
+       ],
+       "decides": [
+        "template Deterministic"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "identity": "ed25519(\"f50c59b6fc2a06a346083815ca4a6da7ac88c2d9fa3e567a921bec70f8e975a0\")",
+       "implementation": {
+        "digest": "sha256:e9f4aa75e2202f2e91473708fb0f5c1b2d5c726b4a7b6aec0e79739ae65cc063"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "7ad96f725cd3db908006351d3ccae1bdf578bcdc23b07ab2142d7d49b024e4ee"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/bf.shape",
+       "mode": "100644",
+       "blob": "d1671b32861e3bd0d82136bd02f8ed694068f46d"
+      },
+      {
+       "path": "src/engine/check.ts",
+       "mode": "100644",
+       "blob": "f20de87bfee3e53a7d2a15bfb977a6254d8da01f"
+      },
+      {
+       "path": "test/engine/check.test.ts",
+       "mode": "100644",
+       "blob": "eeb4dd12f9d97056d3696a8a3077c1745cb45689"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/engine/check.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:51248789bfdbc0915bf9231acfa7d59529105b0b3dc2b012be3e7305e02e221e",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/check.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:4913dbe121c8a93cd2b85d260ce26ac76ab5c68ab729ff50ef6d589f1b611bb8",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/check.ts#check",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:5d4196fc21830d73dc9df59e5899c102c8eae0558102e410c080fc5989a0c164",
+       "kind": "function",
+       "parent": "ts:src/engine/check.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/check.ts#check",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:01dfbbb4df93db1226dd5b79e888c7f4b51883321ec445643764de5f1e6affe6",
+       "kind": "function",
+       "parent": "ts:src/engine/check.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:test/engine/check.test.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:2d8990c074478b50538a1faa7f7ccd0d57095810d9b4d921b00833fa193cb9f5",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:test/engine/check.test.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:5987e63b8068f46f72781a30d5b12370b4a3c99f50b519931e351463fc872a91",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"acme-code-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiY29uZmlndXJhdGlvbiI6W10sImZhaWxlZFRlc3RzIjpbXSwicGFzc2VkVGVzdHMiOltdLCJyZXN1bHQiOiJGQUlMRUQiLCJzaGFwZSI6eyJhc3N1bXB0aW9ucyI6W10sImJvdW5kIjp7InJ1bnMiOjEwMH0sImNsYWltIjp7ImZwIjoic2hhMjU2OmYxMDFlNTViMzVkZGM5YTIyN2FmMzFhZjBlMGQ4NWM5ODg3MTFkNDdmZGEzYzQ0NGUyMTFiYmQ4YTNhMjgwOTYiLCJpZCI6ImJmOjpDaGVja0RldGVybWluaXN0aWMifSwiY29kZSI6W3siZGlnZXN0Ijoic2hhMjU2Ojk1ZGY0NDNlZGZlZjQxYWJmZDI5Y2JmMjliMjIwZTFlZDk4NWU3ODVmNjdjZTAwZmRhMzI1MDJiYWZlYzhiYTkiLCJpZCI6InRzOnNyYy9lbmdpbmUvY2hlY2sudHMjY2hlY2siLCJwcm9qZWN0aW9uIjoidW5pdCIsInNjaGVtZSI6InRzLnVuaXQudjIifV0sImNvdW50ZXJleGFtcGxlIjp7ImFzc2VydGlvbiI6ImNoZWNrKHgpIHJldHVybnMgZXF1YWwgcmVzdWx0cyBvbiB0d28gcnVucyIsImlucHV0cyI6eyJ4IjozfSwic2VlZCI6OH0sImhhcm5lc3MiOlt7ImRpZ2VzdCI6InNoYTI1Njo1OTg3ZTYzYjgwNjhmNDZmNzI3ODFhMzBkNWIxMjM3MGI0YTNjOTlmNTBiNTE5OTMxZTM1MTQ2M2ZjODcyYTkxIiwiaWQiOiJ0czp0ZXN0L2VuZ2luZS9jaGVjay50ZXN0LnRzIiwicHJvamVjdGlvbiI6Im93biIsInNjaGVtZSI6InRzLm93bi52MiJ9XSwia2luZCI6InRlc3QiLCJwcm92aWRlciI6eyJpZCI6ImJmOjp1bml0VGVzdCIsInZlcnNpb24iOiIxLjAuMCJ9LCJyZXN1bHQiOiJjb250cmFkaWN0cyIsInJldmlzaW9uIjoiMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMiIsInRpbWUiOiIyMDI2LTEwLTI1VDA5OjAwOjAwWiIsInYiOiJzaGFwZS5ldmlkZW5jZS52MSJ9LCJ1cmwiOiIiLCJ3YXJuZWRUZXN0cyI6W119LCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9pbi10b3RvLmlvL2F0dGVzdGF0aW9uL3Rlc3QtcmVzdWx0L3YwLjEiLCJzdWJqZWN0IjpbeyJkaWdlc3QiOnsic2hhMjU2IjoiZjEwMWU1NWIzNWRkYzlhMjI3YWYzMWFmMGUwZDg1Yzk4ODcxMWQ0N2ZkYTNjNDQ0ZTIxMWJiZDhhM2EyODA5NiJ9LCJuYW1lIjoic2hhcGU6Y2xhaW0vYmY6OkNoZWNrRGV0ZXJtaW5pc3RpYyJ9LHsiYW5ub3RhdGlvbnMiOnsic2hhcGUuc2NoZW1lIjoidHMudW5pdC52MiJ9LCJkaWdlc3QiOnsic2hhMjU2IjoiOTVkZjQ0M2VkZmVmNDFhYmZkMjljYmYyOWIyMjBlMWVkOTg1ZTc4NWY2N2NlMDBmZGEzMjUwMmJhZmVjOGJhOSJ9LCJuYW1lIjoic2hhcGU6Y29kZS90czpzcmMvZW5naW5lL2NoZWNrLnRzI2NoZWNrQHVuaXQifV19",
+   "signatures": [
+    {
+     "keyid": "f50c59b6fc2a06a346083815ca4a6da7ac88c2d9fa3e567a921bec70f8e975a0",
+     "sig": "+6XD22Dl3Mdgwxmcchwyt3eHlvkzD8iBN4EOJi6OwNAX+NCcLovjjIV713G6uhul0Hf3lTlkB+LMemFojYUjBQ=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiY29uZmlndXJhdGlvbiI6W10sImZhaWxlZFRlc3RzIjpbXSwicGFzc2VkVGVzdHMiOltdLCJyZXN1bHQiOiJGQUlMRUQiLCJzaGFwZSI6eyJhc3N1bXB0aW9ucyI6W10sImJvdW5kIjp7InJ1bnMiOjEwMH0sImNsYWltIjp7ImZwIjoic2hhMjU2OmYxMDFlNTViMzVkZGM5YTIyN2FmMzFhZjBlMGQ4NWM5ODg3MTFkNDdmZGEzYzQ0NGUyMTFiYmQ4YTNhMjgwOTYiLCJpZCI6ImJmOjpDaGVja0RldGVybWluaXN0aWMifSwiY29kZSI6W3siZGlnZXN0Ijoic2hhMjU2OjAxZGZiYmI0ZGY5M2RiMTIyNmRkNWI3OWU4ODhjN2Y0YjUxODgzMzIxZWM0NDU2NDM3NjRkZTVmMWU2YWZmZTYiLCJpZCI6InRzOnNyYy9lbmdpbmUvY2hlY2sudHMjY2hlY2siLCJwcm9qZWN0aW9uIjoidW5pdCIsInNjaGVtZSI6InRzLnVuaXQudjIifV0sImNvdW50ZXJleGFtcGxlIjp7ImFzc2VydGlvbiI6ImNoZWNrKHgpIHJldHVybnMgZXF1YWwgcmVzdWx0cyBvbiB0d28gcnVucyIsImlucHV0cyI6eyJ4IjozfSwic2VlZCI6N30sImhhcm5lc3MiOlt7ImRpZ2VzdCI6InNoYTI1Njo1OTg3ZTYzYjgwNjhmNDZmNzI3ODFhMzBkNWIxMjM3MGI0YTNjOTlmNTBiNTE5OTMxZTM1MTQ2M2ZjODcyYTkxIiwiaWQiOiJ0czp0ZXN0L2VuZ2luZS9jaGVjay50ZXN0LnRzIiwicHJvamVjdGlvbiI6Im93biIsInNjaGVtZSI6InRzLm93bi52MiJ9XSwia2luZCI6InRlc3QiLCJwcm92aWRlciI6eyJpZCI6ImJmOjp1bml0VGVzdCIsInZlcnNpb24iOiIxLjAuMCJ9LCJyZXN1bHQiOiJjb250cmFkaWN0cyIsInJldmlzaW9uIjoiMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMSIsInRpbWUiOiIyMDI2LTEwLTIwVDA5OjAwOjAwWiIsInYiOiJzaGFwZS5ldmlkZW5jZS52MSJ9LCJ1cmwiOiIiLCJ3YXJuZWRUZXN0cyI6W119LCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9pbi10b3RvLmlvL2F0dGVzdGF0aW9uL3Rlc3QtcmVzdWx0L3YwLjEiLCJzdWJqZWN0IjpbeyJkaWdlc3QiOnsic2hhMjU2IjoiZjEwMWU1NWIzNWRkYzlhMjI3YWYzMWFmMGUwZDg1Yzk4ODcxMWQ0N2ZkYTNjNDQ0ZTIxMWJiZDhhM2EyODA5NiJ9LCJuYW1lIjoic2hhcGU6Y2xhaW0vYmY6OkNoZWNrRGV0ZXJtaW5pc3RpYyJ9LHsiYW5ub3RhdGlvbnMiOnsic2hhcGUuc2NoZW1lIjoidHMudW5pdC52MiJ9LCJkaWdlc3QiOnsic2hhMjU2IjoiMDFkZmJiYjRkZjkzZGIxMjI2ZGQ1Yjc5ZTg4OGM3ZjRiNTE4ODMzMjFlYzQ0NTY0Mzc2NGRlNWYxZTZhZmZlNiJ9LCJuYW1lIjoic2hhcGU6Y29kZS90czpzcmMvZW5naW5lL2NoZWNrLnRzI2NoZWNrQHVuaXQifV19",
+   "signatures": [
+    {
+     "keyid": "f50c59b6fc2a06a346083815ca4a6da7ac88c2d9fa3e567a921bec70f8e975a0",
+     "sig": "oCrxPH39PIw0IzffFR50K3NtRitgeioyWwYiZDUZJWQ18brQqXcu8vjmuJRgRYfIZUR1AnJ5sWMY6leRL9WMBw=="
+    }
+   ]
+  }
+ ],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

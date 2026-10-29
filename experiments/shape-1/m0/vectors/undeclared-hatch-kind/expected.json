@@ -1,0 +1,79 @@
+{
+ "vector": "undeclared-hatch-kind",
+ "title": "A hatch marker of a registry kind the shape does not declare is forbidden even inside a boundary (Undeclared clause), while a declared kind the boundary allows raises nothing",
+ "decides": [
+  "A.3.4.5",
+  "A.4.2.4",
+  "A.3.4.4",
+  "D1"
+ ],
+ "cases": [
+  {
+   "case": "undeclared-kind-in-boundary",
+   "input": "undeclared-kind-in-boundary.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction"
+     },
+     "check": "count",
+     "value": 1,
+     "why": "A.4.2.4 [D1]: only the Undeclared clause covers the boundary's code for this kind"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:6cd2e34ae382f2271643ee1e21eb71ea70700a980a610cd7ab8e9442b5698cd7"
+     },
+     "check": "fields",
+     "value": {
+      "subject.code": "ts:src/trusted/t.ts#shim",
+      "introduced": true,
+      "severity": "blocking",
+      "force": "sound",
+      "tier": "normal"
+     },
+     "why": "A.3.4.5: a registry hatch kind the shape does not declare lifts to Undeclared<Trust>; A.4.2.4: forbid hatch * adds effect.forbid(Undeclared<Trust>, [*], []), excepting no boundary, so the marker inside Trusted is a sound (manifest) contradiction; new because shim is a finest change (A.7.3.1)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.4.3: shim is hatchComplete, which meets every hatch(ts) pair; the Undeclared clause has no hatch channel (A.4.5.2)"
+    }
+   ]
+  },
+  {
+   "case": "declared-allowed-kind-in-boundary",
+   "input": "declared-allowed-kind-in-boundary.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "nothing is raised"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.4.2.4 [D1]: the ts_ignore clause excepts Trusted, which allows ts_ignore, and no Hatch clause exists; coverage is met by hatchComplete"
+    }
+   ]
+  }
+ ]
+}

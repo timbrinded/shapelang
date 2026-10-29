@@ -1,0 +1,80 @@
+{
+ "vector": "dependency-macro",
+ "title": "An identity invoking a dependency's macro in statement position is not hatch-complete, so hatch(verus) coverage is raised and nothing claims the hidden assume is absent",
+ "decides": [
+  "A.3.4.4",
+  "A.12.2.8",
+  "A.7.4.3",
+  "A.7.4.4",
+  "D20"
+ ],
+ "cases": [
+  {
+   "case": "statement-macro-from-dependency",
+   "input": "statement-macro-from-dependency.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: DefaultPolicy critical blocks coverage"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage",
+      "key": "ob:db705c420cd9df5c09ae416042c21204da8a7395349010869dee6c0c62ff6a8b"
+     },
+     "check": "fields",
+     "value": {
+      "subject": "component dm::DelegationMap",
+      "tier": "critical",
+      "severity": "blocking",
+      "introduced": true,
+      "owner": "dm::KvTeam",
+      "binding": "bd:6c728db4a75e2ca6f7c3fb3b0ef22e7d8041505af1a5ed219197209a7975c433",
+      "group": "g:4583196982edcda23e2a46db23e3b61a39df44e2f48627dcae68249f50f05d43"
+     },
+     "why": "A.3.4.4 [D20]: dep_macros::trust_me! is neither builtin nor defined in the tree, so the manifest flags set hatchComplete false; A.7.4.2 need (NoAssume fp 1584bb88…, hatch(verus)), hatch channels always observable (A.4.5.6); A.7.4.3 met only if hatchComplete; A.7.4.4 tier max(critical, critical); A.7.2.2 delta '<fp> hatch(verus)'"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.3.4.4: the manifest lists no assume marker at set, so there is no hatch fact"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "only the coverage obligation"
+    }
+   ]
+  },
+  {
+   "case": "plain-edit-control",
+   "input": "plain-edit-control.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.7.4.3: set is hatch-complete, so hatch(verus) is met"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "no marker, need met"
+    }
+   ]
+  }
+ ]
+}

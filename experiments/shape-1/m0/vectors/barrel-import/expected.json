@@ -1,0 +1,91 @@
+{
+ "vector": "barrel-import",
+ "title": "A judgment's Req follows a workspace barrel import to the declaring function: editing that helper or re-pointing the barrel stales the guard, editing another re-export does not",
+ "decides": [
+  "A.12.2.10",
+  "A.5.3.4",
+  "A.5.4.1",
+  "A.7.3.3",
+  "A.12.3.2",
+  "D4"
+ ],
+ "cases": [
+  {
+   "case": "helper-behind-barrel-edited",
+   "input": "helper-behind-barrel-edited.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 9: unestablished does not block at normal under DefaultPolicy"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:a1c9b9585980fe945f9f5b4e5336a74458e3cadcb79dfa3ffcb241073f282b53"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:9f0167e916fa9c025c6d8bfef6f410bd511cefdf33434ad1c6c41effcfdb405b",
+      "reason": "stale",
+      "introduced": true,
+      "severity": "owed",
+      "tier": "normal",
+      "binding": "bd:16e4e1e07fdbd31ca46f4c4e26d02fe160366e7d3c4a413579f90759760a21ba"
+     },
+     "why": "A.12.2.10: u's import of h through the workspace barrel lib/src/index.ts resolves to the declaring identity lib/src/h.ts#h, which the manifest records as u's ref; A.5.3.4 [D4]: Req for a judgment adds the functions of comp(u) reachable through Refs°, so h@unit is in Req and its moved digest stales the judgment (A.5.4.1), introduced since Req meets Δcode (A.7.3.3)"
+    }
+   ]
+  },
+  {
+   "case": "unimported-reexport-edited",
+   "input": "unimported-reexport-edited.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "the judgment is usable"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.5.3.4: k, re-exported by the same barrel but not imported by u, is not reachable through Refs°, so Req = {u, h} is unchanged and the judgment stays usable"
+    }
+   ]
+  },
+  {
+   "case": "barrel-repointed",
+   "input": "barrel-repointed.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 9"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:a1c9b9585980fe945f9f5b4e5336a74458e3cadcb79dfa3ffcb241073f282b53"
+     },
+     "check": "fields",
+     "value": {
+      "reason": "stale",
+      "introduced": true,
+      "severity": "owed",
+      "binding": "bd:7b0f41c2b53587bb861c740f7df8e2785f65a5f3d8b14406b7750664dd496efb"
+     },
+     "why": "A.12.2.10, A.5.7.2: re-pointing the barrel changes what u's import resolves to, so u's unit digest (env by identity) moves and its ref becomes h2; Req = {u@unit, h2@unit}, which the base judgment does not cite, so stale (A.5.4.1 'Req partly uncited'), introduced (A.7.3.3)"
+    }
+   ]
+  }
+ ]
+}

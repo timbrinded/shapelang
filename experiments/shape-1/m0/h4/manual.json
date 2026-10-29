@@ -1,0 +1,375 @@
+{
+ "_doc": "Version 7 manual reading of the 33 H4 cases (M0). Fields: loosens (yes|no|rename), order (A.8.1.3 order class), fwdQ (forward questions that must fire), expl (realised in the head; null if no loosening), final, why, v6_change. Frozen 2026-10-29; sign-offs in m0/SIGNOFF.json.",
+ "rows": [
+  {
+   "case": "claim_misdescribes_code",
+   "loosens": "no",
+   "order": "equivalent",
+   "fwdQ": [],
+   "expl": null,
+   "final": false,
+   "why": "Migration (A.11.1(a),(b),(e),(j)): Sharing binds src/share/**/*.ts. DraftOnly gives effect.forbid(Export<PrivateDraft>,[*]) at tier final on both sides. The head adds unit shareDraft at ts:src/share/button.ts#shareDraft with effects.upper/lower {Export<PublishedStory>}. In the base that identity is Sharing.* (A.3.3.5), so P = cl(grants) ∪ Trust = {Export,Read}<PublishedStory> ∪ Trust. In the head, P = A ∩ S is the same set, because cl{Export<PublishedStory>} equals Sharing's grant closure. Lvl is normal outside that set (authority on both sides, plus the summary in the head) and final on Export<PrivateDraft> on both sides (A.4.4.7). No position or cell differs in P or Lvl, so L1 is implied in both directions (A.8.2.3 L1). Lower bounds count only through upper bounds (A.8.1.3). L6 has no tuples (no structure claim or law) and L7 has no change. Neither pass loosens, so the class is equivalent (A.8.1.3, D17). The misdescription is a matter for observation and coverage.",
+   "v6_change": "v6 read tighter through reverse L2 ('summary removed'). D2 retires L2 and has L1 decide summaries per position. shareDraft's summary excludes nothing that Sharing's authority does not already exclude there, so v7 reads equivalent."
+  },
+  {
+   "case": "draft_trait_removed",
+   "loosens": "yes",
+   "order": "incomparable",
+   "fwdQ": [
+    "L1"
+   ],
+   "expl": true,
+   "final": true,
+   "why": "Migration (A.11.1(e)): the local trait DraftOnly becomes a template that keeps its clause as forbid final. PrivateDraft : DraftOnly therefore gives effect.forbid(Export<sharing::PrivateDraft>,[*],[]) whose own tier is final (A.4.1.3: forbid final = tier final; fp c173a6888dc3d156). Nothing writes a tier on the resource (A.11.1 mints nothing 0.x did not enforce, D19), so PrivateDraft is tier normal in base and head. Head: the attachment is gone, Sharing grants Export<PrivateDraft>, and unit shareDraft {Export<PrivateDraft>} binds button.ts. L1 (A.8.2.3, A.4.4.7): the forbid has no heir (A.6.2.1). Its level falls final>none at shareDraft, the Sharing.* positions and both cells, and final>normal at sharePublished, whose summary protects (D2). That is one final part on the forbid. Component Sharing gains Export<PrivateDraft> and Read<PrivateDraft> newly in both A and P (D17), a second obligation at normal (A.8.2.2). No L7: PrivateDraft's tier did not change, and the forbid has no heir whose tier L7 could compare (A.8.2.3 L7). The lost final tier is reported once, through L1 at the forbid (A.8.2.1, D18). Exploited: W_decl(head) holds (shareDraft, Export, PrivateDraft) (A.4.4.4, A.8.3.1). The forbid is final, so rule 4 applies (A.7.5.1). Reverse: shareDraft's summary rejects Export/Read<PublishedStory>, which the base's Sharing.* permitted, giving a reverse L1 summary part. Class: incomparable (A.8.1.3).",
+   "v6_change": "Class unchanged. v6's L7 part on PrivateDraft goes: v6's migrate.ts (proto/src/migrate.ts:194-207) raised the bearer's tier to final whenever an attached trait held forbid final, but A.11.1(e) and A.4.1.3 put the tier on the claim. The authority+ part is exact (D17), and the reverse loosening is an L1 summary part (D2) instead of L2."
+  },
+  {
+   "case": "effects_unknown",
+   "loosens": "no",
+   "order": "tighter",
+   "fwdQ": [],
+   "expl": null,
+   "final": false,
+   "why": "D19/A.11.1(d): `owns Revision` only makes RevisionLog's owner the resource's owner; no std::Owns is minted. (b): effects unknown gives no summary. (e): AppendOnly becomes std::NoHardDelete<Revision> at final on both sides. RevisionLog has no paths, so code that no unit binds is ungoverned (A.3.3.5). purge.ts#purgeOldRevisions moves from ungoverned (P = every atom except ↓HardDelete<Revision>, Lvl ⊥ elsewhere) to unit purge (P = cl{Append,Read}<Revision> ∪ Trust, Lvl normal through authority, final on ↓HardDelete). At every position and cell Perm_h ⊆ Perm_b and Lvl_h ≥ Lvl_b, so L1 is implied. There are no L3, L4, L6 or L7 subjects. Reverse: the ungoverned reading regains Update, Export and others at that position, giving authority+ and authority-tier parts on RevisionLog. Class: tighter (A.8.1.3, D17). Cross-checked with the scratch L1 model.",
+   "v6_change": "v6 read incomparable because its migration minted std::Owns, so purge gained Append/Write<Revision> on leaving ungoverned. D19 mints no Owns, so v7 reads tighter. This matches A.8.6's original prediction and 0.x (no loosening)."
+  },
+  {
+   "case": "governed_directory_moved",
+   "loosens": "yes",
+   "order": "incomparable",
+   "fwdQ": [
+    "L1"
+   ],
+   "expl": false,
+   "final": false,
+   "why": "Sharing's paths move from src/share/**/*.ts to src/sharing/**/*.ts (A.11.1(j)); the head code is only src/sharing/public.ts. Over M_h, the base unit binds nothing: x_b and its file are absent (A.6.4.3). Cells (A.8.1.4): cell (Sharing.*, ungoverned) = src/share/**/*.ts loses Sharing's closed authority. That gives an L1 part on component Sharing: authority+ for atoms newly in A and P (Export<PrivateDraft> excepted, since the kept final DraftOnly forbid still blocks it) and an authority tier fall normal>none (D11, D17). The counterexample is the shortlex-least path of that cell (e.g. src/share/.ts) with an admitted atom. No head-world fact realises it, so the part is latent (A.8.3.1). Sharing is normal, so the loosening is not final. Reverse: src/sharing/public.ts and cell (ungoverned, Sharing.*) were ungoverned in the base, so the reverse loosens too. Class: incomparable.",
+   "v6_change": "No change in class or parts. The authority-tier fall is a new v7 part kind (D11) in the same Sharing obligation."
+  },
+  {
+   "case": "governed_paths_narrowed",
+   "loosens": "yes",
+   "order": "looser",
+   "fwdQ": [
+    "L1"
+   ],
+   "expl": false,
+   "final": false,
+   "why": "Sharing's paths narrow to src/share/public.ts (A.11.1(j)). src/share/button.ts, button.ts#shareButton and cell (Sharing.*, ungoverned) move from Sharing.* to ungoverned (A.3.3.5, A.8.1.4), which has open authority. That gives an L1 part on component Sharing (A.8.2.3 L1): authority+ for Write<PublishedStory>, Read<PrivateDraft> and other atoms newly in A and P (Export<PrivateDraft> stays forbidden at final), plus an authority tier fall normal>none (D11, D17). No head-world fact exists at button.ts, so the part is latent. Tier normal: DefaultPolicy does not block coverage there, so A.8.3.1's coverage clause does not apply, and rule 9 blocks the latent loosening. The reverse only adds closed authority. Class: looser.",
+   "v6_change": "No change (D11 adds the authority-tier part to the same obligation)."
+  },
+  {
+   "case": "grant_added",
+   "loosens": "no",
+   "order": "tighter",
+   "fwdQ": [],
+   "expl": null,
+   "final": false,
+   "why": "Migration mints no Owns (D19, A.11.1(d)); NoHardDelete<Revision> stays at final (A.11.1(e)). The head grants HardDelete<Revision> and adds unit purge {HardDelete<Revision>} at a new identity. L1 (A.4.4.7, A.8.2.3): at appendRevision the grant adds HardDelete and Update to A, but the unit's own complete summary {Append} excludes Update and the final forbid excludes HardDelete, so P and Lvl are unchanged. Per D17, an authority part needs an atom newly in both A and P, and an atom that a forbid still blocks is no part. purge.ts#purgeOldRevisions moves from ungoverned (every atom except ↓HardDelete) to P = {Update,Write}<Revision> ∪ Trust, which is tighter. No other position or cell gains. Authority has no heir (equal NF only, A.6.2.1), so L1 decides it, not L7. Reverse loosens at purge. Class: tighter. Separately, the head declares (purge, HardDelete<Revision>), which its own final forbid excludes. That is E-conduct (A.4.4.12) and blocks under rule 1 (A.7.5.1); it is not a loosening.",
+   "v6_change": "v6 read incomparable with two L1 parts: an Owns level part at purge (gone under D19) and RevisionLog authority+ Update<Revision> at appendRevision, which the unit's own summary rejects (gone under D2/D17). v7 reads no loosening, tighter, and keeps E-conduct. This matches the 0.x expectation (final_forbidden_effect, not a loosening)."
+  },
+  {
+   "case": "guarded_fn_edited_in_place",
+   "loosens": "no",
+   "order": "equivalent",
+   "fwdQ": [],
+   "expl": null,
+   "final": false,
+   "why": "The head only adds an evidence ref, which migration drops (A.11.1(b)). On both sides the memory guard maps to the same informal RefactorSensitive law on mergeAutosaves (A.11.1(g)). The law therefore has an heir (equal NF) and L4 is implied (A.8.2.3 L3–L4); L1, L6 and L7 are unchanged. The body edit puts mergeAutosaves in Δcode, so the law is unestablished (missing) and introduced (A.7.3.3), owed at normal. That is not a loosening.",
+   "v6_change": "None."
+  },
+  {
+   "case": "memory_and_trait_removed",
+   "loosens": "yes",
+   "order": "looser",
+   "fwdQ": [
+    "L4"
+   ],
+   "expl": false,
+   "final": false,
+   "why": "Base: the guard plus the RefactorSensitive marker give one informal law on mergeAutosaves (A.11.1(g)); the memory is not sensitive, so the law is normal. Head: the memory and the trait are gone, and change/modify are removed (A.11.1(j)). The base law has no heir, so L4 reads loosened (removed) (A.8.2.3 L3–L4). The summary {Read<Autosave>} is identical, so no L1 part. L4 has no counterexample (A.8.3.2); the tier is normal and the code is unchanged, so the loosening is latent, and DefaultPolicy normal blocks it (rule 9). The reverse only adds a law. Class: looser.",
+   "v6_change": "None (A.8.6: L4 only)."
+  },
+  {
+   "case": "memory_guard_removed",
+   "loosens": "yes",
+   "order": "looser",
+   "fwdQ": [
+    "L4"
+   ],
+   "expl": false,
+   "final": false,
+   "why": "Base: the guard on the memory plus the RefactorSensitive marker give RefactorSensitive's informal law on mergeAutosaves (A.11.1(g)). Head: the marker stays but the guard is gone. A.11.1(g) maps 'a RefactorSensitive marker with no guard' to the note alone, so the head has no law; the change block is removed (A.11.1(j)). The base law has no heir, so L4 reads removed, i.e. loosened (A.8.2.3). It is latent (normal tier, unchanged code) and blocks under rule 9. The reverse adds the law. Class: looser. A.8.6 (v7) states the same reading.",
+   "v6_change": "v6 read equivalent because its migration minted the same law from the guardless marker. D19/A.11.1(g) maps that marker to its note only, so v7 reads looser with a latent L4."
+  },
+  {
+   "case": "path_rule_narrowed",
+   "loosens": "yes",
+   "order": "looser",
+   "fwdQ": [
+    "L3"
+   ],
+   "expl": true,
+   "final": false,
+   "why": "Base: path.forbid(Feed → PrivateDraft over calls, provides). Head: the same rule over provides only, plus edge.exists Feed calls Recommender (A.11.1(i)). The op order needs K_h ⊇ K_b (A.5.6.4), so the base rule has no heir. L3 (A.8.4.2): the first pass over W_decl(head) finds Feed -calls-> Recommender -provides-> PrivateDraft, which violates ρc_b (completing set []), so L3 is loosened. The path is declared, so the counterexample is realised and the part is exploited (A.8.3.1); it blocks under rule 8. Reverse: the base rule is an heir of the head rule, and the dropped relation is a lower bound (A.8.1.3). Class: looser.",
+   "v6_change": "None."
+  },
+  {
+   "case": "path_rule_removed",
+   "loosens": "yes",
+   "order": "looser",
+   "fwdQ": [
+    "L3"
+   ],
+   "expl": true,
+   "final": false,
+   "why": "The base path.forbid(Feed → PrivateDraft over calls, provides) has no heir. W_decl(head) holds Feed -calls-> Recommender -provides-> PrivateDraft, so the first L3 pass finds the violation in declared edges (A.8.4.2): loosened and exploited (A.8.3.1, rule 8). The reverse only adds a claim, and the dropped relation is a lower bound. Class: looser.",
+   "v6_change": "None."
+  },
+  {
+   "case": "read_only_function_added",
+   "loosens": "no",
+   "order": "tighter",
+   "fwdQ": [],
+   "expl": null,
+   "final": false,
+   "why": "The head adds unit listRevisions at log.ts#listRevisions with effects complete {Read<Revision>} (A.11.1(b)); no Owns is minted (D19). In the base that identity is ungoverned (RevisionLog has no paths): P = every atom except ↓HardDelete<Revision>. In the head, P = cl(grants) ∩ cl{Read} ∪ Trust = {Read<Revision>} ∪ Trust, with Lvl normal (summary and authority) on every other atom. A.4.4.7 puts summaries in P and Lvl, and A.8.2.3 states 'a unit's own complete summary counts as protection' (D2). So Perm_h ⊆ Perm_b and Lvl_h ≥ Lvl_b, and L1 is implied. The reverse gains the Write family, Export and others there. Class: tighter. A.8.6 (v7) states the same reading.",
+   "v6_change": "The v6 manual already read tighter, but the literal v6 text (Lvl from forbids only, plus minted Owns) gave incomparable, and the v6 prototype wrongly blocked the change. D2 and D19 make tighter the literal v7 reading."
+  },
+  {
+   "case": "relation_left_out",
+   "loosens": "no",
+   "order": "equivalent",
+   "fwdQ": [],
+   "expl": null,
+   "final": false,
+   "why": "The base and head shape files are byte-identical. Migration is deterministic (A.11.1), so migrate(base) = migrate(head) and every question (L0–L7) is implied in both directions (A.8.1.3).",
+   "v6_change": "None."
+  },
+  {
+   "case": "renamed_component",
+   "loosens": "rename",
+   "order": "undecided",
+   "fwdQ": [
+    "L3"
+   ],
+   "expl": false,
+   "final": false,
+   "why": "Feed is renamed PublicFeed and the rule follows it, with no was line. ρ rules 0–2 leave Feed unmapped: there is no was, and components with empty bindings cannot match by identical non-empty bindings. The unique remove-and-add is only a rule-3 hint (A.6.1.4, D17). The rule no_feed_to_drafts (fp 5dcd25997943ef78) has no heir under rules 0–2. Under the hint its head form (fp d0eb216e225bd2ff) is equal after renaming, so it is an heir and the failure does not recur under rule 3. L3 is therefore undecided (A.8.1.6; core §8: a rename without was is undecided), and the diagnostic suggests the was line. The undecided obligation still carries exploited (A.8.1.6: undecided parts may be exploited; A.8.2.1). Here it is false: under the unmapped-removed reading nothing in the head realises a path from Feed (PublicFeed has no edges). The tier is normal, which DefaultPolicy does not list as blocking coverage, and the case has no code (A.8.3.1). With no code, L1 and L6 compare nothing, and no matched item's tier or owner changed (L7). The reverse pass is undecided the same way, so the order is undecided. With was Feed on PublicFeed the class is equivalent.",
+   "v6_change": "No class change: v6 also abstained, and v6's manual recorded the intended class (equivalent). v7 outputs the order class (D17) and defines exploitation for undecided parts (A.8.1.6), so the row records exploited=false instead of leaving it blank."
+  },
+  {
+   "case": "renamed_component_and_narrowed_rule",
+   "loosens": "yes",
+   "order": "looser",
+   "fwdQ": [
+    "L3"
+   ],
+   "expl": true,
+   "final": false,
+   "why": "ρ rules 0–2 do not map Feed (A.6.1.4). Under the rule-3 hint, ρc_b = path.forbid(PublicFeed → PrivateDraft over calls, provides). The head's rule over provides is not ⊒ it (A.5.6.4), and W_decl(head) holds PublicFeed -calls-> Recommender -provides-> PrivateDraft, which violates it. Because it also fails under rule 3, L3 is loosened, not undecided (A.8.1.6). The path is declared, so the part is exploited (A.8.3.1, rule 8). Reverse: under the hint the base rule (more kinds) is an heir of the head rule, so the reverse L3 is undecided under rules 0–2 only and implied under rule 3. I read the class as looser, which is also the class a was line gives. A.8.1.3 does not define how an undecided reverse pass combines (see spec_problems), and ROADMAP's '≤ 2 abstentions (renames without was)' leaves this case decided.",
+   "v6_change": "None (v6 also read looser under the hint, with the reverse undecided). A.8.1.6 rules out the v6 kernel's vacuous 'ga' answer."
+  },
+  {
+   "case": "resource_renamed_trait_dropped",
+   "loosens": "yes",
+   "order": "incomparable",
+   "fwdQ": [
+    "L1"
+   ],
+   "expl": true,
+   "final": true,
+   "why": "Revision becomes Ledger without was. ρ rules 0–2 leave it unmapped (no binding, no was), and rule 3 is a hint (A.6.1.4). Base: the prelude AppendOnly gives std::NoHardDelete<history::Revision> at tier final (A.11.1(e), D19; fp b794b7a06f9480bd), with no std::Owns (A.11.1(d)). Head: Ledger carries no trait, HardDelete<Ledger> is granted, and purgeOldRevisions {HardDelete<Ledger>} is added. L1 (A.8.2.3): under rules 0–2, res:Revision is unmapped in the head ('all verbs permitted, none protected'). Under the hint the head still has no forbid. HardDelete, Truncate and DropStorage fall final>none at ungoverned log.ts, purge.ts and the cell, and final>normal at appendRevision (D2). HardDelete also falls final>none at purgeOldRevisions, where Truncate and DropStorage fall final>normal. The forbid part therefore fails under rule 3 too and is loosened (A.8.1.6), at final (A.8.2.2). appendRevision's summary and RevisionLog's authority+ fail only under rules 0–2, so they are undecided L1 parts. No L7: under rules 0–2 Revision is matched with nothing, so no matched item's tier or owner is compared (A.8.2.3 L7), whichever item carries the final tier. Exploited: W_decl(head) holds (purgeOldRevisions, HardDelete, Ledger), the rule-3 counterexample (A.4.4.4, A.8.3.1). The forbid is final, so rule 4 applies (A.7.5.1). Reverse: purge moves from ungoverned into a summary-bounded unit, which fails under rule 3 too, so the head also tightens. Class: incomparable.",
+   "v6_change": "Class unchanged. v6's manual listed L7, but v6's prototype raised no L7 here, because Revision is unmatched without was. D19 removes the Owns parts (L1 46c9263b29d3 and the L3 undecided part). D2 turns v6's L2 undecided part into an undecided L1 summary part. RevisionLog's part is undecided (it fails only under rules 0–2), not loosened (D17)."
+  },
+  {
+   "case": "resource_renamed_trait_kept",
+   "loosens": "rename",
+   "order": "undecided",
+   "fwdQ": [
+    "L1"
+   ],
+   "expl": false,
+   "final": true,
+   "why": "This is a pure rename of Revision to Ledger, with AppendOnly kept and no was. Revision is unmapped under ρ rules 0–2, and rule 3 gives only a hint (A.6.1.4). Base and head each carry std::NoHardDelete at final (A.11.1(e); fps b794b7a06f9480bd and bc9afc5abdfbbcb8). Under rules 0–2, res:Revision is unmapped in the head (all verbs permitted, none protected, A.8.2.3 L1), so the final forbid, appendRevision's summary and RevisionLog's authority all appear loosened. Under rule 3 each has an equal-NF heir and every position is identical. The parts are therefore undecided, not loosened (A.8.1.6; core §8; D17 suggests the was line): loosens is rename and fwdQ is [L1]. final is true: the forbid's obligation is undecided but keyed to a base claim of tier_b final, and its tier is the subject's (A.8.2.1, A.8.2.2). It blocks under rule 4 until two persons answer (A.7.5.1, A.6.3.4) or a was line is added. exploited is false: no head fact names Revision, and log.ts is identical in base and head, so no affected changed identity is uncovered (A.8.3.1). No L7: Revision is unmatched under rules 0–2. The reverse pass is undecided the same way, so the order is undecided. With was Revision on Ledger the class is equivalent.",
+   "v6_change": "Abstention unchanged. v6's undecided parts included L2 (summary) and an L3 on the minted Owns edge forbid; in v7 they are L1 only (D2, D19). v6's prototype already marked the forbid's undecided part final."
+  },
+  {
+   "case": "rule_added",
+   "loosens": "no",
+   "order": "tighter",
+   "fwdQ": [],
+   "expl": null,
+   "final": false,
+   "why": "The head adds path.forbid(Recommender → Feed over calls) (A.11.1(i)). Every base claim keeps an heir, so the forward pass is implied. Reverse: that claim has no heir in the base. G_A over W_decl(base) admits the type-correct edge Recommender -calls-> Feed, because the edge keeps no_feed_to_drafts, and that edge violates the claim. Reverse L3 is therefore loosened, with a latent counterexample (A.8.4.2). Class: tighter.",
+   "v6_change": "None."
+  },
+  {
+   "case": "rule_and_trait_removed_together",
+   "loosens": "yes",
+   "order": "incomparable",
+   "fwdQ": [
+    "L1"
+   ],
+   "expl": true,
+   "final": true,
+   "why": "Base: 'forbid final HardDelete<T> when T has Protected' gives effect.forbid(HardDelete<Revision>,[*]) at final on the bearer (A.11.1(i),(e)). Protected is an empty marker template, so Revision's own tier stays normal. Head: the rule and the attachment are gone, HardDelete is granted, and unit purge declares {HardDelete<Revision>}. L1 forbid part (A.8.2.3): Lvl falls final>none in ungoverned code and cells and final>normal at listRevisions; HardDelete enters P at purge. There is no authority+ part: at listRevisions, which the base attributes to RevisionLog, the unit's summary {Read} keeps HardDelete and Update out of P (D17), and purge was ungoverned in the base. The counterexample is the declared (purge, HardDelete<Revision>), so the part is exploited; the forbid is final, so rule 4 applies. No L7, since no item tier written as final falls. The reverse loosens at purge. Class: incomparable.",
+   "v6_change": "Class unchanged. v6's second group (RevisionLog authority+ {listRevisions, HardDelete}, which the head's own summary rejects) disappears under D17, leaving one L1 obligation."
+  },
+  {
+   "case": "rule_moved_between_files",
+   "loosens": "no",
+   "order": "equivalent",
+   "fwdQ": [],
+   "expl": null,
+   "final": false,
+   "why": "The same claims are declared in another file of the same module. The fp covers op and args only (A.4.1.5, A.5.7.1; locations excluded), so every claim is its own heir and every question is implied in both directions.",
+   "v6_change": "None."
+  },
+  {
+   "case": "rule_removed",
+   "loosens": "yes",
+   "order": "incomparable",
+   "fwdQ": [
+    "L1"
+   ],
+   "expl": true,
+   "final": true,
+   "why": "The final rule-derived effect.forbid(HardDelete<Revision>,[*]) is removed (A.11.1(i),(e)), while Revision keeps the empty Protected marker, so its tier stays normal. The head grants HardDelete and adds purge {HardDelete<Revision>}. L1 forbid part (A.8.2.3): Lvl falls final>none in ungoverned code and cells and final>normal at listRevisions, and HardDelete enters P at purge. listRevisions' summary {Read} blocks any authority+ part (D17). The counterexample is the declared (purge, HardDelete), so the part is exploited; the forbid is final, so rule 4 applies. No L7. The reverse loosens at purge. Class: incomparable.",
+   "v6_change": "Class unchanged. The spurious RevisionLog authority+ group disappears under D17."
+  },
+  {
+   "case": "trait_removed_from_resource",
+   "loosens": "yes",
+   "order": "incomparable",
+   "fwdQ": [
+    "L1"
+   ],
+   "expl": true,
+   "final": true,
+   "why": "Base: the prelude AppendOnly becomes std::NoHardDelete<history::Revision> at tier final (A.11.1(e), D19; fp b794b7a06f9480bd), forbidding HardDelete, Truncate and DropStorage. owns becomes Revision's owner only, with no std::Owns (A.11.1(d)). The final tier is the claim's: std templates carry no tier (A.4.1.3), and migrate writes none on the bearer (A.11.1, D19; the text does not say where, see the annex wording). Revision therefore stays tier normal in base and head. Head: the trait is gone, HardDelete<Revision> is granted, and purgeOldRevisions {HardDelete<Revision>} binds purge.ts. L1 (A.8.2.3, A.4.4.7): the forbid has no heir (A.6.2.1). HardDelete falls final>none at purgeOldRevisions, and Truncate and DropStorage fall final>normal there (summary and authority). All three fall final>normal at appendRevision (D2) and final>none at ungoverned log.ts, purge.ts and the cell. That is one final part. There is no authority+ part: appendRevision, the only base-RevisionLog position, keeps HardDelete and Update out of P through its summary, and purge was ungoverned in the base (D17). No L7: no matched item's tier fell, and the forbid has no heir (A.8.2.3 L7); the final tier is reported once, at the forbid (D18). Exploited: W_decl(head) holds (purgeOldRevisions, HardDelete, Revision) (A.8.3.1). The forbid is final, so rule 4 applies (A.7.5.1). Reverse: purge moves from ungoverned into a summary-bounded unit, so the head also tightens. Class: incomparable.",
+   "v6_change": "Class unchanged. v6's L7 part on Revision goes, because v6's migrate.ts wrote tier final on the resource. D19 removes the Owns part (46c9263b29d3). D17 removes the spurious RevisionLog authority+ part (HardDelete at appendRevision, which the summary rejects). The forbid is NoHardDelete (D19), not D13's std::AppendOnly, which forbids Update."
+  },
+  {
+   "case": "unused_rule_removed",
+   "loosens": "yes",
+   "order": "looser",
+   "fwdQ": [
+    "L3"
+   ],
+   "expl": false,
+   "final": false,
+   "why": "The base path.forbid(Feed → PrivateDraft over calls, provides) has no heir. The head has no structural upper bound, so G_A = W_decl(head) plus the type-correct new edges, among them Feed -calls-> Recommender (or Feed -provides-> PrivateDraft), which complete a violation. L3 is loosened (A.8.4.2), and the completing edge lies outside W_decl, so the part is latent (A.8.3.1). It is normal and blocks under rule 9. The reverse only adds a claim. Class: looser.",
+   "v6_change": "None."
+  },
+  {
+   "case": "guard-policy-removal",
+   "loosens": "yes",
+   "order": "looser",
+   "fwdQ": [
+    "L1"
+   ],
+   "expl": false,
+   "final": true,
+   "why": "resource AuditEvent : AppendOnly becomes std::NoHardDelete<skill_guard_removal::AuditEvent> at tier final over * (A.11.1(e), D19; fp 26adf38dedc22981). The tier belongs to the claim, not the resource (A.4.1.3; see the annex wording). The candidate drops the trait. With no component and no code, the only position is the universe cell (ungoverned, ungoverned) (A.8.1.4, D23). There HardDelete, Truncate and DropStorage fall final>none, one L1 part at final (A.8.2.3, A.8.2.2). No L7: AuditEvent's tier is normal on both sides, and the forbid has no heir. No fact realises the part and no changed identity exists, so it is latent (A.8.3.1). It is final, so it blocks under rule 4 (A.7.5.1). The reverse adds nothing. Class: looser.",
+   "v6_change": "Class unchanged. v6's L7 part on AuditEvent goes, because v6's migrate.ts wrote tier final on the resource. The atom set is unchanged: NoHardDelete per D19 equals v6's mapping."
+  },
+  {
+   "case": "guard-equivalent-relocation",
+   "loosens": "no",
+   "order": "equivalent",
+   "fwdQ": [],
+   "expl": null,
+   "final": false,
+   "why": "The same `resource AuditEvent : AppendOnly` is declared in another file of the same module. Both sides migrate to the same NoHardDelete claim and resource tier (A.11.1(e)), and fps exclude locations (A.5.7.1), so every question is implied in both directions.",
+   "v6_change": "None."
+  },
+  {
+   "case": "cal1-removal-destructive",
+   "loosens": "yes",
+   "order": "incomparable",
+   "fwdQ": [
+    "L1"
+   ],
+   "expl": true,
+   "final": true,
+   "why": "Base: AuditEvent : AppendOnly becomes std::NoHardDelete<audit::AuditEvent> at final (A.11.1(e), D19; fp ccfcbabf10265d64), with no std::Owns (A.11.1(d)). The tier belongs to the claim (A.4.1.3; see the annex wording). appendEvent binds by name over ids(M_h) (A.11.1(a), A.3.3.2; store.ts from the H4 registry). Head: the trait is removed, HardDelete is granted, and deleteEvent {HardDelete} binds store.ts#deleteEvent. L1 (A.8.2.3, A.4.4.7): HardDelete falls final>none at deleteEvent, which was ungoverned in the base, and Truncate and DropStorage fall final>normal there. All three fall final>normal at appendEvent, whose summary protects (D2), and final>none at ungoverned store.ts and the cell. That is one final part. There is no authority+ part: appendEvent's summary keeps HardDelete and Update out of P at the only base-AuditStore position (D17). No L7: AuditEvent's tier is normal on both sides, and the forbid has no heir. Exploited: W_decl(head) holds (deleteEvent, HardDelete, AuditEvent) (A.8.3.1). The forbid is final, so rule 4 applies (A.7.5.1). Reverse: deleteEvent moves from ungoverned into a unit bounded to {HardDelete, Update, Write}. Class: incomparable.",
+   "v6_change": "Class unchanged (the v6 prototype read incomparable; the v6 kernel read looser). v6's L7 part on AuditEvent goes. D19 removes the Owns part (88d1c8e01d41), and D17 removes the spurious AuditStore authority+ part."
+  },
+  {
+   "case": "cal2-supported-loosening",
+   "loosens": "yes",
+   "order": "looser",
+   "fwdQ": [
+    "L1"
+   ],
+   "expl": false,
+   "final": true,
+   "why": "ExportBundle : AppendOnly becomes std::NoHardDelete<exp::ExportBundle> at final (A.11.1(e), D19; fp 63695df8889b4d65). The tier belongs to the claim (A.4.1.3; see the annex wording). The head drops the trait and adds a rationale. That becomes a rationale note about ExportBundle, with its issue reference kept as a labelled text line (A.11.1(g)); notes derive nothing (A.4.7.2, core §4.4). With no code, the only position is the universe cell. There HardDelete, Truncate and DropStorage fall final>none, one L1 part at final (A.8.2.3). No L7: ExportBundle's tier is normal on both sides, and the forbid has no heir. No fact or changed identity exists, so the part is latent (A.8.3.1). It is final, so it blocks under rule 4 until two persons answer (A.7.5.1). The rationale can support their answer but implies nothing. Class: looser.",
+   "v6_change": "Class unchanged. v6's L7 part on ExportBundle goes, because v6's migrate.ts wrote tier final on the resource."
+  },
+  {
+   "case": "cal3-relocated-rule",
+   "loosens": "no",
+   "order": "equivalent",
+   "fwdQ": [],
+   "expl": null,
+   "final": false,
+   "why": "The rule 'forbid final HardDelete<T> when T has Persistent' moves to another file without change, and gives the same effect.forbid(HardDelete<AuditEvent>,[*]) at final on both sides (A.11.1(i)). Persistent maps to the std marker (A.11.1(e)). Equal fps (A.5.7.1) give every claim an heir, and P and Lvl are unchanged. Class: equivalent.",
+   "v6_change": "Class unchanged. v6's E-shadow on both sides came from the prototype declaring shape1.migrated::Persistent twice. Since A.11.1(e) maps prelude markers to std markers, it should not recur (speculation)."
+  },
+  {
+   "case": "cal4-protected-to-appendonly",
+   "loosens": "no",
+   "order": "equivalent",
+   "fwdQ": [],
+   "expl": null,
+   "final": false,
+   "why": "Base: the local trait Protected { forbid final HardDelete<T> } gives effect.forbid(HardDelete<AuditEvent>,[*]) at final. Head: AuditEvent : AppendOnly gives std::NoHardDelete<AuditEvent> at final (A.11.1(e), D19), which has the same NF and fp. The base claim's heir has an equal tier, the resource tier is final on both sides under the bearer reading, and P and Lvl are equal everywhere. Class: equivalent.",
+   "v6_change": "Class unchanged, but it now depends on D19's NoHardDelete mapping. Mapping to v7 std::AppendOnly (forbid Update, D13) would make the head tighter. Under a mixed tier-placement reading (see spec_problems), the reverse L7 would read tighter."
+  },
+  {
+   "case": "cal5-path-weakened",
+   "loosens": "yes",
+   "order": "looser",
+   "fwdQ": [
+    "L3"
+   ],
+   "expl": true,
+   "final": false,
+   "why": "The path forbid BuildOrchestrator → ProductionStore loses provides, so it has no heir (A.5.6.4: K ⊇). The head declares BuildOrchestrator -provides-> ProductionStore, a one-edge path that violates the base claim in W_decl(head) (A.8.4.2). L3 is loosened and exploited (A.8.3.1, rule 8). Reverse: the base rule is an heir, and the relation is a lower bound. Class: looser.",
+   "v6_change": "None."
+  },
+  {
+   "case": "cal6-vendored-final-removed",
+   "loosens": "yes",
+   "order": "looser",
+   "fwdQ": [
+    "L1"
+   ],
+   "expl": false,
+   "final": true,
+   "why": "The vendored module durable is an ordinary shape module and migrates with the shape (A.11.1(k)). DurableAudit's forbid final HardDelete<T> stays a final clause of the migrated template, and allow Append<T> is dropped (A.11.1(e)). AuditEvent : DurableAudit therefore gives effect.forbid(HardDelete<audit::AuditEvent>,[*],[]) at tier final (A.4.1.3; fp ccfcbabf10265d64), while the resource itself stays tier normal. The head template has no clause, so the forbid has no heir. L1 (A.8.2.3): HardDelete, Truncate and DropStorage fall final>normal at appendEvent, whose summary and authority still exclude them (D2), and final>none at ungoverned store.ts and the cell. That is one final part. No L7: the resource declaration is unchanged, its tier is normal on both sides, and the forbid has no heir. Publishing durable as a pinned pack instead gives the same L1 answer, and pack items are never L7 subjects (D18). store.ts is identical in base and head, and no head fact names these atoms, so the part is latent (A.8.3.1). It is final, so it blocks under rule 4 (A.7.5.1). The reverse only adds protection. Class: looser.",
+   "v6_change": "Class unchanged. v6's L7 part on AuditEvent goes: v6's migrate.ts raised the bearer's tier whenever a trait held forbid final. The counterexample must now be a (position, atom) the head admits (D17, A.8.3.2). It therefore moves from v6's {store.ts#appendEvent, DropStorage}, which appendEvent's summary and authority reject, to an ungoverned position."
+  },
+  {
+   "case": "cal7-generic-attestation",
+   "loosens": "no",
+   "order": "equivalent",
+   "fwdQ": [],
+   "expl": null,
+   "final": false,
+   "why": "`attest` migrates to nothing (A.11.1(j), A.13.5), so both shapes are identical after migration. The store.ts edit is a coverage and evidence matter (A.7.4), not part of the order. Every question is implied in both directions.",
+   "v6_change": "None."
+  },
+  {
+   "case": "cal8-false-completeness",
+   "loosens": "no",
+   "order": "equivalent",
+   "fwdQ": [],
+   "expl": null,
+   "final": false,
+   "why": "effects unknown becomes no summary, and effects complete {} becomes effects.upper(exportSnapshot, ∅) (A.11.1(b)). Exporter has no grants (open authority) and no paths, and the shape declares no resource. L1's T therefore holds only trust (A.8.2.3: resource codes of bindings, res:Q per unbound resource, trust). S(u) always contains TrustAtoms (A.4.4.7), so the empty summary excludes no atom of T, and P and Lvl are equal at every position in both directions. Facts on resource codes that no resource binds do not lift (A.4.4.2, A.3.3.9), so ⟦S_h⟧° = ⟦S_b⟧° (A.8.1.3). The forward and reverse passes are both implied, and the class is equivalent. L2 is retired (D2), so the summary is no longer compared as a summary. The probably false completeness is for observation and coverage once a resource binds code (A.4.4.13, A.8.1.3).",
+   "v6_change": "Class changes from tighter to equivalent. v6 read the added summary as a tightening through L2. v7 retires L2 (D2), and L1 compares only lifted atoms over T, which here holds only trust; summaries never exclude trust atoms (A.4.4.7)."
+  }
+ ]
+}

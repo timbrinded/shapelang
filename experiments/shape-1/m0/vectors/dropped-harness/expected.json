@@ -1,0 +1,133 @@
+{
+ "vector": "dropped-harness",
+ "title": "An edited harness makes a fresh record producer-changed, and dropping the record or its harness field gives E-provider-missing: blocked in every case, never pass",
+ "decides": [
+  "A.5.4.1",
+  "A.5.2.13",
+  "A.12.6",
+  "A.7.3.3",
+  "D9"
+ ],
+ "cases": [
+  {
+   "case": "record-present",
+   "input": "record-present.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: DefaultPolicy critical blocks unestablished"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:85e169c4b02653f162d80cacabd140736c5347d43698224dc3f16455de0d8ac3",
+      "reason": "producer-changed",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "binding": "bd:dc4f0339e8d229d16dddb48d44d511f672b58c5b45507a3090d5b5bdfa0422de"
+     },
+     "why": "A.5.4.1 [D9]: the fresh record cites the head harness digest, but its harness meets Δcode, so it is producer-changed (otherwise usable, supporting); A.7.3.3: reason producer-changed introduces; A.7.2.2: affected adds the harness finest change, code holds every Req pair"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.5.2.13: a producer-changed record counts as supplied"
+    }
+   ]
+  },
+  {
+   "case": "record-dropped",
+   "input": "record-dropped.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 1: errors block"
+    },
+    {
+     "in": "errors",
+     "select": {
+      "code": "E-provider-missing"
+     },
+     "check": "count",
+     "value": 1,
+     "why": "A.5.2.13: the authenticated base test provider unitTest supplies no applicable record at head for the claim it decides"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"
+     },
+     "check": "fields",
+     "value": {
+      "reason": "missing",
+      "introduced": false,
+      "severity": "owed",
+      "tier": "critical",
+      "binding": "bd:2b0e7f5c0d5f14f18ba83800a508a50421aeb21711aec7ae66a333f11aa5badd"
+     },
+     "why": "A.5.4.3: no record holds a reason, so missing; Req (run@unit) does not meet Δcode and no record's cone does, so not introduced (A.7.3.3), owed by rule 6"
+    }
+   ]
+  },
+  {
+   "case": "harness-field-dropped",
+   "input": "harness-field-dropped.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 1"
+    },
+    {
+     "in": "rejected",
+     "select": {
+      "code": "RJ14"
+     },
+     "check": "count",
+     "value": 1,
+     "why": "A.12.6 RJ14: a test record without harness is rejected"
+    },
+    {
+     "in": "errors",
+     "select": {
+      "code": "E-provider-missing"
+     },
+     "check": "count",
+     "value": 1,
+     "why": "A.5.2.13: rejected records do not count as supplied"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"
+     },
+     "check": "fields",
+     "value": {
+      "reason": "missing",
+      "introduced": false,
+      "severity": "owed",
+      "tier": "critical",
+      "binding": "bd:2b0e7f5c0d5f14f18ba83800a508a50421aeb21711aec7ae66a333f11aa5badd"
+     },
+     "why": "A.5.4.3: no record holds a reason, so missing; Req (run@unit) does not meet Δcode and no record's cone does, so not introduced (A.7.3.3), owed by rule 6"
+    }
+   ]
+  }
+ ]
+}

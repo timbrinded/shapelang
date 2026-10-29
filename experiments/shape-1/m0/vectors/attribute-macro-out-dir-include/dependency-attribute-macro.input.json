@@ -1,0 +1,498 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "crate2",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/crate2.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Hatchy",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "erin"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "KvTeam",
+       "kind": "team",
+       "members": [
+        "dana"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "ParserTeam",
+       "kind": "team",
+       "members": [
+        "pat"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "GenTeam",
+       "kind": "team",
+       "members": [
+        "gus"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "dana",
+       "kind": "person",
+       "identities": [
+        "github(\"dana\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "erin",
+       "kind": "person",
+       "identities": [
+        "github(\"erin\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "gus",
+       "kind": "person",
+       "identities": [
+        "github(\"gus\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "pat",
+       "kind": "person",
+       "identities": [
+        "github(\"pat\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "erin",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Parser",
+       "owner": "ParserTeam",
+       "tier": "critical",
+       "paths": [
+        "src/**/*.rs"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "NoUnsafe",
+       "owner": "ParserTeam",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "unsafe<Trust>"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "afc50ebc8ca826f430c9a9b86ea2c0c4cff8f83f73ea39d019feb3203d1aa595"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/crate2.shape",
+       "mode": "100644",
+       "blob": "6ef85e89eed882c9d58ecf67a0ca6986d5b899c1"
+      },
+      {
+       "path": "src/parser.rs",
+       "mode": "100644",
+       "blob": "e5c28203c9f022f61af6c0cc05377a7942d3f638"
+      },
+      {
+       "path": "src/tables.rs",
+       "mode": "100644",
+       "blob": "39b3c01645f9f7b7f2eb990253833ba243186cc0"
+      }
+     ],
+     "entries": [
+      {
+       "id": "rust:src/parser.rs",
+       "projection": "file",
+       "scheme": "rust.file.v1",
+       "digest": "sha256:82ddc868878a3394eb95a7d341e2aa47b90dbdfadeadb51931e8faf6a0eb76e5",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "rust:src/parser.rs",
+       "projection": "own",
+       "scheme": "rust.own.v2",
+       "digest": "sha256:3530dc8882434f373ac22f02c244318e4e9f84b880ecdead60ce2af242a3f911",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "rust:src/parser.rs#parse",
+       "projection": "own",
+       "scheme": "rust.own.v2",
+       "digest": "sha256:59f88a7cf3099a0f732e24492cb6471414cd609232f646f35bf7b44422d4c8a2",
+       "kind": "function",
+       "parent": "rust:src/parser.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": false
+      },
+      {
+       "id": "rust:src/parser.rs#parse",
+       "projection": "unit",
+       "scheme": "rust.unit.v2",
+       "digest": "sha256:d67e808f7fecbcb913d30ef7628ffb600f298242f8f24ec9aa10837b678bca16",
+       "kind": "function",
+       "parent": "rust:src/parser.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": false
+      },
+      {
+       "id": "rust:src/tables.rs",
+       "projection": "file",
+       "scheme": "rust.file.v1",
+       "digest": "sha256:38aed2865b9ba6e72509d85fe8ee32e1d00d652158b0a0c1b99f7d16992051d0",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "rust:src/tables.rs",
+       "projection": "own",
+       "scheme": "rust.own.v2",
+       "digest": "sha256:1d2302016fcf45d92d37074e474d49efd784e410e5e10ac4369376352436a9ca",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "crate2",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/crate2.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Hatchy",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "erin"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "KvTeam",
+       "kind": "team",
+       "members": [
+        "dana"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "ParserTeam",
+       "kind": "team",
+       "members": [
+        "pat"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "GenTeam",
+       "kind": "team",
+       "members": [
+        "gus"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "dana",
+       "kind": "person",
+       "identities": [
+        "github(\"dana\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "erin",
+       "kind": "person",
+       "identities": [
+        "github(\"erin\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "gus",
+       "kind": "person",
+       "identities": [
+        "github(\"gus\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "pat",
+       "kind": "person",
+       "identities": [
+        "github(\"pat\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "erin",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Parser",
+       "owner": "ParserTeam",
+       "tier": "critical",
+       "paths": [
+        "src/**/*.rs"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "NoUnsafe",
+       "owner": "ParserTeam",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "unsafe<Trust>"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "f027f98717690e193310b89b66847ec759760ae62752c36d36b3c1a00f33def0"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/crate2.shape",
+       "mode": "100644",
+       "blob": "6ef85e89eed882c9d58ecf67a0ca6986d5b899c1"
+      },
+      {
+       "path": "src/parser.rs",
+       "mode": "100644",
+       "blob": "6d9cdbbb969da448c198ea30e02107b9b13339f7"
+      },
+      {
+       "path": "src/tables.rs",
+       "mode": "100644",
+       "blob": "39b3c01645f9f7b7f2eb990253833ba243186cc0"
+      }
+     ],
+     "entries": [
+      {
+       "id": "rust:src/parser.rs",
+       "projection": "file",
+       "scheme": "rust.file.v1",
+       "digest": "sha256:ce9d13f68ed47ec28477f0254d558ad5cca6cb8aec5fa9e98a4b7057e862accf",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "rust:src/parser.rs",
+       "projection": "own",
+       "scheme": "rust.own.v2",
+       "digest": "sha256:3530dc8882434f373ac22f02c244318e4e9f84b880ecdead60ce2af242a3f911",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "rust:src/parser.rs#parse",
+       "projection": "own",
+       "scheme": "rust.own.v2",
+       "digest": "sha256:f62018fa81de1e4f91293370ae7393a502339d844a0c49b5a325a9fa5eeed5b5",
+       "kind": "function",
+       "parent": "rust:src/parser.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "rust:src/parser.rs#parse",
+       "projection": "unit",
+       "scheme": "rust.unit.v2",
+       "digest": "sha256:44bc26d3295ad5870ee201d8397c5e5ed907ec87cb37673a3b12c1ccc89ba159",
+       "kind": "function",
+       "parent": "rust:src/parser.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "rust:src/tables.rs",
+       "projection": "file",
+       "scheme": "rust.file.v1",
+       "digest": "sha256:38aed2865b9ba6e72509d85fe8ee32e1d00d652158b0a0c1b99f7d16992051d0",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "rust:src/tables.rs",
+       "projection": "own",
+       "scheme": "rust.own.v2",
+       "digest": "sha256:1d2302016fcf45d92d37074e474d49efd784e410e5e10ac4369376352436a9ca",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"acme-code-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

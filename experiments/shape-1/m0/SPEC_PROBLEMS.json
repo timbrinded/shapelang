@@ -1,0 +1,437 @@
+{
+ "_doc": "Every place an M0 agent found the version 7 text silent, ambiguous or inconsistent, verbatim, before settlement.",
+ "items": [
+  {
+   "from": "author vectors-A",
+   "text": "Input profile: RECORDS §4 and A.12.7.1 require `files` (shape file texts checked against blob ids), `packs`, `trustRoots` and commit objects, but no 1.0 parser exists. Like spec/example-inputs and the other M0 groups, these inputs use the prototype's `source` (shape.source.v1) stand-in, omit packs, trustRoots and commit, and encode an unparsable base as `base.source: null`. A version 7 checker must read this profile, or the vectors need a `files` form before M1."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "A.7.3.3 (and core §7.3) says a structure contradiction is introduced when 'its witness needs a new lifted edge'; A.4.4.11 says 'Supports decide introduced, bindings, groups; witnesses are reported'. The two readings differ exactly in scc-merge (the witness A->B->A is old; the support holds the new C->A) and in off-path-cycle/new-off-path-edge (the witness s->m->t is old; the support holds the new X->Y). The vectors pin the A.4.4.11 reading (introduced), which matches the intent stated in versions 4-6 ('introduces that SCC's contradiction even though the canonical witness is the old cycle'). A.7.3.3 should say 'whose support holds a new lifted edge'."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "Undeclared hatch kind: std 1.0.0 (syntax §4) declares every hatch kind in the 1.0 registry (A.12.2.8), so no undeclared registry kind exists. The vector therefore uses a hypothetical later-registry TS kind `eslint_disable` in the manifest markers. The text does not say how the checker treats a marker kind it cannot place in a registry (the registry version is not an input). Nor does it fix the subject atom of such a fact: A.4.4.8 keeps the 'raw atom', while A.3.4.5 lifts the kind to Undeclared<Trust> (v6 printed Hatch<std::Trust>). The vector pins claim.fp and subject.code only, not the key."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "The Undeclared clause effect.forbid(Undeclared<Trust>, [*], []) has no channel. A.4.5.2 gives a Trust atom hatch(L) channels per language with a hatch kind in ↓v, and ↓Undeclared = {Undeclared} holds no language's kind. So the clause is declared-only and never needs hatch coverage, even at code that is not hatchComplete. Possibly unintended."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "'barrel import' is a code-fingerprint vector (A.12.3.2, resolver A.12.2.10). The checker never reads code, so the checker vector can only fix the consequence of the manifest's refs and unit digests (Req through Refs°). Whether shp manifest produces those refs and digests for a workspace barrel belongs to M3 and needs a builder-side vector."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "A.11.2.4 lists 'callee bug introduces a unit law (H3, D7)', but D7 is the refutation decision. The rule this vector decides is D4's cone clause (A.7.3.3)."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "'dropped harness' is not defined in the version 7 text. Versions 4-6 defined it as Example 3 with the harness edited: blocked by producer-changed when the record is present, by E-provider-missing when it is dropped. The vector follows that definition and adds the literal reading: a record whose harness field is dropped gives RJ14, then E-provider-missing."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "Who may answer a loosening is ambiguous. A.7.1.3 has loosenings answered 'by the subject tier's judges bound to the base owner', and A.9.5 'by the subject's base owner at every tier', but A.6.3.3 makes every actor listed in tier*(o)'s judges eligible. Whether a judge named in the policy who is not the base owner counts as 'eligible by role' for a loosening decides whether the L01 fallback attack is closed for loosenings. The vector uses a producer-changed answer instead, where A.6.3.3 and A.7.6.5 are unambiguous."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "Encodings the text does not fix, which the vectors therefore do not pin: the JSON of an L6 tuple in 'L6 drop <id> <JCS(tuple)>' (so no rename-in-place binding); the ESF encoding of provider soundness in 'L7 <field> <JCS(base)> <JCS(head)>' (so no L7 binding); the JSON shape of L1 counterexamples 'printed as the fact (at, verb, resource)' (is there a type field? a resource code or res:Q?); the E-provider-missing subject ('provider Q' plus 'claim Q': one string, and with which separator?); answered[].records for CI review lines, which have no record id (v6 prints review:<hex>); the order of fact ids in a multi-fact witness (path order or codepoint order); and answered[].exploited."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "A.7.2.2: a producer-changed obligation's binding adds the implementation and harness finest changes to `affected`, but `code` holds only Req pairs, so those identities' digests are not bound. A second edit of the same lockfile within the change therefore keeps the binding and any answer to it, against §7.2's 'any change reopens'. Version 6 behaves the same."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "A.7.2.2's 'Coverage binds unit or own digests only' does not say which projection a function identity that has a unit projection binds; the rule just above it says '(x, own) per affected finest change'. The vectors use own, as vectors.py Variant B'' and v6 do. Measured: v6's coverage bindings equal version 7's minus the '<claim fp> <channel>' delta."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "A.12.7.5 lists `executable` among every manifest entry's fields but says 'executable (file identities)', leaving the value for symbol entries unspecified. The vectors set it on every entry: true for TS and Verus, false for raw data and pkgjson file identities."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "A.6.4.5 names the 'base shape owner' as L0's answerer, but an unparsable base cannot supply one. Version 4 fell back to the head's shape declaration; version 7 dropped that fallback. The L0 owner is not pinned."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "A.3.3.2 and A.10.1 leave it open whether an explicit `bind ts(\"…\")` naming a missing identity is E-unbound or E-unknown ('unresolved references'). The vectors use default-name units for E-unbound."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "Whether adding a provider in the head is an L7 question is not stated: L7 lists only removals and changed fields of base providers. The answer follows only indirectly, from A.7.3.3 ('provider additions never introduce') together with 'loosenings are always introduced'. head-only-provider does not pin loosening."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "In code-moved-lower-tier, the only text that makes the final L1 authority part exploited is A.8.3.1's terse '(none: all count)': no channel is observable, so all channels count and the new identities are uncovered. The vector pins exploited true on that reading."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "A.14.2 step 3 says SetContractFaithful's Req at contract includes the DelegationMap functions that set references, but the manifests in spec/example-inputs carry no refs. approve-without-exception and allowed-hatch-at-boundary add refs(set) = [StrictlyOrderedVec::insert] and a contract judgment citing both. Regenerating the golden outputs for the example inputs should add them the same way."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "A.6.1.3 computes now* from the base committer time, but the version 7 input carries base {revision, commit, files, manifest} with no committer-time field outside the commit object. The 2099 vector supplies none, so now* = now."
+  },
+  {
+   "from": "author vectors-A",
+   "text": "A.7.5.1 rule 1 'Errors block' does not say whether it decides obligation severity when errors exist. dropped-harness record-dropped pins the law's unestablished obligation as owed by rule 6, with the verdict blocked by the E-provider-missing error."
+  },
+  {
+   "from": "blind vectors-A",
+   "text": "A.7.3.3 and core §7.3 make a structure contradiction introduced when 'its witness needs a new lifted edge'. A.4.4.11 says instead that 'Supports decide introduced, bindings, groups; witnesses are reported', and cites the s->m->x->y->m->t vector. The two disagree when a new lifted edge lies in the support but not on the canonical witness: the off-path x->y edge, or the SCC merge whose witness is the old A->B->A cycle. I followed A.4.4.11."
+  },
+  {
+   "from": "blind vectors-A",
+   "text": "A.6.4.3 rebinds a base unit over M_h to the 'new identities in x_b's file (rename in place)', in the plural, while A.3.3.2 binds a unit to one identity. The text does not say whether a base unit with two new candidates (rename-in-place: g and h) binds both, none (ambiguous) or one. I answered with both, which reproduces A.6.4.6's 'L6 loosened at g'."
+  },
+  {
+   "from": "blind vectors-A",
+   "text": "A.5.4.4 [D11] says a final law is never satisfied through any hatch fact in its cone, allowed or not, but it names no law reason. A.5.4.1 defines the reason 'assumption' as an undeclared assumption, which an allowed admit is not, so A.5.4.3 could also be read as 'missing'. I answered assumption."
+  },
+  {
+   "from": "blind vectors-A",
+   "text": "A.7.3.3 asks whether a record's cone 'meets Δcode'. The cone (A.5.4.4) is a set of identities, while 'meets' is defined on (identity, projection) pairs (A.6.1.5), and no projection is given for identities reached through Calls°/Refs°. In two-level-admit, lemma_b's own and unit digests moved but its contract and closure did not. I read 'meets' as any projection."
+  },
+  {
+   "from": "blind vectors-A",
+   "text": "A.3.4.5 does not say how a manifest marker of a kind outside the registry lifts, and A.12.7.5 does not make such a manifest invalid. Because std declares every kind A.12.2.8 lists, the Undeclared clause can only fire for kinds that a later registry version adds, or for Lean markers, which A.5.2.16 mentions but A.12.2.8 does not list."
+  },
+  {
+   "from": "blind vectors-A",
+   "text": "A.8.3.1's '(none: all count)' is terse. I read it as: when none of a question's channels is observable, all of them count, so code-moved-lower-tier's final L1 part is exploited."
+  },
+  {
+   "from": "blind vectors-A",
+   "text": "A.7.2.2: for a producer-changed unestablished obligation, affected adds the implementation and harness identities, but code lists only Req pairs, with no digests for those identities. A further edit of the same implementation or harness file therefore leaves the binding, and any answer to it, current. That is at odds with §7.2's 'any change reopens'. The intent is my speculation."
+  },
+  {
+   "from": "blind vectors-A",
+   "text": "RJ14's 'presence-sound observer' does not say whether soundness is read from the base, the head, or base ∨ head (A.6.2.6). It makes no difference in provider-direction, because the base declares presence."
+  },
+  {
+   "from": "blind vectors-A",
+   "text": "L7 subjects are base items (A.8.2.1). The text does not say which subject, if any, a head-added provider gets (head-only-provider's quickCheck), even though §6.2 says every head governance edit is an L7 question."
+  },
+  {
+   "from": "blind vectors-A",
+   "text": "The text does not say whether a self-signed claim judgment passed in records rather than persisted counts as evidence (D28, A.5.8.2, A.7.6.8)."
+  },
+  {
+   "from": "author vectors-B",
+   "text": "A.6.2.3 vs core §6.2 (D11): the annex states 'a base claim whose final loosening was answered by two persons in this run contributes tier_h of its heir instead' as a separate sentence after both branches, and RFC D11 places it right after the Lvl_b rule; core §6.2 attaches it to the 'otherwise' (non-Lvl_b) branch only. For an effect-forbid contradiction it decides whether tier* falls to the head tier after the two-person answer. final-drift-tier-lowered/tier-lowered-answered pins tier critical (annex reading); the core reading gives final."
+  },
+  {
+   "from": "author vectors-B",
+   "text": "A.5.4.3 has no reason for 'a final law holding one of the two required eligible supporting judgments': by the text it reads as missing although a usable judgment exists, and no discharger can say 'a second person'. final-law-single-judgment pins reason missing."
+  },
+  {
+   "from": "author vectors-B",
+   "text": "A.6.3.3 vs A.6.3.4: A.6.3.3 makes j eligible only if listed by tier*(o)'s judges, while A.6.3.4 requires one of the two final persons to be of the base shape owner; with judges = [owner] (DefaultPolicy critical) the shape-owner person is not listed for claim judgments (A.7.1.3 adds the shape owner explicitly only for loosenings and coverage). final-law-single-judgment avoids this by listing Platform in its Strict policy's critical judges."
+  },
+  {
+   "from": "author vectors-B",
+   "text": "A.15.1 gives no subject spelling for 'other shape errors the declaration' (E-template: 'law Q', 'claim Q', or the template?), and A.4.3.5 does not say whether an instance raising E-template still elaborates (so whether E-route or an unestablished obligation also appears). string-ordered-parameter pins only the error code and count."
+  },
+  {
+   "from": "author vectors-B",
+   "text": "A.7.2.2 lists no `affected` for a refuted lower bound (it has no support facts) and A.7.2.3 no group join for it, so its binding is undefined; refutation-introduced pins key, subject, force, introduced, severity, tier and owner only."
+  },
+  {
+   "from": "author vectors-B",
+   "text": "A.4.5.2: chan(Undeclared<Trust>) is 'hatch(L) per language with a hatch kind in ↓v', but ↓Undeclared holds no declared hatch kind of any language, so read literally the Undeclared clause of forbid hatch * has no channel (declared-only, absent from coverage pairs and deltas) although the manifest observes every registry kind. The hatch vectors here use single explicit clauses (forbid assume<Trust>, forbid unsafe<Trust>) to stay clear of it."
+  },
+  {
+   "from": "author vectors-B",
+   "text": "A.12.4 does not enumerate the 'embedded-SQL languages' that carry pg.table; only A.14.1.5 and the A.7.4.2 vector imply that TypeScript does. head-drops-absence relies on that vector text."
+  },
+  {
+   "from": "author vectors-B",
+   "text": "A.5.4.2 says observation entries are usable 'at head, or with deps complete and digests and deps ≡ M_h'; read literally, a base-revision entry for a changed identity is never usable, so A.7.3.1's 'no usable base-revision entry reports it' would make every fact at changed code new and baseRecords pointless. fact-without-n, refutation-introduced and base-failing-law-counterexample read base-revision usability against M_b."
+  },
+  {
+   "from": "author vectors-B",
+   "text": "With several matching exceptions, RECORDS §5 and A.7.7.1 fix the debt row's exception, owner and expiresInDays (earliest-expiring) but not which exception id the obligation's own `exception` field carries; two-exceptions-earliest-expiry pins only the debt row."
+  },
+  {
+   "from": "author vectors-B",
+   "text": "A.8.3.1-2: for a level-only L1 demotion (a tier lowering), 'the least realising fact the head admits' is undefined because the head still forbids the atom at the lower tier; exploited, the L1 counterexample and the realising-fact group join (A.7.2.3) are therefore not pinned in final-drift-tier-lowered/tier-lowered. The L4 phrase '(none: all count)' is also unclear; hosted-closure-weakened pins exploited false only because set is covered on every channel."
+  },
+  {
+   "from": "author vectors-B",
+   "text": "A.12.8.7 says L7 delta values are 'their ESF encodings (A.12.9)', but A.12.9 elides the provider fields ('providers {…}'), so the delta and binding of a provider L7 loosening (absence, depsComplete) cannot be computed; head-drops-absence and provider-channels-claim-tier pin no provider-loosening binding. A.8.2.2 also gives no provider tier when no claim meets its channels."
+  },
+  {
+   "from": "author vectors-B",
+   "text": "A.12.7.5 defines `executable` for file identities but every entry carries the field (value on non-file entries unspecified; the inputs copy the file's flag); A.3.4.4's 'parsed' suggests hatchComplete false for raw and unparsed identities (the inputs use false), though no hatch channel applies to them."
+  },
+  {
+   "from": "author vectors-B",
+   "text": "A.4.1.2 / §4.1 'explicit, else the subject's (a unit's component's), else the shape owner' does not say what a standalone relation's or rule's subject is, and A.4.1.1 'Q (+ /<12 hex of fp> per clause)' is ambiguous for a single-clause rule. The vectors give rules and relations explicit owners and tiers and pin claim ids only for laws."
+  },
+  {
+   "from": "author vectors-B",
+   "text": "Unspecified output membership: whether a rule-5 debt obligation also appears in `preexisting` (A.7.7.2 'open non-introduced obligations'), whether `loosening` rows remain once their obligation is answered, and whether two unsigned manifests give one or two E-provider-missing errors (both have subject 'manifest'). None of these is pinned."
+  },
+  {
+   "from": "blind vectors-B",
+   "text": "A.6.2.3 / core §6.2 [D11]: in A.6.2.3, the sentence 'a base claim whose final loosening was answered by two persons in this run contributes tier_h of its heir instead' comes after the 'every other obligation' branch. The text does not say whether it also replaces the base claim's contribution to Lvl_b in the effect/summary/authority contradiction branch. final-drift-tier-lowered/tier-lowered-answered depends on this. I applied it to both branches (tier* critical after the answer), following D11's wording."
+  },
+  {
+   "from": "blind vectors-B",
+   "text": "A.5.4.3 / A.5.3.7: a final law with exactly one usable, applicable, supporting claim judgment (two distinct persons are required) holds none of the listed reasons (assumption, weak, producer-changed, expired, stale). The total definition therefore reports 'missing' even though a judgment exists. No reason in the vocabulary means 'insufficient judges'."
+  },
+  {
+   "from": "blind vectors-B",
+   "text": "A.8.3.1 '(none: all count)': I read this as saying that when a question has no channels (L4 per A.8.3.2), every affected changed identity counts as uncovered. An L4 undecided loosening at a coverage-blocking or final tier is then exploited. The parenthetical is terse, and it could instead be read as covering only the case where no channel is observable."
+  },
+  {
+   "from": "blind vectors-B",
+   "text": "A.7.6.8 / A.5.8.2 / D28: the text does not say whether a self-signed claim judgment supplied in the input's `records` (head or base revision) rather than in `persisted` is admissible evidence. It says only that judges commit self-signed records under shape/evidence/."
+  },
+  {
+   "from": "blind vectors-B",
+   "text": "A.7.3.1 / A.7.3.3 use 'usable base-revision record/entry', but usability is defined only for use at head (A.5.4.1-2). A.12.6 also does not say whether RJ validation (e.g. RJ14) applies to baseRecords, or whose declaration (base, or G* (a) base ∨ head) decides presence-soundness there. In the fact-without-n inputs both readings agree."
+  },
+  {
+   "from": "blind vectors-B",
+   "text": "A.6.3.3 vs A.6.3.4: for coverage, A.6.3.3's 'owner' judge resolution names K's base owner and each claim's owner*, not the base shape owner. A.6.3.4 nevertheless requires one of the two final persons to come from the base shape owner. I read A.6.3.4 as making that person eligible: final-coverage bob-and-carol and Example 1 B'' are discharged by carol."
+  },
+  {
+   "from": "blind vectors-B",
+   "text": "A.12.10.1 lists a `final` field on loosening rows without defining it. I took it as 'the subject is final (two persons needed)'. Similarly, when several exceptions match, A.7.6.7 does not say which exception id obligation.exception holds. The debt row uses the earliest-expiring one (A.7.7.1)."
+  },
+  {
+   "from": "author golden",
+   "text": "The output serialisation is not stated. A.12.10.6 requires byte-identical core output but names no format. The goldens use RFC 8785 JCS bytes in UTF-8 with no trailing newline, because JCS (A.0.4) is the only canonical form the text defines. v6 prints JSON.stringify(core, null, 1) plus a newline."
+  },
+  {
+   "from": "author golden",
+   "text": "Health has no JSON encoding: A.10.4 names its items in prose. The goldens propose these keys, in this order: coverage {num,den}, unobservable (strings '<claim fp> <channel>', reusing the R§2 pair encoding), declaredOnly [{claim: fp, route, tier}], unanswered, openAuthority, ungoverned {num,den}, unmapped, externalCalls, ungovernedCalls, unanchored, droppedEdges, unauthenticated, unrecorded, rejected, executesHead, baseObservations, baseDefects, clockClamped, trustDebt, finalDrift, lawsContradictedAtBase, inertExceptions, vacuousLaws, budget {limit,used,overflow count}, self, preexisting, renames, assumption. The unauthenticated entries are strings: 'manifest base', 'manifest head', 'provider Q', 'review <actor>: <line>'. rejected is {count, rj06}. v6's cells, records and baseUnreadable are dropped. Several readings are guesses. 'ungoverned (identities, per channel)' was kept as {num, den}. 'trust debt' was kept as the count of debt rows. The assumption texts of A.5.2.11 and A.5.2.17 have no field."
+  },
+  {
+   "from": "author golden",
+   "text": "A.15.1 says the E-conduct/E-structure subject is 'the key's JSON'. If that means the subject key, two claims violated at one subject would get the same (code, subject), and the (code, subject) sort would tie. The goldens therefore use the JCS of the obligation key's preimage {claim, kind, subject, v}, which is unique per (claim fp, subject key)."
+  },
+  {
+   "from": "author golden",
+   "text": "The cause list is underdetermined. A.14.1.3 includes AppendOnly as a cause of its own obligation. The goldens generalise this and append the obligation's own claim as the root cause of every checker-decided contradiction (Example 1 B family and B′, Example 2, the seeded clock, Example 4). This generalisation is speculation and needs sign-off."
+  },
+  {
+   "from": "author golden",
+   "text": "A.7.1.3's coverage dischargers 'bind or declare; add an observer' do not match A.12.10.2's act set, which has no 'bind'. The goldens map them to declare and provide."
+  },
+  {
+   "from": "author golden",
+   "text": "A.8.2.1 says a loosening's counterexample is a union, with no encoding. The goldens keep v6's form: one part gives its value, an L1 fact {at, verb, resource} or the L3 edge list."
+  },
+  {
+   "from": "author golden",
+   "text": "A CI-supplied approve line without a relay has no record id to put in answered.records. The goldens keep the prototype's 'review:<16 hex of H(review object)>'."
+  },
+  {
+   "from": "author golden",
+   "text": "Debt rows: §7.6 and A.7.7.1 say a row is flagged at 14 days or fewer, but neither R§5 nor A.12.10.1 lists a flagged field. The goldens omit it."
+  },
+  {
+   "from": "author golden",
+   "text": "Under std every registry hatch kind is declared, so A.4.5.2 gives chan(Undeclared<Trust>) nothing. The Undeclared clause is then declared-only by construction (Example 2's health), even though the manifest observes all markers."
+  },
+  {
+   "from": "author golden",
+   "text": "A.12.7.6 leaves inputDigest's canonical form open in three places. It does not cover the prototype profile's source document, a DSSE-enveloped manifest, or say that 'id' for records means the record id. v6 sorts records by their JCS rather than by id. The goldens use v6's canonicalisation for source and manifests, keep envelopes as they are, and apply the A.12.7.6 orders to records, authors, reviews and persisted."
+  },
+  {
+   "from": "author golden",
+   "text": "Manifest flags. A.3.4.4 defines hatchComplete for parsed code only; the goldens set it true for raw and pkgjson identities, which have no hatch kinds. A.3.2.4 says 'executable … per file identity', while the A.12.7.5 entry schema lists it on every entry; the goldens put it on every entry."
+  },
+  {
+   "from": "author golden",
+   "text": "It is unspecified what CI-supplied review lines do when a relay is declared: A.6.3.3 cites A.7.6.8, which covers the no-relay case. The goldens convert Example 1's answers and Example 3's judge line into relay records."
+  },
+  {
+   "from": "author golden",
+   "text": "R§3 requires about only for answers. A.6.3.3's authorship test for relayed claim judgments ('about.change is this change or that the relay produced in this run') needs about or a run marker. The golden's relayed claim judgment carries about {change, refs: []}."
+  },
+  {
+   "from": "author golden",
+   "text": "Whether an empty base is a base defect, and under which code, is unspecified. The goldens keep v6's baseDefects ['E-parse shape']."
+  },
+  {
+   "from": "author golden",
+   "text": "A.5.2.15 offers rerun for a head-only test provider whose records cannot establish (ex1-empty-base). The goldens keep it."
+  },
+  {
+   "from": "author golden",
+   "text": "baseObservations is undefined in audit mode and when no base observer exists. The goldens keep v6's 'present'."
+  },
+  {
+   "from": "author golden",
+   "text": "A.7.1.3 does not list rerun for producer-changed, but v6 offers it. The goldens drop it (ex3-step2-harness-edited)."
+  },
+  {
+   "from": "author h4",
+   "text": "A.11.1(e) does not say where the migrated tier is written. A 0.x trait carrying a `forbid final` (prelude AppendOnly → std::NoHardDelete 'at tier final', and local traits DraftOnly, Protected, DurableAudit) could put it on the bearer resource, on the template clause (`forbid final`) or on a named instance. std templates carry no tier (A.4.1.3), so the attached std::NoHardDelete needs the bearer's tier. I read the tier as written on the bearer resource in every case, as the v6 prototype did and as Example 1 and SYNTAX §1 do. Under that reading L7 fires (resource tier final>normal) in draft_trait_removed, trait_removed_from_resource, resource_renamed_trait_dropped, guard-policy-removal, cal1, cal2 and cal6. Under a mixed reading (local templates keep `forbid final`, std::NoHardDelete takes the bearer tier), cal4 reads tighter instead of equivalent, because reverse L7 sees the resource tier final in the head and normal in the base."
+  },
+  {
+   "from": "author h4",
+   "text": "A.11.1(e) lowers `forbid final` to tier critical 'when the migrated owner and shape owner lack two distinct persons'. A.11.1 never defines the migrated owner or the persons of a 0.x shape with no actors; `--maintainer` appears only in MIGRATION.md §2 and §4. It also does not say whether the prelude AppendOnly's 'NoHardDelete at tier final' is lowered the same way, though its stated reason (E-policy) applies equally. This reading assumes the H4 harness migration (`--maintainer alice --maintainer bob`, trials/H4/run.ts and runall.sh), where item owner = shape owner = a team of two persons, so final stays final. With fewer than two persons, the 9 rows with final=true become critical and final=false; the classes do not change."
+  },
+  {
+   "from": "author h4",
+   "text": "A.8.1.3 does not define the order class when one pass is undecided. In renamed_component_and_narrowed_rule the forward pass is loosened (it fails under rule 3), while the reverse L3 is undecided under ρ rules 0–2 and implied under rule 3. I recorded looser, which matches the was-decided class and ROADMAP's count of 2 abstentions, but a strict reading gives looser-or-incomparable, i.e. undecided."
+  },
+  {
+   "from": "author h4",
+   "text": "A.8.4.2 step (1) makes G_A ⊨ ρc_b vacuously true when ρc_b names a node that ρ rules 0–2 leave unmapped. This is the v6 kernel's unsound 'ga' answer. A.8.1.6 yields 'undecided' only if such a claim counts as a failure. Core §8 says 'a rename without was is undecided', but the annex text should state that an unmapped node makes the question fail rather than pass vacuously (A.8.1.6, A.8.2.3 L3–L4)."
+  },
+  {
+   "from": "author h4",
+   "text": "ROADMAP H4′ and M1 count '≤ 2 abstentions (renames without was)' and 'order class equal to the M0 manual reading on ≥ 31/33', but do not say whether the manual's order for the two renames is the output class (undecided, as recorded here, per the task's 'what the core output's order field must show') or the class that was gives (equivalent). With undecided recorded, ≥ 31/33 leaves 2 cases of slack; with equivalent, the 2 abstentions use it all."
+  },
+  {
+   "from": "author h4",
+   "text": "A.11.1's test line 'fixtures keep A.8.6' conflicts with A.8.6. A.8.6 lists version 6 measured classes, e.g. effects_unknown incomparable and '10 of 33 incomparable', which version 7's own migration (D19) and L1 (D2, D17) change. This reading gives effects_unknown and grant_added tighter, claim_misdescribes_code equivalent and memory_guard_removed looser: 7 incomparable cases, not 10."
+  },
+  {
+   "from": "author h4",
+   "text": "A.8.3.1 sets exploited also when 'the tier blocks coverage (or is final) and an affected changed identity is uncovered … (none: all count)'. For final or critical loosenings in providerless cases, that makes a part exploited without any realised counterexample. The manual column expl ('realised in the head') could then differ from the output's exploited flag. On these 33 cases the two coincide: every final part with an affected changed identity is also realised. The wording '(none: all count)' is also ambiguous."
+  },
+  {
+   "from": "author h4",
+   "text": "A.11.1(g) maps 0.x who.owner to the note owner but does not say what happens when that owner names no actor (EditorTeam in guarded_fn_edited_in_place, memory_and_trait_removed and memory_guard_removed). The options are an E-unknown in the head, a declared actor, or a dropped owner. This does not affect the order class but does affect golden verdicts."
+  },
+  {
+   "from": "blind h4",
+   "text": "1. A.11.1(e) and MIGRATION.md say the 0.x prelude AppendOnly becomes 'std::NoHardDelete at tier final' but not where that tier is written. An attached std template takes its tier from its bearer (A.4.1.3), so the natural output is 'resource R : NoHardDelete { tier final }', which is what version 6's migrate wrote (trials/H4/was/*.json). That form raises the resource item's tier, which (i) makes every other claim the resource bears final, minting finality 0.x did not enforce (against D19), and (ii) turns removing the trait into an L7 'matched item's tier fell' part as well (A.8.2.3). This reading puts the tier on the claim only. Under the resource-tier reading, fwdQ becomes [L1, L7] for trait_removed_from_resource, resource_renamed_trait_dropped (rule 3), cal1, cal2 and guard-policy-removal, and cal4 becomes tighter instead of equivalent."
+  },
+  {
+   "from": "blind h4",
+   "text": "2. A.8.1.3 builds the order class from a forward and a reverse pass but gives no rule for when one pass is undecided. A.8.1.6 makes the reverse pass of a rename without was undecided whenever rule 3 implies it. renamed_component_and_narrowed_rule is loosened forward (also under rule 3) and undecided in reverse, so its class is looser or incomparable; this reading records undecided."
+  },
+  {
+   "from": "blind h4",
+   "text": "3. A.8.1.6 and A.8.4.2 do not say how a base structural claim whose selector names a node unmapped by rho is evaluated over the head world. Read literally it holds vacuously, since there is no head node, which would make renamed_component implied. Treating 'no heir under rho rules 0-2' as the failure is the reading that core section 8 ('a rename without was is undecided'), D17 and A.8.6 require, and it is the one used here."
+  },
+  {
+   "from": "blind h4",
+   "text": "4. A.8.3.1's '(none: all count)' is ambiguous. It could mean that when a question has no observable channel, every affected changed identity counts as uncovered at a coverage-blocking or final tier. That includes L1 on an unbound resource, whose chan(a) is empty, and L4, whose channels A.8.3.2 gives as none. It changes no expl value in these 33 cases: every final case with a changed affected identity is already realised, and cal6 has no changed identity."
+  },
+  {
+   "from": "blind h4",
+   "text": "5. A.7.5.1 rule 4 speaks of 'a final loosening', while A.8.2.1 raises one obligation per base item, at the base tier, for a loosened or an undecided answer. The text does not say whether an undecided obligation on a final subject (resource_renamed_trait_kept) is a final loosening that needs two persons. This reading says yes (final = true)."
+  },
+  {
+   "from": "blind h4",
+   "text": "6. A.11.1(e) lowers forbid final to critical when the migrated owner and the shape owner lack two distinct persons. A.11.1 does not say who the shape owner is when the 0.x shape names no owner (true of all 33 cases), nor what --maintainer declares. The H4 harness runs migrate with --maintainer alice --maintainer bob (trials/H4/run.ts), giving a shape owner with two persons, so final stays final here. Without maintainers every final would be critical and the final column would be false throughout."
+  },
+  {
+   "from": "blind h4",
+   "text": "7. A.6.4.3 base bindings over M_h do not follow relocation (A.6.1.5). In governed_directory_moved the base's explicit bind names a moved, unedited function and so binds nothing. A.11.1(a) ('bind by name; unique-suffix sources rewritten') also leaves unclear whether 0.x source becomes an explicit bind or the unit binds by default name. The class (incomparable) is the same under both readings."
+  },
+  {
+   "from": "blind h4",
+   "text": "8. A.4.2.1 states effects.upper as Xd(u) subset of cl(C), while A.4.4.7 uses S(u) = cl(C) union TrustAtoms. Under A.4.2.1, an empty complete summary (cal8) would reject every hatch fact and the case would be tighter. This reading follows A.4.4.7, under which it is equivalent."
+  },
+  {
+   "from": "blind h4",
+   "text": "9. A.11.1(g) maps who.owner EditorTeam to the note's owner, but EditorTeam is declared nowhere and A.11.1 does not say whether migrate declares it. It has no effect here: notes never decide, and A.11.1 has a 0.x base elaborate with the head's actor declarations."
+  },
+  {
+   "from": "blind h4",
+   "text": "10. The two guard fixtures keep their .shape files at the directory top level, not under shape/ (A.3.1.1). The H4 registry (cases.ts, flat: true) maps them to shape/<file>, and this reading does the same."
+  },
+  {
+   "from": "author h2",
+   "text": "The D4 counterexample clause (A.7.3.3) needs a usable base-revision record from the same provider, but the H2 harness passes only observers (tsClockScan, tsCalls) and judgments as baseRecords (REPORT.md: 'Base records are the observers only'). The two laws that fail at base (FormatterCanonicalGraphRules, FormatterFlattensGroupedContext) are therefore re-introduced, and block, on any edit to a file in their record cone: formatter.ts, shape-strings.ts, parser.ts, language/shape-module.ts, generated/*. That blocks C04, C05, C06 and C10 in both arms. This contradicts RFC D4's C04 prediction and makes H2' 'controls blocked <= 1/14' unattainable unless the M5 harness also supplies base-revision bunTest records. Separately, A.5.4.1 makes any revision-tied record not at head stale, so the text must say that a base-revision record's usability for this clause is judged against M_b."
+  },
+  {
+   "from": "author h2",
+   "text": "D7 (A.7.3.3: 'a refutation one of whose footprint identities is in Delta-code') has no counterpart to D4's equal-counterexample clause or D5's new-edge rule. A relation that is unrealised and refuted at base is re-introduced, and blocks under rule 7, by any edit to code(A). In arm X this blocks control C07 (ShapeRuleEngineReadsLoweredFacts) and adds unrelated blocking refutations to many drifts. This conflicts with §7.5 'Old drift never blocks an unrelated change'."
+  },
+  {
+   "from": "author h2",
+   "text": "A.7.3.3 and core §7.3 say a structure contradiction is introduced when its 'witness needs a new lifted edge', while A.4.4.11 says 'Supports decide introduced' and calls over-approximated supports 'more conservative'. For a new lifted edge inside an SCC that existed at base (S07, S08 in arm A) the readings give different answers: hit under supports, preexisting under witness necessity. A literal canonical-witness reading would even make SCC merges (E13) preexisting, because the least-node cycle need not use the new edge. The rows use the support reading."
+  },
+  {
+   "from": "author h2",
+   "text": "A.4.4.14 requires every footprint identity to have a usable complete entry on an applicable channel. Identities on which no channel applies (raw .md, .yml and .sh files, .shape fixtures) therefore make edge.exists over DocsSite, CiPipeline, ReleasePipeline and the kernel harness unrefutable. The v6 prototype refuted all 14 unrealised relations; the literal v7 reading refutes 7. If inapplicable identities are skipped, arm X C11 would be blocked through D7."
+  },
+  {
+   "from": "author h2",
+   "text": "The record cone (A.5.4.4) is a closure of cited pairs under Calls and Refs, but 'meets Delta-code' is defined on (identity, projection) pairs (A.6.1.5). The projection of identities the closure adds is unspecified. The rows rely only on the deps cited at file."
+  },
+  {
+   "from": "author h2",
+   "text": "The dogfood bunTest counterexample is {detail, index, seed}, while A.12.5.2 and A.5.2.14 require {seed, inputs, assertion} for a forceful contradiction. Read strictly, L01-L09 and the formatter laws would lose force (inconclusive). The rows assume records conforming to the version 7 contract, i.e. M3's laws provider."
+  },
+  {
+   "from": "author h2",
+   "text": "D6 relocation depends on 'own' including declaration modifiers and names. M03 adds 'export', so it is not relocated and is a hit; a canonicaliser that dropped modifiers would make it preexisting. M06 is relocated, so the moved checker call creates the forbidden Analyzer->Checker path without introducing it (A.7.3.1: lifting changes never make facts new). Only E-unbound catches it; had getEditorDiagnostics not been a bound unit, the move would be silent."
+  },
+  {
+   "from": "author h2",
+   "text": "No error is defined for a law's code target that is absent from M_h (N07 renames cli.md). The seed's expected error cannot arise; only an owed unestablished obligation does."
+  },
+  {
+   "from": "author h2",
+   "text": "The arm X harness signs judgments citing only bind(u) (the version 6 Req). Under D4's wider judgment Req (A.5.3.4), 13 guards would be 'Req partly uncited', and so stale at base. The judgments are also passed as records, not persisted under shape/evidence/ (D28). The rows assume judgments that cite the version 7 Req; the classes do not depend on this, because stale and missing both introduce."
+  },
+  {
+   "from": "author h2",
+   "text": "The control taxonomy (clean / coverage / blocked) has no class for 'introduced owed unestablished, no coverage, nothing blocking' (C07 arm A, C09: DocumentedBy, guard and untested Property laws at normal). These are mapped to clean."
+  },
+  {
+   "from": "author h2",
+   "text": "The H2 manifests carry no refs and no hatchComplete for TypeScript identities; D4's judgment Req needs refs. Refs were approximated with a TypeScript-checker reference scan (any identifier resolving to a function identity), so this_m and o.m are only as good as the checker's symbol resolution."
+  },
+  {
+   "from": "blind h2",
+   "text": "D4 counterexample clause vs the H2 method: A.7.3.3 spares a base-failing law only when a usable base-revision record of the same provider made an equal counterexample. The H2 method passes observers only as baseRecords (no bunTest base records), so the clause never applies. The 2 formatter laws that fail at base (FormatterFlattensGroupedContext, FormatterCanonicalGraphRules) are therefore re-introduced as sound blocking contradictions whenever their Req (formatShapeModule@unit) or their test record's cone meets Δcode. The cone covers 7 files @file: formatter.ts, parser.ts, shape-strings.ts, language/shape-module.ts and language/generated/{ast,grammar,module}.ts. This blocks controls C04, C05, C06 and C10 in both arms, and adds unrelated blocking work to S05, S06, E03, E06, E10, E17, M02, L01, L04, L05, L06 and L12. RFC D4 says the clause removes the C04 re-introduction, which holds only if H2′ also supplies base-revision bunTest records. 'Usable' for such a record must then be judged against M_b, because A.5.4.1 makes a revision-tied test record stale at head."
+  },
+  {
+   "from": "blind h2",
+   "text": "D7 footprint clause and never-realised relations: in arm X, 7 declared calls relations of TS-only components are never observed and so are refuted at C00 (preexisting): ShapeBindingsReadLoweredFacts, ShapeBindingsUsesStringHelpers, ShapeDiagnosticsReadsRuleOutput, ShapeModelLowererUsesPreludeRegistry, ShapeModelLowererUsesParser, ShapeRuleEngineReadsLoweredFacts and ShapeEditorUsesPreludeRegistry. A.7.3.3 introduces a refutation whenever any footprint identity is in Δcode, so any edit to the source component's code re-introduces it as blocking. Control C07 (a behaviour-preserving helper extraction in ShapeRuleEngine) is blocked in arm X this way."
+  },
+  {
+   "from": "blind h2",
+   "text": "A.4.4.14 says refutation needs 'every footprint identity [to have] a usable complete entry on an applicable channel'. Two problems follow. (a) Footprints that contain identities no channel applies to (raw .md, pkgjson and gha units, .rs, raw .shape fixtures) can never be refuted under the literal reading: DocsSiteUsesGrammar, ExperimentalHarnessUsesSemanticKernel, CiPipeline* and ReleasePipeline*. Under the lenient reading they are refuted, and C11 X becomes blocked. (b) Entries are file-level, so the nearest-ancestor reading of A.15.9, which today names only coverage and anchoring, must also apply to refutation; otherwise no relation could be refuted and D7 could not hold. I used both the strict reading for (a) and nearest-ancestor for (b)."
+  },
+  {
+   "from": "blind h2",
+   "text": "A.7.3.3 says 'witness needs a new lifted edge', which is ambiguous for cycle subjects. In E13 the new edge ShapeChecker→ShpCli merges ShpCli, ShapeLanguageServer and ShapeEditorServices into the checker SCC, creating a new 9-node {nodes} key. The canonical witness (A.4.4.8, the least cycle through the least node ShapeIncrementalChecker) uses only old edges. On a literal witness reading the obligation is preexisting; on the subject-level reading (the SCC exists only because of the new edge, consistent with A.4.4.11 'supports decide introduced' and the SCC-merge vector) it is introduced. I used the subject-level reading. The M0 scc-merge vector should pin this down."
+  },
+  {
+   "from": "blind h2",
+   "text": "D5 against the registered H2′ (RB) criterion: S07 and S08 add undeclared calls inside the SCC that already exists at base through declared edges plus observed facts (ShapeDiagnostics joins it via the declared ShapeDiagnosticsReadsRuleOutput). Both are therefore preexisting in arm A. With S03, E17, N04 and L12 undetectable by construction of the providers, arm A reaches 45/62 hits with 6 unflagged drifts outside the 11 expected by construction. The registered thresholds are ≥ 47 and ≤ 4 others, so H2′ arm A would fail against these expectations."
+  },
+  {
+   "from": "blind h2",
+   "text": "D6 and lifting: moving forbidden behaviour across a component boundary unchanged (M06: getEditorDiagnostics and its checker call move into ShapeAnalyzer) gives the AnalyzerStaysAdvisory contradiction only as preexisting. The relocated facts are not new, A.7.3.1 says lifting changes never make facts new, and there is no L6 part because both shapes resolve over M_h. Only the explicit-bind E-unbound catches the move. Callers whose unit digest moves only because a callee's identity changed (M02) do produce 'new' facts, since relocation is defined only for the 'at' end."
+  },
+  {
+   "from": "blind h2",
+   "text": "Law code arguments: no rule says whether a DocumentedBy Doc code argument absent from M_h is an error or how Req treats it. In N07 I kept (cli.md, file) in Req, so it meets 'deleted' and the obligation is introduced. If Req drops identities absent from M_h (by analogy with A.15.15), N07 A becomes preexisting. Arm X is introduced either way through the judgment's cone."
+  },
+  {
+   "from": "blind h2",
+   "text": "Migration binding: A.11.1(a) says 'bind by name', but the prototype's rewriteBinds and the composed dogfood model keep explicit 0.x source binds. If a v7 shp migrate binds by name instead, the same-component moves M01 (checkFreshness inside ShapeRuleEngine) and M04 (isoToday into shape-files.ts, a ShpCli path) would rebind by default: M01 would raise no E-unbound (flag-only) and M04's clock read would become excepted (no contradiction). I used explicit binds, as in the dogfood model and M4's stated inputs."
+  },
+  {
+   "from": "blind h2",
+   "text": "Unbound units with complete summaries (N03, M04: ShpCli.isoToday) have an empty footprint. A.4.4.14's 'every footprint identity' is then vacuous, so effects.lower(isoToday) might be refuted, and introduced through the base record (D7). The text does not say whether claims on an E-unbound unit are evaluated at all. This is not decisive here because E-unbound already blocks."
+  },
+  {
+   "from": "blind h2",
+   "text": "Provider contract: the dogfood bunTest emits counterexample {index, seed, detail}, not the {seed, inputs, assertion} that A.5.2.14 and A.12.5.2 require. I assumed its contradicts records keep counterexample force, as M3 conformance would require."
+  },
+  {
+   "from": "blind h2",
+   "text": "Arm X judgments: the harness's judgmentReq mirrors v6 (bind(u)@unit). v7 Req for unit judgments adds same-component functions reachable through Refs° [D4]. Unless they are regenerated, guard judgments omit part of Req and are stale at C00 (preexisting). No class changes either way."
+  },
+  {
+   "from": "blind h2",
+   "text": "The v6 manifest builder carries no refs and has formatting-sensitive file digests (C02 moved ts.file). I judged v7 Δcode by hand where D6, D8 or env(x) matter: C01, C02, M01–M06 and N05. The v6 path-free own digests matched the v7 relocation definition for M01, M02, M05, M06, N05 and N07."
+  }
+ ]
+}

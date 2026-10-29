@@ -1,0 +1,575 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-11-24T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "te",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/te.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Te",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "EngineTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "dave",
+       "kind": "person",
+       "identities": [
+        "github(\"dave\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "Clock",
+       "bind": [
+        "ts.call(\"Date.now\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Engine",
+       "owner": "EngineTeam",
+       "tier": "critical",
+       "paths": [
+        "src/engine/**"
+       ],
+       "grants": "none"
+      },
+      {
+       "decl": "rule",
+       "name": "NoClock",
+       "owner": "EngineTeam",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "Read<Clock>",
+         "within": [
+          "component Engine"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "exception",
+       "name": "AWaiver",
+       "waives": [
+        "contradiction"
+       ],
+       "target": "rule NoClock",
+       "owner": "carol",
+       "expires": "2027-09-01"
+      },
+      {
+       "decl": "exception",
+       "name": "ZWaiver",
+       "waives": [
+        "contradiction"
+       ],
+       "target": "authority Engine",
+       "owner": "dave",
+       "expires": "2026-11-24"
+      },
+      {
+       "decl": "provider",
+       "name": "clockScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(ts.call(\"Date.now\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "identity": "ed25519(\"ece129580f3b97b378a211db3d41ec47a03b69750f367233ac48d239738d5bb5\")",
+       "implementation": {
+        "digest": "sha256:e1e061021aed28c5c19e7d19730753b982acfc594a9c4c2405c618fe963978bf"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "77bb43bd9bc5b5175af62ebf9ed492c85f330303b7d01db9e1f64f577b6d2b64"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "819c9cd73116f09abd5074464b35bf3e7e964301"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/te.shape",
+       "mode": "100644",
+       "blob": "57058fe069761bfba52a6cb90e239b5ff16ea996"
+      },
+      {
+       "path": "src/engine/fresh.ts",
+       "mode": "100644",
+       "blob": "b301d20b7542e2e5f56f506bd0afd9ffe44a5a90"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:f6377b4a362c7ebad48f0f45df03d7ddfd4a28bc161d39dcc31252a28a9e2068",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:a16442ae88dfbd78189b788fd96dcf315f6d3b2399c0b0d4da6fa088f9de851b",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "ts:src/engine/fresh.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:1d38056310d584640982766dc2d8d00cebb1ef47d07c153da8c52fe075b9b8d5",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/fresh.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:1b5c422cb7f230fd0098dc9331c4ab06d5559a4a336dbcfe6e436ea3682317b5",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/fresh.ts#checkFreshness",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:e956bdb87168e8b853a5e34c47ac005ee685c900d94fe810a256686798a7fb95",
+       "kind": "function",
+       "parent": "ts:src/engine/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/fresh.ts#checkFreshness",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:4e9c9601f134f0b547f7d6586db5a37dfaed9c5755195a1c44a7c911f84c1fa0",
+       "kind": "function",
+       "parent": "ts:src/engine/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "te",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/te.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Te",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "tim"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "EngineTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "dave",
+       "kind": "person",
+       "identities": [
+        "github(\"dave\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "Clock",
+       "bind": [
+        "ts.call(\"Date.now\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Engine",
+       "owner": "EngineTeam",
+       "tier": "critical",
+       "paths": [
+        "src/engine/**"
+       ],
+       "grants": "none"
+      },
+      {
+       "decl": "rule",
+       "name": "NoClock",
+       "owner": "EngineTeam",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "Read<Clock>",
+         "within": [
+          "component Engine"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "exception",
+       "name": "AWaiver",
+       "waives": [
+        "contradiction"
+       ],
+       "target": "rule NoClock",
+       "owner": "carol",
+       "expires": "2027-09-01"
+      },
+      {
+       "decl": "exception",
+       "name": "ZWaiver",
+       "waives": [
+        "contradiction"
+       ],
+       "target": "authority Engine",
+       "owner": "dave",
+       "expires": "2026-11-24"
+      },
+      {
+       "decl": "provider",
+       "name": "clockScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(ts.call(\"Date.now\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "identity": "ed25519(\"ece129580f3b97b378a211db3d41ec47a03b69750f367233ac48d239738d5bb5\")",
+       "implementation": {
+        "digest": "sha256:e1e061021aed28c5c19e7d19730753b982acfc594a9c4c2405c618fe963978bf"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "ed41e40e5118b0c6049e7ad3d667f4a9bc81750023b7de746224c5f5e58bdfa6"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "45cf922c503a48d6b39913974f92ba2c96278700"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/te.shape",
+       "mode": "100644",
+       "blob": "57058fe069761bfba52a6cb90e239b5ff16ea996"
+      },
+      {
+       "path": "src/engine/fresh.ts",
+       "mode": "100644",
+       "blob": "b301d20b7542e2e5f56f506bd0afd9ffe44a5a90"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:34ad6b942653f0514bc54b0d6ad0666c0109d4617e15b63c3449daed72c60dbb",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:f4ef18aa3b2bf9c0233ead08d0f5280211058e1a98779853caff426e041cd072",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "ts:src/engine/fresh.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:1d38056310d584640982766dc2d8d00cebb1ef47d07c153da8c52fe075b9b8d5",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/fresh.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:1b5c422cb7f230fd0098dc9331c4ab06d5559a4a336dbcfe6e436ea3682317b5",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/fresh.ts#checkFreshness",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:e956bdb87168e8b853a5e34c47ac005ee685c900d94fe810a256686798a7fb95",
+       "kind": "function",
+       "parent": "ts:src/engine/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/fresh.ts#checkFreshness",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:4e9c9601f134f0b547f7d6586db5a37dfaed9c5755195a1c44a7c911f84c1fa0",
+       "kind": "function",
+       "parent": "ts:src/engine/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"acme-code-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfT0JTRVJWRVMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJvYnNlcnZhdGlvbiJ9fV0sInByb2R1Y2VyIjp7ImFubm90YXRpb25zIjp7InNoYXBlLnByb3ZpZGVyIjoidGU6OmNsb2NrU2NhbiIsInZlcnNpb24iOiIxLjAuMCJ9LCJ1cmkiOiJ0ZTo6Y2xvY2tTY2FuIn0sInNoYXBlIjp7ImFzc3VtcHRpb25zIjpbXSwiZmFjdHMiOlt7ImF0IjoidHM6c3JjL2VuZ2luZS9mcmVzaC50cyNjaGVja0ZyZXNobmVzcyIsIm4iOjEsInJlc291cmNlIjoidHMuY2FsbChcIkRhdGUubm93XCIpIiwidHlwZSI6ImVmZmVjdCIsInZlcmIiOiJSZWFkIn1dLCJoYXJuZXNzIjpbXSwia2luZCI6Im9ic2VydmF0aW9uIiwicHJvdmlkZXIiOnsiaWQiOiJ0ZTo6Y2xvY2tTY2FuIiwidmVyc2lvbiI6IjEuMC4wIn0sInJlc3VsdCI6Im9ic2VydmVzIiwicmV2aXNpb24iOiIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyIiwic2NvcGUiOnsiZW50cmllcyI6W3siY29tcGxldGUiOnRydWUsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6MWQzODA1NjMxMGQ1ODQ2NDA5ODI3NjZkYzJkOGQwMGNlYmIxZWY0N2QwN2MxNTNkYThjNTJmZTA3NWI5YjhkNSIsImlkIjoidHM6c3JjL2VuZ2luZS9mcmVzaC50cyIsInByb2plY3Rpb24iOiJmaWxlIiwic2NoZW1lIjoidHMuZmlsZS52MSJ9LHsiY29tcGxldGUiOnRydWUsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6NGU5Yzk2MDFmMTM0ZjBiNTQ3ZjdkNjU4NmRiNWEzN2RmYWVkOWM1NzU1MTk1YTFjNDRhN2M5MTFmODRjMWZhMCIsImlkIjoidHM6c3JjL2VuZ2luZS9mcmVzaC50cyNjaGVja0ZyZXNobmVzcyIsInByb2plY3Rpb24iOiJ1bml0Iiwic2NoZW1lIjoidHMudW5pdC52MiJ9XSwicm9vdCI6InNoYTI1NjphMGFkYzE5NzlmYzNlNDNkMGJhNTg3OThiZGRiNmE1MmE1NmQ0NjI5OWU2NjFlNWMzY2YzZmRjOTg5OGVlNjRlIn0sInRpbWUiOiIyMDI2LTEwLTI1VDA5OjAwOjAwWiIsInYiOiJzaGFwZS5ldmlkZW5jZS52MSJ9fSwicHJlZGljYXRlVHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9hdHRlc3RhdGlvbi9zY2FpL2F0dHJpYnV0ZS1yZXBvcnQvdjAuMyIsInN1YmplY3QiOlt7ImRpZ2VzdCI6eyJzaGEyNTYiOiJhMGFkYzE5NzlmYzNlNDNkMGJhNTg3OThiZGRiNmE1MmE1NmQ0NjI5OWU2NjFlNWMzY2YzZmRjOTg5OGVlNjRlIn0sIm5hbWUiOiJzaGFwZTpzY29wZS90ZTo6Y2xvY2tTY2FuLzIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIifV19",
+   "signatures": [
+    {
+     "keyid": "ece129580f3b97b378a211db3d41ec47a03b69750f367233ac48d239738d5bb5",
+     "sig": "qRCXTB/EG8yC8IUyfhGtYfEsDXBwK5DXD+4QDAWilZX+rSlj4YrWuXSg9dfMcsaK6oTL95D9zxiJPsapB3mXBg=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

@@ -1,0 +1,98 @@
+{
+ "vector": "two-exceptions-earliest-expiry",
+ "title": "With two exceptions matching an obligation's two excluding claims, the debt row lists both and takes exception, owner and days from the earliest-expiring; when it expires the obligation leaves debt",
+ "decides": [
+  "A.7.7.1",
+  "A.4.6.5",
+  "A.15.7",
+  "A.4.4.7",
+  "D22"
+ ],
+ "cases": [
+  {
+   "case": "both-active",
+   "input": "both-active.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 5: matched, non-introduced, owed debt"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "key": "ob:498720f00f9e0b1f9063c40929d57bd242bf16dbc988d1bcc45d5e8d3d747372"
+     },
+     "check": "fields",
+     "value": {
+      "claim.fp": "sha256:17a111ce57fa1ca042639815c37d387dfdaaf65dc218b775417d535926e5654e",
+      "subject": {
+       "code": "ts:src/engine/fresh.ts#checkFreshness",
+       "atom": "Read<te::Clock>"
+      },
+      "force": "sound",
+      "introduced": false,
+      "severity": "owed",
+      "tier": "critical",
+      "owner": "te::EngineTeam"
+     },
+     "why": "A.4.4.7: the forbid and authority (grants none) both exclude Read; the obligation goes to the forbid (forbids before authority), authority a cause; A.4.6.5: each excluding claim is matched (AWaiver on the rule, ZWaiver on the authority), so rule 5 makes it debt; the obligation keeps its own owner (A.15.7)"
+    },
+    {
+     "in": "debt",
+     "select": {
+      "obligation": "ob:498720f00f9e0b1f9063c40929d57bd242bf16dbc988d1bcc45d5e8d3d747372"
+     },
+     "check": "fields",
+     "value": {
+      "exceptions": [
+       "te::AWaiver",
+       "te::ZWaiver"
+      ],
+      "exception": "te::ZWaiver",
+      "owner": "te::dave",
+      "expiresInDays": 30
+     },
+     "why": "A.7.7.1 vector: every matching exception sorted by id; exception, owner and expiresInDays from the earliest-expiring (ZWaiver, 2026-11-24: ceil(29.5) = 30), not the least id or the primary claim's (AWaiver, 311 days)"
+    }
+   ]
+  },
+  {
+   "case": "earliest-expired",
+   "input": "earliest-expired.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 6: no longer matched, non-introduced, owed"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "key": "ob:498720f00f9e0b1f9063c40929d57bd242bf16dbc988d1bcc45d5e8d3d747372"
+     },
+     "check": "fields",
+     "value": {
+      "introduced": false,
+      "severity": "owed",
+      "exception": null
+     },
+     "why": "A.7.7.1 [D22]: now* 2026-11-24T12:00Z is past ZWaiver's expiry, so the authority excluding claim is unmatched; each excluding claim must be matched (A.4.6.5), so AWaiver alone does not make debt"
+    },
+    {
+     "in": "debt",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.7.7.1: debt ends when the earliest-expiring exception expires"
+    }
+   ]
+  }
+ ]
+}

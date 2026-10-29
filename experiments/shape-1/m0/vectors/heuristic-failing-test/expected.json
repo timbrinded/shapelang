@@ -1,0 +1,98 @@
+{
+ "vector": "heuristic-failing-test",
+ "title": "A failing test from an unsound provider gives an owed heuristic contradiction plus a blocking unestablished(missing) at critical, never pass; with presence soundness it is one blocking sound contradiction",
+ "decides": [
+  "A.5.3.7",
+  "A.5.4.3",
+  "A.5.5.1",
+  "A.7.1.5",
+  "A.14.3.7"
+ ],
+ "cases": [
+  {
+   "case": "unsound-provider",
+   "input": "unsound-provider.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "the unestablished obligation blocks, so the change never passes (A.14.3.7)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:16e19bc25b2fdcf5b5a4bb167c9f3e1c64476255943699268f3a7b33e51bb4cf"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:85e169c4b02653f162d80cacabd140736c5347d43698224dc3f16455de0d8ac3",
+      "subject": null,
+      "force": "heuristic",
+      "introduced": true,
+      "severity": "owed",
+      "tier": "critical",
+      "binding": "bd:908391d4e14cd84545475293c526417b60764338a18f077d35fa6425e9e738d1",
+      "group": "g:24da0f422a39852eb8328fd103be97551849d199e31332e46f572a5a124ee393"
+     },
+     "why": "A.5.5.1: a failing test with a counterexample from a provider without presence soundness is a heuristic contradiction; rule 7: heuristic is owed; introduced since Req meets Δcode (A.7.3.3); law contradiction binding = Req pairs (A.7.2.2)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "unestablished",
+      "reason": "missing",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "binding": "bd:279c231ba57d12c2effac263c04b28aba260d31fbc5920c26e637e3d1b674852",
+      "group": "g:24da0f422a39852eb8328fd103be97551849d199e31332e46f572a5a124ee393"
+     },
+     "why": "A.5.3.7: a heuristic contradiction neither establishes nor prevents Sat, and no supporting record exists; A.5.4.3: usable heuristic contradictions hold no reason, so missing; rule 9: DefaultPolicy critical blocks unestablished; one group through the shared affected finest change run (A.7.2.3)"
+    }
+   ]
+  },
+  {
+   "case": "presence-sound-provider",
+   "input": "presence-sound-provider.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:16e19bc25b2fdcf5b5a4bb167c9f3e1c64476255943699268f3a7b33e51bb4cf"
+     },
+     "check": "fields",
+     "value": {
+      "force": "sound",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical"
+     },
+     "why": "A.5.5.1: with presence soundness the counterexample is a sound contradiction"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.1.5, T9: a sound contradiction suppresses unestablished"
+    }
+   ]
+  }
+ ]
+}

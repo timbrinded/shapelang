@@ -1,0 +1,512 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "mv",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/mv.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Hatchy",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "erin"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "KvTeam",
+       "kind": "team",
+       "members": [
+        "dana"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "ParserTeam",
+       "kind": "team",
+       "members": [
+        "pat"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "GenTeam",
+       "kind": "team",
+       "members": [
+        "gus"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "dana",
+       "kind": "person",
+       "identities": [
+        "github(\"dana\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "erin",
+       "kind": "person",
+       "identities": [
+        "github(\"erin\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "gus",
+       "kind": "person",
+       "identities": [
+        "github(\"gus\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "pat",
+       "kind": "person",
+       "identities": [
+        "github(\"pat\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "erin",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Core",
+       "owner": "KvTeam",
+       "tier": "critical",
+       "paths": [
+        "src/**"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "NoAssume",
+       "owner": "KvTeam",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "assume<Trust>"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "2224919cf4b069274446edcc38c8d9c738d2e73c0d10e03044324b45dce4ab31"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/mv.shape",
+       "mode": "100644",
+       "blob": "db5454978b8747295a9af179f34756b7104a6f18"
+      },
+      {
+       "path": "src/new/lib.rs",
+       "mode": "100644",
+       "blob": "e25003563f49574b4b7654b771042b1fa6fae949"
+      }
+     ],
+     "entries": [
+      {
+       "id": "verus:src/new/lib.rs",
+       "projection": "file",
+       "scheme": "verus.file.v1",
+       "digest": "sha256:a8cec1f14e23c1cd18eac582c9ee27a63f2745d5018ed91a4b3e2de919775b2e",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/new/lib.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:b8cff3ecc4747bba4dbc67d857bc91a08635f578651ebe41ed665800cd76f85d",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/new/lib.rs#f",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:926a9e95924359a26b3b8e07f4485b6ed3adfb03447a8137dbe767eee9dfd1d4",
+       "kind": "function",
+       "parent": "verus:src/new/lib.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "assume": 1
+       }
+      },
+      {
+       "id": "verus:src/new/lib.rs#f",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:da554ec0f94eafa2731f9d0636d781cb1f6205d9f1c578e2cc26bc791e80f246",
+       "kind": "function",
+       "parent": "verus:src/new/lib.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "assume": 1
+       }
+      },
+      {
+       "id": "verus:src/new/lib.rs#f",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:8b0dc6f06d75b7ffedb92f9a8f9c66e71c725ddf6405bd33377035def65d17a3",
+       "kind": "function",
+       "parent": "verus:src/new/lib.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "assume": 1
+       }
+      },
+      {
+       "id": "verus:src/new/lib.rs#f",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:62ea1fce675b7eebdf65cb52c142c1da9cc0798dee77eeb148e27423c2241d28",
+       "kind": "function",
+       "parent": "verus:src/new/lib.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "assume": 1
+       }
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "mv",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/mv.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Hatchy",
+       "owner": "Maint"
+      },
+      {
+       "decl": "actor",
+       "name": "Maint",
+       "kind": "team",
+       "members": [
+        "erin"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "KvTeam",
+       "kind": "team",
+       "members": [
+        "dana"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "ParserTeam",
+       "kind": "team",
+       "members": [
+        "pat"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "GenTeam",
+       "kind": "team",
+       "members": [
+        "gus"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "dana",
+       "kind": "person",
+       "identities": [
+        "github(\"dana\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "erin",
+       "kind": "person",
+       "identities": [
+        "github(\"erin\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "gus",
+       "kind": "person",
+       "identities": [
+        "github(\"gus\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "pat",
+       "kind": "person",
+       "identities": [
+        "github(\"pat\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "erin",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Core",
+       "owner": "KvTeam",
+       "tier": "critical",
+       "paths": [
+        "src/**"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "NoAssume",
+       "owner": "KvTeam",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "assume<Trust>"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "a2987a21ddb1128c82e0f6a915ae2b115b907dd25ad5d464e722ebc935b2dd78"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/mv.shape",
+       "mode": "100644",
+       "blob": "db5454978b8747295a9af179f34756b7104a6f18"
+      },
+      {
+       "path": "src/old/lib.rs",
+       "mode": "100644",
+       "blob": "bf6526d0051ce2e1b5c3ffd45cf93b5423c23987"
+      }
+     ],
+     "entries": [
+      {
+       "id": "verus:src/old/lib.rs",
+       "projection": "file",
+       "scheme": "verus.file.v1",
+       "digest": "sha256:78b452a43d63f31e2398821709c93c34baeca93f812e9dcf65cade5c24529146",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/old/lib.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:b8cff3ecc4747bba4dbc67d857bc91a08635f578651ebe41ed665800cd76f85d",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/old/lib.rs#f",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:926a9e95924359a26b3b8e07f4485b6ed3adfb03447a8137dbe767eee9dfd1d4",
+       "kind": "function",
+       "parent": "verus:src/old/lib.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "assume": 1
+       }
+      },
+      {
+       "id": "verus:src/old/lib.rs#f",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:da554ec0f94eafa2731f9d0636d781cb1f6205d9f1c578e2cc26bc791e80f246",
+       "kind": "function",
+       "parent": "verus:src/old/lib.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "assume": 1
+       }
+      },
+      {
+       "id": "verus:src/old/lib.rs#f",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:4758d4463a1ef78fde02ca32fe643b8c9a256e75c82d010ced4fc03310193fef",
+       "kind": "function",
+       "parent": "verus:src/old/lib.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "assume": 1
+       }
+      },
+      {
+       "id": "verus:src/old/lib.rs#f",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:ed73ad63bbc6ee4cca5f5e26661075b60c7654d6a9a0849561e4017bef27aec7",
+       "kind": "function",
+       "parent": "verus:src/old/lib.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "assume": 1
+       }
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"acme-code-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

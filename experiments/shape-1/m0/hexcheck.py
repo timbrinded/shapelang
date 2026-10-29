@@ -22,7 +22,8 @@ Run (writes nothing unless --json is given):
 SYNTAX.md, which the registered criterion does not cover.
 
 Exit 0 iff: 0 mismatches, 0 unnamed values, every name rule used as often as declared,
-vectors.json identical to the output, and the float audit clean. Otherwise exit 1.
+vectors.json identical to the output, the value count A.1.1 and RECORDS.md state equal to the count
+printed, and the float audit clean. Otherwise exit 1.
 """
 import argparse
 import contextlib
@@ -319,6 +320,14 @@ def main():
         json_same = fh.read() == printed
     inproc_same = audit.pop("stdout").encode("utf-8") == printed
     IN, DER = inputs(ns), derived(ns)
+    # the value count the text states (A.1.1, RECORDS.md header) must be the count printed
+    stated = {}
+    for f, pat in [("ANNEX.md", r"^A\.1\.1 .*?\(python3 -I; (\d+) values"),
+                   ("RECORDS.md", r"vectors\.py` \((\d+) values\)")]:
+        with open(os.path.join(a.spec, f), encoding="utf-8") as fh:
+            m = re.search(pat, fh.read(), re.M)
+        stated[f] = int(m.group(1)) if m else None
+    count_ok = all(n == len(V) for n in stated.values())
 
     def resolve(name):
         if name is None:
@@ -406,7 +415,8 @@ def main():
     extra_rows = [r for r in rows if not r["gated"]]
     gated_unused = [u for u in unused if u["source"] in NAMES]
 
-    print("vectors.py: %d values printed (%s)" % (len(V), vpy))
+    print("vectors.py: %d values printed (%s); the text states %s: %s"
+          % (len(V), vpy, ", ".join("%s %s" % kv for kv in stated.items()), "agree" if count_ok else "DISAGREE"))
     print("vectors.json byte-identical to vectors.py output: %s" % ("yes" if json_same else "NO"))
     print("in-process run prints the same bytes: %s" % ("yes" if inproc_same else "NO"))
     print("float audit: %d hash calls, %d JSON inputs (canonical, float-free, ASCII keys, safe integers), "
@@ -445,10 +455,11 @@ def main():
             if u["source"] in EXTRA_NAMES:
                 print("  RULE       %-14s anchor %r -> %s used %d times, declared %d"
                       % (u["source"], u["anchor"], u["vector"], u["used"], u["declared"]))
-    ok = json_same and inproc_same and not audit["problems"] and not mism and not unnamed and not gated_unused
+    ok = (json_same and inproc_same and count_ok and not audit["problems"] and not mism and not unnamed
+          and not gated_unused)
     if a.json:
         with open(a.json, "w", encoding="utf-8") as fh:
-            json.dump({"vectors": len(V), "vectorsJsonIdentical": json_same, "floatAudit": audit,
+            json.dump({"vectors": len(V), "statedCounts": stated, "vectorsJsonIdentical": json_same, "floatAudit": audit,
                        "checked": counted, "mismatches": len(mism), "unnamed": len(unnamed),
                        "unusedRules": gated_unused, "short": short, "rows": rows + unnamed, "ok": ok},
                       fh, indent=1, ensure_ascii=False)

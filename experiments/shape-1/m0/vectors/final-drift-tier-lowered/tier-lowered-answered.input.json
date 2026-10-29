@@ -1,0 +1,542 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "fd",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/fd.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "FD",
+       "owner": "Platform"
+      },
+      {
+       "decl": "actor",
+       "name": "Platform",
+       "kind": "team",
+       "members": [
+        "alice",
+        "carol"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "EngineTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "alice",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "SystemClock",
+       "bind": [
+        "ts.call(\"Date.now\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Engine",
+       "owner": "EngineTeam",
+       "tier": "critical",
+       "paths": [
+        "src/engine/**"
+       ],
+       "units": [
+        {
+         "name": "check",
+         "bind": "ts(\"src/engine/fresh.ts#checkFreshness\")"
+        }
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "ClockFree",
+       "owner": "EngineTeam",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "Read<SystemClock>",
+         "within": [
+          "unit Engine.check"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "clockScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(ts.call(\"Date.now\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "identity": "ed25519(\"ece129580f3b97b378a211db3d41ec47a03b69750f367233ac48d239738d5bb5\")",
+       "implementation": {
+        "digest": "sha256:265546820115e42ba903a0a4a5ea16fb88904bede8ad4fcdd74d019cc4c8fe41"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "6a0c290726b9b5732ae8585f0f5c620c71e2e98c9873635efd88e9abe97d5f29"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "45cf922c503a48d6b39913974f92ba2c96278700"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/fd.shape",
+       "mode": "100644",
+       "blob": "e770387b4dd2d163e0f05d2c2be631884d40a9f6"
+      },
+      {
+       "path": "src/engine/fresh.ts",
+       "mode": "100644",
+       "blob": "b301d20b7542e2e5f56f506bd0afd9ffe44a5a90"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:2972c7dde252dca9dcea689632dd628ae83c1cb1369eefb900da6bd440b5f3fb",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:53c82f4958c38e530a0a5ff8b317ae24375143f15b9082c94d14f4227989a349",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "ts:src/engine/fresh.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:4b98fef7bc0dabb44f04c9a8f4efef372451ed073154faa0769d1bd2868f1d95",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/fresh.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:1cfe6241ee9839b1eeb34edb5a433a0e886ef9efe568835a34254542d90f557d",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/fresh.ts#checkFreshness",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:deb61c3747c3a26724abd293e1da4f956742640671dab8123b37b58b957656a3",
+       "kind": "function",
+       "parent": "ts:src/engine/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/fresh.ts#checkFreshness",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:2317376e71e68c984c302c562b16071f795cf64e1028cf109f10d7b7272ba222",
+       "kind": "function",
+       "parent": "ts:src/engine/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "fd",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/fd.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "FD",
+       "owner": "Platform"
+      },
+      {
+       "decl": "actor",
+       "name": "Platform",
+       "kind": "team",
+       "members": [
+        "alice",
+        "carol"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "EngineTeam",
+       "kind": "team",
+       "members": [
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alice",
+       "kind": "person",
+       "identities": [
+        "github(\"alice\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "carol",
+       "kind": "person",
+       "identities": [
+        "github(\"carol\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "codeAgent",
+       "kind": "agent",
+       "operator": "alice",
+       "identities": [
+        "github(\"acme-code-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "SystemClock",
+       "bind": [
+        "ts.call(\"Date.now\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Engine",
+       "owner": "EngineTeam",
+       "tier": "critical",
+       "paths": [
+        "src/engine/**"
+       ],
+       "units": [
+        {
+         "name": "check",
+         "bind": "ts(\"src/engine/fresh.ts#checkFreshness\")"
+        }
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "ClockFree",
+       "owner": "EngineTeam",
+       "tier": "final",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "Read<SystemClock>",
+         "within": [
+          "unit Engine.check"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "clockScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(ts.call(\"Date.now\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "identity": "ed25519(\"ece129580f3b97b378a211db3d41ec47a03b69750f367233ac48d239738d5bb5\")",
+       "implementation": {
+        "digest": "sha256:265546820115e42ba903a0a4a5ea16fb88904bede8ad4fcdd74d019cc4c8fe41"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "5f88dc9ea934e4cfa695e795c831778039c1845146bdac3dcd1c52cb7dfbc307"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "45cf922c503a48d6b39913974f92ba2c96278700"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "e8e7d6bc88fdb62a8875ef11b974e242a24f88db"
+      },
+      {
+       "path": "shape/fd.shape",
+       "mode": "100644",
+       "blob": "22f0656280ddb395635438b087d95e41bc817eaf"
+      },
+      {
+       "path": "src/engine/fresh.ts",
+       "mode": "100644",
+       "blob": "b301d20b7542e2e5f56f506bd0afd9ffe44a5a90"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:2972c7dde252dca9dcea689632dd628ae83c1cb1369eefb900da6bd440b5f3fb",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:53c82f4958c38e530a0a5ff8b317ae24375143f15b9082c94d14f4227989a349",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": false
+      },
+      {
+       "id": "ts:src/engine/fresh.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:4b98fef7bc0dabb44f04c9a8f4efef372451ed073154faa0769d1bd2868f1d95",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/fresh.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:1cfe6241ee9839b1eeb34edb5a433a0e886ef9efe568835a34254542d90f557d",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/fresh.ts#checkFreshness",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:deb61c3747c3a26724abd293e1da4f956742640671dab8123b37b58b957656a3",
+       "kind": "function",
+       "parent": "ts:src/engine/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "ts:src/engine/fresh.ts#checkFreshness",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:2317376e71e68c984c302c562b16071f795cf64e1028cf109f10d7b7272ba222",
+       "kind": "function",
+       "parent": "ts:src/engine/fresh.ts",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/repo#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"acme-code-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [
+  {
+   "identity": "github(\"bob\")",
+   "line": "shape approve bd:5ceb0ab01a13b860",
+   "change": "github:acme/repo#1"
+  },
+  {
+   "identity": "github(\"carol\")",
+   "line": "shape approve bd:5ceb0ab01a13b860",
+   "change": "github:acme/repo#1"
+  }
+ ],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfT0JTRVJWRVMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJvYnNlcnZhdGlvbiJ9fV0sInByb2R1Y2VyIjp7ImFubm90YXRpb25zIjp7InNoYXBlLnByb3ZpZGVyIjoiZmQ6OmNsb2NrU2NhbiIsInZlcnNpb24iOiIxLjAuMCJ9LCJ1cmkiOiJmZDo6Y2xvY2tTY2FuIn0sInNoYXBlIjp7ImFzc3VtcHRpb25zIjpbXSwiZmFjdHMiOlt7ImF0IjoidHM6c3JjL2VuZ2luZS9mcmVzaC50cyNjaGVja0ZyZXNobmVzcyIsIm4iOjEsInJlc291cmNlIjoidHMuY2FsbChcIkRhdGUubm93XCIpIiwidHlwZSI6ImVmZmVjdCIsInZlcmIiOiJSZWFkIn1dLCJoYXJuZXNzIjpbXSwia2luZCI6Im9ic2VydmF0aW9uIiwicHJvdmlkZXIiOnsiaWQiOiJmZDo6Y2xvY2tTY2FuIiwidmVyc2lvbiI6IjEuMC4wIn0sInJlc3VsdCI6Im9ic2VydmVzIiwicmV2aXNpb24iOiIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyIiwic2NvcGUiOnsiZW50cmllcyI6W3siY29tcGxldGUiOnRydWUsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6NGI5OGZlZjdiYzBkYWJiNDRmMDRjOWE4ZjRlZmVmMzcyNDUxZWQwNzMxNTRmYWEwNzY5ZDFiZDI4NjhmMWQ5NSIsImlkIjoidHM6c3JjL2VuZ2luZS9mcmVzaC50cyIsInByb2plY3Rpb24iOiJmaWxlIiwic2NoZW1lIjoidHMuZmlsZS52MSJ9LHsiY29tcGxldGUiOnRydWUsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6MjMxNzM3NmU3MWU2OGM5ODRjMzAyYzU2MmIxNjA3MWY3OTVjZjY0ZTEwMjhjZjEwOWYxMGQ3YjcyNzJiYTIyMiIsImlkIjoidHM6c3JjL2VuZ2luZS9mcmVzaC50cyNjaGVja0ZyZXNobmVzcyIsInByb2plY3Rpb24iOiJ1bml0Iiwic2NoZW1lIjoidHMudW5pdC52MiJ9XSwicm9vdCI6InNoYTI1NjpkNDMzOWYwNjNlY2VmZGZiNTI4YzhjNTlmNmU5MDRkYWM3NGViOTM1NDM1M2YzZTVkMWYzNTE3ZmI2ZTExNmEyIn0sInRpbWUiOiIyMDI2LTEwLTI1VDA5OjAwOjAwWiIsInYiOiJzaGFwZS5ldmlkZW5jZS52MSJ9fSwicHJlZGljYXRlVHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9hdHRlc3RhdGlvbi9zY2FpL2F0dHJpYnV0ZS1yZXBvcnQvdjAuMyIsInN1YmplY3QiOlt7ImRpZ2VzdCI6eyJzaGEyNTYiOiJkNDMzOWYwNjNlY2VmZGZiNTI4YzhjNTlmNmU5MDRkYWM3NGViOTM1NDM1M2YzZTVkMWYzNTE3ZmI2ZTExNmEyIn0sIm5hbWUiOiJzaGFwZTpzY29wZS9mZDo6Y2xvY2tTY2FuLzIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIifV19",
+   "signatures": [
+    {
+     "keyid": "ece129580f3b97b378a211db3d41ec47a03b69750f367233ac48d239738d5bb5",
+     "sig": "Ob4VMLBkZHHSKGdS5Z/LScANtERTq5+/kKPaGb02uM5qBQOuojmyJ4RKtpuF07Uvb8RlQ7v85mrXXdAeL65uAQ=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

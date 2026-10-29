@@ -1,0 +1,69 @@
+{
+ "vector": "moved-harness-stale",
+ "title": "An older-revision, deps-complete test record whose harness digest no longer matches M_h is stale (no force), not producer-changed",
+ "decides": [
+  "A.5.4.1",
+  "A.5.4.2",
+  "A.7.3.3",
+  "D9"
+ ],
+ "cases": [
+  {
+   "case": "harness-digest-moved",
+   "input": "harness-digest-moved.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 6"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:6321ad94edb818cc516c06f8d3c0aa1021b0d6f3b6e925d1d0ff0be400a3cd60"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:85e169c4b02653f162d80cacabd140736c5347d43698224dc3f16455de0d8ac3",
+      "reason": "stale",
+      "introduced": false,
+      "severity": "owed",
+      "tier": "critical",
+      "binding": "bd:1eb4c1ae7108138034a5df2a0728f777d8cac0312d58194cb03a69bb068377c0"
+     },
+     "why": "A.5.4.1 [D9]: a moved harness digest is stale (the reused deps-complete record's harness digest differs from M_h), with no force (A.5.4.2); A.7.3.3: Req and the record's cone (run) do not meet Δcode (README only), so preexisting; not producer-changed, since stale matches first and the harness is not in Δcode"
+    },
+    {
+     "in": "errors",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.5.2.13: bunTest is not authenticated (no identity)"
+    }
+   ]
+  },
+  {
+   "case": "harness-digest-current",
+   "input": "harness-digest-current.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "the record is reused through deps complete"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.5.4.1-2: code, deps and harness digests match M_h, so the older-revision record is usable and establishes the law"
+    }
+   ]
+  }
+ ]
+}

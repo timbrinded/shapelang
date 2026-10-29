@@ -1,0 +1,71 @@
+{
+ "vector": "two-level-admit",
+ "title": "A proof assumes a hatch two reference levels below its cited code (set -> lemma_a -> lemma_b with admit()), and that change introduces the law's assumption obligation; an admit outside the cone does not",
+ "decides": [
+  "A.5.4.4",
+  "A.5.4.3",
+  "A.7.3.3",
+  "D4"
+ ],
+ "cases": [
+  {
+   "case": "admit-two-levels-down",
+   "input": "admit-two-levels-down.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: DefaultPolicy critical blocks unestablished"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:4c8acbe9339dac384bcc5c4bfaa3692cb18eb399b6ace0b8e1a386fe124d59d9"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:5b0827574cfafcf32685fbda991e3861771369b9665526e24290aff46318f7f2",
+      "reason": "assumption",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "critical",
+      "binding": "bd:613a4f55d9c94bc8c85e5f0be05dcf4c03a35c133836aef84c5e4a147ee44099"
+     },
+     "why": "A.5.4.4: cone(r) closes set and lemma_a under Refs° (set -> lemma_a -> lemma_b), so M_h's admit fact at lemma_b is an assumption of the proof, undeclared (no boundary allows admit), giving reason assumption (A.5.4.1, A.5.4.3); introduced because that record's cone meets Δcode at lemma_b although Req (set@unit, set@closure) did not move (A.7.3.3 [D4]); binding = every Req pair (A.7.2.2)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "no hatch rule is declared, so the admit fact contradicts nothing"
+    }
+   ]
+  },
+  {
+   "case": "admit-unreachable",
+   "input": "admit-unreachable.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "the proof is usable and establishes the law"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.5.4.4: lemma_c is not in the cone (no refs or calls reach it from set or lemma_a), so its admit is no assumption of the proof"
+    }
+   ]
+  }
+ ]
+}

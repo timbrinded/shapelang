@@ -1,0 +1,1039 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "base": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "modules": [
+    {
+     "module": "ironkv",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/ironkv.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "IronKv",
+       "owner": "Maintainers"
+      },
+      {
+       "decl": "actor",
+       "name": "Maintainers",
+       "kind": "team",
+       "members": [
+        "erin",
+        "dana"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "IronKvTeam",
+       "kind": "team",
+       "members": [
+        "dana",
+        "frank"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "dana",
+       "kind": "person",
+       "identities": [
+        "github(\"dana\")",
+        "ed25519(\"b4c92afb3ba57f3ab959ffe6d319c98484a2155a0f4c65b2c37011ffd197b075\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "erin",
+       "kind": "person",
+       "identities": [
+        "github(\"erin\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "frank",
+       "kind": "person",
+       "identities": [
+        "github(\"frank\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "kvAgent",
+       "kind": "agent",
+       "operator": "frank",
+       "identities": [
+        "github(\"kv-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "HostTrusted",
+       "boundary": true,
+       "attach": [
+        {
+         "name": "ReviewedSurface"
+        }
+       ],
+       "owner": "IronKvTeam",
+       "tier": "critical",
+       "paths": [
+        "ironkv/src/**/*_t.rs"
+       ],
+       "allows": [
+        "external_body",
+        "external",
+        "uninterp"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "DelegationMap",
+       "owner": "IronKvTeam",
+       "tier": "critical",
+       "paths": [
+        "ironkv/src/delegation_map_v.rs"
+       ],
+       "units": [
+        {
+         "name": "set",
+         "bind": "verus(\"ironkv/src/delegation_map_v.rs#DelegationMap::set\")"
+        }
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "NoHatchesOutsideBoundaries",
+       "template": {
+        "name": "HatchesStayAtBoundaries",
+        "args": []
+       },
+       "owner": "IronKvTeam",
+       "tier": "critical"
+      },
+      {
+       "decl": "law",
+       "name": "SetRefinesSpec",
+       "on": [
+        "unit DelegationMap.set"
+       ],
+       "statement": "verus(\"ironkv/src/delegation_map_v.rs#DelegationMap::set\")",
+       "evidence": {
+        "level": "proven",
+        "by": [
+         "verus"
+        ]
+       }
+      },
+      {
+       "decl": "law",
+       "name": "SetContractFaithful",
+       "on": [
+        "unit DelegationMap.set"
+       ],
+       "informal": "The ensures clause of set states the map update the protocol layer relies on.",
+       "evidence": {
+        "judged": true,
+        "at": "contract"
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "verus",
+       "produces": [
+        "proof"
+       ],
+       "decides": [
+        "statements verus"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "depsComplete": true,
+       "identity": "ed25519(\"fd50b8e3b144ea244fbf7737f550bc8dd0c2650bbc1aada833ca17ff8dbf329b\")",
+       "trusts": [
+        [
+         "z3",
+         "4.12.5"
+        ],
+        [
+         "verus",
+         "dccae1d"
+        ]
+       ],
+       "implementation": {
+        "paths": [
+         "ironkv/Cargo.toml",
+         "ironkv/Cargo.lock"
+        ]
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "verusRefines",
+       "produces": [
+        "equivalence"
+       ],
+       "decides": [
+        "equivalence"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "identity": "ed25519(\"fde4fba030ad002f7c2f7d4c331f49d13fb0ec747eceebec634f1ff4cbca9def\")",
+       "implementation": {
+        "paths": [
+         "tools/refines.toml"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "90d41cce38f55519c3c18812397a5e794aebfde52cd669b5431a9f58594fd93e"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "ironkv/Cargo.lock",
+       "mode": "100644",
+       "blob": "253dfb2b3754729f3310901bb9e82b076a280b08"
+      },
+      {
+       "path": "ironkv/Cargo.toml",
+       "mode": "100644",
+       "blob": "94c57ada9deddcbff06df3fc3facce57951875cc"
+      },
+      {
+       "path": "ironkv/src/delegation_map_v.rs",
+       "mode": "100644",
+       "blob": "434e98230c5cda17677f29ca1ef8cc7d09e1bd30"
+      },
+      {
+       "path": "ironkv/src/host_t.rs",
+       "mode": "100644",
+       "blob": "9efc4f5ce29d40279fcd2826c07937303b399e1f"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "83977260e3920505bd1bd2bb8cf4977969dbb729"
+      },
+      {
+       "path": "shape/ironkv.shape",
+       "mode": "100644",
+       "blob": "c4f4b6522dd5e206f4af54a688c0425c19ffce47"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:ironkv/Cargo.lock",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:d00a0fa191c184c08675c7dbe5552f978fc40bd3a745e0b7f8515354321248be",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:ironkv/Cargo.lock",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:bd36f5be6111ce323430942de205a3bb919a29200113b0507cffb4a0b052fcfc",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:ironkv/Cargo.toml",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:db8d47a08322adb3b6f03efc2c9e5be207497a565d8e27602a454247f8600351",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:ironkv/Cargo.toml",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:5723d3060512de8d156fda3ba444634d49e4c462de8dde0c0127ebf9100bcc74",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "file",
+       "scheme": "verus.file.v1",
+       "digest": "sha256:6613e999674b3ac75937b2588ff2d79b6dc2c5bfd58322e9c314e572363172eb",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:1df3bbbb838a7b7a51690b40614323ab41bfd0b803678657a6eba1a39b5acb41",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:447e6db6d5159076b32ae28c0f6c41582e1c285506d6182931d52d7d9a1b1d0b",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:e134d491bc50f78bf89dd8e5337ba759623af0b43f81daab60460206d8abb664",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:52aeddebdcc531fc660d05abc458d9146fbb78ede070eb9614467b60b57dcfd7",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:6f1180911c9d6b41b4441e993941c6b6b61d238815faa7cbde959751ae1b03ff",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:74a1ce46b24c840ef7bc06af217341ce3f605b944558202163df4f0bf624c93f",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:d604e795ba9c30b54be93324f03bfba983c3f8cccc0188c1f8cc9ee7905105f2",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:38293c2eeaa475cfeac7d8d4b09fee1961a33cc347b35e821b2f5a789af50827",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:fd2796c2785d086b4c499b97ebcecbd42f8f84b0861ed69aee17e46e33854f0e",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/host_t.rs",
+       "projection": "file",
+       "scheme": "verus.file.v1",
+       "digest": "sha256:dabc69bd644b98f88dab04b01d6c229019c9739916275ecf907640ed1fe1bc50",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/host_t.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:5d4dc9166ac65d2a375dec5abcc442032ef37ca3e9856b10a958ddfb9632bdbf",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/host_t.rs#Host::send",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:6f6c64717e6eb968aa43440532e4008b906eef8acc09872dd05f89b0a5385777",
+       "kind": "function",
+       "parent": "verus:ironkv/src/host_t.rs",
+       "markers": {
+        "external_body": 1
+       },
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/host_t.rs#Host::send",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:4f908d9db191137c443d20b81a3ac9b1c423e5d7be3661a642d070868629c610",
+       "kind": "function",
+       "parent": "verus:ironkv/src/host_t.rs",
+       "markers": {
+        "external_body": 1
+       },
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/host_t.rs#Host::send",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:e3242cd1364e843975cf5104c0a26217b1a81951e638aa7e9e408155f4bdf4d1",
+       "kind": "function",
+       "parent": "verus:ironkv/src/host_t.rs",
+       "markers": {
+        "external_body": 1
+       },
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/host_t.rs#Host::send",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:3f4d25f77e8a23e03eb78acf8cc604db8f4ddece5b0383dbf9e106343cefe869",
+       "kind": "function",
+       "parent": "verus:ironkv/src/host_t.rs",
+       "markers": {
+        "external_body": 1
+       },
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/ironkv#12"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"kv-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfU1VQUE9SVFMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJwcm9vZiJ9fV0sInByb2R1Y2VyIjp7ImFubm90YXRpb25zIjp7InNoYXBlLnByb3ZpZGVyIjoiaXJvbmt2Ojp2ZXJ1cyIsInZlcnNpb24iOiJkY2NhZTFkIn0sInVyaSI6Imlyb25rdjo6dmVydXMifSwic2hhcGUiOnsiYXNzdW1wdGlvbnMiOlt7ImlkIjoidmVydXM6aXJvbmt2L3NyYy9kZWxlZ2F0aW9uX21hcF92LnJzI0RlbGVnYXRpb25NYXA6OnNldC9hc3N1bWUiLCJraW5kIjoiaGF0Y2gifSx7ImlkIjoiejNANC4xMi41Iiwia2luZCI6InRvb2wifSx7ImlkIjoidmVydXNAZGNjYWUxZCIsImtpbmQiOiJ0b29sIn1dLCJib3VuZCI6eyJybGltaXQiOjEwfSwiY2xhaW0iOnsiZnAiOiJzaGEyNTY6NjBhODY3YWY1M2Q4MGE3Zjc2OTE1MzBmOWFlNTg2OTc3OWMwNWFiY2NkNjAyY2Q3NWIyYmFhZDI4YTg1ZGIzOCIsImlkIjoiaXJvbmt2OjpTZXRSZWZpbmVzU3BlYyJ9LCJjb2RlIjpbeyJkaWdlc3QiOiJzaGEyNTY6NWFiMjU4MjYzN2QzMDRmMDA1MGU2ZTZlYjQ4YjlhM2YwZGRjYTI0NmU5ZDM3NzdjNzc1YjA2NzNmNjAzNGZhZiIsImlkIjoidmVydXM6aXJvbmt2L3NyYy9kZWxlZ2F0aW9uX21hcF92LnJzI0RlbGVnYXRpb25NYXA6OnNldCIsInByb2plY3Rpb24iOiJ1bml0Iiwic2NoZW1lIjoidmVydXMudW5pdC52MiJ9LHsiZGlnZXN0Ijoic2hhMjU2OjQ0N2U2ZGI2ZDUxNTkwNzZiMzJhZTI4YzBmNmM0MTU4MmUxYzI4NTUwNmQ2MTgyOTMxZDUyZDdkOWExYjFkMGIiLCJpZCI6InZlcnVzOmlyb25rdi9zcmMvZGVsZWdhdGlvbl9tYXBfdi5ycyNEZWxlZ2F0aW9uTWFwOjpzZXQiLCJwcm9qZWN0aW9uIjoiY2xvc3VyZSIsInNjaGVtZSI6InZlcnVzLmNsb3N1cmUudmlyLnYyIn1dLCJkZXBzIjpbeyJkaWdlc3QiOiJzaGEyNTY6ZDYwNGU3OTViYTljMzBiNTRiZTkzMzI0ZjAzYmZiYTk4M2MzZjhjY2NjMDE4OGMxZjhjYzllZTc5MDUxMDVmMiIsImlkIjoidmVydXM6aXJvbmt2L3NyYy9kZWxlZ2F0aW9uX21hcF92LnJzI1N0cmljdGx5T3JkZXJlZFZlYzo6aW5zZXJ0IiwicHJvamVjdGlvbiI6ImNvbnRyYWN0Iiwic2NoZW1lIjoidmVydXMuY29udHJhY3QudmlyLnYyIn1dLCJoYXJuZXNzIjpbXSwia2luZCI6InByb29mIiwicHJvdmlkZXIiOnsiaWQiOiJpcm9ua3Y6OnZlcnVzIiwidmVyc2lvbiI6ImRjY2FlMWQifSwicmVzdWx0Ijoic3VwcG9ydHMiLCJyZXZpc2lvbiI6IjMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMiLCJ0aW1lIjoiMjAyNi0xMC0yNVQxMDowMDowMFoiLCJ2Ijoic2hhcGUuZXZpZGVuY2UudjEifX0sInByZWRpY2F0ZVR5cGUiOiJodHRwczovL2luLXRvdG8uaW8vYXR0ZXN0YXRpb24vc2NhaS9hdHRyaWJ1dGUtcmVwb3J0L3YwLjMiLCJzdWJqZWN0IjpbeyJkaWdlc3QiOnsic2hhMjU2IjoiNjBhODY3YWY1M2Q4MGE3Zjc2OTE1MzBmOWFlNTg2OTc3OWMwNWFiY2NkNjAyY2Q3NWIyYmFhZDI4YTg1ZGIzOCJ9LCJuYW1lIjoic2hhcGU6Y2xhaW0vaXJvbmt2OjpTZXRSZWZpbmVzU3BlYyJ9LHsiYW5ub3RhdGlvbnMiOnsic2hhcGUuc2NoZW1lIjoidmVydXMuY2xvc3VyZS52aXIudjIifSwiZGlnZXN0Ijp7InNoYTI1NiI6IjQ0N2U2ZGI2ZDUxNTkwNzZiMzJhZTI4YzBmNmM0MTU4MmUxYzI4NTUwNmQ2MTgyOTMxZDUyZDdkOWExYjFkMGIifSwibmFtZSI6InNoYXBlOmNvZGUvdmVydXM6aXJvbmt2L3NyYy9kZWxlZ2F0aW9uX21hcF92LnJzI0RlbGVnYXRpb25NYXA6OnNldEBjbG9zdXJlIn0seyJhbm5vdGF0aW9ucyI6eyJzaGFwZS5zY2hlbWUiOiJ2ZXJ1cy51bml0LnYyIn0sImRpZ2VzdCI6eyJzaGEyNTYiOiI1YWIyNTgyNjM3ZDMwNGYwMDUwZTZlNmViNDhiOWEzZjBkZGNhMjQ2ZTlkMzc3N2M3NzViMDY3M2Y2MDM0ZmFmIn0sIm5hbWUiOiJzaGFwZTpjb2RlL3ZlcnVzOmlyb25rdi9zcmMvZGVsZWdhdGlvbl9tYXBfdi5ycyNEZWxlZ2F0aW9uTWFwOjpzZXRAdW5pdCJ9LHsiYW5ub3RhdGlvbnMiOnsic2hhcGUuc2NoZW1lIjoidmVydXMuY29udHJhY3QudmlyLnYyIn0sImRpZ2VzdCI6eyJzaGEyNTYiOiJkNjA0ZTc5NWJhOWMzMGI1NGJlOTMzMjRmMDNiZmJhOTgzYzNmOGNjY2MwMTg4YzFmOGNjOWVlNzkwNTEwNWYyIn0sIm5hbWUiOiJzaGFwZTpjb2RlL3ZlcnVzOmlyb25rdi9zcmMvZGVsZWdhdGlvbl9tYXBfdi5ycyNTdHJpY3RseU9yZGVyZWRWZWM6Omluc2VydEBjb250cmFjdCJ9XX0=",
+   "signatures": [
+    {
+     "keyid": "fd50b8e3b144ea244fbf7737f550bc8dd0c2650bbc1aada833ca17ff8dbf329b",
+     "sig": "21zg30VTD9ie/YqOlYyULy9wOoLAfBCR+nqdpdWPqU/Armdp3Ei3nph+sl4G4u1EcUXgTpbmWyG5CxRIlITyDw=="
+    }
+   ]
+  },
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfU1VQUE9SVFMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJqdWRnbWVudCJ9fV0sInNoYXBlIjp7ImNsYWltIjp7ImZwIjoic2hhMjU2OjNkNmI5ZTI0N2ZhY2M3MzY3N2FmYmY4OGU4NzM1NDhlNGMwNTk4MWNiMjRkMTU4ZWVlMGJjMDFmYjFhZDdiNjgiLCJpZCI6Imlyb25rdjo6U2V0Q29udHJhY3RGYWl0aGZ1bCJ9LCJjb2RlIjpbeyJkaWdlc3QiOiJzaGEyNTY6ZTEzNGQ0OTFiYzUwZjc4YmY4OWRkOGU1MzM3YmE3NTk2MjNhZjBiNDNmODFkYWFiNjA0NjAyMDZkOGFiYjY2NCIsImlkIjoidmVydXM6aXJvbmt2L3NyYy9kZWxlZ2F0aW9uX21hcF92LnJzI0RlbGVnYXRpb25NYXA6OnNldCIsInByb2plY3Rpb24iOiJjb250cmFjdCIsInNjaGVtZSI6InZlcnVzLmNvbnRyYWN0LnZpci52MiJ9XSwianVkZ2UiOiJpcm9ua3Y6OmRhbmEiLCJraW5kIjoianVkZ21lbnQiLCJwcm92aWRlciI6bnVsbCwicmVzdWx0Ijoic3VwcG9ydHMiLCJyZXZpc2lvbiI6IjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIiLCJ0aW1lIjoiMjAyNi0xMC0wMVQwOTowMDowMFoiLCJ2Ijoic2hhcGUuZXZpZGVuY2UudjEifX0sInByZWRpY2F0ZVR5cGUiOiJodHRwczovL2luLXRvdG8uaW8vYXR0ZXN0YXRpb24vc2NhaS9hdHRyaWJ1dGUtcmVwb3J0L3YwLjMiLCJzdWJqZWN0IjpbeyJkaWdlc3QiOnsic2hhMjU2IjoiM2Q2YjllMjQ3ZmFjYzczNjc3YWZiZjg4ZTg3MzU0OGU0YzA1OTgxY2IyNGQxNThlZWUwYmMwMWZiMWFkN2I2OCJ9LCJuYW1lIjoic2hhcGU6Y2xhaW0vaXJvbmt2OjpTZXRDb250cmFjdEZhaXRoZnVsIn0seyJhbm5vdGF0aW9ucyI6eyJzaGFwZS5zY2hlbWUiOiJ2ZXJ1cy5jb250cmFjdC52aXIudjIifSwiZGlnZXN0Ijp7InNoYTI1NiI6ImUxMzRkNDkxYmM1MGY3OGJmODlkZDhlNTMzN2JhNzU5NjIzYWYwYjQzZjgxZGFhYjYwNDYwMjA2ZDhhYmI2NjQifSwibmFtZSI6InNoYXBlOmNvZGUvdmVydXM6aXJvbmt2L3NyYy9kZWxlZ2F0aW9uX21hcF92LnJzI0RlbGVnYXRpb25NYXA6OnNldEBjb250cmFjdCJ9XX0=",
+   "signatures": [
+    {
+     "keyid": "b4c92afb3ba57f3ab959ffe6d319c98484a2155a0f4c65b2c37011ffd197b075",
+     "sig": "WuQh5qwR+JYleioYVXRN4AyR8qnRl7ySm+8J4SQ2lzirb7pQhJAdt4ZEfBwyj6gH3ywE3CtqbsQqi13gU/5KBw=="
+    }
+   ]
+  },
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfU1VQUE9SVFMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJqdWRnbWVudCJ9fV0sInNoYXBlIjp7ImNsYWltIjp7ImZwIjoic2hhMjU2OmYzMTE5OTgzZTU1ZjZhYWUwMTJkNDgwNGYzOWFmOWY3M2VjYWZiMjdmYzVmZGNjYzYwNDBiOTA2ZWZiN2IwM2EiLCJpZCI6Imlyb25rdjo6SG9zdFRydXN0ZWQvUmV2aWV3ZWRTdXJmYWNlL2xhdyJ9LCJjb2RlIjpbeyJkaWdlc3QiOiJzaGEyNTY6M2Y0ZDI1Zjc3ZThhMjNlMDNlYjc4YWNmOGNjNjA0ZGI4ZjRkZGVjZTViMDM4M2RiZjllMTA2MzQzY2VmZTg2OSIsImlkIjoidmVydXM6aXJvbmt2L3NyYy9ob3N0X3QucnMjSG9zdDo6c2VuZCIsInByb2plY3Rpb24iOiJ1bml0Iiwic2NoZW1lIjoidmVydXMudW5pdC52MiJ9XSwianVkZ2UiOiJpcm9ua3Y6OmRhbmEiLCJraW5kIjoianVkZ21lbnQiLCJwcm92aWRlciI6bnVsbCwicmVzdWx0Ijoic3VwcG9ydHMiLCJyZXZpc2lvbiI6IjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIiLCJ0aW1lIjoiMjAyNi0xMC0wMVQwOTowMDowMFoiLCJ2Ijoic2hhcGUuZXZpZGVuY2UudjEifX0sInByZWRpY2F0ZVR5cGUiOiJodHRwczovL2luLXRvdG8uaW8vYXR0ZXN0YXRpb24vc2NhaS9hdHRyaWJ1dGUtcmVwb3J0L3YwLjMiLCJzdWJqZWN0IjpbeyJkaWdlc3QiOnsic2hhMjU2IjoiZjMxMTk5ODNlNTVmNmFhZTAxMmQ0ODA0ZjM5YWY5ZjczZWNhZmIyN2ZjNWZkY2NjNjA0MGI5MDZlZmI3YjAzYSJ9LCJuYW1lIjoic2hhcGU6Y2xhaW0vaXJvbmt2OjpIb3N0VHJ1c3RlZC9SZXZpZXdlZFN1cmZhY2UvbGF3In0seyJhbm5vdGF0aW9ucyI6eyJzaGFwZS5zY2hlbWUiOiJ2ZXJ1cy51bml0LnYyIn0sImRpZ2VzdCI6eyJzaGEyNTYiOiIzZjRkMjVmNzdlOGEyM2UwM2ViNzhhY2Y4Y2M2MDRkYjhmNGRkZWNlNWIwMzgzZGJmOWUxMDYzNDNjZWZlODY5In0sIm5hbWUiOiJzaGFwZTpjb2RlL3ZlcnVzOmlyb25rdi9zcmMvaG9zdF90LnJzI0hvc3Q6OnNlbmRAdW5pdCJ9XX0=",
+   "signatures": [
+    {
+     "keyid": "b4c92afb3ba57f3ab959ffe6d319c98484a2155a0f4c65b2c37011ffd197b075",
+     "sig": "TaBY40C4464UnfB1GOsGSE6aqorFt0sod4lWRxKd6Uji33GVPsRncUnrx6MX0yMoPT3Z8zbUTK43tnPvKvxXCw=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ },
+ "head": {
+  "revision": "3333333333333333333333333333333333333333",
+  "source": {
+   "v": "shape.source.v1",
+   "modules": [
+    {
+     "module": "ironkv",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/ironkv.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "IronKv",
+       "owner": "Maintainers"
+      },
+      {
+       "decl": "actor",
+       "name": "Maintainers",
+       "kind": "team",
+       "members": [
+        "erin",
+        "dana"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "IronKvTeam",
+       "kind": "team",
+       "members": [
+        "dana",
+        "frank"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "dana",
+       "kind": "person",
+       "identities": [
+        "github(\"dana\")",
+        "ed25519(\"b4c92afb3ba57f3ab959ffe6d319c98484a2155a0f4c65b2c37011ffd197b075\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "erin",
+       "kind": "person",
+       "identities": [
+        "github(\"erin\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "frank",
+       "kind": "person",
+       "identities": [
+        "github(\"frank\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "kvAgent",
+       "kind": "agent",
+       "operator": "frank",
+       "identities": [
+        "github(\"kv-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "HostTrusted",
+       "boundary": true,
+       "attach": [
+        {
+         "name": "ReviewedSurface"
+        }
+       ],
+       "owner": "IronKvTeam",
+       "tier": "critical",
+       "paths": [
+        "ironkv/src/**/*_t.rs"
+       ],
+       "allows": [
+        "external_body",
+        "external",
+        "uninterp"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "DelegationMap",
+       "owner": "IronKvTeam",
+       "tier": "critical",
+       "paths": [
+        "ironkv/src/delegation_map_v.rs"
+       ],
+       "units": [
+        {
+         "name": "set",
+         "bind": "verus(\"ironkv/src/delegation_map_v.rs#DelegationMap::set\")"
+        }
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "NoHatchesOutsideBoundaries",
+       "template": {
+        "name": "HatchesStayAtBoundaries",
+        "args": []
+       },
+       "owner": "IronKvTeam",
+       "tier": "critical"
+      },
+      {
+       "decl": "law",
+       "name": "SetRefinesSpec",
+       "on": [
+        "unit DelegationMap.set"
+       ],
+       "statement": "verus(\"ironkv/src/delegation_map_v.rs#DelegationMap::set\")",
+       "evidence": {
+        "level": "proven",
+        "by": [
+         "verus"
+        ]
+       }
+      },
+      {
+       "decl": "law",
+       "name": "SetContractFaithful",
+       "on": [
+        "unit DelegationMap.set"
+       ],
+       "informal": "The ensures clause of set states the map update the protocol layer relies on.",
+       "evidence": {
+        "judged": true,
+        "at": "contract"
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "verus",
+       "produces": [
+        "proof"
+       ],
+       "decides": [
+        "statements verus"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "depsComplete": true,
+       "identity": "ed25519(\"fd50b8e3b144ea244fbf7737f550bc8dd0c2650bbc1aada833ca17ff8dbf329b\")",
+       "trusts": [
+        [
+         "z3",
+         "4.12.5"
+        ],
+        [
+         "verus",
+         "dccae1d"
+        ]
+       ],
+       "implementation": {
+        "paths": [
+         "ironkv/Cargo.toml",
+         "ironkv/Cargo.lock"
+        ]
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "verusRefines",
+       "produces": [
+        "equivalence"
+       ],
+       "decides": [
+        "equivalence"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "identity": "ed25519(\"fde4fba030ad002f7c2f7d4c331f49d13fb0ec747eceebec634f1ff4cbca9def\")",
+       "implementation": {
+        "paths": [
+         "tools/refines.toml"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/3333333333333333333333333333333333333333",
+     "digest": {
+      "sha256": "d105caf7bf16d1070024ff6a437441bc4f3464c1a31c2d2adf1f4526de0524f2"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "3333333333333333333333333333333333333333",
+     "tree": [
+      {
+       "path": "ironkv/Cargo.lock",
+       "mode": "100644",
+       "blob": "253dfb2b3754729f3310901bb9e82b076a280b08"
+      },
+      {
+       "path": "ironkv/Cargo.toml",
+       "mode": "100644",
+       "blob": "94c57ada9deddcbff06df3fc3facce57951875cc"
+      },
+      {
+       "path": "ironkv/src/delegation_map_v.rs",
+       "mode": "100644",
+       "blob": "15fb3807c624960f21cd773cf8cee332d1638b42"
+      },
+      {
+       "path": "ironkv/src/host_t.rs",
+       "mode": "100644",
+       "blob": "9efc4f5ce29d40279fcd2826c07937303b399e1f"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "83977260e3920505bd1bd2bb8cf4977969dbb729"
+      },
+      {
+       "path": "shape/ironkv.shape",
+       "mode": "100644",
+       "blob": "c4f4b6522dd5e206f4af54a688c0425c19ffce47"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:ironkv/Cargo.lock",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:d00a0fa191c184c08675c7dbe5552f978fc40bd3a745e0b7f8515354321248be",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:ironkv/Cargo.lock",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:bd36f5be6111ce323430942de205a3bb919a29200113b0507cffb4a0b052fcfc",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:ironkv/Cargo.toml",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:db8d47a08322adb3b6f03efc2c9e5be207497a565d8e27602a454247f8600351",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:ironkv/Cargo.toml",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:5723d3060512de8d156fda3ba444634d49e4c462de8dde0c0127ebf9100bcc74",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "file",
+       "scheme": "verus.file.v1",
+       "digest": "sha256:87482f0c460f44ea90230747a37bc15e21b555915db59f89a816a71f20a4ae18",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:1df3bbbb838a7b7a51690b40614323ab41bfd0b803678657a6eba1a39b5acb41",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:447e6db6d5159076b32ae28c0f6c41582e1c285506d6182931d52d7d9a1b1d0b",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "markers": {
+        "assume": 1
+       },
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:e134d491bc50f78bf89dd8e5337ba759623af0b43f81daab60460206d8abb664",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "markers": {
+        "assume": 1
+       },
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:393b716540569fd40f27d1f90fc3727034dcd4e06b101c6835c47f3a8f030d8f",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "markers": {
+        "assume": 1
+       },
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:5ab2582637d304f0050e6e6eb48b9a3f0ddca246e9d3777c775b0673f6034faf",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "markers": {
+        "assume": 1
+       },
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:74a1ce46b24c840ef7bc06af217341ce3f605b944558202163df4f0bf624c93f",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:d604e795ba9c30b54be93324f03bfba983c3f8cccc0188c1f8cc9ee7905105f2",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:38293c2eeaa475cfeac7d8d4b09fee1961a33cc347b35e821b2f5a789af50827",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:fd2796c2785d086b4c499b97ebcecbd42f8f84b0861ed69aee17e46e33854f0e",
+       "kind": "function",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/host_t.rs",
+       "projection": "file",
+       "scheme": "verus.file.v1",
+       "digest": "sha256:dabc69bd644b98f88dab04b01d6c229019c9739916275ecf907640ed1fe1bc50",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/host_t.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:5d4dc9166ac65d2a375dec5abcc442032ef37ca3e9856b10a958ddfb9632bdbf",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/host_t.rs#Host::send",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:6f6c64717e6eb968aa43440532e4008b906eef8acc09872dd05f89b0a5385777",
+       "kind": "function",
+       "parent": "verus:ironkv/src/host_t.rs",
+       "markers": {
+        "external_body": 1
+       },
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/host_t.rs#Host::send",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:4f908d9db191137c443d20b81a3ac9b1c423e5d7be3661a642d070868629c610",
+       "kind": "function",
+       "parent": "verus:ironkv/src/host_t.rs",
+       "markers": {
+        "external_body": 1
+       },
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/host_t.rs#Host::send",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:e3242cd1364e843975cf5104c0a26217b1a81951e638aa7e9e408155f4bdf4d1",
+       "kind": "function",
+       "parent": "verus:ironkv/src/host_t.rs",
+       "markers": {
+        "external_body": 1
+       },
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:ironkv/src/host_t.rs#Host::send",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:3f4d25f77e8a23e03eb78acf8cc604db8f4ddece5b0383dbf9e106343cefe869",
+       "kind": "function",
+       "parent": "verus:ironkv/src/host_t.rs",
+       "markers": {
+        "external_body": 1
+       },
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ }
+}

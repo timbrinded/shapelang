@@ -1,0 +1,62 @@
+{
+ "vector": "final-law-admit",
+ "title": "A final law is not satisfied through an admit its boundary allows (reason assumption, blocking), while the same proof establishes the law at critical",
+ "decides": [
+  "A.5.4.4",
+  "A.5.4.1",
+  "A.5.4.3",
+  "D11"
+ ],
+ "cases": [
+  {
+   "case": "final-law",
+   "input": "final-law.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: tier final uses critical's policy, which blocks unestablished"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:565281480d16f09ff9495efcedd14d555f461a052dd4adc6b013b06342f565a5"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:d3c2e593e6a2f042e038a3db19d80a53781e4375cf8f5909f339bb7438ddaa4f",
+      "reason": "assumption",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "final",
+      "binding": "bd:5b75bbd4d0df313a16f87cfaf4bce0f13795845b9c7538f084fae0d34fc604c4"
+     },
+     "why": "A.5.4.4 [D11]: a final law is never satisfied through any hatch fact in its cone, allowed or not, so the admit allowed by the DMap boundary is no declared assumption for it; the proof rests on an undeclared assumption (A.5.4.1), reason assumption (A.5.4.3); introduced since Req meets Δcode (set edited)"
+    }
+   ]
+  },
+  {
+   "case": "critical-law",
+   "input": "critical-law.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "the admit is a declared assumption for a non-final law"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "A.5.4.4: the boundary allows admit in base and head, so for the critical law the hatch is declared and the proof establishes"
+    }
+   ]
+  }
+ ]
+}

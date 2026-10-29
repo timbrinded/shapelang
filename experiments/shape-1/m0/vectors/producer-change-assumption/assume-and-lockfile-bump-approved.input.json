@@ -1,0 +1,591 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "head": {
+  "revision": "2222222222222222222222222222222222222222",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Platform"
+      },
+      {
+       "decl": "actor",
+       "name": "Platform",
+       "kind": "team",
+       "members": [
+        "erin"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "KvTeam",
+       "kind": "team",
+       "members": [
+        "dana"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "dana",
+       "kind": "person",
+       "identities": [
+        "github(\"dana\")",
+        "ed25519(\"50533aeddd2b51dcef494cef8e5dc7a67f078d81916c132a914888f709018fc7\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "erin",
+       "kind": "person",
+       "identities": [
+        "github(\"erin\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "frank",
+       "kind": "person",
+       "identities": [
+        "github(\"frank\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "kvAgent",
+       "kind": "agent",
+       "operator": "frank",
+       "identities": [
+        "github(\"kv-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "DMap",
+       "owner": "KvTeam",
+       "tier": "critical",
+       "paths": [
+        "src/dmap.rs"
+       ],
+       "units": [
+        {
+         "name": "set",
+         "bind": "verus(\"src/dmap.rs#set\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "SetSpec",
+       "on": [
+        "unit DMap.set"
+       ],
+       "statement": "verus(\"src/dmap.rs#set\")",
+       "evidence": {
+        "level": "proven",
+        "by": [
+         "verus"
+        ]
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "verus",
+       "produces": [
+        "proof"
+       ],
+       "decides": [
+        "statements verus"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "identity": "ed25519(\"eeb191178d3a8d7d2927d112b7de6817a2d884af44172ecfc3cf8653989e9f01\")",
+       "trusts": [
+        [
+         "z3",
+         "4.12.5"
+        ]
+       ],
+       "implementation": {
+        "paths": [
+         "Cargo.lock"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/2222222222222222222222222222222222222222",
+     "digest": {
+      "sha256": "80bff8086c40dd61d14ffe3f3c4f7c1d8821fdd211574dd5b68b1e53f7321c3d"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "2222222222222222222222222222222222222222",
+     "tree": [
+      {
+       "path": "Cargo.lock",
+       "mode": "100644",
+       "blob": "3b150f8d73d095122369b88fe248981f85127c8d"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "95f59bf7910c11688872bca2e6a36d9f3fe9ffbb"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "e6547fb97197e6f0e2678c03c65f4e029cd904a8"
+      },
+      {
+       "path": "src/dmap.rs",
+       "mode": "100644",
+       "blob": "ed5b9a8aa939fe1bde0381e22cf392a12aa4adb3"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:Cargo.lock",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:8d0c129135e75707f9f2cb772ae4fdfa6222da7c77681523743093d1c7643eba",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:Cargo.lock",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:47978ff87bd46558bd6e2c582ca456e17a7a008406d9138033904b9efa291b2e",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/dmap.rs",
+       "projection": "file",
+       "scheme": "verus.file.v1",
+       "digest": "sha256:35c067c7f23016277bfcc938384533f103e2ea676a5ac6d6e4da5553b4203034",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/dmap.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:c190eeadbe4a45cc85b00ee4ad491345749d5fe88a1f84f5eb698ff5225e578f",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:01dffd1c04012a597a95910bfdbc3cd303a4396a209f0abcdac2899d822f06c4",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "assume": 1
+       }
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:2ccddb3d1b416210a4cadf91620a1410762c0b318de31db590ed34e000ce79fa",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "assume": 1
+       }
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:0528a9dd283f4c62979d5c32d7ea6600867a2f6674526e265c4020206da1b788",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "assume": 1
+       }
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:bf90261ae6476e6b6f25e6363239005691fceee7aeaffac2ddceae74bdf6b420",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true,
+       "markers": {
+        "assume": 1
+       }
+      }
+     ]
+    }
+   }
+  }
+ },
+ "base": {
+  "revision": "1111111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "lock": [
+    {
+     "name": "std",
+     "version": "1.0.0"
+    }
+   ],
+   "modules": [
+    {
+     "module": "m",
+     "imports": [
+      "std"
+     ],
+     "file": "shape/m.shape",
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Product",
+       "owner": "Platform"
+      },
+      {
+       "decl": "actor",
+       "name": "Platform",
+       "kind": "team",
+       "members": [
+        "erin"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "KvTeam",
+       "kind": "team",
+       "members": [
+        "dana"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "dana",
+       "kind": "person",
+       "identities": [
+        "github(\"dana\")",
+        "ed25519(\"50533aeddd2b51dcef494cef8e5dc7a67f078d81916c132a914888f709018fc7\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "erin",
+       "kind": "person",
+       "identities": [
+        "github(\"erin\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "frank",
+       "kind": "person",
+       "identities": [
+        "github(\"frank\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "kvAgent",
+       "kind": "agent",
+       "operator": "frank",
+       "identities": [
+        "github(\"kv-agent[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "DMap",
+       "owner": "KvTeam",
+       "tier": "critical",
+       "paths": [
+        "src/dmap.rs"
+       ],
+       "units": [
+        {
+         "name": "set",
+         "bind": "verus(\"src/dmap.rs#set\")"
+        }
+       ]
+      },
+      {
+       "decl": "law",
+       "name": "SetSpec",
+       "on": [
+        "unit DMap.set"
+       ],
+       "statement": "verus(\"src/dmap.rs#set\")",
+       "evidence": {
+        "level": "proven",
+        "by": [
+         "verus"
+        ]
+       }
+      },
+      {
+       "decl": "provider",
+       "name": "verus",
+       "produces": [
+        "proof"
+       ],
+       "decides": [
+        "statements verus"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "identity": "ed25519(\"eeb191178d3a8d7d2927d112b7de6817a2d884af44172ecfc3cf8653989e9f01\")",
+       "trusts": [
+        [
+         "z3",
+         "4.12.5"
+        ]
+       ],
+       "implementation": {
+        "paths": [
+         "Cargo.lock"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/1111111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "3b92e6caabcb78e41eb0cee9d21886b8e8961e291f4f4c917c63727370347151"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "1111111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "Cargo.lock",
+       "mode": "100644",
+       "blob": "9d4500b1a8b14dbad66aeb1ac70ca8d52e437057"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "95f59bf7910c11688872bca2e6a36d9f3fe9ffbb"
+      },
+      {
+       "path": "shape/m.shape",
+       "mode": "100644",
+       "blob": "e6547fb97197e6f0e2678c03c65f4e029cd904a8"
+      },
+      {
+       "path": "src/dmap.rs",
+       "mode": "100644",
+       "blob": "a8875fda47603a444ab1a773b9e9d67cc4af2344"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:Cargo.lock",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:e9328b63923b305d036faa34a7455b30c1661719f978ad6fada378d55be767aa",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "raw:Cargo.lock",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:769136b78afe47463197137e91b91316299b3d9a695c3dbd3d7b97fefe590fa5",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": false,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/dmap.rs",
+       "projection": "file",
+       "scheme": "verus.file.v1",
+       "digest": "sha256:9ab75db5bb19c8ad584e97371c00e24ef1ba5da347a56b6613cfec7fa9135e57",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/dmap.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:c190eeadbe4a45cc85b00ee4ad491345749d5fe88a1f84f5eb698ff5225e578f",
+       "kind": "file",
+       "parent": null,
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2",
+       "digest": "sha256:01dffd1c04012a597a95910bfdbc3cd303a4396a209f0abcdac2899d822f06c4",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2",
+       "digest": "sha256:2ccddb3d1b416210a4cadf91620a1410762c0b318de31db590ed34e000ce79fa",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "own",
+       "scheme": "verus.own.v2",
+       "digest": "sha256:9058ef436ad4dea1027cb4c664d52843382fb24c9fe42122e127bfbadc21ed3b",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      },
+      {
+       "id": "verus:src/dmap.rs#set",
+       "projection": "unit",
+       "scheme": "verus.unit.v2",
+       "digest": "sha256:937bef4dbe582c02e9f80737a1715a7a598c06012187a4567ed8b381cc8f1835",
+       "kind": "function",
+       "parent": "verus:src/dmap.rs",
+       "refs": [],
+       "executable": true,
+       "hatchComplete": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/app#7"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"kv-agent[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [
+  {
+   "identity": "github(\"dana\")",
+   "line": "shape approve bd:9b9ef99041425da6",
+   "change": "github:acme/app#7"
+  }
+ ],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfU1VQUE9SVFMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJwcm9vZiJ9fV0sInByb2R1Y2VyIjp7ImFubm90YXRpb25zIjp7InNoYXBlLnByb3ZpZGVyIjoibTo6dmVydXMiLCJ2ZXJzaW9uIjoiMS4wLjAifSwidXJpIjoibTo6dmVydXMifSwic2hhcGUiOnsiYXNzdW1wdGlvbnMiOlt7ImlkIjoiejNANC4xMi41Iiwia2luZCI6InRvb2wifV0sImJvdW5kIjp7InJsaW1pdCI6MTB9LCJjbGFpbSI6eyJmcCI6InNoYTI1NjpkM2MyZTU5M2U2YTJmMDQyZTAzOGEzZGIxOWQ4MGE1Mzc4MWU0Mzc1Y2Y4ZjU5MDlmMzM5YmI3NDM4ZGRhYTRmIiwiaWQiOiJtOjpTZXRTcGVjIn0sImNvZGUiOlt7ImRpZ2VzdCI6InNoYTI1NjpiZjkwMjYxYWU2NDc2ZTZiNmYyNWU2MzYzMjM5MDA1NjkxZmNlZWU3YWVhZmZhYzJkZGNlYWU3NGJkZjZiNDIwIiwiaWQiOiJ2ZXJ1czpzcmMvZG1hcC5ycyNzZXQiLCJwcm9qZWN0aW9uIjoidW5pdCIsInNjaGVtZSI6InZlcnVzLnVuaXQudjIifSx7ImRpZ2VzdCI6InNoYTI1NjowMWRmZmQxYzA0MDEyYTU5N2E5NTkxMGJmZGJjM2NkMzAzYTQzOTZhMjA5ZjBhYmNkYWMyODk5ZDgyMmYwNmM0IiwiaWQiOiJ2ZXJ1czpzcmMvZG1hcC5ycyNzZXQiLCJwcm9qZWN0aW9uIjoiY2xvc3VyZSIsInNjaGVtZSI6InZlcnVzLmNsb3N1cmUudmlyLnYyIn1dLCJkZXBzIjpbXSwiaGFybmVzcyI6W10sImtpbmQiOiJwcm9vZiIsInByb3ZpZGVyIjp7ImlkIjoibTo6dmVydXMiLCJ2ZXJzaW9uIjoiMS4wLjAifSwicmVzdWx0Ijoic3VwcG9ydHMiLCJyZXZpc2lvbiI6IjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIiLCJ0aW1lIjoiMjAyNi0xMC0yNVQxMDowMDowMFoiLCJ2Ijoic2hhcGUuZXZpZGVuY2UudjEifX0sInByZWRpY2F0ZVR5cGUiOiJodHRwczovL2luLXRvdG8uaW8vYXR0ZXN0YXRpb24vc2NhaS9hdHRyaWJ1dGUtcmVwb3J0L3YwLjMiLCJzdWJqZWN0IjpbeyJkaWdlc3QiOnsic2hhMjU2IjoiZDNjMmU1OTNlNmEyZjA0MmUwMzhhM2RiMTlkODBhNTM3ODFlNDM3NWNmOGY1OTA5ZjMzOWJiNzQzOGRkYWE0ZiJ9LCJuYW1lIjoic2hhcGU6Y2xhaW0vbTo6U2V0U3BlYyJ9LHsiYW5ub3RhdGlvbnMiOnsic2hhcGUuc2NoZW1lIjoidmVydXMuY2xvc3VyZS52aXIudjIifSwiZGlnZXN0Ijp7InNoYTI1NiI6IjAxZGZmZDFjMDQwMTJhNTk3YTk1OTEwYmZkYmMzY2QzMDNhNDM5NmEyMDlmMGFiY2RhYzI4OTlkODIyZjA2YzQifSwibmFtZSI6InNoYXBlOmNvZGUvdmVydXM6c3JjL2RtYXAucnMjc2V0QGNsb3N1cmUifSx7ImFubm90YXRpb25zIjp7InNoYXBlLnNjaGVtZSI6InZlcnVzLnVuaXQudjIifSwiZGlnZXN0Ijp7InNoYTI1NiI6ImJmOTAyNjFhZTY0NzZlNmI2ZjI1ZTYzNjMyMzkwMDU2OTFmY2VlZTdhZWFmZmFjMmRkY2VhZTc0YmRmNmI0MjAifSwibmFtZSI6InNoYXBlOmNvZGUvdmVydXM6c3JjL2RtYXAucnMjc2V0QHVuaXQifV19",
+   "signatures": [
+    {
+     "keyid": "eeb191178d3a8d7d2927d112b7de6817a2d884af44172ecfc3cf8653989e9f01",
+     "sig": "kcdNN/Y6VYlyWFOYmEu5NDB8zY83/C2JRa48wZnOwO8G1EuMkG21/P4FRQpZbn/BNM+mDMC42eCakWfTJc34AA=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ }
+}

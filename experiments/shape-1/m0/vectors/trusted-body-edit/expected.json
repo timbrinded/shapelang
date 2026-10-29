@@ -1,0 +1,81 @@
+{
+ "vector": "trusted-body-edit",
+ "title": "Editing the body of a function that already carries a hatch marker outside any allowing boundary makes the hatch fact new and the contradiction introduced",
+ "decides": [
+  "A.7.3.1",
+  "A.7.3.3",
+  "D6"
+ ],
+ "cases": [
+  {
+   "case": "trusted-body-edited",
+   "input": "trusted-body-edited.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 7"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:c7193ae634f6a98fdfd9b7221ea6666095cb4e039f0acc70f146e0396ab2bbc2"
+     },
+     "check": "fields",
+     "value": {
+      "kind": "contradiction",
+      "claim.fp": "sha256:001074f4e213e6567a5c4bc0aaf123e83b052c109bc79942e976a879a50a90c8",
+      "subject": {
+       "code": "verus:src/kv.rs#Kv::get",
+       "atom": "external_body<std::Trust>"
+      },
+      "introduced": true,
+      "severity": "blocking",
+      "force": "sound",
+      "tier": "normal",
+      "binding": "bd:6cd52f2b1370f601b235fd47efc6e54c465cea6b07dc65c3d1a7979981b21fda"
+     },
+     "why": "A.7.3.1 [D6]: a hatch fact at a finest change is new even when M_b lists as many markers, so editing the trusted body introduces the external_body contradiction; binding (get, own) (A.7.2.2)"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "coverage"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.7.4.3: get is hatchComplete"
+    }
+   ]
+  },
+  {
+   "case": "other-function-edited",
+   "input": "other-function-edited.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "owed",
+     "why": "A.7.5.1 rule 6"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "key": "ob:c7193ae634f6a98fdfd9b7221ea6666095cb4e039f0acc70f146e0396ab2bbc2"
+     },
+     "check": "fields",
+     "value": {
+      "introduced": false,
+      "severity": "owed",
+      "force": "sound",
+      "binding": "bd:67745cae5b62efdc1f495b44ce53a5d4e4cb4ae9e2efc8e7ad8234245a49af64"
+     },
+     "why": "A.7.3.1: get is not a finest change and M_b lists 1 >= 1 external_body marker at get, so the fact is not new"
+    }
+   ]
+  }
+ ]
+}

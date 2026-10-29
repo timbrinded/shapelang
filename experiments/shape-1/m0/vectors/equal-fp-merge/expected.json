@@ -1,0 +1,93 @@
+{
+ "vector": "equal-fp-merge",
+ "title": "Two laws with equal fps merge into one claim with all ids, the highest tier and the owner of the highest-tier id (ties: least id), and one obligation",
+ "decides": [
+  "A.4.1.7",
+  "§4.1",
+  "A.6.2.5"
+ ],
+ "cases": [
+  {
+   "case": "highest-tier-owner",
+   "input": "highest-tier-owner.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9: the merged claim is critical and DefaultPolicy critical blocks unestablished"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:456e7f03a36b0ee68c0c80e0e2c182917b7b565c9ce8fb86f31fd93640158c73"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:b3b0061c4d96e68004929dd922fcc396a3da8f18a19c2875710047aaf1b9d514",
+      "claim.ids": [
+       "merge::GuardA",
+       "merge::GuardZ"
+      ],
+      "claim.tier": "critical",
+      "tier": "critical",
+      "owner": "merge::TeamZ",
+      "reason": "missing",
+      "introduced": true,
+      "severity": "blocking",
+      "binding": "bd:3e659c0840591721138ac950c736117e97c991bd5c4ad1ed369566afc1ec3d33"
+     },
+     "why": "A.4.1.7: equal fps merge with all ids, the highest tier (critical, GuardZ) and the owner of the highest-tier id (TeamZ); A.6.2.5 owner* from the merged base claim; A.7.3.3 Req (isoToday@unit) meets the delta"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "A.4.1.7: obligations deduplicate"
+    }
+   ]
+  },
+  {
+   "case": "tied-tiers-least-id",
+   "input": "tied-tiers-least-id.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 9"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "unestablished",
+      "claim.fp": "sha256:456e7f03a36b0ee68c0c80e0e2c182917b7b565c9ce8fb86f31fd93640158c73"
+     },
+     "check": "fields",
+     "value": {
+      "key": "ob:b3b0061c4d96e68004929dd922fcc396a3da8f18a19c2875710047aaf1b9d514",
+      "claim.ids": [
+       "merge::GuardA",
+       "merge::GuardZ"
+      ],
+      "claim.tier": "critical",
+      "owner": "merge::TeamA",
+      "severity": "blocking"
+     },
+     "why": "A.4.1.7: tied tiers take the owner of the least id (GuardA, TeamA)"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "A.4.1.7: obligations deduplicate"
+    }
+   ]
+  }
+ ]
+}

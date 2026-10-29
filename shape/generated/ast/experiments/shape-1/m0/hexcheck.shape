@@ -1,0 +1,241 @@
+module shape.generated.ast.experiments.shape_1.m0.hexcheck
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource HexcheckModuleDerivedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/hexcheck.py#derived")
+  fingerprint ast.semantic_subtree_v1("sha256:84017ab28f084c103950886d65e0e75a65ab5c06b75f6047547d473a3ee49647")
+}
+
+resource HexcheckModuleFAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/hexcheck.py#f")
+  fingerprint ast.semantic_subtree_v1("sha256:bcbf11108939e04725cd8d0301695c4d824ca2cfda92e1834586f07efc0baee0")
+}
+
+resource HexcheckModuleFloatAuditAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/hexcheck.py#float_audit")
+  fingerprint ast.semantic_subtree_v1("sha256:9befdb268e39c5315af48b418b041045e8cbe50dd49025b8a2a7e3b66d65336b")
+}
+
+resource HexcheckModuleInputsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/hexcheck.py#inputs")
+  fingerprint ast.semantic_subtree_v1("sha256:d74fcb76cdcf201011b2e5dc5b7a5a7bba2ff1e1ed0a25042408e65a74a8cc4d")
+}
+
+resource HexcheckModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/hexcheck.py#main")
+  fingerprint ast.semantic_subtree_v1("sha256:604f049cab785aef498289d0d4a007f48617a9824db0f7c927b4ffda47c792fd")
+}
+
+resource HexcheckModuleNormAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/hexcheck.py#norm")
+  fingerprint ast.semantic_subtree_v1("sha256:49fa256f9c4a945eb9cc3b6bda6afee984c30c3a07ade1eeef84cce6da5ed4cd")
+}
+
+resource HexcheckModulePcAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/hexcheck.py#pc")
+  fingerprint ast.semantic_subtree_v1("sha256:5ca2f9905a99264a5517e33c70b215715875a238728fc81441ed2b5f89b480ae")
+}
+
+resource HexcheckModulePfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/hexcheck.py#pf")
+  fingerprint ast.semantic_subtree_v1("sha256:52099a817b0d6b975f911721ef164ed925f5e4c92d1ce0665526e6f47552f25b")
+}
+
+resource HexcheckModuleResolveAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/hexcheck.py#resolve")
+  fingerprint ast.semantic_subtree_v1("sha256:131ecf3941d3de81aae07960af241adda58b7931db0c06e438165f87af067740")
+}
+
+resource HexcheckModuleRunVectorsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/hexcheck.py#run_vectors")
+  fingerprint ast.semantic_subtree_v1("sha256:5556637671fa3f66ffe653f70fe244271b47f45bd01ea0ad64abd9bd0d7d3119")
+}
+
+resource HexcheckModuleSourcesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/hexcheck.py#sources")
+  fingerprint ast.semantic_subtree_v1("sha256:092bb4ffd6d4a038d282c9e03dd944b1ba784ffe61a6b8a52ddbcf5e223bc472")
+}
+
+resource HexcheckModuleVectorHexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/hexcheck.py#vector_hex")
+  fingerprint ast.semantic_subtree_v1("sha256:e00cb3c813e319e2024bc303892bb4f6ef3d8f6c5aad4aeba60019e50817433a")
+}
+
+resource HexcheckModuleWalkAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/hexcheck.py#walk")
+  fingerprint ast.semantic_subtree_v1("sha256:c4bfa741de2ec62c4554ffd28dd90ef794e10480065feec153e825715b611c95")
+}
+
+resource HexcheckModuleWrapAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/hexcheck.py#wrap")
+  fingerprint ast.semantic_subtree_v1("sha256:e1630dcdd1cd1c9ab36b41427c3c7d5823e3ae08611f044b0e2bf78721b6cd5a")
+}
+
+component HexcheckModule : GeneratedCandidate {
+  fn derived
+    source python("experiments/shape-1/m0/hexcheck.py#derived")
+    effects unknown
+  fn f
+    source python("experiments/shape-1/m0/hexcheck.py#f")
+    effects unknown
+  fn float_audit
+    source python("experiments/shape-1/m0/hexcheck.py#float_audit")
+    effects unknown
+  fn inputs
+    source python("experiments/shape-1/m0/hexcheck.py#inputs")
+    effects unknown
+  fn main
+    source python("experiments/shape-1/m0/hexcheck.py#main")
+    effects unknown
+  fn norm
+    source python("experiments/shape-1/m0/hexcheck.py#norm")
+    effects unknown
+  fn pc
+    source python("experiments/shape-1/m0/hexcheck.py#pc")
+    effects unknown
+  fn pf
+    source python("experiments/shape-1/m0/hexcheck.py#pf")
+    effects unknown
+  fn resolve
+    source python("experiments/shape-1/m0/hexcheck.py#resolve")
+    effects unknown
+  fn run_vectors
+    source python("experiments/shape-1/m0/hexcheck.py#run_vectors")
+    effects unknown
+  fn sources
+    source python("experiments/shape-1/m0/hexcheck.py#sources")
+    effects unknown
+  fn vector_hex
+    source python("experiments/shape-1/m0/hexcheck.py#vector_hex")
+    effects unknown
+  fn walk
+    source python("experiments/shape-1/m0/hexcheck.py#walk")
+    effects unknown
+  fn wrap
+    source python("experiments/shape-1/m0/hexcheck.py#wrap")
+    effects unknown
+}
+
+relation HexcheckModuleDerivedGeneratedFromHexcheckModuleDerivedAstAnchor {
+  kind generated_from
+  connects HexcheckModule -> HexcheckModuleDerivedAstAnchor
+  roles { HexcheckModule as generated, HexcheckModuleDerivedAstAnchor as syntax }
+  expects HexcheckModuleDerivedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:84017ab28f084c103950886d65e0e75a65ab5c06b75f6047547d473a3ee49647")
+  summary "fn HexcheckModule.derived generated from python function_definition at experiments/shape-1/m0/hexcheck.py#derived."
+}
+
+relation HexcheckModuleFGeneratedFromHexcheckModuleFAstAnchor {
+  kind generated_from
+  connects HexcheckModule -> HexcheckModuleFAstAnchor
+  roles { HexcheckModule as generated, HexcheckModuleFAstAnchor as syntax }
+  expects HexcheckModuleFAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bcbf11108939e04725cd8d0301695c4d824ca2cfda92e1834586f07efc0baee0")
+  summary "fn HexcheckModule.f generated from python function_definition at experiments/shape-1/m0/hexcheck.py#f."
+}
+
+relation HexcheckModuleFloatAuditGeneratedFromHexcheckModuleFloatAuditAstAnchor {
+  kind generated_from
+  connects HexcheckModule -> HexcheckModuleFloatAuditAstAnchor
+  roles { HexcheckModule as generated, HexcheckModuleFloatAuditAstAnchor as syntax }
+  expects HexcheckModuleFloatAuditAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9befdb268e39c5315af48b418b041045e8cbe50dd49025b8a2a7e3b66d65336b")
+  summary "fn HexcheckModule.float_audit generated from python function_definition at experiments/shape-1/m0/hexcheck.py#float_audit."
+}
+
+relation HexcheckModuleInputsGeneratedFromHexcheckModuleInputsAstAnchor {
+  kind generated_from
+  connects HexcheckModule -> HexcheckModuleInputsAstAnchor
+  roles { HexcheckModule as generated, HexcheckModuleInputsAstAnchor as syntax }
+  expects HexcheckModuleInputsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d74fcb76cdcf201011b2e5dc5b7a5a7bba2ff1e1ed0a25042408e65a74a8cc4d")
+  summary "fn HexcheckModule.inputs generated from python function_definition at experiments/shape-1/m0/hexcheck.py#inputs."
+}
+
+relation HexcheckModuleMainGeneratedFromHexcheckModuleMainAstAnchor {
+  kind generated_from
+  connects HexcheckModule -> HexcheckModuleMainAstAnchor
+  roles { HexcheckModule as generated, HexcheckModuleMainAstAnchor as syntax }
+  expects HexcheckModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:604f049cab785aef498289d0d4a007f48617a9824db0f7c927b4ffda47c792fd")
+  summary "fn HexcheckModule.main generated from python function_definition at experiments/shape-1/m0/hexcheck.py#main."
+}
+
+relation HexcheckModuleNormGeneratedFromHexcheckModuleNormAstAnchor {
+  kind generated_from
+  connects HexcheckModule -> HexcheckModuleNormAstAnchor
+  roles { HexcheckModule as generated, HexcheckModuleNormAstAnchor as syntax }
+  expects HexcheckModuleNormAstAnchor fingerprint ast.semantic_subtree_v1("sha256:49fa256f9c4a945eb9cc3b6bda6afee984c30c3a07ade1eeef84cce6da5ed4cd")
+  summary "fn HexcheckModule.norm generated from python function_definition at experiments/shape-1/m0/hexcheck.py#norm."
+}
+
+relation HexcheckModulePcGeneratedFromHexcheckModulePcAstAnchor {
+  kind generated_from
+  connects HexcheckModule -> HexcheckModulePcAstAnchor
+  roles { HexcheckModule as generated, HexcheckModulePcAstAnchor as syntax }
+  expects HexcheckModulePcAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5ca2f9905a99264a5517e33c70b215715875a238728fc81441ed2b5f89b480ae")
+  summary "fn HexcheckModule.pc generated from python function_definition at experiments/shape-1/m0/hexcheck.py#pc."
+}
+
+relation HexcheckModulePfGeneratedFromHexcheckModulePfAstAnchor {
+  kind generated_from
+  connects HexcheckModule -> HexcheckModulePfAstAnchor
+  roles { HexcheckModule as generated, HexcheckModulePfAstAnchor as syntax }
+  expects HexcheckModulePfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:52099a817b0d6b975f911721ef164ed925f5e4c92d1ce0665526e6f47552f25b")
+  summary "fn HexcheckModule.pf generated from python function_definition at experiments/shape-1/m0/hexcheck.py#pf."
+}
+
+relation HexcheckModuleResolveGeneratedFromHexcheckModuleResolveAstAnchor {
+  kind generated_from
+  connects HexcheckModule -> HexcheckModuleResolveAstAnchor
+  roles { HexcheckModule as generated, HexcheckModuleResolveAstAnchor as syntax }
+  expects HexcheckModuleResolveAstAnchor fingerprint ast.semantic_subtree_v1("sha256:131ecf3941d3de81aae07960af241adda58b7931db0c06e438165f87af067740")
+  summary "fn HexcheckModule.resolve generated from python function_definition at experiments/shape-1/m0/hexcheck.py#resolve."
+}
+
+relation HexcheckModuleRunVectorsGeneratedFromHexcheckModuleRunVectorsAstAnchor {
+  kind generated_from
+  connects HexcheckModule -> HexcheckModuleRunVectorsAstAnchor
+  roles { HexcheckModule as generated, HexcheckModuleRunVectorsAstAnchor as syntax }
+  expects HexcheckModuleRunVectorsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5556637671fa3f66ffe653f70fe244271b47f45bd01ea0ad64abd9bd0d7d3119")
+  summary "fn HexcheckModule.run_vectors generated from python function_definition at experiments/shape-1/m0/hexcheck.py#run_vectors."
+}
+
+relation HexcheckModuleSourcesGeneratedFromHexcheckModuleSourcesAstAnchor {
+  kind generated_from
+  connects HexcheckModule -> HexcheckModuleSourcesAstAnchor
+  roles { HexcheckModule as generated, HexcheckModuleSourcesAstAnchor as syntax }
+  expects HexcheckModuleSourcesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:092bb4ffd6d4a038d282c9e03dd944b1ba784ffe61a6b8a52ddbcf5e223bc472")
+  summary "fn HexcheckModule.sources generated from python function_definition at experiments/shape-1/m0/hexcheck.py#sources."
+}
+
+relation HexcheckModuleVectorHexGeneratedFromHexcheckModuleVectorHexAstAnchor {
+  kind generated_from
+  connects HexcheckModule -> HexcheckModuleVectorHexAstAnchor
+  roles { HexcheckModule as generated, HexcheckModuleVectorHexAstAnchor as syntax }
+  expects HexcheckModuleVectorHexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e00cb3c813e319e2024bc303892bb4f6ef3d8f6c5aad4aeba60019e50817433a")
+  summary "fn HexcheckModule.vector_hex generated from python function_definition at experiments/shape-1/m0/hexcheck.py#vector_hex."
+}
+
+relation HexcheckModuleWalkGeneratedFromHexcheckModuleWalkAstAnchor {
+  kind generated_from
+  connects HexcheckModule -> HexcheckModuleWalkAstAnchor
+  roles { HexcheckModule as generated, HexcheckModuleWalkAstAnchor as syntax }
+  expects HexcheckModuleWalkAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c4bfa741de2ec62c4554ffd28dd90ef794e10480065feec153e825715b611c95")
+  summary "fn HexcheckModule.walk generated from python function_definition at experiments/shape-1/m0/hexcheck.py#walk."
+}
+
+relation HexcheckModuleWrapGeneratedFromHexcheckModuleWrapAstAnchor {
+  kind generated_from
+  connects HexcheckModule -> HexcheckModuleWrapAstAnchor
+  roles { HexcheckModule as generated, HexcheckModuleWrapAstAnchor as syntax }
+  expects HexcheckModuleWrapAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e1630dcdd1cd1c9ab36b41427c3c7d5823e3ae08611f044b0e2bf78721b6cd5a")
+  summary "fn HexcheckModule.wrap generated from python function_definition at experiments/shape-1/m0/hexcheck.py#wrap."
+}
+
+implementation HexcheckModuleImpl {
+  paths {
+    "experiments/shape-1/m0/hexcheck.py"
+  }
+  conforms_to HexcheckModule
+}

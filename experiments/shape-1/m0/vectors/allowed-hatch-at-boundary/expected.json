@@ -1,0 +1,88 @@
+{
+ "vector": "allowed-hatch-at-boundary",
+ "title": "Example 2's base: HostTrusted's allowed external_body markers raise nothing, in change mode and in audit mode",
+ "decides": [
+  "A.14.2.6",
+  "A.4.2.4",
+  "A.11.5",
+  "D1"
+ ],
+ "cases": [
+  {
+   "case": "change-base-unchanged",
+   "input": "change-base-unchanged.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.11.5 acceptance: Example 2's base raises no obligation at HostTrusted"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "subject.code": "verus:ironkv/src/host_t.rs#Host::send"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.14.2.6, A.4.2.4 [D1]: the external_body clause excepts HostTrusted, which allows external_body, and no Hatch clause exists"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "D1: hatch * gives the declared-verb clauses plus Undeclared, none of which forbids HostTrusted's allowed markers"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "the proof and dana's judgments establish the three laws; no code changed"
+    }
+   ]
+  },
+  {
+   "case": "audit-base",
+   "input": "audit-base.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.11.5 acceptance: Example 2's base raises no obligation at HostTrusted"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "subject.code": "verus:ironkv/src/host_t.rs#Host::send"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "A.14.2.6, A.4.2.4 [D1]: the external_body clause excepts HostTrusted, which allows external_body, and no Hatch clause exists"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction"
+     },
+     "check": "count",
+     "value": 0,
+     "why": "D1: hatch * gives the declared-verb clauses plus Undeclared, none of which forbids HostTrusted's allowed markers"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "the proof and dana's judgments establish the three laws; no code changed"
+    }
+   ]
+  }
+ ]
+}

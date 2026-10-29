@@ -1,0 +1,125 @@
+{
+ "vector": "append-only-update",
+ "title": "std AppendOnly forbids Update, so an ungoverned script rewriting (Update) or redacting an append-only table raises a final sound contradiction; Read stays permitted",
+ "decides": [
+  "D13",
+  "SYNTAX §4",
+  "A.3.4.2",
+  "A.4.4.7",
+  "A.7.5.1"
+ ],
+ "cases": [
+  {
+   "case": "ungoverned-update",
+   "input": "ungoverned-update.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 2: introduced sound contradiction with tier* final"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "key": "ob:8e534caa49ee999859dfe4584ec8e8d3b56e0e0b99ff388c02bcb4f1cba2e9d2"
+     },
+     "check": "fields",
+     "value": {
+      "claim.fp": "sha256:3fe8f5ac7169085e744c2b83e26fdd5285328148b8300b68510efd4de6b0aef8",
+      "subject": {
+       "code": "ts:scripts/purge-audit.ts#rewritePayloads",
+       "atom": "Update<audit::AuditEvent>"
+      },
+      "force": "sound",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "final",
+      "owner": "audit::AuditTeam",
+      "binding": "bd:52c7e0faf3840b26b547cc2a45068afd72cd4ceccdae7d3e76ffd9110c4d2474",
+      "group": "g:285ccf66476a34a8e229a0b36596ff85d79c756c6c4fed0618963a52b4fdb285",
+      "witness": [
+       "sha256:fcef4d4a12a27dfb6842064aef2f4c27adf516498ab4609533592e5a79bb2fd7"
+      ]
+     },
+     "why": "D13, syntax §4: std AppendOnly<R> is forbid Update<R> (fp 3fe8f5ac7169085e over *), and Update ∈ ↓Update; att = ungoverned, which has no authority, so the forbid is the only excluding claim (A.4.4.7); A.7.3.1 new fact at a new identity; A.6.2.3 tier* final; A.7.5.1 rule 2; A.7.2.2 binding: (x, own, null, head) for the new identity"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "A.7.4.3: the new identities are covered by sqlEffects' complete entries (absence-sound in base and head)"
+    }
+   ]
+  },
+  {
+   "case": "ungoverned-redact",
+   "input": "ungoverned-redact.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "blocked",
+     "why": "A.7.5.1 rule 2: introduced sound contradiction with tier* final"
+    },
+    {
+     "in": "obligations",
+     "select": {
+      "kind": "contradiction",
+      "key": "ob:58e3cfadff4b28042a107a98e466e36cf6d9a27886c8dcc95e0be81d0985c3e3"
+     },
+     "check": "fields",
+     "value": {
+      "claim.fp": "sha256:3fe8f5ac7169085e744c2b83e26fdd5285328148b8300b68510efd4de6b0aef8",
+      "subject": {
+       "code": "ts:scripts/purge-audit.ts#rewritePayloads",
+       "atom": "Redact<audit::AuditEvent>"
+      },
+      "force": "sound",
+      "introduced": true,
+      "severity": "blocking",
+      "tier": "final",
+      "owner": "audit::AuditTeam",
+      "binding": "bd:a98a55ec21641a82ad5fa0865ca9ae89e1d739abd3dae09afb849e81b3482bf9",
+      "group": "g:0c2dae7223aede132fd98acd2487384ca6a6f1a9d7dfcf717a44d2503a8e4070",
+      "witness": [
+       "sha256:163930075e3ac4987de27bc2d4d39c1f2b891fc3f16842601d9f2d28e679111a"
+      ]
+     },
+     "why": "D13, syntax §4: std AppendOnly<R> is forbid Update<R> (fp 3fe8f5ac7169085e over *), and Redact ∈ ↓Update; att = ungoverned, which has no authority, so the forbid is the only excluding claim (A.4.4.7); A.7.3.1 new fact at a new identity; A.6.2.3 tier* final; A.7.5.1 rule 2; A.7.2.2 binding: (x, own, null, head) for the new identity"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 1,
+     "why": "A.7.4.3: covered as in ungoverned-update"
+    }
+   ]
+  },
+  {
+   "case": "ungoverned-read",
+   "input": "ungoverned-read.input.json",
+   "assert": [
+    {
+     "in": "verdict",
+     "select": {},
+     "check": "equals",
+     "value": "pass",
+     "why": "A.4.4.7: Read ∉ ↓Update, so P(ungoverned) contains Read<AuditEvent>"
+    },
+    {
+     "in": "obligations",
+     "select": {},
+     "check": "count",
+     "value": 0,
+     "why": "no claim excludes Read at ungoverned code; coverage met"
+    }
+   ]
+  }
+ ]
+}

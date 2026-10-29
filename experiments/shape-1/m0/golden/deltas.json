@@ -1,0 +1,846 @@
+{
+ "ex1-A": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; the head adds purgeOldEvents' complete summary, which bounds that position (A.4.4.7 [D2]); the added grant gains no permitted atom; the reverse pass loosens",
+    "what": "new top-level field order = \"tighter\""
+   },
+   {
+    "clause": "A.15.1 [D22] (subject the key's JSON), A.4.4.12, records §2; AppendOnly forbids Update [D13]",
+    "what": "E-conduct subject \"audit::AuditEvent/AppendOnly/effect.forbid-HardDelete {\\\"code\\\":…,\\\"atom\\\":…}\" -> the JCS of the obligation key's preimage {claim: 3fe8f5ac… (the Update forbid), kind: contradiction, subject: {atom: HardDelete<audit::AuditEvent>, code: ts:src/audit/purge.ts#purgeOldEvents}, v: shape.obligation.v1}"
+   },
+   {
+    "clause": "A.4.5.1 [D2], A.7.4.2-3 [D3]; EXAMPLES Example 1 Variant A",
+    "what": "coverage obligation ob:f99ad91d0fb96186 (component audit::AuditStore, critical, blocking, unmet call(ts) at purgeOldEvents) removed: summaries have no call(ts) channel, and the effect(pg.table(\"audit_events\")) needs at purge.ts and purgeOldEvents are met by sqlEffects' complete entries"
+   },
+   {
+    "clause": "A.8.2.3 L1 authority part ('an atom gained in A that a forbid still blocks is no part') [D17]; EXAMPLES Example 1 Variant A",
+    "what": "L1 loosening ob:ca99c5461b8ff9a8 (component audit::AuditStore, authority+ HardDelete, exploited, blocking) and its loosening row removed: HardDelete and Update are newly in A but not in P, since the final Update forbid still excludes them; L1 is implied"
+   },
+   {
+    "clause": "A.7.4.2-3 [D2, D3]",
+    "what": "health.coverage {num 1, den 2} -> {num 2, den 2}"
+   },
+   {
+    "clause": "A.7.5.1 rule 1, A.10.2",
+    "what": "verdict stays blocked, now by the error alone (no obligation remains)"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "observation of audit::sqlEffects gives each effect fact \"n\": 1 and is re-signed; record id sha256:358a637db4da2c29db18078fddc9a66bb4783251249669e1d9f87328dc4ff449 -> sha256:85b714f74c48f471180badd032a50189cb367b8655271cc5a65255e5b91c5a78 [A.12.6 RJ14, A.5.2.1, A.12.8.4, records §2 [D15]]",
+   "the shape declaration names manifest ed25519(\"3ab9cc26e2e4142e800d629423642f49708b20f8f4eb368195b84efc64928a67\") (the prototype's ed25519 stand-in for syntax §1's sigstore identity) in every non-empty Example 1 shape, and both manifests are DSSE-signed by it [syntax §1, A.3.1.2, A.5.2.17, A.12.7.5 [D27]]"
+  ],
+  "obligations": 0,
+  "verdict": "blocked"
+ },
+ "ex1-B": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; base and head shapes are identical",
+    "what": "new top-level field order = \"equivalent\""
+   },
+   {
+    "clause": "syntax §4 std AppendOnly, A.3.4.2, A.4.1.1, A.4.4.7 [D13]",
+    "what": "contradiction claim: the AppendOnly clause is forbid Update<audit::AuditEvent> (fp 3fe8f5ac7169085e, id audit::AuditEvent/AppendOnly/effect.forbid-Update) instead of forbid HardDelete (fp ccfcbabf10265d64, id …/effect.forbid-HardDelete); HardDelete is below Update, so the fact still violates it"
+   },
+   {
+    "clause": "records §2 keys and bindings, A.7.2.1-3, A.12.8.5-6 [D13]; EXAMPLES Example 1 Variant B",
+    "what": "contradiction key ob:bb51a88f52f5081e -> ob:98ff6f5f02010232, binding bd:0ee8731661d897e6 -> bd:1c907a8a119dd310, group g:d8aa91339ae209d8 -> g:e49eeaef1d87eb9a (same subject, affected and code; new claim fp)"
+   },
+   {
+    "clause": "A.14.1.3, A.7.1.2 (causes proximate to root), A.6.2.3",
+    "what": "contradiction causes gain {type claim, id sha256:3fe8f5ac…} (the AppendOnly clause, tier final, Lvl_b final at AuditStore.*) as the root, after the fact, the AuditEvent binding, the AuditStore.* attribution and authority"
+   },
+   {
+    "clause": "records §2 facts, A.12.8.4, A.4.4.5 (n = max over sources) [D15]",
+    "what": "facts[sha256:51ed979304abfea6…] gains \"n\": 1 (the fact id is unchanged: it excludes n)"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "observation of audit::sqlEffects gives each effect fact \"n\": 1 and is re-signed; record id sha256:358a637db4da2c29db18078fddc9a66bb4783251249669e1d9f87328dc4ff449 -> sha256:85b714f74c48f471180badd032a50189cb367b8655271cc5a65255e5b91c5a78 [A.12.6 RJ14, A.5.2.1, A.12.8.4, records §2 [D15]]",
+   "the shape declaration names manifest ed25519(\"3ab9cc26e2e4142e800d629423642f49708b20f8f4eb368195b84efc64928a67\") (the prototype's ed25519 stand-in for syntax §1's sigstore identity) in every non-empty Example 1 shape, and both manifests are DSSE-signed by it [syntax §1, A.3.1.2, A.5.2.17, A.12.7.5 [D27]]"
+  ],
+  "obligations": 1,
+  "verdict": "blocked"
+ },
+ "ex1-B-weak-observer": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; the only forward part is an undecided L7 question on provider audit::sqlEffects (A.8.2.3 L7)",
+    "what": "new top-level field order = \"undecided\""
+   },
+   {
+    "clause": "syntax §4 std AppendOnly, A.3.4.2, A.4.1.1, A.4.4.7 [D13]",
+    "what": "contradiction claim: the AppendOnly clause is forbid Update<audit::AuditEvent> (fp 3fe8f5ac7169085e, id audit::AuditEvent/AppendOnly/effect.forbid-Update) instead of forbid HardDelete (fp ccfcbabf10265d64, id …/effect.forbid-HardDelete); HardDelete is below Update, so the fact still violates it"
+   },
+   {
+    "clause": "records §2 keys and bindings, A.7.2.1-3, A.12.8.5-6 [D13]; EXAMPLES Example 1 Variant B",
+    "what": "contradiction key ob:bb51a88f52f5081e -> ob:98ff6f5f02010232, binding bd:0ee8731661d897e6 -> bd:1c907a8a119dd310, group g:d8aa91339ae209d8 -> g:e49eeaef1d87eb9a (same subject, affected and code; new claim fp)"
+   },
+   {
+    "clause": "A.14.1.3, A.7.1.2 (causes proximate to root), A.6.2.3",
+    "what": "contradiction causes gain {type claim, id sha256:3fe8f5ac…} (the AppendOnly clause, tier final, Lvl_b final at AuditStore.*) as the root, after the fact, the AuditEvent binding, the AuditStore.* attribution and authority"
+   },
+   {
+    "clause": "records §2 facts, A.12.8.4, A.4.4.5 (n = max over sources) [D15]",
+    "what": "facts[sha256:51ed979304abfea6…] gains \"n\": 1 (the fact id is unchanged: it excludes n)"
+   },
+   {
+    "clause": "A.8.2.2-3 L7, A.14.1.5, A.6.3.4 [D12]; A.7.2.3 [D10] (the contradiction's causes name no changed base item)",
+    "what": "the L7 loosening ob:ae867d9fedbd638a (provider audit::sqlEffects, undecided, final, blocking, delta 'L7 presence true false', binding bd:bb43581fbf9b506d, eligible carol only) is unchanged; it stays in its own group"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "observation of audit::sqlEffects gives each effect fact \"n\": 1 and is re-signed; record id sha256:358a637db4da2c29db18078fddc9a66bb4783251249669e1d9f87328dc4ff449 -> sha256:85b714f74c48f471180badd032a50189cb367b8655271cc5a65255e5b91c5a78 [A.12.6 RJ14, A.5.2.1, A.12.8.4, records §2 [D15]]",
+   "the shape declaration names manifest ed25519(\"3ab9cc26e2e4142e800d629423642f49708b20f8f4eb368195b84efc64928a67\") (the prototype's ed25519 stand-in for syntax §1's sigstore identity) in every non-empty Example 1 shape, and both manifests are DSSE-signed by it [syntax §1, A.3.1.2, A.5.2.17, A.12.7.5 [D27]]"
+  ],
+  "obligations": 2,
+  "verdict": "blocked"
+ },
+ "ex1-Bprime": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; base and head shapes are identical",
+    "what": "new top-level field order = \"equivalent\""
+   },
+   {
+    "clause": "syntax §4 std AppendOnly, A.4.4.7, records §2 [D13]; EXAMPLES Example 1 B′",
+    "what": "contradiction claim HardDelete forbid (ccfcbabf…) -> Update forbid (3fe8f5ac…, id …/effect.forbid-Update); key ob:0e15fc409b2de2ab -> ob:66055a3355822d3b, binding bd:8061e184d3eaa0f7 -> bd:30826739357c3cfa, group g:e358f90b5333ff78 -> g:7090849974a91553"
+   },
+   {
+    "clause": "A.14.1.3, A.7.1.2, A.4.4.7 (ungoverned: all atoms in A)",
+    "what": "causes gain {type claim, id sha256:3fe8f5ac…} as the root (ungoverned has no authority, so no other excluding claim)"
+   },
+   {
+    "clause": "records §2, A.12.8.4 [D15]",
+    "what": "facts[sha256:c91451290422bd92…] gains \"n\": 1"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "observation of audit::sqlEffects gives each effect fact \"n\": 1 and is re-signed; record id sha256:4adfba1540785f21b00f1a73a6879a4a7ecd2975c4a393abc50968ce9241d491 -> sha256:7a1dfcf439e5edda8b262ab85112a45be5921303560d10efdbca0293ad34490b [A.12.6 RJ14, A.5.2.1, A.12.8.4, records §2 [D15]]",
+   "the shape declaration names manifest ed25519(\"3ab9cc26e2e4142e800d629423642f49708b20f8f4eb368195b84efc64928a67\") (the prototype's ed25519 stand-in for syntax §1's sigstore identity) in every non-empty Example 1 shape, and both manifests are DSSE-signed by it [syntax §1, A.3.1.2, A.5.2.17, A.12.7.5 [D27]]"
+  ],
+  "obligations": 1,
+  "verdict": "blocked"
+ },
+ "ex1-Bsecond": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; base and head shapes are identical",
+    "what": "new top-level field order = \"equivalent\""
+   },
+   {
+    "clause": "records §2 bindings, A.7.2.2, A.12.8.6 [D22] (lawyer L41); EXAMPLES Example 1 B″",
+    "what": "coverage binding bd:5f45c544d7284f45 -> bd:55aeb9df71bf26a0: the delta now holds the unmet pair \"sha256:3fe8f5ac… effect(pg.table(\\\"audit_events\\\"))\" (key ob:155fa0bf253e0793 unchanged)"
+   },
+   {
+    "clause": "A.7.1.3 coverage ('bind or declare'), A.12.10.2 (act set has no bind)",
+    "what": "coverage dischargers[1].act \"bind\" -> \"declare\""
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "observation of audit::sqlEffects gives each effect fact \"n\": 1 and is re-signed; record id sha256:ab9f53df1e7960ea4fd3c228d38e15c98c23f99d01aa493ad65504527d03d9c4 -> sha256:865966eae91c46f09c5f5b82f4d521fc106d77cf9c6e4d85836c0649360d3f25 [A.12.6 RJ14, A.5.2.1, A.12.8.4, records §2 [D15]]",
+   "the shape declaration names manifest ed25519(\"3ab9cc26e2e4142e800d629423642f49708b20f8f4eb368195b84efc64928a67\") (the prototype's ed25519 stand-in for syntax §1's sigstore identity) in every non-empty Example 1 shape, and both manifests are DSSE-signed by it [syntax §1, A.3.1.2, A.5.2.17, A.12.7.5 [D27]]"
+  ],
+  "obligations": 1,
+  "verdict": "blocked"
+ },
+ "ex1-C": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; EXAMPLES Variant C: the new summary also rejects worlds the base admits",
+    "what": "new top-level field order = \"incomparable\""
+   },
+   {
+    "clause": "A.4.5.1 [D2], A.7.4.2-3 [D3]",
+    "what": "coverage obligation ob:f99ad91d0fb96186 (component AuditStore, critical, blocking) removed; it was a member of the loosening group"
+   },
+   {
+    "clause": "A.8.2.3 L1 level parts, A.4.4.7 (summary in Lvl), A.12.8.7 [D2, D13]; M0 errata M0-E1/E2; EXAMPLES Variant C",
+    "what": "forbid loosening: subject and claim fp ccfcbabf… -> 3fe8f5ac… (ids …/effect.forbid-Update), causes[0].id likewise; key ob:031024b1dfd16fe2 -> ob:e8ec989a6cf48d9a; binding bd:8d771e08d86d43b2 -> bd:a7514dcb4cfb7068 (delta: L1 level <atom> final>critical and final>none for all six atoms of ↓Update, HardDelete and Update included at appendEvent, whose complete summary protects them at critical)"
+   },
+   {
+    "clause": "A.8.2.3 L1 authority part [D17], A.4.4.7 P with summaries [D2]; EXAMPLES Variant C ('not at appendEvent, bounded by its summary')",
+    "what": "authority loosening (ob:ca99c5461b8ff9a8, key unchanged): binding bd:2785f31d20281bdd -> bd:6bca5b3fe0d0787d; its loosening row's affected drops ts:src/audit/store.ts#appendEvent (appendEvent's complete summary {Append} keeps HardDelete and Update out of P there); delta authority+ HardDelete and Update"
+   },
+   {
+    "clause": "A.8.3.2, A.12.8.8 [D17]",
+    "what": "both loosenings: counterexample \"sha256:51ed979304abfea6…\" (a fact id) -> the fact printed as {at: ts:src/audit/purge.ts#purgeOldEvents, verb: HardDelete, resource: pg.table(\"audit_events\")}; the same in both loosening rows"
+   },
+   {
+    "clause": "A.7.2.3; EXAMPLES Variant C",
+    "what": "group g:8456e4786582a819 -> g:9f2b9e1c945e6418 (members: the two loosenings only)"
+   },
+   {
+    "clause": "as for the forbid loosening [D13]",
+    "what": "loosening row subject ccfcbabf… -> 3fe8f5ac… and obligation ob:031024b1… -> ob:e8ec989a…"
+   },
+   {
+    "clause": "A.7.4.2-3 [D2, D3]",
+    "what": "health.coverage {num 1, den 2} -> {num 2, den 2}"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "observation of audit::sqlEffects gives each effect fact \"n\": 1 and is re-signed; record id sha256:358a637db4da2c29db18078fddc9a66bb4783251249669e1d9f87328dc4ff449 -> sha256:85b714f74c48f471180badd032a50189cb367b8655271cc5a65255e5b91c5a78 [A.12.6 RJ14, A.5.2.1, A.12.8.4, records §2 [D15]]",
+   "the shape declaration names manifest ed25519(\"3ab9cc26e2e4142e800d629423642f49708b20f8f4eb368195b84efc64928a67\") (the prototype's ed25519 stand-in for syntax §1's sigstore identity) in every non-empty Example 1 shape, and both manifests are DSSE-signed by it [syntax §1, A.3.1.2, A.5.2.17, A.12.7.5 [D27]]"
+  ],
+  "obligations": 2,
+  "verdict": "blocked"
+ },
+ "ex1-C-answered": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; as Variant C",
+    "what": "new top-level field order = \"incomparable\""
+   },
+   {
+    "clause": "A.4.5.1 [D2], A.7.4.2 [D3]; A.7.6.5, A.7.5.2, A.10.2; EXAMPLES Variant C ('phase 2 discharges both')",
+    "what": "coverage obligation ob:f99ad91d0fb96186 (the only open obligation in v6, blocking) removed, so the verdict goes blocked -> pass: both loosenings are discharged and nothing stays open"
+   },
+   {
+    "clause": "A.14.1.8, A.7.6.3-5, A.6.3.4 (bob for AuditTeam, carol for Platform), A.12.10.1",
+    "what": "answered rows: the forbid loosening's key ob:031024b1… -> ob:e8ec989a6cf48d9a with records [review:ba7c14f1688510c7, review:bea566bf016733d1] -> [bob's and carol's relay answer records sha256:5c45bce9c67ad27c…, sha256:8bcc651084dc84b5…]; the authority loosening's records [review:ba7c14f1688510c7] -> [sha256:5c45bce9c67ad27c…]; codepoint order puts ob:ca99… first"
+   },
+   {
+    "clause": "A.5.2.11, A.6.3.3, A.7.6.8",
+    "what": "health.unauthenticated: the two \"review audit::bob|carol: shape approve …\" entries removed (the answers are the base relay's signed records)"
+   },
+   {
+    "clause": "A.8.2.3, A.8.3.2, A.12.8.8 [D2, D13, D17]",
+    "what": "loosening rows as in ex1-C: forbid subject 3fe8f5ac…, obligation ob:e8ec989a…, counterexamples printed as facts, authority row's affected without appendEvent"
+   },
+   {
+    "clause": "A.7.4.2-3 [D2, D3]",
+    "what": "health.coverage {num 1, den 2} -> {num 2, den 2}"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "observation of audit::sqlEffects gives each effect fact \"n\": 1 and is re-signed; record id sha256:358a637db4da2c29db18078fddc9a66bb4783251249669e1d9f87328dc4ff449 -> sha256:85b714f74c48f471180badd032a50189cb367b8655271cc5a65255e5b91c5a78 [A.12.6 RJ14, A.5.2.1, A.12.8.4, records §2 [D15]]",
+   "the shape declaration names manifest ed25519(\"3ab9cc26e2e4142e800d629423642f49708b20f8f4eb368195b84efc64928a67\") (the prototype's ed25519 stand-in for syntax §1's sigstore identity) in every non-empty Example 1 shape, and both manifests are DSSE-signed by it [syntax §1, A.3.1.2, A.5.2.17, A.12.7.5 [D27]]",
+   "the two review lines (v6 refs bd:8d771e08d86d43b2, bd:2785f31d20281bdd) are replaced by the relay's two answer records: bob approves [bd:6bca5b3fe0d0787d, bd:a7514dcb4cfb7068] (record sha256:5c45bce9c67ad27c777ec3f976496a202db9a841acaaa065761394f3ebc768a9, subject digest 032ab91f227efdd5), carol approves [bd:a7514dcb4cfb7068] (record sha256:8bcc651084dc84b58ed4147fa496bae4a4a9f8da041d21f62029311bbd02944e, subject digest ee776f8f2ec7de37); reviews is empty [A.14.1.8, A.7.6.3, A.7.6.4, A.12.1.6-7, EXAMPLES Example 1 Variant C (v7 bindings)]"
+  ],
+  "obligations": 0,
+  "verdict": "pass"
+ },
+ "ex1-audit": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; audit mode",
+    "what": "new top-level field order = null"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "observation of audit::sqlEffects gives each effect fact \"n\": 1 and is re-signed; record id sha256:1fad3f7b8f4e2a0d3a30716b69fc9a423aed31a3ee3033c97ecfa6421d609b38 -> sha256:a523db0fbd1ddd7058c8b88ac6daa5c2eb237dfaa883b19be8918d3a1c40053c [A.12.6 RJ14, A.5.2.1, A.12.8.4, records §2 [D15]]",
+   "the shape declaration names manifest ed25519(\"3ab9cc26e2e4142e800d629423642f49708b20f8f4eb368195b84efc64928a67\") (the prototype's ed25519 stand-in for syntax §1's sigstore identity) in every non-empty Example 1 shape, and both manifests are DSSE-signed by it [syntax §1, A.3.1.2, A.5.2.17, A.12.7.5 [D27]]"
+  ],
+  "obligations": 0,
+  "verdict": "pass"
+ },
+ "ex1-empty-base": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; the base is empty",
+    "what": "new top-level field order = \"tighter\""
+   },
+   {
+    "clause": "A.5.2.17, A.10.4 [D27]",
+    "what": "health.unauthenticated gains \"manifest base\" and \"manifest head\": the base names no manifest identity"
+   },
+   {
+    "clause": "A.5.1.3, A.5.4.3, A.6.2.6 (head-only providers: no reason) [D9]; EXAMPLES Example 1 ('Empty base: owed … preexisting missing')",
+    "what": "unestablished ob:e388df561228b690 reason weak -> missing, causes [record sha256:3934cae8dfb8c48c…] -> []: fastCheck is head-only, so its record never establishes and holds no reason"
+   },
+   {
+    "clause": "A.4.5.6, A.10.4, A.7.4.2 [D3]",
+    "what": "health.unobservable [the four claim ids] -> []; health.declaredOnly lists the Update forbid (final), authority(AuditStore), appendEvent's effects.upper and effects.lower (critical), each with route declared-only: the empty base declares no provider"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "observation of audit::sqlEffects gives each effect fact \"n\": 1 and is re-signed; record id sha256:ab9f53df1e7960ea4fd3c228d38e15c98c23f99d01aa493ad65504527d03d9c4 -> sha256:865966eae91c46f09c5f5b82f4d521fc106d77cf9c6e4d85836c0649360d3f25 [A.12.6 RJ14, A.5.2.1, A.12.8.4, records §2 [D15]]",
+   "the shape declaration names manifest ed25519(\"3ab9cc26e2e4142e800d629423642f49708b20f8f4eb368195b84efc64928a67\") (the prototype's ed25519 stand-in for syntax §1's sigstore identity) in every non-empty Example 1 shape, and both manifests are DSSE-signed by it [syntax §1, A.3.1.2, A.5.2.17, A.12.7.5 [D27]]"
+  ],
+  "obligations": 1,
+  "verdict": "owed"
+ },
+ "ex2": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; EXAMPLES Example 2",
+    "what": "new top-level field order = \"equivalent\""
+   },
+   {
+    "clause": "A.5.2.17, A.10.4 [D27]",
+    "what": "health.unauthenticated gains \"manifest base\" and \"manifest head\": the base names no manifest identity"
+   },
+   {
+    "clause": "A.4.2.4, A.12.8.1 [D1]; A.14.2.6; EXAMPLES Example 2",
+    "what": "the owed preexisting contradiction ob:220a9b307f0f3608 of the Hatch clause dc8454f26ba4a098 at verus:ironkv/src/host_t.rs#Host::send (external_body) removed, with its preexisting row; health.preexisting 1 -> 0"
+   },
+   {
+    "clause": "A.4.2.4 [D1], A.4.4.7, A.7.1.2, A.14.1.3",
+    "what": "contradiction ob:815d7ebb9678dbea: causes[2] {claim dc8454f26ba4a098} (the Hatch clause as a second excluding claim) -> {claim 1584bb88c66cbc8b} (the assume clause itself, as the root)"
+   },
+   {
+    "clause": "A.4.5.2, A.4.5.6, A.3.4.5 [D1, D3]",
+    "what": "health.declaredOnly lists the Undeclared clause 6cd2e34ae382f227 (critical, route declared-only): under std every registry hatch kind is declared, so ↓Undeclared<Trust> holds no language's hatch kind and the clause has no channel"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]"
+  ],
+  "obligations": 2,
+  "verdict": "blocked"
+ },
+ "ex2-approve-only": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; EXAMPLES Example 2",
+    "what": "new top-level field order = \"equivalent\""
+   },
+   {
+    "clause": "A.5.2.17, A.10.4 [D27]",
+    "what": "health.unauthenticated gains \"manifest base\" and \"manifest head\": the base names no manifest identity"
+   },
+   {
+    "clause": "A.4.2.4, A.12.8.1 [D1]; A.14.2.6; EXAMPLES Example 2",
+    "what": "the owed preexisting contradiction ob:220a9b307f0f3608 of the Hatch clause dc8454f26ba4a098 at verus:ironkv/src/host_t.rs#Host::send (external_body) removed, with its preexisting row; health.preexisting 1 -> 0"
+   },
+   {
+    "clause": "A.4.2.4 [D1], A.4.4.7, A.7.1.2, A.14.1.3",
+    "what": "contradiction ob:815d7ebb9678dbea: causes[2] {claim dc8454f26ba4a098} (the Hatch clause as a second excluding claim) -> {claim 1584bb88c66cbc8b} (the assume clause itself, as the root)"
+   },
+   {
+    "clause": "A.4.5.2, A.4.5.6, A.3.4.5 [D1, D3]",
+    "what": "health.declaredOnly lists the Undeclared clause 6cd2e34ae382f227 (critical, route declared-only): under std every registry hatch kind is declared, so ↓Undeclared<Trust> holds no language's hatch kind and the clause has no channel"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]"
+  ],
+  "obligations": 2,
+  "verdict": "blocked"
+ },
+ "ex2-exception-approve": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; exceptions are not governance (A.8.1.1-2)",
+    "what": "new top-level field order = \"equivalent\""
+   },
+   {
+    "clause": "A.5.2.17, A.10.4 [D27]",
+    "what": "health.unauthenticated gains \"manifest base\" and \"manifest head\": the base names no manifest identity"
+   },
+   {
+    "clause": "A.4.2.4, A.12.8.1 [D1]; A.14.2.6; EXAMPLES Example 2",
+    "what": "the owed preexisting contradiction ob:220a9b307f0f3608 of the Hatch clause dc8454f26ba4a098 at verus:ironkv/src/host_t.rs#Host::send (external_body) removed, with its preexisting row; health.preexisting 1 -> 0"
+   },
+   {
+    "clause": "A.4.2.4 [D1], A.4.4.7, A.7.1.2, A.14.1.3",
+    "what": "contradiction ob:815d7ebb9678dbea: causes[2] {claim dc8454f26ba4a098} (the Hatch clause as a second excluding claim) -> {claim 1584bb88c66cbc8b} (the assume clause itself, as the root)"
+   },
+   {
+    "clause": "A.4.5.2, A.4.5.6, A.3.4.5 [D1, D3]",
+    "what": "health.declaredOnly lists the Undeclared clause 6cd2e34ae382f227 (critical, route declared-only): under std every registry hatch kind is declared, so ↓Undeclared<Trust> holds no language's hatch kind and the clause has no channel"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.7.7.1 [D22]",
+    "what": "debt rows gain exceptions [\"ironkv::SetAssumeAccepted\"] and lose flagged"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]"
+  ],
+  "obligations": 2,
+  "verdict": "owed"
+ },
+ "ex3-step1": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; base and head shapes are identical",
+    "what": "new top-level field order = \"equivalent\""
+   },
+   {
+    "clause": "A.5.2.17, A.10.4 [D27]",
+    "what": "health.unauthenticated gains \"manifest base\" and \"manifest head\": the base names no manifest identity"
+   },
+   {
+    "clause": "A.4.5.1 [D2], A.4.5.2, A.7.4.2 [D3], A.7.5.3; EXAMPLES Example 3 Step 1",
+    "what": "coverage obligation ob:fc86e1bb3ce8d2d5 (component tooling::ShpCli, normal, owed, judgment, assignee agents) removed, with its health.unanswered entry: isoToday's summary has no call(ts) channel and SystemClock binds no resource code, so it has no channel at all"
+   },
+   {
+    "clause": "A.7.4.5",
+    "what": "health.coverage {num 1, den 2} -> {num 2, den 2} (freshness.ts and isoToday covered vacuously)"
+   },
+   {
+    "clause": "A.4.5.6, A.10.4 [D3]; EXAMPLES Example 3 ('the summary is declared-only until SystemClock binds code')",
+    "what": "health.unobservable [isoToday effects.lower, effects.upper] -> []; health.declaredOnly lists both (normal, declared-only)"
+   },
+   {
+    "clause": "A.7.2.3",
+    "what": "unestablished ob:5b2b722c136fd4da (stale, owed, binding bd:904f519651548b32 unchanged): group g:733c96ee86267271 -> g:317d24c25b95205f (its only member now)"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "base and head declare the review relay tooling::reviews (produces judgment, identity ed25519(\"1262bc6d5408a3c4e025aa0c15e64f69197cdb38911be5ad344a949779df3da6\")) [EXAMPLES Example 3 Step 1 ('makes the relay commit a judgment'), A.11.5, A.7.6.3, A.7.6.8 [D28]]"
+  ],
+  "obligations": 1,
+  "verdict": "owed"
+ },
+ "ex3-step1-judged": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; base and head shapes are identical",
+    "what": "new top-level field order = \"equivalent\""
+   },
+   {
+    "clause": "A.5.2.17, A.10.4 [D27]",
+    "what": "health.unauthenticated gains \"manifest base\" and \"manifest head\": the base names no manifest identity"
+   },
+   {
+    "clause": "A.4.5.1 [D2], A.4.5.2, A.7.4.2 [D3], A.7.5.3; EXAMPLES Example 3 Step 1",
+    "what": "coverage obligation ob:fc86e1bb3ce8d2d5 (component tooling::ShpCli, normal, owed, judgment, assignee agents) removed, with its health.unanswered entry: isoToday's summary has no call(ts) channel and SystemClock binds no resource code, so it has no channel at all"
+   },
+   {
+    "clause": "A.7.4.5",
+    "what": "health.coverage {num 1, den 2} -> {num 2, den 2} (freshness.ts and isoToday covered vacuously)"
+   },
+   {
+    "clause": "A.4.5.6, A.10.4 [D3]; EXAMPLES Example 3 ('the summary is declared-only until SystemClock binds code')",
+    "what": "health.unobservable [isoToday effects.lower, effects.upper] -> []; health.declaredOnly lists both (normal, declared-only)"
+   },
+   {
+    "clause": "A.5.3.7, A.6.3.3 (self fallback), A.7.6.3 [D2, D3, D28]; EXAMPLES Example 3 Step 1 ('the next run passes'); A.11.5",
+    "what": "verdict owed -> pass: the relay's claim judgment establishes the law (as in v6) and the coverage obligation is gone"
+   },
+   {
+    "clause": "A.10.3, A.9.2 [D10]",
+    "what": "budget.used and health.budget.used 1 -> 0 (no judgment group left)"
+   },
+   {
+    "clause": "A.7.6.8, A.5.8.1 [D28], A.6.3.3",
+    "what": "health.unauthenticated: \"review tooling::tim: shape judge tooling::ShpCli.isoToday/RefactorSensitive/law\" removed (the judgment is the base relay's signed record); health.self keeps \"judgment … by tooling::tim\""
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "base and head declare the review relay tooling::reviews (produces judgment, identity ed25519(\"1262bc6d5408a3c4e025aa0c15e64f69197cdb38911be5ad344a949779df3da6\")) [EXAMPLES Example 3 Step 1 ('makes the relay commit a judgment'), A.11.5, A.7.6.3, A.7.6.8 [D28]]",
+   "the judge line 'shape judge tooling::ShpCli.isoToday/RefactorSensitive/law' (tim) is replaced by the relay's claim judgment it produces (phase 2): judge tooling::tim, identity github(\"tim\"), revision 5555555555555555555555555555555555555555, citing isoToday at unit (6f68619e784427af), record sha256:eb55ae24bbc740074902a9ce62f07acfa707bbd431ddbfd9902933b08e840ffd; reviews is empty [A.7.6.3, A.5.8.1, A.7.6.8 [D28]; A.11.5]"
+  ],
+  "obligations": 0,
+  "verdict": "pass"
+ },
+ "ex3-step2": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; base and head shapes are identical",
+    "what": "new top-level field order = \"equivalent\""
+   },
+   {
+    "clause": "A.5.2.17, A.10.4 [D27]",
+    "what": "health.unauthenticated gains \"manifest base\" and \"manifest head\": the base names no manifest identity"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "observation of tooling::tsClockScan gives each effect fact \"n\": 1 and is re-signed; record id sha256:795bba4cf9e2a3ee87ee031220b50d0e868ab0756285fe06d8b362c7a2c3bbf0 -> sha256:12bf11a0887581e1062c14690baf1ea5dd4223e691830eaad8134369f6326e76 [A.12.6 RJ14, A.5.2.1, A.12.8.4, records §2 [D15]]"
+  ],
+  "obligations": 0,
+  "verdict": "pass"
+ },
+ "ex3-step2-harness-edited": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; base and head shapes are identical",
+    "what": "new top-level field order = \"equivalent\""
+   },
+   {
+    "clause": "A.5.2.17, A.10.4 [D27]",
+    "what": "health.unauthenticated gains \"manifest base\" and \"manifest head\": the base names no manifest identity"
+   },
+   {
+    "clause": "A.7.1.3 (producer-changed: a person's answer; last: exception, lower the requirement) [D9]",
+    "what": "producer-changed unestablished ob:79b18d16e2bc560c: the discharger rerun (2nd of 4) removed; dischargers are answer, exception, lower-requirement"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "observation of tooling::tsClockScan gives each effect fact \"n\": 1 and is re-signed; record id sha256:739f8b239bb666922eadacca0818d40e85fbe1fb8f84ae8f7f95f886c9dfffad -> sha256:2665776d9059a79ab93c97826f14b82facade95a3fc177885d0dd55694d5971d [A.12.6 RJ14, A.5.2.1, A.12.8.4, records §2 [D15]]"
+  ],
+  "obligations": 1,
+  "verdict": "blocked"
+ },
+ "ex3-step2-record-dropped": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; base and head shapes are identical",
+    "what": "new top-level field order = \"equivalent\""
+   },
+   {
+    "clause": "A.5.2.17, A.10.4 [D27]",
+    "what": "health.unauthenticated gains \"manifest base\" and \"manifest head\": the base names no manifest identity"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "observation of tooling::tsClockScan gives each effect fact \"n\": 1 and is re-signed; record id sha256:739f8b239bb666922eadacca0818d40e85fbe1fb8f84ae8f7f95f886c9dfffad -> sha256:2665776d9059a79ab93c97826f14b82facade95a3fc177885d0dd55694d5971d [A.12.6 RJ14, A.5.2.1, A.12.8.4, records §2 [D15]]"
+  ],
+  "obligations": 1,
+  "verdict": "blocked"
+ },
+ "ex3-step2-refactor-sensitive-removed": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; the head removes the RefactorSensitive law (L4 loosened); the reverse pass adds it",
+    "what": "new top-level field order = \"looser\""
+   },
+   {
+    "clause": "A.5.2.17, A.10.4 [D27]",
+    "what": "health.unauthenticated gains \"manifest base\" and \"manifest head\": the base names no manifest identity"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "observation of tooling::tsClockScan gives each effect fact \"n\": 1 and is re-signed; record id sha256:795bba4cf9e2a3ee87ee031220b50d0e868ab0756285fe06d8b362c7a2c3bbf0 -> sha256:12bf11a0887581e1062c14690baf1ea5dd4223e691830eaad8134369f6326e76 [A.12.6 RJ14, A.5.2.1, A.12.8.4, records §2 [D15]]"
+  ],
+  "obligations": 1,
+  "verdict": "blocked"
+ },
+ "ex3-step2-seeded-clock": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; base and head shapes are identical",
+    "what": "new top-level field order = \"equivalent\""
+   },
+   {
+    "clause": "A.5.2.17, A.10.4 [D27]",
+    "what": "health.unauthenticated gains \"manifest base\" and \"manifest head\": the base names no manifest identity"
+   },
+   {
+    "clause": "A.7.1.2, A.14.1.3, A.4.4.7",
+    "what": "contradiction ob:d4218b3063c6f1b9: causes gain {claim 866e06e6bddd0add} (CheckerNeverReadsClock) as the root, after authority(ShapeRuleEngine)"
+   },
+   {
+    "clause": "records §2, A.12.8.4 [D15]",
+    "what": "facts[sha256:fedfa0b09d953521…] gains \"n\": 1"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]",
+   "observation of tooling::tsClockScan gives each effect fact \"n\": 1 and is re-signed; record id sha256:d5eff0b050adbe20a6a767d83bc4d65f16384635ae44a69a535aff2a0b4b99f7 -> sha256:aea1362907586ad96bb9050f4cd1583e3a357d085f5b6f3b2fc0513806e583e0 [A.12.6 RJ14, A.5.2.1, A.12.8.4, records §2 [D15]]"
+  ],
+  "obligations": 1,
+  "verdict": "blocked"
+ },
+ "ex4": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; base and head shapes are identical",
+    "what": "new top-level field order = \"equivalent\""
+   },
+   {
+    "clause": "A.5.2.17, A.10.4 [D27]",
+    "what": "health.unauthenticated gains \"manifest base\" and \"manifest head\": the base names no manifest identity"
+   },
+   {
+    "clause": "A.7.1.2",
+    "what": "cycle contradiction ob:6efc5ef79a4f52af: causes gain {claim d1d638be608c2992} as the root"
+   },
+   {
+    "clause": "A.4.5.6, A.10.4 [D3]; EXAMPLES Example 4 ('Both claims are declared-only (route contradiction-only)')",
+    "what": "health.unobservable [the relation, the cycle rule] -> []; health.declaredOnly lists relation 8a8f0d5a3028807a and rule d1d638be608c2992 (normal, route contradiction-only: tsCallGraph declares call(ts) with sound none)"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]"
+  ],
+  "obligations": 1,
+  "verdict": "owed"
+ },
+ "ex4-closing-the-set": {
+  "deltas": [
+   {
+    "clause": "A.0.2, A.0.4, A.12.10.6 (byte-identical core output; JCS is the only canonical form the text defines)",
+    "what": "serialisation: v6 prints JSON.stringify(core, null, 1) (insertion-order keys, 1-space indent, trailing newline); the golden file is the RFC 8785 JCS bytes of the core output (keys sorted, no whitespace, no trailing newline)"
+   },
+   {
+    "clause": "A.12.7.6",
+    "what": "inputDigest recomputed over the version 7 input (see input_changes), with records and baseRecords in record-id order and authors, reviews and persisted lists in the A.12.7.6 orders"
+   },
+   {
+    "clause": "A.10.4; A.4.5.6 [D3]; A.7.6.8 [D28]; A.12.6 (RJ06 counted apart); A.7.7.2 [D11]; A.7.3.3 [D4]; A.4.6.9; A.5.3.7 [D14]",
+    "what": "health: keys cells, records and baseUnreadable dropped (not A.10.4 health items); keys declaredOnly, unrecorded, rejected {count, rj06}, finalDrift, lawsContradictedAtBase, inertExceptions and vacuousLaws added (all empty unless listed below)"
+   },
+   {
+    "clause": "records §5, A.12.10.1, A.8.1.3 [D17]; L3 loosened forward; in the reverse pass the base's exceptTo {ShapeModelLowerer} claim is an heir of the head's",
+    "what": "new top-level field order = \"looser\""
+   },
+   {
+    "clause": "A.5.2.17, A.10.4 [D27]",
+    "what": "health.unauthenticated gains \"manifest base\" and \"manifest head\": the base names no manifest identity"
+   },
+   {
+    "clause": "A.7.1.2",
+    "what": "cycle contradiction ob:6efc5ef79a4f52af: causes gain {claim d1d638be608c2992} as the root"
+   },
+   {
+    "clause": "A.4.5.6, A.10.4 [D3]",
+    "what": "health.unobservable [4 claim ids] -> []; health.declaredOnly lists the head's relations complete clause (630a3439992eb6fc), both relations (8a8f0d5a3028807a, f175b0883c27059c) and the cycle rule, all normal, route contradiction-only"
+   }
+  ],
+  "input_changes": [
+   "manifest entries (base and head) carry refs ([]: no identity of the label-digested scenario resolves a free name to another), executable (true for ts/verus identities and executable raw files, false for package.json and raw data) and hatchComplete (true unless the v6 entry said false) [A.12.7.5, A.3.2.4, A.3.4.4, A.15.5 [D27]; records §4]"
+  ],
+  "obligations": 2,
+  "verdict": "blocked"
+ }
+}
