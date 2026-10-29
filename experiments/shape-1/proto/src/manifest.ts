@@ -160,11 +160,20 @@ export function openManifest(input: unknown): ManifestEnvelopeInfo {
       keyid?: string;
       sig?: string;
     }[]) {
-      if (typeof sig.keyid === "string" && typeof sig.sig === "string" && verifyDsse(sig.keyid, o.payloadType, body, sig.sig))
+      if (
+        typeof sig.keyid === "string" &&
+        typeof sig.sig === "string" &&
+        verifyDsse(sig.keyid, o.payloadType, body, sig.sig)
+      )
         signers.push(`ed25519("${sig.keyid}")`);
       else badSignature = true;
     }
-    return { statement, signers: [...new Set(signers)].sort(cmpStr), enveloped: true, badSignature };
+    return {
+      statement,
+      signers: [...new Set(signers)].sort(cmpStr),
+      enveloped: true,
+      badSignature
+    };
   }
   return { statement: input, signers: [], enveloped: false, badSignature: false };
 }
@@ -232,8 +241,7 @@ export function indexManifest(input: unknown): {
         markers: {},
         hatchComplete: e.hatchComplete ?? true,
         // an entry without the flag (a version 6 manifest): registered languages are executable
-        executable:
-          e.executable ?? ["ts", "rust", "verus"].includes(identityLang(e.id)),
+        executable: e.executable ?? ["ts", "rust", "verus"].includes(identityLang(e.id)),
         refs: []
       };
       ids.set(e.id, info);

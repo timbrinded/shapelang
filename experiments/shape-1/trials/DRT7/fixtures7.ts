@@ -19,7 +19,16 @@
 //            each unit without code gets one synthesised identity (as trials/H4/cases.ts completes).
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  statSync,
+  writeFileSync
+} from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { manifestStatement } from "../../proto/src/manifest.ts";
 import { makeStatement, signStatement, signerFromSeed } from "../../proto/src/records.ts";
@@ -31,7 +40,8 @@ if (!outDir || !workDir) {
 }
 const REPO = "/home/user/shapelang";
 const S1 = `${REPO}/experiments/shape-1`;
-const SCRATCH = "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/shape1work";
+const SCRATCH =
+  "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/shape1work";
 const CLI = `${S1}/proto/src/cli.ts`;
 const NOW = "2026-10-25T12:00:00Z";
 for (const d of ["h4", "h3", "h5", "x"]) mkdirSync(join(outDir, d), { recursive: true });
@@ -40,27 +50,63 @@ const list = [];
 const log = { h4: [], upgrade: { h3: {}, h5: {} }, x: [] };
 
 // ---- P: the frozen version 7 example inputs ---------------------------------------------------------
-for (const f of readdirSync(`${S1}/m0/golden/inputs`).filter((x) => x.endsWith(".json")).sort())
+for (const f of readdirSync(`${S1}/m0/golden/inputs`)
+  .filter((x) => x.endsWith(".json"))
+  .sort())
   list.push([`P-${f.replace(/\.json$/, "")}`, "P", `${S1}/m0/golden/inputs/${f}`]);
 
 // ---- shape1 check --write-input ---------------------------------------------------------------------
 function writeInput(model, base, out, extra = []) {
-  const args = [CLI, "check", "--model", model, ...(base ? ["--base", base] : []), "--synthesize", "--maintainer", "alice", "--maintainer", "bob", "--now", NOW, "--json", "--write-input", out, ...extra];
+  const args = [
+    CLI,
+    "check",
+    "--model",
+    model,
+    ...(base ? ["--base", base] : []),
+    "--synthesize",
+    "--maintainer",
+    "alice",
+    "--maintainer",
+    "bob",
+    "--now",
+    NOW,
+    "--json",
+    "--write-input",
+    out,
+    ...extra
+  ];
   const r = spawnSync("bun", args, { cwd: workDir, maxBuffer: 1 << 28, encoding: "utf8" });
-  return { ok: existsSync(out), status: r.status, stderr: (r.stderr ?? "").split("\n").slice(-4).join(" | "), out: r.stdout };
+  return {
+    ok: existsSync(out),
+    status: r.status,
+    stderr: (r.stderr ?? "").split("\n").slice(-4).join(" | "),
+    out: r.stdout
+  };
 }
 
 // ---- H4 ----------------------------------------------------------------------------------------------
-const RENAMES = new Set(["renamed_component", "renamed_component_and_narrowed_rule", "resource_renamed_trait_dropped", "resource_renamed_trait_kept"]);
+const RENAMES = new Set([
+  "renamed_component",
+  "renamed_component_and_narrowed_rule",
+  "resource_renamed_trait_dropped",
+  "resource_renamed_trait_kept"
+]);
 {
   const casesDir = join(workDir, "h4cases");
   rmSync(casesDir, { recursive: true, force: true });
-  const b = spawnSync("bun", [`${S1}/trials/H4/build.ts`, casesDir], { cwd: workDir, encoding: "utf8" });
+  const b = spawnSync("bun", [`${S1}/trials/H4/build.ts`, casesDir], {
+    cwd: workDir,
+    encoding: "utf8"
+  });
   if (b.status !== 0) throw new Error(`trials/H4/build.ts failed: ${b.stderr}`);
   const { CASES } = await import(`${S1}/trials/H4/cases.ts`);
   for (const c of CASES) {
     const runs = [
-      ...["fwd", "fwdu", "rev"].map((run) => [run, join(casesDir, c.id, run, "head"), join(casesDir, c.id, run, "base")]),
+      ...["fwd", "fwdu", "rev"].map((run) => [
+        run,
+        join(casesDir, c.id, run, "head"),
+        join(casesDir, c.id, run, "base")
+      ]),
       ...(c.family === "loosening" ? [["orig", c.head, c.base]] : [])
     ];
     for (const [run, head, base] of runs) {
@@ -74,7 +120,11 @@ const RENAMES = new Set(["renamed_component", "renamed_component_and_narrowed_ru
 }
 
 // ---- version 6 dumps upgraded to the version 7 profile ----------------------------------------------
-const SCRIPT_EXTS = new Set("sh bash zsh fish py rb pl php ps1 bat cmd sql swift go java kt scala c h cc cpp hpp cs lua r jl ex exs erl hs ml dart groovy zig html htm astro vue svelte".split(" "));
+const SCRIPT_EXTS = new Set(
+  "sh bash zsh fish py rb pl php ps1 bat cmd sql swift go java kt scala c h cc cpp hpp cs lua r jl ex exs erl hs ml dart groovy zig html htm astro vue svelte".split(
+    " "
+  )
+);
 const SIGNERS = [
   signerFromSeed(createHash("sha256").update("shape-h3-law-suite-provider").digest("hex")),
   signerFromSeed(createHash("sha256").update("shape-h5-reviewer").digest("hex"))
@@ -90,7 +140,11 @@ function executableOf(id, mode) {
   if (lang === "raw") {
     const base = file.slice(4).split("/").pop() ?? "";
     const ext = base.includes(".") ? base.split(".").pop() : "";
-    return SCRIPT_EXTS.has(ext) || ["Makefile", "GNUmakefile", "Dockerfile", "Justfile"].includes(base) || mode === "100755";
+    return (
+      SCRIPT_EXTS.has(ext) ||
+      ["Makefile", "GNUmakefile", "Dockerfile", "Justfile"].includes(base) ||
+      mode === "100755"
+    );
   }
   return false;
 }
@@ -115,8 +169,14 @@ export function upgradeV6(input, stats) {
     const entries = p.entries.map((e) => {
       const file = e.id.split("#")[0];
       const path = file.slice(file.indexOf(":") + 1);
-      const ne = { ...e, refs: e.refs ?? [], executable: e.executable ?? executableOf(e.id, modeOf.get(path)), hatchComplete: e.hatchComplete !== false };
-      if (e.refs === undefined || e.executable === undefined || e.hatchComplete === undefined) changed = true;
+      const ne = {
+        ...e,
+        refs: e.refs ?? [],
+        executable: e.executable ?? executableOf(e.id, modeOf.get(path)),
+        hatchComplete: e.hatchComplete !== false
+      };
+      if (e.refs === undefined || e.executable === undefined || e.hatchComplete === undefined)
+        changed = true;
       return ne;
     });
     if (changed) bump("manifest-flags");
@@ -134,7 +194,9 @@ export function upgradeV6(input, stats) {
   const presence = new Set();
   for (const side of ["head", "base"])
     for (const m of x[side]?.source?.modules ?? [])
-      for (const d of m.decls ?? []) if (d.decl === "provider" && (d.sound ?? []).includes("presence")) presence.add(`${m.module}::${d.name}`);
+      for (const d of m.decls ?? [])
+        if (d.decl === "provider" && (d.sound ?? []).includes("presence"))
+          presence.add(`${m.module}::${d.name}`);
   const fix = (r) => {
     const env = isEnv(r) ? r : null;
     const st = env ? decode(env) : r;
@@ -146,10 +208,19 @@ export function upgradeV6(input, stats) {
           f.n = 1;
           changed = true;
         }
-    if ((s.kind === "test" || s.kind === "proof") && s.result === "contradicts" && s.counterexample && typeof s.counterexample === "object") {
+    if (
+      (s.kind === "test" || s.kind === "proof") &&
+      s.result === "contradicts" &&
+      s.counterexample &&
+      typeof s.counterexample === "object"
+    ) {
       const c = s.counterexample;
       if (!("seed" in c && "inputs" in c && "assertion" in c)) {
-        s.counterexample = { seed: s.bound?.seed ?? 0, inputs: c.inputs ?? c.input ?? null, assertion: c.assertion ?? c.law ?? null };
+        s.counterexample = {
+          seed: s.bound?.seed ?? 0,
+          inputs: c.inputs ?? c.input ?? null,
+          assertion: c.assertion ?? c.law ?? null
+        };
         changed = true;
         bump("counterexample-v7");
       }
@@ -179,7 +250,9 @@ for (const [set, dirs] of [
 ]) {
   const stats = log.upgrade[set.toLowerCase()];
   for (const dir of dirs)
-    for (const f of readdirSync(dir).filter((y) => y.endsWith(".json")).sort()) {
+    for (const f of readdirSync(dir)
+      .filter((y) => y.endsWith(".json"))
+      .sort()) {
       const v6 = JSON.parse(readFileSync(join(dir, f), "utf8"));
       const v7 = upgradeV6(v6, stats);
       const id = `${set}-${f.replace(/\.input\.json$|\.json$/, "")}${dir.endsWith("dumptest") ? "-dumptest" : ""}`;
@@ -214,15 +287,25 @@ function materialise(dst, shapeFiles, copies = []) {
   for (const [src, rel] of copies) {
     if (!existsSync(src)) continue;
     mkdirSync(join(dst, rel), { recursive: true });
-    cpSync(src, join(dst, rel), { recursive: true, filter: (q) => !q.endsWith(".shape") && !basename(q).startsWith(".") });
+    cpSync(src, join(dst, rel), {
+      recursive: true,
+      filter: (q) => !q.endsWith(".shape") && !basename(q).startsWith(".")
+    });
   }
   return dst;
 }
 /** One synthesised identity per unit the elaboration leaves unbound (E-unbound by name). */
 function complete(model, input) {
   const comps = new Map();
-  for (const m of input.head.source?.modules ?? []) for (const d of m.decls ?? []) if (d.decl === "component") comps.set(`${m.module}::${d.name}`, d);
-  const out = spawnSync("bun", [CLI, "check", "--input", "-", "--json"], { input: JSON.stringify(input), cwd: workDir, maxBuffer: 1 << 28, encoding: "utf8" });
+  for (const m of input.head.source?.modules ?? [])
+    for (const d of m.decls ?? [])
+      if (d.decl === "component") comps.set(`${m.module}::${d.name}`, d);
+  const out = spawnSync("bun", [CLI, "check", "--input", "-", "--json"], {
+    input: JSON.stringify(input),
+    cwd: workDir,
+    maxBuffer: 1 << 28,
+    encoding: "utf8"
+  });
   let added = 0;
   try {
     for (const e of JSON.parse(out.stdout).errors ?? []) {
@@ -232,11 +315,20 @@ function complete(model, input) {
       const comp = comps.get(q.slice(0, q.lastIndexOf(".")));
       const glob = comp?.paths?.[0];
       if (!glob) continue;
-      const path = /\.(ts|tsx|js)$/.test(glob) && !/[*?]/.test(glob) ? glob : `${glob.replace(/\*\*\/?/g, "").replace(/\*.*$/, "").replace(/\/$/, "")}/${name}.ts`;
+      const path =
+        /\.(ts|tsx|js)$/.test(glob) && !/[*?]/.test(glob)
+          ? glob
+          : `${glob
+              .replace(/\*\*\/?/g, "")
+              .replace(/\*.*$/, "")
+              .replace(/\/$/, "")}/${name}.ts`;
       const p = join(model, path);
       mkdirSync(dirname(p), { recursive: true });
       const prev = existsSync(p) ? readFileSync(p, "utf8") : "";
-      writeFileSync(p, `${prev}export function ${name}() {\n  return ${JSON.stringify(name)};\n}\n`);
+      writeFileSync(
+        p,
+        `${prev}export function ${name}() {\n  return ${JSON.stringify(name)};\n}\n`
+      );
       added += 1;
     }
   } catch {
@@ -251,7 +343,10 @@ function xCase(id, set, headModel, baseModel, variants) {
     const out = join(outDir, "x", `${id}.${v}.json`);
     const tmp = join(workDir, "x-tmp.json");
     rmSync(tmp, { force: true });
-    const r = v === "audit" ? writeInput(headModel, null, tmp, ["--mode", "audit"]) : writeInput(headModel, v === "change" ? baseModel : empty, tmp);
+    const r =
+      v === "audit"
+        ? writeInput(headModel, null, tmp, ["--mode", "audit"])
+        : writeInput(headModel, v === "change" ? baseModel : empty, tmp);
     if (!r.ok) {
       log.x.push({ id: `${id}.${v}`, ok: false, stderr: r.stderr });
       continue;
@@ -292,14 +387,29 @@ for (const fam of ["pass", "fail"])
   for (const name of readdirSync(`${SK}/review`).sort()) {
     const d = `${SK}/review/${name}`;
     const files = shapeFilesIn(`${d}/shape`).map((p) => [`shape/${p.slice(d.length + 7)}`, p]);
-    const base = prepared(`skills-review-${name}-base`, files, codeCopies(d, files, ["base"], "candidate"));
+    const base = prepared(
+      `skills-review-${name}-base`,
+      files,
+      codeCopies(d, files, ["base"], "candidate")
+    );
     const head = prepared(`skills-review-${name}-head`, files, codeCopies(d, files, ["candidate"]));
     xCase(`skills-review-${name}`, "X-skills", head, base, ["change"]);
   }
   for (const name of readdirSync(`${SK}/preflight`).sort()) {
     const d = `${SK}/preflight/${name}`;
-    const base = prepared(`skills-preflight-${name}-base`, [["shape/base.shape", `${d}/shape/base.shape`]], []);
-    const head = prepared(`skills-preflight-${name}-head`, [["shape/base.shape", `${d}/shape/base.shape`], ["shape/proposal.shape", `${d}/proposal.shape`]], []);
+    const base = prepared(
+      `skills-preflight-${name}-base`,
+      [["shape/base.shape", `${d}/shape/base.shape`]],
+      []
+    );
+    const head = prepared(
+      `skills-preflight-${name}-head`,
+      [
+        ["shape/base.shape", `${d}/shape/base.shape`],
+        ["shape/proposal.shape", `${d}/proposal.shape`]
+      ],
+      []
+    );
     xCase(`skills-preflight-${name}`, "X-skills", head, base, ["change"]);
   }
   for (const group of ["index", "unix-system-visualiser"])
@@ -307,7 +417,9 @@ for (const fam of ["pass", "fail"])
       const d = `${SK}/${group}/${name}`;
       if (!statSync(d).isDirectory() || !existsSync(`${d}/shape`)) continue;
       const files = shapeFilesIn(`${d}/shape`).map((p) => [`shape/${p.slice(d.length + 7)}`, p]);
-      const subs = readdirSync(d).filter((e) => e !== "shape" && statSync(join(d, e)).isDirectory());
+      const subs = readdirSync(d).filter(
+        (e) => e !== "shape" && statSync(join(d, e)).isDirectory()
+      );
       const m = prepared(`skills-${group}-${name}`, files, codeCopies(d, files, subs));
       xCase(`skills-${group}-${name}`, "X-skills", m, null, ["audit", "empty-base"]);
     }

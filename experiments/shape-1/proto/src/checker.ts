@@ -7,7 +7,14 @@ import { idToSourceRef } from "./elaborate.ts";
 import { type UsableEntry, type WFact, channelCovered, factId } from "./evidence.ts";
 import { jcs } from "./jcs.ts";
 import { type IdentityInfo, ancestorsOrSelf } from "./manifest.ts";
-import { type Cause, type Claim, type JsonValue, type ShapeError, TRUST, parseAtom } from "./model.ts";
+import {
+  type Cause,
+  type Claim,
+  type JsonValue,
+  type ShapeError,
+  TRUST,
+  parseAtom
+} from "./model.ts";
 import { carriers } from "./resource-code.ts";
 import { type Tier, cmpStr, cmpTuple, maxTier, sortedUniq, tierRank } from "./util.ts";
 import {
@@ -242,7 +249,13 @@ function keyPreimage(c: Claim, subject: JsonValue): string {
   return jcs({ claim: c.fp, kind: "contradiction", subject, v: "shape.obligation.v1" });
 }
 
-function editShape(): { act: "edit-shape"; by: "author"; agentSafe: true; eligible: string[]; creates: null } {
+function editShape(): {
+  act: "edit-shape";
+  by: "author";
+  agentSafe: true;
+  eligible: string[];
+  creates: null;
+} {
   return { act: "edit-shape", by: "author", agentSafe: true, eligible: [], creates: null };
 }
 
@@ -294,10 +307,7 @@ export function evalEffects(ctx: Ctx, facts: WFact[], errors: ShapeError[], lvlB
     const L = s.x.startsWith("unit:") ? null : lvlB(s.x, s.atom, bestFact(s.facts));
     const tstar = (c: Claim): Tier => (L ? maxTier(c.tier, L) : c.tier);
     const excl = excludingClaims(W, s.pos, s.atom).sort((a, b) =>
-      cmpTuple(
-        [-tierRank(tstar(a)), kindRank(a), a.fp],
-        [-tierRank(tstar(b)), kindRank(b), b.fp]
-      )
+      cmpTuple([-tierRank(tstar(a)), kindRank(a), a.fp], [-tierRank(tstar(b)), kindRank(b), b.fp])
     );
     const claim = excl[0];
     if (!claim) continue;
@@ -497,7 +507,9 @@ export function fullyObserved(
   for (const x of code) {
     const info = ctx.Mh.ids.get(x);
     if (!info) return { ok: false, covered, records: [] };
-    const applicable = channels.map((t) => channelAt(t, info)).filter((t): t is string => t !== null);
+    const applicable = channels
+      .map((t) => channelAt(t, info))
+      .filter((t): t is string => t !== null);
     let hit: UsableEntry | null = null;
     for (const e of nearestEntries(ctx, x)) {
       const g = ctx.provs.get(e.provider);
@@ -718,7 +730,9 @@ export function evalStructure(ctx: Ctx, edges: Edge[], errors: ShapeError[]): Co
       refuted: false,
       refuting: [],
       site: null,
-      supportEdges: [...new Map(supportEdges.map((e) => [`${e.from}\u0000${e.kind}\u0000${e.to}`, e])).values()]
+      supportEdges: [
+        ...new Map(supportEdges.map((e) => [`${e.from}\u0000${e.kind}\u0000${e.to}`, e])).values()
+      ]
     });
   };
   for (const c of ctx.head.claims) {

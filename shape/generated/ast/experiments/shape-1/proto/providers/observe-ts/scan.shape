@@ -23,7 +23,7 @@ resource ScanModuleCompilerOptionsAstAnchor : GeneratedAstAnchor {
 
 resource ScanModuleScanTsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/providers/observe-ts/scan.ts#scanTs")
-  fingerprint ast.semantic_subtree_v1("sha256:f3cb4fd8f0aac40252fea78799a0ed52d5e8978e9ffe5e21bff1a7f447b35a55")
+  fingerprint ast.semantic_subtree_v1("sha256:fd6354fcab60ae01296b60de52730e23bf5e9286625f02172a615eac3c6e834b")
 }
 
 resource ScanModuleSqlEffectAstAnchor : GeneratedAstAnchor {
@@ -77,7 +77,7 @@ relation ScanModuleScanTsGeneratedFromScanModuleScanTsAstAnchor {
   kind generated_from
   connects ScanModule -> ScanModuleScanTsAstAnchor
   roles { ScanModule as generated, ScanModuleScanTsAstAnchor as syntax }
-  expects ScanModuleScanTsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f3cb4fd8f0aac40252fea78799a0ed52d5e8978e9ffe5e21bff1a7f447b35a55")
+  expects ScanModuleScanTsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fd6354fcab60ae01296b60de52730e23bf5e9286625f02172a615eac3c6e834b")
   summary "fn ScanModule.scanTs generated from typescript function_declaration at experiments/shape-1/proto/providers/observe-ts/scan.ts#scanTs."
 }
 

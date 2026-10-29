@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource CheckerModuleBestFactAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/checker.ts#bestFact")
-  fingerprint ast.semantic_subtree_v1("sha256:0f85699a6fb8c56b43c6f31bc3dcff2045c06dae1c5cba74ada11b2300344f1e")
+  fingerprint ast.semantic_subtree_v1("sha256:23332862abf55eb4197e440ceb88d1ca4d75497d057178a5599e837aab718229")
 }
 
 resource CheckerModuleBoundCodesAstAnchor : GeneratedAstAnchor {
@@ -23,12 +23,12 @@ resource CheckerModuleBuildCallsAstAnchor : GeneratedAstAnchor {
 
 resource CheckerModuleChanOfAtomAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/checker.ts#chanOfAtom")
-  fingerprint ast.semantic_subtree_v1("sha256:0d4175d041b9b35c8e95656062cce2a08052599d8e926991e2af9dffcec81982")
+  fingerprint ast.semantic_subtree_v1("sha256:a20b83259a16eff45a0d6745c8eeaace5d08a6af1d83a9e8faff400163137d5b")
 }
 
 resource CheckerModuleChannelAtAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/checker.ts#channelAt")
-  fingerprint ast.semantic_subtree_v1("sha256:0783dd3027979c224ff395bb259aedb56a7695264231f05d22e749457ab1ec31")
+  fingerprint ast.semantic_subtree_v1("sha256:9b3e67d23c43629d5aa62f5f60b1b3faa0d4a808bacea628640905f35bff412a")
 }
 
 resource CheckerModuleClaimIdAstAnchor : GeneratedAstAnchor {
@@ -36,44 +36,44 @@ resource CheckerModuleClaimIdAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:97c34807b61619afc365b0b436c50449120289f1f08c607e9ef078432884a26d")
 }
 
-resource CheckerModuleDeclaredFactsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#declaredFacts")
-  fingerprint ast.semantic_subtree_v1("sha256:5befebd30c222ba3212b10552c4b7841a2e35e3df250e8464ddec9b09cc774fa")
+resource CheckerModuleDeclFactAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#declFact")
+  fingerprint ast.semantic_subtree_v1("sha256:2eee4beb32c7ad31039dfaf48b657227b38bba2304d4a06de84695b7079b4cb4")
 }
 
-resource CheckerModuleEdgeCostAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#edgeCost")
-  fingerprint ast.semantic_subtree_v1("sha256:4506c5a5d42471b470b660e6ed89ba8be7feaaf9326d69e500cb18578c8f9fc8")
+resource CheckerModuleDeclaredFactsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#declaredFacts")
+  fingerprint ast.semantic_subtree_v1("sha256:9cb0c78ca551af772139e9ecf9290a23dcdaa0f68e5e6170b585a131022713b1")
+}
+
+resource CheckerModuleDeclaredFactsOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#declaredFactsOf")
+  fingerprint ast.semantic_subtree_v1("sha256:862700fdc9f9a62657b6b466c659a799e05ec15b08a92e1df71e1173d8692087")
+}
+
+resource CheckerModuleEditShapeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#editShape")
+  fingerprint ast.semantic_subtree_v1("sha256:cf05246ec7fa48c57758dee29c9dac97acecbf7582793c0b802428e5f6ce9e2c")
 }
 
 resource CheckerModuleEffectSitesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/checker.ts#effectSites")
-  fingerprint ast.semantic_subtree_v1("sha256:ee623d87545f1e5b8239c2c9d517819a47229e24d308e39578aa2f5e947a03ef")
-}
-
-resource CheckerModuleEntryForAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#entryFor")
-  fingerprint ast.semantic_subtree_v1("sha256:095b22d0c08793921558247e2aa4fde5ab4dea38e5ff30a1e0bda20022abe708")
+  fingerprint ast.semantic_subtree_v1("sha256:8b404bf3b1a42632ea7168366a6dd325f1f72c8cc9dd60816671e4464a874f53")
 }
 
 resource CheckerModuleEvalEffectsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/checker.ts#evalEffects")
-  fingerprint ast.semantic_subtree_v1("sha256:df55c5b2f66549ebbe9cc3ab46b5730e062347a1d0e19f31323c435b05cd44a1")
+  fingerprint ast.semantic_subtree_v1("sha256:ab3191125f3628ed2cc16de20175bb08819874e230e85484621a617a0d9fedbb")
 }
 
 resource CheckerModuleEvalLowerAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/checker.ts#evalLower")
-  fingerprint ast.semantic_subtree_v1("sha256:e3009b1a50c2a0221f781a2f9b1e31998d02767090ad3932528815c9296a7493")
+  fingerprint ast.semantic_subtree_v1("sha256:68c83d147a4cb3bc91274b9234e35ca5846387c45b578f8b834cf4f61ce3c4b3")
 }
 
 resource CheckerModuleEvalStructureAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/checker.ts#evalStructure")
-  fingerprint ast.semantic_subtree_v1("sha256:d60daea1f0524bd1c307485e6d11262a2b77258dcb5787a328bf96cd64754263")
-}
-
-resource CheckerModuleEvalUpperAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#evalUpper")
-  fingerprint ast.semantic_subtree_v1("sha256:1875a048130feb3b161d91ddf0bc264667657dcd7a135c8a9cb663116247d8f9")
+  fingerprint ast.semantic_subtree_v1("sha256:c2728a6a99daf28f463d6cf73ca2511dd25609420b6a650113fe268966b7882e")
 }
 
 resource CheckerModuleFactCostAstAnchor : GeneratedAstAnchor {
@@ -88,32 +88,42 @@ resource CheckerModuleFactTextAstAnchor : GeneratedAstAnchor {
 
 resource CheckerModuleFootprintAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/checker.ts#footprint")
-  fingerprint ast.semantic_subtree_v1("sha256:08798494787e7bdb9c669935e5be297456a8c0c1b67fd2a852be01eb98755c45")
+  fingerprint ast.semantic_subtree_v1("sha256:b75af96d2755cd5bd4cd91ba33cdfdfff028fdadbfc28c45c04ac4944c7c48c4")
 }
 
 resource CheckerModuleFullyObservedAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/checker.ts#fullyObserved")
-  fingerprint ast.semantic_subtree_v1("sha256:6b29e071e495d025c4fb49a2cfbbb6e2614bf03911ed06f243eebfc18313506b")
+  fingerprint ast.semantic_subtree_v1("sha256:61da446691ed487c60a44c7e23f5314350f8543958f04c781f0131e78986a81f")
 }
 
 resource CheckerModuleGovernedCodeAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/checker.ts#governedCode")
-  fingerprint ast.semantic_subtree_v1("sha256:bac29b510fb47b1189da45bfba6066847b35667b1e40dd6ead5bf6f1f1bf8eba")
+  fingerprint ast.semantic_subtree_v1("sha256:475e38639ecf93eea03fd46b4da18daff02c047a60818307f5d88df826763bf4")
 }
 
-resource CheckerModuleInClosureAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#inClosure")
-  fingerprint ast.semantic_subtree_v1("sha256:983a28c8aff2634484469a143ab602a1eaf0ea432e3c070a99e3ec3607200622")
+resource CheckerModuleIsExecutableAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#isExecutable")
+  fingerprint ast.semantic_subtree_v1("sha256:6babc0beba7f08e7a26393d3f5f770bd96397d859d1fca72e7aa5d27de33cbbd")
+}
+
+resource CheckerModuleKeyPreimageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#keyPreimage")
+  fingerprint ast.semantic_subtree_v1("sha256:897682f139f80ec0d088a71c4107f73e8bc1041781298ce7c893abad9d1fe676")
 }
 
 resource CheckerModuleLiftedEdgesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/checker.ts#liftedEdges")
-  fingerprint ast.semantic_subtree_v1("sha256:33003e569c6747e677814a25c0162494b32ffca16445e3d7581a863c8bcabae2")
+  fingerprint ast.semantic_subtree_v1("sha256:344045e9688c8df2ee2fd08837b9ca9eaec5f7f17ab41ad400bde5df5f691874")
+}
+
+resource CheckerModuleNearestEntriesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#nearestEntries")
+  fingerprint ast.semantic_subtree_v1("sha256:83b6fb124483f9915a95fc5c455a78628b48b6cc30fa6fa1e302aa18dff8713f")
 }
 
 resource CheckerModulePathCostAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/checker.ts#pathCost")
-  fingerprint ast.semantic_subtree_v1("sha256:3507dc04563900a34abdd0a7f9b4a8de1b31b39ba7945f6fcb0228c94dc1e8e4")
+  fingerprint ast.semantic_subtree_v1("sha256:c9db371311df83057b7308b790dc5ef2fc2ea38f13c31a6dc1f0ccbbe63cadfe")
 }
 
 resource CheckerModuleProdAstAnchor : GeneratedAstAnchor {
@@ -121,29 +131,19 @@ resource CheckerModuleProdAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:000799f301738c8348af45311170a84c00bb95f8451e593a6ddfb7f4fd686f48")
 }
 
-resource CheckerModuleReachAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#reach")
-  fingerprint ast.semantic_subtree_v1("sha256:df37b06f303743fd55b1f645f3c9a462b495d6005e75ac3434ff1d2a21ff1fa5")
-}
-
 resource CheckerModuleSccsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/checker.ts#sccs")
-  fingerprint ast.semantic_subtree_v1("sha256:d16583071c48f4312258e7696a2fe24ec0f07c2a2825f6cdb9f90279a62b72ca")
+  fingerprint ast.semantic_subtree_v1("sha256:b3f575aa1da9d41b60ba5d1e437834d9f7d305a8d9e9bbbc7dffa40ade9c3bcf")
 }
 
 resource CheckerModuleShortestPathsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/checker.ts#shortestPaths")
-  fingerprint ast.semantic_subtree_v1("sha256:4e671d72d3373dcf887f8b072f1c5d8bc1f582404e2c0ce9d91f42bbe4c00d24")
+  fingerprint ast.semantic_subtree_v1("sha256:845114916f137fcbcfe8273797424f19f4250eaff0497c2ef841493cef831710")
 }
 
-resource CheckerModuleTierStarAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#tierStar")
-  fingerprint ast.semantic_subtree_v1("sha256:e1b1ba4521cc8a6095263485fcde30e8380a233b081d5852f75197b741220103")
-}
-
-resource CheckerModuleUnitsOfSelAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#unitsOfSel")
-  fingerprint ast.semantic_subtree_v1("sha256:fa6f5213ee9bbceb2da763ef1dcd4fe70624fafaa1fc2106fb7e6be23243c4cd")
+resource CheckerModuleUngovernedIdsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/checker.ts#ungovernedIds")
+  fingerprint ast.semantic_subtree_v1("sha256:3b44bf0f5dc53b11f31657300739ac8c5aae2ac2076a735790ec85c883e42fad")
 }
 
 component CheckerModule : GeneratedCandidate {
@@ -165,17 +165,20 @@ component CheckerModule : GeneratedCandidate {
   fn claimId
     source ts("experiments/shape-1/proto/src/checker.ts#claimId")
     effects unknown
+  fn declFact
+    source ts("experiments/shape-1/proto/src/checker.ts#declFact")
+    effects unknown
   fn declaredFacts
     source ts("experiments/shape-1/proto/src/checker.ts#declaredFacts")
     effects unknown
-  fn edgeCost
-    source ts("experiments/shape-1/proto/src/checker.ts#edgeCost")
+  fn declaredFactsOf
+    source ts("experiments/shape-1/proto/src/checker.ts#declaredFactsOf")
+    effects unknown
+  fn editShape
+    source ts("experiments/shape-1/proto/src/checker.ts#editShape")
     effects unknown
   fn effectSites
     source ts("experiments/shape-1/proto/src/checker.ts#effectSites")
-    effects unknown
-  fn entryFor
-    source ts("experiments/shape-1/proto/src/checker.ts#entryFor")
     effects unknown
   fn evalEffects
     source ts("experiments/shape-1/proto/src/checker.ts#evalEffects")
@@ -185,9 +188,6 @@ component CheckerModule : GeneratedCandidate {
     effects unknown
   fn evalStructure
     source ts("experiments/shape-1/proto/src/checker.ts#evalStructure")
-    effects unknown
-  fn evalUpper
-    source ts("experiments/shape-1/proto/src/checker.ts#evalUpper")
     effects unknown
   fn factCost
     source ts("experiments/shape-1/proto/src/checker.ts#factCost")
@@ -204,11 +204,17 @@ component CheckerModule : GeneratedCandidate {
   fn governedCode
     source ts("experiments/shape-1/proto/src/checker.ts#governedCode")
     effects unknown
-  fn inClosure
-    source ts("experiments/shape-1/proto/src/checker.ts#inClosure")
+  fn isExecutable
+    source ts("experiments/shape-1/proto/src/checker.ts#isExecutable")
+    effects unknown
+  fn keyPreimage
+    source ts("experiments/shape-1/proto/src/checker.ts#keyPreimage")
     effects unknown
   fn liftedEdges
     source ts("experiments/shape-1/proto/src/checker.ts#liftedEdges")
+    effects unknown
+  fn nearestEntries
+    source ts("experiments/shape-1/proto/src/checker.ts#nearestEntries")
     effects unknown
   fn pathCost
     source ts("experiments/shape-1/proto/src/checker.ts#pathCost")
@@ -216,20 +222,14 @@ component CheckerModule : GeneratedCandidate {
   fn prod
     source ts("experiments/shape-1/proto/src/checker.ts#prod")
     effects unknown
-  fn reach
-    source ts("experiments/shape-1/proto/src/checker.ts#reach")
-    effects unknown
   fn sccs
     source ts("experiments/shape-1/proto/src/checker.ts#sccs")
     effects unknown
   fn shortestPaths
     source ts("experiments/shape-1/proto/src/checker.ts#shortestPaths")
     effects unknown
-  fn tierStar
-    source ts("experiments/shape-1/proto/src/checker.ts#tierStar")
-    effects unknown
-  fn unitsOfSel
-    source ts("experiments/shape-1/proto/src/checker.ts#unitsOfSel")
+  fn ungovernedIds
+    source ts("experiments/shape-1/proto/src/checker.ts#ungovernedIds")
     effects unknown
 }
 
@@ -237,7 +237,7 @@ relation CheckerModuleBestFactGeneratedFromCheckerModuleBestFactAstAnchor {
   kind generated_from
   connects CheckerModule -> CheckerModuleBestFactAstAnchor
   roles { CheckerModule as generated, CheckerModuleBestFactAstAnchor as syntax }
-  expects CheckerModuleBestFactAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0f85699a6fb8c56b43c6f31bc3dcff2045c06dae1c5cba74ada11b2300344f1e")
+  expects CheckerModuleBestFactAstAnchor fingerprint ast.semantic_subtree_v1("sha256:23332862abf55eb4197e440ceb88d1ca4d75497d057178a5599e837aab718229")
   summary "fn CheckerModule.bestFact generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#bestFact."
 }
 
@@ -261,7 +261,7 @@ relation CheckerModuleChanOfAtomGeneratedFromCheckerModuleChanOfAtomAstAnchor {
   kind generated_from
   connects CheckerModule -> CheckerModuleChanOfAtomAstAnchor
   roles { CheckerModule as generated, CheckerModuleChanOfAtomAstAnchor as syntax }
-  expects CheckerModuleChanOfAtomAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0d4175d041b9b35c8e95656062cce2a08052599d8e926991e2af9dffcec81982")
+  expects CheckerModuleChanOfAtomAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a20b83259a16eff45a0d6745c8eeaace5d08a6af1d83a9e8faff400163137d5b")
   summary "fn CheckerModule.chanOfAtom generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#chanOfAtom."
 }
 
@@ -269,7 +269,7 @@ relation CheckerModuleChannelAtGeneratedFromCheckerModuleChannelAtAstAnchor {
   kind generated_from
   connects CheckerModule -> CheckerModuleChannelAtAstAnchor
   roles { CheckerModule as generated, CheckerModuleChannelAtAstAnchor as syntax }
-  expects CheckerModuleChannelAtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0783dd3027979c224ff395bb259aedb56a7695264231f05d22e749457ab1ec31")
+  expects CheckerModuleChannelAtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9b3e67d23c43629d5aa62f5f60b1b3faa0d4a808bacea628640905f35bff412a")
   summary "fn CheckerModule.channelAt generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#channelAt."
 }
 
@@ -281,43 +281,51 @@ relation CheckerModuleClaimIdGeneratedFromCheckerModuleClaimIdAstAnchor {
   summary "fn CheckerModule.claimId generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#claimId."
 }
 
+relation CheckerModuleDeclFactGeneratedFromCheckerModuleDeclFactAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleDeclFactAstAnchor
+  roles { CheckerModule as generated, CheckerModuleDeclFactAstAnchor as syntax }
+  expects CheckerModuleDeclFactAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2eee4beb32c7ad31039dfaf48b657227b38bba2304d4a06de84695b7079b4cb4")
+  summary "fn CheckerModule.declFact generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#declFact."
+}
+
 relation CheckerModuleDeclaredFactsGeneratedFromCheckerModuleDeclaredFactsAstAnchor {
   kind generated_from
   connects CheckerModule -> CheckerModuleDeclaredFactsAstAnchor
   roles { CheckerModule as generated, CheckerModuleDeclaredFactsAstAnchor as syntax }
-  expects CheckerModuleDeclaredFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5befebd30c222ba3212b10552c4b7841a2e35e3df250e8464ddec9b09cc774fa")
+  expects CheckerModuleDeclaredFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9cb0c78ca551af772139e9ecf9290a23dcdaa0f68e5e6170b585a131022713b1")
   summary "fn CheckerModule.declaredFacts generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#declaredFacts."
 }
 
-relation CheckerModuleEdgeCostGeneratedFromCheckerModuleEdgeCostAstAnchor {
+relation CheckerModuleDeclaredFactsOfGeneratedFromCheckerModuleDeclaredFactsOfAstAnchor {
   kind generated_from
-  connects CheckerModule -> CheckerModuleEdgeCostAstAnchor
-  roles { CheckerModule as generated, CheckerModuleEdgeCostAstAnchor as syntax }
-  expects CheckerModuleEdgeCostAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4506c5a5d42471b470b660e6ed89ba8be7feaaf9326d69e500cb18578c8f9fc8")
-  summary "fn CheckerModule.edgeCost generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#edgeCost."
+  connects CheckerModule -> CheckerModuleDeclaredFactsOfAstAnchor
+  roles { CheckerModule as generated, CheckerModuleDeclaredFactsOfAstAnchor as syntax }
+  expects CheckerModuleDeclaredFactsOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:862700fdc9f9a62657b6b466c659a799e05ec15b08a92e1df71e1173d8692087")
+  summary "fn CheckerModule.declaredFactsOf generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#declaredFactsOf."
+}
+
+relation CheckerModuleEditShapeGeneratedFromCheckerModuleEditShapeAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleEditShapeAstAnchor
+  roles { CheckerModule as generated, CheckerModuleEditShapeAstAnchor as syntax }
+  expects CheckerModuleEditShapeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cf05246ec7fa48c57758dee29c9dac97acecbf7582793c0b802428e5f6ce9e2c")
+  summary "fn CheckerModule.editShape generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#editShape."
 }
 
 relation CheckerModuleEffectSitesGeneratedFromCheckerModuleEffectSitesAstAnchor {
   kind generated_from
   connects CheckerModule -> CheckerModuleEffectSitesAstAnchor
   roles { CheckerModule as generated, CheckerModuleEffectSitesAstAnchor as syntax }
-  expects CheckerModuleEffectSitesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ee623d87545f1e5b8239c2c9d517819a47229e24d308e39578aa2f5e947a03ef")
+  expects CheckerModuleEffectSitesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b404bf3b1a42632ea7168366a6dd325f1f72c8cc9dd60816671e4464a874f53")
   summary "fn CheckerModule.effectSites generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#effectSites."
-}
-
-relation CheckerModuleEntryForGeneratedFromCheckerModuleEntryForAstAnchor {
-  kind generated_from
-  connects CheckerModule -> CheckerModuleEntryForAstAnchor
-  roles { CheckerModule as generated, CheckerModuleEntryForAstAnchor as syntax }
-  expects CheckerModuleEntryForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:095b22d0c08793921558247e2aa4fde5ab4dea38e5ff30a1e0bda20022abe708")
-  summary "fn CheckerModule.entryFor generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#entryFor."
 }
 
 relation CheckerModuleEvalEffectsGeneratedFromCheckerModuleEvalEffectsAstAnchor {
   kind generated_from
   connects CheckerModule -> CheckerModuleEvalEffectsAstAnchor
   roles { CheckerModule as generated, CheckerModuleEvalEffectsAstAnchor as syntax }
-  expects CheckerModuleEvalEffectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:df55c5b2f66549ebbe9cc3ab46b5730e062347a1d0e19f31323c435b05cd44a1")
+  expects CheckerModuleEvalEffectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ab3191125f3628ed2cc16de20175bb08819874e230e85484621a617a0d9fedbb")
   summary "fn CheckerModule.evalEffects generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#evalEffects."
 }
 
@@ -325,7 +333,7 @@ relation CheckerModuleEvalLowerGeneratedFromCheckerModuleEvalLowerAstAnchor {
   kind generated_from
   connects CheckerModule -> CheckerModuleEvalLowerAstAnchor
   roles { CheckerModule as generated, CheckerModuleEvalLowerAstAnchor as syntax }
-  expects CheckerModuleEvalLowerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e3009b1a50c2a0221f781a2f9b1e31998d02767090ad3932528815c9296a7493")
+  expects CheckerModuleEvalLowerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:68c83d147a4cb3bc91274b9234e35ca5846387c45b578f8b834cf4f61ce3c4b3")
   summary "fn CheckerModule.evalLower generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#evalLower."
 }
 
@@ -333,16 +341,8 @@ relation CheckerModuleEvalStructureGeneratedFromCheckerModuleEvalStructureAstAnc
   kind generated_from
   connects CheckerModule -> CheckerModuleEvalStructureAstAnchor
   roles { CheckerModule as generated, CheckerModuleEvalStructureAstAnchor as syntax }
-  expects CheckerModuleEvalStructureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d60daea1f0524bd1c307485e6d11262a2b77258dcb5787a328bf96cd64754263")
+  expects CheckerModuleEvalStructureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c2728a6a99daf28f463d6cf73ca2511dd25609420b6a650113fe268966b7882e")
   summary "fn CheckerModule.evalStructure generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#evalStructure."
-}
-
-relation CheckerModuleEvalUpperGeneratedFromCheckerModuleEvalUpperAstAnchor {
-  kind generated_from
-  connects CheckerModule -> CheckerModuleEvalUpperAstAnchor
-  roles { CheckerModule as generated, CheckerModuleEvalUpperAstAnchor as syntax }
-  expects CheckerModuleEvalUpperAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1875a048130feb3b161d91ddf0bc264667657dcd7a135c8a9cb663116247d8f9")
-  summary "fn CheckerModule.evalUpper generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#evalUpper."
 }
 
 relation CheckerModuleFactCostGeneratedFromCheckerModuleFactCostAstAnchor {
@@ -365,7 +365,7 @@ relation CheckerModuleFootprintGeneratedFromCheckerModuleFootprintAstAnchor {
   kind generated_from
   connects CheckerModule -> CheckerModuleFootprintAstAnchor
   roles { CheckerModule as generated, CheckerModuleFootprintAstAnchor as syntax }
-  expects CheckerModuleFootprintAstAnchor fingerprint ast.semantic_subtree_v1("sha256:08798494787e7bdb9c669935e5be297456a8c0c1b67fd2a852be01eb98755c45")
+  expects CheckerModuleFootprintAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b75af96d2755cd5bd4cd91ba33cdfdfff028fdadbfc28c45c04ac4944c7c48c4")
   summary "fn CheckerModule.footprint generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#footprint."
 }
 
@@ -373,7 +373,7 @@ relation CheckerModuleFullyObservedGeneratedFromCheckerModuleFullyObservedAstAnc
   kind generated_from
   connects CheckerModule -> CheckerModuleFullyObservedAstAnchor
   roles { CheckerModule as generated, CheckerModuleFullyObservedAstAnchor as syntax }
-  expects CheckerModuleFullyObservedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6b29e071e495d025c4fb49a2cfbbb6e2614bf03911ed06f243eebfc18313506b")
+  expects CheckerModuleFullyObservedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:61da446691ed487c60a44c7e23f5314350f8543958f04c781f0131e78986a81f")
   summary "fn CheckerModule.fullyObserved generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#fullyObserved."
 }
 
@@ -381,31 +381,47 @@ relation CheckerModuleGovernedCodeGeneratedFromCheckerModuleGovernedCodeAstAncho
   kind generated_from
   connects CheckerModule -> CheckerModuleGovernedCodeAstAnchor
   roles { CheckerModule as generated, CheckerModuleGovernedCodeAstAnchor as syntax }
-  expects CheckerModuleGovernedCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bac29b510fb47b1189da45bfba6066847b35667b1e40dd6ead5bf6f1f1bf8eba")
+  expects CheckerModuleGovernedCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:475e38639ecf93eea03fd46b4da18daff02c047a60818307f5d88df826763bf4")
   summary "fn CheckerModule.governedCode generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#governedCode."
 }
 
-relation CheckerModuleInClosureGeneratedFromCheckerModuleInClosureAstAnchor {
+relation CheckerModuleIsExecutableGeneratedFromCheckerModuleIsExecutableAstAnchor {
   kind generated_from
-  connects CheckerModule -> CheckerModuleInClosureAstAnchor
-  roles { CheckerModule as generated, CheckerModuleInClosureAstAnchor as syntax }
-  expects CheckerModuleInClosureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:983a28c8aff2634484469a143ab602a1eaf0ea432e3c070a99e3ec3607200622")
-  summary "fn CheckerModule.inClosure generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#inClosure."
+  connects CheckerModule -> CheckerModuleIsExecutableAstAnchor
+  roles { CheckerModule as generated, CheckerModuleIsExecutableAstAnchor as syntax }
+  expects CheckerModuleIsExecutableAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6babc0beba7f08e7a26393d3f5f770bd96397d859d1fca72e7aa5d27de33cbbd")
+  summary "fn CheckerModule.isExecutable generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#isExecutable."
+}
+
+relation CheckerModuleKeyPreimageGeneratedFromCheckerModuleKeyPreimageAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleKeyPreimageAstAnchor
+  roles { CheckerModule as generated, CheckerModuleKeyPreimageAstAnchor as syntax }
+  expects CheckerModuleKeyPreimageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:897682f139f80ec0d088a71c4107f73e8bc1041781298ce7c893abad9d1fe676")
+  summary "fn CheckerModule.keyPreimage generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#keyPreimage."
 }
 
 relation CheckerModuleLiftedEdgesGeneratedFromCheckerModuleLiftedEdgesAstAnchor {
   kind generated_from
   connects CheckerModule -> CheckerModuleLiftedEdgesAstAnchor
   roles { CheckerModule as generated, CheckerModuleLiftedEdgesAstAnchor as syntax }
-  expects CheckerModuleLiftedEdgesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:33003e569c6747e677814a25c0162494b32ffca16445e3d7581a863c8bcabae2")
+  expects CheckerModuleLiftedEdgesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:344045e9688c8df2ee2fd08837b9ca9eaec5f7f17ab41ad400bde5df5f691874")
   summary "fn CheckerModule.liftedEdges generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#liftedEdges."
+}
+
+relation CheckerModuleNearestEntriesGeneratedFromCheckerModuleNearestEntriesAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleNearestEntriesAstAnchor
+  roles { CheckerModule as generated, CheckerModuleNearestEntriesAstAnchor as syntax }
+  expects CheckerModuleNearestEntriesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:83b6fb124483f9915a95fc5c455a78628b48b6cc30fa6fa1e302aa18dff8713f")
+  summary "fn CheckerModule.nearestEntries generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#nearestEntries."
 }
 
 relation CheckerModulePathCostGeneratedFromCheckerModulePathCostAstAnchor {
   kind generated_from
   connects CheckerModule -> CheckerModulePathCostAstAnchor
   roles { CheckerModule as generated, CheckerModulePathCostAstAnchor as syntax }
-  expects CheckerModulePathCostAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3507dc04563900a34abdd0a7f9b4a8de1b31b39ba7945f6fcb0228c94dc1e8e4")
+  expects CheckerModulePathCostAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c9db371311df83057b7308b790dc5ef2fc2ea38f13c31a6dc1f0ccbbe63cadfe")
   summary "fn CheckerModule.pathCost generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#pathCost."
 }
 
@@ -417,19 +433,11 @@ relation CheckerModuleProdGeneratedFromCheckerModuleProdAstAnchor {
   summary "fn CheckerModule.prod generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#prod."
 }
 
-relation CheckerModuleReachGeneratedFromCheckerModuleReachAstAnchor {
-  kind generated_from
-  connects CheckerModule -> CheckerModuleReachAstAnchor
-  roles { CheckerModule as generated, CheckerModuleReachAstAnchor as syntax }
-  expects CheckerModuleReachAstAnchor fingerprint ast.semantic_subtree_v1("sha256:df37b06f303743fd55b1f645f3c9a462b495d6005e75ac3434ff1d2a21ff1fa5")
-  summary "fn CheckerModule.reach generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#reach."
-}
-
 relation CheckerModuleSccsGeneratedFromCheckerModuleSccsAstAnchor {
   kind generated_from
   connects CheckerModule -> CheckerModuleSccsAstAnchor
   roles { CheckerModule as generated, CheckerModuleSccsAstAnchor as syntax }
-  expects CheckerModuleSccsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d16583071c48f4312258e7696a2fe24ec0f07c2a2825f6cdb9f90279a62b72ca")
+  expects CheckerModuleSccsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b3f575aa1da9d41b60ba5d1e437834d9f7d305a8d9e9bbbc7dffa40ade9c3bcf")
   summary "fn CheckerModule.sccs generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#sccs."
 }
 
@@ -437,24 +445,16 @@ relation CheckerModuleShortestPathsGeneratedFromCheckerModuleShortestPathsAstAnc
   kind generated_from
   connects CheckerModule -> CheckerModuleShortestPathsAstAnchor
   roles { CheckerModule as generated, CheckerModuleShortestPathsAstAnchor as syntax }
-  expects CheckerModuleShortestPathsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4e671d72d3373dcf887f8b072f1c5d8bc1f582404e2c0ce9d91f42bbe4c00d24")
+  expects CheckerModuleShortestPathsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:845114916f137fcbcfe8273797424f19f4250eaff0497c2ef841493cef831710")
   summary "fn CheckerModule.shortestPaths generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#shortestPaths."
 }
 
-relation CheckerModuleTierStarGeneratedFromCheckerModuleTierStarAstAnchor {
+relation CheckerModuleUngovernedIdsGeneratedFromCheckerModuleUngovernedIdsAstAnchor {
   kind generated_from
-  connects CheckerModule -> CheckerModuleTierStarAstAnchor
-  roles { CheckerModule as generated, CheckerModuleTierStarAstAnchor as syntax }
-  expects CheckerModuleTierStarAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e1b1ba4521cc8a6095263485fcde30e8380a233b081d5852f75197b741220103")
-  summary "fn CheckerModule.tierStar generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#tierStar."
-}
-
-relation CheckerModuleUnitsOfSelGeneratedFromCheckerModuleUnitsOfSelAstAnchor {
-  kind generated_from
-  connects CheckerModule -> CheckerModuleUnitsOfSelAstAnchor
-  roles { CheckerModule as generated, CheckerModuleUnitsOfSelAstAnchor as syntax }
-  expects CheckerModuleUnitsOfSelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fa6f5213ee9bbceb2da763ef1dcd4fe70624fafaa1fc2106fb7e6be23243c4cd")
-  summary "fn CheckerModule.unitsOfSel generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#unitsOfSel."
+  connects CheckerModule -> CheckerModuleUngovernedIdsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleUngovernedIdsAstAnchor as syntax }
+  expects CheckerModuleUngovernedIdsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3b44bf0f5dc53b11f31657300739ac8c5aae2ac2076a735790ec85c883e42fad")
+  summary "fn CheckerModule.ungovernedIds generated from typescript function_declaration at experiments/shape-1/proto/src/checker.ts#ungovernedIds."
 }
 
 implementation CheckerModuleImpl {

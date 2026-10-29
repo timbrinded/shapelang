@@ -53,7 +53,7 @@ resource ManifestBuildModulePkgjsonIdentitiesAstAnchor : GeneratedAstAnchor {
 
 resource ManifestBuildModulePushAllAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/manifest-build.ts#pushAll")
-  fingerprint ast.semantic_subtree_v1("sha256:e4157f56fad06be8584697404771863af24719cbd62004dd5fa633b139d73c22")
+  fingerprint ast.semantic_subtree_v1("sha256:d7b17a93361dc24c14214c4489affea7299e96227942b7d2a9530cee9ff2c1cc")
 }
 
 resource ManifestBuildModuleRawExecutableAstAnchor : GeneratedAstAnchor {
@@ -189,7 +189,7 @@ relation ManifestBuildModulePushAllGeneratedFromManifestBuildModulePushAllAstAnc
   kind generated_from
   connects ManifestBuildModule -> ManifestBuildModulePushAllAstAnchor
   roles { ManifestBuildModule as generated, ManifestBuildModulePushAllAstAnchor as syntax }
-  expects ManifestBuildModulePushAllAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e4157f56fad06be8584697404771863af24719cbd62004dd5fa633b139d73c22")
+  expects ManifestBuildModulePushAllAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d7b17a93361dc24c14214c4489affea7299e96227942b7d2a9530cee9ff2c1cc")
   summary "fn ManifestBuildModule.pushAll generated from typescript function_declaration at experiments/shape-1/proto/src/manifest-build.ts#pushAll."
 }
 

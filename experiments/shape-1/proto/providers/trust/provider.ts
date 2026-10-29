@@ -158,7 +158,10 @@ export function overlayInput(
   };
   const base =
     input.base && readBase
-      ? { ...input.base, manifest: overlayManifest(input.base.manifest as Statement, readBase).statement }
+      ? {
+          ...input.base,
+          manifest: overlayManifest(input.base.manifest as Statement, readBase).statement
+        }
       : input.base;
   return { ...input, head, base };
 }

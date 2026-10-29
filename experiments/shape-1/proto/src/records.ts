@@ -347,7 +347,8 @@ export function validateRecord(r: ParsedRecord, ctx: ValidationContext): Rejecti
     return rej("RJ02", "answer subject mismatch");
   if (
     s.scope &&
-    subj.get(`shape:scope/${s.provider?.id ?? "-"}/${s.revision}`) !== s.scope.root.replace(/^sha256:/, "")
+    subj.get(`shape:scope/${s.provider?.id ?? "-"}/${s.revision}`) !==
+      s.scope.root.replace(/^sha256:/, "")
   )
     return rej("RJ02", "scope subject mismatch");
   // RJ03 scope root
@@ -408,10 +409,7 @@ export function validateRecord(r: ParsedRecord, ctx: ValidationContext): Rejecti
   if (ctx.persisted && s.kind === "proof" && (s.deps ?? []).length === 0)
     return rej("RJ10", "persisted proof without deps");
   // RJ11 persisted record kinds: judgments and signed persist proofs (A.5.8.2)
-  if (
-    ctx.persisted &&
-    !(s.kind === "judgment" || (s.kind === "proof" && !!pq && !!baseP?.persist))
-  )
+  if (ctx.persisted && !(s.kind === "judgment" || (s.kind === "proof" && !!pq && !!baseP?.persist)))
     return rej("RJ11", "persisted record is not a judgment or persist proof");
   // RJ12 fact paths absent from the tree; RJ13 digests contradicting the revision's manifest
   const tree = ctx.trees.get(s.revision);

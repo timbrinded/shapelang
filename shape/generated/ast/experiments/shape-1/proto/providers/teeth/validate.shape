@@ -28,7 +28,7 @@ resource ValidateModuleKeysOfAstAnchor : GeneratedAstAnchor {
 
 resource ValidateModuleObservationAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/providers/teeth/validate.ts#observation")
-  fingerprint ast.semantic_subtree_v1("sha256:6f8f47b7eab7b55e13f42d11da4dbfc8fc51d5c05d528de6129138ee5b28df1b")
+  fingerprint ast.semantic_subtree_v1("sha256:ec776b9d663c756274845a93cf6b5a886344c27f56ee94b22b20a4dd131312d9")
 }
 
 resource ValidateModuleProbeSourceAstAnchor : GeneratedAstAnchor {
@@ -117,7 +117,7 @@ relation ValidateModuleObservationGeneratedFromValidateModuleObservationAstAncho
   kind generated_from
   connects ValidateModule -> ValidateModuleObservationAstAnchor
   roles { ValidateModule as generated, ValidateModuleObservationAstAnchor as syntax }
-  expects ValidateModuleObservationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6f8f47b7eab7b55e13f42d11da4dbfc8fc51d5c05d528de6129138ee5b28df1b")
+  expects ValidateModuleObservationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ec776b9d663c756274845a93cf6b5a886344c27f56ee94b22b20a4dd131312d9")
   summary "fn ValidateModule.observation generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/validate.ts#observation."
 }
 

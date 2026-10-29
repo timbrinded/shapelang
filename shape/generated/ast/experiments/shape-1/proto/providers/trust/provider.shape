@@ -18,7 +18,7 @@ resource ProviderModuleLeanProofRecordsAstAnchor : GeneratedAstAnchor {
 
 resource ProviderModuleOverlayInputAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/providers/trust/provider.ts#overlayInput")
-  fingerprint ast.semantic_subtree_v1("sha256:3303f43abd81cb72f92bc833c6cffefb81c1040aefe99889d39f8696b1bd82ad")
+  fingerprint ast.semantic_subtree_v1("sha256:d6228f50adccfe357a8a70c4c1b03de4e66477e09a843619ed4bd2f56759ebbb")
 }
 
 resource ProviderModuleOverlayManifestAstAnchor : GeneratedAstAnchor {
@@ -93,7 +93,7 @@ relation ProviderModuleOverlayInputGeneratedFromProviderModuleOverlayInputAstAnc
   kind generated_from
   connects ProviderModule -> ProviderModuleOverlayInputAstAnchor
   roles { ProviderModule as generated, ProviderModuleOverlayInputAstAnchor as syntax }
-  expects ProviderModuleOverlayInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3303f43abd81cb72f92bc833c6cffefb81c1040aefe99889d39f8696b1bd82ad")
+  expects ProviderModuleOverlayInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d6228f50adccfe357a8a70c4c1b03de4e66477e09a843619ed4bd2f56759ebbb")
   summary "fn ProviderModule.overlayInput generated from typescript function_declaration at experiments/shape-1/proto/providers/trust/provider.ts#overlayInput."
 }
 

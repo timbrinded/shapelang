@@ -815,9 +815,17 @@ describe("DRT7 round 1", () => {
     modules: doc.modules.map((m) => ({ ...m, decls: m.decls.map(f) }))
   });
   const narrowK = (doc: SourceDoc): SourceDoc =>
-    mapDecls(doc, (d) => (d.decl === "component" && d.name === "K" ? { ...d, paths: ["src/k/*.ts"] } : d));
+    mapDecls(doc, (d) =>
+      d.decl === "component" && d.name === "K" ? { ...d, paths: ["src/k/*.ts"] } : d
+    );
   const P2 = signerFromSeed("25");
-  const judgment = (claimId: string, fp: string, result: "supports" | "contradicts", judge: string, time: string): ShapeRecord => ({
+  const judgment = (
+    claimId: string,
+    fp: string,
+    result: "supports" | "contradicts",
+    judge: string,
+    time: string
+  ): ShapeRecord => ({
     v: "shape.evidence.v1",
     kind: "judgment",
     result,
@@ -842,8 +850,12 @@ describe("DRT7 round 1", () => {
     const out = run(input(world(), h));
     expect(out.renames).toEqual([{ base: "m::p2", head: "m::p3", rule: "was" }]);
     expect(out.health.renames).toBe(1);
-    const clash = mapDecls(world(), (d) => (d.decl === "actor" && d.name === "p2" ? { ...d, was: "p1" } : d));
-    expect(run(input(world(), clash)).errors.map((e) => `${e.code} ${e.subject}`)).toContain("E-was actor m::p2");
+    const clash = mapDecls(world(), (d) =>
+      d.decl === "actor" && d.name === "p2" ? { ...d, was: "p1" } : d
+    );
+    expect(run(input(world(), clash)).errors.map((e) => `${e.code} ${e.subject}`)).toContain(
+      "E-was actor m::p2"
+    );
   });
   test("A.8.2.3 L1: code leaving K for ungoverned gets authority+ and the authority tier fall", () => {
     // P_L1_AUTHPLUS_COMPONENT: authority+ has no same-component condition (H4 governed_directory_moved)
@@ -869,7 +881,12 @@ describe("DRT7 round 1", () => {
     expect(l?.message).not.toContain("normal>low");
   });
   test("A.16.41 L6: narrowing K's globs drops the cell left behind from a law on component K", () => {
-    const law: Decl = { decl: "law", name: "KLaw", on: ["component K"], informal: "K stays readable." };
+    const law: Decl = {
+      decl: "law",
+      name: "KLaw",
+      on: ["component K"],
+      informal: "K stays readable."
+    };
     const b = world({ extra: [law] });
     const out = run(input(b, narrowK(b)));
     const l = obsOf(out, "loosening").find((o) => o.subject === lawFp(b, "m::KLaw"));
@@ -878,7 +895,11 @@ describe("DRT7 round 1", () => {
     expect(l?.message).toContain('"type":"law-member"');
   });
   test("A.4.4.2 L3: a calls self-loop is no type-correct candidate (counterexample is a 2-cycle)", () => {
-    const cyc: Decl = { decl: "rule", name: "NoCalls", clauses: [{ forbid: "cycle", over: ["calls"] }] };
+    const cyc: Decl = {
+      decl: "rule",
+      name: "NoCalls",
+      clauses: [{ forbid: "cycle", over: ["calls"] }]
+    };
     const out = run(input(world({ extra: [cyc] }), world()));
     const l = obsOf(out, "loosening").find((o) => o.questions?.includes("L3"));
     const cx = l?.counterexample as { from: string; to: string }[];
@@ -906,34 +927,65 @@ describe("DRT7 round 1", () => {
       clauses: [{ forbid: "effect", atom: "Append<R>", within: ["component K"] }]
     };
     const w = world({ extra: [low] });
-    const inp = input(w, w, { records: [obsRecord(OBS, "m::obs", [write(FA, "Append")])], noObs: true });
+    const inp = input(w, w, {
+      records: [obsRecord(OBS, "m::obs", [write(FA, "Append")])],
+      noObs: true
+    });
     inp.mode = "audit";
     inp.base = null;
-    const c = obsOf(run(inp), "contradiction").find((o) => (o.subject as { code?: string })?.code === FA);
+    const c = obsOf(run(inp), "contradiction").find(
+      (o) => (o.subject as { code?: string })?.code === FA
+    );
     expect(c?.claim?.fp).toBe(lawFp(w, "m::LowAppends"));
     expect(c?.tier).toBe("normal");
   });
   test("A.6.3.4: one person's contradicting judgment of a final law is no contradiction", () => {
     // P_FINAL_LAW_ONE_CONTRA_JUDGMENT: two distinct persons are needed (A.16.12)
-    const law: Decl = { decl: "law", name: "FFinal", on: ["unit K.f"], informal: "f stays final.", tier: "final" };
+    const law: Decl = {
+      decl: "law",
+      name: "FFinal",
+      on: ["unit K.f"],
+      informal: "f stays final.",
+      tier: "final"
+    };
     const w = mapDecls(world({ extra: [law] }), (d) =>
-      d.decl === "actor" && d.name === "p2" ? { ...d, identities: ['github("p2")', P2.identity] } : d
+      d.decl === "actor" && d.name === "p2"
+        ? { ...d, identities: ['github("p2")', P2.identity] }
+        : d
     );
-    const j = signed(judgment("m::FFinal", lawFp(w, "m::FFinal"), "contradicts", "m::p2", "2026-10-25T09:00:00Z"), [P2]);
+    const j = signed(
+      judgment("m::FFinal", lawFp(w, "m::FFinal"), "contradicts", "m::p2", "2026-10-25T09:00:00Z"),
+      [P2]
+    );
     const out = run(input(w, w, { changed: [FA], records: [j] }));
-    expect(obsOf(out, "contradiction").filter((o) => o.claim?.ids.includes("m::FFinal"))).toEqual([]);
-    expect(obsOf(out, "unestablished").find((o) => o.claim?.ids.includes("m::FFinal"))?.reason).toBe("missing");
+    expect(obsOf(out, "contradiction").filter((o) => o.claim?.ids.includes("m::FFinal"))).toEqual(
+      []
+    );
+    expect(
+      obsOf(out, "unestablished").find((o) => o.claim?.ids.includes("m::FFinal"))?.reason
+    ).toBe("missing");
   });
   test("A.16.43: a self-fallback judgment contradicting with force is a use listed in health.self", () => {
     // P_SELF_CONTRA_OMITTED: p1 is the only base person eligible and an author
     const w = mapDecls(world({ informal: true }), (d) =>
       d.decl === "actor" && d.name === "Team" ? { ...d, members: ["p1"] } : d
     );
-    const j = signed(judgment("m::FReviewed", lawFp(w, "m::FReviewed"), "contradicts", "m::p1", "2026-10-25T09:00:00Z"), [P1]);
+    const j = signed(
+      judgment(
+        "m::FReviewed",
+        lawFp(w, "m::FReviewed"),
+        "contradicts",
+        "m::p1",
+        "2026-10-25T09:00:00Z"
+      ),
+      [P1]
+    );
     const inp = input(w, w, { changed: [FA], records: [j] });
     inp.authors = [{ identity: 'github("p1")', verified: true, bot: false }];
     const out = run(inp);
-    expect(obsOf(out, "contradiction").find((o) => o.claim?.ids.includes("m::FReviewed"))?.force).toBe("sound");
+    expect(
+      obsOf(out, "contradiction").find((o) => o.claim?.ids.includes("m::FReviewed"))?.force
+    ).toBe("sound");
     expect(out.health.self).toEqual(["judgment m::FReviewed by m::p1"]);
   });
   test("A.5.2.13: a stale record from a deps-complete provider is not reusable (E-provider-missing)", () => {
@@ -942,10 +994,16 @@ describe("DRT7 round 1", () => {
       d.decl === "provider" && d.name === "tester" ? { ...d, depsComplete: true } : d
     );
     // a base-revision record with deps, citing f's base digest: reusable unless f moved
-    const rec = testRecord("supports", { revision: BASE, digest: label(`${FA} unit b`), deps: true });
+    const rec = testRecord("supports", {
+      revision: BASE,
+      digest: label(`${FA} unit b`),
+      deps: true
+    });
     const missing = (changed: string[]): string[] =>
       run(input(w, w, { changed, records: [rec] }))
-        .errors.filter((e) => e.code === "E-provider-missing" && e.subject.startsWith("provider m::tester"))
+        .errors.filter(
+          (e) => e.code === "E-provider-missing" && e.subject.startsWith("provider m::tester")
+        )
         .map((e) => e.subject);
     expect(missing([FA])).toEqual(["provider m::tester claim m::FBounded"]);
     expect(missing([])).toEqual([]);
@@ -999,8 +1057,17 @@ describe("DRT7 round 1", () => {
       mapDecls(doc, (d) =>
         d.decl === "actor" && d.name === "Team" ? { ...d, members: ["p1", "p2", "p3"] } : d
       );
-    const b = add(world({ forbidJ: true, extra: [{ decl: "actor", name: "p3", kind: "person", identities: ['github("p3")'] }] }));
-    const h = add(world({ extra: [{ decl: "actor", name: "p3", kind: "person", identities: ['github("p3")'] }] }));
+    const b = add(
+      world({
+        forbidJ: true,
+        extra: [{ decl: "actor", name: "p3", kind: "person", identities: ['github("p3")'] }]
+      })
+    );
+    const h = add(
+      world({
+        extra: [{ decl: "actor", name: "p3", kind: "person", identities: ['github("p3")'] }]
+      })
+    );
     const ref = (run(input(b, h)).obligations[0]?.binding ?? "").slice(0, 19);
     const reviews = [
       { identity: 'github("p2")', line: `shape approve ${ref}` },

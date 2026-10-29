@@ -183,7 +183,11 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
   };
   const userModules = (doc?.modules ?? []).filter((m) => !m.pack);
   const packModules = (doc?.modules ?? []).filter((m) => m.pack);
-  const modules: SourceModule[] = [...(opts.std === false ? [] : [STD]), ...packModules, ...userModules];
+  const modules: SourceModule[] = [
+    ...(opts.std === false ? [] : [STD]),
+    ...packModules,
+    ...userModules
+  ];
   for (const m of userModules)
     if (m.module === "std")
       err("E-shadow", "module std", "a shape module reuses the pack name std");
@@ -525,7 +529,11 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
           else {
             const prev = resourceCodeOwner.get(c);
             if (prev && prev !== q)
-              err("E-overlap", [`resource ${prev}`, `resource ${q}`].sort(cmpStr).join(" "), `${c} is bound by ${prev} and ${q}`);
+              err(
+                "E-overlap",
+                [`resource ${prev}`, `resource ${q}`].sort(cmpStr).join(" "),
+                `${c} is bound by ${prev} and ${q}`
+              );
             resourceCodeOwner.set(c, q);
             bind.push(c);
           }
@@ -694,20 +702,18 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
           if (t === "Hatch") undeclared = true;
           for (const v of hatchVerbs) if (impliesStar(implies, v, t)) verbs.add(v);
         }
-        const out: { op: Op; args: Args; final: boolean }[] = [...verbs]
-          .sort(cmpStr)
-          .map((h) => ({
-            op: "effect.forbid" as Op,
-            args: {
-              atom: `${h}<${TRUST}>`,
-              scope: ["*"],
-              except: components
-                .filter((b) => b.boundary && b.allows.includes(h))
-                .map((b) => `component ${b.q}`)
-                .sort(cmpStr)
-            },
-            final
-          }));
+        const out: { op: Op; args: Args; final: boolean }[] = [...verbs].sort(cmpStr).map((h) => ({
+          op: "effect.forbid" as Op,
+          args: {
+            atom: `${h}<${TRUST}>`,
+            scope: ["*"],
+            except: components
+              .filter((b) => b.boundary && b.allows.includes(h))
+              .map((b) => `component ${b.q}`)
+              .sort(cmpStr)
+          },
+          final
+        }));
         if (undeclared)
           out.push({
             op: "effect.forbid",
@@ -898,7 +904,11 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
       // leq and geq order safe integers only; a string there is E-template (A.4.3.5 [D13])
       const dir = order.get(p);
       if ((dir === "leq" || dir === "geq") && typeof v === "string") {
-        err("E-template", where, `${p} is ordered by ${dir} and takes a safe integer, not ${JSON.stringify(v)}`);
+        err(
+          "E-template",
+          where,
+          `${p} is ordered by ${dir} and takes a safe integer, not ${JSON.stringify(v)}`
+        );
         ok = false;
         return;
       }
@@ -1238,7 +1248,13 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
     return shapeOwner;
   };
   const itemName = (q: string): string | null =>
-    unitByQ.has(q) ? `unit ${q}` : compByQ.has(q) ? `component ${q}` : resByQ.has(q) ? `resource ${q}` : null;
+    unitByQ.has(q)
+      ? `unit ${q}`
+      : compByQ.has(q)
+        ? `component ${q}`
+        : resByQ.has(q)
+          ? `resource ${q}`
+          : null;
   const ownerSource = (d: Draft): string | null => {
     if (d.owner) return null;
     const via = (d.bearer && itemName(d.bearer)) || (d.subject && itemName(d.subject));
@@ -1322,7 +1338,8 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
     : (table.get("std::DefaultPolicy") ?? null);
   const policy = buildPolicy(
     policyEntry,
-    (name, mod) => lookup(name, mod, ["actor"], `policy ${policyEntry?.q ?? policyName}`)?.q ?? null,
+    (name, mod) =>
+      lookup(name, mod, ["actor"], `policy ${policyEntry?.q ?? policyName}`)?.q ?? null,
     err
   );
 
@@ -1557,10 +1574,14 @@ export function elaborate(doc: SourceDoc | null, opts: ElaborateOptions): ESF {
   {
     const persons = (q: string): Set<string> => personsOf(q, actors);
     const finalItems: { owner: string; subject: string }[] = [];
-    for (const c of claims) if (c.tier === "final") finalItems.push({ owner: c.owner, subject: c.decl });
-    for (const x of resources) if (x.tier === "final") finalItems.push({ owner: x.owner, subject: `resource ${x.q}` });
-    for (const x of components) if (x.tier === "final") finalItems.push({ owner: x.owner, subject: `component ${x.q}` });
-    for (const x of units) if (x.tier === "final") finalItems.push({ owner: x.owner, subject: `unit ${x.q}` });
+    for (const c of claims)
+      if (c.tier === "final") finalItems.push({ owner: c.owner, subject: c.decl });
+    for (const x of resources)
+      if (x.tier === "final") finalItems.push({ owner: x.owner, subject: `resource ${x.q}` });
+    for (const x of components)
+      if (x.tier === "final") finalItems.push({ owner: x.owner, subject: `component ${x.q}` });
+    for (const x of units)
+      if (x.tier === "final") finalItems.push({ owner: x.owner, subject: `unit ${x.q}` });
     for (const it of finalItems) {
       const a = persons(it.owner);
       const b = persons(shapeOwner);
@@ -1737,7 +1758,8 @@ function buildPolicy(
     const judges = (src.judges ?? ["owner"]).flatMap((j) => {
       if (j === "owner" || j === "agents") return [j];
       const q = resolveActor(j, mod);
-      if (!q) err("E-policy", `policy ${entry?.q ?? "std::DefaultPolicy"}`, `unresolved judge ${j}`);
+      if (!q)
+        err("E-policy", `policy ${entry?.q ?? "std::DefaultPolicy"}`, `unresolved judge ${j}`);
       return q ? [q] : [];
     });
     return {

@@ -185,7 +185,8 @@ export function computeCells(owners: GlobOwner[], budget = 1_000_000): CellResul
   );
   const nfas = [...owners.map((o) => buildNfa(o.glob)), ...extra.map((g) => buildNfa(g))];
   const lits = new Set<string>(["/"]);
-  for (const g of [...owners.map((o) => o.glob), ...extra]) for (const c of literalChars(g)) lits.add(c);
+  for (const g of [...owners.map((o) => o.glob), ...extra])
+    for (const c of literalChars(g)) lits.add(c);
   let freshChar = "";
   for (const c of "abcdefghijklmnopqrstuvwxyz") {
     if (!lits.has(c)) {
@@ -212,9 +213,7 @@ export function computeCells(owners: GlobOwner[], budget = 1_000_000): CellResul
     head += 1;
     if (st.last === "c") {
       const raw = st.sets.map((s, i) => s.includes((nfas[i] as Nfa).accept));
-      const acc = owners.map(
-        (_, i) => !!raw[i] && !(exceptOf[i] ?? []).some((j) => raw[j])
-      );
+      const acc = owners.map((_, i) => !!raw[i] && !(exceptOf[i] ?? []).some((j) => raw[j]));
       const b = classify(owners, acc, "b");
       const h = classify(owners, acc, "h");
       const k = JSON.stringify([b, h]);

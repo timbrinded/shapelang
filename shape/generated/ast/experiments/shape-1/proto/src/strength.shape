@@ -11,9 +11,19 @@ resource StrengthModuleCmpValueAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:bb48750ef0a98afc1e8bdeb70f3452cc07967695f6bb1ee9657b911fefcd6e45")
 }
 
+resource StrengthModuleComputeHeirsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/strength.ts#computeHeirs")
+  fingerprint ast.semantic_subtree_v1("sha256:13802f18396af439af3c2a6ae9a2b707d7cf56518b30832f58ef92187ac07c4d")
+}
+
+resource StrengthModuleIsSchemaArgsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/strength.ts#isSchemaArgs")
+  fingerprint ast.semantic_subtree_v1("sha256:48cd3602ba68f7285d61115512c79b82ae0bd4e257533e9250308c1f77ef95c4")
+}
+
 resource StrengthModuleNormaliseArraysAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/strength.ts#normaliseArrays")
-  fingerprint ast.semantic_subtree_v1("sha256:909ee80b1f4c238b763ecdb0f94887b2accaa62d403f281ccf3af56cb425c72e")
+  fingerprint ast.semantic_subtree_v1("sha256:6322d79c72f6af8c09476bba35b65424b4510fd8a45e43e9942dc5f9ffbf3557")
 }
 
 resource StrengthModuleOpOrderGeqAstAnchor : GeneratedAstAnchor {
@@ -23,7 +33,7 @@ resource StrengthModuleOpOrderGeqAstAnchor : GeneratedAstAnchor {
 
 resource StrengthModuleRenameArgsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/strength.ts#renameArgs")
-  fingerprint ast.semantic_subtree_v1("sha256:8397aba285098ed8e03aff56c67ea4fdc162cccf5f1e1c57984aa19b2e0b7025")
+  fingerprint ast.semantic_subtree_v1("sha256:2fecbbdab77406ed332b6c8c65a91eb7fe717dcc583bd080284dfbc09da8bb9f")
 }
 
 resource StrengthModuleRenamedFpAstAnchor : GeneratedAstAnchor {
@@ -39,6 +49,12 @@ resource StrengthModuleSupsetAstAnchor : GeneratedAstAnchor {
 component StrengthModule : GeneratedCandidate {
   fn cmpValue
     source ts("experiments/shape-1/proto/src/strength.ts#cmpValue")
+    effects unknown
+  fn computeHeirs
+    source ts("experiments/shape-1/proto/src/strength.ts#computeHeirs")
+    effects unknown
+  fn isSchemaArgs
+    source ts("experiments/shape-1/proto/src/strength.ts#isSchemaArgs")
     effects unknown
   fn normaliseArrays
     source ts("experiments/shape-1/proto/src/strength.ts#normaliseArrays")
@@ -65,11 +81,27 @@ relation StrengthModuleCmpValueGeneratedFromStrengthModuleCmpValueAstAnchor {
   summary "fn StrengthModule.cmpValue generated from typescript function_declaration at experiments/shape-1/proto/src/strength.ts#cmpValue."
 }
 
+relation StrengthModuleComputeHeirsGeneratedFromStrengthModuleComputeHeirsAstAnchor {
+  kind generated_from
+  connects StrengthModule -> StrengthModuleComputeHeirsAstAnchor
+  roles { StrengthModule as generated, StrengthModuleComputeHeirsAstAnchor as syntax }
+  expects StrengthModuleComputeHeirsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:13802f18396af439af3c2a6ae9a2b707d7cf56518b30832f58ef92187ac07c4d")
+  summary "fn StrengthModule.computeHeirs generated from typescript function_declaration at experiments/shape-1/proto/src/strength.ts#computeHeirs."
+}
+
+relation StrengthModuleIsSchemaArgsGeneratedFromStrengthModuleIsSchemaArgsAstAnchor {
+  kind generated_from
+  connects StrengthModule -> StrengthModuleIsSchemaArgsAstAnchor
+  roles { StrengthModule as generated, StrengthModuleIsSchemaArgsAstAnchor as syntax }
+  expects StrengthModuleIsSchemaArgsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:48cd3602ba68f7285d61115512c79b82ae0bd4e257533e9250308c1f77ef95c4")
+  summary "fn StrengthModule.isSchemaArgs generated from typescript function_declaration at experiments/shape-1/proto/src/strength.ts#isSchemaArgs."
+}
+
 relation StrengthModuleNormaliseArraysGeneratedFromStrengthModuleNormaliseArraysAstAnchor {
   kind generated_from
   connects StrengthModule -> StrengthModuleNormaliseArraysAstAnchor
   roles { StrengthModule as generated, StrengthModuleNormaliseArraysAstAnchor as syntax }
-  expects StrengthModuleNormaliseArraysAstAnchor fingerprint ast.semantic_subtree_v1("sha256:909ee80b1f4c238b763ecdb0f94887b2accaa62d403f281ccf3af56cb425c72e")
+  expects StrengthModuleNormaliseArraysAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6322d79c72f6af8c09476bba35b65424b4510fd8a45e43e9942dc5f9ffbf3557")
   summary "fn StrengthModule.normaliseArrays generated from typescript function_declaration at experiments/shape-1/proto/src/strength.ts#normaliseArrays."
 }
 
@@ -85,7 +117,7 @@ relation StrengthModuleRenameArgsGeneratedFromStrengthModuleRenameArgsAstAnchor 
   kind generated_from
   connects StrengthModule -> StrengthModuleRenameArgsAstAnchor
   roles { StrengthModule as generated, StrengthModuleRenameArgsAstAnchor as syntax }
-  expects StrengthModuleRenameArgsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8397aba285098ed8e03aff56c67ea4fdc162cccf5f1e1c57984aa19b2e0b7025")
+  expects StrengthModuleRenameArgsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2fecbbdab77406ed332b6c8c65a91eb7fe717dcc583bd080284dfbc09da8bb9f")
   summary "fn StrengthModule.renameArgs generated from typescript function_declaration at experiments/shape-1/proto/src/strength.ts#renameArgs."
 }
 

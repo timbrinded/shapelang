@@ -13,7 +13,7 @@ resource GlobsModuleBuildNfaAstAnchor : GeneratedAstAnchor {
 
 resource GlobsModuleCellIdAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/globs.ts#cellId")
-  fingerprint ast.semantic_subtree_v1("sha256:c0d0b9eb277e893e3da5398a6054aecc26456dc717cb48fa18d4c5e5424ab239")
+  fingerprint ast.semantic_subtree_v1("sha256:138960216c951bf6d845d40d92e10ee5f0582712d38658c904ca79fa78f72717")
 }
 
 resource GlobsModuleClassifyAstAnchor : GeneratedAstAnchor {
@@ -28,7 +28,7 @@ resource GlobsModuleClosureAstAnchor : GeneratedAstAnchor {
 
 resource GlobsModuleComputeCellsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/globs.ts#computeCells")
-  fingerprint ast.semantic_subtree_v1("sha256:dd607a0bd3da44f94e3a0d772317a7acc20622419936e4a188cd33aaaae23317")
+  fingerprint ast.semantic_subtree_v1("sha256:8dd00fb7780581e0e2dea4c4242d9cfe2597619ed5faac354876be5c2a08c9fe")
 }
 
 resource GlobsModuleEscapeRegexAstAnchor : GeneratedAstAnchor {
@@ -125,7 +125,7 @@ relation GlobsModuleCellIdGeneratedFromGlobsModuleCellIdAstAnchor {
   kind generated_from
   connects GlobsModule -> GlobsModuleCellIdAstAnchor
   roles { GlobsModule as generated, GlobsModuleCellIdAstAnchor as syntax }
-  expects GlobsModuleCellIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c0d0b9eb277e893e3da5398a6054aecc26456dc717cb48fa18d4c5e5424ab239")
+  expects GlobsModuleCellIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:138960216c951bf6d845d40d92e10ee5f0582712d38658c904ca79fa78f72717")
   summary "fn GlobsModule.cellId generated from typescript function_declaration at experiments/shape-1/proto/src/globs.ts#cellId."
 }
 
@@ -149,7 +149,7 @@ relation GlobsModuleComputeCellsGeneratedFromGlobsModuleComputeCellsAstAnchor {
   kind generated_from
   connects GlobsModule -> GlobsModuleComputeCellsAstAnchor
   roles { GlobsModule as generated, GlobsModuleComputeCellsAstAnchor as syntax }
-  expects GlobsModuleComputeCellsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dd607a0bd3da44f94e3a0d772317a7acc20622419936e4a188cd33aaaae23317")
+  expects GlobsModuleComputeCellsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8dd00fb7780581e0e2dea4c4242d9cfe2597619ed5faac354876be5c2a08c9fe")
   summary "fn GlobsModule.computeCells generated from typescript function_declaration at experiments/shape-1/proto/src/globs.ts#computeCells."
 }
 

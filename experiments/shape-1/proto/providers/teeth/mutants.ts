@@ -137,7 +137,8 @@ export function worldFacts(o: Pick<TeethOptions, "esf" | "world" | "observations
     }
   }
   for (const x of W.man.ids.values())
-    for (const [k, n] of Object.entries(x.markers)) if (n > 0) add(W.att(x.id), liftHatch(W, k, x.lang));
+    for (const [k, n] of Object.entries(x.markers))
+      if (n > 0) add(W.att(x.id), liftHatch(W, k, x.lang));
   // position-level reach through calls (summaries' footprint), and component call edges
   const callsFrom = new Map<string, Set<string>>();
   for (const [a, b] of callPairs) {

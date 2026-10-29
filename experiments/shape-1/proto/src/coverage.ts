@@ -67,7 +67,11 @@ export function observable(ctx: Ctx, ch: string): boolean {
   if (ch.startsWith("hatch(")) return true;
   for (const p of ctx.gov.providers) {
     if (!p.absence) continue;
-    if (ch === "call(*)" ? p.observes.some((o) => o.startsWith("call(")) : channelCovered(p.observes, ch))
+    if (
+      ch === "call(*)"
+        ? p.observes.some((o) => o.startsWith("call("))
+        : channelCovered(p.observes, ch)
+    )
       return true;
   }
   return false;
@@ -192,7 +196,10 @@ export function computeCoverage(ctx: Ctx): CoverageResult {
         : (kb?.owner ?? W.compByQ.get(comp)?.owner ?? ctx.gov.shape.owner);
     const uniq = new Map(unmet.map((u) => [`${u.id}\u0000${u.claim}\u0000${u.channel}`, u]));
     const sorted = [...uniq.values()].sort((a, b) =>
-      cmpStr(`${a.id}\u0000${a.claim}\u0000${a.channel}`, `${b.id}\u0000${b.claim}\u0000${b.channel}`)
+      cmpStr(
+        `${a.id}\u0000${a.claim}\u0000${a.channel}`,
+        `${b.id}\u0000${b.claim}\u0000${b.channel}`
+      )
     );
     obligations.push({
       subject: comp === UNGOVERNED ? UNGOVERNED : `component ${comp}`,

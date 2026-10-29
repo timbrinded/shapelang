@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.shape_1.proto.examples.v7
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource V7ModuleExecutableOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/examples/v7.ts#executableOf")
+  fingerprint ast.semantic_subtree_v1("sha256:b7ae89571d06db21bf1f06bcccdf334e12cbeb1c48f70091a67b43cdb30cadde")
+}
+
+resource V7ModuleJudgmentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/examples/v7.ts#judgment")
+  fingerprint ast.semantic_subtree_v1("sha256:44eac98d99591475e7fe729d39c04beea72bf3079ce63d2424111e4aae242c34")
+}
+
+resource V7ModuleToV7AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/examples/v7.ts#toV7")
+  fingerprint ast.semantic_subtree_v1("sha256:1b5e2d8d946d3938fe439b9155291731d1de4aca19806846c1a03b9a1f0f2b29")
+}
+
+resource V7ModuleV7ManifestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/examples/v7.ts#v7Manifest")
+  fingerprint ast.semantic_subtree_v1("sha256:6d86b6a4eaf9e7c7f30260efb29773a7958c7498e060a1a378f40602530ec5b1")
+}
+
+resource V7ModuleWithNAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/examples/v7.ts#withN")
+  fingerprint ast.semantic_subtree_v1("sha256:e39b93062081a385cf1aa6ab9c3317448ee6e8d2830a27374da9fc9aee99c722")
+}
+
+component V7Module : GeneratedCandidate {
+  fn executableOf
+    source ts("experiments/shape-1/proto/examples/v7.ts#executableOf")
+    effects unknown
+  fn judgment
+    source ts("experiments/shape-1/proto/examples/v7.ts#judgment")
+    effects unknown
+  fn toV7
+    source ts("experiments/shape-1/proto/examples/v7.ts#toV7")
+    effects unknown
+  fn v7Manifest
+    source ts("experiments/shape-1/proto/examples/v7.ts#v7Manifest")
+    effects unknown
+  fn withN
+    source ts("experiments/shape-1/proto/examples/v7.ts#withN")
+    effects unknown
+}
+
+relation V7ModuleExecutableOfGeneratedFromV7ModuleExecutableOfAstAnchor {
+  kind generated_from
+  connects V7Module -> V7ModuleExecutableOfAstAnchor
+  roles { V7Module as generated, V7ModuleExecutableOfAstAnchor as syntax }
+  expects V7ModuleExecutableOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b7ae89571d06db21bf1f06bcccdf334e12cbeb1c48f70091a67b43cdb30cadde")
+  summary "fn V7Module.executableOf generated from typescript function_declaration at experiments/shape-1/proto/examples/v7.ts#executableOf."
+}
+
+relation V7ModuleJudgmentGeneratedFromV7ModuleJudgmentAstAnchor {
+  kind generated_from
+  connects V7Module -> V7ModuleJudgmentAstAnchor
+  roles { V7Module as generated, V7ModuleJudgmentAstAnchor as syntax }
+  expects V7ModuleJudgmentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:44eac98d99591475e7fe729d39c04beea72bf3079ce63d2424111e4aae242c34")
+  summary "fn V7Module.judgment generated from typescript function_declaration at experiments/shape-1/proto/examples/v7.ts#judgment."
+}
+
+relation V7ModuleToV7GeneratedFromV7ModuleToV7AstAnchor {
+  kind generated_from
+  connects V7Module -> V7ModuleToV7AstAnchor
+  roles { V7Module as generated, V7ModuleToV7AstAnchor as syntax }
+  expects V7ModuleToV7AstAnchor fingerprint ast.semantic_subtree_v1("sha256:1b5e2d8d946d3938fe439b9155291731d1de4aca19806846c1a03b9a1f0f2b29")
+  summary "fn V7Module.toV7 generated from typescript function_declaration at experiments/shape-1/proto/examples/v7.ts#toV7."
+}
+
+relation V7ModuleV7ManifestGeneratedFromV7ModuleV7ManifestAstAnchor {
+  kind generated_from
+  connects V7Module -> V7ModuleV7ManifestAstAnchor
+  roles { V7Module as generated, V7ModuleV7ManifestAstAnchor as syntax }
+  expects V7ModuleV7ManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6d86b6a4eaf9e7c7f30260efb29773a7958c7498e060a1a378f40602530ec5b1")
+  summary "fn V7Module.v7Manifest generated from typescript function_declaration at experiments/shape-1/proto/examples/v7.ts#v7Manifest."
+}
+
+relation V7ModuleWithNGeneratedFromV7ModuleWithNAstAnchor {
+  kind generated_from
+  connects V7Module -> V7ModuleWithNAstAnchor
+  roles { V7Module as generated, V7ModuleWithNAstAnchor as syntax }
+  expects V7ModuleWithNAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e39b93062081a385cf1aa6ab9c3317448ee6e8d2830a27374da9fc9aee99c722")
+  summary "fn V7Module.withN generated from typescript function_declaration at experiments/shape-1/proto/examples/v7.ts#withN."
+}
+
+implementation V7ModuleImpl {
+  paths {
+    "experiments/shape-1/proto/examples/v7.ts"
+  }
+  conforms_to V7Module
+}

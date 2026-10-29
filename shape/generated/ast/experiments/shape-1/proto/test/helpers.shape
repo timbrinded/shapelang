@@ -23,12 +23,12 @@ resource HelpersModuleObsOfAstAnchor : GeneratedAstAnchor {
 
 resource HelpersModulePermuteAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/test/helpers.ts#permute")
-  fingerprint ast.semantic_subtree_v1("sha256:54803de42207f0e6915d1b76136b49fc933a3f2894afd4f8ad0f5ea00646fd7d")
+  fingerprint ast.semantic_subtree_v1("sha256:5da157bead9dceaf6e1d28bf2bf14dc03fa59e0f5196c183305c77ce8738f86f")
 }
 
 resource HelpersModulePermuteManifestAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/test/helpers.ts#permuteManifest")
-  fingerprint ast.semantic_subtree_v1("sha256:ae8b97356b8535c4bd5882702806c78a07862c5584c322467482ef635045b220")
+  fingerprint ast.semantic_subtree_v1("sha256:a6649f028e98dce6d22c0c5fdec32953cf546762f2446b67fc7887f5ce610625")
 }
 
 resource HelpersModulePermuteSourceAstAnchor : GeneratedAstAnchor {
@@ -109,7 +109,7 @@ relation HelpersModulePermuteGeneratedFromHelpersModulePermuteAstAnchor {
   kind generated_from
   connects HelpersModule -> HelpersModulePermuteAstAnchor
   roles { HelpersModule as generated, HelpersModulePermuteAstAnchor as syntax }
-  expects HelpersModulePermuteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:54803de42207f0e6915d1b76136b49fc933a3f2894afd4f8ad0f5ea00646fd7d")
+  expects HelpersModulePermuteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5da157bead9dceaf6e1d28bf2bf14dc03fa59e0f5196c183305c77ce8738f86f")
   summary "fn HelpersModule.permute generated from typescript function_declaration at experiments/shape-1/proto/test/helpers.ts#permute."
 }
 
@@ -117,7 +117,7 @@ relation HelpersModulePermuteManifestGeneratedFromHelpersModulePermuteManifestAs
   kind generated_from
   connects HelpersModule -> HelpersModulePermuteManifestAstAnchor
   roles { HelpersModule as generated, HelpersModulePermuteManifestAstAnchor as syntax }
-  expects HelpersModulePermuteManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ae8b97356b8535c4bd5882702806c78a07862c5584c322467482ef635045b220")
+  expects HelpersModulePermuteManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a6649f028e98dce6d22c0c5fdec32953cf546762f2446b67fc7887f5ce610625")
   summary "fn HelpersModule.permuteManifest generated from typescript function_declaration at experiments/shape-1/proto/test/helpers.ts#permuteManifest."
 }
 

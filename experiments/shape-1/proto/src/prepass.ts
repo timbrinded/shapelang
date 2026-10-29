@@ -217,7 +217,11 @@ export function prepass(input: CheckInput): Prepass | PrepassInvalid {
           presence: new Set(base.providers.filter((p) => p.presence).map((p) => p.q)),
           headRevision: Mb?.revision ?? Mh.revision
         })
-      : { valid: [] as ParsedRecord[], rejected: [] as Rejection[], persistedIds: new Set<string>() };
+      : {
+          valid: [] as ParsedRecord[],
+          rejected: [] as Rejection[],
+          persistedIds: new Set<string>()
+        };
   const rejected = [...recs.rejected, ...baseRecs.rejected].sort(
     (a, b) => cmpStr(a.record, b.record) || cmpStr(a.code, b.code)
   );

@@ -33,7 +33,7 @@ resource GenCasesModuleCAuthorityAstAnchor : GeneratedAstAnchor {
 
 resource GenCasesModuleCaseAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#case")
-  fingerprint ast.semantic_subtree_v1("sha256:bfe417f673cdb205f33e96a8c3eea599cf6db0ded0a965303518ac6d3ad26e39")
+  fingerprint ast.semantic_subtree_v1("sha256:9922eb49a805aba2ccf73380679decfcc8f20141d79582018218c0cb94dd30ec")
 }
 
 resource GenCasesModuleCiteAstAnchor : GeneratedAstAnchor {
@@ -73,7 +73,7 @@ resource GenCasesModuleEntries3AstAnchor : GeneratedAstAnchor {
 
 resource GenCasesModuleEntryAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/kernel/test/gen_cases.py#entry")
-  fingerprint ast.semantic_subtree_v1("sha256:746319c0d020c9c87f5d74c57536abc601c53fbc4719fd3f29be811918ec1ef1")
+  fingerprint ast.semantic_subtree_v1("sha256:cb8ff9f44dc297930abbad9bc614a4a46b7d329ceb29d6f291bd429cbcad5c89")
 }
 
 resource GenCasesModuleEsf2AstAnchor : GeneratedAstAnchor {
@@ -269,7 +269,7 @@ relation GenCasesModuleCaseGeneratedFromGenCasesModuleCaseAstAnchor {
   kind generated_from
   connects GenCasesModule -> GenCasesModuleCaseAstAnchor
   roles { GenCasesModule as generated, GenCasesModuleCaseAstAnchor as syntax }
-  expects GenCasesModuleCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bfe417f673cdb205f33e96a8c3eea599cf6db0ded0a965303518ac6d3ad26e39")
+  expects GenCasesModuleCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9922eb49a805aba2ccf73380679decfcc8f20141d79582018218c0cb94dd30ec")
   summary "fn GenCasesModule.case generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#case."
 }
 
@@ -333,7 +333,7 @@ relation GenCasesModuleEntryGeneratedFromGenCasesModuleEntryAstAnchor {
   kind generated_from
   connects GenCasesModule -> GenCasesModuleEntryAstAnchor
   roles { GenCasesModule as generated, GenCasesModuleEntryAstAnchor as syntax }
-  expects GenCasesModuleEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:746319c0d020c9c87f5d74c57536abc601c53fbc4719fd3f29be811918ec1ef1")
+  expects GenCasesModuleEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cb8ff9f44dc297930abbad9bc614a4a46b7d329ceb29d6f291bd429cbcad5c89")
   summary "fn GenCasesModule.entry generated from python function_definition at experiments/shape-1/kernel/test/gen_cases.py#entry."
 }
 

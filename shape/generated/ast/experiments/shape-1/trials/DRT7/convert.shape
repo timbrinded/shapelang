@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.trials.DRT7.convert
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ConvertModuleConvertAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/convert.ts#convert")
+  fingerprint ast.semantic_subtree_v1("sha256:6240b21a48d9fbe08ccfe5b131084c23e81914270839a23e825eace9ceab63ca")
+}
+
+resource ConvertModuleRecordEntryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/convert.ts#recordEntry")
+  fingerprint ast.semantic_subtree_v1("sha256:bb8b6306876bfa96516ec9e620f3bdabc39f7b027758ba66db949c6c9018b008")
+}
+
+component ConvertModule : GeneratedCandidate {
+  fn convert
+    source ts("experiments/shape-1/trials/DRT7/convert.ts#convert")
+    effects unknown
+  fn recordEntry
+    source ts("experiments/shape-1/trials/DRT7/convert.ts#recordEntry")
+    effects unknown
+}
+
+relation ConvertModuleConvertGeneratedFromConvertModuleConvertAstAnchor {
+  kind generated_from
+  connects ConvertModule -> ConvertModuleConvertAstAnchor
+  roles { ConvertModule as generated, ConvertModuleConvertAstAnchor as syntax }
+  expects ConvertModuleConvertAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6240b21a48d9fbe08ccfe5b131084c23e81914270839a23e825eace9ceab63ca")
+  summary "fn ConvertModule.convert generated from typescript function_declaration at experiments/shape-1/trials/DRT7/convert.ts#convert."
+}
+
+relation ConvertModuleRecordEntryGeneratedFromConvertModuleRecordEntryAstAnchor {
+  kind generated_from
+  connects ConvertModule -> ConvertModuleRecordEntryAstAnchor
+  roles { ConvertModule as generated, ConvertModuleRecordEntryAstAnchor as syntax }
+  expects ConvertModuleRecordEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bb8b6306876bfa96516ec9e620f3bdabc39f7b027758ba66db949c6c9018b008")
+  summary "fn ConvertModule.recordEntry generated from typescript function_declaration at experiments/shape-1/trials/DRT7/convert.ts#recordEntry."
+}
+
+implementation ConvertModuleImpl {
+  paths {
+    "experiments/shape-1/trials/DRT7/convert.ts"
+  }
+  conforms_to ConvertModule
+}

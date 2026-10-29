@@ -23,7 +23,7 @@ resource MigrateModuleMergeSidecarAstAnchor : GeneratedAstAnchor {
 
 resource MigrateModuleMigrateAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/migrate.ts#migrate")
-  fingerprint ast.semantic_subtree_v1("sha256:0c0f83e75b42583a5bf3a6ef9bff4b8f123ea0085e445289bb0c6d592c1236dd")
+  fingerprint ast.semantic_subtree_v1("sha256:3f52edb0325db5b2cb5df54f07a1eb8707888d31e2779542354edd29ef953de4")
 }
 
 resource MigrateModuleRewriteBindsAstAnchor : GeneratedAstAnchor {
@@ -85,7 +85,7 @@ relation MigrateModuleMigrateGeneratedFromMigrateModuleMigrateAstAnchor {
   kind generated_from
   connects MigrateModule -> MigrateModuleMigrateAstAnchor
   roles { MigrateModule as generated, MigrateModuleMigrateAstAnchor as syntax }
-  expects MigrateModuleMigrateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0c0f83e75b42583a5bf3a6ef9bff4b8f123ea0085e445289bb0c6d592c1236dd")
+  expects MigrateModuleMigrateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3f52edb0325db5b2cb5df54f07a1eb8707888d31e2779542354edd29ef953de4")
   summary "fn MigrateModule.migrate generated from typescript function_declaration at experiments/shape-1/proto/src/migrate.ts#migrate."
 }
 

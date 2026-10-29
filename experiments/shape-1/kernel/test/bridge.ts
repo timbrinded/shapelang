@@ -28,14 +28,13 @@ function records(list, rejected, persistedBase) {
     const r = parseRecord(x);
     if (!r.error) parsed.push(r);
   }
-  return mergeRecords(parsed)
-    .map((r) => ({
-      id: r.id,
-      rejected: rejected.has(r.id),
-      predicate: { shape: r.shape },
-      authenticated: r.signers.length > 0,
-      persistedBase: persistedBase.has(r.id)
-    }));
+  return mergeRecords(parsed).map((r) => ({
+    id: r.id,
+    rejected: rejected.has(r.id),
+    predicate: { shape: r.shape },
+    authenticated: r.signers.length > 0,
+    persistedBase: persistedBase.has(r.id)
+  }));
 }
 
 function kernelCase(input, ts) {
@@ -48,17 +47,30 @@ function kernelCase(input, ts) {
   const head = elaborate(v.head.source, { now, std: v.head.std });
   head.errors = [
     ...head.errors,
-    ...v.head.shapeErrors.map((e) => ({ code: e.code, subject: e.subject, causes: [], dischargers: [] })),
+    ...v.head.shapeErrors.map((e) => ({
+      code: e.code,
+      subject: e.subject,
+      causes: [],
+      dischargers: []
+    })),
     ...(ts.errors ?? [])
       .filter((e) => e.code === "E-evidence-path" || e.code === "E-evidence-rewrite")
       .map((e) => ({ code: e.code, subject: e.subject, causes: [], dischargers: [] }))
   ];
   const unreadable = hasBase && !!v.base?.unreadable;
-  const base = hasBase && !unreadable ? elaborate(v.base.source, { lenient: true, now, std: v.base.std }) : null;
+  const base =
+    hasBase && !unreadable
+      ? elaborate(v.base.source, { lenient: true, now, std: v.base.std })
+      : null;
   if (base)
     base.errors = [
       ...base.errors,
-      ...(v.base?.defects ?? []).map((d) => ({ code: d.code, subject: d.subject, causes: [], dischargers: [] }))
+      ...(v.base?.defects ?? []).map((d) => ({
+        code: d.code,
+        subject: d.subject,
+        causes: [],
+        dischargers: []
+      }))
     ];
   const gov = base ?? head;
   const gv = buildGov(gov, gov.policy, gov.policy, input.authors ?? [], unreadable);
@@ -92,7 +104,12 @@ function kernelCase(input, ts) {
       change: input.change,
       authors: [...gv.authors],
       unmappedBot: gv.unmappedBot,
-      head: { revision: v.head.revision, esf: head, manifest: input.head.manifest, manifestAuthenticated: auth(v.head) },
+      head: {
+        revision: v.head.revision,
+        esf: head,
+        manifest: input.head.manifest,
+        manifestAuthenticated: auth(v.head)
+      },
       base: !hasBase
         ? null
         : {

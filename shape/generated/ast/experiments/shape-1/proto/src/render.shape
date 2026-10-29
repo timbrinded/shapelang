@@ -6,9 +6,14 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource RenderModuleCoreBytesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/render.ts#coreBytes")
+  fingerprint ast.semantic_subtree_v1("sha256:f2ef45c9056b4cd7b094128b6e0a9bc8639f80fab8ad07b210f6063e37573139")
+}
+
 resource RenderModuleCoreOutputAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/render.ts#coreOutput")
-  fingerprint ast.semantic_subtree_v1("sha256:d903d7f8f04e7767f881f5245a97fe8036f26d998a5d016af3a7eaa9723f89b7")
+  fingerprint ast.semantic_subtree_v1("sha256:33a3a3766c29c76ba91f53c35b99a31cc9d2976558858f71dd70b19ac2297538")
 }
 
 resource RenderModuleRenderDischargerAstAnchor : GeneratedAstAnchor {
@@ -18,7 +23,7 @@ resource RenderModuleRenderDischargerAstAnchor : GeneratedAstAnchor {
 
 resource RenderModuleRenderHumanAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/render.ts#renderHuman")
-  fingerprint ast.semantic_subtree_v1("sha256:870474b69db4c3500e525e50db6fe881e34fe4ad3ebd5f9c4eb89c39380d5914")
+  fingerprint ast.semantic_subtree_v1("sha256:6d4d2ef02fac4cd62a0bf42ffeaef84da53dfa092e6f53777f66b8f930d6c50b")
 }
 
 resource RenderModuleShortAstAnchor : GeneratedAstAnchor {
@@ -32,6 +37,9 @@ resource RenderModuleWhereAstAnchor : GeneratedAstAnchor {
 }
 
 component RenderModule : GeneratedCandidate {
+  fn coreBytes
+    source ts("experiments/shape-1/proto/src/render.ts#coreBytes")
+    effects unknown
   fn coreOutput
     source ts("experiments/shape-1/proto/src/render.ts#coreOutput")
     effects unknown
@@ -49,11 +57,19 @@ component RenderModule : GeneratedCandidate {
     effects unknown
 }
 
+relation RenderModuleCoreBytesGeneratedFromRenderModuleCoreBytesAstAnchor {
+  kind generated_from
+  connects RenderModule -> RenderModuleCoreBytesAstAnchor
+  roles { RenderModule as generated, RenderModuleCoreBytesAstAnchor as syntax }
+  expects RenderModuleCoreBytesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f2ef45c9056b4cd7b094128b6e0a9bc8639f80fab8ad07b210f6063e37573139")
+  summary "fn RenderModule.coreBytes generated from typescript function_declaration at experiments/shape-1/proto/src/render.ts#coreBytes."
+}
+
 relation RenderModuleCoreOutputGeneratedFromRenderModuleCoreOutputAstAnchor {
   kind generated_from
   connects RenderModule -> RenderModuleCoreOutputAstAnchor
   roles { RenderModule as generated, RenderModuleCoreOutputAstAnchor as syntax }
-  expects RenderModuleCoreOutputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d903d7f8f04e7767f881f5245a97fe8036f26d998a5d016af3a7eaa9723f89b7")
+  expects RenderModuleCoreOutputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:33a3a3766c29c76ba91f53c35b99a31cc9d2976558858f71dd70b19ac2297538")
   summary "fn RenderModule.coreOutput generated from typescript function_declaration at experiments/shape-1/proto/src/render.ts#coreOutput."
 }
 
@@ -69,7 +85,7 @@ relation RenderModuleRenderHumanGeneratedFromRenderModuleRenderHumanAstAnchor {
   kind generated_from
   connects RenderModule -> RenderModuleRenderHumanAstAnchor
   roles { RenderModule as generated, RenderModuleRenderHumanAstAnchor as syntax }
-  expects RenderModuleRenderHumanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:870474b69db4c3500e525e50db6fe881e34fe4ad3ebd5f9c4eb89c39380d5914")
+  expects RenderModuleRenderHumanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6d4d2ef02fac4cd62a0bf42ffeaef84da53dfa092e6f53777f66b8f930d6c50b")
   summary "fn RenderModule.renderHuman generated from typescript function_declaration at experiments/shape-1/proto/src/render.ts#renderHuman."
 }
 

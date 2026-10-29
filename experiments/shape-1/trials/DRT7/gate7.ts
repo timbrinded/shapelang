@@ -38,13 +38,29 @@ function readCase(src) {
     const e = JSON.parse(readFileSync(`${dir}/expected.json`, "utf8"));
     const c = e.cases.find((x) => x.case === name);
     if (!c) throw new Error(`no case ${name} in ${dir}`);
-    return typeof c.input === "string" ? JSON.parse(readFileSync(resolve(dir, c.input), "utf8")) : c.input;
+    return typeof c.input === "string"
+      ? JSON.parse(readFileSync(resolve(dir, c.input), "utf8"))
+      : c.input;
   }
   return JSON.parse(readFileSync(src, "utf8"));
 }
 
 function runOne(id, set, src, shapek, timeout, save) {
-  const row = { id, set, src, status: "", sigs: [], details: {}, reasons: [], verdicts: {}, exitOk: null, harness: [], features: [], tsMs: 0, kMs: 0 };
+  const row = {
+    id,
+    set,
+    src,
+    status: "",
+    sigs: [],
+    details: {},
+    reasons: [],
+    verdicts: {},
+    exitOk: null,
+    harness: [],
+    features: [],
+    tsMs: 0,
+    kMs: 0
+  };
   let input;
   try {
     input = readCase(src);
@@ -77,14 +93,21 @@ function runOne(id, set, src, shapek, timeout, save) {
   if (cv.kind !== "case") {
     row.status = "prepass-invalid";
     row.reasons = cv.problems.slice(0, 5);
-    if (out.verdict !== "invalid") row.harness.push(`prepass invalid but derive verdict ${out.verdict}`);
+    if (out.verdict !== "invalid")
+      row.harness.push(`prepass invalid but derive verdict ${out.verdict}`);
     return row;
   }
   const k = cv.kcase;
-  if (out.verdict === "invalid") row.harness.push("derive invalid but the pre-pass accepts the input");
+  if (out.verdict === "invalid")
+    row.harness.push("derive invalid but the pre-pass accepts the input");
   if (k.inputDigest !== out.inputDigest) row.harness.push("inputDigest differs from derive's");
-  if (jcs(k.rejected) !== jcs(out.rejected ?? [])) row.harness.push("rejected differs from derive's");
-  if (out.health && typeof out.health.clockClamped === "boolean" && out.health.clockClamped !== k.clockClamped)
+  if (jcs(k.rejected) !== jcs(out.rejected ?? []))
+    row.harness.push("rejected differs from derive's");
+  if (
+    out.health &&
+    typeof out.health.clockClamped === "boolean" &&
+    out.health.clockClamped !== k.clockClamped
+  )
     row.harness.push("clockClamped differs from derive's");
   if (set === "fragment" || set === "clean") row.features = features(input, cv.pp, out);
   const caseText = JSON.stringify(k);
@@ -99,7 +122,8 @@ function runOne(id, set, src, shapek, timeout, save) {
     writeFileSync(`${save}/${id}.kernel.txt`, kout);
   };
   if (r.error || r.signal) {
-    row.status = r.error?.code === "ETIMEDOUT" || r.signal === "SIGTERM" ? "kernel-timeout" : "kernel-error";
+    row.status =
+      r.error?.code === "ETIMEDOUT" || r.signal === "SIGTERM" ? "kernel-timeout" : "kernel-error";
     row.reasons = [String(r.error ?? r.signal).slice(0, 200)];
     keep();
     return row;
@@ -132,7 +156,8 @@ function runOne(id, set, src, shapek, timeout, save) {
   const ds = diffSignatures(JSON.parse(core), parsed);
   for (const d of ds) {
     if (!row.sigs.includes(d.sig)) row.sigs.push(d.sig);
-    if (!(d.sig in row.details) && Object.keys(row.details).length < 16) row.details[d.sig] = d.detail;
+    if (!(d.sig in row.details) && Object.keys(row.details).length < 16)
+      row.details[d.sig] = d.detail;
   }
   row.sigs.sort();
   keep();
@@ -150,7 +175,8 @@ function cmdRun(argv) {
   if (save) mkdirSync(save, { recursive: true });
   const done = new Set();
   if (existsSync(rows))
-    for (const l of readFileSync(rows, "utf8").split("\n").filter(Boolean)) done.add(JSON.parse(l).id);
+    for (const l of readFileSync(rows, "utf8").split("\n").filter(Boolean))
+      done.add(JSON.parse(l).id);
   const lines = readFileSync(list, "utf8").split("\n").filter(Boolean);
   lines.forEach((line, j) => {
     if (j % shard[1] !== shard[0]) return;
@@ -161,13 +187,29 @@ function cmdRun(argv) {
   });
 }
 
-const STATUSES = ["identical", "residual", "out-of-fragment", "prepass-invalid", "kernel-malformed", "kernel-timeout", "kernel-error", "proto-error"];
+const STATUSES = [
+  "identical",
+  "residual",
+  "out-of-fragment",
+  "prepass-invalid",
+  "kernel-malformed",
+  "kernel-timeout",
+  "kernel-error",
+  "proto-error"
+];
 
 function stats(xs) {
   if (xs.length === 0) return { n: 0 };
   const s = [...xs].sort((a, b) => a - b);
   const q = (p) => s[Math.min(s.length - 1, Math.floor(p * s.length))];
-  return { n: s.length, total: s.reduce((a, b) => a + b, 0), mean: Math.round(s.reduce((a, b) => a + b, 0) / s.length), p50: q(0.5), p99: q(0.99), max: s.at(-1) };
+  return {
+    n: s.length,
+    total: s.reduce((a, b) => a + b, 0),
+    mean: Math.round(s.reduce((a, b) => a + b, 0) / s.length),
+    p50: q(0.5),
+    p99: q(0.99),
+    max: s.at(-1)
+  };
 }
 
 function cmdReport(argv) {
@@ -179,13 +221,20 @@ function cmdReport(argv) {
     else files.push(argv[i]);
   }
   const rows = [];
-  for (const f of files) for (const l of readFileSync(f, "utf8").split("\n").filter(Boolean)) rows.push(JSON.parse(l));
+  for (const f of files)
+    for (const l of readFileSync(f, "utf8").split("\n").filter(Boolean)) rows.push(JSON.parse(l));
   const byId = new Map();
   for (const r of rows) byId.set(r.id, r);
   const all = [...byId.values()].sort((a, b) => (a.id < b.id ? -1 : 1));
   const sets = [...new Set(all.map((r) => r.set))].sort();
-  const count = (rs) => Object.fromEntries(STATUSES.map((s) => [s, rs.filter((r) => r.status === s).length]));
-  const perSet = Object.fromEntries(sets.map((s) => [s, { cases: all.filter((r) => r.set === s).length, ...count(all.filter((r) => r.set === s)) }]));
+  const count = (rs) =>
+    Object.fromEntries(STATUSES.map((s) => [s, rs.filter((r) => r.status === s).length]));
+  const perSet = Object.fromEntries(
+    sets.map((s) => [
+      s,
+      { cases: all.filter((r) => r.set === s).length, ...count(all.filter((r) => r.set === s)) }
+    ])
+  );
   const residual = all.filter((r) => r.status === "residual");
   const clusters = new Map();
   for (const r of residual)
@@ -200,14 +249,22 @@ function cmdReport(argv) {
   const prim = new Map();
   for (const r of residual) {
     const p = primary(r.sigs);
-    const c = prim.get(p) ?? { sig: p, cases: 0, sets: {}, examples: [], detail: r.details[p] ?? null };
+    const c = prim.get(p) ?? {
+      sig: p,
+      cases: 0,
+      sets: {},
+      examples: [],
+      detail: r.details[p] ?? null
+    };
     c.cases += 1;
     c.sets[r.set] = (c.sets[r.set] ?? 0) + 1;
     if (c.examples.length < 4) c.examples.push(r.id);
     prim.set(p, c);
   }
   const reasons = new Map();
-  for (const r of all.filter((x) => x.status === "out-of-fragment" || x.status === "kernel-malformed"))
+  for (const r of all.filter(
+    (x) => x.status === "out-of-fragment" || x.status === "kernel-malformed"
+  ))
     for (const why of r.reasons) {
       const k = `${r.status}: ${why.replace(/[0-9a-f]{16,}/g, "…").slice(0, 160)}`;
       const c = reasons.get(k) ?? { reason: k, cases: 0, sets: {}, examples: [] };
@@ -218,10 +275,21 @@ function cmdReport(argv) {
     }
   const corpus = all.filter((r) => r.set === "fragment" || r.set === "clean");
   const coverage = Object.fromEntries(
-    DECISIONS.map((d) => [d, { cases: corpus.filter((r) => r.features.includes(d)).length, fragment: corpus.filter((r) => r.set === "fragment" && r.features.includes(d)).length, clean: corpus.filter((r) => r.set === "clean" && r.features.includes(d)).length }])
+    DECISIONS.map((d) => [
+      d,
+      {
+        cases: corpus.filter((r) => r.features.includes(d)).length,
+        fragment: corpus.filter((r) => r.set === "fragment" && r.features.includes(d)).length,
+        clean: corpus.filter((r) => r.set === "clean" && r.features.includes(d)).length
+      }
+    ])
   );
-  const harness = all.filter((r) => r.harness.length > 0).map((r) => ({ id: r.id, harness: r.harness }));
-  const notCompared = all.filter((r) => !["identical", "residual", "out-of-fragment", "prepass-invalid"].includes(r.status));
+  const harness = all
+    .filter((r) => r.harness.length > 0)
+    .map((r) => ({ id: r.id, harness: r.harness }));
+  const notCompared = all.filter(
+    (r) => !["identical", "residual", "out-of-fragment", "prepass-invalid"].includes(r.status)
+  );
   const report = {
     contract: "drt7.gate.report/v1",
     cases: all.length,
@@ -237,39 +305,69 @@ function cmdReport(argv) {
     exitCodeMismatches: all.filter((r) => r.exitOk === false).map((r) => r.id),
     harnessCheckFailures: harness,
     outOfFragmentReasons: [...reasons.values()].sort((a, b) => b.cases - a.cases),
-    primaryClusters: [...prim.values()].sort((a, b) => b.cases - a.cases || (a.sig < b.sig ? -1 : 1)),
-    signatureClusters: [...clusters.values()].sort((a, b) => b.cases - a.cases || (a.sig < b.sig ? -1 : 1)),
+    primaryClusters: [...prim.values()].sort(
+      (a, b) => b.cases - a.cases || (a.sig < b.sig ? -1 : 1)
+    ),
+    signatureClusters: [...clusters.values()].sort(
+      (a, b) => b.cases - a.cases || (a.sig < b.sig ? -1 : 1)
+    ),
     coverage,
     coverageThreshold: 100,
     coverageMet: DECISIONS.every((d) => coverage[d].cases >= 100),
-    timing: { protoMs: stats(all.map((r) => r.tsMs).filter((x) => x > 0)), kernelMs: stats(all.filter((r) => r.kMs > 0).map((r) => r.kMs)) },
-    notCompared: notCompared.map((r) => ({ id: r.id, set: r.set, status: r.status, reasons: r.reasons }))
+    timing: {
+      protoMs: stats(all.map((r) => r.tsMs).filter((x) => x > 0)),
+      kernelMs: stats(all.filter((r) => r.kMs > 0).map((r) => r.kMs))
+    },
+    notCompared: notCompared.map((r) => ({
+      id: r.id,
+      set: r.set,
+      status: r.status,
+      reasons: r.reasons
+    }))
   };
   writeFileSync(outPath, `${JSON.stringify(report, null, 1)}\n`);
   if (textPath) {
     const L = [];
-    L.push(`DRT7 gate: ${all.length} cases; residual ${residual.length}; out of fragment ${report.gate.outOfFragment}; kernel failures ${notCompared.length}; pre-pass invalid ${report.gate.prepassInvalid}; zero residual: ${report.gate.zeroResidual}`);
+    L.push(
+      `DRT7 gate: ${all.length} cases; residual ${residual.length}; out of fragment ${report.gate.outOfFragment}; kernel failures ${notCompared.length}; pre-pass invalid ${report.gate.prepassInvalid}; zero residual: ${report.gate.zeroResidual}`
+    );
     L.push("");
-    L.push("per set: cases identical residual out-of-fragment prepass-invalid malformed timeout kernel-error proto-error");
+    L.push(
+      "per set: cases identical residual out-of-fragment prepass-invalid malformed timeout kernel-error proto-error"
+    );
     for (const s of sets) {
       const p = perSet[s];
-      L.push(`  ${s.padEnd(12)} ${String(p.cases).padStart(5)} ${String(p.identical).padStart(5)} ${String(p.residual).padStart(5)} ${String(p["out-of-fragment"]).padStart(5)} ${String(p["prepass-invalid"]).padStart(5)} ${String(p["kernel-malformed"]).padStart(5)} ${String(p["kernel-timeout"]).padStart(5)} ${String(p["kernel-error"]).padStart(5)} ${String(p["proto-error"]).padStart(5)}`);
+      L.push(
+        `  ${s.padEnd(12)} ${String(p.cases).padStart(5)} ${String(p.identical).padStart(5)} ${String(p.residual).padStart(5)} ${String(p["out-of-fragment"]).padStart(5)} ${String(p["prepass-invalid"]).padStart(5)} ${String(p["kernel-malformed"]).padStart(5)} ${String(p["kernel-timeout"]).padStart(5)} ${String(p["kernel-error"]).padStart(5)} ${String(p["proto-error"]).padStart(5)}`
+      );
     }
     L.push("");
     L.push("coverage (corpus cases per decision; threshold 100):");
-    for (const d of DECISIONS) L.push(`  ${d.padEnd(4)} ${String(coverage[d].cases).padStart(5)}  (fragment ${coverage[d].fragment}, clean ${coverage[d].clean})`);
+    for (const d of DECISIONS)
+      L.push(
+        `  ${d.padEnd(4)} ${String(coverage[d].cases).padStart(5)}  (fragment ${coverage[d].fragment}, clean ${coverage[d].clean})`
+      );
     L.push("");
     L.push("out-of-fragment and malformed reasons:");
-    for (const c of report.outOfFragmentReasons) L.push(`  ${String(c.cases).padStart(5)}  ${c.reason}  e.g. ${c.examples.join(", ")}`);
+    for (const c of report.outOfFragmentReasons)
+      L.push(`  ${String(c.cases).padStart(5)}  ${c.reason}  e.g. ${c.examples.join(", ")}`);
     L.push("");
     L.push("primary clusters (each residual case once):");
-    for (const c of report.primaryClusters) L.push(`  ${String(c.cases).padStart(5)}  ${c.sig}  ${JSON.stringify(c.sets)}  e.g. ${c.examples.join(", ")}${c.detail ? `\n         ${JSON.stringify(c.detail).slice(0, 300)}` : ""}`);
+    for (const c of report.primaryClusters)
+      L.push(
+        `  ${String(c.cases).padStart(5)}  ${c.sig}  ${JSON.stringify(c.sets)}  e.g. ${c.examples.join(", ")}${c.detail ? `\n         ${JSON.stringify(c.detail).slice(0, 300)}` : ""}`
+      );
     L.push("");
     L.push("signature clusters (a case in every cluster it shows):");
-    for (const c of report.signatureClusters.slice(0, 80)) L.push(`  ${String(c.cases).padStart(5)}  ${c.sig}  e.g. ${c.examples.join(", ")}`);
+    for (const c of report.signatureClusters.slice(0, 80))
+      L.push(`  ${String(c.cases).padStart(5)}  ${c.sig}  e.g. ${c.examples.join(", ")}`);
     L.push("");
-    L.push(`harness check failures: ${harness.length}; exit-code mismatches: ${report.exitCodeMismatches.length}`);
-    L.push(`timing: proto ${JSON.stringify(report.timing.protoMs)}; kernel ${JSON.stringify(report.timing.kernelMs)}`);
+    L.push(
+      `harness check failures: ${harness.length}; exit-code mismatches: ${report.exitCodeMismatches.length}`
+    );
+    L.push(
+      `timing: proto ${JSON.stringify(report.timing.protoMs)}; kernel ${JSON.stringify(report.timing.kernelMs)}`
+    );
     writeFileSync(textPath, `${L.join("\n")}\n`);
   }
 }

@@ -22,7 +22,8 @@ const rowsOut = arg("rows");
 const shard = (arg("shard") ?? "0/1").split("/").map(Number);
 const rows = [];
 if (argv.includes("--merge")) {
-  for (const f of argv.slice(argv.indexOf("--merge") + 1)) for (const l of readFileSync(f, "utf8").split("\n").filter(Boolean)) rows.push(JSON.parse(l));
+  for (const f of argv.slice(argv.indexOf("--merge") + 1))
+    for (const l of readFileSync(f, "utf8").split("\n").filter(Boolean)) rows.push(JSON.parse(l));
 } else {
   const lines = readFileSync(arg("list"), "utf8").split("\n").filter(Boolean);
   lines.forEach((line, j) => {
@@ -31,7 +32,12 @@ if (argv.includes("--merge")) {
     const input = JSON.parse(readFileSync(src, "utf8"));
     const o = derive(input);
     const c = convert(input);
-    const row = { id, set, verdict: o.verdict, features: c.kind === "case" ? features(input, c.pp, o) : [] };
+    const row = {
+      id,
+      set,
+      verdict: o.verdict,
+      features: c.kind === "case" ? features(input, c.pp, o) : []
+    };
     if (rowsOut) appendFileSync(rowsOut, `${JSON.stringify(row)}\n`);
     else rows.push(row);
   });
@@ -48,9 +54,28 @@ for (const dir of many("index"))
       if (r.phase2) tags.phase2 = (tags.phase2 ?? 0) + 1;
     }
 const sets = [...new Set(rows.map((r) => r.set))].sort();
-const coverage = Object.fromEntries(DECISIONS.map((d) => [d, Object.fromEntries([["cases", rows.filter((r) => r.features.includes(d)).length], ...sets.map((s) => [s, rows.filter((r) => r.set === s && r.features.includes(d)).length])])]));
+const coverage = Object.fromEntries(
+  DECISIONS.map((d) => [
+    d,
+    Object.fromEntries([
+      ["cases", rows.filter((r) => r.features.includes(d)).length],
+      ...sets.map((s) => [s, rows.filter((r) => r.set === s && r.features.includes(d)).length])
+    ])
+  ])
+);
 const verdicts = {};
-for (const r of rows) verdicts[`${r.set}:${r.verdict}`] = (verdicts[`${r.set}:${r.verdict}`] ?? 0) + 1;
-const report = { cases: rows.length, perSet: Object.fromEntries(sets.map((s) => [s, rows.filter((r) => r.set === s).length])), threshold: 100, met: DECISIONS.every((d) => coverage[d].cases >= 100), coverage, verdicts, generatorTags: Object.fromEntries(Object.entries(tags).sort()) };
+for (const r of rows)
+  verdicts[`${r.set}:${r.verdict}`] = (verdicts[`${r.set}:${r.verdict}`] ?? 0) + 1;
+const report = {
+  cases: rows.length,
+  perSet: Object.fromEntries(sets.map((s) => [s, rows.filter((r) => r.set === s).length])),
+  threshold: 100,
+  met: DECISIONS.every((d) => coverage[d].cases >= 100),
+  coverage,
+  verdicts,
+  generatorTags: Object.fromEntries(Object.entries(tags).sort())
+};
 writeFileSync(out, `${JSON.stringify(report, null, 1)}\n`);
-process.stdout.write(`${DECISIONS.map((d) => `${d} ${coverage[d].cases}`).join("; ")}; met ${report.met}\n`);
+process.stdout.write(
+  `${DECISIONS.map((d) => `${d} ${coverage[d].cases}`).join("; ")}; met ${report.met}\n`
+);

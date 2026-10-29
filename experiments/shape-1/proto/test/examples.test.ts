@@ -265,9 +265,9 @@ describe("Example 2: a Verus change adds an assume", () => {
     );
     expect(host).toBeUndefined();
     expect(out.preexisting).toEqual([]);
-    expect(
-      (out.health.declaredOnly as { claim: string }[]).map((d) => d.claim)
-    ).toContain("sha256:6cd2e34ae382f2271643ee1e21eb71ea70700a980a610cd7ab8e9442b5698cd7");
+    expect((out.health.declaredOnly as { claim: string }[]).map((d) => d.claim)).toContain(
+      "sha256:6cd2e34ae382f2271643ee1e21eb71ea70700a980a610cd7ab8e9442b5698cd7"
+    );
   });
 });
 

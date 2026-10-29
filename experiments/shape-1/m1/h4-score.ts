@@ -72,7 +72,12 @@ for (const m of manual) {
   }
   if (!out) {
     wrong += 1;
-    rows.push({ case: m.case, verdict: "error", stderr: (r.stderr ?? "").slice(-400), result: "wrong" });
+    rows.push({
+      case: m.case,
+      verdict: "error",
+      stderr: (r.stderr ?? "").slice(-400),
+      result: "wrong"
+    });
     continue;
   }
   const loose = out.loosening ?? [];
@@ -95,13 +100,15 @@ for (const m of manual) {
     if (want === null) reasons.push("manual expects undecided (rename)");
     else if (want !== loosens) reasons.push(`loosens ${loosens} != ${want}`);
     for (const q of m.fwdQ) if (!fired.includes(q)) reasons.push(`fwdQ ${q} did not fire`);
-    if (m.loosens === "no" && fired.length > 0) reasons.push(`fired ${fired.join(",")} on a no case`);
+    if (m.loosens === "no" && fired.length > 0)
+      reasons.push(`fired ${fired.join(",")} on a no case`);
     result = reasons.length === 0 ? "correct" : "wrong";
     if (result === "correct") correct += 1;
     else wrong += 1;
   }
   const info = [];
-  if (m.expl !== null && m.expl !== exploited) info.push(`exploited ${exploited} (manual ${m.expl})`);
+  if (m.expl !== null && m.expl !== exploited)
+    info.push(`exploited ${exploited} (manual ${m.expl})`);
   if (m.final !== final && loose.length > 0) info.push(`final ${final} (manual ${m.final})`);
   rows.push({
     case: m.case,

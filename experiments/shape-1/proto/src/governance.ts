@@ -121,7 +121,11 @@ export function persons(gov: Gov, q: string): string[] {
 }
 
 /** Actors eligible by role under a policy's judges, ignoring authorship (A.6.3.3, A.15.6). */
-export function eligibleByRole(gov: Gov, q: EligibilityQuery, policy: Policy = gov.policy): string[] {
+export function eligibleByRole(
+  gov: Gov,
+  q: EligibilityQuery,
+  policy: Policy = gov.policy
+): string[] {
   const out = new Set<string>();
   if (q.final) {
     // A.16.12(a): the persons of the item's base owner and of the base shape owner

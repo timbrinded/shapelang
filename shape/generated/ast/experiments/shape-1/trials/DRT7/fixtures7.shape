@@ -1,0 +1,161 @@
+module shape.generated.ast.experiments.shape_1.trials.DRT7.fixtures7
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource Fixtures7ModuleCodeCopiesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/fixtures7.ts#codeCopies")
+  fingerprint ast.semantic_subtree_v1("sha256:a0898287b5b464aa71ba94e6f027a6e5af45907dc0250baffa3e08589ae72917")
+}
+
+resource Fixtures7ModuleExecutableOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/fixtures7.ts#executableOf")
+  fingerprint ast.semantic_subtree_v1("sha256:f62df3e028eadaed08ca1f3be378b17a1829f507bf67de9dad053b000f5115eb")
+}
+
+resource Fixtures7ModuleGeneratedFunctionCompleteAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/fixtures7.ts#complete")
+  fingerprint ast.semantic_subtree_v1("sha256:add93143a03c53e9281075dc6b9fe96bba683d619fd879bbdfd087b7c53506ad")
+}
+
+resource Fixtures7ModuleMaterialiseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/fixtures7.ts#materialise")
+  fingerprint ast.semantic_subtree_v1("sha256:34273064d9ac69554dbb3ca72381402e7a2107222e8c99a7c8a816abdecf6008")
+}
+
+resource Fixtures7ModulePreparedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/fixtures7.ts#prepared")
+  fingerprint ast.semantic_subtree_v1("sha256:41da86176ebe265fe5111504231b792312c8139bc5a324869b62de523697ee93")
+}
+
+resource Fixtures7ModuleShapeFilesInAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/fixtures7.ts#shapeFilesIn")
+  fingerprint ast.semantic_subtree_v1("sha256:cdc91e61ccb942694c79b91689fd9db66c111e19718142549542e8ad5269c60a")
+}
+
+resource Fixtures7ModuleUpgradeV6AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/fixtures7.ts#upgradeV6")
+  fingerprint ast.semantic_subtree_v1("sha256:f548efee05b196c5a95861673dee7a3396f6450d415ac5980d21246396d50caf")
+}
+
+resource Fixtures7ModuleWriteInputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/fixtures7.ts#writeInput")
+  fingerprint ast.semantic_subtree_v1("sha256:e766ea8a1f17b0b9c243a689c47cd60d1a183baeb409dfd3fd8540e5c5338814")
+}
+
+resource Fixtures7ModuleXCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/fixtures7.ts#xCase")
+  fingerprint ast.semantic_subtree_v1("sha256:aebeb8da6f269b24234f75fe34583757c506756c41f642e33e32246d3607d59f")
+}
+
+component Fixtures7Module : GeneratedCandidate {
+  fn codeCopies
+    source ts("experiments/shape-1/trials/DRT7/fixtures7.ts#codeCopies")
+    effects unknown
+  fn executableOf
+    source ts("experiments/shape-1/trials/DRT7/fixtures7.ts#executableOf")
+    effects unknown
+  fn generatedFunction_complete
+    source ts("experiments/shape-1/trials/DRT7/fixtures7.ts#complete")
+    effects unknown
+  fn materialise
+    source ts("experiments/shape-1/trials/DRT7/fixtures7.ts#materialise")
+    effects unknown
+  fn prepared
+    source ts("experiments/shape-1/trials/DRT7/fixtures7.ts#prepared")
+    effects unknown
+  fn shapeFilesIn
+    source ts("experiments/shape-1/trials/DRT7/fixtures7.ts#shapeFilesIn")
+    effects unknown
+  fn upgradeV6
+    source ts("experiments/shape-1/trials/DRT7/fixtures7.ts#upgradeV6")
+    effects unknown
+  fn writeInput
+    source ts("experiments/shape-1/trials/DRT7/fixtures7.ts#writeInput")
+    effects unknown
+  fn xCase
+    source ts("experiments/shape-1/trials/DRT7/fixtures7.ts#xCase")
+    effects unknown
+}
+
+relation Fixtures7ModuleCodeCopiesGeneratedFromFixtures7ModuleCodeCopiesAstAnchor {
+  kind generated_from
+  connects Fixtures7Module -> Fixtures7ModuleCodeCopiesAstAnchor
+  roles { Fixtures7Module as generated, Fixtures7ModuleCodeCopiesAstAnchor as syntax }
+  expects Fixtures7ModuleCodeCopiesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a0898287b5b464aa71ba94e6f027a6e5af45907dc0250baffa3e08589ae72917")
+  summary "fn Fixtures7Module.codeCopies generated from typescript function_declaration at experiments/shape-1/trials/DRT7/fixtures7.ts#codeCopies."
+}
+
+relation Fixtures7ModuleExecutableOfGeneratedFromFixtures7ModuleExecutableOfAstAnchor {
+  kind generated_from
+  connects Fixtures7Module -> Fixtures7ModuleExecutableOfAstAnchor
+  roles { Fixtures7Module as generated, Fixtures7ModuleExecutableOfAstAnchor as syntax }
+  expects Fixtures7ModuleExecutableOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f62df3e028eadaed08ca1f3be378b17a1829f507bf67de9dad053b000f5115eb")
+  summary "fn Fixtures7Module.executableOf generated from typescript function_declaration at experiments/shape-1/trials/DRT7/fixtures7.ts#executableOf."
+}
+
+relation Fixtures7ModuleGeneratedFunctionCompleteGeneratedFromFixtures7ModuleGeneratedFunctionCompleteAstAnchor {
+  kind generated_from
+  connects Fixtures7Module -> Fixtures7ModuleGeneratedFunctionCompleteAstAnchor
+  roles { Fixtures7Module as generated, Fixtures7ModuleGeneratedFunctionCompleteAstAnchor as syntax }
+  expects Fixtures7ModuleGeneratedFunctionCompleteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:add93143a03c53e9281075dc6b9fe96bba683d619fd879bbdfd087b7c53506ad")
+  summary "fn Fixtures7Module.generatedFunction_complete generated from typescript function_declaration at experiments/shape-1/trials/DRT7/fixtures7.ts#complete."
+}
+
+relation Fixtures7ModuleMaterialiseGeneratedFromFixtures7ModuleMaterialiseAstAnchor {
+  kind generated_from
+  connects Fixtures7Module -> Fixtures7ModuleMaterialiseAstAnchor
+  roles { Fixtures7Module as generated, Fixtures7ModuleMaterialiseAstAnchor as syntax }
+  expects Fixtures7ModuleMaterialiseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:34273064d9ac69554dbb3ca72381402e7a2107222e8c99a7c8a816abdecf6008")
+  summary "fn Fixtures7Module.materialise generated from typescript function_declaration at experiments/shape-1/trials/DRT7/fixtures7.ts#materialise."
+}
+
+relation Fixtures7ModulePreparedGeneratedFromFixtures7ModulePreparedAstAnchor {
+  kind generated_from
+  connects Fixtures7Module -> Fixtures7ModulePreparedAstAnchor
+  roles { Fixtures7Module as generated, Fixtures7ModulePreparedAstAnchor as syntax }
+  expects Fixtures7ModulePreparedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:41da86176ebe265fe5111504231b792312c8139bc5a324869b62de523697ee93")
+  summary "fn Fixtures7Module.prepared generated from typescript function_declaration at experiments/shape-1/trials/DRT7/fixtures7.ts#prepared."
+}
+
+relation Fixtures7ModuleShapeFilesInGeneratedFromFixtures7ModuleShapeFilesInAstAnchor {
+  kind generated_from
+  connects Fixtures7Module -> Fixtures7ModuleShapeFilesInAstAnchor
+  roles { Fixtures7Module as generated, Fixtures7ModuleShapeFilesInAstAnchor as syntax }
+  expects Fixtures7ModuleShapeFilesInAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cdc91e61ccb942694c79b91689fd9db66c111e19718142549542e8ad5269c60a")
+  summary "fn Fixtures7Module.shapeFilesIn generated from typescript function_declaration at experiments/shape-1/trials/DRT7/fixtures7.ts#shapeFilesIn."
+}
+
+relation Fixtures7ModuleUpgradeV6GeneratedFromFixtures7ModuleUpgradeV6AstAnchor {
+  kind generated_from
+  connects Fixtures7Module -> Fixtures7ModuleUpgradeV6AstAnchor
+  roles { Fixtures7Module as generated, Fixtures7ModuleUpgradeV6AstAnchor as syntax }
+  expects Fixtures7ModuleUpgradeV6AstAnchor fingerprint ast.semantic_subtree_v1("sha256:f548efee05b196c5a95861673dee7a3396f6450d415ac5980d21246396d50caf")
+  summary "fn Fixtures7Module.upgradeV6 generated from typescript function_declaration at experiments/shape-1/trials/DRT7/fixtures7.ts#upgradeV6."
+}
+
+relation Fixtures7ModuleWriteInputGeneratedFromFixtures7ModuleWriteInputAstAnchor {
+  kind generated_from
+  connects Fixtures7Module -> Fixtures7ModuleWriteInputAstAnchor
+  roles { Fixtures7Module as generated, Fixtures7ModuleWriteInputAstAnchor as syntax }
+  expects Fixtures7ModuleWriteInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e766ea8a1f17b0b9c243a689c47cd60d1a183baeb409dfd3fd8540e5c5338814")
+  summary "fn Fixtures7Module.writeInput generated from typescript function_declaration at experiments/shape-1/trials/DRT7/fixtures7.ts#writeInput."
+}
+
+relation Fixtures7ModuleXCaseGeneratedFromFixtures7ModuleXCaseAstAnchor {
+  kind generated_from
+  connects Fixtures7Module -> Fixtures7ModuleXCaseAstAnchor
+  roles { Fixtures7Module as generated, Fixtures7ModuleXCaseAstAnchor as syntax }
+  expects Fixtures7ModuleXCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aebeb8da6f269b24234f75fe34583757c506756c41f642e33e32246d3607d59f")
+  summary "fn Fixtures7Module.xCase generated from typescript function_declaration at experiments/shape-1/trials/DRT7/fixtures7.ts#xCase."
+}
+
+implementation Fixtures7ModuleImpl {
+  paths {
+    "experiments/shape-1/trials/DRT7/fixtures7.ts"
+  }
+  conforms_to Fixtures7Module
+}

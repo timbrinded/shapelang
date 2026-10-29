@@ -23,7 +23,7 @@ resource RunTestsModuleShAstAnchor : GeneratedAstAnchor {
 
 resource RunTestsModuleShuffleCaseAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/kernel/test/run_tests.py#shuffle_case")
-  fingerprint ast.semantic_subtree_v1("sha256:70756903fa4173b3f750b26dfb1b8b44df8d1d776c0fcace280a1dcce4261234")
+  fingerprint ast.semantic_subtree_v1("sha256:ac26e09ac56e862aca6d8514a34a62e2a53642e747e8c7b6fcb4c2483d77bf47")
 }
 
 component RunTestsModule : GeneratedCandidate {
@@ -69,7 +69,7 @@ relation RunTestsModuleShuffleCaseGeneratedFromRunTestsModuleShuffleCaseAstAncho
   kind generated_from
   connects RunTestsModule -> RunTestsModuleShuffleCaseAstAnchor
   roles { RunTestsModule as generated, RunTestsModuleShuffleCaseAstAnchor as syntax }
-  expects RunTestsModuleShuffleCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:70756903fa4173b3f750b26dfb1b8b44df8d1d776c0fcace280a1dcce4261234")
+  expects RunTestsModuleShuffleCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ac26e09ac56e862aca6d8514a34a62e2a53642e747e8c7b6fcb4c2483d77bf47")
   summary "fn RunTestsModule.shuffle_case generated from python function_definition at experiments/shape-1/kernel/test/run_tests.py#shuffle_case."
 }
 

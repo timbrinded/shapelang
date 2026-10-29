@@ -16,9 +16,9 @@ resource MutantsModuleEntailedAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:fc7aaa67b01aca38213309ebea7eaa4d73512edde80d4441ec71794b383b43ab")
 }
 
-resource MutantsModuleInClosureAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/providers/teeth/mutants.ts#inClosure")
-  fingerprint ast.semantic_subtree_v1("sha256:fa83e520b0cccdf3d5281d8447dfd900f1145438a9cc07c5b2cb53bb3520de88")
+resource MutantsModuleInSummaryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/providers/teeth/mutants.ts#inSummary")
+  fingerprint ast.semantic_subtree_v1("sha256:67cdc017ff1252dc000cd5949f962e9ab5a2fdbd51644ee780777f75671c9e0e")
 }
 
 resource MutantsModuleIsSubsetAstAnchor : GeneratedAstAnchor {
@@ -33,17 +33,17 @@ resource MutantsModuleReachableAstAnchor : GeneratedAstAnchor {
 
 resource MutantsModuleTeethAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/providers/teeth/mutants.ts#teeth")
-  fingerprint ast.semantic_subtree_v1("sha256:84252f81467d8230d5c78c2395456c5e0696f8a625934f95a4565a248c1f96be")
+  fingerprint ast.semantic_subtree_v1("sha256:a62afb57588125627607edf81bab9008141a768366ba42f015846f6a43a66502")
 }
 
 resource MutantsModuleW1KillersAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/providers/teeth/mutants.ts#w1Killers")
-  fingerprint ast.semantic_subtree_v1("sha256:90cd680dc0b774bd9d98c7eefb3853bb68323c42e0e7b7b4930ef894181af60b")
+  fingerprint ast.semantic_subtree_v1("sha256:3473453cfca2a76d2eb3e987ac6dd5fa4ca624bf48a02f8e7de73a0b373b168d")
 }
 
 resource MutantsModuleWorldFactsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/providers/teeth/mutants.ts#worldFacts")
-  fingerprint ast.semantic_subtree_v1("sha256:8ff31086062151da06ff8726a1eddf7abce74661b6d4e1ef99d0586e65b73de0")
+  fingerprint ast.semantic_subtree_v1("sha256:728e38c72e2681c430cfc372e84aaf969e3e8a7b161d24ea246768fb0c0ff520")
 }
 
 component MutantsModule : GeneratedCandidate {
@@ -53,8 +53,8 @@ component MutantsModule : GeneratedCandidate {
   fn entailed
     source ts("experiments/shape-1/proto/providers/teeth/mutants.ts#entailed")
     effects unknown
-  fn inClosure
-    source ts("experiments/shape-1/proto/providers/teeth/mutants.ts#inClosure")
+  fn inSummary
+    source ts("experiments/shape-1/proto/providers/teeth/mutants.ts#inSummary")
     effects unknown
   fn isSubset
     source ts("experiments/shape-1/proto/providers/teeth/mutants.ts#isSubset")
@@ -89,12 +89,12 @@ relation MutantsModuleEntailedGeneratedFromMutantsModuleEntailedAstAnchor {
   summary "fn MutantsModule.entailed generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/mutants.ts#entailed."
 }
 
-relation MutantsModuleInClosureGeneratedFromMutantsModuleInClosureAstAnchor {
+relation MutantsModuleInSummaryGeneratedFromMutantsModuleInSummaryAstAnchor {
   kind generated_from
-  connects MutantsModule -> MutantsModuleInClosureAstAnchor
-  roles { MutantsModule as generated, MutantsModuleInClosureAstAnchor as syntax }
-  expects MutantsModuleInClosureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fa83e520b0cccdf3d5281d8447dfd900f1145438a9cc07c5b2cb53bb3520de88")
-  summary "fn MutantsModule.inClosure generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/mutants.ts#inClosure."
+  connects MutantsModule -> MutantsModuleInSummaryAstAnchor
+  roles { MutantsModule as generated, MutantsModuleInSummaryAstAnchor as syntax }
+  expects MutantsModuleInSummaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:67cdc017ff1252dc000cd5949f962e9ab5a2fdbd51644ee780777f75671c9e0e")
+  summary "fn MutantsModule.inSummary generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/mutants.ts#inSummary."
 }
 
 relation MutantsModuleIsSubsetGeneratedFromMutantsModuleIsSubsetAstAnchor {
@@ -117,7 +117,7 @@ relation MutantsModuleTeethGeneratedFromMutantsModuleTeethAstAnchor {
   kind generated_from
   connects MutantsModule -> MutantsModuleTeethAstAnchor
   roles { MutantsModule as generated, MutantsModuleTeethAstAnchor as syntax }
-  expects MutantsModuleTeethAstAnchor fingerprint ast.semantic_subtree_v1("sha256:84252f81467d8230d5c78c2395456c5e0696f8a625934f95a4565a248c1f96be")
+  expects MutantsModuleTeethAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a62afb57588125627607edf81bab9008141a768366ba42f015846f6a43a66502")
   summary "fn MutantsModule.teeth generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/mutants.ts#teeth."
 }
 
@@ -125,7 +125,7 @@ relation MutantsModuleW1KillersGeneratedFromMutantsModuleW1KillersAstAnchor {
   kind generated_from
   connects MutantsModule -> MutantsModuleW1KillersAstAnchor
   roles { MutantsModule as generated, MutantsModuleW1KillersAstAnchor as syntax }
-  expects MutantsModuleW1KillersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:90cd680dc0b774bd9d98c7eefb3853bb68323c42e0e7b7b4930ef894181af60b")
+  expects MutantsModuleW1KillersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3473453cfca2a76d2eb3e987ac6dd5fa4ca624bf48a02f8e7de73a0b373b168d")
   summary "fn MutantsModule.w1Killers generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/mutants.ts#w1Killers."
 }
 
@@ -133,7 +133,7 @@ relation MutantsModuleWorldFactsGeneratedFromMutantsModuleWorldFactsAstAnchor {
   kind generated_from
   connects MutantsModule -> MutantsModuleWorldFactsAstAnchor
   roles { MutantsModule as generated, MutantsModuleWorldFactsAstAnchor as syntax }
-  expects MutantsModuleWorldFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8ff31086062151da06ff8726a1eddf7abce74661b6d4e1ef99d0586e65b73de0")
+  expects MutantsModuleWorldFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:728e38c72e2681c430cfc372e84aaf969e3e8a7b161d24ea246768fb0c0ff520")
   summary "fn MutantsModule.worldFacts generated from typescript function_declaration at experiments/shape-1/proto/providers/teeth/mutants.ts#worldFacts."
 }
 

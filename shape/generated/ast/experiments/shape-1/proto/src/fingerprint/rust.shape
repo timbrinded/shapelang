@@ -13,7 +13,7 @@ resource RustModuleCanonToksAstAnchor : GeneratedAstAnchor {
 
 resource RustModuleFingerprintRustAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/fingerprint/rust.ts#fingerprintRust")
-  fingerprint ast.semantic_subtree_v1("sha256:533d842f107eeb00302f26045c3e1355acd599daa1a77015754fd52ff3303813")
+  fingerprint ast.semantic_subtree_v1("sha256:43b21bd601992059baba379486b821c9361c29b6b608a459172479dbd253d51a")
 }
 
 resource RustModuleImplSegmentAstAnchor : GeneratedAstAnchor {
@@ -69,7 +69,7 @@ relation RustModuleFingerprintRustGeneratedFromRustModuleFingerprintRustAstAncho
   kind generated_from
   connects RustModule -> RustModuleFingerprintRustAstAnchor
   roles { RustModule as generated, RustModuleFingerprintRustAstAnchor as syntax }
-  expects RustModuleFingerprintRustAstAnchor fingerprint ast.semantic_subtree_v1("sha256:533d842f107eeb00302f26045c3e1355acd599daa1a77015754fd52ff3303813")
+  expects RustModuleFingerprintRustAstAnchor fingerprint ast.semantic_subtree_v1("sha256:43b21bd601992059baba379486b821c9361c29b6b608a459172479dbd253d51a")
   summary "fn RustModule.fingerprintRust generated from typescript function_declaration at experiments/shape-1/proto/src/fingerprint/rust.ts#fingerprintRust."
 }
 

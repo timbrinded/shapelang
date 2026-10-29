@@ -224,7 +224,8 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
           `prelude AppendOnly on ${r.id} → rule ${r.name}_NoHardDelete = std::NoHardDelete<${r.name}> tier ${finalTier}` +
             (twoPersons ? "" : " (lowered: the owner and shape owner lack two distinct persons)")
         );
-      } else if (STD_MARKERS.has(short) && !t.includes("::")) attach.push({ name: `std::${short}` });
+      } else if (STD_MARKERS.has(short) && !t.includes("::"))
+        attach.push({ name: `std::${short}` });
       else {
         const tb = traitsByQ.get(t);
         if (tb?.forbids.some((f) => f.final) && !twoPersons) {
@@ -237,7 +238,9 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
               tier: "critical"
             }
           });
-          notes.push(`trait ${t} on ${r.id}: forbid final lowered to critical (no two distinct persons)`);
+          notes.push(
+            `trait ${t} on ${r.id}: forbid final lowered to critical (no two distinct persons)`
+          );
         } else attach.push({ name: t });
         usedTemplates.set(t, "resource");
       }
@@ -368,8 +371,11 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
     }));
     for (const w of when) {
       if (w.has === "std::AppendOnly")
-        notes.push(`rule ${r.id}: when ${w.param} has AppendOnly names the prelude trait, migrated as std::NoHardDelete rules`);
-      if (!w.has.startsWith("std::") && !usedTemplates.has(w.has)) usedTemplates.set(w.has, "resource");
+        notes.push(
+          `rule ${r.id}: when ${w.param} has AppendOnly names the prelude trait, migrated as std::NoHardDelete rules`
+        );
+      if (!w.has.startsWith("std::") && !usedTemplates.has(w.has))
+        usedTemplates.set(w.has, "resource");
     }
     mod(r.module).decls.push({
       decl: "rule",
@@ -383,7 +389,9 @@ export function migrate(insAll: Inspect, opts: MigrateOptions = {}): MigrateResu
   // law when the target carries that marker); a marker with no guard → the note alone
   const markerOn = new Set(
     ins.functions
-      .filter((f) => (f.shapeTraits ?? []).some((t) => (t.split("::").pop() ?? t) === "RefactorSensitive"))
+      .filter((f) =>
+        (f.shapeTraits ?? []).some((t) => (t.split("::").pop() ?? t) === "RefactorSensitive")
+      )
       .map((f) => f.id)
   );
   for (const m of [...ins.memories].sort((a, b) => cmpStr(a.id, b.id))) {

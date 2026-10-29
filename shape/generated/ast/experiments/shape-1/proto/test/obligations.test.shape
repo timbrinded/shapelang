@@ -18,7 +18,7 @@ resource ObligationsTestModuleObsRecordAstAnchor : GeneratedAstAnchor {
 
 resource ObligationsTestModuleTestRecordAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/test/obligations.test.ts#testRecord")
-  fingerprint ast.semantic_subtree_v1("sha256:d9247d9f8fa92a0c9dc6b69533de20b4b2ef481804f0a6c83db32c6d38e5608f")
+  fingerprint ast.semantic_subtree_v1("sha256:4f1021a1bbda15fe8cb05c04bee8b1f7fecf432f772a83f59b0cb1a7261a19ee")
 }
 
 resource ObligationsTestModuleWorldAstAnchor : GeneratedAstAnchor {
@@ -61,7 +61,7 @@ relation ObligationsTestModuleTestRecordGeneratedFromObligationsTestModuleTestRe
   kind generated_from
   connects ObligationsTestModule -> ObligationsTestModuleTestRecordAstAnchor
   roles { ObligationsTestModule as generated, ObligationsTestModuleTestRecordAstAnchor as syntax }
-  expects ObligationsTestModuleTestRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d9247d9f8fa92a0c9dc6b69533de20b4b2ef481804f0a6c83db32c6d38e5608f")
+  expects ObligationsTestModuleTestRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4f1021a1bbda15fe8cb05c04bee8b1f7fecf432f772a83f59b0cb1a7261a19ee")
   summary "fn ObligationsTestModule.testRecord generated from typescript function_declaration at experiments/shape-1/proto/test/obligations.test.ts#testRecord."
 }
 

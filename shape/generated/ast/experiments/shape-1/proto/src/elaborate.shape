@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource ElaborateModuleBuildPolicyAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/elaborate.ts#buildPolicy")
-  fingerprint ast.semantic_subtree_v1("sha256:854fac4ce5e1b9faaf4cd17f2d30413f6adb35a5f589cf56ec1d092fe660f732")
+  fingerprint ast.semantic_subtree_v1("sha256:b97194cfeb862d73c90dc4626c09a4611a7aa1175da107754aac5bf75f42b4f7")
 }
 
 resource ElaborateModuleCanonChannelAstAnchor : GeneratedAstAnchor {
@@ -28,12 +28,12 @@ resource ElaborateModuleClauseTagAstAnchor : GeneratedAstAnchor {
 
 resource ElaborateModuleDedupeErrorsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/elaborate.ts#dedupeErrors")
-  fingerprint ast.semantic_subtree_v1("sha256:7f973be61bee6771b7246685793b659ebab8596db508d66f7d46b01881f4124a")
+  fingerprint ast.semantic_subtree_v1("sha256:4044e90df96da3e02847fa07ce4e7428f84da3c6f3e28384a87b439d04acdce0")
 }
 
 resource ElaborateModuleElaborateAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/elaborate.ts#elaborate")
-  fingerprint ast.semantic_subtree_v1("sha256:705d29c881257f9a4f9f71fc95f36d33e65912fb21b0f6eb3e71090db0d9c91f")
+  fingerprint ast.semantic_subtree_v1("sha256:7562254204f50dd115fa7d3e6cdd9be403363bc43f0e911d71938e549976849c")
 }
 
 resource ElaborateModuleIdToSourceRefAstAnchor : GeneratedAstAnchor {
@@ -48,12 +48,22 @@ resource ElaborateModuleImpliesStarAstAnchor : GeneratedAstAnchor {
 
 resource ElaborateModuleLawDecidedByAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/elaborate.ts#lawDecidedBy")
-  fingerprint ast.semantic_subtree_v1("sha256:2afbbfae76b99627e18540d65f8c9f2fd86c2a321b5db3a93735b8e99c42575b")
+  fingerprint ast.semantic_subtree_v1("sha256:b884c8cf23dd76ab6433d8e528ff221bd0e26f6323d7f0609b271a59e1aae70b")
+}
+
+resource ElaborateModuleLookupQuietAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/elaborate.ts#lookupQuiet")
+  fingerprint ast.semantic_subtree_v1("sha256:a161f40fd88818515e3b569ef3eecf5307fd61394240130148deb841d21b5724")
 }
 
 resource ElaborateModuleMembersOfAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/elaborate.ts#membersOf")
   fingerprint ast.semantic_subtree_v1("sha256:5fb076f123855b5ac4abc9a68e8e6aa8d014541e88e86724215e3d370ff68494")
+}
+
+resource ElaborateModuleNoteKindsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/elaborate.ts#noteKinds")
+  fingerprint ast.semantic_subtree_v1("sha256:7b1e3abd198300d915c651afd4e57946b6fba98c5c71bfcde6f6122ead8bcb82")
 }
 
 resource ElaborateModulePersonsOfAstAnchor : GeneratedAstAnchor {
@@ -63,7 +73,7 @@ resource ElaborateModulePersonsOfAstAnchor : GeneratedAstAnchor {
 
 resource ElaborateModuleResolveClaimRefAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/elaborate.ts#resolveClaimRef")
-  fingerprint ast.semantic_subtree_v1("sha256:bfa5abb637e33636750044331c390103136edba8ae779d2d04f974aff39acfe9")
+  fingerprint ast.semantic_subtree_v1("sha256:3b7afe8f1f4798530ecea62f2f0bff3a748d308fabfca5e4e38a616e77956b7d")
 }
 
 resource ElaborateModuleSourceRefToIdAstAnchor : GeneratedAstAnchor {
@@ -104,8 +114,14 @@ component ElaborateModule : GeneratedCandidate {
   fn lawDecidedBy
     source ts("experiments/shape-1/proto/src/elaborate.ts#lawDecidedBy")
     effects unknown
+  fn lookupQuiet
+    source ts("experiments/shape-1/proto/src/elaborate.ts#lookupQuiet")
+    effects unknown
   fn membersOf
     source ts("experiments/shape-1/proto/src/elaborate.ts#membersOf")
+    effects unknown
+  fn noteKinds
+    source ts("experiments/shape-1/proto/src/elaborate.ts#noteKinds")
     effects unknown
   fn personsOf
     source ts("experiments/shape-1/proto/src/elaborate.ts#personsOf")
@@ -125,7 +141,7 @@ relation ElaborateModuleBuildPolicyGeneratedFromElaborateModuleBuildPolicyAstAnc
   kind generated_from
   connects ElaborateModule -> ElaborateModuleBuildPolicyAstAnchor
   roles { ElaborateModule as generated, ElaborateModuleBuildPolicyAstAnchor as syntax }
-  expects ElaborateModuleBuildPolicyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:854fac4ce5e1b9faaf4cd17f2d30413f6adb35a5f589cf56ec1d092fe660f732")
+  expects ElaborateModuleBuildPolicyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b97194cfeb862d73c90dc4626c09a4611a7aa1175da107754aac5bf75f42b4f7")
   summary "fn ElaborateModule.buildPolicy generated from typescript function_declaration at experiments/shape-1/proto/src/elaborate.ts#buildPolicy."
 }
 
@@ -157,7 +173,7 @@ relation ElaborateModuleDedupeErrorsGeneratedFromElaborateModuleDedupeErrorsAstA
   kind generated_from
   connects ElaborateModule -> ElaborateModuleDedupeErrorsAstAnchor
   roles { ElaborateModule as generated, ElaborateModuleDedupeErrorsAstAnchor as syntax }
-  expects ElaborateModuleDedupeErrorsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7f973be61bee6771b7246685793b659ebab8596db508d66f7d46b01881f4124a")
+  expects ElaborateModuleDedupeErrorsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4044e90df96da3e02847fa07ce4e7428f84da3c6f3e28384a87b439d04acdce0")
   summary "fn ElaborateModule.dedupeErrors generated from typescript function_declaration at experiments/shape-1/proto/src/elaborate.ts#dedupeErrors."
 }
 
@@ -165,7 +181,7 @@ relation ElaborateModuleElaborateGeneratedFromElaborateModuleElaborateAstAnchor 
   kind generated_from
   connects ElaborateModule -> ElaborateModuleElaborateAstAnchor
   roles { ElaborateModule as generated, ElaborateModuleElaborateAstAnchor as syntax }
-  expects ElaborateModuleElaborateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:705d29c881257f9a4f9f71fc95f36d33e65912fb21b0f6eb3e71090db0d9c91f")
+  expects ElaborateModuleElaborateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7562254204f50dd115fa7d3e6cdd9be403363bc43f0e911d71938e549976849c")
   summary "fn ElaborateModule.elaborate generated from typescript function_declaration at experiments/shape-1/proto/src/elaborate.ts#elaborate."
 }
 
@@ -189,8 +205,16 @@ relation ElaborateModuleLawDecidedByGeneratedFromElaborateModuleLawDecidedByAstA
   kind generated_from
   connects ElaborateModule -> ElaborateModuleLawDecidedByAstAnchor
   roles { ElaborateModule as generated, ElaborateModuleLawDecidedByAstAnchor as syntax }
-  expects ElaborateModuleLawDecidedByAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2afbbfae76b99627e18540d65f8c9f2fd86c2a321b5db3a93735b8e99c42575b")
+  expects ElaborateModuleLawDecidedByAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b884c8cf23dd76ab6433d8e528ff221bd0e26f6323d7f0609b271a59e1aae70b")
   summary "fn ElaborateModule.lawDecidedBy generated from typescript function_declaration at experiments/shape-1/proto/src/elaborate.ts#lawDecidedBy."
+}
+
+relation ElaborateModuleLookupQuietGeneratedFromElaborateModuleLookupQuietAstAnchor {
+  kind generated_from
+  connects ElaborateModule -> ElaborateModuleLookupQuietAstAnchor
+  roles { ElaborateModule as generated, ElaborateModuleLookupQuietAstAnchor as syntax }
+  expects ElaborateModuleLookupQuietAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a161f40fd88818515e3b569ef3eecf5307fd61394240130148deb841d21b5724")
+  summary "fn ElaborateModule.lookupQuiet generated from typescript function_declaration at experiments/shape-1/proto/src/elaborate.ts#lookupQuiet."
 }
 
 relation ElaborateModuleMembersOfGeneratedFromElaborateModuleMembersOfAstAnchor {
@@ -199,6 +223,14 @@ relation ElaborateModuleMembersOfGeneratedFromElaborateModuleMembersOfAstAnchor 
   roles { ElaborateModule as generated, ElaborateModuleMembersOfAstAnchor as syntax }
   expects ElaborateModuleMembersOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5fb076f123855b5ac4abc9a68e8e6aa8d014541e88e86724215e3d370ff68494")
   summary "fn ElaborateModule.membersOf generated from typescript function_declaration at experiments/shape-1/proto/src/elaborate.ts#membersOf."
+}
+
+relation ElaborateModuleNoteKindsGeneratedFromElaborateModuleNoteKindsAstAnchor {
+  kind generated_from
+  connects ElaborateModule -> ElaborateModuleNoteKindsAstAnchor
+  roles { ElaborateModule as generated, ElaborateModuleNoteKindsAstAnchor as syntax }
+  expects ElaborateModuleNoteKindsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7b1e3abd198300d915c651afd4e57946b6fba98c5c71bfcde6f6122ead8bcb82")
+  summary "fn ElaborateModule.noteKinds generated from typescript function_declaration at experiments/shape-1/proto/src/elaborate.ts#noteKinds."
 }
 
 relation ElaborateModulePersonsOfGeneratedFromElaborateModulePersonsOfAstAnchor {
@@ -213,7 +245,7 @@ relation ElaborateModuleResolveClaimRefGeneratedFromElaborateModuleResolveClaimR
   kind generated_from
   connects ElaborateModule -> ElaborateModuleResolveClaimRefAstAnchor
   roles { ElaborateModule as generated, ElaborateModuleResolveClaimRefAstAnchor as syntax }
-  expects ElaborateModuleResolveClaimRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bfa5abb637e33636750044331c390103136edba8ae779d2d04f974aff39acfe9")
+  expects ElaborateModuleResolveClaimRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3b7afe8f1f4798530ecea62f2f0bff3a748d308fabfca5e4e38a616e77956b7d")
   summary "fn ElaborateModule.resolveClaimRef generated from typescript function_declaration at experiments/shape-1/proto/src/elaborate.ts#resolveClaimRef."
 }
 

@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource CliModuleCmdCheckAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/cli.ts#cmdCheck")
-  fingerprint ast.semantic_subtree_v1("sha256:0c8648188bd5efc1f75d97626f6d8bc88ea0804dca832dfd8c36d9fb5d626feb")
+  fingerprint ast.semantic_subtree_v1("sha256:112d71f7f5bed5b8a2e13f68dbc6bce07480a7bbf6a3130ae8922e6dd48c8a40")
 }
 
 resource CliModuleGitRootAstAnchor : GeneratedAstAnchor {
@@ -69,7 +69,7 @@ relation CliModuleCmdCheckGeneratedFromCliModuleCmdCheckAstAnchor {
   kind generated_from
   connects CliModule -> CliModuleCmdCheckAstAnchor
   roles { CliModule as generated, CliModuleCmdCheckAstAnchor as syntax }
-  expects CliModuleCmdCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0c8648188bd5efc1f75d97626f6d8bc88ea0804dca832dfd8c36d9fb5d626feb")
+  expects CliModuleCmdCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:112d71f7f5bed5b8a2e13f68dbc6bce07480a7bbf6a3130ae8922e6dd48c8a40")
   summary "fn CliModule.cmdCheck generated from typescript function_declaration at experiments/shape-1/proto/src/cli.ts#cmdCheck."
 }
 

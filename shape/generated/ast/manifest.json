@@ -717,6 +717,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.experiments.shape_1.m1.h4_score",
+      "path": "shape/generated/ast/experiments/shape-1/m1/h4-score.shape",
+      "sources": [
+        "experiments/shape-1/m1/h4-score.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.experiments.shape_1.proto.examples.fixtures",
       "path": "shape/generated/ast/experiments/shape-1/proto/examples/fixtures.shape",
       "sources": [
@@ -728,6 +735,13 @@
       "path": "shape/generated/ast/experiments/shape-1/proto/examples/sources.shape",
       "sources": [
         "experiments/shape-1/proto/examples/sources.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.examples.v7",
+      "path": "shape/generated/ast/experiments/shape-1/proto/examples/v7.shape",
+      "sources": [
+        "experiments/shape-1/proto/examples/v7.ts"
       ]
     },
     {
@@ -990,6 +1004,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.input",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/input.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/input.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.experiments.shape_1.proto.src.io_types",
       "path": "shape/generated/ast/experiments/shape-1/proto/src/io-types.shape",
       "sources": [
@@ -1050,6 +1071,20 @@
       "path": "shape/generated/ast/experiments/shape-1/proto/src/model.shape",
       "sources": [
         "experiments/shape-1/proto/src/model.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.parse",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/parse.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/parse.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.src.prepass",
+      "path": "shape/generated/ast/experiments/shape-1/proto/src/prepass.shape",
+      "sources": [
+        "experiments/shape-1/proto/src/prepass.ts"
       ]
     },
     {
@@ -1155,6 +1190,13 @@
       "path": "shape/generated/ast/experiments/shape-1/proto/test/obligations.test.shape",
       "sources": [
         "experiments/shape-1/proto/test/obligations.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.proto.test.prepass_test",
+      "path": "shape/generated/ast/experiments/shape-1/proto/test/prepass.test.shape",
+      "sources": [
+        "experiments/shape-1/proto/test/prepass.test.ts"
       ]
     },
     {
@@ -1323,6 +1365,69 @@
       "path": "shape/generated/ast/experiments/shape-1/trials/DRT/why.shape",
       "sources": [
         "experiments/shape-1/trials/DRT/why.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT7.compare7",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT7/compare7.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT7/compare7.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT7.convert",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT7/convert.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT7/convert.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT7.coverage7",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT7/coverage7.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT7/coverage7.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT7.features7",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT7/features7.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT7/features7.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT7.fixtures7",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT7/fixtures7.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT7/fixtures7.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT7.gate7",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT7/gate7.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT7/gate7.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT7.gen_corpus7",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT7/gen-corpus7.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT7/gen-corpus7.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT7.gen7",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT7/gen7.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT7/gen7.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.shape_1.trials.DRT7.lists7",
+      "path": "shape/generated/ast/experiments/shape-1/trials/DRT7/lists7.shape",
+      "sources": [
+        "experiments/shape-1/trials/DRT7/lists7.ts"
       ]
     },
     {

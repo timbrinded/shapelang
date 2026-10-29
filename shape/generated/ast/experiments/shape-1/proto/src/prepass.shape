@@ -1,0 +1,74 @@
+module shape.generated.ast.experiments.shape_1.proto.src.prepass
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource PrepassModulePrepassAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/prepass.ts#prepass")
+  fingerprint ast.semantic_subtree_v1("sha256:44379830576bfee20be15a669a188e181cdb2acfd1958b31dee0b9af1eeb71b2")
+}
+
+resource PrepassModuleStmtOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/prepass.ts#stmtOf")
+  fingerprint ast.semantic_subtree_v1("sha256:aaebe5e3d93f8725bf65ef8a3fa588de9e75de4e1682d169ade0ab9e9da74e3e")
+}
+
+resource PrepassRecord : GeneratedCandidate {
+  storage ts.type("experiments/shape-1/proto/src/prepass.ts#PrepassRecord")
+}
+
+resource PrepassRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/prepass.ts#PrepassRecord")
+  fingerprint ast.semantic_subtree_v1("sha256:af08edf42dde5031d7b62360af4986d57183ed0f9b207b3d63e0ffb77f5542bc")
+}
+
+component PrepassModule : GeneratedCandidate {
+  fn prepass
+    source ts("experiments/shape-1/proto/src/prepass.ts#prepass")
+    effects unknown
+  fn stmtOf
+    source ts("experiments/shape-1/proto/src/prepass.ts#stmtOf")
+    effects unknown
+}
+
+relation PrepassModulePrepassGeneratedFromPrepassModulePrepassAstAnchor {
+  kind generated_from
+  connects PrepassModule -> PrepassModulePrepassAstAnchor
+  roles { PrepassModule as generated, PrepassModulePrepassAstAnchor as syntax }
+  expects PrepassModulePrepassAstAnchor fingerprint ast.semantic_subtree_v1("sha256:44379830576bfee20be15a669a188e181cdb2acfd1958b31dee0b9af1eeb71b2")
+  summary "fn PrepassModule.prepass generated from typescript function_declaration at experiments/shape-1/proto/src/prepass.ts#prepass."
+}
+
+relation PrepassModuleStmtOfGeneratedFromPrepassModuleStmtOfAstAnchor {
+  kind generated_from
+  connects PrepassModule -> PrepassModuleStmtOfAstAnchor
+  roles { PrepassModule as generated, PrepassModuleStmtOfAstAnchor as syntax }
+  expects PrepassModuleStmtOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaebe5e3d93f8725bf65ef8a3fa588de9e75de4e1682d169ade0ab9e9da74e3e")
+  summary "fn PrepassModule.stmtOf generated from typescript function_declaration at experiments/shape-1/proto/src/prepass.ts#stmtOf."
+}
+
+relation PrepassRecordGeneratedFromPrepassRecordAstAnchor {
+  kind generated_from
+  connects PrepassRecord -> PrepassRecordAstAnchor
+  roles { PrepassRecord as generated, PrepassRecordAstAnchor as syntax }
+  expects PrepassRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:af08edf42dde5031d7b62360af4986d57183ed0f9b207b3d63e0ffb77f5542bc")
+  summary "resource PrepassRecord generated from typescript interface_declaration at experiments/shape-1/proto/src/prepass.ts#PrepassRecord."
+}
+
+effect candidate PrepassAppendPrepassRecordCandidateEffect {
+  fn PrepassModule.prepass
+  effect Append<PrepassRecord>
+  source ts("experiments/shape-1/proto/src/prepass.ts#prepass")
+  confidence low
+  pin PrepassModulePrepassAstAnchor fingerprint ast.semantic_subtree_v1("sha256:44379830576bfee20be15a669a188e181cdb2acfd1958b31dee0b9af1eeb71b2")
+}
+
+implementation PrepassModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/prepass.ts"
+  }
+  conforms_to PrepassModule
+}

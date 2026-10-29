@@ -9,7 +9,15 @@ import { finalPair, isEligible, tierPolicy } from "./governance.ts";
 import { descendantsOrSelf } from "./manifest.ts";
 import type { Claim, JsonValue, Requirement, ShapeError } from "./model.ts";
 import type { ParsedRecord, ShapeRecord } from "./records.ts";
-import { type Level, type Tier, cmpStr, levelRank, maxTier, sortedUniq, toSeconds } from "./util.ts";
+import {
+  type Level,
+  type Tier,
+  cmpStr,
+  levelRank,
+  maxTier,
+  sortedUniq,
+  toSeconds
+} from "./util.ts";
 import { bindOf, compCode, posComp } from "./world.ts";
 
 export interface Pair {
@@ -173,7 +181,8 @@ export function reqOf(
         if (!info?.symbol || !has(x, pi)) continue;
         const parent = info.parent;
         const parentFile = !parent || !M.ids.get(parent)?.symbol;
-        if (parentFile || !has(parent, pi) || !codeSet.has(parent)) out.push({ id: x, projection: pi });
+        if (parentFile || !has(parent, pi) || !codeSet.has(parent))
+          out.push({ id: x, projection: pi });
       }
       if (pi === "unit") for (const x of code) if (isFile(x)) out.push(at(x, "own"));
     } else if (t.startsWith("code ")) {
@@ -210,7 +219,9 @@ function implementationChanges(ctx: Ctx, q: string): string[] {
   for (const x of [...ctx.delta, ...ctx.deleted]) {
     const path = ctx.Mh.ids.get(x)?.path ?? ctx.Mb?.ids.get(x)?.path ?? "";
     if (g.implementationPaths.some((p) => globMatches(p, path))) out.add(x);
-    if (g.implementationIds.some((id) => x === id || x.startsWith(`${id}.`) || x.startsWith(`${id}#`)))
+    if (
+      g.implementationIds.some((id) => x === id || x.startsWith(`${id}.`) || x.startsWith(`${id}#`))
+    )
       out.add(x);
   }
   return [...out].sort(cmpStr);
@@ -340,8 +351,10 @@ export function conformingCounterexample(v: unknown): boolean {
 function sameCounterexample(a: JsonValue, b: JsonValue): boolean {
   const ao = (a ?? {}) as Record<string, JsonValue>;
   const bo = (b ?? {}) as Record<string, JsonValue>;
-  return JSON.stringify(canon(ao.assertion)) === JSON.stringify(canon(bo.assertion)) &&
-    JSON.stringify(canon(ao.inputs)) === JSON.stringify(canon(bo.inputs));
+  return (
+    JSON.stringify(canon(ao.assertion)) === JSON.stringify(canon(bo.assertion)) &&
+    JSON.stringify(canon(ao.inputs)) === JSON.stringify(canon(bo.inputs))
+  );
 }
 
 function canon(v: JsonValue | undefined): JsonValue {
@@ -429,11 +442,7 @@ export function evaluateLaws(ctx: Ctx, deps: LawDeps): LawEval[] {
           : direction;
       // stale (A.5.4.1)
       let reason: UseReason | null = digestsMoved(ctx, s) ? "stale" : null;
-      if (
-        !isJ &&
-        s.revision !== ctx.Mh.revision &&
-        !(g?.depsCompleteB && Array.isArray(s.deps))
-      )
+      if (!isJ && s.revision !== ctx.Mh.revision && !(g?.depsCompleteB && Array.isArray(s.deps)))
         reason = reason ?? "stale";
       if (partial) reason = reason ?? "stale";
       // expired (judgments, max_age of tier*(c))
@@ -450,9 +459,10 @@ export function evaluateLaws(ctx: Ctx, deps: LawDeps): LawEval[] {
           if (!req.judged || (actorPins.length > 0 && !actorPins.includes(s.judge ?? "")))
             reason = "weak";
         } else {
-          const decides = !!g?.base && !!g.head && g.decidesB.length > 0
-            ? lawDecidedBy(c, { decides: g.decidesB })
-            : false;
+          const decides =
+            !!g?.base && !!g.head && g.decidesB.length > 0
+              ? lawDecidedBy(c, { decides: g.decidesB })
+              : false;
           const lvl = g?.establishes && decides ? levelOfKind(s.kind) : "declared";
           const providerPins = req.pins.filter((p) => ctx.provs.has(p));
           const pinned = providerPins.length > 0 && !providerPins.includes(s.provider?.id ?? "");
@@ -498,7 +508,8 @@ export function evaluateLaws(ctx: Ctx, deps: LawDeps): LawEval[] {
       .map((e) => e.judge ?? "");
     const contraJOk = tier !== "final" || finalPair(gov, owner, tier, contraJudges) !== null;
     const soundContra =
-      evals.find((e) => e.force === "sound" && (e.record.shape.kind !== "judgment" || contraJOk)) ?? null;
+      evals.find((e) => e.force === "sound" && (e.record.shape.kind !== "judgment" || contraJOk)) ??
+      null;
     const heurContras = evals.filter((e) => e.force === "heuristic");
     const bindingReq =
       req.level !== "none" && levelRank(req.level) >= 1 ? reqTest : req.judged ? reqJudg : reqTest;
@@ -515,7 +526,13 @@ export function evaluateLaws(ctx: Ctx, deps: LawDeps): LawEval[] {
         else if (req.judged) {
           const judges = usable.filter((e) => e.record.shape.kind === "judgment");
           if (tier === "final")
-            sat = finalPair(gov, owner, tier, judges.map((e) => e.judge ?? "")) !== null;
+            sat =
+              finalPair(
+                gov,
+                owner,
+                tier,
+                judges.map((e) => e.judge ?? "")
+              ) !== null;
           else sat = judges.length > 0;
         }
       }
@@ -539,7 +556,8 @@ export function evaluateLaws(ctx: Ctx, deps: LawDeps): LawEval[] {
     const contraRecords = soundContra ? [soundContra] : heurContras;
     let contraIntroduced =
       ctx.hasBase &&
-      (reqMeets || evals.some((e) => e.force !== null && meetsDelta(ctx, cone(ctx, e.record.shape))));
+      (reqMeets ||
+        evals.some((e) => e.force !== null && meetsDelta(ctx, cone(ctx, e.record.shape))));
     const baseContradictions: JsonValue[] = [];
     for (const br of ctx.baseRecords) {
       const s = br.shape;

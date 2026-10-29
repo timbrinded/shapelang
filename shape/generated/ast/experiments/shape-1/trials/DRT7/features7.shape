@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.shape_1.trials.DRT7.features7
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource Features7ModuleCodeDeltaAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/features7.ts#codeDelta")
+  fingerprint ast.semantic_subtree_v1("sha256:625f2b34116d0d7f955b77515dc6a446fce31e71d8210506819fae949135dde0")
+}
+
+resource Features7ModuleFeaturesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/features7.ts#features")
+  fingerprint ast.semantic_subtree_v1("sha256:d749303e09d6df2eefb5a2d9370134e829636c72daaa7ac391bd63c777b16881")
+}
+
+component Features7Module : GeneratedCandidate {
+  fn codeDelta
+    source ts("experiments/shape-1/trials/DRT7/features7.ts#codeDelta")
+    effects unknown
+  fn features
+    source ts("experiments/shape-1/trials/DRT7/features7.ts#features")
+    effects unknown
+}
+
+relation Features7ModuleCodeDeltaGeneratedFromFeatures7ModuleCodeDeltaAstAnchor {
+  kind generated_from
+  connects Features7Module -> Features7ModuleCodeDeltaAstAnchor
+  roles { Features7Module as generated, Features7ModuleCodeDeltaAstAnchor as syntax }
+  expects Features7ModuleCodeDeltaAstAnchor fingerprint ast.semantic_subtree_v1("sha256:625f2b34116d0d7f955b77515dc6a446fce31e71d8210506819fae949135dde0")
+  summary "fn Features7Module.codeDelta generated from typescript function_declaration at experiments/shape-1/trials/DRT7/features7.ts#codeDelta."
+}
+
+relation Features7ModuleFeaturesGeneratedFromFeatures7ModuleFeaturesAstAnchor {
+  kind generated_from
+  connects Features7Module -> Features7ModuleFeaturesAstAnchor
+  roles { Features7Module as generated, Features7ModuleFeaturesAstAnchor as syntax }
+  expects Features7ModuleFeaturesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d749303e09d6df2eefb5a2d9370134e829636c72daaa7ac391bd63c777b16881")
+  summary "fn Features7Module.features generated from typescript function_declaration at experiments/shape-1/trials/DRT7/features7.ts#features."
+}
+
+implementation Features7ModuleImpl {
+  paths {
+    "experiments/shape-1/trials/DRT7/features7.ts"
+  }
+  conforms_to Features7Module
+}

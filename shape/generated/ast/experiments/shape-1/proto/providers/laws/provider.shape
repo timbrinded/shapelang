@@ -33,7 +33,7 @@ resource ProviderModuleRunLawFileAstAnchor : GeneratedAstAnchor {
 
 resource ProviderModuleRunLawsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/providers/laws/provider.ts#runLaws")
-  fingerprint ast.semantic_subtree_v1("sha256:069ec9337d1d5deab0baefb8180489cb7da7c732c18eb05fa9d4d917dfc14e2e")
+  fingerprint ast.semantic_subtree_v1("sha256:390615568bff93e858089365bfd81dbb6f44b975e2436d3ade0b21c4572315b1")
 }
 
 resource ProviderModuleTmpBaseAstAnchor : GeneratedAstAnchor {
@@ -109,7 +109,7 @@ relation ProviderModuleRunLawsGeneratedFromProviderModuleRunLawsAstAnchor {
   kind generated_from
   connects ProviderModule -> ProviderModuleRunLawsAstAnchor
   roles { ProviderModule as generated, ProviderModuleRunLawsAstAnchor as syntax }
-  expects ProviderModuleRunLawsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:069ec9337d1d5deab0baefb8180489cb7da7c732c18eb05fa9d4d917dfc14e2e")
+  expects ProviderModuleRunLawsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:390615568bff93e858089365bfd81dbb6f44b975e2436d3ade0b21c4572315b1")
   summary "fn ProviderModule.runLaws generated from typescript function_declaration at experiments/shape-1/proto/providers/laws/provider.ts#runLaws."
 }
 

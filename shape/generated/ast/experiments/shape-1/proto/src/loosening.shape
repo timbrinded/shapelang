@@ -6,117 +6,196 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
-resource LooseningModuleChannelMeetAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#channelMeet")
-  fingerprint ast.semantic_subtree_v1("sha256:92303d723c5d8f84dc7cd14ec5c8b2af0ed01c76d6c09c1e258444b2f5a2fb47")
+resource LooseningModuleBaseOfHeadAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#baseOfHead")
+  fingerprint ast.semantic_subtree_v1("sha256:0425ff878680870dca5a9a713cb576a2d67b10ff1ff68976e5e7a702bb2e5a66")
 }
 
-resource LooseningModuleClaimChannelsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#claimChannels")
-  fingerprint ast.semantic_subtree_v1("sha256:bfed25bf0b9527119b50e64522afa61c7e55f94788dac8d2cf8a203206d5b317")
+resource LooseningModuleCompileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#compile")
+  fingerprint ast.semantic_subtree_v1("sha256:5917d64e7d51c8bd13636a20ca64e2ca2c8917d168de9099a5a312e9232a762c")
 }
 
 resource LooseningModuleConTuplesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#conTuples")
-  fingerprint ast.semantic_subtree_v1("sha256:d53b0bcbd813e711144c1d09ad05126c3b72a78c2bd8a47ab5e1e8296e4ac656")
-}
-
-resource LooseningModuleDecideLooseningAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#decideLoosening")
-  fingerprint ast.semantic_subtree_v1("sha256:37cf2b002f19fcd5272dfdff02d735b1ef8403680b8b448fe58062d431537f83")
+  fingerprint ast.semantic_subtree_v1("sha256:c966cd440aea908afa7105b3737106a67c9feeaa45b9b601954d2f46bd607343")
 }
 
 resource LooseningModuleDominatesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#dominates")
-  fingerprint ast.semantic_subtree_v1("sha256:d0a702f0ad965afbe5f15cf55b80583ed36b81a0307b948e1ff579d85bb5aa5c")
+  fingerprint ast.semantic_subtree_v1("sha256:c69580e24742cfb86f9e6fd598cd85299587ac41724485434d4048f178d4c036")
 }
 
-resource LooseningModuleL2AstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#l2")
-  fingerprint ast.semantic_subtree_v1("sha256:916331d22889d2080bbeb3c45f26c9c531c7f20e7ccc66ce143a1832c7ae79c6")
+resource LooseningModuleHasHeirUnderAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#hasHeirUnder")
+  fingerprint ast.semantic_subtree_v1("sha256:292dc3fb392ce2d0014568c5148590e23023de9f3612185617e16b34a50eae63")
+}
+
+resource LooseningModuleKindsOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#kindsOf")
+  fingerprint ast.semantic_subtree_v1("sha256:dc05abc7f5263060801fc06ca53640fd80c20e8e3ba9dbf8f0bd3330eff8b994")
+}
+
+resource LooseningModuleL1AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#l1")
+  fingerprint ast.semantic_subtree_v1("sha256:d50117a4b3fbefd76c536585c3341ffe63d7a29b8ef2d12fce0a02a74c5850f9")
 }
 
 resource LooseningModuleL3AstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#l3")
-  fingerprint ast.semantic_subtree_v1("sha256:3fb11b02d4047ade98f4e71bb6ce4747a20afdc72262541d238904bea94d14a8")
+  fingerprint ast.semantic_subtree_v1("sha256:941185efbbd94e776cc013024a3171855b7f333c0faf471a9fc023d69ae0fbbd")
+}
+
+resource LooseningModuleL3SearchAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#l3Search")
+  fingerprint ast.semantic_subtree_v1("sha256:d271c89634c92e899cde5c5a394c7a9eb079294a766db2ae2cbc8903db0be683")
+}
+
+resource LooseningModuleL3ShellAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#l3Shell")
+  fingerprint ast.semantic_subtree_v1("sha256:27943b317288595c1c2f64814592d21db36d0879872b2fe14a18c7e3791737de")
 }
 
 resource LooseningModuleL4AstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#l4")
-  fingerprint ast.semantic_subtree_v1("sha256:83cfc7c6e585749d54f4fff200932c6642b6e1d9c1c5ea7283b589971673e2d6")
+  fingerprint ast.semantic_subtree_v1("sha256:8c7d5da63acbd2dafbd0b6958d01fe8b8f5eb45836038ff24e577cd4f30d6985")
 }
 
 resource LooseningModuleL6AstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#l6")
-  fingerprint ast.semantic_subtree_v1("sha256:a190494f5c32602dab87d61f5fedda91b169c3141fd33f3d88db37526a1017b6")
+  fingerprint ast.semantic_subtree_v1("sha256:4d4218a39318c6d7635929c400fa918b7455a6a89a61dd19e6549ff2d8476ea1")
 }
 
 resource LooseningModuleL7AstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#l7")
-  fingerprint ast.semantic_subtree_v1("sha256:3316100710c06b0cb318dfb8b86f477323cba503e200853218e51dca1685eff6")
+  fingerprint ast.semantic_subtree_v1("sha256:19a4b15112ebf3142333564dc4fe594efd728b4deb94a2870ee927d575efbf5b")
 }
 
-resource LooseningModuleMaxNullableAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#maxNullable")
-  fingerprint ast.semantic_subtree_v1("sha256:75b6139167284960a683548720c4a49da9fe3b5b2e415f0ba6d2d0c6a208056e")
+resource LooseningModuleLawCodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#lawCode")
+  fingerprint ast.semantic_subtree_v1("sha256:b6e9595ca59d1768fa04769ac18902582b385bf1a8e99cfa99577deb822a378d")
+}
+
+resource LooseningModuleNewPartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#newPart")
+  fingerprint ast.semantic_subtree_v1("sha256:f27ee4ae9c0a4341cf5caab72814fafaede71414625c619b99eb4b39b3abce04")
+}
+
+resource LooseningModuleObservesMeetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#observesMeet")
+  fingerprint ast.semantic_subtree_v1("sha256:f0fd71a55d80db719c674d5a0e8b2fb73dcfc7d7ae9c99940e71788e644141c1")
+}
+
+resource LooseningModuleOrderClassAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#orderClass")
+  fingerprint ast.semantic_subtree_v1("sha256:e2d84c90fb0175b1c5756e18c70f23affaa77b23c0f173bafeef975dbe4c0d84")
+}
+
+resource LooseningModuleParseAtomVerbAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#parseAtomVerb")
+  fingerprint ast.semantic_subtree_v1("sha256:97f7d32700945be96548cbf3f961058d8af8b6a7a8f0b2b6e56971959216e394")
+}
+
+resource LooseningModulePassAnswerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#passAnswer")
+  fingerprint ast.semantic_subtree_v1("sha256:90a6fea5846916553959125bebb849229b86de0dc9e47e3b263687a7b871a077")
+}
+
+resource LooseningModulePushUAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#pushU")
+  fingerprint ast.semantic_subtree_v1("sha256:ae5058c2ee0435c89151537379e1b676e308bbaf5896e8ad4753b5122a5b9244")
+}
+
+resource LooseningModuleRankOrNoneAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#rankOrNone")
+  fingerprint ast.semantic_subtree_v1("sha256:1f9e0e6ce6760bf634e9ab4a1ef0f3feeb89132ac3adac586d5876928d5c34fa")
 }
 
 resource LooseningModuleReqGeqAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#reqGeq")
-  fingerprint ast.semantic_subtree_v1("sha256:54b82b719c0848e4881b6acb5c9b4a3871c8379966794f8468aa7252215f9f70")
+  fingerprint ast.semantic_subtree_v1("sha256:0b5fa2c5ca66a06aea862bafca9e25bf43249c96cb072085c62e4f3a4f607eb9")
 }
 
-resource LooseningModuleSideStrAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#sideStr")
-  fingerprint ast.semantic_subtree_v1("sha256:645b9b86000cf022d5145eb54e1b4759f5957b0b745d43933f5682cc3eeb6825")
+resource LooseningModuleRunPassAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#runPass")
+  fingerprint ast.semantic_subtree_v1("sha256:8e611f9b19d5437ae7c810cb79d83ce61120e98f6f3aa7fc6b4d3d0af6d0864b")
 }
 
-resource LooseningModuleStructuralViolationsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#structuralViolations")
-  fingerprint ast.semantic_subtree_v1("sha256:8f1ae5c22c3a1bb591fd41b4b470761d3edb2b5626d7ce7e00e49eea1fe55600")
+resource LooseningModuleSelectorsOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#selectorsOf")
+  fingerprint ast.semantic_subtree_v1("sha256:1fe37dc82f3af98d646dbcf66ad58c01fa1b3522ef0b10a0b16bbdc1a46bcaa0")
 }
 
 resource LooseningModuleSubjectOwnerAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#subjectOwner")
-  fingerprint ast.semantic_subtree_v1("sha256:70ffa5493155474c0c5473596837275839376dcbe12375082e2d50ae921a9e9e")
+  fingerprint ast.semantic_subtree_v1("sha256:9e06d038b47adee4da017ea142e56cb1b5490001d679c23fe6c909b2edcb1718")
 }
 
 resource LooseningModuleSubjectTierAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#subjectTier")
-  fingerprint ast.semantic_subtree_v1("sha256:9ca33f96cc68b4232ea4b77b8b4b99e8a90c84251af8fd3d5a0f9a35fb4103e5")
+  fingerprint ast.semantic_subtree_v1("sha256:1a557467b901c7bc2fe7109d49a617293cbabcac5b9fc81545949754d055738d")
 }
 
 resource LooseningModuleSupAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#sup")
-  fingerprint ast.semantic_subtree_v1("sha256:01dd8b3754167a51f493c3e59d101a00a5794ccfad561d989157d9b55eff041b")
+  fingerprint ast.semantic_subtree_v1("sha256:e35d342e8a1c5ee499d70d1be7ab95586874667b9ca2fc0ca2032b884647ffc2")
 }
 
-resource LooseningModuleVerbsForAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#verbsFor")
-  fingerprint ast.semantic_subtree_v1("sha256:15c63b11b8834ba5bdc1ee4f32aad0d4f1f7d689c6f0c3dba37a13e71ad2fd93")
+resource LooseningModuleSupportOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#supportOf")
+  fingerprint ast.semantic_subtree_v1("sha256:dbc14394b884245b5a34d04322ab7fecae6f27dd9ea0e25a4e3ebdbef29f9d2e")
+}
+
+resource LooseningModuleUnmappedNamedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#unmappedNamed")
+  fingerprint ast.semantic_subtree_v1("sha256:0b9c55337304bc03d3259e3266f0d529771ff6a245b52b5f645ccad6c9fd6b82")
+}
+
+resource LooseningModuleVerbUniverseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#verbUniverse")
+  fingerprint ast.semantic_subtree_v1("sha256:45ca18e9c3559d44850177a83a1e4152743613f18aa85fccd1441229bdfec0cf")
+}
+
+resource LooseningModuleViolatesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#violates")
+  fingerprint ast.semantic_subtree_v1("sha256:b47dfa74c52c0d560c4e6e7673cdc283cdc12da9fe7e14fcadb25557c51471cf")
+}
+
+resource LooseningModuleViolatesViaAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/loosening.ts#violatesVia")
+  fingerprint ast.semantic_subtree_v1("sha256:16bd8e35c575a253f5d785d4e5a9e7482f027876ae8ee82b4667dba5f33cb252")
 }
 
 component LooseningModule : GeneratedCandidate {
-  fn channelMeet
-    source ts("experiments/shape-1/proto/src/loosening.ts#channelMeet")
+  fn baseOfHead
+    source ts("experiments/shape-1/proto/src/loosening.ts#baseOfHead")
     effects unknown
-  fn claimChannels
-    source ts("experiments/shape-1/proto/src/loosening.ts#claimChannels")
+  fn compile
+    source ts("experiments/shape-1/proto/src/loosening.ts#compile")
     effects unknown
   fn conTuples
     source ts("experiments/shape-1/proto/src/loosening.ts#conTuples")
     effects unknown
-  fn decideLoosening
-    source ts("experiments/shape-1/proto/src/loosening.ts#decideLoosening")
-    effects unknown
   fn dominates
     source ts("experiments/shape-1/proto/src/loosening.ts#dominates")
     effects unknown
-  fn l2
-    source ts("experiments/shape-1/proto/src/loosening.ts#l2")
+  fn hasHeirUnder
+    source ts("experiments/shape-1/proto/src/loosening.ts#hasHeirUnder")
+    effects unknown
+  fn kindsOf
+    source ts("experiments/shape-1/proto/src/loosening.ts#kindsOf")
+    effects unknown
+  fn l1
+    source ts("experiments/shape-1/proto/src/loosening.ts#l1")
     effects unknown
   fn l3
     source ts("experiments/shape-1/proto/src/loosening.ts#l3")
+    effects unknown
+  fn l3Search
+    source ts("experiments/shape-1/proto/src/loosening.ts#l3Search")
+    effects unknown
+  fn l3Shell
+    source ts("experiments/shape-1/proto/src/loosening.ts#l3Shell")
     effects unknown
   fn l4
     source ts("experiments/shape-1/proto/src/loosening.ts#l4")
@@ -127,17 +206,38 @@ component LooseningModule : GeneratedCandidate {
   fn l7
     source ts("experiments/shape-1/proto/src/loosening.ts#l7")
     effects unknown
-  fn maxNullable
-    source ts("experiments/shape-1/proto/src/loosening.ts#maxNullable")
+  fn lawCode
+    source ts("experiments/shape-1/proto/src/loosening.ts#lawCode")
+    effects unknown
+  fn newPart
+    source ts("experiments/shape-1/proto/src/loosening.ts#newPart")
+    effects unknown
+  fn observesMeet
+    source ts("experiments/shape-1/proto/src/loosening.ts#observesMeet")
+    effects unknown
+  fn orderClass
+    source ts("experiments/shape-1/proto/src/loosening.ts#orderClass")
+    effects unknown
+  fn parseAtomVerb
+    source ts("experiments/shape-1/proto/src/loosening.ts#parseAtomVerb")
+    effects unknown
+  fn passAnswer
+    source ts("experiments/shape-1/proto/src/loosening.ts#passAnswer")
+    effects unknown
+  fn pushU
+    source ts("experiments/shape-1/proto/src/loosening.ts#pushU")
+    effects unknown
+  fn rankOrNone
+    source ts("experiments/shape-1/proto/src/loosening.ts#rankOrNone")
     effects unknown
   fn reqGeq
     source ts("experiments/shape-1/proto/src/loosening.ts#reqGeq")
     effects unknown
-  fn sideStr
-    source ts("experiments/shape-1/proto/src/loosening.ts#sideStr")
+  fn runPass
+    source ts("experiments/shape-1/proto/src/loosening.ts#runPass")
     effects unknown
-  fn structuralViolations
-    source ts("experiments/shape-1/proto/src/loosening.ts#structuralViolations")
+  fn selectorsOf
+    source ts("experiments/shape-1/proto/src/loosening.ts#selectorsOf")
     effects unknown
   fn subjectOwner
     source ts("experiments/shape-1/proto/src/loosening.ts#subjectOwner")
@@ -148,72 +248,108 @@ component LooseningModule : GeneratedCandidate {
   fn sup
     source ts("experiments/shape-1/proto/src/loosening.ts#sup")
     effects unknown
-  fn verbsFor
-    source ts("experiments/shape-1/proto/src/loosening.ts#verbsFor")
+  fn supportOf
+    source ts("experiments/shape-1/proto/src/loosening.ts#supportOf")
+    effects unknown
+  fn unmappedNamed
+    source ts("experiments/shape-1/proto/src/loosening.ts#unmappedNamed")
+    effects unknown
+  fn verbUniverse
+    source ts("experiments/shape-1/proto/src/loosening.ts#verbUniverse")
+    effects unknown
+  fn violates
+    source ts("experiments/shape-1/proto/src/loosening.ts#violates")
+    effects unknown
+  fn violatesVia
+    source ts("experiments/shape-1/proto/src/loosening.ts#violatesVia")
     effects unknown
 }
 
-relation LooseningModuleChannelMeetGeneratedFromLooseningModuleChannelMeetAstAnchor {
+relation LooseningModuleBaseOfHeadGeneratedFromLooseningModuleBaseOfHeadAstAnchor {
   kind generated_from
-  connects LooseningModule -> LooseningModuleChannelMeetAstAnchor
-  roles { LooseningModule as generated, LooseningModuleChannelMeetAstAnchor as syntax }
-  expects LooseningModuleChannelMeetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92303d723c5d8f84dc7cd14ec5c8b2af0ed01c76d6c09c1e258444b2f5a2fb47")
-  summary "fn LooseningModule.channelMeet generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#channelMeet."
+  connects LooseningModule -> LooseningModuleBaseOfHeadAstAnchor
+  roles { LooseningModule as generated, LooseningModuleBaseOfHeadAstAnchor as syntax }
+  expects LooseningModuleBaseOfHeadAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0425ff878680870dca5a9a713cb576a2d67b10ff1ff68976e5e7a702bb2e5a66")
+  summary "fn LooseningModule.baseOfHead generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#baseOfHead."
 }
 
-relation LooseningModuleClaimChannelsGeneratedFromLooseningModuleClaimChannelsAstAnchor {
+relation LooseningModuleCompileGeneratedFromLooseningModuleCompileAstAnchor {
   kind generated_from
-  connects LooseningModule -> LooseningModuleClaimChannelsAstAnchor
-  roles { LooseningModule as generated, LooseningModuleClaimChannelsAstAnchor as syntax }
-  expects LooseningModuleClaimChannelsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bfed25bf0b9527119b50e64522afa61c7e55f94788dac8d2cf8a203206d5b317")
-  summary "fn LooseningModule.claimChannels generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#claimChannels."
+  connects LooseningModule -> LooseningModuleCompileAstAnchor
+  roles { LooseningModule as generated, LooseningModuleCompileAstAnchor as syntax }
+  expects LooseningModuleCompileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5917d64e7d51c8bd13636a20ca64e2ca2c8917d168de9099a5a312e9232a762c")
+  summary "fn LooseningModule.compile generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#compile."
 }
 
 relation LooseningModuleConTuplesGeneratedFromLooseningModuleConTuplesAstAnchor {
   kind generated_from
   connects LooseningModule -> LooseningModuleConTuplesAstAnchor
   roles { LooseningModule as generated, LooseningModuleConTuplesAstAnchor as syntax }
-  expects LooseningModuleConTuplesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d53b0bcbd813e711144c1d09ad05126c3b72a78c2bd8a47ab5e1e8296e4ac656")
+  expects LooseningModuleConTuplesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c966cd440aea908afa7105b3737106a67c9feeaa45b9b601954d2f46bd607343")
   summary "fn LooseningModule.conTuples generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#conTuples."
-}
-
-relation LooseningModuleDecideLooseningGeneratedFromLooseningModuleDecideLooseningAstAnchor {
-  kind generated_from
-  connects LooseningModule -> LooseningModuleDecideLooseningAstAnchor
-  roles { LooseningModule as generated, LooseningModuleDecideLooseningAstAnchor as syntax }
-  expects LooseningModuleDecideLooseningAstAnchor fingerprint ast.semantic_subtree_v1("sha256:37cf2b002f19fcd5272dfdff02d735b1ef8403680b8b448fe58062d431537f83")
-  summary "fn LooseningModule.decideLoosening generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#decideLoosening."
 }
 
 relation LooseningModuleDominatesGeneratedFromLooseningModuleDominatesAstAnchor {
   kind generated_from
   connects LooseningModule -> LooseningModuleDominatesAstAnchor
   roles { LooseningModule as generated, LooseningModuleDominatesAstAnchor as syntax }
-  expects LooseningModuleDominatesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d0a702f0ad965afbe5f15cf55b80583ed36b81a0307b948e1ff579d85bb5aa5c")
+  expects LooseningModuleDominatesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c69580e24742cfb86f9e6fd598cd85299587ac41724485434d4048f178d4c036")
   summary "fn LooseningModule.dominates generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#dominates."
 }
 
-relation LooseningModuleL2GeneratedFromLooseningModuleL2AstAnchor {
+relation LooseningModuleHasHeirUnderGeneratedFromLooseningModuleHasHeirUnderAstAnchor {
   kind generated_from
-  connects LooseningModule -> LooseningModuleL2AstAnchor
-  roles { LooseningModule as generated, LooseningModuleL2AstAnchor as syntax }
-  expects LooseningModuleL2AstAnchor fingerprint ast.semantic_subtree_v1("sha256:916331d22889d2080bbeb3c45f26c9c531c7f20e7ccc66ce143a1832c7ae79c6")
-  summary "fn LooseningModule.l2 generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#l2."
+  connects LooseningModule -> LooseningModuleHasHeirUnderAstAnchor
+  roles { LooseningModule as generated, LooseningModuleHasHeirUnderAstAnchor as syntax }
+  expects LooseningModuleHasHeirUnderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:292dc3fb392ce2d0014568c5148590e23023de9f3612185617e16b34a50eae63")
+  summary "fn LooseningModule.hasHeirUnder generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#hasHeirUnder."
+}
+
+relation LooseningModuleKindsOfGeneratedFromLooseningModuleKindsOfAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModuleKindsOfAstAnchor
+  roles { LooseningModule as generated, LooseningModuleKindsOfAstAnchor as syntax }
+  expects LooseningModuleKindsOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dc05abc7f5263060801fc06ca53640fd80c20e8e3ba9dbf8f0bd3330eff8b994")
+  summary "fn LooseningModule.kindsOf generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#kindsOf."
+}
+
+relation LooseningModuleL1GeneratedFromLooseningModuleL1AstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModuleL1AstAnchor
+  roles { LooseningModule as generated, LooseningModuleL1AstAnchor as syntax }
+  expects LooseningModuleL1AstAnchor fingerprint ast.semantic_subtree_v1("sha256:d50117a4b3fbefd76c536585c3341ffe63d7a29b8ef2d12fce0a02a74c5850f9")
+  summary "fn LooseningModule.l1 generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#l1."
 }
 
 relation LooseningModuleL3GeneratedFromLooseningModuleL3AstAnchor {
   kind generated_from
   connects LooseningModule -> LooseningModuleL3AstAnchor
   roles { LooseningModule as generated, LooseningModuleL3AstAnchor as syntax }
-  expects LooseningModuleL3AstAnchor fingerprint ast.semantic_subtree_v1("sha256:3fb11b02d4047ade98f4e71bb6ce4747a20afdc72262541d238904bea94d14a8")
+  expects LooseningModuleL3AstAnchor fingerprint ast.semantic_subtree_v1("sha256:941185efbbd94e776cc013024a3171855b7f333c0faf471a9fc023d69ae0fbbd")
   summary "fn LooseningModule.l3 generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#l3."
+}
+
+relation LooseningModuleL3SearchGeneratedFromLooseningModuleL3SearchAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModuleL3SearchAstAnchor
+  roles { LooseningModule as generated, LooseningModuleL3SearchAstAnchor as syntax }
+  expects LooseningModuleL3SearchAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d271c89634c92e899cde5c5a394c7a9eb079294a766db2ae2cbc8903db0be683")
+  summary "fn LooseningModule.l3Search generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#l3Search."
+}
+
+relation LooseningModuleL3ShellGeneratedFromLooseningModuleL3ShellAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModuleL3ShellAstAnchor
+  roles { LooseningModule as generated, LooseningModuleL3ShellAstAnchor as syntax }
+  expects LooseningModuleL3ShellAstAnchor fingerprint ast.semantic_subtree_v1("sha256:27943b317288595c1c2f64814592d21db36d0879872b2fe14a18c7e3791737de")
+  summary "fn LooseningModule.l3Shell generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#l3Shell."
 }
 
 relation LooseningModuleL4GeneratedFromLooseningModuleL4AstAnchor {
   kind generated_from
   connects LooseningModule -> LooseningModuleL4AstAnchor
   roles { LooseningModule as generated, LooseningModuleL4AstAnchor as syntax }
-  expects LooseningModuleL4AstAnchor fingerprint ast.semantic_subtree_v1("sha256:83cfc7c6e585749d54f4fff200932c6642b6e1d9c1c5ea7283b589971673e2d6")
+  expects LooseningModuleL4AstAnchor fingerprint ast.semantic_subtree_v1("sha256:8c7d5da63acbd2dafbd0b6958d01fe8b8f5eb45836038ff24e577cd4f30d6985")
   summary "fn LooseningModule.l4 generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#l4."
 }
 
@@ -221,7 +357,7 @@ relation LooseningModuleL6GeneratedFromLooseningModuleL6AstAnchor {
   kind generated_from
   connects LooseningModule -> LooseningModuleL6AstAnchor
   roles { LooseningModule as generated, LooseningModuleL6AstAnchor as syntax }
-  expects LooseningModuleL6AstAnchor fingerprint ast.semantic_subtree_v1("sha256:a190494f5c32602dab87d61f5fedda91b169c3141fd33f3d88db37526a1017b6")
+  expects LooseningModuleL6AstAnchor fingerprint ast.semantic_subtree_v1("sha256:4d4218a39318c6d7635929c400fa918b7455a6a89a61dd19e6549ff2d8476ea1")
   summary "fn LooseningModule.l6 generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#l6."
 }
 
@@ -229,47 +365,103 @@ relation LooseningModuleL7GeneratedFromLooseningModuleL7AstAnchor {
   kind generated_from
   connects LooseningModule -> LooseningModuleL7AstAnchor
   roles { LooseningModule as generated, LooseningModuleL7AstAnchor as syntax }
-  expects LooseningModuleL7AstAnchor fingerprint ast.semantic_subtree_v1("sha256:3316100710c06b0cb318dfb8b86f477323cba503e200853218e51dca1685eff6")
+  expects LooseningModuleL7AstAnchor fingerprint ast.semantic_subtree_v1("sha256:19a4b15112ebf3142333564dc4fe594efd728b4deb94a2870ee927d575efbf5b")
   summary "fn LooseningModule.l7 generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#l7."
 }
 
-relation LooseningModuleMaxNullableGeneratedFromLooseningModuleMaxNullableAstAnchor {
+relation LooseningModuleLawCodeGeneratedFromLooseningModuleLawCodeAstAnchor {
   kind generated_from
-  connects LooseningModule -> LooseningModuleMaxNullableAstAnchor
-  roles { LooseningModule as generated, LooseningModuleMaxNullableAstAnchor as syntax }
-  expects LooseningModuleMaxNullableAstAnchor fingerprint ast.semantic_subtree_v1("sha256:75b6139167284960a683548720c4a49da9fe3b5b2e415f0ba6d2d0c6a208056e")
-  summary "fn LooseningModule.maxNullable generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#maxNullable."
+  connects LooseningModule -> LooseningModuleLawCodeAstAnchor
+  roles { LooseningModule as generated, LooseningModuleLawCodeAstAnchor as syntax }
+  expects LooseningModuleLawCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b6e9595ca59d1768fa04769ac18902582b385bf1a8e99cfa99577deb822a378d")
+  summary "fn LooseningModule.lawCode generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#lawCode."
+}
+
+relation LooseningModuleNewPartGeneratedFromLooseningModuleNewPartAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModuleNewPartAstAnchor
+  roles { LooseningModule as generated, LooseningModuleNewPartAstAnchor as syntax }
+  expects LooseningModuleNewPartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f27ee4ae9c0a4341cf5caab72814fafaede71414625c619b99eb4b39b3abce04")
+  summary "fn LooseningModule.newPart generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#newPart."
+}
+
+relation LooseningModuleObservesMeetGeneratedFromLooseningModuleObservesMeetAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModuleObservesMeetAstAnchor
+  roles { LooseningModule as generated, LooseningModuleObservesMeetAstAnchor as syntax }
+  expects LooseningModuleObservesMeetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f0fd71a55d80db719c674d5a0e8b2fb73dcfc7d7ae9c99940e71788e644141c1")
+  summary "fn LooseningModule.observesMeet generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#observesMeet."
+}
+
+relation LooseningModuleOrderClassGeneratedFromLooseningModuleOrderClassAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModuleOrderClassAstAnchor
+  roles { LooseningModule as generated, LooseningModuleOrderClassAstAnchor as syntax }
+  expects LooseningModuleOrderClassAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e2d84c90fb0175b1c5756e18c70f23affaa77b23c0f173bafeef975dbe4c0d84")
+  summary "fn LooseningModule.orderClass generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#orderClass."
+}
+
+relation LooseningModuleParseAtomVerbGeneratedFromLooseningModuleParseAtomVerbAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModuleParseAtomVerbAstAnchor
+  roles { LooseningModule as generated, LooseningModuleParseAtomVerbAstAnchor as syntax }
+  expects LooseningModuleParseAtomVerbAstAnchor fingerprint ast.semantic_subtree_v1("sha256:97f7d32700945be96548cbf3f961058d8af8b6a7a8f0b2b6e56971959216e394")
+  summary "fn LooseningModule.parseAtomVerb generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#parseAtomVerb."
+}
+
+relation LooseningModulePassAnswerGeneratedFromLooseningModulePassAnswerAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModulePassAnswerAstAnchor
+  roles { LooseningModule as generated, LooseningModulePassAnswerAstAnchor as syntax }
+  expects LooseningModulePassAnswerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:90a6fea5846916553959125bebb849229b86de0dc9e47e3b263687a7b871a077")
+  summary "fn LooseningModule.passAnswer generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#passAnswer."
+}
+
+relation LooseningModulePushUGeneratedFromLooseningModulePushUAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModulePushUAstAnchor
+  roles { LooseningModule as generated, LooseningModulePushUAstAnchor as syntax }
+  expects LooseningModulePushUAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ae5058c2ee0435c89151537379e1b676e308bbaf5896e8ad4753b5122a5b9244")
+  summary "fn LooseningModule.pushU generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#pushU."
+}
+
+relation LooseningModuleRankOrNoneGeneratedFromLooseningModuleRankOrNoneAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModuleRankOrNoneAstAnchor
+  roles { LooseningModule as generated, LooseningModuleRankOrNoneAstAnchor as syntax }
+  expects LooseningModuleRankOrNoneAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1f9e0e6ce6760bf634e9ab4a1ef0f3feeb89132ac3adac586d5876928d5c34fa")
+  summary "fn LooseningModule.rankOrNone generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#rankOrNone."
 }
 
 relation LooseningModuleReqGeqGeneratedFromLooseningModuleReqGeqAstAnchor {
   kind generated_from
   connects LooseningModule -> LooseningModuleReqGeqAstAnchor
   roles { LooseningModule as generated, LooseningModuleReqGeqAstAnchor as syntax }
-  expects LooseningModuleReqGeqAstAnchor fingerprint ast.semantic_subtree_v1("sha256:54b82b719c0848e4881b6acb5c9b4a3871c8379966794f8468aa7252215f9f70")
+  expects LooseningModuleReqGeqAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0b5fa2c5ca66a06aea862bafca9e25bf43249c96cb072085c62e4f3a4f607eb9")
   summary "fn LooseningModule.reqGeq generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#reqGeq."
 }
 
-relation LooseningModuleSideStrGeneratedFromLooseningModuleSideStrAstAnchor {
+relation LooseningModuleRunPassGeneratedFromLooseningModuleRunPassAstAnchor {
   kind generated_from
-  connects LooseningModule -> LooseningModuleSideStrAstAnchor
-  roles { LooseningModule as generated, LooseningModuleSideStrAstAnchor as syntax }
-  expects LooseningModuleSideStrAstAnchor fingerprint ast.semantic_subtree_v1("sha256:645b9b86000cf022d5145eb54e1b4759f5957b0b745d43933f5682cc3eeb6825")
-  summary "fn LooseningModule.sideStr generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#sideStr."
+  connects LooseningModule -> LooseningModuleRunPassAstAnchor
+  roles { LooseningModule as generated, LooseningModuleRunPassAstAnchor as syntax }
+  expects LooseningModuleRunPassAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8e611f9b19d5437ae7c810cb79d83ce61120e98f6f3aa7fc6b4d3d0af6d0864b")
+  summary "fn LooseningModule.runPass generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#runPass."
 }
 
-relation LooseningModuleStructuralViolationsGeneratedFromLooseningModuleStructuralViolationsAstAnchor {
+relation LooseningModuleSelectorsOfGeneratedFromLooseningModuleSelectorsOfAstAnchor {
   kind generated_from
-  connects LooseningModule -> LooseningModuleStructuralViolationsAstAnchor
-  roles { LooseningModule as generated, LooseningModuleStructuralViolationsAstAnchor as syntax }
-  expects LooseningModuleStructuralViolationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8f1ae5c22c3a1bb591fd41b4b470761d3edb2b5626d7ce7e00e49eea1fe55600")
-  summary "fn LooseningModule.structuralViolations generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#structuralViolations."
+  connects LooseningModule -> LooseningModuleSelectorsOfAstAnchor
+  roles { LooseningModule as generated, LooseningModuleSelectorsOfAstAnchor as syntax }
+  expects LooseningModuleSelectorsOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fe37dc82f3af98d646dbcf66ad58c01fa1b3522ef0b10a0b16bbdc1a46bcaa0")
+  summary "fn LooseningModule.selectorsOf generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#selectorsOf."
 }
 
 relation LooseningModuleSubjectOwnerGeneratedFromLooseningModuleSubjectOwnerAstAnchor {
   kind generated_from
   connects LooseningModule -> LooseningModuleSubjectOwnerAstAnchor
   roles { LooseningModule as generated, LooseningModuleSubjectOwnerAstAnchor as syntax }
-  expects LooseningModuleSubjectOwnerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:70ffa5493155474c0c5473596837275839376dcbe12375082e2d50ae921a9e9e")
+  expects LooseningModuleSubjectOwnerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9e06d038b47adee4da017ea142e56cb1b5490001d679c23fe6c909b2edcb1718")
   summary "fn LooseningModule.subjectOwner generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#subjectOwner."
 }
 
@@ -277,7 +469,7 @@ relation LooseningModuleSubjectTierGeneratedFromLooseningModuleSubjectTierAstAnc
   kind generated_from
   connects LooseningModule -> LooseningModuleSubjectTierAstAnchor
   roles { LooseningModule as generated, LooseningModuleSubjectTierAstAnchor as syntax }
-  expects LooseningModuleSubjectTierAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9ca33f96cc68b4232ea4b77b8b4b99e8a90c84251af8fd3d5a0f9a35fb4103e5")
+  expects LooseningModuleSubjectTierAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1a557467b901c7bc2fe7109d49a617293cbabcac5b9fc81545949754d055738d")
   summary "fn LooseningModule.subjectTier generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#subjectTier."
 }
 
@@ -285,16 +477,48 @@ relation LooseningModuleSupGeneratedFromLooseningModuleSupAstAnchor {
   kind generated_from
   connects LooseningModule -> LooseningModuleSupAstAnchor
   roles { LooseningModule as generated, LooseningModuleSupAstAnchor as syntax }
-  expects LooseningModuleSupAstAnchor fingerprint ast.semantic_subtree_v1("sha256:01dd8b3754167a51f493c3e59d101a00a5794ccfad561d989157d9b55eff041b")
+  expects LooseningModuleSupAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e35d342e8a1c5ee499d70d1be7ab95586874667b9ca2fc0ca2032b884647ffc2")
   summary "fn LooseningModule.sup generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#sup."
 }
 
-relation LooseningModuleVerbsForGeneratedFromLooseningModuleVerbsForAstAnchor {
+relation LooseningModuleSupportOfGeneratedFromLooseningModuleSupportOfAstAnchor {
   kind generated_from
-  connects LooseningModule -> LooseningModuleVerbsForAstAnchor
-  roles { LooseningModule as generated, LooseningModuleVerbsForAstAnchor as syntax }
-  expects LooseningModuleVerbsForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:15c63b11b8834ba5bdc1ee4f32aad0d4f1f7d689c6f0c3dba37a13e71ad2fd93")
-  summary "fn LooseningModule.verbsFor generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#verbsFor."
+  connects LooseningModule -> LooseningModuleSupportOfAstAnchor
+  roles { LooseningModule as generated, LooseningModuleSupportOfAstAnchor as syntax }
+  expects LooseningModuleSupportOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dbc14394b884245b5a34d04322ab7fecae6f27dd9ea0e25a4e3ebdbef29f9d2e")
+  summary "fn LooseningModule.supportOf generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#supportOf."
+}
+
+relation LooseningModuleUnmappedNamedGeneratedFromLooseningModuleUnmappedNamedAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModuleUnmappedNamedAstAnchor
+  roles { LooseningModule as generated, LooseningModuleUnmappedNamedAstAnchor as syntax }
+  expects LooseningModuleUnmappedNamedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0b9c55337304bc03d3259e3266f0d529771ff6a245b52b5f645ccad6c9fd6b82")
+  summary "fn LooseningModule.unmappedNamed generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#unmappedNamed."
+}
+
+relation LooseningModuleVerbUniverseGeneratedFromLooseningModuleVerbUniverseAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModuleVerbUniverseAstAnchor
+  roles { LooseningModule as generated, LooseningModuleVerbUniverseAstAnchor as syntax }
+  expects LooseningModuleVerbUniverseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:45ca18e9c3559d44850177a83a1e4152743613f18aa85fccd1441229bdfec0cf")
+  summary "fn LooseningModule.verbUniverse generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#verbUniverse."
+}
+
+relation LooseningModuleViolatesGeneratedFromLooseningModuleViolatesAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModuleViolatesAstAnchor
+  roles { LooseningModule as generated, LooseningModuleViolatesAstAnchor as syntax }
+  expects LooseningModuleViolatesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b47dfa74c52c0d560c4e6e7673cdc283cdc12da9fe7e14fcadb25557c51471cf")
+  summary "fn LooseningModule.violates generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#violates."
+}
+
+relation LooseningModuleViolatesViaGeneratedFromLooseningModuleViolatesViaAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModuleViolatesViaAstAnchor
+  roles { LooseningModule as generated, LooseningModuleViolatesViaAstAnchor as syntax }
+  expects LooseningModuleViolatesViaAstAnchor fingerprint ast.semantic_subtree_v1("sha256:16bd8e35c575a253f5d785d4e5a9e7482f027876ae8ee82b4667dba5f33cb252")
+  summary "fn LooseningModule.violatesVia generated from typescript function_declaration at experiments/shape-1/proto/src/loosening.ts#violatesVia."
 }
 
 implementation LooseningModuleImpl {

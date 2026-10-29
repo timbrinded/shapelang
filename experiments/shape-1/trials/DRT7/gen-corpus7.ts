@@ -14,7 +14,9 @@ import { addReviews, genCase, mulberry32 } from "./gen7.ts";
 const argv = process.argv.slice(2);
 const [outDir, firstStr, countStr] = argv;
 if (!outDir || !firstStr || !countStr) {
-  process.stderr.write("usage: bun gen-corpus7.ts <outDir> <firstSeed> <count> [--profile fragment|clean] [--phase2 p] [--shard i/n]\n");
+  process.stderr.write(
+    "usage: bun gen-corpus7.ts <outDir> <firstSeed> <count> [--profile fragment|clean] [--phase2 p] [--shard i/n]\n"
+  );
   process.exit(2);
 }
 let profile = "fragment";
@@ -42,7 +44,10 @@ for (let s = first; s < first + Number(countStr); s += 1) {
         g.meta.attempt = k;
       }
   } catch (e) {
-    appendFileSync(idx, `${JSON.stringify({ id, seed: s, status: "gen-error", error: String(e?.stack ?? e).slice(0, 400) })}\n`);
+    appendFileSync(
+      idx,
+      `${JSON.stringify({ id, seed: s, status: "gen-error", error: String(e?.stack ?? e).slice(0, 400) })}\n`
+    );
     continue;
   }
   let input = g.input;

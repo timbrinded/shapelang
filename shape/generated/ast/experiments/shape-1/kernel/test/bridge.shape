@@ -8,12 +8,12 @@ trait GeneratedCandidate {
 
 resource BridgeModuleKernelCaseAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/kernel/test/bridge.ts#kernelCase")
-  fingerprint ast.semantic_subtree_v1("sha256:bf339b8ac6c7d95962fe6bfb572cf4e8fad63c726719b00e35539ef4c207cbd1")
+  fingerprint ast.semantic_subtree_v1("sha256:8bc23de252af6f54b805eb81ce6e07edbc2e343e7de214157a7a7bda82fa6246")
 }
 
 resource BridgeModuleRecordsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/kernel/test/bridge.ts#records")
-  fingerprint ast.semantic_subtree_v1("sha256:2b14836d79aaec27329ad7620793fe5d55c77942a2a6d9bcd84f699621ae27dd")
+  fingerprint ast.semantic_subtree_v1("sha256:f737d25590f3c794ea0ec71eecceac37ba9d5695bf3237d542a440391cb31f01")
 }
 
 component BridgeModule : GeneratedCandidate {
@@ -29,7 +29,7 @@ relation BridgeModuleKernelCaseGeneratedFromBridgeModuleKernelCaseAstAnchor {
   kind generated_from
   connects BridgeModule -> BridgeModuleKernelCaseAstAnchor
   roles { BridgeModule as generated, BridgeModuleKernelCaseAstAnchor as syntax }
-  expects BridgeModuleKernelCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bf339b8ac6c7d95962fe6bfb572cf4e8fad63c726719b00e35539ef4c207cbd1")
+  expects BridgeModuleKernelCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8bc23de252af6f54b805eb81ce6e07edbc2e343e7de214157a7a7bda82fa6246")
   summary "fn BridgeModule.kernelCase generated from typescript function_declaration at experiments/shape-1/kernel/test/bridge.ts#kernelCase."
 }
 
@@ -37,7 +37,7 @@ relation BridgeModuleRecordsGeneratedFromBridgeModuleRecordsAstAnchor {
   kind generated_from
   connects BridgeModule -> BridgeModuleRecordsAstAnchor
   roles { BridgeModule as generated, BridgeModuleRecordsAstAnchor as syntax }
-  expects BridgeModuleRecordsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2b14836d79aaec27329ad7620793fe5d55c77942a2a6d9bcd84f699621ae27dd")
+  expects BridgeModuleRecordsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f737d25590f3c794ea0ec71eecceac37ba9d5695bf3237d542a440391cb31f01")
   summary "fn BridgeModule.records generated from typescript function_declaration at experiments/shape-1/kernel/test/bridge.ts#records."
 }
 

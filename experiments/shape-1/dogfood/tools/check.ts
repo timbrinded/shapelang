@@ -164,7 +164,9 @@ const input: CheckInput = argv.includes("--partial-summaries")
   ? {
       ...built,
       head: { ...built.head, source: partialSummaries(built.head.source ?? null) },
-      base: built.base ? { ...built.base, source: partialSummaries(built.base.source ?? null) } : null
+      base: built.base
+        ? { ...built.base, source: partialSummaries(built.base.source ?? null) }
+        : null
     }
   : built;
 const t1 = performance.now();

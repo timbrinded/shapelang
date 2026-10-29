@@ -67,7 +67,7 @@ resource RecordsModuleSignerFromSeedAstAnchor : GeneratedAstAnchor {
 
 resource RecordsModuleValidateRecordAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/records.ts#validateRecord")
-  fingerprint ast.semantic_subtree_v1("sha256:e250aeb7117e7c00286e67c87f4d8a7ac4f00e39257cd97c8e60ad33c455fb66")
+  fingerprint ast.semantic_subtree_v1("sha256:7a8de4b10a54dc43f48135b9037611c5d606f76ad83b969affc0317c86e2c62e")
 }
 
 resource RecordsModuleVerifyEd25519AstAnchor : GeneratedAstAnchor {
@@ -215,7 +215,7 @@ relation RecordsModuleValidateRecordGeneratedFromRecordsModuleValidateRecordAstA
   kind generated_from
   connects RecordsModule -> RecordsModuleValidateRecordAstAnchor
   roles { RecordsModule as generated, RecordsModuleValidateRecordAstAnchor as syntax }
-  expects RecordsModuleValidateRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e250aeb7117e7c00286e67c87f4d8a7ac4f00e39257cd97c8e60ad33c455fb66")
+  expects RecordsModuleValidateRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7a8de4b10a54dc43f48135b9037611c5d606f76ad83b969affc0317c86e2c62e")
   summary "fn RecordsModule.validateRecord generated from typescript function_declaration at experiments/shape-1/proto/src/records.ts#validateRecord."
 }
 
@@ -272,7 +272,7 @@ effect candidate ValidateRecordAppendParsedRecordCandidateEffect {
   effect Append<ParsedRecord>
   source ts("experiments/shape-1/proto/src/records.ts#validateRecord")
   confidence low
-  pin RecordsModuleValidateRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e250aeb7117e7c00286e67c87f4d8a7ac4f00e39257cd97c8e60ad33c455fb66")
+  pin RecordsModuleValidateRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7a8de4b10a54dc43f48135b9037611c5d606f76ad83b969affc0317c86e2c62e")
 }
 
 implementation RecordsModuleImpl {

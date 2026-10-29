@@ -32,7 +32,9 @@ describe("prepass agrees with derive", () => {
       expect(pp.records.filter((r) => r.rejection !== null).length).toBe(
         out.rejected.filter((r) => pp.records.some((x) => x.id === r.record)).length
       );
-      for (const r of pp.records) if (r.rejection === null && r.parsed?.shape.kind === "judgment") expect(r.authenticated).toBe(true);
+      for (const r of pp.records)
+        if (r.rejection === null && r.parsed?.shape.kind === "judgment")
+          expect(r.authenticated).toBe(true);
     });
   }
   test("a malformed input is invalid in both", () => {

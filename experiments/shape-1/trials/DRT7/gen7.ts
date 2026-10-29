@@ -102,7 +102,10 @@ function rewriteDecls(decls, re, to) {
     if (v && typeof v === "object") {
       const o = {};
       for (const [kk, vv] of Object.entries(v))
-        o[kk] = kk === "identities" || kk === "paths" || kk === "exceptPaths" || kk === "bind" ? vv : walk(vv, kk);
+        o[kk] =
+          kk === "identities" || kk === "paths" || kk === "exceptPaths" || kk === "bind"
+            ? vv
+            : walk(vv, kk);
       return o;
     }
     return v;
@@ -192,7 +195,12 @@ export function genCase(seed, profile = "fragment") {
       kind: "person",
       identities: [`github("${p}")`, key(`p-${p}`).identity]
     })),
-    ...Object.entries(teams).map(([n, ms]) => ({ decl: "actor", name: n, kind: "team", members: ms })),
+    ...Object.entries(teams).map(([n, ms]) => ({
+      decl: "actor",
+      name: n,
+      kind: "team",
+      members: ms
+    })),
     {
       decl: "actor",
       name: "bot",
@@ -207,11 +215,23 @@ export function genCase(seed, profile = "fragment") {
       code: 'pg.table("events")',
       spell: ['pg.table("events")', 'pg.table("public.events")', 'pg.table("EVENTS")']
     },
-    { name: "Users", code: 'pg.table("users")', spell: ['pg.table("users")', 'pg.table("public.Users")'] },
+    {
+      name: "Users",
+      code: 'pg.table("users")',
+      spell: ['pg.table("users")', 'pg.table("public.Users")']
+    },
     { name: "Clock", code: 'ts.call("Date.now")', spell: ['ts.call("Date.now")'] }
   ].slice(0, int(2, 3));
   const customVerb = chance(0.2);
-  const VERBS = ["Read", "Write", "Append", "Update", "HardDelete", "Truncate", ...(customVerb ? ["Purge"] : [])];
+  const VERBS = [
+    "Read",
+    "Write",
+    "Append",
+    "Update",
+    "HardDelete",
+    "Truncate",
+    ...(customVerb ? ["Purge"] : [])
+  ];
   const atoms = RES.flatMap((r) => VERBS.map((v) => `${v}<${r.name}>`));
   const nComp = int(2, 3);
   const COMPS = ["C1", "C2", "C3"].slice(0, nComp);
@@ -240,7 +260,15 @@ export function genCase(seed, profile = "fragment") {
     for (let i = 0; i < n; i += 1) {
       fn += 1;
       const fid = `${id}#f${fn}`;
-      code.set(fid, { okey: fid, file: null, own: 0, unit: 0, markers: null, parent: id, refs: [] });
+      code.set(fid, {
+        okey: fid,
+        file: null,
+        own: 0,
+        unit: 0,
+        markers: null,
+        parent: id,
+        refs: []
+      });
       fns.push(fid);
     }
     return fns;
@@ -260,13 +288,52 @@ export function genCase(seed, profile = "fragment") {
     feat("except-paths");
   }
   const ungovFns = addFile("scripts/tool.ts", null);
-  code.set("raw:tools/run.sh", { okey: "raw:tools/run.sh", file: 0, own: 0, unit: null, markers: null, parent: null, executable: true });
-  code.set("raw:README.md", { okey: "raw:README.md", file: 0, own: 0, unit: null, markers: null, parent: null, executable: false });
-  code.set("pkgjson:package.json", { okey: "pkgjson:package.json", file: 0, own: 0, unit: null, markers: null, parent: null, executable: false });
+  code.set("raw:tools/run.sh", {
+    okey: "raw:tools/run.sh",
+    file: 0,
+    own: 0,
+    unit: null,
+    markers: null,
+    parent: null,
+    executable: true
+  });
+  code.set("raw:README.md", {
+    okey: "raw:README.md",
+    file: 0,
+    own: 0,
+    unit: null,
+    markers: null,
+    parent: null,
+    executable: false
+  });
+  code.set("pkgjson:package.json", {
+    okey: "pkgjson:package.json",
+    file: 0,
+    own: 0,
+    unit: null,
+    markers: null,
+    parent: null,
+    executable: false
+  });
   const hasScript = chance(0.6);
   if (hasScript)
-    code.set(SCRIPT_TEST, { okey: SCRIPT_TEST, file: null, own: 0, unit: 0, markers: null, parent: "pkgjson:package.json", kind: "script" });
-  code.set("ts:test/sys.test.ts", { okey: "ts:test/sys.test.ts", file: 0, own: 0, unit: null, markers: null, parent: null });
+    code.set(SCRIPT_TEST, {
+      okey: SCRIPT_TEST,
+      file: null,
+      own: 0,
+      unit: 0,
+      markers: null,
+      parent: "pkgjson:package.json",
+      kind: "script"
+    });
+  code.set("ts:test/sys.test.ts", {
+    okey: "ts:test/sys.test.ts",
+    file: 0,
+    own: 0,
+    unit: null,
+    markers: null,
+    parent: null
+  });
   for (const [id, info] of code)
     if (id.startsWith("ts:") && chance(0.08)) {
       info.markers = { [pick(TS_KINDS)]: int(1, 2) };
@@ -300,14 +367,33 @@ export function genCase(seed, profile = "fragment") {
     for (const fid of compFns[c])
       if (chance(0.5)) units[c].push({ name: fid.split("#")[1], fid, explicit: chance(0.85) });
   }
-  const allUnits = Object.entries(units).flatMap(([c, us]) => us.map((u) => ({ ...u, comp: c, q: `${c}.${u.name}` })));
+  const allUnits = Object.entries(units).flatMap(([c, us]) =>
+    us.map((u) => ({ ...u, comp: c, q: `${c}.${u.name}` }))
+  );
 
   // ---- base shape ---------------------------------------------------------------------------------
-  const summaryAtoms = () => someOf(atoms.filter(() => chance(0.3)), 0).slice(0, 2);
+  const summaryAtoms = () =>
+    someOf(
+      atoms.filter(() => chance(0.3)),
+      0
+    ).slice(0, 2);
   const grantsFor = () =>
-    chance(0.3) ? undefined : chance(0.12) ? "none" : someOf(atoms.filter(() => chance(0.25)), 1).slice(0, 3);
+    chance(0.3)
+      ? undefined
+      : chance(0.12)
+        ? "none"
+        : someOf(
+            atoms.filter(() => chance(0.25)),
+            1
+          ).slice(0, 3);
   const compDecl = (c) => {
-    const d = { decl: "component", name: c, owner: pick(owners), tier: tierP(), paths: compPaths[c] };
+    const d = {
+      decl: "component",
+      name: c,
+      owner: pick(owners),
+      tier: tierP(),
+      paths: compPaths[c]
+    };
     if (c === "C1" && exceptC1) d.exceptPaths = ["src/c1/gen/**"];
     const g = grantsFor();
     if (g !== undefined) d.grants = g;
@@ -328,15 +414,25 @@ export function genCase(seed, profile = "fragment") {
         feat("complete-summary");
       }
       if (ud.effects && chance(0.2)) {
-        const other = allUnits.find((x) => x.comp === c && x.name !== u.name) ?? allUnits.find((x) => x.name !== u.name);
+        const other =
+          allUnits.find((x) => x.comp === c && x.name !== u.name) ??
+          allUnits.find((x) => x.name !== u.name);
         if (other && ud.effects.atoms.length > 0) {
-          ud.effects.atoms[0] = { ...ud.effects.atoms[0], via: other.comp === c ? other.name : other.q };
+          ud.effects.atoms[0] = {
+            ...ud.effects.atoms[0],
+            via: other.comp === c ? other.name : other.q
+          };
           feat("via");
         }
       } else if (r < 0.6)
         ud.effects = {
           mode: "partial",
-          atoms: someOf(atoms.filter(() => chance(0.3)), 1).slice(0, 2).map((a) => ({ atom: a }))
+          atoms: someOf(
+            atoms.filter(() => chance(0.3)),
+            1
+          )
+            .slice(0, 2)
+            .map((a) => ({ atom: a }))
         };
       if (chance(0.12)) {
         ud.attach = [{ name: "RefactorSensitive" }];
@@ -350,15 +446,30 @@ export function genCase(seed, profile = "fragment") {
   decls.push(...actors);
   if (customVerb) decls.push({ decl: "effect", name: "Purge", implies: ["HardDelete"] });
   for (const r of RES) {
-    const d = { decl: "resource", name: r.name, owner: pick(owners), tier: tierP(), bind: [r.code] };
+    const d = {
+      decl: "resource",
+      name: r.name,
+      owner: pick(owners),
+      tier: tierP(),
+      bind: [r.code]
+    };
     if (chance(0.3)) d.attach = [{ name: pick(["AppendOnly", "AppendOnly", "NoHardDelete"]) }];
     decls.push(d);
   }
   for (const c of Object.keys(compFns)) decls.push(compDecl(c));
   const unitSel = () =>
-    pick(["*", "ungoverned", ...COMPS.map((c) => `component ${c}`), ...allUnits.map((u) => `unit ${u.q}`)]);
+    pick([
+      "*",
+      "ungoverned",
+      ...COMPS.map((c) => `component ${c}`),
+      ...allUnits.map((u) => `unit ${u.q}`)
+    ]);
   const nodeSel = () =>
-    pick(["*", ...COMPS.map((c) => `component ${c}`), ...(chance(0.2) ? RES.map((r) => `resource ${r.name}`) : [])]);
+    pick([
+      "*",
+      ...COMPS.map((c) => `component ${c}`),
+      ...(chance(0.2) ? RES.map((r) => `resource ${r.name}`) : [])
+    ]);
   let ruleN = 0;
   const effectRule = () => {
     ruleN += 1;
@@ -376,20 +487,44 @@ export function genCase(seed, profile = "fragment") {
     const r = rnd();
     decls.push(
       r < 0.4
-        ? { decl: "rule", name: "NoHatches", template: { name: "HatchesStayAtBoundaries", args: [] }, tier: tierP() }
+        ? {
+            decl: "rule",
+            name: "NoHatches",
+            template: { name: "HatchesStayAtBoundaries", args: [] },
+            tier: tierP()
+          }
         : r < 0.8
-          ? { decl: "rule", name: "NoHatches", clauses: [{ forbid: "hatch", kinds: ["*"] }], tier: tierP() }
-          : { decl: "rule", name: "NoHatches", clauses: [{ forbid: "hatch", kinds: [pick(["ts_ignore", "Hatch"])] }], tier: tierP() }
+          ? {
+              decl: "rule",
+              name: "NoHatches",
+              clauses: [{ forbid: "hatch", kinds: ["*"] }],
+              tier: tierP()
+            }
+          : {
+              decl: "rule",
+              name: "NoHatches",
+              clauses: [{ forbid: "hatch", kinds: [pick(["ts_ignore", "Hatch"])] }],
+              tier: tierP()
+            }
     );
     feat("hatch-rule");
   }
   if (chance(0.12)) {
-    decls.push({ decl: "rule", name: "Own1", template: { name: "Owns", args: [pick(RES).name, pick(COMPS)] } });
+    decls.push({
+      decl: "rule",
+      name: "Own1",
+      template: { name: "Owns", args: [pick(RES).name, pick(COMPS)] }
+    });
     feat("owns-template");
   }
   if (chance(0.12)) {
     const [a, b] = [COMPS[0], COMPS[1]];
-    decls.push({ decl: "rule", name: "Lay1", template: { name: "Layering", args: [a, b] }, ...(chance(0.5) ? { tier: tierP() } : {}) });
+    decls.push({
+      decl: "rule",
+      name: "Lay1",
+      template: { name: "Layering", args: [a, b] },
+      ...(chance(0.5) ? { tier: tierP() } : {})
+    });
     feat("layering-template");
   }
   let relN = 0;
@@ -397,7 +532,12 @@ export function genCase(seed, profile = "fragment") {
     relN += 1;
     const a = pick(COMPS);
     const b = pick(COMPS.filter((x) => x !== a));
-    return { decl: "relation", name: `Rel${relN}`, kind: chance(0.25) ? "data_flow" : "calls", connects: [a, b] };
+    return {
+      decl: "relation",
+      name: `Rel${relN}`,
+      kind: chance(0.25) ? "data_flow" : "calls",
+      connects: [a, b]
+    };
   };
   for (let i = int(0, 2); i > 0; i -= 1) decls.push(relation());
   const structRule = () => {
@@ -424,18 +564,31 @@ export function genCase(seed, profile = "fragment") {
     lawN += 1;
     const r = rnd();
     const ev = {};
-    if (chance(0.5)) ev.level = pick(["declared", "tested", "tested", ...(hasProver ? ["proven"] : [])]);
+    if (chance(0.5))
+      ev.level = pick(["declared", "tested", "tested", ...(hasProver ? ["proven"] : [])]);
     if (chance(0.25)) ev.orJudged = true;
     if (chance(0.25)) ev.by = ["tests"];
     const tier = chance(0.6) ? tierP() : undefined;
     if (r < 0.3 && allUnits.length > 0) {
       const u = pick(allUnits);
-      return { decl: "law", name: `L${lawN}`, template: { name: "Deterministic", args: [u.q] }, tier, evidence: ev };
+      return {
+        decl: "law",
+        name: `L${lawN}`,
+        template: { name: "Deterministic", args: [u.q] },
+        tier,
+        evidence: ev
+      };
     }
     if (r < 0.38 && allUnits.length > 0) {
       const u = pick(allUnits);
       feat("bounded");
-      return { decl: "law", name: `L${lawN}`, template: { name: "Bounded", args: [u.q, int(0, 5) * 10, int(6, 20) * 10] }, tier, evidence: ev };
+      return {
+        decl: "law",
+        name: `L${lawN}`,
+        template: { name: "Bounded", args: [u.q, int(0, 5) * 10, int(6, 20) * 10] },
+        tier,
+        evidence: ev
+      };
     }
     if (r < 0.6)
       return {
@@ -473,7 +626,9 @@ export function genCase(seed, profile = "fragment") {
     sound: soundEff,
     depsComplete: chance(0.3),
     identity: chance(0.75) ? key("prov-eff").identity : undefined,
-    implementation: chance(0.5) ? { digest: `sha256:${"e".repeat(64)}` } : { paths: ["tools/run.sh"] }
+    implementation: chance(0.5)
+      ? { digest: `sha256:${"e".repeat(64)}` }
+      : { paths: ["tools/run.sh"] }
   };
   const rc = rnd();
   provs.calls = {
@@ -481,17 +636,27 @@ export function genCase(seed, profile = "fragment") {
     name: "calls",
     produces: ["observation"],
     observes: ["call(ts)", ...(chance(0.4) ? ["edge(data_flow)"] : [])],
-    sound: rc < 0.35 ? ["presence", "absence"] : rc < 0.7 ? ["presence"] : rc < 0.8 ? ["absence"] : [],
+    sound:
+      rc < 0.35 ? ["presence", "absence"] : rc < 0.7 ? ["presence"] : rc < 0.8 ? ["absence"] : [],
     identity: chance(0.6) ? key("prov-calls").identity : undefined,
     implementation: { digest: `sha256:${"c".repeat(64)}` }
   };
-  const impl = hasScript && chance(0.35) ? { ids: ['pkgjson("package.json#scripts.test")'] } : chance(0.3) ? { digest: `sha256:${"a".repeat(64)}` } : { paths: ["package.json"] };
+  const impl =
+    hasScript && chance(0.35)
+      ? { ids: ['pkgjson("package.json#scripts.test")'] }
+      : chance(0.3)
+        ? { digest: `sha256:${"a".repeat(64)}` }
+        : { paths: ["package.json"] };
   if (impl.ids) feat("implementation-ids");
   provs.tests = {
     decl: "provider",
     name: "tests",
     produces: ["test"],
-    decides: ["template Deterministic", "template HistoryPreserved", ...(chance(0.7) ? ["template Bounded"] : [])],
+    decides: [
+      "template Deterministic",
+      "template HistoryPreserved",
+      ...(chance(0.7) ? ["template Bounded"] : [])
+    ],
     sound: chance(0.85) ? ["presence"] : [],
     depsComplete: chance(0.2),
     identity: chance(0.7) ? key("prov-tests").identity : undefined,
@@ -512,7 +677,9 @@ export function genCase(seed, profile = "fragment") {
     };
     feat("prover");
   }
-  const provNames = Object.keys(provs).filter((n) => n === "tests" || n === "prover" || chance(0.85));
+  const provNames = Object.keys(provs).filter(
+    (n) => n === "tests" || n === "prover" || chance(0.85)
+  );
   for (const n of provNames) {
     const p = provs[n];
     if (!p.identity) delete p.identity;
@@ -554,7 +721,13 @@ export function genCase(seed, profile = "fragment") {
     ...(manifestId ? { manifest: manifestId } : {})
   });
   for (const c of Object.keys(compFns))
-    for (const u of units[c]) decls.push({ decl: "note", name: `N_${c}_${u.name}`, kind: "memory", about: [`unit ${c}.${u.name}`] });
+    for (const u of units[c])
+      decls.push({
+        decl: "note",
+        name: `N_${c}_${u.name}`,
+        kind: "memory",
+        about: [`unit ${c}.${u.name}`]
+      });
   // exceptions
   let excN = 0;
   const exceptionDecl = (target) => {
@@ -609,12 +782,23 @@ export function genCase(seed, profile = "fragment") {
   const headBind = new Map(); // unit q -> new bind (relocation)
   const ops = {
     tier: () => {
-      const xs = [...byDecl("component"), ...byDecl("resource"), ...byDecl("rule"), ...byDecl("law"), ...byDecl("component").flatMap((c) => c.units ?? [])];
+      const xs = [
+        ...byDecl("component"),
+        ...byDecl("resource"),
+        ...byDecl("rule"),
+        ...byDecl("law"),
+        ...byDecl("component").flatMap((c) => c.units ?? [])
+      ];
       const x = pick(xs);
       if (x) x.tier = tierP();
     },
     owner: () => {
-      const x = pick([...byDecl("component"), ...byDecl("resource"), ...byDecl("rule"), ...byDecl("law")]);
+      const x = pick([
+        ...byDecl("component"),
+        ...byDecl("resource"),
+        ...byDecl("rule"),
+        ...byDecl("law")
+      ]);
       if (x) x.owner = pick(owners);
     },
     grants: () => {
@@ -660,7 +844,14 @@ export function genCase(seed, profile = "fragment") {
         l.evidence = { ...l.evidence };
         const s = rnd();
         if (l.template?.name === "Bounded" && s < 0.35) {
-          l.template = { ...l.template, args: [l.template.args[0], l.template.args[1] + pick([-10, 10]), l.template.args[2] + pick([-10, 10])] };
+          l.template = {
+            ...l.template,
+            args: [
+              l.template.args[0],
+              l.template.args[1] + pick([-10, 10]),
+              l.template.args[2] + pick([-10, 10])
+            ]
+          };
           feat("bounded-edited");
         } else if (s < 0.5) l.evidence.level = pick(["declared", "tested"]);
         else if (s < 0.75) l.evidence.orJudged = !l.evidence.orJudged;
@@ -675,7 +866,11 @@ export function genCase(seed, profile = "fragment") {
       feat("summary-edited");
       const r = rnd();
       if (r < 0.25) delete u.effects;
-      else if (r < 0.5) u.effects = { mode: pick(["complete", "partial"]), atoms: summaryAtoms().map((a) => ({ atom: a })) };
+      else if (r < 0.5)
+        u.effects = {
+          mode: pick(["complete", "partial"]),
+          atoms: summaryAtoms().map((a) => ({ atom: a }))
+        };
       else if (u.effects) {
         const as = [...(u.effects.atoms ?? [])];
         if (chance(0.5) || as.length === 0) as.push({ atom: pick(atoms) });
@@ -687,7 +882,9 @@ export function genCase(seed, profile = "fragment") {
       const hd = hdOf();
       const r = rnd();
       const rels = byDecl("relation");
-      const srules = byDecl("rule").filter((d) => ["edge", "path", "cycle"].includes(d.clauses?.[0]?.forbid));
+      const srules = byDecl("rule").filter((d) =>
+        ["edge", "path", "cycle"].includes(d.clauses?.[0]?.forbid)
+      );
       if (r < 0.25) hd.push(relation());
       else if (r < 0.4 && rels.length > 0) hd.splice(hd.indexOf(pick(rels)), 1);
       else if (r < 0.6) hd.push(structRule());
@@ -713,11 +910,21 @@ export function genCase(seed, profile = "fragment") {
         feat("provider-soundness-edited");
       } else if (r < 0.5) p.depsComplete = !p.depsComplete;
       else if (r < 0.65) {
-        p.implementation = chance(0.5) || !hasScript ? { digest: `sha256:${"9".repeat(64)}` } : { ids: ['pkgjson("package.json#scripts.test")'] };
+        p.implementation =
+          chance(0.5) || !hasScript
+            ? { digest: `sha256:${"9".repeat(64)}` }
+            : { ids: ['pkgjson("package.json#scripts.test")'] };
         feat("implementation-edited");
       } else if (r < 0.8 && p.observes)
-        p.observes = p.observes.length > 1 ? [p.observes[0]] : [...p.observes, 'effect(ts.call("*"))'].filter((x, i, a) => a.indexOf(x) === i);
-      else if (p.decides) p.decides = p.decides.length > 1 ? [p.decides[0]] : ["template Deterministic", "template HistoryPreserved"];
+        p.observes =
+          p.observes.length > 1
+            ? [p.observes[0]]
+            : [...p.observes, 'effect(ts.call("*"))'].filter((x, i, a) => a.indexOf(x) === i);
+      else if (p.decides)
+        p.decides =
+          p.decides.length > 1
+            ? [p.decides[0]]
+            : ["template Deterministic", "template HistoryPreserved"];
     },
     policy: () => {
       let pol = byDecl("policy")[0];
@@ -739,7 +946,8 @@ export function genCase(seed, profile = "fragment") {
     actor: () => {
       const t = pick(byDecl("actor").filter((a) => a.kind === "team"));
       const m = pick(PERSONS);
-      if (t.members.includes(m) && t.members.length > 1) t.members = t.members.filter((x) => x !== m);
+      if (t.members.includes(m) && t.members.length > 1)
+        t.members = t.members.filter((x) => x !== m);
       else t.members = [...new Set([...t.members, m])];
     },
     exception: () => {
@@ -752,7 +960,10 @@ export function genCase(seed, profile = "fragment") {
       const b = byDecl("component").find((c) => c.boundary);
       if (!b) return;
       if (chance(0.5)) b.allows = b.allows?.length ? [] : ["ts_ignore"];
-      else b.assumes = b.assumes?.length ? [] : [{ id: "HostTrusted", text: "host input is validated" }];
+      else
+        b.assumes = b.assumes?.length
+          ? []
+          : [{ id: "HostTrusted", text: "host input is validated" }];
     },
     addUnit: () => {
       const c = pick(Object.keys(compFns).filter((x) => x !== "Empty"));
@@ -766,7 +977,9 @@ export function genCase(seed, profile = "fragment") {
         {
           name: fid.split("#")[1],
           ...(chance(0.85) ? { bind: `ts("${fid.slice(3)}")` } : {}),
-          effects: chance(0.5) ? { mode: "complete", atoms: summaryAtoms().map((a) => ({ atom: a })) } : undefined
+          effects: chance(0.5)
+            ? { mode: "complete", atoms: summaryAtoms().map((a) => ({ atom: a })) }
+            : undefined
         }
       ];
     },
@@ -788,12 +1001,16 @@ export function genCase(seed, profile = "fragment") {
         head.modules[0].decls = rewriteDecls(hdOf(), new RegExp(`\\b${res}\\b`, "g"), n);
         const rd = byDecl("resource").find((d) => d.name === n);
         if (rd && withWas) rd.was = res;
-        if (rd && !withWas && chance(0.4)) rd.bind = [`${rd.bind[0].replace(/"\)$/, "_v2\")")}`];
+        if (rd && !withWas && chance(0.4)) rd.bind = [`${rd.bind[0].replace(/"\)$/, '_v2")')}`];
         feat(withWas ? "rename-was" : "rename-binding");
       } else if (allUnits.length > 0) {
         const u = pick(allUnits);
         const n = `${u.name}x`;
-        head.modules[0].decls = rewriteDecls(hdOf(), new RegExp(`\\b${u.comp}\\.${u.name}\\b`, "g"), `${u.comp}.${n}`);
+        head.modules[0].decls = rewriteDecls(
+          hdOf(),
+          new RegExp(`\\b${u.comp}\\.${u.name}\\b`, "g"),
+          `${u.comp}.${n}`
+        );
         const cd = byDecl("component").find((d) => d.name === u.comp);
         const ud = cd?.units?.find((x) => x.name === u.name);
         if (ud) {
@@ -817,8 +1034,10 @@ export function genCase(seed, profile = "fragment") {
         if (d.decl === "actor" && d.members) d.members = d.members.map(fix);
         if (d.decl === "actor" && d.operator) d.operator = fix(d.operator);
         if (d.owner) d.owner = fix(d.owner);
-        if (d.decl === "component") for (const u of d.units ?? []) if (u.owner) u.owner = fix(u.owner);
-        if (d.decl === "policy") for (const t of Object.values(d.tiers)) if (t.judges) t.judges = t.judges.map(fix);
+        if (d.decl === "component")
+          for (const u of d.units ?? []) if (u.owner) u.owner = fix(u.owner);
+        if (d.decl === "policy")
+          for (const t of Object.values(d.tiers)) if (t.judges) t.judges = t.judges.map(fix);
         if (d.evidence?.by) d.evidence = { ...d.evidence, by: d.evidence.by.map(fix) };
       }
       feat("actor-was");
@@ -829,9 +1048,14 @@ export function genCase(seed, profile = "fragment") {
       const cs = byDecl("component").filter((d) => d.name !== "Host");
       const c = pick(cs);
       if (!c) return;
-      if (r < 0.35) c.exceptPaths = c.exceptPaths?.length ? undefined : [`${c.paths[0].split("/").slice(0, 2).join("/")}/b.ts`];
-      else if (r < 0.65 && c.paths[0].endsWith("/**/*.ts")) c.paths = [c.paths[0].replace("/**/*.ts", "/a.ts")];
-      else if (c.name === "C3") c.paths = [c.paths[0] === "src/c3/**" ? "src/c3/*.ts" : "src/c3/**"];
+      if (r < 0.35)
+        c.exceptPaths = c.exceptPaths?.length
+          ? undefined
+          : [`${c.paths[0].split("/").slice(0, 2).join("/")}/b.ts`];
+      else if (r < 0.65 && c.paths[0].endsWith("/**/*.ts"))
+        c.paths = [c.paths[0].replace("/**/*.ts", "/a.ts")];
+      else if (c.name === "C3")
+        c.paths = [c.paths[0] === "src/c3/**" ? "src/c3/*.ts" : "src/c3/**"];
       else c.paths = [...c.paths, "scripts/**/*.ts"];
       feat("paths-changed");
     },
@@ -856,7 +1080,8 @@ export function genCase(seed, profile = "fragment") {
     for (const d of src.modules[0].decls) {
       for (const k of Object.keys(d)) if (d[k] === undefined) delete d[k];
       if (d.decl === "component")
-        for (const u of d.units ?? []) for (const k of Object.keys(u)) if (u[k] === undefined) delete u[k];
+        for (const u of d.units ?? [])
+          for (const k of Object.keys(u)) if (u[k] === undefined) delete u[k];
     }
   };
   tidy(head);
@@ -895,11 +1120,28 @@ export function genCase(seed, profile = "fragment") {
       }
     if (chance(0.25)) {
       const comp = pick([...Object.keys(compFns), null]);
-      const path = comp ? `src/${comp === "Host" ? "host" : comp.toLowerCase()}/new.ts` : "scripts/new.ts";
+      const path = comp
+        ? `src/${comp === "Host" ? "host" : comp.toLowerCase()}/new.ts`
+        : "scripts/new.ts";
       const id = `ts:${path}`;
-      headCode.set(id, { okey: id, file: 5, own: 5, unit: null, markers: chance(0.2) ? { ts_ignore: 1 } : null, parent: null });
+      headCode.set(id, {
+        okey: id,
+        file: 5,
+        own: 5,
+        unit: null,
+        markers: chance(0.2) ? { ts_ignore: 1 } : null,
+        parent: null
+      });
       fn += 1;
-      headCode.set(`${id}#f${fn}`, { okey: `${id}#f${fn}`, file: null, own: 5, unit: 5, markers: null, parent: id, refs: [] });
+      headCode.set(`${id}#f${fn}`, {
+        okey: `${id}#f${fn}`,
+        file: null,
+        own: 5,
+        unit: 5,
+        markers: null,
+        parent: id,
+        refs: []
+      });
       if (comp) compFns[comp].push(`${id}#f${fn}`);
       feat("new-file");
     }
@@ -907,7 +1149,15 @@ export function genCase(seed, profile = "fragment") {
       const file = pick([...files.keys()]);
       if (headCode.has(file)) {
         fn += 1;
-        headCode.set(`${file}#f${fn}`, { okey: `${file}#f${fn}`, file: null, own: 7, unit: 7, markers: null, parent: file, refs: [] });
+        headCode.set(`${file}#f${fn}`, {
+          okey: `${file}#f${fn}`,
+          file: null,
+          own: 7,
+          unit: 7,
+          markers: null,
+          parent: file,
+          refs: []
+        });
         headCode.get(file).own += 1;
         headCode.get(file).file += 1;
         const comp = files.get(file);
@@ -917,7 +1167,9 @@ export function genCase(seed, profile = "fragment") {
     }
     if (chance(0.12)) {
       const bound = new Set(allUnits.map((u) => u.fid));
-      const cands = [...headCode.keys()].filter((id) => id.startsWith("ts:") && id.includes("#") && !bound.has(id));
+      const cands = [...headCode.keys()].filter(
+        (id) => id.startsWith("ts:") && id.includes("#") && !bound.has(id)
+      );
       if (cands.length > 0) {
         const del = pick(cands);
         const parent = headCode.get(del).parent;
@@ -934,21 +1186,37 @@ export function genCase(seed, profile = "fragment") {
       const path = from.slice(3);
       const parts = path.split("/");
       const within = chance(0.7);
-      const to = within ? `${parts.slice(0, -1).join("/")}/moved/${parts.at(-1)}` : `scripts/moved_${parts.at(-1)}`;
+      const to = within
+        ? `${parts.slice(0, -1).join("/")}/moved/${parts.at(-1)}`
+        : `scripts/moved_${parts.at(-1)}`;
       const toId = `ts:${to}`;
       if (!headCode.has(toId)) {
-        const moved = [...headCode.entries()].filter(([id, info]) => id === from || info.parent === from);
+        const moved = [...headCode.entries()].filter(
+          ([id, info]) => id === from || info.parent === from
+        );
         for (const [id, info] of moved) {
           headCode.delete(id);
           const nid = id === from ? toId : `${toId}#${id.split("#")[1]}`;
-          headCode.set(nid, { ...info, parent: info.parent ? toId : null, refs: (info.refs ?? []).map((r) => (r.startsWith(`${from}#`) ? `${toId}#${r.split("#")[1]}` : r)) });
+          headCode.set(nid, {
+            ...info,
+            parent: info.parent ? toId : null,
+            refs: (info.refs ?? []).map((r) =>
+              r.startsWith(`${from}#`) ? `${toId}#${r.split("#")[1]}` : r
+            )
+          });
           for (const u of allUnits) if (u.fid === id) headBind.set(u.q, nid);
         }
-        for (const [, info] of headCode) if (info.refs) info.refs = info.refs.map((r) => (r.startsWith(`${from}#`) ? `${toId}#${r.split("#")[1]}` : r));
+        for (const [, info] of headCode)
+          if (info.refs)
+            info.refs = info.refs.map((r) =>
+              r.startsWith(`${from}#`) ? `${toId}#${r.split("#")[1]}` : r
+            );
         feat(within ? "relocation" : "relocation-across");
         const comp = files.get(from);
         files.set(toId, within ? comp : null);
-        if (comp && within) for (const [id] of moved) if (id.includes("#")) compFns[comp].push(`${toId}#${id.split("#")[1]}`);
+        if (comp && within)
+          for (const [id] of moved)
+            if (id.includes("#")) compFns[comp].push(`${toId}#${id.split("#")[1]}`);
       }
     }
     if (chance(0.1)) {
@@ -985,29 +1253,38 @@ export function genCase(seed, profile = "fragment") {
     const info = m.get(id);
     if (!info) return null;
     if (proj === "unit" && (info.unit === null || info.unit === undefined)) return null;
-    if (proj === "file" && (info.file === null || info.file === undefined || id.includes("#"))) return null;
+    if (proj === "file" && (info.file === null || info.file === undefined || id.includes("#")))
+      return null;
     return label(`${info.okey} ${proj} v${info[proj]}`);
   };
 
   // ---- base variants: unreadable (L0) and empty (A.16.17) ---------------------------------------------
   const br = rnd();
-  const baseKind = mode === "audit" ? "none" : !clean && br < 0.02 ? "unreadable" : br < 0.04 ? "empty" : "normal";
+  const baseKind =
+    mode === "audit" ? "none" : !clean && br < 0.02 ? "unreadable" : br < 0.04 ? "empty" : "normal";
   if (baseKind !== "normal" && baseKind !== "none") feat(`base-${baseKind}`);
 
   // ---- records -----------------------------------------------------------------------------------------
   const headEsf = elaborate(head, { now: NOW_S });
-  const baseEsf = elaborate(baseKind === "empty" ? { v: "shape.source.v1", modules: [] } : baseSrc, { now: NOW_S, lenient: true });
+  const baseEsf = elaborate(
+    baseKind === "empty" ? { v: "shape.source.v1", modules: [] } : baseSrc,
+    { now: NOW_S, lenient: true }
+  );
   const govEsf = mode === "audit" || baseKind === "unreadable" ? headEsf : baseEsf;
-  const hasProv = (n) => govEsf.providers.some((p) => p.q === `m::${n}`) || headEsf.providers.some((p) => p.q === `m::${n}`);
+  const hasProv = (n) =>
+    govEsf.providers.some((p) => p.q === `m::${n}`) ||
+    headEsf.providers.some((p) => p.q === `m::${n}`);
   const presenceSound = (n) =>
     [...govEsf.providers, ...headEsf.providers].some((p) => p.q === `m::${n}` && p.presence);
   const provSigner = (n) => key(`prov-${n}`);
-  const signedRec = (r, signers) => (signers.length > 0 ? signStatement(makeStatement(r), signers) : makeStatement(r));
+  const signedRec = (r, signers) =>
+    signers.length > 0 ? signStatement(makeStatement(r), signers) : makeStatement(r);
   const records = [];
   const baseRecords = [];
   const persisted = { base: [], head: [] };
   const recTime = (s) => isoTime(s);
-  const tsIds = (m) => [...m.keys()].filter((id) => id.startsWith("ts:") || id === "raw:tools/run.sh");
+  const tsIds = (m) =>
+    [...m.keys()].filter((id) => id.startsWith("ts:") || id === "raw:tools/run.sh");
   const facts = [];
   const nOf = (presence) => {
     // D15: presence-sound observers report n (RJ14 otherwise); other observers may omit it
@@ -1027,7 +1304,10 @@ export function genCase(seed, profile = "fragment") {
   const withN = (f, n) => (n === undefined ? f : { ...f, n });
   const effFactAt = (id, presence) => {
     const r = pick(RES);
-    return withN({ type: "effect", at: id, verb: pick(VERBS), resource: pick(r.spell) }, nOf(presence));
+    return withN(
+      { type: "effect", at: id, verb: pick(VERBS), resource: pick(r.spell) },
+      nOf(presence)
+    );
   };
   const effUnitDecl = (u) =>
     head.modules[0].decls
@@ -1041,11 +1321,23 @@ export function genCase(seed, profile = "fragment") {
     const rev = stale ? BASE_REV : HEAD_REV;
     const ids = tsIds(m).filter(() => chance(0.7));
     const entries = ids.map((id) => {
-      const proj = m.get(id).unit !== null && m.get(id).unit !== undefined ? "unit" : id.includes("#") ? "own" : "file";
+      const proj =
+        m.get(id).unit !== null && m.get(id).unit !== undefined
+          ? "unit"
+          : id.includes("#")
+            ? "own"
+            : "file";
       const deps = chance(0.15)
-        ? [citeOf(pick([...m.keys()].filter((x) => !x.includes("#"))), "own", null)].map((c) => ({ ...c, digest: digestAt(m, c.id, "own") }))
+        ? [citeOf(pick([...m.keys()].filter((x) => !x.includes("#"))), "own", null)].map((c) => ({
+            ...c,
+            digest: digestAt(m, c.id, "own")
+          }))
         : [];
-      return { ...citeOf(id, proj, digestAt(m, id, proj)), complete: chance(clean ? 0.95 : 0.75), deps };
+      return {
+        ...citeOf(id, proj, digestAt(m, id, proj)),
+        complete: chance(clean ? 0.95 : 0.75),
+        deps
+      };
     });
     const fs = [];
     for (const id of tsIds(m)) if (chance(0.25)) fs.push(effFactAt(id, pres));
@@ -1057,7 +1349,10 @@ export function genCase(seed, profile = "fragment") {
         if (!m.has(fid) || !chance(clean ? 0.9 : 0.75)) continue;
         const mm = /^(\w+)<(\w+)>$/.exec(a.atom);
         const rr = RES.find((x) => x.name === mm?.[2] || `${x.name}2` === mm?.[2]);
-        if (mm && rr) fs.push(withN({ type: "effect", at: fid, verb: mm[1], resource: pick(rr.spell) }, nOf(pres)));
+        if (mm && rr)
+          fs.push(
+            withN({ type: "effect", at: fid, verb: mm[1], resource: pick(rr.spell) }, nOf(pres))
+          );
       }
     }
     facts.push(...fs);
@@ -1078,8 +1373,17 @@ export function genCase(seed, profile = "fragment") {
     if (mode !== "audit" && baseKind === "normal" && chance(0.6)) {
       const bids = tsIds(baseCode).filter(() => chance(0.7));
       const bentries = bids.map((id) => {
-        const proj = baseCode.get(id).unit !== null && baseCode.get(id).unit !== undefined ? "unit" : id.includes("#") ? "own" : "file";
-        return { ...citeOf(id, proj, digestAt(baseCode, id, proj)), complete: chance(0.75), deps: [] };
+        const proj =
+          baseCode.get(id).unit !== null && baseCode.get(id).unit !== undefined
+            ? "unit"
+            : id.includes("#")
+              ? "own"
+              : "file";
+        return {
+          ...citeOf(id, proj, digestAt(baseCode, id, proj)),
+          complete: chance(0.75),
+          deps: []
+        };
       });
       const bpres = baseEsf.providers.some((p) => p.q === "m::eff" && p.presence);
       const bfs = fs
@@ -1116,7 +1420,11 @@ export function genCase(seed, profile = "fragment") {
     const ids = callIds(headCode);
     const entries = ids
       .filter(() => chance(clean ? 0.95 : 0.6))
-      .map((id) => ({ ...citeOf(id, "unit", digestAt(headCode, id, "unit")), complete: chance(clean ? 0.95 : 0.55), deps: [] }));
+      .map((id) => ({
+        ...citeOf(id, "unit", digestAt(headCode, id, "unit")),
+        complete: chance(clean ? 0.95 : 0.55),
+        deps: []
+      }));
     const fs = [];
     for (let i = int(0, 4); i > 0; i -= 1) {
       const a = pick(ids);
@@ -1140,7 +1448,11 @@ export function genCase(seed, profile = "fragment") {
       const fa = (compFns[ca] ?? []).filter((f) => headCode.has(f));
       const fb = (compFns[cb] ?? []).filter((f) => headCode.has(f));
       if (fa.length && fb.length && chance(clean ? 0.9 : 0.7))
-        fs.push(rel.kind === "calls" ? { type: "call", at: fa[0], to: fb[0] } : { type: "edge", at: fa[0], kind: rel.kind, to: fb[0] });
+        fs.push(
+          rel.kind === "calls"
+            ? { type: "call", at: fa[0], to: fb[0] }
+            : { type: "edge", at: fa[0], kind: rel.kind, to: fb[0] }
+        );
     }
     if (provs.calls.observes.includes("edge(data_flow)"))
       for (let i = int(0, 2); i > 0; i -= 1) {
@@ -1163,11 +1475,20 @@ export function genCase(seed, profile = "fragment") {
     records.push(signedRec(rec, [provSigner("calls")]));
     if (provs.calls.sound.includes("absence")) feat("absence-sound-calls");
     // base call observation (lifted edges the base already had, D5; facts the base had seen, D7)
-    if (mode !== "audit" && baseKind === "normal" && baseEsf.providers.some((p) => p.q === "m::calls") && chance(0.5)) {
+    if (
+      mode !== "audit" &&
+      baseKind === "normal" &&
+      baseEsf.providers.some((p) => p.q === "m::calls") &&
+      chance(0.5)
+    ) {
       const bids = callIds(baseCode);
       const bentries = bids
         .filter(() => chance(0.7))
-        .map((id) => ({ ...citeOf(id, "unit", digestAt(baseCode, id, "unit")), complete: chance(0.6), deps: [] }));
+        .map((id) => ({
+          ...citeOf(id, "unit", digestAt(baseCode, id, "unit")),
+          complete: chance(0.6),
+          deps: []
+        }));
       const bfs = fs.filter((f) => baseCode.has(f.at) && baseCode.has(f.to) && chance(0.6));
       for (let i = int(0, 2); i > 0; i -= 1) {
         const a = pick(bids);
@@ -1206,18 +1527,26 @@ export function genCase(seed, profile = "fragment") {
         const fid = unitFid(t.slice(5));
         if (fid && headCode.has(fid)) {
           out.push([fid, judgment ? (proj === "trust" ? "unit" : proj) : "unit"]);
-          if (judgment) for (const r of headCode.get(fid).refs ?? []) if (headCode.has(r)) out.push([r, "unit"]);
+          if (judgment)
+            for (const r of headCode.get(fid).refs ?? [])
+              if (headCode.has(r)) out.push([r, "unit"]);
         }
       } else if (t.startsWith("component ")) {
         const k = t.slice(10).replace(/^m::/, "").replace(/r$/, "");
-        const fns = [...headCode.keys()].filter((id) => id.includes("#") && files.get(headCode.get(id).parent) === k);
+        const fns = [...headCode.keys()].filter(
+          (id) => id.includes("#") && files.get(headCode.get(id).parent) === k
+        );
         for (const f of fns) out.push([f, "unit"]);
-        for (const f of [...files.keys()].filter((x) => files.get(x) === k && headCode.has(x))) out.push([f, "own"]);
+        for (const f of [...files.keys()].filter((x) => files.get(x) === k && headCode.has(x)))
+          out.push([f, "own"]);
       }
     }
     return out;
   };
-  const cites = (pairs, m) => pairs.map(([id, p]) => citeOf(id, p, digestAt(m, id, p) ?? label(`${id} ${p} v0`))).filter((c) => c.digest);
+  const cites = (pairs, m) =>
+    pairs
+      .map(([id, p]) => citeOf(id, p, digestAt(m, id, p) ?? label(`${id} ${p} v0`)))
+      .filter((c) => c.digest);
   const ce = (k) => ({ seed: k, inputs: [k, k + 1], assertion: `law ${k}` });
   for (const c of headEsf.claims.filter((x) => x.op === "law")) {
     const st = c.args.statement;
@@ -1240,19 +1569,36 @@ export function genCase(seed, profile = "fragment") {
         time: recTime(-7200),
         claim: { id: c.ids[0], fp: c.fp },
         code: codeC,
-        harness: [citeOf("ts:test/sys.test.ts", "own", digestAt(harnessMoved ? baseCode : m, "ts:test/sys.test.ts", "own"))],
+        harness: [
+          citeOf(
+            "ts:test/sys.test.ts",
+            "own",
+            digestAt(harnessMoved ? baseCode : m, "ts:test/sys.test.ts", "own")
+          )
+        ],
         assumptions: chance(0.1)
-          ? [pick([{ id: "z3@4.12.5", kind: "tool" }, { id: "HostTrusted", kind: "named" }, { id: "other@1", kind: "tool" }])]
+          ? [
+              pick([
+                { id: "z3@4.12.5", kind: "tool" },
+                { id: "HostTrusted", kind: "named" },
+                { id: "other@1", kind: "tool" }
+              ])
+            ]
           : [],
         bound: { runs: 100 }
       };
       if (harnessMoved) feat("harness-moved");
       const dr = rnd();
-      if (dr < 0.2) rec.deps = [citeOf("pkgjson:package.json", "own", digestAt(m, "pkgjson:package.json", "own"))];
+      if (dr < 0.2)
+        rec.deps = [
+          citeOf("pkgjson:package.json", "own", digestAt(m, "pkgjson:package.json", "own"))
+        ];
       else if (dr < 0.45) {
         // the record's cone reaches a function of the same component (D4)
         const comp = files.get(m.get(codeC[0].id)?.parent ?? codeC[0].id);
-        const others = (compFns[comp] ?? []).filter((x) => m.has(x) && !codeC.some((cc) => cc.id === x));
+        const others = (compFns[comp] ?? []).filter(
+          (x) => m.has(x) && !codeC.some((cc) => cc.id === x)
+        );
         if (others.length) {
           const o = pick(others);
           rec.deps = [citeOf(o, "unit", digestAt(m, o, "unit"))];
@@ -1260,7 +1606,8 @@ export function genCase(seed, profile = "fragment") {
         }
       }
       const ceK = int(1, 3);
-      if (result === "contradicts") rec.counterexample = chance(clean ? 0.95 : 0.85) ? ce(ceK) : { input: "[1,2]" };
+      if (result === "contradicts")
+        rec.counterexample = chance(clean ? 0.95 : 0.85) ? ce(ceK) : { input: "[1,2]" };
       if (result === "contradicts" && !rec.counterexample.seed) feat("counterexample-v6-form");
       if (hasProv("tests")) records.push(signedRec(rec, [provSigner("tests")]));
       if (stale) feat("stale-test");
@@ -1274,9 +1621,14 @@ export function genCase(seed, profile = "fragment") {
             revision: BASE_REV,
             time: recTime(-86400 * 3),
             code: bcode,
-            harness: [citeOf("ts:test/sys.test.ts", "own", digestAt(baseCode, "ts:test/sys.test.ts", "own"))],
+            harness: [
+              citeOf("ts:test/sys.test.ts", "own", digestAt(baseCode, "ts:test/sys.test.ts", "own"))
+            ],
             result: "contradicts",
-            counterexample: result === "contradicts" && rec.counterexample.seed && chance(0.5) ? rec.counterexample : ce(ceK + 5)
+            counterexample:
+              result === "contradicts" && rec.counterexample.seed && chance(0.5)
+                ? rec.counterexample
+                : ce(ceK + 5)
           };
           delete brec.deps;
           baseRecords.push(signedRec(brec, [provSigner("tests")]));
@@ -1347,7 +1699,11 @@ export function genCase(seed, profile = "fragment") {
       { identity: 'github("bot[bot]")', verified: true, bot: true }
     ]
   ];
-  const baseManifest = manifest7(BASE_REV, baseCode, persistTree.filter((t) => persisted.base.some((p) => p.path === t.path)));
+  const baseManifest = manifest7(
+    BASE_REV,
+    baseCode,
+    persistTree.filter((t) => persisted.base.some((p) => p.path === t.path))
+  );
   const headManifest = manifest7(HEAD_REV, headCode, persistTree);
   const signMan = (m) => {
     if (!manifestId) return m;
@@ -1368,7 +1724,12 @@ export function genCase(seed, profile = "fragment") {
         ? null
         : {
             revision: BASE_REV,
-            source: baseKind === "unreadable" ? null : baseKind === "empty" ? { v: "shape.source.v1", modules: [] } : baseSrc,
+            source:
+              baseKind === "unreadable"
+                ? null
+                : baseKind === "empty"
+                  ? { v: "shape.source.v1", modules: [] }
+                  : baseSrc,
             manifest: signMan(baseManifest),
             ...(chance(0.08) ? { committerTime: isoTime(86400 * 2) } : {})
           },
@@ -1427,12 +1788,23 @@ export function addReviews(input, phase1, seed, meta = {}) {
       } else reviews.push({ identity: ident(p), line: `shape approve ${refs.join(" ")}`, change });
     }
   }
-  const laws = obs.filter((o) => o.claim && (o.kind === "unestablished" || o.kind === "contradiction") && o.subject === null);
+  const laws = obs.filter(
+    (o) =>
+      o.claim && (o.kind === "unestablished" || o.kind === "contradiction") && o.subject === null
+  );
   if (laws.length > 0 && chance(0.5)) {
-    reviews.push({ identity: ident(who()), line: `shape judge ${pick(laws).claim.ids[0]}`, change: CHANGE });
+    reviews.push({
+      identity: ident(who()),
+      line: `shape judge ${pick(laws).claim.ids[0]}`,
+      change: CHANGE
+    });
     features.push("judge-line");
   }
   if (laws.length > 0 && chance(0.15))
-    reviews.push({ identity: ident(who()), line: `shape reject ${pick(laws).claim.ids[0]} it is wrong`, change: CHANGE });
+    reviews.push({
+      identity: ident(who()),
+      line: `shape reject ${pick(laws).claim.ids[0]} it is wrong`,
+      change: CHANGE
+    });
   return { input: { ...input, reviews, records }, features };
 }

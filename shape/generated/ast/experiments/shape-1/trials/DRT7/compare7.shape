@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.shape_1.trials.DRT7.compare7
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource Compare7ModuleDiffSignaturesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/compare7.ts#diffSignatures")
+  fingerprint ast.semantic_subtree_v1("sha256:a2447323d2a6231154cf3939c05b5037b0529d97648c2a28a7e4c8453211cf61")
+}
+
+resource Compare7ModuleKeyedDiffAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/compare7.ts#keyedDiff")
+  fingerprint ast.semantic_subtree_v1("sha256:bb6417598f4f783db80c8caf389839dd152d3778289883477bcc94a4a104a95e")
+}
+
+resource Compare7ModuleKindQAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/compare7.ts#kindQ")
+  fingerprint ast.semantic_subtree_v1("sha256:018add90547aeb51b63e06dcb628bfdcd11b6aa812fba972a6ee8be8009162e6")
+}
+
+resource Compare7ModulePrimaryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/compare7.ts#primary")
+  fingerprint ast.semantic_subtree_v1("sha256:92db6302a3e75c27e124d86b6b9d8289855bfa963d1eab0829272969d34c98f5")
+}
+
+component Compare7Module : GeneratedCandidate {
+  fn diffSignatures
+    source ts("experiments/shape-1/trials/DRT7/compare7.ts#diffSignatures")
+    effects unknown
+  fn keyedDiff
+    source ts("experiments/shape-1/trials/DRT7/compare7.ts#keyedDiff")
+    effects unknown
+  fn kindQ
+    source ts("experiments/shape-1/trials/DRT7/compare7.ts#kindQ")
+    effects unknown
+  fn primary
+    source ts("experiments/shape-1/trials/DRT7/compare7.ts#primary")
+    effects unknown
+}
+
+relation Compare7ModuleDiffSignaturesGeneratedFromCompare7ModuleDiffSignaturesAstAnchor {
+  kind generated_from
+  connects Compare7Module -> Compare7ModuleDiffSignaturesAstAnchor
+  roles { Compare7Module as generated, Compare7ModuleDiffSignaturesAstAnchor as syntax }
+  expects Compare7ModuleDiffSignaturesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a2447323d2a6231154cf3939c05b5037b0529d97648c2a28a7e4c8453211cf61")
+  summary "fn Compare7Module.diffSignatures generated from typescript function_declaration at experiments/shape-1/trials/DRT7/compare7.ts#diffSignatures."
+}
+
+relation Compare7ModuleKeyedDiffGeneratedFromCompare7ModuleKeyedDiffAstAnchor {
+  kind generated_from
+  connects Compare7Module -> Compare7ModuleKeyedDiffAstAnchor
+  roles { Compare7Module as generated, Compare7ModuleKeyedDiffAstAnchor as syntax }
+  expects Compare7ModuleKeyedDiffAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bb6417598f4f783db80c8caf389839dd152d3778289883477bcc94a4a104a95e")
+  summary "fn Compare7Module.keyedDiff generated from typescript function_declaration at experiments/shape-1/trials/DRT7/compare7.ts#keyedDiff."
+}
+
+relation Compare7ModuleKindQGeneratedFromCompare7ModuleKindQAstAnchor {
+  kind generated_from
+  connects Compare7Module -> Compare7ModuleKindQAstAnchor
+  roles { Compare7Module as generated, Compare7ModuleKindQAstAnchor as syntax }
+  expects Compare7ModuleKindQAstAnchor fingerprint ast.semantic_subtree_v1("sha256:018add90547aeb51b63e06dcb628bfdcd11b6aa812fba972a6ee8be8009162e6")
+  summary "fn Compare7Module.kindQ generated from typescript function_declaration at experiments/shape-1/trials/DRT7/compare7.ts#kindQ."
+}
+
+relation Compare7ModulePrimaryGeneratedFromCompare7ModulePrimaryAstAnchor {
+  kind generated_from
+  connects Compare7Module -> Compare7ModulePrimaryAstAnchor
+  roles { Compare7Module as generated, Compare7ModulePrimaryAstAnchor as syntax }
+  expects Compare7ModulePrimaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92db6302a3e75c27e124d86b6b9d8289855bfa963d1eab0829272969d34c98f5")
+  summary "fn Compare7Module.primary generated from typescript function_declaration at experiments/shape-1/trials/DRT7/compare7.ts#primary."
+}
+
+implementation Compare7ModuleImpl {
+  paths {
+    "experiments/shape-1/trials/DRT7/compare7.ts"
+  }
+  conforms_to Compare7Module
+}

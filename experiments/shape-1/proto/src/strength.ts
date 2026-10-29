@@ -32,7 +32,9 @@ export function renameArgs(args: JsonValue, rho: Map<string, string>): JsonValue
       return positional ? xs : xs.sort((a, b) => cmpStr(JSON.stringify(a), JSON.stringify(b)));
     }
     if (v && typeof v === "object")
-      return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x, isSchemaArgs(v, k))]));
+      return Object.fromEntries(
+        Object.entries(v).map(([k, x]) => [k, walk(x, isSchemaArgs(v, k))])
+      );
     return v;
   };
   return walk(args);
@@ -52,10 +54,14 @@ export function renamedFp(c: Claim, rho: Map<string, string>): string {
 function normaliseArrays(v: JsonValue, positional = false): JsonValue {
   if (Array.isArray(v)) {
     const xs = v.map((x) => normaliseArrays(x));
-    return !positional && xs.every((x) => typeof x === "string") ? [...new Set(xs as string[])].sort(cmpStr) : xs;
+    return !positional && xs.every((x) => typeof x === "string")
+      ? [...new Set(xs as string[])].sort(cmpStr)
+      : xs;
   }
   if (v && typeof v === "object")
-    return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, normaliseArrays(x, isSchemaArgs(v, k))]));
+    return Object.fromEntries(
+      Object.entries(v).map(([k, x]) => [k, normaliseArrays(x, isSchemaArgs(v, k))])
+    );
   return v;
 }
 

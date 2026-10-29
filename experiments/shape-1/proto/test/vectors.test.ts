@@ -15,21 +15,33 @@ import { ob, run } from "./helpers.ts";
 // Undeclared, with no Hatch clause [D1]
 const V = {
   "fp ex1.appendonly": "sha256:3fe8f5ac7169085e744c2b83e26fdd5285328148b8300b68510efd4de6b0aef8",
-  "fp ex1.authority.base": "sha256:987106a04014478f6935873a3a96a3fc65c384de7b145c679dbf6cc9d082eaa4",
-  "fp ex1.authority.headC": "sha256:1765c00ea02cf35cf1a1fa83357a00dfc0900fe4cec525ec621113f1a2a2bfa4",
+  "fp ex1.authority.base":
+    "sha256:987106a04014478f6935873a3a96a3fc65c384de7b145c679dbf6cc9d082eaa4",
+  "fp ex1.authority.headC":
+    "sha256:1765c00ea02cf35cf1a1fa83357a00dfc0900fe4cec525ec621113f1a2a2bfa4",
   "fp ex1.history.law": "sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3",
-  "fp ex2.confine Undeclared": "sha256:6cd2e34ae382f2271643ee1e21eb71ea70700a980a610cd7ab8e9442b5698cd7",
+  "fp ex2.confine Undeclared":
+    "sha256:6cd2e34ae382f2271643ee1e21eb71ea70700a980a610cd7ab8e9442b5698cd7",
   "fp ex2.confine admit": "sha256:999e379d3817b66b3501c0baf222cb1b96e6c63827c578e4cddfc81023f1479f",
-  "fp ex2.confine assume": "sha256:1584bb88c66cbc8b0a51502299e8e8ca660d8cfeba2e7f93a99491072752a6d4",
-  "fp ex2.confine assume_specification": "sha256:7ef4d39fc5cce5e25236a2a941202e9d641dadf699801666a3d2680b276c889e",
+  "fp ex2.confine assume":
+    "sha256:1584bb88c66cbc8b0a51502299e8e8ca660d8cfeba2e7f93a99491072752a6d4",
+  "fp ex2.confine assume_specification":
+    "sha256:7ef4d39fc5cce5e25236a2a941202e9d641dadf699801666a3d2680b276c889e",
   "fp ex2.confine axiom": "sha256:260f9bab2f56feaf9250511bf2a69f1f6fff5917e8c87f7e8f206c143da0038a",
-  "fp ex2.confine external": "sha256:36262b4b629215dac8004587babf2559d6a16db087f7fdb0797acbd0ae25e023",
-  "fp ex2.confine external_body": "sha256:9dbce5edea4f3d2e68dd82851ca84ae7df7ef74169a691818bf64762fb03a6ba",
-  "fp ex2.confine ts_expect_error": "sha256:6092a1b156904692bd72a9b6e8dacc4e477bdd07f23e916f7525ee72c688ba19",
-  "fp ex2.confine ts_ignore": "sha256:7707fdede7e747cb54a9dfb2e6741c02f7eefbc1bcd6ed6d42cffefe3fe97982",
-  "fp ex2.confine ts_nocheck": "sha256:d128502010fc47e3538fcfed1434e86d87234063fe37bace434d52113f285337",
-  "fp ex2.confine uninterp": "sha256:f3592ed13e19e6106bf38dc88d42a17fd347bef1977d06dd0e1edd5426ddfe9c",
-  "fp ex2.confine unsafe": "sha256:c062e5c3410c9114f907d26eaf96bec52364b90a82975aa04ba6b2bea3dbbb0c",
+  "fp ex2.confine external":
+    "sha256:36262b4b629215dac8004587babf2559d6a16db087f7fdb0797acbd0ae25e023",
+  "fp ex2.confine external_body":
+    "sha256:9dbce5edea4f3d2e68dd82851ca84ae7df7ef74169a691818bf64762fb03a6ba",
+  "fp ex2.confine ts_expect_error":
+    "sha256:6092a1b156904692bd72a9b6e8dacc4e477bdd07f23e916f7525ee72c688ba19",
+  "fp ex2.confine ts_ignore":
+    "sha256:7707fdede7e747cb54a9dfb2e6741c02f7eefbc1bcd6ed6d42cffefe3fe97982",
+  "fp ex2.confine ts_nocheck":
+    "sha256:d128502010fc47e3538fcfed1434e86d87234063fe37bace434d52113f285337",
+  "fp ex2.confine uninterp":
+    "sha256:f3592ed13e19e6106bf38dc88d42a17fd347bef1977d06dd0e1edd5426ddfe9c",
+  "fp ex2.confine unsafe":
+    "sha256:c062e5c3410c9114f907d26eaf96bec52364b90a82975aa04ba6b2bea3dbbb0c",
   "fp ex2.law.faithful": "sha256:3d6b9e247facc73677afbf88e873548e4c05981cb24d158eee0bc01fb1ad7b68",
   "fp ex2.law.set": "sha256:60a867af53d80a7f7691530f9ae5869779c05abccd602cd75b2baad28a85db38",
   "fp ex2.surface": "sha256:f3119983e55f6aae012d4804f39af9f73ecafb27fc5fdccc6040b906efb7b03a",
@@ -46,11 +58,15 @@ const V = {
 /** keys, bindings, groups, refs and answer digests of the version 7 vectors.py */
 const V7_OUT = {
   "key ex1.B.contradiction": "ob:98ff6f5f02010232b459f9b228f17abb7f78b90094b40b37a3e9a12bb3c32fd2",
-  "binding ex1.B.contradiction": "bd:1c907a8a119dd310a06e0e9ec876c2db0f003b4c1a33ca0b9d3d851b3e2d72c9",
+  "binding ex1.B.contradiction":
+    "bd:1c907a8a119dd310a06e0e9ec876c2db0f003b4c1a33ca0b9d3d851b3e2d72c9",
   "group ex1.B": "g:e49eeaef1d87eb9aae889d4019cf944a91aeb22e46ef77341f2cf8aef85d314b",
-  "key ex1.Bprime.contradiction": "ob:66055a3355822d3b2a2e0d299eca90a40134f1a2ec90f98a44f923b036b1bdd9",
-  "key ex1.Bsecond.coverage.ungoverned": "ob:155fa0bf253e0793716dee7451858de84676f017da2d47ee65a8e9d24a457c67",
-  "binding ex1.Bsecond.coverage.ungoverned": "bd:55aeb9df71bf26a0b65a79a17d84b6ebb853da1c5be9ccbaa3aa61cd269027df",
+  "key ex1.Bprime.contradiction":
+    "ob:66055a3355822d3b2a2e0d299eca90a40134f1a2ec90f98a44f923b036b1bdd9",
+  "key ex1.Bsecond.coverage.ungoverned":
+    "ob:155fa0bf253e0793716dee7451858de84676f017da2d47ee65a8e9d24a457c67",
+  "binding ex1.Bsecond.coverage.ungoverned":
+    "bd:55aeb9df71bf26a0b65a79a17d84b6ebb853da1c5be9ccbaa3aa61cd269027df",
   "key ex1.C.forbid": "ob:e8ec989a6cf48d9a11cc0aec2006e60bfb0200faed2798b0a3144d4e77b91585",
   "key ex1.C.authority": "ob:ca99c5461b8ff9a8410d4389337b30099a13b1a78bf99bd8f9cc107df9d04054",
   "binding ex1.C.forbid": "bd:a7514dcb4cfb7068eb51a981fe81680557d8c8d2e219c890c9eb09294d0ae084",
@@ -58,16 +74,20 @@ const V7_OUT = {
   "ref ex1.C.forbid": "bd:a7514dcb4cfb7068",
   "ref ex1.C.authority": "bd:6bca5b3fe0d0787d",
   "group ex1.C": "g:9f2b9e1c945e64187b39b5210fdc1218ca8249dfff9d7f26654c29d954985f2c",
-  "answer subject digest ex1.C bob": "sha256:032ab91f227efdd58843dd1c64ba1c1ffb5f82c30731c08f36e9fdc9c23d8314",
-  "answer subject digest ex1.C carol": "sha256:ee776f8f2ec7de3755051239298b8a0f0a1bb281ba69b060e942e0df8dd0ffdb"
+  "answer subject digest ex1.C bob":
+    "sha256:032ab91f227efdd58843dd1c64ba1c1ffb5f82c30731c08f36e9fdc9c23d8314",
+  "answer subject digest ex1.C carol":
+    "sha256:ee776f8f2ec7de3755051239298b8a0f0a1bb281ba69b060e942e0df8dd0ffdb"
 };
 
 const SCHEMA = {
   "std::AppendOnly": "sha256:cf26a16ce7df73f5a8f0b200c43dacb573cfd012fe0c29676d659bcf7d6d4079",
   "std::Bounded": "sha256:a8a3741ae3f04fdbd835de17c9106feb7a9ec709d55553b200a3accd603e33d3",
   "std::Deterministic": "sha256:5dd1f7b8369f9557a9403b64a20f9d62e456c9960127a258755161b56e21d3e0",
-  "std::HistoryPreserved": "sha256:3c5937e280af3a8d80cde26bd287b0a9a5454d81eb01f305653b3e8e978dbeb9",
-  "std::RefactorSensitive": "sha256:a3dc08d2aa6d63dc0ec6b9026302a86b5efeb43523667268a3c18075a7f50837",
+  "std::HistoryPreserved":
+    "sha256:3c5937e280af3a8d80cde26bd287b0a9a5454d81eb01f305653b3e8e978dbeb9",
+  "std::RefactorSensitive":
+    "sha256:a3dc08d2aa6d63dc0ec6b9026302a86b5efeb43523667268a3c18075a7f50837",
   "std::ReviewedSurface": "sha256:b6d6d42a87ca0b278b7ac26ea86bda2682396fa365a0119dcf91a5f2e6a8d143",
   "std::Verified": "sha256:6441cc042e70ee30fee0cd4f6e0ff91d308581804ff3b1f5c9cb6c7152808081"
 };

@@ -1,0 +1,225 @@
+module shape.generated.ast.experiments.shape_1.proto.src.input
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource InputModuleCanonDeclAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/input.ts#canonDecl")
+  fingerprint ast.semantic_subtree_v1("sha256:4982effb8b3124dec157b1d1d253734a512e0dcc58fd0d135f65477836af208d")
+}
+
+resource InputModuleCanonManifestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/input.ts#canonManifest")
+  fingerprint ast.semantic_subtree_v1("sha256:9217c76df1ef8580e96951e2a2e69f05774e2854ae75a858943d789c3d4129db")
+}
+
+resource InputModuleCanonSourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/input.ts#canonSource")
+  fingerprint ast.semantic_subtree_v1("sha256:43eb6031f331a613492cbb97e0b3abe553fe51e2c4ad1bddce481f2949582e9f")
+}
+
+resource InputModuleCanonicalInputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/input.ts#canonicalInput")
+  fingerprint ast.semantic_subtree_v1("sha256:18137e247ce3919702d27af2479863d60daa0704ad416825a8b1ae14af49e5ab")
+}
+
+resource InputModuleCommitInfoAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/input.ts#commitInfo")
+  fingerprint ast.semantic_subtree_v1("sha256:f8d389f5c3db97bbf85740ce9c9a85049e369e9b6ab094030c50ea249a030500")
+}
+
+resource InputModuleDeclKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/input.ts#declKey")
+  fingerprint ast.semantic_subtree_v1("sha256:81a467da1e55963c17c9dbf76fb818cfbd988b6e5bd285361599346233f527b9")
+}
+
+resource InputModuleInputDigestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/input.ts#inputDigest")
+  fingerprint ast.semantic_subtree_v1("sha256:3d45a8bc41e4d2e9858b4de385510ff22efc7fc0a61488e8fcc9a845022ffc7c")
+}
+
+resource InputModulePackDigestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/input.ts#packDigest")
+  fingerprint ast.semantic_subtree_v1("sha256:cbac93edd671f7c0e31f6c1f76f1a3f0081fa737b68ba419e8d40ff5bc64b9bb")
+}
+
+resource InputModuleParseLockAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/input.ts#parseLock")
+  fingerprint ast.semantic_subtree_v1("sha256:a76cfb2b695b0a4444292be5a7b0e5bb419096daa93af87ab5f774ecf4a92aaa")
+}
+
+resource InputModuleReadRevisionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/input.ts#readRevision")
+  fingerprint ast.semantic_subtree_v1("sha256:e49a546556fd6e9e62b098bd2ed39d67fb421811da9f626c0899a75ee9f5a540")
+}
+
+resource InputModuleSortByKeysAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/input.ts#sortByKeys")
+  fingerprint ast.semantic_subtree_v1("sha256:4063ecaca09d01a95659b5143aba1eb71580d9917513812fb5ee1a8c5b3345b8")
+}
+
+resource InputModuleStatementOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/input.ts#statementOf")
+  fingerprint ast.semantic_subtree_v1("sha256:77cf9afed65f2bd33a49353e4162b9b2ee012142e0fd924914ef6c0a112bf4d3")
+}
+
+resource InputModuleVerifyInputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/input.ts#verifyInput")
+  fingerprint ast.semantic_subtree_v1("sha256:fa13f4fc9675be57b3f292f35deb454298791d4978ad55adfc3944d6fe6cf53c")
+}
+
+component InputModule : GeneratedCandidate {
+  fn canonDecl
+    source ts("experiments/shape-1/proto/src/input.ts#canonDecl")
+    effects unknown
+  fn canonManifest
+    source ts("experiments/shape-1/proto/src/input.ts#canonManifest")
+    effects unknown
+  fn canonSource
+    source ts("experiments/shape-1/proto/src/input.ts#canonSource")
+    effects unknown
+  fn canonicalInput
+    source ts("experiments/shape-1/proto/src/input.ts#canonicalInput")
+    effects unknown
+  fn commitInfo
+    source ts("experiments/shape-1/proto/src/input.ts#commitInfo")
+    effects unknown
+  fn declKey
+    source ts("experiments/shape-1/proto/src/input.ts#declKey")
+    effects unknown
+  fn inputDigest
+    source ts("experiments/shape-1/proto/src/input.ts#inputDigest")
+    effects unknown
+  fn packDigest
+    source ts("experiments/shape-1/proto/src/input.ts#packDigest")
+    effects unknown
+  fn parseLock
+    source ts("experiments/shape-1/proto/src/input.ts#parseLock")
+    effects unknown
+  fn readRevision
+    source ts("experiments/shape-1/proto/src/input.ts#readRevision")
+    effects unknown
+  fn sortByKeys
+    source ts("experiments/shape-1/proto/src/input.ts#sortByKeys")
+    effects unknown
+  fn statementOf
+    source ts("experiments/shape-1/proto/src/input.ts#statementOf")
+    effects unknown
+  fn verifyInput
+    source ts("experiments/shape-1/proto/src/input.ts#verifyInput")
+    effects unknown
+}
+
+relation InputModuleCanonDeclGeneratedFromInputModuleCanonDeclAstAnchor {
+  kind generated_from
+  connects InputModule -> InputModuleCanonDeclAstAnchor
+  roles { InputModule as generated, InputModuleCanonDeclAstAnchor as syntax }
+  expects InputModuleCanonDeclAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4982effb8b3124dec157b1d1d253734a512e0dcc58fd0d135f65477836af208d")
+  summary "fn InputModule.canonDecl generated from typescript function_declaration at experiments/shape-1/proto/src/input.ts#canonDecl."
+}
+
+relation InputModuleCanonManifestGeneratedFromInputModuleCanonManifestAstAnchor {
+  kind generated_from
+  connects InputModule -> InputModuleCanonManifestAstAnchor
+  roles { InputModule as generated, InputModuleCanonManifestAstAnchor as syntax }
+  expects InputModuleCanonManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9217c76df1ef8580e96951e2a2e69f05774e2854ae75a858943d789c3d4129db")
+  summary "fn InputModule.canonManifest generated from typescript function_declaration at experiments/shape-1/proto/src/input.ts#canonManifest."
+}
+
+relation InputModuleCanonSourceGeneratedFromInputModuleCanonSourceAstAnchor {
+  kind generated_from
+  connects InputModule -> InputModuleCanonSourceAstAnchor
+  roles { InputModule as generated, InputModuleCanonSourceAstAnchor as syntax }
+  expects InputModuleCanonSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:43eb6031f331a613492cbb97e0b3abe553fe51e2c4ad1bddce481f2949582e9f")
+  summary "fn InputModule.canonSource generated from typescript function_declaration at experiments/shape-1/proto/src/input.ts#canonSource."
+}
+
+relation InputModuleCanonicalInputGeneratedFromInputModuleCanonicalInputAstAnchor {
+  kind generated_from
+  connects InputModule -> InputModuleCanonicalInputAstAnchor
+  roles { InputModule as generated, InputModuleCanonicalInputAstAnchor as syntax }
+  expects InputModuleCanonicalInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:18137e247ce3919702d27af2479863d60daa0704ad416825a8b1ae14af49e5ab")
+  summary "fn InputModule.canonicalInput generated from typescript function_declaration at experiments/shape-1/proto/src/input.ts#canonicalInput."
+}
+
+relation InputModuleCommitInfoGeneratedFromInputModuleCommitInfoAstAnchor {
+  kind generated_from
+  connects InputModule -> InputModuleCommitInfoAstAnchor
+  roles { InputModule as generated, InputModuleCommitInfoAstAnchor as syntax }
+  expects InputModuleCommitInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f8d389f5c3db97bbf85740ce9c9a85049e369e9b6ab094030c50ea249a030500")
+  summary "fn InputModule.commitInfo generated from typescript function_declaration at experiments/shape-1/proto/src/input.ts#commitInfo."
+}
+
+relation InputModuleDeclKeyGeneratedFromInputModuleDeclKeyAstAnchor {
+  kind generated_from
+  connects InputModule -> InputModuleDeclKeyAstAnchor
+  roles { InputModule as generated, InputModuleDeclKeyAstAnchor as syntax }
+  expects InputModuleDeclKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:81a467da1e55963c17c9dbf76fb818cfbd988b6e5bd285361599346233f527b9")
+  summary "fn InputModule.declKey generated from typescript function_declaration at experiments/shape-1/proto/src/input.ts#declKey."
+}
+
+relation InputModuleInputDigestGeneratedFromInputModuleInputDigestAstAnchor {
+  kind generated_from
+  connects InputModule -> InputModuleInputDigestAstAnchor
+  roles { InputModule as generated, InputModuleInputDigestAstAnchor as syntax }
+  expects InputModuleInputDigestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3d45a8bc41e4d2e9858b4de385510ff22efc7fc0a61488e8fcc9a845022ffc7c")
+  summary "fn InputModule.inputDigest generated from typescript function_declaration at experiments/shape-1/proto/src/input.ts#inputDigest."
+}
+
+relation InputModulePackDigestGeneratedFromInputModulePackDigestAstAnchor {
+  kind generated_from
+  connects InputModule -> InputModulePackDigestAstAnchor
+  roles { InputModule as generated, InputModulePackDigestAstAnchor as syntax }
+  expects InputModulePackDigestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cbac93edd671f7c0e31f6c1f76f1a3f0081fa737b68ba419e8d40ff5bc64b9bb")
+  summary "fn InputModule.packDigest generated from typescript function_declaration at experiments/shape-1/proto/src/input.ts#packDigest."
+}
+
+relation InputModuleParseLockGeneratedFromInputModuleParseLockAstAnchor {
+  kind generated_from
+  connects InputModule -> InputModuleParseLockAstAnchor
+  roles { InputModule as generated, InputModuleParseLockAstAnchor as syntax }
+  expects InputModuleParseLockAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a76cfb2b695b0a4444292be5a7b0e5bb419096daa93af87ab5f774ecf4a92aaa")
+  summary "fn InputModule.parseLock generated from typescript function_declaration at experiments/shape-1/proto/src/input.ts#parseLock."
+}
+
+relation InputModuleReadRevisionGeneratedFromInputModuleReadRevisionAstAnchor {
+  kind generated_from
+  connects InputModule -> InputModuleReadRevisionAstAnchor
+  roles { InputModule as generated, InputModuleReadRevisionAstAnchor as syntax }
+  expects InputModuleReadRevisionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e49a546556fd6e9e62b098bd2ed39d67fb421811da9f626c0899a75ee9f5a540")
+  summary "fn InputModule.readRevision generated from typescript function_declaration at experiments/shape-1/proto/src/input.ts#readRevision."
+}
+
+relation InputModuleSortByKeysGeneratedFromInputModuleSortByKeysAstAnchor {
+  kind generated_from
+  connects InputModule -> InputModuleSortByKeysAstAnchor
+  roles { InputModule as generated, InputModuleSortByKeysAstAnchor as syntax }
+  expects InputModuleSortByKeysAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4063ecaca09d01a95659b5143aba1eb71580d9917513812fb5ee1a8c5b3345b8")
+  summary "fn InputModule.sortByKeys generated from typescript function_declaration at experiments/shape-1/proto/src/input.ts#sortByKeys."
+}
+
+relation InputModuleStatementOfGeneratedFromInputModuleStatementOfAstAnchor {
+  kind generated_from
+  connects InputModule -> InputModuleStatementOfAstAnchor
+  roles { InputModule as generated, InputModuleStatementOfAstAnchor as syntax }
+  expects InputModuleStatementOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:77cf9afed65f2bd33a49353e4162b9b2ee012142e0fd924914ef6c0a112bf4d3")
+  summary "fn InputModule.statementOf generated from typescript function_declaration at experiments/shape-1/proto/src/input.ts#statementOf."
+}
+
+relation InputModuleVerifyInputGeneratedFromInputModuleVerifyInputAstAnchor {
+  kind generated_from
+  connects InputModule -> InputModuleVerifyInputAstAnchor
+  roles { InputModule as generated, InputModuleVerifyInputAstAnchor as syntax }
+  expects InputModuleVerifyInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fa13f4fc9675be57b3f292f35deb454298791d4978ad55adfc3944d6fe6cf53c")
+  summary "fn InputModule.verifyInput generated from typescript function_declaration at experiments/shape-1/proto/src/input.ts#verifyInput."
+}
+
+implementation InputModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/input.ts"
+  }
+  conforms_to InputModule
+}

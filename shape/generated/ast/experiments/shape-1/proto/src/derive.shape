@@ -6,9 +6,9 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
-resource DeriveModuleAnswerItemsSatisfiedAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/derive.ts#answerItemsSatisfied")
-  fingerprint ast.semantic_subtree_v1("sha256:6d3d42609c4d88cb84e85cff665d12156c7aef1a9a82286024f110718e3ecbb0")
+resource DeriveModuleAnswerItemsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/derive.ts#answerItems")
+  fingerprint ast.semantic_subtree_v1("sha256:1a2ad040c5baa0b628fb8d7be056c14bba4d97bb443f534cc8ca8b3a25d36701")
 }
 
 resource DeriveModuleAnswerableAstAnchor : GeneratedAstAnchor {
@@ -18,52 +18,62 @@ resource DeriveModuleAnswerableAstAnchor : GeneratedAstAnchor {
 
 resource DeriveModuleBindingOfAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/derive.ts#bindingOf")
-  fingerprint ast.semantic_subtree_v1("sha256:df31a5e9530589ce1d24324547c811f64753b4eefa8f2abc63bdf0b0be151ee8")
-}
-
-resource DeriveModuleCanonicalInputAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/derive.ts#canonicalInput")
-  fingerprint ast.semantic_subtree_v1("sha256:faa24598a4044e1673f18bc4a9006bbd9142fbf7efbcce9251c55ce847d56450")
+  fingerprint ast.semantic_subtree_v1("sha256:99c724c5ff76a5d59bd1b17f0ed6a1f9a582393695ab455dcc642cd3f8a1a70c")
 }
 
 resource DeriveModuleDedupErrorsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/derive.ts#dedupErrors")
-  fingerprint ast.semantic_subtree_v1("sha256:f159b7e0f92b84777c75f42dc899f045ba2849c7b66364f5f76aa7b51419627a")
+  fingerprint ast.semantic_subtree_v1("sha256:d7468ad2a3206417e66fca0b4ba92ec14d8a98ae362de263363c3c9376c9f65a")
 }
 
 resource DeriveModuleDeriveAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/derive.ts#derive")
-  fingerprint ast.semantic_subtree_v1("sha256:683614aa9af8fec072099bdadf1844221d3279ea0eb0ad29ca097ee8b99103ad")
+  fingerprint ast.semantic_subtree_v1("sha256:cd4415456629a17c75965efad49dfa72636495a5a22347677c5a0bdb1783b89b")
 }
 
 resource DeriveModuleDischargersAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/derive.ts#dischargers")
-  fingerprint ast.semantic_subtree_v1("sha256:cd5d7106aff7566db73dc8cbbd8b793fe2b154e4fb8e23257730fdeae7363caf")
+  fingerprint ast.semantic_subtree_v1("sha256:51f05af8a76b9a9d5629a354bdf5178e42f65a2ff8b4377cfdb03d466d981218")
 }
 
-resource DeriveModuleEmptyEsfAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/derive.ts#emptyEsf")
-  fingerprint ast.semantic_subtree_v1("sha256:ce45fa2fd942338e2d374d47c59d5e34c57a29054cedcca3b8e4788f3e29abae")
+resource DeriveModuleEmptyHealthAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/derive.ts#emptyHealth")
+  fingerprint ast.semantic_subtree_v1("sha256:3bca3e880b839c4509d45229f070ecad508430560fa1bfb897536e47224d55cc")
 }
 
-resource DeriveModuleExceptionAnswerSatisfiedAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/derive.ts#exceptionAnswerSatisfied")
-  fingerprint ast.semantic_subtree_v1("sha256:3f04cb410c6726c72546928ee71d33cf03aa70cfdff6fdba79f3ed82e71173fc")
+resource DeriveModuleExceptionAnswerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/derive.ts#exceptionAnswer")
+  fingerprint ast.semantic_subtree_v1("sha256:a8e1a25d98cba2db42cad36938ecfa044d2da846f07d34345fb208f1878185ba")
 }
 
 resource DeriveModuleExceptionMatchesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/derive.ts#exceptionMatches")
-  fingerprint ast.semantic_subtree_v1("sha256:dfc952b207072abf408986fa3f20d6da8d589930a768953068d003f8787bbe33")
+  fingerprint ast.semantic_subtree_v1("sha256:20a853a9a8b142ff87a74a22fe83670cf57653036da7877a480815f0ea1b29e1")
 }
 
 resource DeriveModuleInvalidAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/derive.ts#invalid")
-  fingerprint ast.semantic_subtree_v1("sha256:10536b396e635885175bbd65d07d94b992f8b0e4d430ca118062f0b9b70271ba")
+  fingerprint ast.semantic_subtree_v1("sha256:cf22868bab55e4c0d5d545f62ab311278972653cc6c41686a444d0e466b7f39e")
+}
+
+resource DeriveModuleInvertImpliesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/derive.ts#invertImplies")
+  fingerprint ast.semantic_subtree_v1("sha256:fbd336ec7b774ff28f7d9479270d5c4cc8c3d5b2bcec716edf0ce9a9a273e3d9")
+}
+
+resource DeriveModuleIsStructuralAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/derive.ts#isStructural")
+  fingerprint ast.semantic_subtree_v1("sha256:c12292dc5fe2d41a7c161197b68cf97a1208700da85112b3d8db0a61344c95f8")
+}
+
+resource DeriveModuleManMapAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/derive.ts#manMap")
+  fingerprint ast.semantic_subtree_v1("sha256:fda4c9a2a07cdc4e51e60922e0319da6d5ec3eafb2e497d6e28680f451859fff")
 }
 
 resource DeriveModuleMatchUnitSelAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/derive.ts#matchUnitSel")
-  fingerprint ast.semantic_subtree_v1("sha256:8a54122fa7c68be8eb30a1d01df0734275592bb0ce0c1180efdf8e918141075f")
+  fingerprint ast.semantic_subtree_v1("sha256:9540590262a1c3286936cfeea26ce60593242ed9d4f5cb6a2f17c20eeb22e687")
 }
 
 resource DeriveModuleObKeyAstAnchor : GeneratedAstAnchor {
@@ -71,14 +81,14 @@ resource DeriveModuleObKeyAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:49605900b1a9ca8beabf0f4dc5d301501e9d6213fd7a727783998b81dfa2f1ed")
 }
 
-resource DeriveModuleSafeDigestAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/shape-1/proto/src/derive.ts#safeDigest")
-  fingerprint ast.semantic_subtree_v1("sha256:3123b61d89b56f3060aca8f3a3ac5eef770a542e1b7f13d3cb1878be91b88f08")
+resource DeriveModuleRefutedAtBaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/derive.ts#refutedAtBase")
+  fingerprint ast.semantic_subtree_v1("sha256:b989de4554f6cb78eccf23914434321c1e5ca5d36e1b456ccb105aa93f2d0f31")
 }
 
 resource DeriveModuleSeverityOfAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/derive.ts#severityOf")
-  fingerprint ast.semantic_subtree_v1("sha256:5876b7eae4ca7220b371fb7160ee5e95ac094ebf77fc0fcb8a1945a69c0023f2")
+  fingerprint ast.semantic_subtree_v1("sha256:2ee078780ca5bb7f4905597991bd4e3fb6a484a16e9763ea55b2215d9f53cf50")
 }
 
 resource DeriveModuleStmtOfAstAnchor : GeneratedAstAnchor {
@@ -88,21 +98,23 @@ resource DeriveModuleStmtOfAstAnchor : GeneratedAstAnchor {
 
 resource DeriveModuleTeethAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/derive.ts#teeth")
-  fingerprint ast.semantic_subtree_v1("sha256:4ad9f0db36021a744a1964b48f07876d625e74da02dd280045369e68152e4336")
+  fingerprint ast.semantic_subtree_v1("sha256:5cb63635906a35862077a43b3f6744bf1ef268ef4a39828a8b61650c62fd49d3")
+}
+
+resource DeriveModuleUnionManifestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/derive.ts#unionManifest")
+  fingerprint ast.semantic_subtree_v1("sha256:60c6872bf9eeb7caca7ce908285800fc9ae807f5b739e7cdbf5a9be5af024708")
 }
 
 component DeriveModule : GeneratedCandidate {
-  fn answerItemsSatisfied
-    source ts("experiments/shape-1/proto/src/derive.ts#answerItemsSatisfied")
+  fn answerItems
+    source ts("experiments/shape-1/proto/src/derive.ts#answerItems")
     effects unknown
   fn answerable
     source ts("experiments/shape-1/proto/src/derive.ts#answerable")
     effects unknown
   fn bindingOf
     source ts("experiments/shape-1/proto/src/derive.ts#bindingOf")
-    effects unknown
-  fn canonicalInput
-    source ts("experiments/shape-1/proto/src/derive.ts#canonicalInput")
     effects unknown
   fn dedupErrors
     source ts("experiments/shape-1/proto/src/derive.ts#dedupErrors")
@@ -113,11 +125,11 @@ component DeriveModule : GeneratedCandidate {
   fn dischargers
     source ts("experiments/shape-1/proto/src/derive.ts#dischargers")
     effects unknown
-  fn emptyEsf
-    source ts("experiments/shape-1/proto/src/derive.ts#emptyEsf")
+  fn emptyHealth
+    source ts("experiments/shape-1/proto/src/derive.ts#emptyHealth")
     effects unknown
-  fn exceptionAnswerSatisfied
-    source ts("experiments/shape-1/proto/src/derive.ts#exceptionAnswerSatisfied")
+  fn exceptionAnswer
+    source ts("experiments/shape-1/proto/src/derive.ts#exceptionAnswer")
     effects unknown
   fn exceptionMatches
     source ts("experiments/shape-1/proto/src/derive.ts#exceptionMatches")
@@ -125,14 +137,23 @@ component DeriveModule : GeneratedCandidate {
   fn invalid
     source ts("experiments/shape-1/proto/src/derive.ts#invalid")
     effects unknown
+  fn invertImplies
+    source ts("experiments/shape-1/proto/src/derive.ts#invertImplies")
+    effects unknown
+  fn isStructural
+    source ts("experiments/shape-1/proto/src/derive.ts#isStructural")
+    effects unknown
+  fn manMap
+    source ts("experiments/shape-1/proto/src/derive.ts#manMap")
+    effects unknown
   fn matchUnitSel
     source ts("experiments/shape-1/proto/src/derive.ts#matchUnitSel")
     effects unknown
   fn obKey
     source ts("experiments/shape-1/proto/src/derive.ts#obKey")
     effects unknown
-  fn safeDigest
-    source ts("experiments/shape-1/proto/src/derive.ts#safeDigest")
+  fn refutedAtBase
+    source ts("experiments/shape-1/proto/src/derive.ts#refutedAtBase")
     effects unknown
   fn severityOf
     source ts("experiments/shape-1/proto/src/derive.ts#severityOf")
@@ -143,14 +164,17 @@ component DeriveModule : GeneratedCandidate {
   fn teeth
     source ts("experiments/shape-1/proto/src/derive.ts#teeth")
     effects unknown
+  fn unionManifest
+    source ts("experiments/shape-1/proto/src/derive.ts#unionManifest")
+    effects unknown
 }
 
-relation DeriveModuleAnswerItemsSatisfiedGeneratedFromDeriveModuleAnswerItemsSatisfiedAstAnchor {
+relation DeriveModuleAnswerItemsGeneratedFromDeriveModuleAnswerItemsAstAnchor {
   kind generated_from
-  connects DeriveModule -> DeriveModuleAnswerItemsSatisfiedAstAnchor
-  roles { DeriveModule as generated, DeriveModuleAnswerItemsSatisfiedAstAnchor as syntax }
-  expects DeriveModuleAnswerItemsSatisfiedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6d3d42609c4d88cb84e85cff665d12156c7aef1a9a82286024f110718e3ecbb0")
-  summary "fn DeriveModule.answerItemsSatisfied generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#answerItemsSatisfied."
+  connects DeriveModule -> DeriveModuleAnswerItemsAstAnchor
+  roles { DeriveModule as generated, DeriveModuleAnswerItemsAstAnchor as syntax }
+  expects DeriveModuleAnswerItemsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1a2ad040c5baa0b628fb8d7be056c14bba4d97bb443f534cc8ca8b3a25d36701")
+  summary "fn DeriveModule.answerItems generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#answerItems."
 }
 
 relation DeriveModuleAnswerableGeneratedFromDeriveModuleAnswerableAstAnchor {
@@ -165,23 +189,15 @@ relation DeriveModuleBindingOfGeneratedFromDeriveModuleBindingOfAstAnchor {
   kind generated_from
   connects DeriveModule -> DeriveModuleBindingOfAstAnchor
   roles { DeriveModule as generated, DeriveModuleBindingOfAstAnchor as syntax }
-  expects DeriveModuleBindingOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:df31a5e9530589ce1d24324547c811f64753b4eefa8f2abc63bdf0b0be151ee8")
+  expects DeriveModuleBindingOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:99c724c5ff76a5d59bd1b17f0ed6a1f9a582393695ab455dcc642cd3f8a1a70c")
   summary "fn DeriveModule.bindingOf generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#bindingOf."
-}
-
-relation DeriveModuleCanonicalInputGeneratedFromDeriveModuleCanonicalInputAstAnchor {
-  kind generated_from
-  connects DeriveModule -> DeriveModuleCanonicalInputAstAnchor
-  roles { DeriveModule as generated, DeriveModuleCanonicalInputAstAnchor as syntax }
-  expects DeriveModuleCanonicalInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:faa24598a4044e1673f18bc4a9006bbd9142fbf7efbcce9251c55ce847d56450")
-  summary "fn DeriveModule.canonicalInput generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#canonicalInput."
 }
 
 relation DeriveModuleDedupErrorsGeneratedFromDeriveModuleDedupErrorsAstAnchor {
   kind generated_from
   connects DeriveModule -> DeriveModuleDedupErrorsAstAnchor
   roles { DeriveModule as generated, DeriveModuleDedupErrorsAstAnchor as syntax }
-  expects DeriveModuleDedupErrorsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f159b7e0f92b84777c75f42dc899f045ba2849c7b66364f5f76aa7b51419627a")
+  expects DeriveModuleDedupErrorsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d7468ad2a3206417e66fca0b4ba92ec14d8a98ae362de263363c3c9376c9f65a")
   summary "fn DeriveModule.dedupErrors generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#dedupErrors."
 }
 
@@ -189,7 +205,7 @@ relation DeriveModuleDeriveGeneratedFromDeriveModuleDeriveAstAnchor {
   kind generated_from
   connects DeriveModule -> DeriveModuleDeriveAstAnchor
   roles { DeriveModule as generated, DeriveModuleDeriveAstAnchor as syntax }
-  expects DeriveModuleDeriveAstAnchor fingerprint ast.semantic_subtree_v1("sha256:683614aa9af8fec072099bdadf1844221d3279ea0eb0ad29ca097ee8b99103ad")
+  expects DeriveModuleDeriveAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cd4415456629a17c75965efad49dfa72636495a5a22347677c5a0bdb1783b89b")
   summary "fn DeriveModule.derive generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#derive."
 }
 
@@ -197,31 +213,31 @@ relation DeriveModuleDischargersGeneratedFromDeriveModuleDischargersAstAnchor {
   kind generated_from
   connects DeriveModule -> DeriveModuleDischargersAstAnchor
   roles { DeriveModule as generated, DeriveModuleDischargersAstAnchor as syntax }
-  expects DeriveModuleDischargersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cd5d7106aff7566db73dc8cbbd8b793fe2b154e4fb8e23257730fdeae7363caf")
+  expects DeriveModuleDischargersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:51f05af8a76b9a9d5629a354bdf5178e42f65a2ff8b4377cfdb03d466d981218")
   summary "fn DeriveModule.dischargers generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#dischargers."
 }
 
-relation DeriveModuleEmptyEsfGeneratedFromDeriveModuleEmptyEsfAstAnchor {
+relation DeriveModuleEmptyHealthGeneratedFromDeriveModuleEmptyHealthAstAnchor {
   kind generated_from
-  connects DeriveModule -> DeriveModuleEmptyEsfAstAnchor
-  roles { DeriveModule as generated, DeriveModuleEmptyEsfAstAnchor as syntax }
-  expects DeriveModuleEmptyEsfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ce45fa2fd942338e2d374d47c59d5e34c57a29054cedcca3b8e4788f3e29abae")
-  summary "fn DeriveModule.emptyEsf generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#emptyEsf."
+  connects DeriveModule -> DeriveModuleEmptyHealthAstAnchor
+  roles { DeriveModule as generated, DeriveModuleEmptyHealthAstAnchor as syntax }
+  expects DeriveModuleEmptyHealthAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3bca3e880b839c4509d45229f070ecad508430560fa1bfb897536e47224d55cc")
+  summary "fn DeriveModule.emptyHealth generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#emptyHealth."
 }
 
-relation DeriveModuleExceptionAnswerSatisfiedGeneratedFromDeriveModuleExceptionAnswerSatisfiedAstAnchor {
+relation DeriveModuleExceptionAnswerGeneratedFromDeriveModuleExceptionAnswerAstAnchor {
   kind generated_from
-  connects DeriveModule -> DeriveModuleExceptionAnswerSatisfiedAstAnchor
-  roles { DeriveModule as generated, DeriveModuleExceptionAnswerSatisfiedAstAnchor as syntax }
-  expects DeriveModuleExceptionAnswerSatisfiedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3f04cb410c6726c72546928ee71d33cf03aa70cfdff6fdba79f3ed82e71173fc")
-  summary "fn DeriveModule.exceptionAnswerSatisfied generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#exceptionAnswerSatisfied."
+  connects DeriveModule -> DeriveModuleExceptionAnswerAstAnchor
+  roles { DeriveModule as generated, DeriveModuleExceptionAnswerAstAnchor as syntax }
+  expects DeriveModuleExceptionAnswerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a8e1a25d98cba2db42cad36938ecfa044d2da846f07d34345fb208f1878185ba")
+  summary "fn DeriveModule.exceptionAnswer generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#exceptionAnswer."
 }
 
 relation DeriveModuleExceptionMatchesGeneratedFromDeriveModuleExceptionMatchesAstAnchor {
   kind generated_from
   connects DeriveModule -> DeriveModuleExceptionMatchesAstAnchor
   roles { DeriveModule as generated, DeriveModuleExceptionMatchesAstAnchor as syntax }
-  expects DeriveModuleExceptionMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dfc952b207072abf408986fa3f20d6da8d589930a768953068d003f8787bbe33")
+  expects DeriveModuleExceptionMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:20a853a9a8b142ff87a74a22fe83670cf57653036da7877a480815f0ea1b29e1")
   summary "fn DeriveModule.exceptionMatches generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#exceptionMatches."
 }
 
@@ -229,15 +245,39 @@ relation DeriveModuleInvalidGeneratedFromDeriveModuleInvalidAstAnchor {
   kind generated_from
   connects DeriveModule -> DeriveModuleInvalidAstAnchor
   roles { DeriveModule as generated, DeriveModuleInvalidAstAnchor as syntax }
-  expects DeriveModuleInvalidAstAnchor fingerprint ast.semantic_subtree_v1("sha256:10536b396e635885175bbd65d07d94b992f8b0e4d430ca118062f0b9b70271ba")
+  expects DeriveModuleInvalidAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cf22868bab55e4c0d5d545f62ab311278972653cc6c41686a444d0e466b7f39e")
   summary "fn DeriveModule.invalid generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#invalid."
+}
+
+relation DeriveModuleInvertImpliesGeneratedFromDeriveModuleInvertImpliesAstAnchor {
+  kind generated_from
+  connects DeriveModule -> DeriveModuleInvertImpliesAstAnchor
+  roles { DeriveModule as generated, DeriveModuleInvertImpliesAstAnchor as syntax }
+  expects DeriveModuleInvertImpliesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fbd336ec7b774ff28f7d9479270d5c4cc8c3d5b2bcec716edf0ce9a9a273e3d9")
+  summary "fn DeriveModule.invertImplies generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#invertImplies."
+}
+
+relation DeriveModuleIsStructuralGeneratedFromDeriveModuleIsStructuralAstAnchor {
+  kind generated_from
+  connects DeriveModule -> DeriveModuleIsStructuralAstAnchor
+  roles { DeriveModule as generated, DeriveModuleIsStructuralAstAnchor as syntax }
+  expects DeriveModuleIsStructuralAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c12292dc5fe2d41a7c161197b68cf97a1208700da85112b3d8db0a61344c95f8")
+  summary "fn DeriveModule.isStructural generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#isStructural."
+}
+
+relation DeriveModuleManMapGeneratedFromDeriveModuleManMapAstAnchor {
+  kind generated_from
+  connects DeriveModule -> DeriveModuleManMapAstAnchor
+  roles { DeriveModule as generated, DeriveModuleManMapAstAnchor as syntax }
+  expects DeriveModuleManMapAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fda4c9a2a07cdc4e51e60922e0319da6d5ec3eafb2e497d6e28680f451859fff")
+  summary "fn DeriveModule.manMap generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#manMap."
 }
 
 relation DeriveModuleMatchUnitSelGeneratedFromDeriveModuleMatchUnitSelAstAnchor {
   kind generated_from
   connects DeriveModule -> DeriveModuleMatchUnitSelAstAnchor
   roles { DeriveModule as generated, DeriveModuleMatchUnitSelAstAnchor as syntax }
-  expects DeriveModuleMatchUnitSelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8a54122fa7c68be8eb30a1d01df0734275592bb0ce0c1180efdf8e918141075f")
+  expects DeriveModuleMatchUnitSelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9540590262a1c3286936cfeea26ce60593242ed9d4f5cb6a2f17c20eeb22e687")
   summary "fn DeriveModule.matchUnitSel generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#matchUnitSel."
 }
 
@@ -249,19 +289,19 @@ relation DeriveModuleObKeyGeneratedFromDeriveModuleObKeyAstAnchor {
   summary "fn DeriveModule.obKey generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#obKey."
 }
 
-relation DeriveModuleSafeDigestGeneratedFromDeriveModuleSafeDigestAstAnchor {
+relation DeriveModuleRefutedAtBaseGeneratedFromDeriveModuleRefutedAtBaseAstAnchor {
   kind generated_from
-  connects DeriveModule -> DeriveModuleSafeDigestAstAnchor
-  roles { DeriveModule as generated, DeriveModuleSafeDigestAstAnchor as syntax }
-  expects DeriveModuleSafeDigestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3123b61d89b56f3060aca8f3a3ac5eef770a542e1b7f13d3cb1878be91b88f08")
-  summary "fn DeriveModule.safeDigest generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#safeDigest."
+  connects DeriveModule -> DeriveModuleRefutedAtBaseAstAnchor
+  roles { DeriveModule as generated, DeriveModuleRefutedAtBaseAstAnchor as syntax }
+  expects DeriveModuleRefutedAtBaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b989de4554f6cb78eccf23914434321c1e5ca5d36e1b456ccb105aa93f2d0f31")
+  summary "fn DeriveModule.refutedAtBase generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#refutedAtBase."
 }
 
 relation DeriveModuleSeverityOfGeneratedFromDeriveModuleSeverityOfAstAnchor {
   kind generated_from
   connects DeriveModule -> DeriveModuleSeverityOfAstAnchor
   roles { DeriveModule as generated, DeriveModuleSeverityOfAstAnchor as syntax }
-  expects DeriveModuleSeverityOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5876b7eae4ca7220b371fb7160ee5e95ac094ebf77fc0fcb8a1945a69c0023f2")
+  expects DeriveModuleSeverityOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2ee078780ca5bb7f4905597991bd4e3fb6a484a16e9763ea55b2215d9f53cf50")
   summary "fn DeriveModule.severityOf generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#severityOf."
 }
 
@@ -277,8 +317,16 @@ relation DeriveModuleTeethGeneratedFromDeriveModuleTeethAstAnchor {
   kind generated_from
   connects DeriveModule -> DeriveModuleTeethAstAnchor
   roles { DeriveModule as generated, DeriveModuleTeethAstAnchor as syntax }
-  expects DeriveModuleTeethAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ad9f0db36021a744a1964b48f07876d625e74da02dd280045369e68152e4336")
+  expects DeriveModuleTeethAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5cb63635906a35862077a43b3f6744bf1ef268ef4a39828a8b61650c62fd49d3")
   summary "fn DeriveModule.teeth generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#teeth."
+}
+
+relation DeriveModuleUnionManifestGeneratedFromDeriveModuleUnionManifestAstAnchor {
+  kind generated_from
+  connects DeriveModule -> DeriveModuleUnionManifestAstAnchor
+  roles { DeriveModule as generated, DeriveModuleUnionManifestAstAnchor as syntax }
+  expects DeriveModuleUnionManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:60c6872bf9eeb7caca7ce908285800fc9ae807f5b739e7cdbf5a9be5af024708")
+  summary "fn DeriveModule.unionManifest generated from typescript function_declaration at experiments/shape-1/proto/src/derive.ts#unionManifest."
 }
 
 implementation DeriveModuleImpl {

@@ -39,7 +39,20 @@ const KEY: Record<string, Signer> = {
 export const MANIFEST_EX1 = signerFromSeed("0d");
 export const RELAY_EX3 = KEY["tooling::reviews"] as Signer;
 const PRESENCE_SOUND_OBSERVERS = new Set(["audit::sqlEffects", "tooling::tsClockScan"]);
-const SCRIPT_EXTS = ["sh", "bash", "zsh", "fish", "py", "rb", "pl", "php", "ps1", "bat", "cmd", "sql"];
+const SCRIPT_EXTS = [
+  "sh",
+  "bash",
+  "zsh",
+  "fish",
+  "py",
+  "rb",
+  "pl",
+  "php",
+  "ps1",
+  "bat",
+  "cmd",
+  "sql"
+];
 
 type Env = { payloadType: string; payload: string; signatures: { keyid: string; sig: string }[] };
 const decode = (env: Env): Statement =>

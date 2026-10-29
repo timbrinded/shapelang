@@ -23,7 +23,7 @@ resource ResourceCodeModuleCanonSqlTableAstAnchor : GeneratedAstAnchor {
 
 resource ResourceCodeModuleCarriersAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/resource-code.ts#carriers")
-  fingerprint ast.semantic_subtree_v1("sha256:df37a070d2ce6e008e10817f5d8dcfff0c83eca6bb6611d215da8b9dd7228e6e")
+  fingerprint ast.semantic_subtree_v1("sha256:bd3e73b669d3779ba84c546ab6e23a0a91c6abccd7d2deb1965f6684f22562c6")
 }
 
 resource ResourceCodeModuleChannelMatchesAstAnchor : GeneratedAstAnchor {
@@ -109,7 +109,7 @@ relation ResourceCodeModuleCarriersGeneratedFromResourceCodeModuleCarriersAstAnc
   kind generated_from
   connects ResourceCodeModule -> ResourceCodeModuleCarriersAstAnchor
   roles { ResourceCodeModule as generated, ResourceCodeModuleCarriersAstAnchor as syntax }
-  expects ResourceCodeModuleCarriersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:df37a070d2ce6e008e10817f5d8dcfff0c83eca6bb6611d215da8b9dd7228e6e")
+  expects ResourceCodeModuleCarriersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bd3e73b669d3779ba84c546ab6e23a0a91c6abccd7d2deb1965f6684f22562c6")
   summary "fn ResourceCodeModule.carriers generated from typescript function_declaration at experiments/shape-1/proto/src/resource-code.ts#carriers."
 }
 

@@ -111,7 +111,15 @@ function lex(text: string): Tok[] {
 }
 
 const TIERS: Tier[] = ["low", "normal", "critical", "final"];
-const PARAM_KINDS: ParamKind[] = ["resource", "component", "unit", "effect", "kind", "value", "code"];
+const PARAM_KINDS: ParamKind[] = [
+  "resource",
+  "component",
+  "unit",
+  "effect",
+  "kind",
+  "value",
+  "code"
+];
 const NOTE_KINDS: NoteKind[] = ["rationale", "memory", "decision"];
 const REC_KINDS: RecKind[] = ["observation", "test", "proof", "judgment", "equivalence"];
 const ORDER_DIRS: OrderDir[] = ["leq", "geq", "subset", "superset", "equal"];
@@ -145,7 +153,10 @@ class P {
   }
   fail(msg: string): never {
     const t = this.peek();
-    throw new ParseError(`${msg}${t ? ` at ${JSON.stringify(t.v)}` : " at end of file"}`, this.line());
+    throw new ParseError(
+      `${msg}${t ? ` at ${JSON.stringify(t.v)}` : " at end of file"}`,
+      this.line()
+    );
   }
   isId(v?: string, o = 0): boolean {
     const t = this.peek(o);
@@ -346,7 +357,8 @@ function evidence(p: P): EvidenceSpec {
   if (p.isId("at")) {
     p.next();
     const a = p.id();
-    if (a !== "unit" && a !== "contract" && a !== "trust") p.fail("expected unit, contract or trust");
+    if (a !== "unit" && a !== "contract" && a !== "trust")
+      p.fail("expected unit, contract or trust");
     ev.at = a;
   }
   if (p.isId("by")) {
@@ -500,7 +512,8 @@ function unit(p: P): UnitDecl {
         u.effects = { mode: "unknown" };
         return;
       }
-      if (mode !== "complete" && mode !== "partial") p.fail("expected complete, partial or unknown");
+      if (mode !== "complete" && mode !== "partial")
+        p.fail("expected complete, partial or unknown");
       const atoms: SummaryEntry[] = [];
       block(p, () => {
         const a = p.atom();
@@ -546,7 +559,8 @@ function component(p: P, boundary: boolean): Decl {
       if (p.isId("none")) {
         p.next();
         d.grants = "none";
-      } else d.grants = [...(Array.isArray(d.grants) ? d.grants : []), ...p.commaList(() => p.atom())];
+      } else
+        d.grants = [...(Array.isArray(d.grants) ? d.grants : []), ...p.commaList(() => p.atom())];
     } else if (p.isId("relations")) {
       p.next();
       p.id("complete");
@@ -638,7 +652,10 @@ function decl(p: P): Decl {
       const from = p.id();
       p.id("to");
       const to = p.id();
-      if ((from !== "component" && from !== "resource") || (to !== "component" && to !== "resource"))
+      if (
+        (from !== "component" && from !== "resource") ||
+        (to !== "component" && to !== "resource")
+      )
         p.fail("kinds connect components and resources");
       return { decl: "kind", name, from, to };
     }
@@ -1006,7 +1023,8 @@ function decl(p: P): Decl {
         if (p.isId("tier")) {
           p.next();
           const t = p.id();
-          if (t !== "low" && t !== "normal" && t !== "critical") p.fail("expected low, normal or critical");
+          if (t !== "low" && t !== "normal" && t !== "critical")
+            p.fail("expected low, normal or critical");
           const tp: TierPolicySrc = {};
           block(p, () => {
             if (p.isId("floor")) {
@@ -1054,7 +1072,10 @@ function decl(p: P): Decl {
 /** Parses one shape file. Throws ParseError when it does not parse (E-parse). */
 export function parseShapeFile(path: string, text: string): SourceModule {
   const p = new P(lex(text));
-  let module = path.replace(/^shape\//, "").replace(/\.shape$/, "").replace(/\//g, "::");
+  let module = path
+    .replace(/^shape\//, "")
+    .replace(/\.shape$/, "")
+    .replace(/\//g, "::");
   if (p.isId("module")) {
     p.next();
     module = p.qname();

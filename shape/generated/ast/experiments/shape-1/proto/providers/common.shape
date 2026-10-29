@@ -68,7 +68,7 @@ resource CommonModuleRevParseAstAnchor : GeneratedAstAnchor {
 
 resource CommonModuleSelfValidateAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/providers/common.ts#selfValidate")
-  fingerprint ast.semantic_subtree_v1("sha256:9ee95641dbeccee7abcbccb701d7218281086af8f47669edeb29928fce2bd676")
+  fingerprint ast.semantic_subtree_v1("sha256:fbf1b5308f952e2577ce023714e95fc7e51dc7bdd746f00ee9d26e2573f01959")
 }
 
 resource CommonModuleShareAstAnchor : GeneratedAstAnchor {
@@ -261,7 +261,7 @@ relation CommonModuleSelfValidateGeneratedFromCommonModuleSelfValidateAstAnchor 
   kind generated_from
   connects CommonModule -> CommonModuleSelfValidateAstAnchor
   roles { CommonModule as generated, CommonModuleSelfValidateAstAnchor as syntax }
-  expects CommonModuleSelfValidateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9ee95641dbeccee7abcbccb701d7218281086af8f47669edeb29928fce2bd676")
+  expects CommonModuleSelfValidateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fbf1b5308f952e2577ce023714e95fc7e51dc7bdd746f00ee9d26e2573f01959")
   summary "fn CommonModule.selfValidate generated from typescript function_declaration at experiments/shape-1/proto/providers/common.ts#selfValidate."
 }
 

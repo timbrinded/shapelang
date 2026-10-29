@@ -8,12 +8,28 @@ trait GeneratedCandidate {
 
 resource CoverageModuleComputeCoverageAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/coverage.ts#computeCoverage")
-  fingerprint ast.semantic_subtree_v1("sha256:e13b4ac391dc223518477887202c2c8955b6937cc401ce832d169b5b3f8066cb")
+  fingerprint ast.semantic_subtree_v1("sha256:ffb3734e688449c5b0fb7adfdfbe1ad992bab75791dbe13c4f8ab1586e964366")
+}
+
+resource CoverageModuleObservableAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/coverage.ts#observable")
+  fingerprint ast.semantic_subtree_v1("sha256:280bb66697a0d2f793ea6ddb2d4164dcf301846bde46cf9cbad06e1423c00976")
+}
+
+resource CoverageModuleTierStarAtAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/coverage.ts#tierStarAt")
+  fingerprint ast.semantic_subtree_v1("sha256:38bf992fb4802198bde7489c3122d18cc3fb2443d4d8ef55c335acc52cbc1802")
 }
 
 component CoverageModule : GeneratedCandidate {
   fn computeCoverage
     source ts("experiments/shape-1/proto/src/coverage.ts#computeCoverage")
+    effects unknown
+  fn observable
+    source ts("experiments/shape-1/proto/src/coverage.ts#observable")
+    effects unknown
+  fn tierStarAt
+    source ts("experiments/shape-1/proto/src/coverage.ts#tierStarAt")
     effects unknown
 }
 
@@ -21,8 +37,24 @@ relation CoverageModuleComputeCoverageGeneratedFromCoverageModuleComputeCoverage
   kind generated_from
   connects CoverageModule -> CoverageModuleComputeCoverageAstAnchor
   roles { CoverageModule as generated, CoverageModuleComputeCoverageAstAnchor as syntax }
-  expects CoverageModuleComputeCoverageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e13b4ac391dc223518477887202c2c8955b6937cc401ce832d169b5b3f8066cb")
+  expects CoverageModuleComputeCoverageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ffb3734e688449c5b0fb7adfdfbe1ad992bab75791dbe13c4f8ab1586e964366")
   summary "fn CoverageModule.computeCoverage generated from typescript function_declaration at experiments/shape-1/proto/src/coverage.ts#computeCoverage."
+}
+
+relation CoverageModuleObservableGeneratedFromCoverageModuleObservableAstAnchor {
+  kind generated_from
+  connects CoverageModule -> CoverageModuleObservableAstAnchor
+  roles { CoverageModule as generated, CoverageModuleObservableAstAnchor as syntax }
+  expects CoverageModuleObservableAstAnchor fingerprint ast.semantic_subtree_v1("sha256:280bb66697a0d2f793ea6ddb2d4164dcf301846bde46cf9cbad06e1423c00976")
+  summary "fn CoverageModule.observable generated from typescript function_declaration at experiments/shape-1/proto/src/coverage.ts#observable."
+}
+
+relation CoverageModuleTierStarAtGeneratedFromCoverageModuleTierStarAtAstAnchor {
+  kind generated_from
+  connects CoverageModule -> CoverageModuleTierStarAtAstAnchor
+  roles { CoverageModule as generated, CoverageModuleTierStarAtAstAnchor as syntax }
+  expects CoverageModuleTierStarAtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:38bf992fb4802198bde7489c3122d18cc3fb2443d4d8ef55c335acc52cbc1802")
+  summary "fn CoverageModule.tierStarAt generated from typescript function_declaration at experiments/shape-1/proto/src/coverage.ts#tierStarAt."
 }
 
 implementation CoverageModuleImpl {

@@ -1,0 +1,113 @@
+module shape.generated.ast.experiments.shape_1.trials.DRT7.gate7
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource Gate7ModuleArgAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/gate7.ts#arg")
+  fingerprint ast.semantic_subtree_v1("sha256:dae89e3ff04b6b314e58af1afe04b4fe0159a389057370eeef2f7c97ca6e5192")
+}
+
+resource Gate7ModuleCmdReportAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/gate7.ts#cmdReport")
+  fingerprint ast.semantic_subtree_v1("sha256:6d66d626889cea17d3ea7abf28565bcb158a9dc525b54c7a73274a6cb51029df")
+}
+
+resource Gate7ModuleCmdRunAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/gate7.ts#cmdRun")
+  fingerprint ast.semantic_subtree_v1("sha256:95ea139317e4c5a72a54bea7b51ef86441518d3f9ca3659814411f1bb8ea9111")
+}
+
+resource Gate7ModuleReadCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/gate7.ts#readCase")
+  fingerprint ast.semantic_subtree_v1("sha256:aa8af7e795ee4ce7752cf1d42a32a5958f9991924f0c06e0c6ce5ce3e07a4821")
+}
+
+resource Gate7ModuleRunOneAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/gate7.ts#runOne")
+  fingerprint ast.semantic_subtree_v1("sha256:7c26e892b1cfd1d893ac6c6356771da1587a57f27a25d9729b5e122b92411697")
+}
+
+resource Gate7ModuleStatsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/gate7.ts#stats")
+  fingerprint ast.semantic_subtree_v1("sha256:2aa7590620659e16d3cb7b26fa7cf4ff3b39b4dc8dbf0924e28ef98b47e0cfe4")
+}
+
+component Gate7Module : GeneratedCandidate {
+  fn arg
+    source ts("experiments/shape-1/trials/DRT7/gate7.ts#arg")
+    effects unknown
+  fn cmdReport
+    source ts("experiments/shape-1/trials/DRT7/gate7.ts#cmdReport")
+    effects unknown
+  fn cmdRun
+    source ts("experiments/shape-1/trials/DRT7/gate7.ts#cmdRun")
+    effects unknown
+  fn readCase
+    source ts("experiments/shape-1/trials/DRT7/gate7.ts#readCase")
+    effects unknown
+  fn runOne
+    source ts("experiments/shape-1/trials/DRT7/gate7.ts#runOne")
+    effects unknown
+  fn stats
+    source ts("experiments/shape-1/trials/DRT7/gate7.ts#stats")
+    effects unknown
+}
+
+relation Gate7ModuleArgGeneratedFromGate7ModuleArgAstAnchor {
+  kind generated_from
+  connects Gate7Module -> Gate7ModuleArgAstAnchor
+  roles { Gate7Module as generated, Gate7ModuleArgAstAnchor as syntax }
+  expects Gate7ModuleArgAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dae89e3ff04b6b314e58af1afe04b4fe0159a389057370eeef2f7c97ca6e5192")
+  summary "fn Gate7Module.arg generated from typescript function_declaration at experiments/shape-1/trials/DRT7/gate7.ts#arg."
+}
+
+relation Gate7ModuleCmdReportGeneratedFromGate7ModuleCmdReportAstAnchor {
+  kind generated_from
+  connects Gate7Module -> Gate7ModuleCmdReportAstAnchor
+  roles { Gate7Module as generated, Gate7ModuleCmdReportAstAnchor as syntax }
+  expects Gate7ModuleCmdReportAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6d66d626889cea17d3ea7abf28565bcb158a9dc525b54c7a73274a6cb51029df")
+  summary "fn Gate7Module.cmdReport generated from typescript function_declaration at experiments/shape-1/trials/DRT7/gate7.ts#cmdReport."
+}
+
+relation Gate7ModuleCmdRunGeneratedFromGate7ModuleCmdRunAstAnchor {
+  kind generated_from
+  connects Gate7Module -> Gate7ModuleCmdRunAstAnchor
+  roles { Gate7Module as generated, Gate7ModuleCmdRunAstAnchor as syntax }
+  expects Gate7ModuleCmdRunAstAnchor fingerprint ast.semantic_subtree_v1("sha256:95ea139317e4c5a72a54bea7b51ef86441518d3f9ca3659814411f1bb8ea9111")
+  summary "fn Gate7Module.cmdRun generated from typescript function_declaration at experiments/shape-1/trials/DRT7/gate7.ts#cmdRun."
+}
+
+relation Gate7ModuleReadCaseGeneratedFromGate7ModuleReadCaseAstAnchor {
+  kind generated_from
+  connects Gate7Module -> Gate7ModuleReadCaseAstAnchor
+  roles { Gate7Module as generated, Gate7ModuleReadCaseAstAnchor as syntax }
+  expects Gate7ModuleReadCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aa8af7e795ee4ce7752cf1d42a32a5958f9991924f0c06e0c6ce5ce3e07a4821")
+  summary "fn Gate7Module.readCase generated from typescript function_declaration at experiments/shape-1/trials/DRT7/gate7.ts#readCase."
+}
+
+relation Gate7ModuleRunOneGeneratedFromGate7ModuleRunOneAstAnchor {
+  kind generated_from
+  connects Gate7Module -> Gate7ModuleRunOneAstAnchor
+  roles { Gate7Module as generated, Gate7ModuleRunOneAstAnchor as syntax }
+  expects Gate7ModuleRunOneAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7c26e892b1cfd1d893ac6c6356771da1587a57f27a25d9729b5e122b92411697")
+  summary "fn Gate7Module.runOne generated from typescript function_declaration at experiments/shape-1/trials/DRT7/gate7.ts#runOne."
+}
+
+relation Gate7ModuleStatsGeneratedFromGate7ModuleStatsAstAnchor {
+  kind generated_from
+  connects Gate7Module -> Gate7ModuleStatsAstAnchor
+  roles { Gate7Module as generated, Gate7ModuleStatsAstAnchor as syntax }
+  expects Gate7ModuleStatsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2aa7590620659e16d3cb7b26fa7cf4ff3b39b4dc8dbf0924e28ef98b47e0cfe4")
+  summary "fn Gate7Module.stats generated from typescript function_declaration at experiments/shape-1/trials/DRT7/gate7.ts#stats."
+}
+
+implementation Gate7ModuleImpl {
+  paths {
+    "experiments/shape-1/trials/DRT7/gate7.ts"
+  }
+  conforms_to Gate7Module
+}

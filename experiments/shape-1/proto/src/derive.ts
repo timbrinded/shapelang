@@ -263,8 +263,7 @@ export function derive(input: CheckInput): CheckOutput {
   const baseUnreadable = hasBase && !!v.base?.unreadable;
   if (hasBase && v.base && !v.base.unreadable)
     base = elaborate(v.base.source, { lenient: true, now, std: v.base.std });
-  const emptyBase =
-    !!base && (v.base?.source?.modules ?? []).filter((m) => !m.pack).length === 0;
+  const emptyBase = !!base && (v.base?.source?.modules ?? []).filter((m) => !m.pack).length === 0;
   const baseDefects = sortedUniq([
     ...(v.base?.defects ?? []).map((d) => `${d.code} ${d.subject}`),
     ...(base?.errors ?? []).map((e) => `${e.code} ${e.subject}`)
@@ -300,7 +299,8 @@ export function derive(input: CheckInput): CheckOutput {
   const emptyEsf = elaborate({ v: "shape.source.v1", modules: [] }, { lenient: true, now });
   const provs = providerGovernance(baseUnreadable ? emptyEsf : gov, head);
   const authenticated = new Map<string, string>();
-  for (const g of provs.values()) if (g.authenticated && g.base && g.identity) authenticated.set(g.q, g.identity);
+  for (const g of provs.values())
+    if (g.authenticated && g.base && g.identity) authenticated.set(g.q, g.identity);
   const actorsMap = new Map(
     gov.actors.map((a) => [a.q, { identities: a.identities, kind: a.kind, operator: a.operator }])
   );
@@ -370,13 +370,21 @@ export function derive(input: CheckInput): CheckOutput {
   // head globs of two components with intersecting languages (A.3.3.6)
   {
     const cr = computeCells(
-      Wh.globOwners.map((o) => ({ side: "h" as const, glob: o.glob, owner: o.owner, except: o.except }))
+      Wh.globOwners.map((o) => ({
+        side: "h" as const,
+        glob: o.glob,
+        owner: o.owner,
+        except: o.except
+      }))
     );
     for (const c of cr.cells)
       if (Array.isArray(c.h))
         errors.push({
           code: "E-overlap",
-          subject: c.h.map((w) => `component ${posComp(w)}`).sort(cmpStr).join(" "),
+          subject: c.h
+            .map((w) => `component ${posComp(w)}`)
+            .sort(cmpStr)
+            .join(" "),
           message: `equally specific globs of ${c.h.join(" and ")} match ${c.example}`,
           causes: [],
           dischargers: []
@@ -529,7 +537,13 @@ export function derive(input: CheckInput): CheckOutput {
       if (rho.has(u.q)) continue;
       const comp = rho.get(u.component);
       const hq = comp ? `${comp}.${u.name}` : null;
-      if (comp && comp !== u.component && hq && head.units.some((x) => x.q === hq) && !taken.has(hq)) {
+      if (
+        comp &&
+        comp !== u.component &&
+        hq &&
+        head.units.some((x) => x.q === hq) &&
+        !taken.has(hq)
+      ) {
         rho.set(u.q, hq);
         taken.add(hq);
         renames.push({ base: u.q, head: hq, rule: "component" });
@@ -551,7 +565,8 @@ export function derive(input: CheckInput): CheckOutput {
     for (const u of base.units) {
       if (rho.has(u.q) || hints.has(u.q)) continue;
       const comp = hints.get(u.component);
-      if (comp && head.units.some((x) => x.q === `${comp}.${u.name}`)) hints.set(u.q, `${comp}.${u.name}`);
+      if (comp && head.units.some((x) => x.q === `${comp}.${u.name}`))
+        hints.set(u.q, `${comp}.${u.name}`);
     }
     for (const h of hi) {
       if (!h.was) continue;
@@ -583,7 +598,8 @@ export function derive(input: CheckInput): CheckOutput {
   );
   const claimImplies = new Map<string, Set<string>>();
   for (const r of records) {
-    if (r.shape.kind !== "equivalence" || r.shape.pair?.space !== "claim" || !contributing(r)) continue;
+    if (r.shape.kind !== "equivalence" || r.shape.pair?.space !== "claim" || !contributing(r))
+      continue;
     const { from, to } = r.shape.pair;
     claimImplies.set(from, new Set([...(claimImplies.get(from) ?? []), to]));
     if (r.shape.result === "equivalent")
@@ -705,7 +721,9 @@ export function derive(input: CheckInput): CheckOutput {
   const obs = observedWorld(records, Mh, Mh.revision, provs, pc, equiv, (g) => g.presenceA);
   ctx.obsEntries = obs.entries;
   const decl = declaredFacts(ctx);
-  const facts: WFact[] = [...decl, ...obs.facts, ...hatchFacts(Mh)].sort((a, b) => cmpStr(a.fid, b.fid));
+  const facts: WFact[] = [...decl, ...obs.facts, ...hatchFacts(Mh)].sort((a, b) =>
+    cmpStr(a.fid, b.fid)
+  );
   ctx.facts = facts;
   ctx.factById = new Map(facts.map((f) => [f.fid, f]));
   // facts reported by usable base-revision entries (A.7.3.1, A.16.6(c))
@@ -773,9 +791,15 @@ export function derive(input: CheckInput): CheckOutput {
   const reqIdsOver = (W: World, c: Claim): string[] => {
     const tierB = c.tier;
     const floor = tierPolicy(base?.policy ?? policy, tierB).floor;
-    const req = c.requirement ?? { level: "declared" as const, judged: false, pins: [], projection: "unit" as const };
+    const req = c.requirement ?? {
+      level: "declared" as const,
+      judged: false,
+      pins: [],
+      projection: "unit" as const
+    };
     const level = levelRank(req.level) >= levelRank(floor) ? req.level : floor;
-    const kind = level !== "declared" && level !== "none" ? "test" : req.judged ? "judgment" : "test";
+    const kind =
+      level !== "declared" && level !== "none" ? "test" : req.judged ? "judgment" : "test";
     const proj = kind === "test" ? (req.projection === "trust" ? "trust" : "unit") : req.projection;
     const save = ctx.Wh;
     ctx.Wh = W;
@@ -826,7 +850,8 @@ export function derive(input: CheckInput): CheckOutput {
     };
     const fwd = runPass(fwdEnv);
     parts = fwd.parts;
-    for (const [b, hs] of fwd.hA) for (const h of hs) ctx.hAOf.set(h, sortedUniq([...(ctx.hAOf.get(h) ?? []), b]));
+    for (const [b, hs] of fwd.hA)
+      for (const h of hs) ctx.hAOf.set(h, sortedUniq([...(ctx.hAOf.get(h) ?? []), b]));
     // reverse pass: base and head exchanged over the union code (A.8.1.3 [D17])
     const Mu = unionManifest(Mh, Mb as ManifestIndex);
     const rWb = buildWorld(head, Mu, { side: "b", baseMan: Mh });
@@ -878,7 +903,9 @@ export function derive(input: CheckInput): CheckOutput {
   const own = (m: ManifestIndex | null, id: string, p: string): string | null =>
     m?.ids.get(id)?.digests.get(p) ?? null;
   const finestCode = (affected: string[]): CodeRow[] =>
-    affected.filter((x) => finest.has(x)).map((x) => [x, "own", own(Mb, x, "own"), own(Mh, x, "own")]);
+    affected
+      .filter((x) => finest.has(x))
+      .map((x) => [x, "own", own(Mb, x, "own"), own(Mh, x, "own")]);
   const blank = (): Omit<
     Ob,
     "kind" | "key" | "claim" | "subject" | "tier" | "owner" | "affected" | "code"
@@ -955,7 +982,13 @@ export function derive(input: CheckInput): CheckOutput {
       counterexample: cx,
       exploited: false,
       final: tier === "final",
-      causes: [{ type: "base-claim", id: subject, text: `${qs.join(", ")}: ${deltaL.slice(0, 3).join("; ")}` }],
+      causes: [
+        {
+          type: "base-claim",
+          id: subject,
+          text: `${qs.join(", ")}: ${deltaL.slice(0, 3).join("; ")}`
+        }
+      ],
       message: `${subject}: ${deltaL.slice(0, 4).join("; ")} (${qs.join(", ")}), at ${affected.filter((a) => !a.startsWith("cell:")).length} files and ${affected.filter((a) => a.startsWith("cell:")).length} regions.`,
       parts: ps,
       binding: bindingOf(key, affected, code, deltaL)
@@ -1029,14 +1062,16 @@ export function derive(input: CheckInput): CheckOutput {
       // the head attribution, for the head atom (A.6.2.3)
       if (mode !== "audit") return null;
       let t: Tier | null = null;
-      for (const pos of Wh.attAll(x)) for (const c of excludingClaims(Wh, pos, atomH)) t = t ? maxTier(t, c.tier) : c.tier;
+      for (const pos of Wh.attAll(x))
+        for (const c of excludingClaims(Wh, pos, atomH)) t = t ? maxTier(t, c.tier) : c.tier;
       return t;
     }
     let atomB: string | null = null;
     if (f.type === "effect" && f.verb && f.resource) {
       const r = Wb.resOfCode.get(f.resource);
       atomB = r ? `${f.verb}<${r}>` : null;
-    } else if (f.type === "hatch" && f.kind) atomB = liftHatch(Wb, f.kind, Mh.ids.get(x)?.lang ?? "");
+    } else if (f.type === "hatch" && f.kind)
+      atomB = liftHatch(Wb, f.kind, Mh.ids.get(x)?.lang ?? "");
     else if (f.declared && f.atom) {
       // a declared summary atom names its resource by its head Q: the base shape reads it as
       // ρ⁻¹ of that resource, or as itself when the base has a resource of that name; Lvl_b at
@@ -1053,7 +1088,9 @@ export function derive(input: CheckInput): CheckOutput {
       for (const c of excludingClaims(Wb, pos, atomB)) {
         let ct: Tier | null = c.tier;
         if (ctx.finalAnswered.has(c.fp)) {
-          const hs = (heirs.get(c.fp) ?? []).map((h) => headClaims.get(h)).filter((y): y is Claim => !!y);
+          const hs = (heirs.get(c.fp) ?? [])
+            .map((h) => headClaims.get(h))
+            .filter((y): y is Claim => !!y);
           ct = hs.length === 0 ? null : maxTier(...hs.map((y) => y.tier));
         }
         if (ct) t = t ? maxTier(t, ct) : ct;
@@ -1066,11 +1103,18 @@ export function derive(input: CheckInput): CheckOutput {
     ...evalStructure(ctx, edges, errors)
   ];
   for (const c of contras)
-    if (c.claim.op !== "effect.forbid" && c.claim.op !== "effects.upper" && c.claim.op !== "authority")
+    if (
+      c.claim.op !== "effect.forbid" &&
+      c.claim.op !== "effects.upper" &&
+      c.claim.op !== "authority"
+    )
       c.tierStar = tierStar(ctx, c.claim);
 
   // ---- 8. laws ------------------------------------------------------------------------------------------
-  const nfOf = (x: { fp: string; nf?: string }): { op: Claim["op"]; args: Claim["args"] } | null => {
+  const nfOf = (x: {
+    fp: string;
+    nf?: string;
+  }): { op: Claim["op"]; args: Claim["args"] } | null => {
     if (x.nf) {
       try {
         const y = JSON.parse(x.nf) as { op: Claim["op"]; args: Claim["args"] };
@@ -1125,7 +1169,13 @@ export function derive(input: CheckInput): CheckOutput {
       }
       const met = nearestEntries(ctx, x).some((e) => {
         const g = provs.get(e.provider);
-        return e.entry.complete && !e.producerChanged && !!g && g.absenceB && channelCovered(g.channelsB, ch);
+        return (
+          e.entry.complete &&
+          !e.producerChanged &&
+          !!g &&
+          g.absenceB &&
+          channelCovered(g.channelsB, ch)
+        );
       });
       if (!met) return true;
     }
@@ -1153,7 +1203,8 @@ export function derive(input: CheckInput): CheckOutput {
     let introduced = false;
     if (hasBase) {
       if (c.refuted) introduced = affected.some((x) => delta.has(x)) || refutedAtBase(ctx, c);
-      else if (c.supportEdges.length > 0 || isStructural(c.claim)) introduced = c.supportEdges.some(edgeNew);
+      else if (c.supportEdges.length > 0 || isStructural(c.claim))
+        introduced = c.supportEdges.some(edgeNew);
       else introduced = c.witness.some((f) => ctx.newFact(f));
     }
     const facts2: Record<string, JsonValue> = {};
@@ -1240,7 +1291,9 @@ export function derive(input: CheckInput): CheckOutput {
       ];
       const holder = [...l.reasonRecords].sort((a, b) => cmpStr(a.record.id, b.record.id))[0];
       const pcCauses =
-        l.reason === "producer-changed" ? l.reasonRecords.flatMap((e) => producerCauses(ctx, e.record)) : [];
+        l.reason === "producer-changed"
+          ? l.reasonRecords.flatMap((e) => producerCauses(ctx, e.record))
+          : [];
       obs2.push({
         ...common,
         kind: "unestablished",
@@ -1253,7 +1306,9 @@ export function derive(input: CheckInput): CheckOutput {
         tokens: [...finestTokens(affected), ...pcCauses.map((x) => `x:${x}`)],
         pcReqDelta:
           l.reason === "producer-changed" &&
-          l.bindingReq.some((p) => deltaPairs.has(`${p.id}\u0000${p.projection}`) || deleted.has(p.id)),
+          l.bindingReq.some(
+            (p) => deltaPairs.has(`${p.id}\u0000${p.projection}`) || deleted.has(p.id)
+          ),
         causes: holder
           ? [
               {
@@ -1376,7 +1431,11 @@ export function derive(input: CheckInput): CheckOutput {
     if (answerable(o)) {
       const res = answerItems(ctx, gv, o, as, subjOwner);
       if (res.ok) {
-        o.discharged = { records: sortedUniq(res.sources), self: res.self, selfActors: res.selfActors };
+        o.discharged = {
+          records: sortedUniq(res.sources),
+          self: res.self,
+          selfActors: res.selfActors
+        };
         for (const a of res.selfActors) selfUses.push(`answer ${o.key} by ${a}`);
         continue;
       }
@@ -1396,7 +1455,8 @@ export function derive(input: CheckInput): CheckOutput {
       if (
         e.self &&
         e.applicable &&
-        ((e.direction === "supports" && e.reason === null) || (e.direction === "contradicts" && e.force !== null))
+        ((e.direction === "supports" && e.reason === null) ||
+          (e.direction === "contradicts" && e.force !== null))
       )
         selfUses.push(`judgment ${l.claim.ids[0] ?? l.claim.fp} by ${e.judge}`);
 
@@ -1438,7 +1498,9 @@ export function derive(input: CheckInput): CheckOutput {
       introduced: o.introduced,
       severity,
       tier: o.tier,
-      budget: ["rerun", "provide", "edit-code", "add-was"].includes(first) ? "mechanical" : "judgment",
+      budget: ["rerun", "provide", "edit-code", "add-was"].includes(first)
+        ? "mechanical"
+        : "judgment",
       force: o.force,
       owner: o.owner,
       assignee: null,
@@ -1473,7 +1535,8 @@ export function derive(input: CheckInput): CheckOutput {
     }
     if (rule === 6) {
       preexisting.push({ obligation: o.key, owner: o.owner });
-      if (o.kind === "contradiction" && o.force === "sound" && o.tier === "final") finalDrift.push(o.key);
+      if (o.kind === "contradiction" && o.force === "sound" && o.tier === "final")
+        finalDrift.push(o.key);
     }
     if (severity === "owed" && (o.kind === "loosening" || o.kind === "coverage"))
       unanswered.push({
@@ -1502,7 +1565,10 @@ export function derive(input: CheckInput): CheckOutput {
       tier: rs.reduce<Tier>((t, r) => maxTier(t, r.out.tier), "low")
     }))
     .sort((a, b) =>
-      cmpTuple([a.blocking ? 0 : 1, -tierRank(a.tier), a.g], [b.blocking ? 0 : 1, -tierRank(b.tier), b.g])
+      cmpTuple(
+        [a.blocking ? 0 : 1, -tierRank(a.tier), a.g],
+        [b.blocking ? 0 : 1, -tierRank(b.tier), b.g]
+      )
     );
   const agentOk = judgmentGroups.filter(
     (x) =>
@@ -1519,10 +1585,15 @@ export function derive(input: CheckInput): CheckOutput {
   const limit = policy.budget;
   const taken = limit === null ? agentOk : agentOk.slice(0, limit);
   const overflow = limit === null ? [] : agentOk.slice(limit).map((x) => x.g);
-  for (const t of taken) for (const r of t.rs) if (r.out.budget === "judgment") r.out.assignee = "agents";
+  for (const t of taken)
+    for (const r of t.rs) if (r.out.budget === "judgment") r.out.assignee = "agents";
 
   const blocking = errors.length > 0 || outObs.some((o) => o.severity === "blocking");
-  const verdict: CheckOutput["verdict"] = blocking ? "blocked" : outObs.length > 0 ? "owed" : "pass";
+  const verdict: CheckOutput["verdict"] = blocking
+    ? "blocked"
+    : outObs.length > 0
+      ? "owed"
+      : "pass";
 
   // phase-1 summary per group (display, A.7.6.2)
   const summary: NonNullable<CheckOutput["summary"]> = [];
@@ -1543,7 +1614,9 @@ export function derive(input: CheckInput): CheckOutput {
       judge: relayDeclared
         ? sortedUniq(
             outs
-              .filter((o) => o.kind === "unestablished" && o.dischargers.some((d) => d.act === "judge"))
+              .filter(
+                (o) => o.kind === "unestablished" && o.dischargers.some((d) => d.act === "judge")
+              )
               .map((o) => `shape judge ${o.claim?.ids[0] ?? ""}`)
           )
         : [],
@@ -1560,15 +1633,25 @@ export function derive(input: CheckInput): CheckOutput {
     if (chans.some((t) => observable(ctx, t))) continue;
     const declaredBy = govProvs.some((p) =>
       chans.some((t) =>
-        t === "call(*)" ? p.observes.some((o) => o.startsWith("call(")) : channelCovered(p.observes, t)
+        t === "call(*)"
+          ? p.observes.some((o) => o.startsWith("call("))
+          : channelCovered(p.observes, t)
       )
     );
-    declaredOnly.push({ claim: c.fp, route: declaredBy ? "contradiction-only" : "declared-only", tier: c.tier });
+    declaredOnly.push({
+      claim: c.fp,
+      route: declaredBy ? "contradiction-only" : "declared-only",
+      tier: c.tier
+    });
   }
-  declaredOnly.sort((a, b) => cmpStr(String((a as { claim: string }).claim), String((b as { claim: string }).claim)));
+  declaredOnly.sort((a, b) =>
+    cmpStr(String((a as { claim: string }).claim), String((b as { claim: string }).claim))
+  );
   const unmappedCodes = sortedUniq(
     facts
-      .filter((f) => f.type === "effect" && f.observed && f.resource && !Wh.resOfCode.get(f.resource))
+      .filter(
+        (f) => f.type === "effect" && f.observed && f.resource && !Wh.resOfCode.get(f.resource)
+      )
       .map((f) => f.resource as string)
   );
   const provUnauth = [...provs.values()]
@@ -1648,8 +1731,10 @@ export function derive(input: CheckInput): CheckOutput {
     rejected,
     obligations: outObs,
     answered: answered.sort((a, b) => cmpStr(a.obligation, b.obligation)),
-    loosening: looseningRows.sort((a, b) => cmpTuple([a.subject, a.question], [b.subject, b.question])),
-    order: mode === "audit" ? null : order ?? "equivalent",
+    loosening: looseningRows.sort((a, b) =>
+      cmpTuple([a.subject, a.question], [b.subject, b.question])
+    ),
+    order: mode === "audit" ? null : (order ?? "equivalent"),
     renames: renames.sort((a, b) => cmpStr(a.base, b.base)),
     debt: debt.sort((a, b) => cmpStr(a.obligation, b.obligation)),
     preexisting: preexisting.sort((a, b) => cmpStr(a.obligation, b.obligation)),
@@ -1732,7 +1817,11 @@ function exceptionMatches(ctx: Ctx, e: ExceptionItem, o: Ob, c: Claim): boolean 
   if (e.for) {
     const inSigma = (x: string): boolean =>
       e.for?.some((sub) =>
-        sub.kind === "code" ? sub.id === x : sub.kind === "unit" ? matchUnitSel(W, sub.sel, x) : false
+        sub.kind === "code"
+          ? sub.id === x
+          : sub.kind === "unit"
+            ? matchUnitSel(W, sub.sel, x)
+            : false
       ) ?? false;
     if (o.law) return reqIds.length > 0 && reqIds.every(inSigma);
     if (s && typeof s.code === "string") return inSigma(s.code);
@@ -1781,7 +1870,12 @@ function answerItems(
   if (as.length === 0) return fail;
   const tier = o.tier;
   const elig = (actor: string, it: Item, final: boolean): { ok: boolean; self: boolean } =>
-    isEligible(gov, actor, { tier, owner: it.owner, noAgent: it.noAgent, final } as EligibilityQuery);
+    isEligible(gov, actor, {
+      tier,
+      owner: it.owner,
+      noAgent: it.noAgent,
+      final
+    } as EligibilityQuery);
   // final: two distinct eligible persons covering the required owners and the base shape owner
   if (o.final) {
     const owners: string[] = [];
@@ -1799,7 +1893,9 @@ function answerItems(
     const ok = sortedUniq(
       as
         .map((a) => a.actor)
-        .filter((a) => isPerson(gov, a) && need.some((w) => elig(a, { owner: w, noAgent: true }, true).ok))
+        .filter(
+          (a) => isPerson(gov, a) && need.some((w) => elig(a, { owner: w, noAgent: true }, true).ok)
+        )
     );
     // choose two distinct persons covering every needed owner (persons of each actor)
     for (const x of ok)
@@ -1809,7 +1905,10 @@ function answerItems(
           const ps = new Set(persons(gov, w));
           return ps.has(x) || ps.has(y);
         });
-        const twoOfSame = need.length === 1 ? persons(gov, need[0] as string).filter((p) => p === x || p === y).length === 2 : true;
+        const twoOfSame =
+          need.length === 1
+            ? persons(gov, need[0] as string).filter((p) => p === x || p === y).length === 2
+            : true;
         if (covers && twoOfSame)
           return {
             ok: true,
@@ -1823,8 +1922,10 @@ function answerItems(
   }
   const items: Item[] = [];
   if (o.kind === "loosening") items.push({ owner: subjOwner(String(o.subject)), noAgent: true });
-  else if (o.kind === "contradiction" && o.claim) items.push({ owner: ownerStar(ctx, o.claim), noAgent: false });
-  else if (o.kind === "unestablished" && o.claim) items.push({ owner: ownerStar(ctx, o.claim), noAgent: true });
+  else if (o.kind === "contradiction" && o.claim)
+    items.push({ owner: ownerStar(ctx, o.claim), noAgent: false });
+  else if (o.kind === "unestablished" && o.claim)
+    items.push({ owner: ownerStar(ctx, o.claim), noAgent: true });
   else if (o.kind === "coverage") {
     if (o.vocab) items.push({ owner: gov.shapeOwner, noAgent: false });
     else if (o.coverage) {
@@ -1841,7 +1942,9 @@ function answerItems(
   // A.16.40 (amending A.16.28): records list every answer eligible for at least one item, none
   // chosen over another, so they never depend on input order (T1); self is read over them
   for (const it of items) {
-    const hits = as.filter((a) => (!it.noAgent || isPerson(gov, a.actor)) && elig(a.actor, it, false).ok);
+    const hits = as.filter(
+      (a) => (!it.noAgent || isPerson(gov, a.actor)) && elig(a.actor, it, false).ok
+    );
     if (hits.length === 0) return fail;
     for (const hit of hits) {
       if (elig(hit.actor, it, false).self) {
@@ -1867,7 +1970,12 @@ function exceptionAnswer(
     const hits = as.filter(
       (a) =>
         isPerson(gov, a.actor) &&
-        isEligible(gov, a.actor, { tier: o.tier, owner: ownerStar(ctx, c), noAgent: true, final: false }).ok
+        isEligible(gov, a.actor, {
+          tier: o.tier,
+          owner: ownerStar(ctx, c),
+          noAgent: true,
+          final: false
+        }).ok
     );
     if (hits.length === 0) return { ok: false, sources: [] };
     for (const hit of hits) sources.push(hit.source);
@@ -1880,13 +1988,16 @@ function exceptionAnswer(
 function severityOf(ctx: Ctx, o: Ob): { severity: Severity; rule: number } {
   if (o.kind === "contradiction" && o.force === "sound" && o.tier === "final" && o.introduced)
     return { severity: "blocking", rule: 2 };
-  if (o.kind === "loosening" && (o.questions ?? []).includes("L0")) return { severity: "blocking", rule: 3 };
+  if (o.kind === "loosening" && (o.questions ?? []).includes("L0"))
+    return { severity: "blocking", rule: 3 };
   if (o.kind === "loosening" && o.tier === "final") return { severity: "blocking", rule: 4 };
   if (o.kind === "coverage" && o.coverage && o.coverage.unmetFinalClaims.length > 0)
     return { severity: "blocking", rule: 4 };
-  if (o.matched.length > 0 && (!o.introduced || o.exceptionAnswered)) return { severity: "owed", rule: 5 };
+  if (o.matched.length > 0 && (!o.introduced || o.exceptionAnswered))
+    return { severity: "owed", rule: 5 };
   if (!o.introduced) return { severity: "owed", rule: 6 };
-  if (o.kind === "contradiction") return { severity: o.force === "sound" ? "blocking" : "owed", rule: 7 };
+  if (o.kind === "contradiction")
+    return { severity: o.force === "sound" ? "blocking" : "owed", rule: 7 };
   if (o.kind === "loosening" && o.exploited) return { severity: "blocking", rule: 8 };
   if (o.kind === "unestablished" && o.reason === "producer-changed" && o.pcReqDelta)
     return { severity: "blocking", rule: 8 };
@@ -1906,18 +2017,29 @@ function dischargers(ctx: Ctx, gov: Gov, o: Ob, subjOwner: (s: string) => string
     eligibleNow(gov, { tier: o.tier, owner, noAgent: noAgent || o.final, final: o.final });
   const finalElig = (owners: string[]): string[] =>
     sortedUniq(owners.flatMap((w) => elig(w, true))).filter((a) => isPerson(gov, a));
-  const author = (act: Discharger["act"], agentSafe = true, creates: Discharger["creates"] = null): Discharger => ({
+  const author = (
+    act: Discharger["act"],
+    agentSafe = true,
+    creates: Discharger["creates"] = null
+  ): Discharger => ({
     act,
     by: "author",
     agentSafe,
     eligible: [],
     creates
   });
-  const ci = (act: Discharger["act"]): Discharger => ({ act, by: "ci", agentSafe: true, eligible: [], creates: null });
+  const ci = (act: Discharger["act"]): Discharger => ({
+    act,
+    by: "ci",
+    agentSafe: true,
+    eligible: [],
+    creates: null
+  });
   // the loosening an edit would raise, or null when it changes only items the base lacks
   const creates = (c: Claim | null): Discharger["creates"] => {
     if (!c || !ctx.hasBase || ctx.baseUnreadable) return null;
-    const inherits = (ctx.heirOf.get(c.fp) ?? []).length > 0 || (ctx.hAOf.get(c.fp) ?? []).length > 0;
+    const inherits =
+      (ctx.heirOf.get(c.fp) ?? []).length > 0 || (ctx.hAOf.get(c.fp) ?? []).length > 0;
     if (!inherits) return null;
     const owners = sortedUniq([ownerStar(ctx, c), ...(o.final ? [gov.shapeOwner] : [])]);
     return { kind: "loosening", tier: o.tier, answers: o.final ? 2 : 1, owners };
@@ -1959,7 +2081,8 @@ function dischargers(ctx: Ctx, gov: Gov, o: Ob, subjOwner: (s: string) => string
     const l = o.law;
     const owner = ownerStar(ctx, l.claim);
     const decidedBy = [...ctx.provs.values()].filter(
-      (g) => lawDecidedBy(l.claim, { decides: g.decidesA }) &&
+      (g) =>
+        lawDecidedBy(l.claim, { decides: g.decidesA }) &&
         g.produces.some((k) => k === "test" || (k === "proof" && !g.persist) || k === "observation")
     );
     const judge: Discharger | null = l.req.judged
@@ -1978,7 +2101,9 @@ function dischargers(ctx: Ctx, gov: Gov, o: Ob, subjOwner: (s: string) => string
           act: "answer",
           by: "judges",
           agentSafe: false,
-          eligible: o.final ? finalElig([owner, gov.shapeOwner]) : elig(owner, true).filter((a) => isPerson(gov, a)),
+          eligible: o.final
+            ? finalElig([owner, gov.shapeOwner])
+            : elig(owner, true).filter((a) => isPerson(gov, a)),
           creates: null,
           command: `shape approve ${ref}`
         });
@@ -2001,14 +2126,18 @@ function dischargers(ctx: Ctx, gov: Gov, o: Ob, subjOwner: (s: string) => string
   } else if (o.kind === "loosening") {
     const subject = String(o.subject);
     out.push(author("revert"));
-    if ((o.parts ?? []).some((p) => p.answer === "undecided" && p.unmapped)) out.push(author("add-was"));
-    if ((o.parts ?? []).some((p) => p.question === "L4" && p.answer === "undecided")) out.push(ci("provide"));
+    if ((o.parts ?? []).some((p) => p.answer === "undecided" && p.unmapped))
+      out.push(author("add-was"));
+    if ((o.parts ?? []).some((p) => p.question === "L4" && p.answer === "undecided"))
+      out.push(ci("provide"));
     const ownerQ = subjOwner(subject);
     out.push({
       act: "answer",
       by: "judges",
       agentSafe: false,
-      eligible: o.final ? finalElig([ownerQ, gov.shapeOwner]) : elig(ownerQ, true).filter((a) => isPerson(gov, a)),
+      eligible: o.final
+        ? finalElig([ownerQ, gov.shapeOwner])
+        : elig(ownerQ, true).filter((a) => isPerson(gov, a)),
       creates: null,
       command: `shape approve ${ref}`
     });
@@ -2035,7 +2164,9 @@ function dischargers(ctx: Ctx, gov: Gov, o: Ob, subjOwner: (s: string) => string
       act: "answer",
       by: "judges",
       agentSafe: agentsListed,
-      eligible: o.final ? finalElig([...owners, gov.shapeOwner]) : sortedUniq(owners.flatMap((w) => elig(w, false))),
+      eligible: o.final
+        ? finalElig([...owners, gov.shapeOwner])
+        : sortedUniq(owners.flatMap((w) => elig(w, false))),
       creates: null,
       command: `shape approve ${ref}`
     });
@@ -2066,10 +2197,15 @@ function teeth(ctx: Ctx, facts: WFact[]): Record<string, JsonValue> {
     }
   }
   const vacuous = ctx.head.claims
-    .filter((c) => (c.op === "effect.forbid" || c.op === "authority") && footprint(W, c).code.length === 0)
+    .filter(
+      (c) => (c.op === "effect.forbid" || c.op === "authority") && footprint(W, c).code.length === 0
+    )
     .map((c) => c.ids[0] ?? c.fp);
   const gaps = W.esf.resources
-    .filter((r) => !r.q.startsWith("std::") && !W.forbids.some((f) => String(f.args.atom).endsWith(`<${r.q}>`)))
+    .filter(
+      (r) =>
+        !r.q.startsWith("std::") && !W.forbids.some((f) => String(f.args.atom).endsWith(`<${r.q}>`))
+    )
     .map((r) => r.q);
   return {
     unusedGrants: unusedGrants.sort(cmpStr),

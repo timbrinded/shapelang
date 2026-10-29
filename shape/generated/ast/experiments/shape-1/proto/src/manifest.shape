@@ -43,7 +43,7 @@ resource ManifestModuleIdentitySymbolAstAnchor : GeneratedAstAnchor {
 
 resource ManifestModuleIndexManifestAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#indexManifest")
-  fingerprint ast.semantic_subtree_v1("sha256:f0bddcd6c1fd1e13c7d8a3a26a5373bff6a56ba3a56fff2babb9aa2ac7fa663d")
+  fingerprint ast.semantic_subtree_v1("sha256:426bdcb1ba5b9ce5e82b57700538f53b584b2562e6581bb6d27cd7b8eda79058")
 }
 
 resource ManifestModuleIsRecordFileAstAnchor : GeneratedAstAnchor {
@@ -66,9 +66,19 @@ resource ManifestModuleManifestStatementAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:80df99d209ff8dcb6b0ea5f87243154fc19aaffae815077d4f927839ca641645")
 }
 
+resource ManifestModuleOpenManifestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#openManifest")
+  fingerprint ast.semantic_subtree_v1("sha256:9d76a4a1a5a05620ad42dd2312561f4e89af1dd03255abaa4eacbf229fd31489")
+}
+
 resource ManifestModuleSortManifestAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#sortManifest")
   fingerprint ast.semantic_subtree_v1("sha256:34817858d11a73b4959f91be1bdf70ea253d7e20e46f778eb919b2098ef1e778")
+}
+
+resource ManifestModuleVerifyDsseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/manifest.ts#verifyDsse")
+  fingerprint ast.semantic_subtree_v1("sha256:e297c194e9a491edc6faedb4763dd5c6a4ffb7670c85373f40c038ff3214e586")
 }
 
 component ManifestModule : GeneratedCandidate {
@@ -108,8 +118,14 @@ component ManifestModule : GeneratedCandidate {
   fn manifestStatement
     source ts("experiments/shape-1/proto/src/manifest.ts#manifestStatement")
     effects unknown
+  fn openManifest
+    source ts("experiments/shape-1/proto/src/manifest.ts#openManifest")
+    effects unknown
   fn sortManifest
     source ts("experiments/shape-1/proto/src/manifest.ts#sortManifest")
+    effects unknown
+  fn verifyDsse
+    source ts("experiments/shape-1/proto/src/manifest.ts#verifyDsse")
     effects unknown
 }
 
@@ -173,7 +189,7 @@ relation ManifestModuleIndexManifestGeneratedFromManifestModuleIndexManifestAstA
   kind generated_from
   connects ManifestModule -> ManifestModuleIndexManifestAstAnchor
   roles { ManifestModule as generated, ManifestModuleIndexManifestAstAnchor as syntax }
-  expects ManifestModuleIndexManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f0bddcd6c1fd1e13c7d8a3a26a5373bff6a56ba3a56fff2babb9aa2ac7fa663d")
+  expects ManifestModuleIndexManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:426bdcb1ba5b9ce5e82b57700538f53b584b2562e6581bb6d27cd7b8eda79058")
   summary "fn ManifestModule.indexManifest generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#indexManifest."
 }
 
@@ -209,12 +225,28 @@ relation ManifestModuleManifestStatementGeneratedFromManifestModuleManifestState
   summary "fn ManifestModule.manifestStatement generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#manifestStatement."
 }
 
+relation ManifestModuleOpenManifestGeneratedFromManifestModuleOpenManifestAstAnchor {
+  kind generated_from
+  connects ManifestModule -> ManifestModuleOpenManifestAstAnchor
+  roles { ManifestModule as generated, ManifestModuleOpenManifestAstAnchor as syntax }
+  expects ManifestModuleOpenManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9d76a4a1a5a05620ad42dd2312561f4e89af1dd03255abaa4eacbf229fd31489")
+  summary "fn ManifestModule.openManifest generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#openManifest."
+}
+
 relation ManifestModuleSortManifestGeneratedFromManifestModuleSortManifestAstAnchor {
   kind generated_from
   connects ManifestModule -> ManifestModuleSortManifestAstAnchor
   roles { ManifestModule as generated, ManifestModuleSortManifestAstAnchor as syntax }
   expects ManifestModuleSortManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:34817858d11a73b4959f91be1bdf70ea253d7e20e46f778eb919b2098ef1e778")
   summary "fn ManifestModule.sortManifest generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#sortManifest."
+}
+
+relation ManifestModuleVerifyDsseGeneratedFromManifestModuleVerifyDsseAstAnchor {
+  kind generated_from
+  connects ManifestModule -> ManifestModuleVerifyDsseAstAnchor
+  roles { ManifestModule as generated, ManifestModuleVerifyDsseAstAnchor as syntax }
+  expects ManifestModuleVerifyDsseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e297c194e9a491edc6faedb4763dd5c6a4ffb7670c85373f40c038ff3214e586")
+  summary "fn ManifestModule.verifyDsse generated from typescript function_declaration at experiments/shape-1/proto/src/manifest.ts#verifyDsse."
 }
 
 implementation ManifestModuleImpl {

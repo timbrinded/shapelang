@@ -85,9 +85,11 @@ function parseLock(text: string): LockPin[] | null {
   }
 }
 
-function commitInfo(
-  commit: string
-): { sha1: string; tree: string | null; committerTime: number | null } {
+function commitInfo(commit: string): {
+  sha1: string;
+  tree: string | null;
+  committerTime: number | null;
+} {
   const bytes = Buffer.from(commit, "utf8");
   const h = createHash("sha1");
   h.update(`commit ${bytes.length}\0`);
@@ -197,7 +199,8 @@ function readRevision(
     const pack = packs.find((p) => p.name === pin.name && p.version === pin.version);
     const ok = !!pack && pin.digest !== undefined && packDigest(pack.files) === pin.digest;
     if (!ok) {
-      if (side === "head") problems.push(`head lock: pack ${pin.name} ${pin.version} does not match its pin`);
+      if (side === "head")
+        problems.push(`head lock: pack ${pin.name} ${pin.version} does not match its pin`);
       else
         out.defects.push({
           code: "E-pack",
@@ -342,7 +345,12 @@ function canonManifest(st: unknown): unknown {
       ...s,
       predicate: {
         ...s.predicate,
-        shape: { v: "shape.manifest.v1", revision: p.revision, tree: sorted.tree, entries: sorted.entries }
+        shape: {
+          v: "shape.manifest.v1",
+          revision: p.revision,
+          tree: sorted.tree,
+          entries: sorted.entries
+        }
       }
     };
   }

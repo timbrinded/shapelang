@@ -1,0 +1,161 @@
+module shape.generated.ast.experiments.shape_1.trials.DRT7.gen7
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource Gen7ModuleAddReviewsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/gen7.ts#addReviews")
+  fingerprint ast.semantic_subtree_v1("sha256:a558bc072e505b7689db065a70687a35669b1ed7e91ec5aaba8c66e999613130")
+}
+
+resource Gen7ModuleCiteOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/gen7.ts#citeOf")
+  fingerprint ast.semantic_subtree_v1("sha256:57fc46017f2809adf9080c9f27280526ce35ef6f1450d4d2a90cfcf6de6c9957")
+}
+
+resource Gen7ModuleGenCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/gen7.ts#genCase")
+  fingerprint ast.semantic_subtree_v1("sha256:fc61155dcc00ee50317bbcda0555d0cbe3253abe9dd35f88e8296a457063e671")
+}
+
+resource Gen7ModuleIsoDayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/gen7.ts#isoDay")
+  fingerprint ast.semantic_subtree_v1("sha256:3a0f1f9f47e7c78354a8be1b0c586aac59f3275daa9f5e2c89e2d3b86024e943")
+}
+
+resource Gen7ModuleIsoTimeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/gen7.ts#isoTime")
+  fingerprint ast.semantic_subtree_v1("sha256:e081e1eef5a6a28cf07af697e994ead5d5ebe4aa4f77ad2b8b83e8c57409ad37")
+}
+
+resource Gen7ModuleKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/gen7.ts#key")
+  fingerprint ast.semantic_subtree_v1("sha256:eedf4ad5620777ece3d22e9875db685ab0edf23bac7820a177db00eb6e467b42")
+}
+
+resource Gen7ModuleManifest7AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/gen7.ts#manifest7")
+  fingerprint ast.semantic_subtree_v1("sha256:6eedf9f9f0bf0ce1c698e0ede89d072c37f75cd5b8d4219ce04618a51badcc45")
+}
+
+resource Gen7ModuleMulberry32AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/gen7.ts#mulberry32")
+  fingerprint ast.semantic_subtree_v1("sha256:1951a0fa8820e63f4b162a4cb7f8160d5c5b7c6691b3db4389431c4b65d52bda")
+}
+
+resource Gen7ModuleRewriteDeclsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/trials/DRT7/gen7.ts#rewriteDecls")
+  fingerprint ast.semantic_subtree_v1("sha256:dcbeb75da1efabeb03102a7ee8df6bf53e0edebfe0d97d562d8a01cfed61b304")
+}
+
+component Gen7Module : GeneratedCandidate {
+  fn addReviews
+    source ts("experiments/shape-1/trials/DRT7/gen7.ts#addReviews")
+    effects unknown
+  fn citeOf
+    source ts("experiments/shape-1/trials/DRT7/gen7.ts#citeOf")
+    effects unknown
+  fn genCase
+    source ts("experiments/shape-1/trials/DRT7/gen7.ts#genCase")
+    effects unknown
+  fn isoDay
+    source ts("experiments/shape-1/trials/DRT7/gen7.ts#isoDay")
+    effects unknown
+  fn isoTime
+    source ts("experiments/shape-1/trials/DRT7/gen7.ts#isoTime")
+    effects unknown
+  fn key
+    source ts("experiments/shape-1/trials/DRT7/gen7.ts#key")
+    effects unknown
+  fn manifest7
+    source ts("experiments/shape-1/trials/DRT7/gen7.ts#manifest7")
+    effects unknown
+  fn mulberry32
+    source ts("experiments/shape-1/trials/DRT7/gen7.ts#mulberry32")
+    effects unknown
+  fn rewriteDecls
+    source ts("experiments/shape-1/trials/DRT7/gen7.ts#rewriteDecls")
+    effects unknown
+}
+
+relation Gen7ModuleAddReviewsGeneratedFromGen7ModuleAddReviewsAstAnchor {
+  kind generated_from
+  connects Gen7Module -> Gen7ModuleAddReviewsAstAnchor
+  roles { Gen7Module as generated, Gen7ModuleAddReviewsAstAnchor as syntax }
+  expects Gen7ModuleAddReviewsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a558bc072e505b7689db065a70687a35669b1ed7e91ec5aaba8c66e999613130")
+  summary "fn Gen7Module.addReviews generated from typescript function_declaration at experiments/shape-1/trials/DRT7/gen7.ts#addReviews."
+}
+
+relation Gen7ModuleCiteOfGeneratedFromGen7ModuleCiteOfAstAnchor {
+  kind generated_from
+  connects Gen7Module -> Gen7ModuleCiteOfAstAnchor
+  roles { Gen7Module as generated, Gen7ModuleCiteOfAstAnchor as syntax }
+  expects Gen7ModuleCiteOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:57fc46017f2809adf9080c9f27280526ce35ef6f1450d4d2a90cfcf6de6c9957")
+  summary "fn Gen7Module.citeOf generated from typescript function_declaration at experiments/shape-1/trials/DRT7/gen7.ts#citeOf."
+}
+
+relation Gen7ModuleGenCaseGeneratedFromGen7ModuleGenCaseAstAnchor {
+  kind generated_from
+  connects Gen7Module -> Gen7ModuleGenCaseAstAnchor
+  roles { Gen7Module as generated, Gen7ModuleGenCaseAstAnchor as syntax }
+  expects Gen7ModuleGenCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fc61155dcc00ee50317bbcda0555d0cbe3253abe9dd35f88e8296a457063e671")
+  summary "fn Gen7Module.genCase generated from typescript function_declaration at experiments/shape-1/trials/DRT7/gen7.ts#genCase."
+}
+
+relation Gen7ModuleIsoDayGeneratedFromGen7ModuleIsoDayAstAnchor {
+  kind generated_from
+  connects Gen7Module -> Gen7ModuleIsoDayAstAnchor
+  roles { Gen7Module as generated, Gen7ModuleIsoDayAstAnchor as syntax }
+  expects Gen7ModuleIsoDayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3a0f1f9f47e7c78354a8be1b0c586aac59f3275daa9f5e2c89e2d3b86024e943")
+  summary "fn Gen7Module.isoDay generated from typescript function_declaration at experiments/shape-1/trials/DRT7/gen7.ts#isoDay."
+}
+
+relation Gen7ModuleIsoTimeGeneratedFromGen7ModuleIsoTimeAstAnchor {
+  kind generated_from
+  connects Gen7Module -> Gen7ModuleIsoTimeAstAnchor
+  roles { Gen7Module as generated, Gen7ModuleIsoTimeAstAnchor as syntax }
+  expects Gen7ModuleIsoTimeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e081e1eef5a6a28cf07af697e994ead5d5ebe4aa4f77ad2b8b83e8c57409ad37")
+  summary "fn Gen7Module.isoTime generated from typescript function_declaration at experiments/shape-1/trials/DRT7/gen7.ts#isoTime."
+}
+
+relation Gen7ModuleKeyGeneratedFromGen7ModuleKeyAstAnchor {
+  kind generated_from
+  connects Gen7Module -> Gen7ModuleKeyAstAnchor
+  roles { Gen7Module as generated, Gen7ModuleKeyAstAnchor as syntax }
+  expects Gen7ModuleKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eedf4ad5620777ece3d22e9875db685ab0edf23bac7820a177db00eb6e467b42")
+  summary "fn Gen7Module.key generated from typescript function_declaration at experiments/shape-1/trials/DRT7/gen7.ts#key."
+}
+
+relation Gen7ModuleManifest7GeneratedFromGen7ModuleManifest7AstAnchor {
+  kind generated_from
+  connects Gen7Module -> Gen7ModuleManifest7AstAnchor
+  roles { Gen7Module as generated, Gen7ModuleManifest7AstAnchor as syntax }
+  expects Gen7ModuleManifest7AstAnchor fingerprint ast.semantic_subtree_v1("sha256:6eedf9f9f0bf0ce1c698e0ede89d072c37f75cd5b8d4219ce04618a51badcc45")
+  summary "fn Gen7Module.manifest7 generated from typescript function_declaration at experiments/shape-1/trials/DRT7/gen7.ts#manifest7."
+}
+
+relation Gen7ModuleMulberry32GeneratedFromGen7ModuleMulberry32AstAnchor {
+  kind generated_from
+  connects Gen7Module -> Gen7ModuleMulberry32AstAnchor
+  roles { Gen7Module as generated, Gen7ModuleMulberry32AstAnchor as syntax }
+  expects Gen7ModuleMulberry32AstAnchor fingerprint ast.semantic_subtree_v1("sha256:1951a0fa8820e63f4b162a4cb7f8160d5c5b7c6691b3db4389431c4b65d52bda")
+  summary "fn Gen7Module.mulberry32 generated from typescript function_declaration at experiments/shape-1/trials/DRT7/gen7.ts#mulberry32."
+}
+
+relation Gen7ModuleRewriteDeclsGeneratedFromGen7ModuleRewriteDeclsAstAnchor {
+  kind generated_from
+  connects Gen7Module -> Gen7ModuleRewriteDeclsAstAnchor
+  roles { Gen7Module as generated, Gen7ModuleRewriteDeclsAstAnchor as syntax }
+  expects Gen7ModuleRewriteDeclsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dcbeb75da1efabeb03102a7ee8df6bf53e0edebfe0d97d562d8a01cfed61b304")
+  summary "fn Gen7Module.rewriteDecls generated from typescript function_declaration at experiments/shape-1/trials/DRT7/gen7.ts#rewriteDecls."
+}
+
+implementation Gen7ModuleImpl {
+  paths {
+    "experiments/shape-1/trials/DRT7/gen7.ts"
+  }
+  conforms_to Gen7Module
+}

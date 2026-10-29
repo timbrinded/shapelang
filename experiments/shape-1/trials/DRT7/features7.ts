@@ -73,7 +73,8 @@ function codeDelta(pp) {
   const relocated = new Map();
   for (const [k, xs] of newBy) {
     const ys = delBy.get(k) ?? [];
-    if (xs.length === 1 && ys.length === 1 && Mh.ids.get(xs[0]).lang === Mb.ids.get(ys[0]).lang) relocated.set(xs[0], ys[0]);
+    if (xs.length === 1 && ys.length === 1 && Mh.ids.get(xs[0]).lang === Mb.ids.get(ys[0]).lang)
+      relocated.set(xs[0], ys[0]);
   }
   for (const x of added) if (!relocated.has(x)) finest.add(x);
   return { delta, deleted, finest, relocated };
@@ -100,7 +101,9 @@ export function features(input, pp, out) {
   const undeclaredClause = [...headClaims, ...baseClaims].some(
     (c) => c.op === "effect.forbid" && c.args?.atom === "Undeclared<std::Trust>"
   );
-  const markers = [...Mh.ids.values()].some((i) => Object.values(i.markers ?? {}).some((n) => n > 0));
+  const markers = [...Mh.ids.values()].some((i) =>
+    Object.values(i.markers ?? {}).some((n) => n > 0)
+  );
   if (undeclaredClause && markers) f.add("D1");
   // D2
   const upper = headClaims.filter((c) => c.op === "effects.upper");
@@ -108,7 +111,8 @@ export function features(input, pp, out) {
     const sumOf = (cs) => {
       const m = new Map();
       for (const c of cs)
-        if (c.op === "effects.upper" || c.op === "effects.lower") m.set(c.args.unit, [...(m.get(c.args.unit) ?? []), c.fp].sort().join(","));
+        if (c.op === "effects.upper" || c.op === "effects.lower")
+          m.set(c.args.unit, [...(m.get(c.args.unit) ?? []), c.fp].sort().join(","));
       return m;
     };
     const hs = sumOf(headClaims);
@@ -116,8 +120,11 @@ export function features(input, pp, out) {
     let edited = false;
     for (const [u, fps] of bs) if (hs.has(u) && hs.get(u) !== fps) edited = true;
     const summarised = new Set();
-    for (const u of pp.head.units) if (u.summary?.mode === "complete" && u.bind) summarised.add(idOfBind(u.bind));
-    const callOut = valid.some((r) => (r.parsed.shape.facts ?? []).some((x) => x.type === "call" && summarised.has(x.at)));
+    for (const u of pp.head.units)
+      if (u.summary?.mode === "complete" && u.bind) summarised.add(idOfBind(u.bind));
+    const callOut = valid.some((r) =>
+      (r.parsed.shape.facts ?? []).some((x) => x.type === "call" && summarised.has(x.at))
+    );
     const via = pp.head.units.some((u) => (u.summary?.atoms ?? []).some((a) => a.via));
     if (edited || callOut || via) f.add("D2");
   }
@@ -126,7 +133,8 @@ export function features(input, pp, out) {
   const meets = (id) => delta.has(id) || deleted.has(id);
   for (const r of valid) {
     const s = r.parsed.shape;
-    if (!s.claim || !lawFps.has(s.claim.fp) || !["test", "proof", "judgment"].includes(s.kind)) continue;
+    if (!s.claim || !lawFps.has(s.claim.fp) || !["test", "proof", "judgment"].includes(s.kind))
+      continue;
     const cited = new Set((s.code ?? []).map((c) => c.id));
     const cone = new Set((s.deps ?? []).map((c) => c.id));
     const stack = [...cited, ...cone];
@@ -142,16 +150,47 @@ export function features(input, pp, out) {
     }
     if ([...cone].some((x) => !cited.has(x) && meets(x))) f.add("D4");
   }
-  if (validBase.some((r) => r.parsed.shape.result === "contradicts" && r.parsed.shape.claim && lawFps.has(r.parsed.shape.claim.fp))) f.add("D4");
+  if (
+    validBase.some(
+      (r) =>
+        r.parsed.shape.result === "contradicts" &&
+        r.parsed.shape.claim &&
+        lawFps.has(r.parsed.shape.claim.fp)
+    )
+  )
+    f.add("D4");
   // D5
-  if (pp.hasBase && obs.some((o) => o.kind === "contradiction" && o.subject && typeof o.subject === "object" && ("nodes" in o.subject || ("from" in o.subject && "to" in o.subject))))
+  if (
+    pp.hasBase &&
+    obs.some(
+      (o) =>
+        o.kind === "contradiction" &&
+        o.subject &&
+        typeof o.subject === "object" &&
+        ("nodes" in o.subject || ("from" in o.subject && "to" in o.subject))
+    )
+  )
     f.add("D5");
   // D6
-  if (pp.hasBase && (relocated.size > 0 || [...Mh.ids.values()].some((i) => finest.has(i.id) && Object.values(i.markers ?? {}).some((n) => n > 0))))
+  if (
+    pp.hasBase &&
+    (relocated.size > 0 ||
+      [...Mh.ids.values()].some(
+        (i) => finest.has(i.id) && Object.values(i.markers ?? {}).some((n) => n > 0)
+      ))
+  )
     f.add("D6");
   if (relocated.size > 0) f.add("relocated");
   // D7
-  if (obs.some((o) => o.kind === "contradiction" && o.claim && ["effects.lower", "edge.exists"].includes(opOf.get(o.claim.fp)))) f.add("D7");
+  if (
+    obs.some(
+      (o) =>
+        o.kind === "contradiction" &&
+        o.claim &&
+        ["effects.lower", "edge.exists"].includes(opOf.get(o.claim.fp))
+    )
+  )
+    f.add("D7");
   // D9
   if (pp.hasBase && pp.base) {
     const implOf = (e, q) => e.providers.find((p) => p.q === q)?.implementation ?? null;
@@ -161,34 +200,57 @@ export function features(input, pp, out) {
       const hi = implOf(pp.head, q);
       const ids = [...(bi?.ids ?? []), ...(hi?.ids ?? [])].map(idOfBind).filter(Boolean);
       const paths = [...(bi?.paths ?? []), ...(hi?.paths ?? [])];
-      const pathIds = [...Mh.ids.values()].filter((i) => !i.symbol && paths.includes(i.path)).map((i) => i.id);
+      const pathIds = [...Mh.ids.values()]
+        .filter((i) => !i.symbol && paths.includes(i.path))
+        .map((i) => i.id);
       if (H(bi) !== H(hi) || [...ids, ...pathIds].some((x) => delta.has(x))) f.add("D9");
     }
     for (const r of valid) {
       const s = r.parsed.shape;
       if (!["test", "proof"].includes(s.kind)) continue;
-      if ((s.harness ?? []).some((c) => {
-        const d = Mh.ids.get(c.id)?.digests.get(c.projection);
-        return d !== undefined && d !== c.digest;
-      }))
+      if (
+        (s.harness ?? []).some((c) => {
+          const d = Mh.ids.get(c.id)?.digests.get(c.projection);
+          return d !== undefined && d !== c.digest;
+        })
+      )
         f.add("D9");
     }
   }
   // D11
   const approvers = new Set();
-  for (const rv of pp.reviews) if (rv.actor && /^shape\s+approve\s/.test(rv.line)) approvers.add(rv.actor);
-  for (const r of valid) if (r.parsed.shape.kind === "judgment" && r.parsed.shape.result === "approves" && r.parsed.shape.judge) approvers.add(r.parsed.shape.judge);
+  for (const rv of pp.reviews)
+    if (rv.actor && /^shape\s+approve\s/.test(rv.line)) approvers.add(rv.actor);
+  for (const r of valid)
+    if (
+      r.parsed.shape.kind === "judgment" &&
+      r.parsed.shape.result === "approves" &&
+      r.parsed.shape.judge
+    )
+      approvers.add(r.parsed.shape.judge);
   const finalClaim = [...headClaims, ...baseClaims].some((c) => c.tier === "final");
   if (obs.some((o) => o.tier === "final") || (finalClaim && approvers.size >= 2)) f.add("D11");
   // D12
-  const actsByActor = pp.reviews.some((rv) => rv.actor) || valid.some((r) => r.parsed.shape.kind === "judgment");
-  const judgesOf = (e) => JSON.stringify(Object.values(e?.policy?.tiers ?? {}).map((t) => t.judges));
-  if ((pp.gv.authors.size > 0 && actsByActor) || (input.persisted?.base ?? []).length > 0 || (pp.base && judgesOf(pp.base) !== judgesOf(pp.head)))
+  const actsByActor =
+    pp.reviews.some((rv) => rv.actor) || valid.some((r) => r.parsed.shape.kind === "judgment");
+  const judgesOf = (e) =>
+    JSON.stringify(Object.values(e?.policy?.tiers ?? {}).map((t) => t.judges));
+  if (
+    (pp.gv.authors.size > 0 && actsByActor) ||
+    (input.persisted?.base ?? []).length > 0 ||
+    (pp.base && judgesOf(pp.base) !== judgesOf(pp.head))
+  )
     f.add("D12");
   // D14
   if ((out?.health?.vacuousLaws ?? []).length > 0) f.add("D14");
   // D15
-  const factNoN = (r) => (r.parsed?.shape?.facts ?? []).some((x) => x.type === "effect" && x.n === undefined);
-  if ([...pp.records, ...pp.baseRecords].some((r) => r.parsed && r.parsed.shape.kind === "observation" && factNoN(r))) f.add("D15");
+  const factNoN = (r) =>
+    (r.parsed?.shape?.facts ?? []).some((x) => x.type === "effect" && x.n === undefined);
+  if (
+    [...pp.records, ...pp.baseRecords].some(
+      (r) => r.parsed && r.parsed.shape.kind === "observation" && factNoN(r)
+    )
+  )
+    f.add("D15");
   return [...f].sort();
 }

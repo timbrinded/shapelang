@@ -18,7 +18,7 @@ resource FixturesModuleCiteAstAnchor : GeneratedAstAnchor {
 
 resource FixturesModuleEx1AstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/examples/fixtures.ts#ex1")
-  fingerprint ast.semantic_subtree_v1("sha256:8b425deb13eb233ecfbe866d8b5f1a83a36c6efb35d866f75964fb8613b0d986")
+  fingerprint ast.semantic_subtree_v1("sha256:81d9c36d7434263c998ee9932e5b138940a0271ca1d7d6de63276193c8b0a197")
 }
 
 resource FixturesModuleEx1BaseIdsAstAnchor : GeneratedAstAnchor {
@@ -26,14 +26,24 @@ resource FixturesModuleEx1BaseIdsAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:e24ebf15a2d0741307f6e8af56222d80e63b1a9d971fed81f0eccd72f8fd73f7")
 }
 
+resource FixturesModuleEx1v6AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/examples/fixtures.ts#ex1v6")
+  fingerprint ast.semantic_subtree_v1("sha256:ad58564880328f77db44cf3a9598c1b68f3cae750675fb373cb9587717a04306")
+}
+
 resource FixturesModuleEx2AstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/examples/fixtures.ts#ex2")
-  fingerprint ast.semantic_subtree_v1("sha256:d494826d536c7868ecb407935f02bb89e796b859a4515533486d4cdba52731ea")
+  fingerprint ast.semantic_subtree_v1("sha256:bb59f67edff9f7b9d9981249592480093247b04cdb5f6570c212abf0d6f1c951")
+}
+
+resource FixturesModuleEx2v6AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/examples/fixtures.ts#ex2v6")
+  fingerprint ast.semantic_subtree_v1("sha256:12561712e80b659b7f7f0ac0f759e62b4a945ae0e333489bccd292bf8208584f")
 }
 
 resource FixturesModuleEx3AstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/examples/fixtures.ts#ex3")
-  fingerprint ast.semantic_subtree_v1("sha256:c5b6fde741ab5b63c433184e818b891338665f202ed1340bbfb129cf3fb840a7")
+  fingerprint ast.semantic_subtree_v1("sha256:b9f45e2473c84a268b5ff0fbfb158882196935c7a685553d11749e36bc013e86")
 }
 
 resource FixturesModuleEx3SourceAstAnchor : GeneratedAstAnchor {
@@ -43,7 +53,7 @@ resource FixturesModuleEx3SourceAstAnchor : GeneratedAstAnchor {
 
 resource FixturesModuleEx3s2AstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/examples/fixtures.ts#ex3s2")
-  fingerprint ast.semantic_subtree_v1("sha256:6f5949bb51cc670a3b0e2453d86fc7e0550709658f5491fe207585d3661fc731")
+  fingerprint ast.semantic_subtree_v1("sha256:a4627f7839206681d81185f23400e4ff7accc32ec6e4aea89b53a6bfe76ded3e")
 }
 
 resource FixturesModuleEx3s2SourceAstAnchor : GeneratedAstAnchor {
@@ -51,14 +61,29 @@ resource FixturesModuleEx3s2SourceAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:ac09a5905b7076d25ac8470547b0f2d65b1279f1387283c2d0473b73f08e85c1")
 }
 
+resource FixturesModuleEx3s2v6AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/examples/fixtures.ts#ex3s2v6")
+  fingerprint ast.semantic_subtree_v1("sha256:7286d20e12c8ec724cf2046be547fa6ccfa8efdb18be5e811c062eb86a349277")
+}
+
+resource FixturesModuleEx3v6AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/examples/fixtures.ts#ex3v6")
+  fingerprint ast.semantic_subtree_v1("sha256:6db20a568fc7df34a1c1415c1f21646a51f42b90013db59018147b01e192cad4")
+}
+
 resource FixturesModuleEx4AstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/examples/fixtures.ts#ex4")
-  fingerprint ast.semantic_subtree_v1("sha256:13657204860eb0e1dcb4f66fd88a19044073105febc665dbe91d089a488014f7")
+  fingerprint ast.semantic_subtree_v1("sha256:e2f655f78927535982555b4dc3fdbaeee48cee40eca97b95eec27c7e6f35c62f")
 }
 
 resource FixturesModuleEx4SourceAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/proto/examples/fixtures.ts#ex4Source")
   fingerprint ast.semantic_subtree_v1("sha256:1eae7e03a455ad31c7c6b3568fd665018f9a25597871f8d439c24dcce4109552")
+}
+
+resource FixturesModuleEx4v6AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/examples/fixtures.ts#ex4v6")
+  fingerprint ast.semantic_subtree_v1("sha256:babee24fea261e4d9ee3e31cf5e263eed0e3785642cca56b6ad073e4ed0099cb")
 }
 
 resource FixturesModuleManifestAstAnchor : GeneratedAstAnchor {
@@ -84,8 +109,14 @@ component FixturesModule : GeneratedCandidate {
   fn ex1BaseIds
     source ts("experiments/shape-1/proto/examples/fixtures.ts#ex1BaseIds")
     effects unknown
+  fn ex1v6
+    source ts("experiments/shape-1/proto/examples/fixtures.ts#ex1v6")
+    effects unknown
   fn ex2
     source ts("experiments/shape-1/proto/examples/fixtures.ts#ex2")
+    effects unknown
+  fn ex2v6
+    source ts("experiments/shape-1/proto/examples/fixtures.ts#ex2v6")
     effects unknown
   fn ex3
     source ts("experiments/shape-1/proto/examples/fixtures.ts#ex3")
@@ -99,11 +130,20 @@ component FixturesModule : GeneratedCandidate {
   fn ex3s2Source
     source ts("experiments/shape-1/proto/examples/fixtures.ts#ex3s2Source")
     effects unknown
+  fn ex3s2v6
+    source ts("experiments/shape-1/proto/examples/fixtures.ts#ex3s2v6")
+    effects unknown
+  fn ex3v6
+    source ts("experiments/shape-1/proto/examples/fixtures.ts#ex3v6")
+    effects unknown
   fn ex4
     source ts("experiments/shape-1/proto/examples/fixtures.ts#ex4")
     effects unknown
   fn ex4Source
     source ts("experiments/shape-1/proto/examples/fixtures.ts#ex4Source")
+    effects unknown
+  fn ex4v6
+    source ts("experiments/shape-1/proto/examples/fixtures.ts#ex4v6")
     effects unknown
   fn manifest
     source ts("experiments/shape-1/proto/examples/fixtures.ts#manifest")
@@ -141,23 +181,39 @@ relation FixturesModuleEx1GeneratedFromFixturesModuleEx1AstAnchor {
   kind generated_from
   connects FixturesModule -> FixturesModuleEx1AstAnchor
   roles { FixturesModule as generated, FixturesModuleEx1AstAnchor as syntax }
-  expects FixturesModuleEx1AstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b425deb13eb233ecfbe866d8b5f1a83a36c6efb35d866f75964fb8613b0d986")
+  expects FixturesModuleEx1AstAnchor fingerprint ast.semantic_subtree_v1("sha256:81d9c36d7434263c998ee9932e5b138940a0271ca1d7d6de63276193c8b0a197")
   summary "fn FixturesModule.ex1 generated from typescript function_declaration at experiments/shape-1/proto/examples/fixtures.ts#ex1."
+}
+
+relation FixturesModuleEx1v6GeneratedFromFixturesModuleEx1v6AstAnchor {
+  kind generated_from
+  connects FixturesModule -> FixturesModuleEx1v6AstAnchor
+  roles { FixturesModule as generated, FixturesModuleEx1v6AstAnchor as syntax }
+  expects FixturesModuleEx1v6AstAnchor fingerprint ast.semantic_subtree_v1("sha256:ad58564880328f77db44cf3a9598c1b68f3cae750675fb373cb9587717a04306")
+  summary "fn FixturesModule.ex1v6 generated from typescript function_declaration at experiments/shape-1/proto/examples/fixtures.ts#ex1v6."
 }
 
 relation FixturesModuleEx2GeneratedFromFixturesModuleEx2AstAnchor {
   kind generated_from
   connects FixturesModule -> FixturesModuleEx2AstAnchor
   roles { FixturesModule as generated, FixturesModuleEx2AstAnchor as syntax }
-  expects FixturesModuleEx2AstAnchor fingerprint ast.semantic_subtree_v1("sha256:d494826d536c7868ecb407935f02bb89e796b859a4515533486d4cdba52731ea")
+  expects FixturesModuleEx2AstAnchor fingerprint ast.semantic_subtree_v1("sha256:bb59f67edff9f7b9d9981249592480093247b04cdb5f6570c212abf0d6f1c951")
   summary "fn FixturesModule.ex2 generated from typescript function_declaration at experiments/shape-1/proto/examples/fixtures.ts#ex2."
+}
+
+relation FixturesModuleEx2v6GeneratedFromFixturesModuleEx2v6AstAnchor {
+  kind generated_from
+  connects FixturesModule -> FixturesModuleEx2v6AstAnchor
+  roles { FixturesModule as generated, FixturesModuleEx2v6AstAnchor as syntax }
+  expects FixturesModuleEx2v6AstAnchor fingerprint ast.semantic_subtree_v1("sha256:12561712e80b659b7f7f0ac0f759e62b4a945ae0e333489bccd292bf8208584f")
+  summary "fn FixturesModule.ex2v6 generated from typescript function_declaration at experiments/shape-1/proto/examples/fixtures.ts#ex2v6."
 }
 
 relation FixturesModuleEx3GeneratedFromFixturesModuleEx3AstAnchor {
   kind generated_from
   connects FixturesModule -> FixturesModuleEx3AstAnchor
   roles { FixturesModule as generated, FixturesModuleEx3AstAnchor as syntax }
-  expects FixturesModuleEx3AstAnchor fingerprint ast.semantic_subtree_v1("sha256:c5b6fde741ab5b63c433184e818b891338665f202ed1340bbfb129cf3fb840a7")
+  expects FixturesModuleEx3AstAnchor fingerprint ast.semantic_subtree_v1("sha256:b9f45e2473c84a268b5ff0fbfb158882196935c7a685553d11749e36bc013e86")
   summary "fn FixturesModule.ex3 generated from typescript function_declaration at experiments/shape-1/proto/examples/fixtures.ts#ex3."
 }
 
@@ -173,7 +229,7 @@ relation FixturesModuleEx3s2GeneratedFromFixturesModuleEx3s2AstAnchor {
   kind generated_from
   connects FixturesModule -> FixturesModuleEx3s2AstAnchor
   roles { FixturesModule as generated, FixturesModuleEx3s2AstAnchor as syntax }
-  expects FixturesModuleEx3s2AstAnchor fingerprint ast.semantic_subtree_v1("sha256:6f5949bb51cc670a3b0e2453d86fc7e0550709658f5491fe207585d3661fc731")
+  expects FixturesModuleEx3s2AstAnchor fingerprint ast.semantic_subtree_v1("sha256:a4627f7839206681d81185f23400e4ff7accc32ec6e4aea89b53a6bfe76ded3e")
   summary "fn FixturesModule.ex3s2 generated from typescript function_declaration at experiments/shape-1/proto/examples/fixtures.ts#ex3s2."
 }
 
@@ -185,11 +241,27 @@ relation FixturesModuleEx3s2SourceGeneratedFromFixturesModuleEx3s2SourceAstAncho
   summary "fn FixturesModule.ex3s2Source generated from typescript function_declaration at experiments/shape-1/proto/examples/fixtures.ts#ex3s2Source."
 }
 
+relation FixturesModuleEx3s2v6GeneratedFromFixturesModuleEx3s2v6AstAnchor {
+  kind generated_from
+  connects FixturesModule -> FixturesModuleEx3s2v6AstAnchor
+  roles { FixturesModule as generated, FixturesModuleEx3s2v6AstAnchor as syntax }
+  expects FixturesModuleEx3s2v6AstAnchor fingerprint ast.semantic_subtree_v1("sha256:7286d20e12c8ec724cf2046be547fa6ccfa8efdb18be5e811c062eb86a349277")
+  summary "fn FixturesModule.ex3s2v6 generated from typescript function_declaration at experiments/shape-1/proto/examples/fixtures.ts#ex3s2v6."
+}
+
+relation FixturesModuleEx3v6GeneratedFromFixturesModuleEx3v6AstAnchor {
+  kind generated_from
+  connects FixturesModule -> FixturesModuleEx3v6AstAnchor
+  roles { FixturesModule as generated, FixturesModuleEx3v6AstAnchor as syntax }
+  expects FixturesModuleEx3v6AstAnchor fingerprint ast.semantic_subtree_v1("sha256:6db20a568fc7df34a1c1415c1f21646a51f42b90013db59018147b01e192cad4")
+  summary "fn FixturesModule.ex3v6 generated from typescript function_declaration at experiments/shape-1/proto/examples/fixtures.ts#ex3v6."
+}
+
 relation FixturesModuleEx4GeneratedFromFixturesModuleEx4AstAnchor {
   kind generated_from
   connects FixturesModule -> FixturesModuleEx4AstAnchor
   roles { FixturesModule as generated, FixturesModuleEx4AstAnchor as syntax }
-  expects FixturesModuleEx4AstAnchor fingerprint ast.semantic_subtree_v1("sha256:13657204860eb0e1dcb4f66fd88a19044073105febc665dbe91d089a488014f7")
+  expects FixturesModuleEx4AstAnchor fingerprint ast.semantic_subtree_v1("sha256:e2f655f78927535982555b4dc3fdbaeee48cee40eca97b95eec27c7e6f35c62f")
   summary "fn FixturesModule.ex4 generated from typescript function_declaration at experiments/shape-1/proto/examples/fixtures.ts#ex4."
 }
 
@@ -199,6 +271,14 @@ relation FixturesModuleEx4SourceGeneratedFromFixturesModuleEx4SourceAstAnchor {
   roles { FixturesModule as generated, FixturesModuleEx4SourceAstAnchor as syntax }
   expects FixturesModuleEx4SourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1eae7e03a455ad31c7c6b3568fd665018f9a25597871f8d439c24dcce4109552")
   summary "fn FixturesModule.ex4Source generated from typescript function_declaration at experiments/shape-1/proto/examples/fixtures.ts#ex4Source."
+}
+
+relation FixturesModuleEx4v6GeneratedFromFixturesModuleEx4v6AstAnchor {
+  kind generated_from
+  connects FixturesModule -> FixturesModuleEx4v6AstAnchor
+  roles { FixturesModule as generated, FixturesModuleEx4v6AstAnchor as syntax }
+  expects FixturesModuleEx4v6AstAnchor fingerprint ast.semantic_subtree_v1("sha256:babee24fea261e4d9ee3e31cf5e263eed0e3785642cca56b6ad073e4ed0099cb")
+  summary "fn FixturesModule.ex4v6 generated from typescript function_declaration at experiments/shape-1/proto/examples/fixtures.ts#ex4v6."
 }
 
 relation FixturesModuleManifestGeneratedFromFixturesModuleManifestAstAnchor {

@@ -121,8 +121,18 @@ export function runPass(env: PassEnv): PassResult {
   const parts: LoosePart[] = [];
   // cells (A.8.1.4): base and head globs with their except globs
   const owners: GlobOwner[] = [
-    ...env.Wb.globOwners.map((o) => ({ side: "b" as const, glob: o.glob, owner: o.owner, except: o.except })),
-    ...env.Wh.globOwners.map((o) => ({ side: "h" as const, glob: o.glob, owner: o.owner, except: o.except }))
+    ...env.Wb.globOwners.map((o) => ({
+      side: "b" as const,
+      glob: o.glob,
+      owner: o.owner,
+      except: o.except
+    })),
+    ...env.Wh.globOwners.map((o) => ({
+      side: "h" as const,
+      glob: o.glob,
+      owner: o.owner,
+      except: o.except
+    }))
   ].sort((a, b) => cmpStr(`${a.side}:${a.glob}`, `${b.side}:${b.glob}`));
   const cr = computeCells(owners);
   const cells = cr.cells.map((c) => ({ id: cellId(c.b, c.h), b: c.b, h: c.h, example: c.example }));
@@ -362,7 +372,12 @@ function l1(env: PassEnv, cells: { id: string; b: CellSide; h: CellSide }[]): Lo
   };
   const shown = (t: Token, v: string): string => (t.resB ? `${v}<${t.resB}>` : `${v}<${t.key}>`);
 
-  const evalToken = (g: Group, t: Token, resH: string | null, sink: Map<string, LoosePart>): void => {
+  const evalToken = (
+    g: Group,
+    t: Token,
+    resH: string | null,
+    sink: Map<string, LoosePart>
+  ): void => {
     const verbs = t.trust ? verbsTrust : verbsOrd;
     for (const v of verbs) {
       const aH = resH ? `${v}<${resH}>` : null;
@@ -389,7 +404,14 @@ function l1(env: PassEnv, cells: { id: string; b: CellSide; h: CellSide }[]): Lo
         for (const e of bv.excl) {
           if (e.op === "authority") continue;
           if (rankOrNone(hv.lvl) < tierRank(e.tier))
-            add(sink, e.fp, g.xs, `L1 level ${atomShown} ${e.tier}>${hv.lvl ?? "none"}`, mk(), chans);
+            add(
+              sink,
+              e.fp,
+              g.xs,
+              `L1 level ${atomShown} ${e.tier}>${hv.lvl ?? "none"}`,
+              mk(),
+              chans
+            );
         }
         const K = posComp(pb);
         const auth = K ? Wb.authority.get(K) : undefined;
@@ -397,7 +419,8 @@ function l1(env: PassEnv, cells: { id: string; b: CellSide; h: CellSide }[]): Lo
         // authority+: the atom is newly in both A and P at the position, wherever the code now
         // lives (another component, open authority, ungoverned); an atom gained in A that a
         // forbid still blocks is no part [D17]
-        if (hv.inA && hv.perm) add(sink, `component ${K}`, g.xs, `L1 authority+ ${atomShown}`, mk(), chans);
+        if (hv.inA && hv.perm)
+          add(sink, `component ${K}`, g.xs, `L1 authority+ ${atomShown}`, mk(), chans);
         // authority tier fall, an independent condition (A.16.39): tier_h is the head authority
         // tier of the atom, that of the head authority excluding it, none for open authority,
         // ungoverned code or an unmapped resource; an atom a head grant admits has no entry
@@ -411,7 +434,14 @@ function l1(env: PassEnv, cells: { id: string; b: CellSide; h: CellSide }[]): Lo
           rankOrNone(hv.lvl) < tierRank(auth.tier) &&
           rankOrNone(authH) < tierRank(auth.tier)
         )
-          add(sink, `component ${K}`, g.xs, `L1 authority ${auth.tier}>${authH ?? "none"}`, mk(), chans);
+          add(
+            sink,
+            `component ${K}`,
+            g.xs,
+            `L1 authority ${auth.tier}>${authH ?? "none"}`,
+            mk(),
+            chans
+          );
       }
     }
   };
@@ -479,7 +509,9 @@ function l1(env: PassEnv, cells: { id: string; b: CellSide; h: CellSide }[]): Lo
     if (admittedFact) {
       p.counterexample = {
         at: admittedFact.f.at as string,
-        verb: (admittedFact.f.type === "hatch" ? admittedFact.f.kind : admittedFact.f.verb) ?? admittedFact.e.verb,
+        verb:
+          (admittedFact.f.type === "hatch" ? admittedFact.f.kind : admittedFact.f.verb) ??
+          admittedFact.e.verb,
         resource: admittedFact.e.token
       };
       p.realised = true;
@@ -710,7 +742,8 @@ function hasHeirUnder(env: PassEnv, cb: Claim, rho: Map<string, string>): boolea
     }
     if (cb.op !== "effect.forbid" && cb.op !== "authority" && hosted === undefined)
       if (opOrderGeq(ch, ren, env.Wh, env.templates)) return true;
-    if (env.claimImplies.get(ch.fp)?.has(cb.fp) || env.claimImplies.get(ch.fp)?.has(rfp)) return true;
+    if (env.claimImplies.get(ch.fp)?.has(cb.fp) || env.claimImplies.get(ch.fp)?.has(rfp))
+      return true;
   }
   return false;
 }
@@ -757,13 +790,12 @@ function l3Shell(env: PassEnv, cb: Claim, rho: Map<string, string>): LoosePart {
   if (ren.op === "cycle.forbid") S = new Set(Wh.nodes);
   else {
     S = nodeSet(Wh, (ren.args.from as string[]) ?? []);
-    if (ren.op === "edge.forbid") for (const x of nodeSet(Wh, (ren.args.exceptFrom as string[]) ?? [])) S.delete(x);
+    if (ren.op === "edge.forbid")
+      for (const x of nodeSet(Wh, (ren.args.exceptFrom as string[]) ?? [])) S.delete(x);
   }
   p.affected = sortedUniq([...S].flatMap((s) => compCode(Wh, s)));
   const T =
-    ren.op === "cycle.forbid"
-      ? new Set(Wh.nodes)
-      : nodeSet(Wh, (ren.args.to as string[]) ?? []);
+    ren.op === "cycle.forbid" ? new Set(Wh.nodes) : nodeSet(Wh, (ren.args.to as string[]) ?? []);
   p.channels = sortedUniq(kinds.flatMap((k) => prod(Wh, k, T)));
   return p;
 }
@@ -772,7 +804,8 @@ function l3Shell(env: PassEnv, cb: Claim, rho: Map<string, string>): LoosePart {
  *  path forbids the K-edges (a,b) with a reachable from S∖V and T reachable from b through
  *  interiors outside V ∪ S ∪ T; cycle forbids the K-edges on a cycle. */
 function supportOf(c: Compiled, edges: SEdge[], nodes: string[]): SEdge[] {
-  if (c.op === "edge.forbid") return edges.filter((e) => e.kind === c.kind && c.S.has(e.from) && c.T.has(e.to));
+  if (c.op === "edge.forbid")
+    return edges.filter((e) => e.kind === c.kind && c.S.has(e.from) && c.T.has(e.to));
   const kE = edges.filter((e) => c.K.has(e.kind));
   const fwdM = new Map<string, string[]>();
   const revM = new Map<string, string[]>();
@@ -781,7 +814,11 @@ function supportOf(c: Compiled, edges: SEdge[], nodes: string[]): SEdge[] {
     revM.set(e.to, [...(revM.get(e.to) ?? []), e.from]);
   }
   // the seeds, then every node reached from a seed that passes ok
-  const reach = (seeds: string[], next: Map<string, string[]>, ok: (n: string) => boolean): Set<string> => {
+  const reach = (
+    seeds: string[],
+    next: Map<string, string[]>,
+    ok: (n: string) => boolean
+  ): Set<string> => {
     const out = new Set(seeds);
     const stack = [...seeds];
     while (stack.length > 0) {
@@ -813,16 +850,12 @@ function supportOf(c: Compiled, edges: SEdge[], nodes: string[]): SEdge[] {
         (n) => !blocked(n)
       )
     ]);
-    return kE.filter((e) => fwdI.has(e.from) && (c.T.has(e.to) || (bwd.has(e.to) && !blocked(e.to))));
+    return kE.filter(
+      (e) => fwdI.has(e.from) && (c.T.has(e.to) || (bwd.has(e.to) && !blocked(e.to)))
+    );
   }
   if (c.op === "cycle.forbid")
-    return kE.filter((e) =>
-      reach(
-        fwdM.get(e.to) ?? [],
-        fwdM,
-        () => true
-      ).has(e.from)
-    );
+    return kE.filter((e) => reach(fwdM.get(e.to) ?? [], fwdM, () => true).has(e.from));
   return [];
 }
 
@@ -1104,7 +1137,8 @@ function conTuples(
       const T = ns(args.to);
       const V = ns(args.exceptVia);
       const K = [...(args.kinds as string[])].sort(cmpStr);
-      if (S.includes(node) && !V.includes(node)) out.push({ type: "path-source", value: { T, K, V }, claim });
+      if (S.includes(node) && !V.includes(node))
+        out.push({ type: "path-source", value: { T, K, V }, claim });
       if (T.includes(node)) out.push({ type: "path-target", value: { S, K, V }, claim });
       if (V.includes(node)) out.push({ type: "via", value: { S, T, K }, claim });
     } else if (claim.op === "edge.forbid" && node) {
@@ -1116,12 +1150,18 @@ function conTuples(
       if (S.includes(node)) out.push({ type: "edge-source", value: { k, T }, claim });
       if (T.includes(node)) out.push({ type: "edge-target", value: { S, k }, claim });
     } else if (claim.op === "cycle.forbid" && node) {
-      out.push({ type: "cycle-member", value: { K: [...(args.kinds as string[])].sort(cmpStr) }, claim });
+      out.push({
+        type: "cycle-member",
+        value: { K: [...(args.kinds as string[])].sort(cmpStr) },
+        claim
+      });
     } else if (
       claim.op === "law" &&
       // a law's on selects positions by attribution: identities through lawCode, and a cell
       // (x null) when it is attributed to K.* or a unit of K under on component K (A.16.41)
-      (x ? lawCode(w, { args }, x) : node !== null && ((args.on as string[]) ?? []).includes(`component ${node}`))
+      (x
+        ? lawCode(w, { args }, x)
+        : node !== null && ((args.on as string[]) ?? []).includes(`component ${node}`))
     ) {
       out.push({ type: "law-member", value: { statement: args.statement ?? null }, claim });
     }
@@ -1201,7 +1241,15 @@ function l6(env: PassEnv, cells: { id: string; b: CellSide; h: CellSide }[]): Lo
       for (const pb of pbs) {
         const k = posComp(pb);
         const nodeB = k ? (rho.get(k) ?? k) : null;
-        tb.push(...conTuples(env, Wb, nodeB, isId ? x : null, baseC.map((c) => ({ ...c }))));
+        tb.push(
+          ...conTuples(
+            env,
+            Wb,
+            nodeB,
+            isId ? x : null,
+            baseC.map((c) => ({ ...c }))
+          )
+        );
       }
       for (const b of tb) {
         if (b.type === "via") continue;
@@ -1268,7 +1316,8 @@ function l7(env: PassEnv, hA: Map<string, string[]>): LoosePart[] {
     if (answer === "loosened") p.answer = "loosened";
     pushU(p.delta, `L7 ${field} ${jcs(b)} ${jcs(h)}`);
   };
-  const user = <T extends { q: string }>(xs: T[]): T[] => xs.filter((x) => !x.q.startsWith("std::"));
+  const user = <T extends { q: string }>(xs: T[]): T[] =>
+    xs.filter((x) => !x.q.startsWith("std::"));
   const headClaims = new Map(head.claims.map((c) => [c.fp, c]));
   const rhoOf = (q: string): string => env.rho.get(q) ?? q;
   // is the base claim's field inherited from an item that the heir inherits from too?
@@ -1281,9 +1330,13 @@ function l7(env: PassEnv, hA: Map<string, string[]>): LoosePart[] {
   };
   // claims with heirs, and structural claims implied through H_A
   for (const cb of base.claims) {
-    const hs = (env.heirs.get(cb.fp) ?? []).map((f) => headClaims.get(f)).filter((c): c is Claim => !!c);
+    const hs = (env.heirs.get(cb.fp) ?? [])
+      .map((f) => headClaims.get(f))
+      .filter((c): c is Claim => !!c);
     if (hs.length > 0) {
-      const ok = hs.some((h) => tierRank(h.tier) >= tierRank(cb.tier) && reqGeq(h.requirement, cb.requirement));
+      const ok = hs.some(
+        (h) => tierRank(h.tier) >= tierRank(cb.tier) && reqGeq(h.requirement, cb.requirement)
+      );
       if (!ok) {
         const best = [...hs].sort((a, b) => cmpStr(a.fp, b.fp))[0] as Claim;
         const tierFell = !hs.some((h) => tierRank(h.tier) >= tierRank(cb.tier));
@@ -1306,7 +1359,9 @@ function l7(env: PassEnv, hA: Map<string, string[]>): LoosePart[] {
       continue;
     }
     const ha = (hA.get(cb.fp) ?? []).map((f) => headClaims.get(f)).filter((c): c is Claim => !!c);
-    const low = ha.filter((h) => tierRank(h.tier) < tierRank(cb.tier)).sort((a, b) => cmpStr(a.fp, b.fp));
+    const low = ha
+      .filter((h) => tierRank(h.tier) < tierRank(cb.tier))
+      .sort((a, b) => cmpStr(a.fp, b.fp));
     if (low.length > 0) add(cb.fp, "loosened", "tier", cb.tier, (low[0] as Claim).tier);
   }
   // policy entries and the shape (A.16.17: nothing the missing declaration would hold)
@@ -1329,7 +1384,8 @@ function l7(env: PassEnv, hA: Map<string, string[]>): LoosePart[] {
       add("shape", "undecided", "owner", base.shape.owner, head.shape.owner);
     const mb = base.shape.manifest;
     const mh = head.shape.manifest;
-    if (mb !== mh) add("shape", mb !== null && mh === null ? "loosened" : "undecided", "manifest", mb, mh);
+    if (mb !== mh)
+      add("shape", mb !== null && mh === null ? "loosened" : "undecided", "manifest", mb, mh);
   }
   // vocabulary items (ρ-matched)
   for (const kb of user(base.components)) {
@@ -1347,7 +1403,11 @@ function l7(env: PassEnv, hA: Map<string, string[]>): LoosePart[] {
         kb.assumes.map((a) => a.id).sort(cmpStr),
         kh.assumes.map((a) => a.id).sort(cmpStr)
       );
-    if (!env.emptyBase && kh.owner !== kb.owner && !(kb.ownerFrom === "shape" && kh.ownerFrom === "shape"))
+    if (
+      !env.emptyBase &&
+      kh.owner !== kb.owner &&
+      !(kb.ownerFrom === "shape" && kh.ownerFrom === "shape")
+    )
       add(s, "undecided", "owner", kb.owner, kh.owner);
   }
   for (const rb of user(base.resources)) {
@@ -1356,7 +1416,11 @@ function l7(env: PassEnv, hA: Map<string, string[]>): LoosePart[] {
     if (!rh) continue;
     const s = `resource ${rb.q}`;
     if (tierRank(rh.tier) < tierRank(rb.tier)) add(s, "loosened", "tier", rb.tier, rh.tier);
-    if (!env.emptyBase && rh.owner !== rb.owner && !(rb.ownerFrom === "shape" && rh.ownerFrom === "shape"))
+    if (
+      !env.emptyBase &&
+      rh.owner !== rb.owner &&
+      !(rb.ownerFrom === "shape" && rh.ownerFrom === "shape")
+    )
       add(s, "undecided", "owner", rb.owner, rh.owner);
   }
   for (const ub of user(base.units)) {
@@ -1432,7 +1496,13 @@ function l7(env: PassEnv, hA: Map<string, string[]>): LoosePart[] {
     if (!ah) continue;
     const s = `actor ${ab.q}`;
     if (ah.identities.some((i) => !ab.identities.includes(i)))
-      add(s, "undecided", "identity", [...ab.identities].sort(cmpStr), [...ah.identities].sort(cmpStr));
+      add(
+        s,
+        "undecided",
+        "identity",
+        [...ab.identities].sort(cmpStr),
+        [...ah.identities].sort(cmpStr)
+      );
     if (ah.members.some((m) => !ab.members.includes(m)))
       add(s, "undecided", "member", [...ab.members].sort(cmpStr), [...ah.members].sort(cmpStr));
     if (ah.operator !== ab.operator && ah.operator !== null)

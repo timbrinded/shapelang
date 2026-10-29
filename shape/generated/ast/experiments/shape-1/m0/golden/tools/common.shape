@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource CommonModuleCanonDeclAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/m0/golden/tools/common.py#_canon_decl")
-  fingerprint ast.semantic_subtree_v1("sha256:7fac64fe8f8b983c36d2ac76b2dbff9d3e8ad9cb8d46f07f312dcda3d36767e0")
+  fingerprint ast.semantic_subtree_v1("sha256:8eb6286d545b76f1c18d8579dd7b95d9653ec3f061c036515944c2e536c2c70b")
 }
 
 resource CommonModuleCanonManifestAstAnchor : GeneratedAstAnchor {
@@ -181,7 +181,7 @@ relation CommonModuleCanonDeclGeneratedFromCommonModuleCanonDeclAstAnchor {
   kind generated_from
   connects CommonModule -> CommonModuleCanonDeclAstAnchor
   roles { CommonModule as generated, CommonModuleCanonDeclAstAnchor as syntax }
-  expects CommonModuleCanonDeclAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7fac64fe8f8b983c36d2ac76b2dbff9d3e8ad9cb8d46f07f312dcda3d36767e0")
+  expects CommonModuleCanonDeclAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8eb6286d545b76f1c18d8579dd7b95d9653ec3f061c036515944c2e536c2c70b")
   summary "fn CommonModule._canon_decl generated from python function_definition at experiments/shape-1/m0/golden/tools/common.py#_canon_decl."
 }
 

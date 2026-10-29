@@ -8,12 +8,12 @@ trait GeneratedCandidate {
 
 resource GenModuleCycleObAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/m0/golden/tools/gen.py#cycle_ob")
-  fingerprint ast.semantic_subtree_v1("sha256:165d1c86eaf74276562efb5cddc0ad8c1a73471b21a3c77eb7894589cc21428b")
+  fingerprint ast.semantic_subtree_v1("sha256:b9e9e7348b31927eb883afd200d6e9c94c4733082ce7664bc6a9a1e59b541909")
 }
 
 resource GenModuleDetObAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/m0/golden/tools/gen.py#det_ob")
-  fingerprint ast.semantic_subtree_v1("sha256:5c63f188017d566af58c14d9105013cdda4f2d9583266ff70969c7bf18d9a1c7")
+  fingerprint ast.semantic_subtree_v1("sha256:acd0db7eac9c0d3c09695112ee917f91a5a5b5b8531a8c3e8ba61daaa539f8a7")
 }
 
 resource GenModuleEqAstAnchor : GeneratedAstAnchor {
@@ -63,7 +63,7 @@ resource GenModuleEx1CPartsAstAnchor : GeneratedAstAnchor {
 
 resource GenModuleEx1EmptyBaseAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/m0/golden/tools/gen.py#ex1_empty_base")
-  fingerprint ast.semantic_subtree_v1("sha256:87bf09eb28dbb55e747632cbb4a94462751b9f97f0d1ef826ce84720aa17147a")
+  fingerprint ast.semantic_subtree_v1("sha256:4f0f79dc5ce65ccaf4a6f0778fed160f78b2acb7d9d40e06852d4a96cac22006")
 }
 
 resource GenModuleEx1FinalContraDisAstAnchor : GeneratedAstAnchor {
@@ -171,9 +171,14 @@ resource GenModuleLoadAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:6695574bf835c9351263b657ecb492f4870713ab33c75304efae57a1d6e207d4")
 }
 
+resource GenModuleMdigAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/m0/golden/tools/gen.py#mdig")
+  fingerprint ast.semantic_subtree_v1("sha256:552d9117ac1c8f64c3c75e9e45b9879288a8e3883813df4adff095958dba7005")
+}
+
 resource GenModuleRecIdWhereAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/shape-1/m0/golden/tools/gen.py#rec_id_where")
-  fingerprint ast.semantic_subtree_v1("sha256:7211e58f70b3fcabc0e27f16a54074bd4ebb25e4cb3c51bc4203e458c6c9665e")
+  fingerprint ast.semantic_subtree_v1("sha256:0a98f089aaf409b5f4860a8535a6f4dd7317e4188aff1cae9481efc6490b09c7")
 }
 
 resource GenModuleWithNAstAnchor : GeneratedAstAnchor {
@@ -281,6 +286,9 @@ component GenModule : GeneratedCandidate {
   fn load
     source python("experiments/shape-1/m0/golden/tools/gen.py#load")
     effects unknown
+  fn mdig
+    source python("experiments/shape-1/m0/golden/tools/gen.py#mdig")
+    effects unknown
   fn rec_id_where
     source python("experiments/shape-1/m0/golden/tools/gen.py#rec_id_where")
     effects unknown
@@ -293,7 +301,7 @@ relation GenModuleCycleObGeneratedFromGenModuleCycleObAstAnchor {
   kind generated_from
   connects GenModule -> GenModuleCycleObAstAnchor
   roles { GenModule as generated, GenModuleCycleObAstAnchor as syntax }
-  expects GenModuleCycleObAstAnchor fingerprint ast.semantic_subtree_v1("sha256:165d1c86eaf74276562efb5cddc0ad8c1a73471b21a3c77eb7894589cc21428b")
+  expects GenModuleCycleObAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b9e9e7348b31927eb883afd200d6e9c94c4733082ce7664bc6a9a1e59b541909")
   summary "fn GenModule.cycle_ob generated from python function_definition at experiments/shape-1/m0/golden/tools/gen.py#cycle_ob."
 }
 
@@ -301,7 +309,7 @@ relation GenModuleDetObGeneratedFromGenModuleDetObAstAnchor {
   kind generated_from
   connects GenModule -> GenModuleDetObAstAnchor
   roles { GenModule as generated, GenModuleDetObAstAnchor as syntax }
-  expects GenModuleDetObAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5c63f188017d566af58c14d9105013cdda4f2d9583266ff70969c7bf18d9a1c7")
+  expects GenModuleDetObAstAnchor fingerprint ast.semantic_subtree_v1("sha256:acd0db7eac9c0d3c09695112ee917f91a5a5b5b8531a8c3e8ba61daaa539f8a7")
   summary "fn GenModule.det_ob generated from python function_definition at experiments/shape-1/m0/golden/tools/gen.py#det_ob."
 }
 
@@ -381,7 +389,7 @@ relation GenModuleEx1EmptyBaseGeneratedFromGenModuleEx1EmptyBaseAstAnchor {
   kind generated_from
   connects GenModule -> GenModuleEx1EmptyBaseAstAnchor
   roles { GenModule as generated, GenModuleEx1EmptyBaseAstAnchor as syntax }
-  expects GenModuleEx1EmptyBaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:87bf09eb28dbb55e747632cbb4a94462751b9f97f0d1ef826ce84720aa17147a")
+  expects GenModuleEx1EmptyBaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4f0f79dc5ce65ccaf4a6f0778fed160f78b2acb7d9d40e06852d4a96cac22006")
   summary "fn GenModule.ex1_empty_base generated from python function_definition at experiments/shape-1/m0/golden/tools/gen.py#ex1_empty_base."
 }
 
@@ -553,11 +561,19 @@ relation GenModuleLoadGeneratedFromGenModuleLoadAstAnchor {
   summary "fn GenModule.load generated from python function_definition at experiments/shape-1/m0/golden/tools/gen.py#load."
 }
 
+relation GenModuleMdigGeneratedFromGenModuleMdigAstAnchor {
+  kind generated_from
+  connects GenModule -> GenModuleMdigAstAnchor
+  roles { GenModule as generated, GenModuleMdigAstAnchor as syntax }
+  expects GenModuleMdigAstAnchor fingerprint ast.semantic_subtree_v1("sha256:552d9117ac1c8f64c3c75e9e45b9879288a8e3883813df4adff095958dba7005")
+  summary "fn GenModule.mdig generated from python function_definition at experiments/shape-1/m0/golden/tools/gen.py#mdig."
+}
+
 relation GenModuleRecIdWhereGeneratedFromGenModuleRecIdWhereAstAnchor {
   kind generated_from
   connects GenModule -> GenModuleRecIdWhereAstAnchor
   roles { GenModule as generated, GenModuleRecIdWhereAstAnchor as syntax }
-  expects GenModuleRecIdWhereAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7211e58f70b3fcabc0e27f16a54074bd4ebb25e4cb3c51bc4203e458c6c9665e")
+  expects GenModuleRecIdWhereAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0a98f089aaf409b5f4860a8535a6f4dd7317e4188aff1cae9481efc6490b09c7")
   summary "fn GenModule.rec_id_where generated from python function_definition at experiments/shape-1/m0/golden/tools/gen.py#rec_id_where."
 }
 

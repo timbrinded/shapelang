@@ -1,0 +1,687 @@
+module shape.generated.ast.experiments.shape_1.proto.src.parse
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource PAcceptAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.accept")
+  fingerprint ast.semantic_subtree_v1("sha256:567a7c089a1b4b0fcbc007a468315f1a0a6cfe5873dde27e06595dbca4e774dd")
+}
+
+resource PAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P")
+  fingerprint ast.semantic_subtree_v1("sha256:f09bd11a872a449414c9f39931b048c2e7a518de7aa1e35edfb47abc2013a8d9")
+}
+
+resource PAtEndAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.atEnd")
+  fingerprint ast.semantic_subtree_v1("sha256:1ce84bf52f87b802043bb60315128d784b997d10b570f59746b4bdec0e6837ad")
+}
+
+resource PAtomAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.atom")
+  fingerprint ast.semantic_subtree_v1("sha256:50e118da9f80485df48ee34ef12072d34e086de730db295a6f28574e01afbb09")
+}
+
+resource PCallAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.call")
+  fingerprint ast.semantic_subtree_v1("sha256:a6db768b33cd7f11dec8f581d423c3d773f208a3dc40540070856fe72562be1e")
+}
+
+resource PCodeRefAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.codeRef")
+  fingerprint ast.semantic_subtree_v1("sha256:b21b322668efff778aef23cb0d05218ee1a657be571e23ae4d8d2b339a0d6a85")
+}
+
+resource PCommaListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.commaList")
+  fingerprint ast.semantic_subtree_v1("sha256:2587735fec7430e1e645aa539f58a3efd36b0b27c960bd8576d9578a0e4dbf14")
+}
+
+resource PConstructorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.constructor")
+  fingerprint ast.semantic_subtree_v1("sha256:56376ba21d8866e8f7b1a8634f2de48d3e6661b70d40f910978e7346c8bd66ef")
+}
+
+resource PFailAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.fail")
+  fingerprint ast.semantic_subtree_v1("sha256:ad1862790e81eaeb1fbaea454da200c86a833f674550fc7b94440f2b194cc489")
+}
+
+resource PIdAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.id")
+  fingerprint ast.semantic_subtree_v1("sha256:f06081c83d94938571034965616087389056a3b6587949db9146f6459afa0f58")
+}
+
+resource PIntAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.int")
+  fingerprint ast.semantic_subtree_v1("sha256:6430fb41c15a81ae75084fb344388eb4a5ac679c3da08c9c7db28c5120032fb9")
+}
+
+resource PIsAtomAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.isAtom")
+  fingerprint ast.semantic_subtree_v1("sha256:968f5067fb5d0863c33670531702b36c7c203ee3e31697cfb29d1d3c570e33f1")
+}
+
+resource PIsCodeRefAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.isCodeRef")
+  fingerprint ast.semantic_subtree_v1("sha256:e8ef7eb1f64fc6fb64cecb877c038e6eaa3279fa776e63a0e01dcc6bc0b7a7b7")
+}
+
+resource PIsIdAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.isId")
+  fingerprint ast.semantic_subtree_v1("sha256:9ea5c747298aa19e070c07ff99cfca0c8454e7d64b500c5b3ede0702df764b0d")
+}
+
+resource PIsPAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.isP")
+  fingerprint ast.semantic_subtree_v1("sha256:6958829f43b116c8da55fd93dee60530fcd0a418a503e40501d70feb92421767")
+}
+
+resource PLineAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.line")
+  fingerprint ast.semantic_subtree_v1("sha256:7884a1f917a09fcad51e094eda78082944a187649020de882111ed1a7a6535a6")
+}
+
+resource PNextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.next")
+  fingerprint ast.semantic_subtree_v1("sha256:12340223dfb7f5ad06c56f0c5a954cc4bd785fbb5519c0e3a19c9b510d90e16a")
+}
+
+resource PPAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.p")
+  fingerprint ast.semantic_subtree_v1("sha256:a0f1f00c4199e4bbe08533d7041991bcea1b60bf1028cc712632f6ace99ed95d")
+}
+
+resource PPeekAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.peek")
+  fingerprint ast.semantic_subtree_v1("sha256:40c547c1fc5c51ab7f0b915f6aa70cba048da553150852deb27f5eeb4424c267")
+}
+
+resource PQnameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.qname")
+  fingerprint ast.semantic_subtree_v1("sha256:c42e63c62a8c152006082e8f670901b742ce2d15a83c06ba2a3f6e1cbcfc9b50")
+}
+
+resource PRefAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.ref")
+  fingerprint ast.semantic_subtree_v1("sha256:993c5029ec1e2b33bcfe3e222e957a2bd6a905b79542f32bab23c63e114f41e7")
+}
+
+resource PStrAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.str")
+  fingerprint ast.semantic_subtree_v1("sha256:697a99544cefe0e6ee254e4f6d2cb35346b857c522fae9b47fcb736427645521")
+}
+
+resource PTierAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#P.tier")
+  fingerprint ast.semantic_subtree_v1("sha256:d46125504cf2331127eb67a0b6ec3c8f63da4aec66f3cb01174b8ea374812118")
+}
+
+resource ParseErrorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#ParseError")
+  fingerprint ast.semantic_subtree_v1("sha256:9e698eb484574461a376955b1ad6ab74d73c1704888f2929764ccae5d69318f0")
+}
+
+resource ParseErrorConstructorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#ParseError.constructor")
+  fingerprint ast.semantic_subtree_v1("sha256:fbc0f07b1e3a029b9cf36ce0b1f6bcdb1246dec7cb462924faf009fe6bb0866b")
+}
+
+resource ParseModuleAttachAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#attach")
+  fingerprint ast.semantic_subtree_v1("sha256:aa126220b9416c37bec667a51e959ffd61729f705a2d41ae0076c5321e8fdefe")
+}
+
+resource ParseModuleBlockAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#block")
+  fingerprint ast.semantic_subtree_v1("sha256:c0b3f95aabf61e9322700a11cb8c5e1b86d60c96239be7b73beee56c5bec65ed")
+}
+
+resource ParseModuleClaimMetaAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#claimMeta")
+  fingerprint ast.semantic_subtree_v1("sha256:af4f9ceeb4446eafc7418354c913e079c2963d68229bc712453b128d487fa899")
+}
+
+resource ParseModuleClauseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#clause")
+  fingerprint ast.semantic_subtree_v1("sha256:3a8b161eef54f5dd5b2416c8c34d9d5e3cf3afb93cfce6fc433370e36e64239c")
+}
+
+resource ParseModuleDeclAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#decl")
+  fingerprint ast.semantic_subtree_v1("sha256:8521bd32015eea9ab816c33b0722ad6855bffd185ecb325bd229fc8ada0bef6a")
+}
+
+resource ParseModuleGeneratedFunctionComponentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#component")
+  fingerprint ast.semantic_subtree_v1("sha256:de4d89c9df5c6167a7b5386ddf7b75e03e1b6aba506a34702910e1f9722c65fd")
+}
+
+resource ParseModuleGeneratedFunctionEvidenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#evidence")
+  fingerprint ast.semantic_subtree_v1("sha256:913df29076a5848d377ed36fa64dca00c5a90a38d416558ad2646e26e4b219a5")
+}
+
+resource ParseModuleGeneratedFunctionOwnerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#owner")
+  fingerprint ast.semantic_subtree_v1("sha256:915bb8a521abeadf0026c27a8ce098c3b77448dbbd7fd02007997645fec06379")
+}
+
+resource ParseModuleLexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#lex")
+  fingerprint ast.semantic_subtree_v1("sha256:7f08726982282f6c51b24d02738d29d9c3249ea8bef48face1134339471331c2")
+}
+
+resource ParseModuleNodeSelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#nodeSel")
+  fingerprint ast.semantic_subtree_v1("sha256:49b5b75a4b7f24f61c6a3f20ad8b69f4755a89ba3202f11f214e786d90727b43")
+}
+
+resource ParseModuleParseShapeFileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#parseShapeFile")
+  fingerprint ast.semantic_subtree_v1("sha256:4fa4ba7b4fd08f5c358acce599d2dea325d7145dd597248c2e94d0f8a538ac69")
+}
+
+resource ParseModuleStringBlockAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#stringBlock")
+  fingerprint ast.semantic_subtree_v1("sha256:6f2b280ffab359d2b31006399f1c0307c88496b9c05712f02be375be25bbb8a7")
+}
+
+resource ParseModuleTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#target")
+  fingerprint ast.semantic_subtree_v1("sha256:35cac9921af51c9cf2b6dc8f3091c2eababc821f46d1bdd1188f44f1a7e957bb")
+}
+
+resource ParseModuleTemplateAppAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#templateApp")
+  fingerprint ast.semantic_subtree_v1("sha256:21c43bbe1c582f285315365869d6177af14bcb54313db76bb7c35c6b82838e23")
+}
+
+resource ParseModuleUnitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#unit")
+  fingerprint ast.semantic_subtree_v1("sha256:25893886c11275a1e4c0713ee7c0476c3a5773b6a561aa3821b3f950e65a70b7")
+}
+
+resource ParseModuleUnitSelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/shape-1/proto/src/parse.ts#unitSel")
+  fingerprint ast.semantic_subtree_v1("sha256:5295c9d77f54298d73c62be2e5ccc1c5e141601a7cf06eb2396d7150c6a4645a")
+}
+
+component P : GeneratedCandidate {
+  fn accept
+    source ts("experiments/shape-1/proto/src/parse.ts#P.accept")
+    effects unknown
+  fn atEnd
+    source ts("experiments/shape-1/proto/src/parse.ts#P.atEnd")
+    effects unknown
+  fn atom
+    source ts("experiments/shape-1/proto/src/parse.ts#P.atom")
+    effects unknown
+  fn call
+    source ts("experiments/shape-1/proto/src/parse.ts#P.call")
+    effects unknown
+  fn codeRef
+    source ts("experiments/shape-1/proto/src/parse.ts#P.codeRef")
+    effects unknown
+  fn commaList
+    source ts("experiments/shape-1/proto/src/parse.ts#P.commaList")
+    effects unknown
+  fn constructor
+    source ts("experiments/shape-1/proto/src/parse.ts#P.constructor")
+    effects unknown
+  fn fail
+    source ts("experiments/shape-1/proto/src/parse.ts#P.fail")
+    effects unknown
+  fn id
+    source ts("experiments/shape-1/proto/src/parse.ts#P.id")
+    effects unknown
+  fn int
+    source ts("experiments/shape-1/proto/src/parse.ts#P.int")
+    effects unknown
+  fn isAtom
+    source ts("experiments/shape-1/proto/src/parse.ts#P.isAtom")
+    effects unknown
+  fn isCodeRef
+    source ts("experiments/shape-1/proto/src/parse.ts#P.isCodeRef")
+    effects unknown
+  fn isId
+    source ts("experiments/shape-1/proto/src/parse.ts#P.isId")
+    effects unknown
+  fn isP
+    source ts("experiments/shape-1/proto/src/parse.ts#P.isP")
+    effects unknown
+  fn line
+    source ts("experiments/shape-1/proto/src/parse.ts#P.line")
+    effects unknown
+  fn next
+    source ts("experiments/shape-1/proto/src/parse.ts#P.next")
+    effects unknown
+  fn p
+    source ts("experiments/shape-1/proto/src/parse.ts#P.p")
+    effects unknown
+  fn peek
+    source ts("experiments/shape-1/proto/src/parse.ts#P.peek")
+    effects unknown
+  fn qname
+    source ts("experiments/shape-1/proto/src/parse.ts#P.qname")
+    effects unknown
+  fn ref
+    source ts("experiments/shape-1/proto/src/parse.ts#P.ref")
+    effects unknown
+  fn str
+    source ts("experiments/shape-1/proto/src/parse.ts#P.str")
+    effects unknown
+  fn tier
+    source ts("experiments/shape-1/proto/src/parse.ts#P.tier")
+    effects unknown
+}
+
+component ParseError : GeneratedCandidate {
+  fn constructor
+    source ts("experiments/shape-1/proto/src/parse.ts#ParseError.constructor")
+    effects unknown
+}
+
+component ParseModule : GeneratedCandidate {
+  fn attach
+    source ts("experiments/shape-1/proto/src/parse.ts#attach")
+    effects unknown
+  fn block
+    source ts("experiments/shape-1/proto/src/parse.ts#block")
+    effects unknown
+  fn claimMeta
+    source ts("experiments/shape-1/proto/src/parse.ts#claimMeta")
+    effects unknown
+  fn clause
+    source ts("experiments/shape-1/proto/src/parse.ts#clause")
+    effects unknown
+  fn decl
+    source ts("experiments/shape-1/proto/src/parse.ts#decl")
+    effects unknown
+  fn generatedFunction_component
+    source ts("experiments/shape-1/proto/src/parse.ts#component")
+    effects unknown
+  fn generatedFunction_evidence
+    source ts("experiments/shape-1/proto/src/parse.ts#evidence")
+    effects unknown
+  fn generatedFunction_owner
+    source ts("experiments/shape-1/proto/src/parse.ts#owner")
+    effects unknown
+  fn lex
+    source ts("experiments/shape-1/proto/src/parse.ts#lex")
+    effects unknown
+  fn nodeSel
+    source ts("experiments/shape-1/proto/src/parse.ts#nodeSel")
+    effects unknown
+  fn parseShapeFile
+    source ts("experiments/shape-1/proto/src/parse.ts#parseShapeFile")
+    effects unknown
+  fn stringBlock
+    source ts("experiments/shape-1/proto/src/parse.ts#stringBlock")
+    effects unknown
+  fn target
+    source ts("experiments/shape-1/proto/src/parse.ts#target")
+    effects unknown
+  fn templateApp
+    source ts("experiments/shape-1/proto/src/parse.ts#templateApp")
+    effects unknown
+  fn unit
+    source ts("experiments/shape-1/proto/src/parse.ts#unit")
+    effects unknown
+  fn unitSel
+    source ts("experiments/shape-1/proto/src/parse.ts#unitSel")
+    effects unknown
+}
+
+relation PAcceptGeneratedFromPAcceptAstAnchor {
+  kind generated_from
+  connects P -> PAcceptAstAnchor
+  roles { P as generated, PAcceptAstAnchor as syntax }
+  expects PAcceptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:567a7c089a1b4b0fcbc007a468315f1a0a6cfe5873dde27e06595dbca4e774dd")
+  summary "fn P.accept generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.accept."
+}
+
+relation PAtEndGeneratedFromPAtEndAstAnchor {
+  kind generated_from
+  connects P -> PAtEndAstAnchor
+  roles { P as generated, PAtEndAstAnchor as syntax }
+  expects PAtEndAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1ce84bf52f87b802043bb60315128d784b997d10b570f59746b4bdec0e6837ad")
+  summary "fn P.atEnd generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.atEnd."
+}
+
+relation PAtomGeneratedFromPAtomAstAnchor {
+  kind generated_from
+  connects P -> PAtomAstAnchor
+  roles { P as generated, PAtomAstAnchor as syntax }
+  expects PAtomAstAnchor fingerprint ast.semantic_subtree_v1("sha256:50e118da9f80485df48ee34ef12072d34e086de730db295a6f28574e01afbb09")
+  summary "fn P.atom generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.atom."
+}
+
+relation PCallGeneratedFromPCallAstAnchor {
+  kind generated_from
+  connects P -> PCallAstAnchor
+  roles { P as generated, PCallAstAnchor as syntax }
+  expects PCallAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a6db768b33cd7f11dec8f581d423c3d773f208a3dc40540070856fe72562be1e")
+  summary "fn P.call generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.call."
+}
+
+relation PCodeRefGeneratedFromPCodeRefAstAnchor {
+  kind generated_from
+  connects P -> PCodeRefAstAnchor
+  roles { P as generated, PCodeRefAstAnchor as syntax }
+  expects PCodeRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b21b322668efff778aef23cb0d05218ee1a657be571e23ae4d8d2b339a0d6a85")
+  summary "fn P.codeRef generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.codeRef."
+}
+
+relation PCommaListGeneratedFromPCommaListAstAnchor {
+  kind generated_from
+  connects P -> PCommaListAstAnchor
+  roles { P as generated, PCommaListAstAnchor as syntax }
+  expects PCommaListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2587735fec7430e1e645aa539f58a3efd36b0b27c960bd8576d9578a0e4dbf14")
+  summary "fn P.commaList generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.commaList."
+}
+
+relation PConstructorGeneratedFromPConstructorAstAnchor {
+  kind generated_from
+  connects P -> PConstructorAstAnchor
+  roles { P as generated, PConstructorAstAnchor as syntax }
+  expects PConstructorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:56376ba21d8866e8f7b1a8634f2de48d3e6661b70d40f910978e7346c8bd66ef")
+  summary "fn P.constructor generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.constructor."
+}
+
+relation PFailGeneratedFromPFailAstAnchor {
+  kind generated_from
+  connects P -> PFailAstAnchor
+  roles { P as generated, PFailAstAnchor as syntax }
+  expects PFailAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ad1862790e81eaeb1fbaea454da200c86a833f674550fc7b94440f2b194cc489")
+  summary "fn P.fail generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.fail."
+}
+
+relation PGeneratedFromPAstAnchor {
+  kind generated_from
+  connects P -> PAstAnchor
+  roles { P as generated, PAstAnchor as syntax }
+  expects PAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f09bd11a872a449414c9f39931b048c2e7a518de7aa1e35edfb47abc2013a8d9")
+  summary "component P generated from typescript class_declaration at experiments/shape-1/proto/src/parse.ts#P."
+}
+
+relation PIdGeneratedFromPIdAstAnchor {
+  kind generated_from
+  connects P -> PIdAstAnchor
+  roles { P as generated, PIdAstAnchor as syntax }
+  expects PIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f06081c83d94938571034965616087389056a3b6587949db9146f6459afa0f58")
+  summary "fn P.id generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.id."
+}
+
+relation PIntGeneratedFromPIntAstAnchor {
+  kind generated_from
+  connects P -> PIntAstAnchor
+  roles { P as generated, PIntAstAnchor as syntax }
+  expects PIntAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6430fb41c15a81ae75084fb344388eb4a5ac679c3da08c9c7db28c5120032fb9")
+  summary "fn P.int generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.int."
+}
+
+relation PIsAtomGeneratedFromPIsAtomAstAnchor {
+  kind generated_from
+  connects P -> PIsAtomAstAnchor
+  roles { P as generated, PIsAtomAstAnchor as syntax }
+  expects PIsAtomAstAnchor fingerprint ast.semantic_subtree_v1("sha256:968f5067fb5d0863c33670531702b36c7c203ee3e31697cfb29d1d3c570e33f1")
+  summary "fn P.isAtom generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.isAtom."
+}
+
+relation PIsCodeRefGeneratedFromPIsCodeRefAstAnchor {
+  kind generated_from
+  connects P -> PIsCodeRefAstAnchor
+  roles { P as generated, PIsCodeRefAstAnchor as syntax }
+  expects PIsCodeRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e8ef7eb1f64fc6fb64cecb877c038e6eaa3279fa776e63a0e01dcc6bc0b7a7b7")
+  summary "fn P.isCodeRef generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.isCodeRef."
+}
+
+relation PIsIdGeneratedFromPIsIdAstAnchor {
+  kind generated_from
+  connects P -> PIsIdAstAnchor
+  roles { P as generated, PIsIdAstAnchor as syntax }
+  expects PIsIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9ea5c747298aa19e070c07ff99cfca0c8454e7d64b500c5b3ede0702df764b0d")
+  summary "fn P.isId generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.isId."
+}
+
+relation PIsPGeneratedFromPIsPAstAnchor {
+  kind generated_from
+  connects P -> PIsPAstAnchor
+  roles { P as generated, PIsPAstAnchor as syntax }
+  expects PIsPAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6958829f43b116c8da55fd93dee60530fcd0a418a503e40501d70feb92421767")
+  summary "fn P.isP generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.isP."
+}
+
+relation PLineGeneratedFromPLineAstAnchor {
+  kind generated_from
+  connects P -> PLineAstAnchor
+  roles { P as generated, PLineAstAnchor as syntax }
+  expects PLineAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7884a1f917a09fcad51e094eda78082944a187649020de882111ed1a7a6535a6")
+  summary "fn P.line generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.line."
+}
+
+relation PNextGeneratedFromPNextAstAnchor {
+  kind generated_from
+  connects P -> PNextAstAnchor
+  roles { P as generated, PNextAstAnchor as syntax }
+  expects PNextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:12340223dfb7f5ad06c56f0c5a954cc4bd785fbb5519c0e3a19c9b510d90e16a")
+  summary "fn P.next generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.next."
+}
+
+relation PPGeneratedFromPPAstAnchor {
+  kind generated_from
+  connects P -> PPAstAnchor
+  roles { P as generated, PPAstAnchor as syntax }
+  expects PPAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a0f1f00c4199e4bbe08533d7041991bcea1b60bf1028cc712632f6ace99ed95d")
+  summary "fn P.p generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.p."
+}
+
+relation PPeekGeneratedFromPPeekAstAnchor {
+  kind generated_from
+  connects P -> PPeekAstAnchor
+  roles { P as generated, PPeekAstAnchor as syntax }
+  expects PPeekAstAnchor fingerprint ast.semantic_subtree_v1("sha256:40c547c1fc5c51ab7f0b915f6aa70cba048da553150852deb27f5eeb4424c267")
+  summary "fn P.peek generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.peek."
+}
+
+relation PQnameGeneratedFromPQnameAstAnchor {
+  kind generated_from
+  connects P -> PQnameAstAnchor
+  roles { P as generated, PQnameAstAnchor as syntax }
+  expects PQnameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c42e63c62a8c152006082e8f670901b742ce2d15a83c06ba2a3f6e1cbcfc9b50")
+  summary "fn P.qname generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.qname."
+}
+
+relation PRefGeneratedFromPRefAstAnchor {
+  kind generated_from
+  connects P -> PRefAstAnchor
+  roles { P as generated, PRefAstAnchor as syntax }
+  expects PRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:993c5029ec1e2b33bcfe3e222e957a2bd6a905b79542f32bab23c63e114f41e7")
+  summary "fn P.ref generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.ref."
+}
+
+relation PStrGeneratedFromPStrAstAnchor {
+  kind generated_from
+  connects P -> PStrAstAnchor
+  roles { P as generated, PStrAstAnchor as syntax }
+  expects PStrAstAnchor fingerprint ast.semantic_subtree_v1("sha256:697a99544cefe0e6ee254e4f6d2cb35346b857c522fae9b47fcb736427645521")
+  summary "fn P.str generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.str."
+}
+
+relation PTierGeneratedFromPTierAstAnchor {
+  kind generated_from
+  connects P -> PTierAstAnchor
+  roles { P as generated, PTierAstAnchor as syntax }
+  expects PTierAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d46125504cf2331127eb67a0b6ec3c8f63da4aec66f3cb01174b8ea374812118")
+  summary "fn P.tier generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#P.tier."
+}
+
+relation ParseErrorConstructorGeneratedFromParseErrorConstructorAstAnchor {
+  kind generated_from
+  connects ParseError -> ParseErrorConstructorAstAnchor
+  roles { ParseError as generated, ParseErrorConstructorAstAnchor as syntax }
+  expects ParseErrorConstructorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fbc0f07b1e3a029b9cf36ce0b1f6bcdb1246dec7cb462924faf009fe6bb0866b")
+  summary "fn ParseError.constructor generated from typescript method_definition at experiments/shape-1/proto/src/parse.ts#ParseError.constructor."
+}
+
+relation ParseErrorGeneratedFromParseErrorAstAnchor {
+  kind generated_from
+  connects ParseError -> ParseErrorAstAnchor
+  roles { ParseError as generated, ParseErrorAstAnchor as syntax }
+  expects ParseErrorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9e698eb484574461a376955b1ad6ab74d73c1704888f2929764ccae5d69318f0")
+  summary "component ParseError generated from typescript class_declaration at experiments/shape-1/proto/src/parse.ts#ParseError."
+}
+
+relation ParseModuleAttachGeneratedFromParseModuleAttachAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleAttachAstAnchor
+  roles { ParseModule as generated, ParseModuleAttachAstAnchor as syntax }
+  expects ParseModuleAttachAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aa126220b9416c37bec667a51e959ffd61729f705a2d41ae0076c5321e8fdefe")
+  summary "fn ParseModule.attach generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#attach."
+}
+
+relation ParseModuleBlockGeneratedFromParseModuleBlockAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleBlockAstAnchor
+  roles { ParseModule as generated, ParseModuleBlockAstAnchor as syntax }
+  expects ParseModuleBlockAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c0b3f95aabf61e9322700a11cb8c5e1b86d60c96239be7b73beee56c5bec65ed")
+  summary "fn ParseModule.block generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#block."
+}
+
+relation ParseModuleClaimMetaGeneratedFromParseModuleClaimMetaAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleClaimMetaAstAnchor
+  roles { ParseModule as generated, ParseModuleClaimMetaAstAnchor as syntax }
+  expects ParseModuleClaimMetaAstAnchor fingerprint ast.semantic_subtree_v1("sha256:af4f9ceeb4446eafc7418354c913e079c2963d68229bc712453b128d487fa899")
+  summary "fn ParseModule.claimMeta generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#claimMeta."
+}
+
+relation ParseModuleClauseGeneratedFromParseModuleClauseAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleClauseAstAnchor
+  roles { ParseModule as generated, ParseModuleClauseAstAnchor as syntax }
+  expects ParseModuleClauseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3a8b161eef54f5dd5b2416c8c34d9d5e3cf3afb93cfce6fc433370e36e64239c")
+  summary "fn ParseModule.clause generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#clause."
+}
+
+relation ParseModuleDeclGeneratedFromParseModuleDeclAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleDeclAstAnchor
+  roles { ParseModule as generated, ParseModuleDeclAstAnchor as syntax }
+  expects ParseModuleDeclAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8521bd32015eea9ab816c33b0722ad6855bffd185ecb325bd229fc8ada0bef6a")
+  summary "fn ParseModule.decl generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#decl."
+}
+
+relation ParseModuleGeneratedFunctionComponentGeneratedFromParseModuleGeneratedFunctionComponentAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleGeneratedFunctionComponentAstAnchor
+  roles { ParseModule as generated, ParseModuleGeneratedFunctionComponentAstAnchor as syntax }
+  expects ParseModuleGeneratedFunctionComponentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:de4d89c9df5c6167a7b5386ddf7b75e03e1b6aba506a34702910e1f9722c65fd")
+  summary "fn ParseModule.generatedFunction_component generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#component."
+}
+
+relation ParseModuleGeneratedFunctionEvidenceGeneratedFromParseModuleGeneratedFunctionEvidenceAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleGeneratedFunctionEvidenceAstAnchor
+  roles { ParseModule as generated, ParseModuleGeneratedFunctionEvidenceAstAnchor as syntax }
+  expects ParseModuleGeneratedFunctionEvidenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:913df29076a5848d377ed36fa64dca00c5a90a38d416558ad2646e26e4b219a5")
+  summary "fn ParseModule.generatedFunction_evidence generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#evidence."
+}
+
+relation ParseModuleGeneratedFunctionOwnerGeneratedFromParseModuleGeneratedFunctionOwnerAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleGeneratedFunctionOwnerAstAnchor
+  roles { ParseModule as generated, ParseModuleGeneratedFunctionOwnerAstAnchor as syntax }
+  expects ParseModuleGeneratedFunctionOwnerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:915bb8a521abeadf0026c27a8ce098c3b77448dbbd7fd02007997645fec06379")
+  summary "fn ParseModule.generatedFunction_owner generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#owner."
+}
+
+relation ParseModuleLexGeneratedFromParseModuleLexAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleLexAstAnchor
+  roles { ParseModule as generated, ParseModuleLexAstAnchor as syntax }
+  expects ParseModuleLexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7f08726982282f6c51b24d02738d29d9c3249ea8bef48face1134339471331c2")
+  summary "fn ParseModule.lex generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#lex."
+}
+
+relation ParseModuleNodeSelGeneratedFromParseModuleNodeSelAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleNodeSelAstAnchor
+  roles { ParseModule as generated, ParseModuleNodeSelAstAnchor as syntax }
+  expects ParseModuleNodeSelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:49b5b75a4b7f24f61c6a3f20ad8b69f4755a89ba3202f11f214e786d90727b43")
+  summary "fn ParseModule.nodeSel generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#nodeSel."
+}
+
+relation ParseModuleParseShapeFileGeneratedFromParseModuleParseShapeFileAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleParseShapeFileAstAnchor
+  roles { ParseModule as generated, ParseModuleParseShapeFileAstAnchor as syntax }
+  expects ParseModuleParseShapeFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4fa4ba7b4fd08f5c358acce599d2dea325d7145dd597248c2e94d0f8a538ac69")
+  summary "fn ParseModule.parseShapeFile generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#parseShapeFile."
+}
+
+relation ParseModuleStringBlockGeneratedFromParseModuleStringBlockAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleStringBlockAstAnchor
+  roles { ParseModule as generated, ParseModuleStringBlockAstAnchor as syntax }
+  expects ParseModuleStringBlockAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6f2b280ffab359d2b31006399f1c0307c88496b9c05712f02be375be25bbb8a7")
+  summary "fn ParseModule.stringBlock generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#stringBlock."
+}
+
+relation ParseModuleTargetGeneratedFromParseModuleTargetAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleTargetAstAnchor
+  roles { ParseModule as generated, ParseModuleTargetAstAnchor as syntax }
+  expects ParseModuleTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:35cac9921af51c9cf2b6dc8f3091c2eababc821f46d1bdd1188f44f1a7e957bb")
+  summary "fn ParseModule.target generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#target."
+}
+
+relation ParseModuleTemplateAppGeneratedFromParseModuleTemplateAppAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleTemplateAppAstAnchor
+  roles { ParseModule as generated, ParseModuleTemplateAppAstAnchor as syntax }
+  expects ParseModuleTemplateAppAstAnchor fingerprint ast.semantic_subtree_v1("sha256:21c43bbe1c582f285315365869d6177af14bcb54313db76bb7c35c6b82838e23")
+  summary "fn ParseModule.templateApp generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#templateApp."
+}
+
+relation ParseModuleUnitGeneratedFromParseModuleUnitAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleUnitAstAnchor
+  roles { ParseModule as generated, ParseModuleUnitAstAnchor as syntax }
+  expects ParseModuleUnitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:25893886c11275a1e4c0713ee7c0476c3a5773b6a561aa3821b3f950e65a70b7")
+  summary "fn ParseModule.unit generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#unit."
+}
+
+relation ParseModuleUnitSelGeneratedFromParseModuleUnitSelAstAnchor {
+  kind generated_from
+  connects ParseModule -> ParseModuleUnitSelAstAnchor
+  roles { ParseModule as generated, ParseModuleUnitSelAstAnchor as syntax }
+  expects ParseModuleUnitSelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5295c9d77f54298d73c62be2e5ccc1c5e141601a7cf06eb2396d7150c6a4645a")
+  summary "fn ParseModule.unitSel generated from typescript function_declaration at experiments/shape-1/proto/src/parse.ts#unitSel."
+}
+
+implementation PImpl {
+  paths {
+    "experiments/shape-1/proto/src/parse.ts"
+  }
+  conforms_to P
+}
+
+implementation ParseErrorImpl {
+  paths {
+    "experiments/shape-1/proto/src/parse.ts"
+  }
+  conforms_to ParseError
+}
+
+implementation ParseModuleImpl {
+  paths {
+    "experiments/shape-1/proto/src/parse.ts"
+  }
+  conforms_to ParseModule
+}
