@@ -13,3 +13,7 @@ experiments/semantic-kernel/target/
 
 TODO.md
 plans/
+
+# Local tool output: Playwright MCP session logs and image render scratch directories
+.playwright-mcp/
+.render-tmp/
