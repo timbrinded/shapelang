@@ -3,8 +3,9 @@ import { createScanner } from "typescript/ast/scanner";
 
 /**
  * Keep authored type text inside the generated alias. The caller must embed
- * it in parentheses: `type Expected = (${value});`. Balanced fragments cannot
- * close that wrapper, and comments cannot suppress the generated checks.
+ * it in parentheses, here inside a one-element tuple:
+ * `type Expected = [(${value})];`. Balanced fragments cannot close that
+ * wrapper, and comments cannot suppress the generated checks.
  *
  * This is a lexical boundary, not a type parser. The native compiler checks
  * the remaining grammar and type meaning of the parenthesized expression.

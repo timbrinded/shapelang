@@ -1,8 +1,24 @@
 import { dirname, isAbsolute, resolve } from "node:path";
-import { emitContract } from "./emit.ts";
+import { contractStart, emitContract, rejectedTransform } from "./emit.ts";
 
 function object(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+export const STRICT_CHECKING_REQUIRED =
+  "Contract checking requires strict checking: strict, strictNullChecks and strictFunctionTypes must not be false, and noCheck must not be true.";
+
+/**
+ * The compiler forwards, and --showConfig reports, only options that are set, so an
+ * omitted strict is the TypeScript 7 default (on).
+ */
+export function loosensStrictness(options: Record<string, unknown>): boolean {
+  return (
+    options.strict === false ||
+    options.strictNullChecks === false ||
+    options.strictFunctionTypes === false ||
+    options.noCheck === true
+  );
 }
 
 export class RpcError extends Error {
@@ -63,18 +79,26 @@ export class MapperSession {
           report(["repoRoot"], "repoRoot must be a nonempty path string.");
         }
       }
-      if (typeof input.configFileName !== "string" || !isAbsolute(input.configFileName)) {
+      const configFileName =
+        typeof input.configFileName === "string" && isAbsolute(input.configFileName)
+          ? input.configFileName
+          : undefined;
+      if (configFileName === undefined) {
         report([], "Version 1 requires a configured project with an absolute configFileName.");
       }
-      if (errors.length) {
+      const compiler = input.compilerOptions;
+      if (!object(compiler)) {
+        report([], "The compiler must supply the project's compiler options.");
+      } else if (loosensStrictness(compiler)) {
+        report([], STRICT_CHECKING_REQUIRED);
+      }
+      // The second and third conditions only narrow types: each already reported an error.
+      if (errors.length || !object(options) || configFileName === undefined) {
         this.#projects.set(handle, { error: errors.map((error) => error.messageText).join(" ") });
         return { optionDiagnostics: errors };
       }
-      // Values are narrowed again rather than trusted through the diagnostic accumulator.
-      if (!object(options) || typeof input.configFileName !== "string")
-        throw new RpcError(-32602, "Invalid project options.");
       const root = typeof options.repoRoot === "string" ? options.repoRoot : ".";
-      this.#projects.set(handle, { repoRoot: resolve(dirname(input.configFileName), root) });
+      this.#projects.set(handle, { repoRoot: resolve(dirname(configFileName), root) });
       return {};
     }
     const project = this.#projects.get(handle);
@@ -87,19 +111,13 @@ export class MapperSession {
       throw new RpcError(-32602, "transform requires fileName and content strings.");
     }
     if ("error" in project) {
-      return {
-        text: "export {};\n",
-        extension: ".ts",
-        mappings: [],
-        diagnostics: [
-          {
-            code: 1006,
-            messageText: `Invalid mapper project options: ${project.error}`,
-            start: 0,
-            length: Math.min(1, input.content.length)
-          }
-        ]
-      };
+      return rejectedTransform([
+        {
+          code: 1006,
+          messageText: `Invalid mapper project options: ${project.error}`,
+          ...contractStart(input.content)
+        }
+      ]);
     }
     return emitContract({
       fileName: input.fileName,
@@ -113,6 +131,17 @@ export type RpcReply = { jsonrpc: "2.0"; id: string | number | null } & (
   | { result: unknown }
   | { error: { code: number; message: string } }
 );
+
+export function rpcFailure(id: string | number | null, error: unknown): RpcReply {
+  return {
+    jsonrpc: "2.0",
+    id,
+    error: {
+      code: error instanceof RpcError ? error.code : -32603,
+      message: error instanceof Error ? error.message : String(error)
+    }
+  };
+}
 
 export function dispatch(session: MapperSession, message: unknown): RpcReply | undefined {
   if (object(message) && message.id === undefined) return undefined;
@@ -131,14 +160,7 @@ export function dispatch(session: MapperSession, message: unknown): RpcReply | u
     }
     return { jsonrpc: "2.0", id, result: session.handle(message.method, message.params ?? {}) };
   } catch (error) {
-    return {
-      jsonrpc: "2.0",
-      id,
-      error: {
-        code: error instanceof RpcError ? error.code : -32603,
-        message: error instanceof Error ? error.message : String(error)
-      }
-    };
+    return rpcFailure(id, error);
   }
 }
 
@@ -156,12 +178,9 @@ export class FrameDecoder {
     const messages: unknown[] = [];
     while (this.#buffer.length) {
       const boundary = this.#buffer.indexOf("\r\n\r\n");
-      if (boundary < 0) {
-        if (this.#buffer.length > 8192)
-          throw new RpcError(-32700, "Mapper frame header exceeds 8192 bytes.");
-        break;
-      }
-      if (boundary > 8192) throw new RpcError(-32700, "Mapper frame header exceeds 8192 bytes.");
+      if ((boundary < 0 ? this.#buffer.length : boundary) > 8192)
+        throw new RpcError(-32700, "Mapper frame header exceeds 8192 bytes.");
+      if (boundary < 0) break;
       const header = this.#buffer.subarray(0, boundary).toString("ascii");
       const lengths: string[] = [];
       for (const line of header.split("\r\n")) {
@@ -172,13 +191,7 @@ export class FrameDecoder {
         }
       }
       const length = Number(lengths[0]);
-      if (
-        lengths.length !== 1 ||
-        !/^\d+$/.test(lengths[0] ?? "") ||
-        !Number.isSafeInteger(length) ||
-        length < 0 ||
-        length > 16 * 1024 * 1024
-      ) {
+      if (lengths.length !== 1 || !/^\d+$/.test(lengths[0] ?? "") || length > 16 * 1024 * 1024) {
         throw new RpcError(-32700, "Expected one Content-Length no larger than 16 MiB.");
       }
       if (this.#buffer.length < boundary + 4 + length) break;

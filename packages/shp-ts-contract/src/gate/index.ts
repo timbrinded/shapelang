@@ -7,7 +7,7 @@ import {
   validateMapper,
   type Compiler
 } from "./compiler.ts";
-import { selectedSources, validatePair } from "./inventory.ts";
+import { rejectJavaScriptRoots, selectedSources, validatePair } from "./inventory.ts";
 import {
   compareText,
   errorText,
@@ -93,6 +93,7 @@ export async function runTsContractGate(options: RunTsContractGateOptions): Prom
           );
         }
         const roots = compilerRoots(shown.stdout, project);
+        rejectJavaScriptRoots(config.repoRoot, project, roots);
         for (const source of sources) {
           if (!roots.has(source))
             fail(

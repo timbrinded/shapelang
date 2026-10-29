@@ -1,5 +1,14 @@
 import { describe, expect, test } from "bun:test";
 import { formatShapeSource } from "./formatter.ts";
+import { isComponentDecl, isFunctionSummary } from "./language/generated/ast.ts";
+import { parseShapeModule } from "./parser.ts";
+
+function signatureValue(source: string): string | undefined {
+  const parsed = parseShapeModule(source);
+  if (!parsed.ok) throw new Error(parsed.diagnostics.map(({ message }) => message).join("\n"));
+  return parsed.module.declarations.find(isComponentDecl)?.members.find(isFunctionSummary)
+    ?.signature?.value;
+}
 
 function format(source: string): string {
   const result = formatShapeSource(source, "memory.shape");
@@ -61,4 +70,24 @@ describe("fn signature formatting", () => {
     expect(formatted).toContain('    signature ts("(entry: AuditEntry) => void")');
     expect(format(formatted)).toBe(formatted);
   });
+
+  test(
+    "[locked-intended] formatting preserves a signature value that begins and ends with a quote — " +
+      "anchor: docs-site/src/content/docs/reference/language-syntax.md#lexical-rules",
+    () => {
+      const value = '"on" extends string ? () => "yes" : () => "no"';
+      const source = `module gateway
+component Gateway {
+  fn choose
+    source ts("src/gateway.ts#choose")
+    signature ts(${JSON.stringify(value)})
+    effects unknown
+}
+`;
+      expect(signatureValue(source)).toBe(value);
+      const formatted = format(source);
+      expect(signatureValue(formatted)).toBe(value);
+      expect(format(formatted)).toBe(formatted);
+    }
+  );
 });

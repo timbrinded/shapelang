@@ -2,7 +2,6 @@ import { lstat, readFile, readdir, realpath, stat } from "node:fs/promises";
 import { join, relative } from "node:path";
 import { Glob } from "bun";
 import { isGeneratedAstModuleName, parseShapeModule } from "@shape/shp-checker";
-import { stringValue } from "../mapper/strings.ts";
 import { inside } from "./config.ts";
 import { compareText, fail, GateFailure, type ContractProject } from "./types.ts";
 
@@ -10,34 +9,52 @@ export function slash(path: string): string {
   return path.replaceAll("\\", "/");
 }
 
-function maySelectDescendant(path: string, patterns: string[]): boolean {
-  return patterns.some((pattern) => {
-    const prefix = pattern.split(/[?*[{]/, 1)[0] ?? "";
-    return prefix.startsWith(`${path}/`) || `${path}/`.startsWith(prefix);
-  });
+/** The literal leading text of each include, before its first glob character. */
+function includePrefixes(project: ContractProject): string[] {
+  return project.include.map((pattern) => pattern.split(/[?*[{]/, 1)[0] ?? "");
+}
+
+function maySelectDescendant(path: string, prefixes: string[]): boolean {
+  return prefixes.some((prefix) => prefix.startsWith(`${path}/`) || `${path}/`.startsWith(prefix));
+}
+
+/** Literal directories that an exclude ending in `/**` or `/**\/*` removes entirely. */
+function excludedDirectories(project: ContractProject): string[] {
+  return project.exclude
+    .map((pattern) => /^(.*)\/\*\*(?:\/\*)?$/.exec(pattern)?.[1])
+    .filter((prefix): prefix is string => prefix !== undefined && !/[?*[{]/.test(prefix));
+}
+
+const TYPESCRIPT_VARIANT = /\.(?:tsx|mts|cts)$/;
+const JAVASCRIPT = /\.(?:js|jsx|mjs|cjs)$/;
+
+/**
+ * A path whose extension matches `renamed` is also tested under its .ts spelling,
+ * so renaming a governed file cannot move it out of a .ts selector. Excludes see
+ * both spellings, so an explicit .mts exclude still applies. JavaScript spellings
+ * apply only to compiler roots: without allowJs a .js file is not governed.
+ */
+function projectSelection(project: ContractProject, renamed: RegExp): (path: string) => boolean {
+  const include = project.include.map((pattern) => new Glob(pattern));
+  const exclude = project.exclude.map((pattern) => new Glob(pattern));
+  return (path) => {
+    const spellings = [path, path.replace(renamed, ".ts")];
+    return (
+      spellings.some((spelling) => include.some((glob) => glob.match(spelling))) &&
+      !spellings.some((spelling) => exclude.some((glob) => glob.match(spelling)))
+    );
+  };
 }
 
 /** Reads the filesystem, not Git or compiler inputs: new and ignored files count. */
 export async function selectedSources(root: string, project: ContractProject): Promise<string[]> {
-  const include = project.include.map((pattern) => new Glob(pattern));
-  const exclude = project.exclude.map((pattern) => new Glob(pattern));
-  const selected = (path: string): boolean =>
-    include.some((glob) => glob.match(path)) && !exclude.some((glob) => glob.match(path));
+  const selected = projectSelection(project, TYPESCRIPT_VARIANT);
+  const includes = includePrefixes(project);
+  const excludes = excludedDirectories(project);
   const excludedSubtree = (path: string): boolean =>
-    project.exclude.some((pattern) => {
-      const prefix = pattern.endsWith("/**/*")
-        ? pattern.slice(0, -5)
-        : pattern.endsWith("/**")
-          ? pattern.slice(0, -3)
-          : undefined;
-      return (
-        prefix !== undefined &&
-        !/[?*[{]/.test(prefix) &&
-        (path === prefix || path.startsWith(`${prefix}/`))
-      );
-    });
+    excludes.some((prefix) => path === prefix || path.startsWith(`${prefix}/`));
   const files: string[] = [];
-  const walk = async (directory: string): Promise<void> => {
+  const walk = async (directory: string, parent: string): Promise<void> => {
     let entries;
     try {
       entries = await readdir(directory, { withFileTypes: true });
@@ -52,7 +69,7 @@ export async function selectedSources(root: string, project: ContractProject): P
     for (const entry of entries.sort((left, right) => compareText(left.name, right.name))) {
       if (entry.name === ".git" || entry.name === "node_modules") continue;
       const absolute = join(directory, entry.name);
-      const path = slash(relative(root, absolute));
+      const path = parent ? `${parent}/${entry.name}` : entry.name;
       if (excludedSubtree(path)) continue;
       if (entry.isSymbolicLink()) {
         let directoryLink = false;
@@ -61,7 +78,7 @@ export async function selectedSources(root: string, project: ContractProject): P
         } catch {
           // A selected dangling link is still a missing governed input.
         }
-        if (selected(path) || (directoryLink && maySelectDescendant(path, project.include))) {
+        if (selected(path) || (directoryLink && maySelectDescendant(path, includes))) {
           fail(
             "unsafe_path",
             absolute,
@@ -72,10 +89,10 @@ export async function selectedSources(root: string, project: ContractProject): P
         continue;
       }
       if (entry.isDirectory()) {
-        if (maySelectDescendant(path, project.include)) await walk(absolute);
+        if (maySelectDescendant(path, includes)) await walk(absolute, path);
         continue;
       }
-      if (!entry.isFile() || !selected(path) || !/\.(?:ts|tsx|mts|cts)$/.test(path)) continue;
+      if (!entry.isFile() || !/\.(?:ts|tsx|mts|cts)$/.test(path) || !selected(path)) continue;
       if (!path.endsWith(".ts") || path.endsWith(".d.ts")) {
         fail(
           "unsupported_source",
@@ -87,7 +104,7 @@ export async function selectedSources(root: string, project: ContractProject): P
       files.push(absolute);
     }
   };
-  await walk(root);
+  await walk(root, "");
   if (files.length === 0)
     fail(
       "empty_selection",
@@ -95,6 +112,28 @@ export async function selectedSources(root: string, project: ContractProject): P
       "No supported source files match this project's include/exclude patterns."
     );
   return files.sort(compareText);
+}
+
+/** allowJs can add selected-tree JavaScript to the program; version 1 checks .ts sources only. */
+export function rejectJavaScriptRoots(
+  root: string,
+  project: ContractProject,
+  roots: Iterable<string>
+): void {
+  const selected = projectSelection(project, JAVASCRIPT);
+  const file = [...roots]
+    .filter(
+      (path) => JAVASCRIPT.test(path) && inside(root, path) && selected(slash(relative(root, path)))
+    )
+    .sort(compareText)[0];
+  if (file) {
+    fail(
+      "unsupported_source",
+      file,
+      "Version 1 supports .ts implementation files only; this JavaScript compiler root lies in the selected tree, so exclude it explicitly.",
+      project.tsconfig
+    );
+  }
 }
 
 export function contractFor(source: string): string {
@@ -151,8 +190,9 @@ export async function validatePair(root: string, source: string): Promise<string
     if (component.$type !== "ComponentDecl") continue;
     for (const fn of component.members) {
       if (fn.$type !== "FunctionSummary") continue;
+      // Read the value Langium decoded, as shp check and shp fmt do.
       const citation = fn.source?.ref;
-      const path = stringValue(citation?.$cstNode);
+      const path = citation?.path;
       if (
         !citation ||
         !["ts", "typescript"].includes(citation.language) ||

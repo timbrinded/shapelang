@@ -8,7 +8,12 @@ trait GeneratedCandidate {
 
 resource CompilerModuleCompilerRootsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/gate/compiler.ts#compilerRoots")
-  fingerprint ast.semantic_subtree_v1("sha256:927e7348969f2d00cfc13e6d5dc7eb216bf767b2dfef47e7a183437d69dc9c49")
+  fingerprint ast.semantic_subtree_v1("sha256:023c53f8645138bb233566bb0849662122f060fe93a3c63b2741bf50b72db164")
+}
+
+resource CompilerModuleNativeMapperPackageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/compiler.ts#nativeMapperPackage")
+  fingerprint ast.semantic_subtree_v1("sha256:6e3ed82bfa317c9d45d3ae6d97fb4d64c1b48853458f11c7da028702d900a13c")
 }
 
 resource CompilerModuleResolveCompilerAstAnchor : GeneratedAstAnchor {
@@ -23,12 +28,15 @@ resource CompilerModuleRunCompilerAstAnchor : GeneratedAstAnchor {
 
 resource CompilerModuleValidateMapperAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/gate/compiler.ts#validateMapper")
-  fingerprint ast.semantic_subtree_v1("sha256:ad336eb32d08f8cf91a077b5d2185350879420bcda5a728edd36a0aa36a7a1e1")
+  fingerprint ast.semantic_subtree_v1("sha256:8379c0b89dc3774c7c99227cb859fb82c4e506411f10345b2593848ab5d47616")
 }
 
 component CompilerModule : GeneratedCandidate {
   fn compilerRoots
     source ts("packages/shp-ts-contract/src/gate/compiler.ts#compilerRoots")
+    effects unknown
+  fn nativeMapperPackage
+    source ts("packages/shp-ts-contract/src/gate/compiler.ts#nativeMapperPackage")
     effects unknown
   fn resolveCompiler
     source ts("packages/shp-ts-contract/src/gate/compiler.ts#resolveCompiler")
@@ -45,8 +53,16 @@ relation CompilerModuleCompilerRootsGeneratedFromCompilerModuleCompilerRootsAstA
   kind generated_from
   connects CompilerModule -> CompilerModuleCompilerRootsAstAnchor
   roles { CompilerModule as generated, CompilerModuleCompilerRootsAstAnchor as syntax }
-  expects CompilerModuleCompilerRootsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:927e7348969f2d00cfc13e6d5dc7eb216bf767b2dfef47e7a183437d69dc9c49")
+  expects CompilerModuleCompilerRootsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:023c53f8645138bb233566bb0849662122f060fe93a3c63b2741bf50b72db164")
   summary "fn CompilerModule.compilerRoots generated from typescript function_declaration at packages/shp-ts-contract/src/gate/compiler.ts#compilerRoots."
+}
+
+relation CompilerModuleNativeMapperPackageGeneratedFromCompilerModuleNativeMapperPackageAstAnchor {
+  kind generated_from
+  connects CompilerModule -> CompilerModuleNativeMapperPackageAstAnchor
+  roles { CompilerModule as generated, CompilerModuleNativeMapperPackageAstAnchor as syntax }
+  expects CompilerModuleNativeMapperPackageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6e3ed82bfa317c9d45d3ae6d97fb4d64c1b48853458f11c7da028702d900a13c")
+  summary "fn CompilerModule.nativeMapperPackage generated from typescript function_declaration at packages/shp-ts-contract/src/gate/compiler.ts#nativeMapperPackage."
 }
 
 relation CompilerModuleResolveCompilerGeneratedFromCompilerModuleResolveCompilerAstAnchor {
@@ -69,7 +85,7 @@ relation CompilerModuleValidateMapperGeneratedFromCompilerModuleValidateMapperAs
   kind generated_from
   connects CompilerModule -> CompilerModuleValidateMapperAstAnchor
   roles { CompilerModule as generated, CompilerModuleValidateMapperAstAnchor as syntax }
-  expects CompilerModuleValidateMapperAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ad336eb32d08f8cf91a077b5d2185350879420bcda5a728edd36a0aa36a7a1e1")
+  expects CompilerModuleValidateMapperAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8379c0b89dc3774c7c99227cb859fb82c4e506411f10345b2593848ab5d47616")
   summary "fn CompilerModule.validateMapper generated from typescript function_declaration at packages/shp-ts-contract/src/gate/compiler.ts#validateMapper."
 }
 

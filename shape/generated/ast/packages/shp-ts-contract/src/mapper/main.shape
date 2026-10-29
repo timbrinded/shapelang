@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource MainModuleFailAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/mapper/main.ts#fail")
-  fingerprint ast.semantic_subtree_v1("sha256:4efccf15d41e84eb17f3226634b6feaf3e614e3e9bfdba32e5a61b50946ffc1b")
+  fingerprint ast.semantic_subtree_v1("sha256:e7e9a60408bce98dcb990469959ce21f21ca3b6f175b9269164dbe0ce73f484f")
 }
 
 component MainModule : GeneratedCandidate {
@@ -21,7 +21,7 @@ relation MainModuleFailGeneratedFromMainModuleFailAstAnchor {
   kind generated_from
   connects MainModule -> MainModuleFailAstAnchor
   roles { MainModule as generated, MainModuleFailAstAnchor as syntax }
-  expects MainModuleFailAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4efccf15d41e84eb17f3226634b6feaf3e614e3e9bfdba32e5a61b50946ffc1b")
+  expects MainModuleFailAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e7e9a60408bce98dcb990469959ce21f21ca3b6f175b9269164dbe0ce73f484f")
   summary "fn MainModule.fail generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/main.ts#fail."
 }
 

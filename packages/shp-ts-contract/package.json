@@ -18,7 +18,10 @@
       "compilerOptions": [
         "module",
         "moduleResolution",
+        "noCheck",
         "strict",
+        "strictFunctionTypes",
+        "strictNullChecks",
         "verbatimModuleSyntax"
       ],
       "exec": [

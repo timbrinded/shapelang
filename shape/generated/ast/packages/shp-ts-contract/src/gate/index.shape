@@ -13,7 +13,7 @@ resource IndexModuleFormatGateDiagnosticsAstAnchor : GeneratedAstAnchor {
 
 resource IndexModuleRunTsContractGateAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/gate/index.ts#runTsContractGate")
-  fingerprint ast.semantic_subtree_v1("sha256:997a63fb5b6cd9d21c7d2fab3488f429cda96ab8de34e2f1a1a637969803838b")
+  fingerprint ast.semantic_subtree_v1("sha256:0da5f1a8d56eaee34578e2596b09d7b2a58bfe1637654da812cb3ffc53417454")
 }
 
 component IndexModule : GeneratedCandidate {
@@ -37,7 +37,7 @@ relation IndexModuleRunTsContractGateGeneratedFromIndexModuleRunTsContractGateAs
   kind generated_from
   connects IndexModule -> IndexModuleRunTsContractGateAstAnchor
   roles { IndexModule as generated, IndexModuleRunTsContractGateAstAnchor as syntax }
-  expects IndexModuleRunTsContractGateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:997a63fb5b6cd9d21c7d2fab3488f429cda96ab8de34e2f1a1a637969803838b")
+  expects IndexModuleRunTsContractGateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0da5f1a8d56eaee34578e2596b09d7b2a58bfe1637654da812cb3ffc53417454")
   summary "fn IndexModule.runTsContractGate generated from typescript function_declaration at packages/shp-ts-contract/src/gate/index.ts#runTsContractGate."
 }
 

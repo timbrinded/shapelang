@@ -60,13 +60,18 @@ A push has no base ref, so this job writes an empty list on push. The push run t
 Projects that opt into native TypeScript content mapping add a separate gate:
 
 ```bash
-bun shp ts-contract --config shape/ts-contract.json --run-external-code
+bun --cwd /path/to/shapelang shp ts-contract \
+  --config "$PWD/shape/ts-contract.json" --run-external-code
 ```
 
 This preview requires a source checkout and the pinned TypeScript 7.1 beta setup
 described in [TypeScript content mapping](/shapelang/reference/typescript-content-mapping/).
-It is not included in the `v0.10.0` setup-action example above. Keep the normal
-Shape gate: a matching type signature does not establish effects or architecture.
+It is not included in the `v0.10.0` setup-action example above. Run it from the
+project directory with `--cwd` naming the Shape source checkout and an absolute
+`--config` path: Bun then reads no `bunfig.toml` from the project, so a
+project's preload script cannot run inside the gate and change its exit status.
+Keep the normal Shape gate: a matching type signature does not establish effects
+or architecture.
 
 Run the contract gate against the complete selected-source inventory on every
 CI invocation. A changed-file list or a bare mapper-enabled `tsc` command cannot

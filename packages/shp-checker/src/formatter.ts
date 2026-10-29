@@ -21,7 +21,6 @@ import type {
   MemoryMember,
   ModifyFunctionChange,
   PolicyDecl,
-  TransformDecl,
   RationaleDecl,
   RationaleMember,
   ReevaluationDecl,
@@ -391,59 +390,34 @@ function formatFingerprint(fingerprint: FingerprintDecl): string {
 }
 
 function formatFunction(fn: FunctionSummary | AddFunctionChange): string {
-  return formatFunctionParts(
-    `fn ${formatFunctionLocalName(fn)}`,
-    fn.shapeTraits,
-    undefined,
-    fn.source,
-    fn.signature,
-    fn.description,
-    fn.unsafe,
-    fn.effects,
-    fn.members
-  );
+  return formatFunctionParts(`fn ${formatFunctionLocalName(fn)}`, fn);
 }
 
 function formatQualifiedFunction(
   fn: AddFunctionChange | ModifyFunctionChange,
   keyword: "add" | "modify"
 ): string {
-  return formatFunctionParts(
-    `${keyword} fn ${fn.target}`,
-    fn.shapeTraits,
-    isModifyFunctionChange(fn) ? fn.transforms : undefined,
-    fn.source,
-    fn.signature,
-    fn.description,
-    fn.unsafe,
-    fn.effects,
-    fn.members
-  );
+  return formatFunctionParts(`${keyword} fn ${fn.target}`, fn);
 }
 
 function formatFunctionParts(
   header: string,
-  shapeTraits: ShapeTraitList | undefined,
-  transforms: TransformDecl | undefined,
-  source: SourceDecl | undefined,
-  signature: FunctionSignatureDecl | undefined,
-  description: DescriptionDecl | undefined,
-  unsafe: boolean,
-  effects: FunctionSummary["effects"],
-  members: FunctionMember[]
+  fn: FunctionSummary | AddFunctionChange | ModifyFunctionChange
 ): string {
-  const lines = [`${header}${formatShapeTraitList(shapeTraits)}`];
+  const { effects, unsafe } = fn;
+  const transforms = isModifyFunctionChange(fn) ? fn.transforms : undefined;
+  const lines = [`${header}${formatShapeTraitList(fn.shapeTraits)}`];
   if (transforms && transforms.labels.length > 0) {
     lines.push(indent(`transform ${transforms.labels.join(", ")}`));
   }
-  if (source) {
-    lines.push(indent(`source ${formatSource(source)}`));
+  if (fn.source) {
+    lines.push(indent(`source ${formatSource(fn.source)}`));
   }
-  if (signature) {
-    lines.push(indent(formatSignature(signature)));
+  if (fn.signature) {
+    lines.push(indent(formatSignature(fn.signature)));
   }
-  if (description) {
-    lines.push(indent(formatDescription(description)));
+  if (fn.description) {
+    lines.push(indent(formatDescription(fn.description)));
   }
 
   if (isUnknownEffects(effects)) {
@@ -458,7 +432,7 @@ function formatFunctionParts(
     lines.push(indent("}"));
   }
 
-  for (const member of sortFunctionMembers(members)) {
+  for (const member of sortFunctionMembers(fn.members)) {
     lines.push(indent(formatFunctionMember(member)));
   }
 
@@ -479,8 +453,10 @@ function formatDescription(description: DescriptionDecl): string {
   return `description ${description.required ? "required " : ""}${quote(description.summary)}`;
 }
 
+// The AST value is already unquoted and decoded; quote() would strip a leading and
+// trailing quote that belong to the type text itself.
 function formatSignature(signature: FunctionSignatureDecl): string {
-  return `signature ${signature.language}(${quote(signature.value)})`;
+  return `signature ${signature.language}(${JSON.stringify(signature.value)})`;
 }
 
 function formatEffectEntry(entry: EffectEntry): string {

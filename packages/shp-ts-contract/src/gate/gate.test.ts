@@ -1,13 +1,17 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, realpath, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { runTsContractGate } from "./index.ts";
+import { lockedIntended } from "../native-test-helpers.ts";
+import { TESTED_TYPESCRIPT_VERSION } from "./types.ts";
 
 // These are gate unit tests with real files and a deliberately tiny Node
 // compiler fixture. They establish inventory, configuration, and process
 // wiring, not compatibility with TypeScript's native mapper implementation.
 // Native compilation has a separate integration test owner.
+
+const packageRoot = join(import.meta.dir, "../..");
 
 type Config = {
   version: number;
@@ -19,6 +23,7 @@ type Config = {
 type CompilerState = {
   files: string[];
   compilerOptions: Record<string, unknown>;
+  references?: { path: string }[];
   check: { exitCode: number; stdout: string; stderr: string };
 };
 
@@ -83,7 +88,7 @@ async function fixture(): Promise<Fixture> {
   const config: Config = {
     version: 1,
     repoRoot: ".",
-    compiler: { package: "typescript", version: "7.1.0-beta" },
+    compiler: { package: "typescript", version: TESTED_TYPESCRIPT_VERSION },
     projects: [{ name: "app", tsconfig: "tsconfig.json", include: ["src/**/*.ts"] }]
   };
   const state: CompilerState = {
@@ -97,9 +102,12 @@ async function fixture(): Promise<Fixture> {
     json(root, "compiler-state.json", state),
     put(root, "src/a.ts", "export function f(): number { return 1; }\n"),
     put(root, "src/a.shape", contract()),
+    mkdir(join(root, "node_modules/@shape"), { recursive: true }).then(() =>
+      symlink(packageRoot, join(root, "node_modules/@shape/shp-ts-contract"), "junction")
+    ),
     json(root, "node_modules/typescript/package.json", {
       name: "typescript",
-      version: "7.1.0-beta",
+      version: TESTED_TYPESCRIPT_VERSION,
       type: "commonjs",
       bin: { tsc: "./bin/tsc.cjs" }
     }),
@@ -113,10 +121,8 @@ const root = path.resolve(__dirname, "../../..");
 const args = process.argv.slice(2);
 fs.appendFileSync(path.join(root, "compiler-log.jsonl"), JSON.stringify(args) + "\\n");
 const state = JSON.parse(fs.readFileSync(path.join(root, "compiler-state.json"), "utf8"));
-if (args.includes("--version")) {
-  process.stdout.write("Version 7.1.0-beta\\n");
-} else if (args.includes("--showConfig")) {
-  process.stdout.write(JSON.stringify({ files: state.files, compilerOptions: state.compilerOptions }));
+if (args.includes("--showConfig")) {
+  process.stdout.write(JSON.stringify({ files: state.files, compilerOptions: state.compilerOptions, references: state.references }));
 } else {
   process.stdout.write(state.check.stdout);
   process.stderr.write(state.check.stderr);
@@ -145,11 +151,16 @@ async function compilerInvocations(root: string): Promise<string[][]> {
     .map((line) => JSON.parse(line) as string[]);
 }
 
+/** Configuration and inventory failures must stop before any mapper runs. */
+async function expectNoNativeCheck(root: string): Promise<void> {
+  const invocations = await compilerInvocations(root);
+  expect(invocations.some((args) => args.includes("--noEmit"))).toBe(false);
+}
+
 function requireFailure(result: Awaited<ReturnType<typeof runTsContractGate>>, kind: string) {
   expect(result.ok).toBe(false);
   expect(result.exitCode).not.toBe(0);
   const diagnostic = result.diagnostics.find((entry) => entry.kind === kind);
-  expect(diagnostic).toBeDefined();
   if (!diagnostic)
     throw new Error(`Missing diagnostic ${kind}: ${JSON.stringify(result.diagnostics)}`);
   expect(diagnostic.path.length).toBeGreaterThan(0);
@@ -167,9 +178,7 @@ describe("TypeScript contract gate unit tests", () => {
     expect(result.projects[0]?.sources).toHaveLength(1);
     const calls = await compilerInvocations(f.root);
     expect(calls.some((args) => args.includes("--showConfig"))).toBe(true);
-    const checking = calls.filter(
-      (args) => !args.includes("--showConfig") && !args.includes("--version")
-    );
+    const checking = calls.filter((args) => !args.includes("--showConfig"));
     expect(checking).toHaveLength(1);
     expect(checking[0]).toContain("--noEmit");
     expect(checking[0]).toContain("--runExternalCode");
@@ -205,9 +214,7 @@ describe("TypeScript contract gate unit tests", () => {
     const diagnostic = requireFailure(await f.run(), "missing_contract");
     expect(diagnostic.path).toBe(join(f.root, "src/new.shape"));
     expect(diagnostic.causedBy.join("\n")).toContain("src/new.ts");
-    expect((await compilerInvocations(f.root)).some((args) => args.includes("--noEmit"))).toBe(
-      false
-    );
+    await expectNoNativeCheck(f.root);
   });
 
   test("does not let Git ignore rules hide a governed source with no contract", async () => {
@@ -301,9 +308,7 @@ describe("TypeScript contract gate unit tests", () => {
         omitted.endsWith(".shape") ? "contract_not_in_project" : "source_not_in_project"
       );
       expect(diagnostic.path).toBe(join(f.root, omitted));
-      expect((await compilerInvocations(f.root)).some((args) => args.includes("--noEmit"))).toBe(
-        false
-      );
+      await expectNoNativeCheck(f.root);
     }
   );
 
@@ -316,9 +321,7 @@ describe("TypeScript contract gate unit tests", () => {
     const diagnostic = requireFailure(await f.run(), "unexpected_contract");
     expect(diagnostic.path).toBe(join(f.root, "outside/unselected.shape"));
     expect(diagnostic.causedBy).toContain(join(f.root, "tsconfig.json"));
-    expect((await compilerInvocations(f.root)).some((args) => args.includes("--noEmit"))).toBe(
-      false
-    );
+    await expectNoNativeCheck(f.root);
   });
 
   test("requires a local mapper registration even when compiler roots include the contract", async () => {
@@ -328,9 +331,7 @@ describe("TypeScript contract gate unit tests", () => {
       files: f.state.files
     });
     requireFailure(await f.run(), "invalid_mapper");
-    expect((await compilerInvocations(f.root)).some((args) => args.includes("--noEmit"))).toBe(
-      false
-    );
+    await expectNoNativeCheck(f.root);
   });
 
   test.each([
@@ -346,9 +347,7 @@ describe("TypeScript contract gate unit tests", () => {
     const f = await fixture();
     await json(f.root, "tsconfig.json", { ...tsconfig(), contentMappers: [mapper] });
     requireFailure(await f.run(), "invalid_mapper");
-    expect((await compilerInvocations(f.root)).some((args) => args.includes("--noEmit"))).toBe(
-      false
-    );
+    await expectNoNativeCheck(f.root);
   });
 
   test("rejects two registrations for the same .shape extension", async () => {
@@ -362,23 +361,38 @@ describe("TypeScript contract gate unit tests", () => {
     requireFailure(await f.run(), "invalid_mapper");
   });
 
-  test("accepts TypeScript language aliases and decoded source-path escapes", async () => {
-    const f = await fixture();
-    await put(
-      f.root,
-      "src/a.shape",
-      contract().replace('source ts("src/a.ts#f")', 'source typescript("src/\\u0061.ts#f")')
-    );
-    expect((await f.run()).ok).toBe(true);
-  });
+  test(
+    lockedIntended(
+      "source anchors are read as the Shape parser decodes them, so a \\u escape cannot spell the sibling path",
+      "contract-layout"
+    ),
+    async () => {
+      const f = await fixture();
+      await put(
+        f.root,
+        "src/a.shape",
+        contract().replace('source ts("src/a.ts#f")', "source typescript('src/a.ts#f')")
+      );
+      expect(await f.run()).toMatchObject({ ok: true, exitCode: 0, diagnostics: [] });
+
+      // Shape strings decode an unknown escape to its character: this anchor reads src/u0061.ts.
+      await put(
+        f.root,
+        "src/a.shape",
+        contract().replace('source ts("src/a.ts#f")', 'source ts("src/\\u0061.ts#f")')
+      );
+      const diagnostic = requireFailure(await f.run(), "mismatched_source");
+      expect(diagnostic.path).toBe(join(f.root, "src/a.shape"));
+      expect(diagnostic.causedBy).toEqual([join(f.root, "src/a.ts")]);
+      expect(diagnostic.message).toContain('ts("src/a.ts#exportName")');
+    }
+  );
 
   test("rejects a contract that describes another source file", async () => {
     const f = await fixture();
     await put(f.root, "src/a.shape", contract("src/another.ts"));
     requireFailure(await f.run(), "mismatched_source");
-    expect((await compilerInvocations(f.root)).some((args) => args.includes("--noEmit"))).toBe(
-      false
-    );
+    await expectNoNativeCheck(f.root);
   });
 
   test("does not turn this API-contract gate into an effects-completeness gate", async () => {
@@ -396,9 +410,7 @@ describe("TypeScript contract gate unit tests", () => {
     );
     const diagnostic = requireFailure(await f.run(), "generated_contract");
     expect(diagnostic.path).toBe(join(f.root, "src/a.shape"));
-    expect((await compilerInvocations(f.root)).some((args) => args.includes("--noEmit"))).toBe(
-      false
-    );
+    await expectNoNativeCheck(f.root);
   });
 
   test.each([
@@ -438,15 +450,14 @@ describe("TypeScript contract gate unit tests", () => {
     { strict: false },
     { strict: true, noCheck: true },
     { strict: true, strictFunctionTypes: false },
-    { strict: true, strictNullChecks: false }
+    { strict: true, strictNullChecks: false },
+    { strictNullChecks: false }
   ])("rejects compiler options that disable contract checking %#", async (options) => {
     const f = await fixture();
     f.state.compilerOptions = options;
     await f.saveState();
     requireFailure(await f.run(), "invalid_compiler");
-    expect((await compilerInvocations(f.root)).some((args) => args.includes("--noEmit"))).toBe(
-      false
-    );
+    await expectNoNativeCheck(f.root);
   });
 
   test("rejects module suffixes that can redirect a contract to a different implementation", async () => {
@@ -456,9 +467,7 @@ describe("TypeScript contract gate unit tests", () => {
     const diagnostic = requireFailure(await f.run(), "invalid_compiler");
     expect(diagnostic.path).toBe(join(f.root, "tsconfig.json"));
     expect(diagnostic.message).toContain("different source file");
-    expect((await compilerInvocations(f.root)).some((args) => args.includes("--noEmit"))).toBe(
-      false
-    );
+    await expectNoNativeCheck(f.root);
   });
 
   test("accepts an explicit unsuffixed-only module resolution setting", async () => {
@@ -547,4 +556,143 @@ describe("TypeScript contract gate unit tests", () => {
     expect(calls.some((args) => args.includes("--showConfig"))).toBe(true);
     expect(calls.some((args) => args.includes("--noEmit"))).toBe(false);
   });
+
+  test.each([".tsx", ".mts", ".cts"])(
+    lockedIntended(
+      "a .ts selector still reports a selected file renamed to %s",
+      "selected-source-gate"
+    ),
+    async (extension) => {
+      const f = await fixture();
+      await put(
+        f.root,
+        `src/renamed${extension}`,
+        "export function renamed(): number { return 1; }\n"
+      );
+      const diagnostic = requireFailure(await f.run(), "unsupported_source");
+      expect(diagnostic.path).toBe(join(f.root, `src/renamed${extension}`));
+      expect(diagnostic.causedBy).toEqual([join(f.root, "tsconfig.json")]);
+      expect(await compilerInvocations(f.root)).toEqual([]);
+    }
+  );
+
+  test(
+    lockedIntended(
+      "explicit excludes keep .tsx, .mts and .cts files out of a .ts selector",
+      "selected-source-gate"
+    ),
+    async () => {
+      const f = await fixture();
+      f.config.projects[0]!.exclude = ["src/**/*.tsx", "src/**/*.mts", "src/**/*.cts"];
+      await f.saveConfig();
+      for (const extension of [".tsx", ".mts", ".cts"])
+        await put(
+          f.root,
+          `src/renamed${extension}`,
+          "export function renamed(): number { return 1; }\n"
+        );
+      const result = await f.run();
+      expect(result).toMatchObject({ ok: true, exitCode: 0, diagnostics: [] });
+      expect(result.projects[0]?.sources).toEqual([join(f.root, "src/a.ts")]);
+    }
+  );
+
+  test(
+    lockedIntended(
+      "only a JavaScript compiler root in the selected tree is unsupported, until it is excluded",
+      "selected-source-gate"
+    ),
+    async () => {
+      const f = await fixture();
+      // Without allowJs a JavaScript file is no compiler root, so even a link is not governed.
+      await put(f.root, "vendor/bundle.js", "export function bundled() { return 1; }\n");
+      await symlink("../vendor/bundle.js", join(f.root, "src/vendor.js"));
+      expect(await f.run()).toMatchObject({ ok: true, exitCode: 0, diagnostics: [] });
+      await rm(join(f.root, "compiler-log.jsonl"));
+
+      await put(f.root, "src/legacy.js", "export function legacy() { return 1; }\n");
+      await put(f.root, "tools/build.js", "export function build() { return 1; }\n");
+      f.state.files.push("./src/legacy.js", "./tools/build.js");
+      await f.saveState();
+      const diagnostic = requireFailure(await f.run(), "unsupported_source");
+      expect(diagnostic.path).toBe(join(f.root, "src/legacy.js"));
+      expect(diagnostic.causedBy).toEqual([join(f.root, "tsconfig.json")]);
+      await expectNoNativeCheck(f.root);
+
+      // tools/build.js stays a root outside the selected tree and is not reported.
+      f.config.projects[0]!.exclude = ["src/**/*.js"];
+      await f.saveConfig();
+      expect(await f.run()).toMatchObject({ ok: true, exitCode: 0, diagnostics: [] });
+    }
+  );
+
+  test(
+    lockedIntended("two projects may not claim the same source", "selected-source-gate"),
+    async () => {
+      const f = await fixture();
+      f.config.projects.push({ name: "other", tsconfig: "other.json", include: ["src/a.ts"] });
+      await f.saveConfig();
+      await json(f.root, "other.json", tsconfig());
+      const diagnostic = requireFailure(await f.run(), "ambiguous_project");
+      expect(diagnostic.path).toBe(join(f.root, "src/a.ts"));
+      expect(diagnostic.causedBy).toEqual([f.configPath]);
+      expect(diagnostic.message).toContain("both app and other");
+      await expectNoNativeCheck(f.root);
+    }
+  );
+
+  // The compiler loads the nearest linked directory itself. tsconfig paths and package
+  // exports redirect module resolution only, so neither may hide a stale link.
+  test.each(["a plain link", "a tsconfig paths alias", "a package exports map"])(
+    lockedIntended(
+      "the project must link the mapper package this gate runs from, despite %s",
+      "opt-in"
+    ),
+    async (variant) => {
+      const f = await fixture();
+      const link = join(f.root, "node_modules/@shape/shp-ts-contract");
+      await rm(link);
+      const foreign = join(f.root, "other-checkout");
+      await json(f.root, "other-checkout/package.json", {
+        name: "@shape/shp-ts-contract",
+        version: "0.0.0",
+        ...(variant === "a package exports map"
+          ? { exports: { "./package.json": "./current/package.json" } }
+          : {})
+      });
+      await symlink(packageRoot, join(foreign, "current"), "junction");
+      await symlink(foreign, link, "junction");
+      if (variant === "a tsconfig paths alias") {
+        await json(f.root, "tsconfig.json", {
+          ...tsconfig(),
+          compilerOptions: {
+            strict: true,
+            noEmit: true,
+            paths: { "@shape/*": [join(dirname(packageRoot), "*")] }
+          }
+        });
+      }
+      const diagnostic = requireFailure(await f.run(), "invalid_mapper");
+      expect(diagnostic.path).toBe(join(f.root, "tsconfig.json"));
+      expect(diagnostic.message).toContain(await realpath(foreign));
+      expect(diagnostic.message).toContain(await realpath(packageRoot));
+      expect(await compilerInvocations(f.root)).toEqual([]);
+    }
+  );
+
+  test(
+    lockedIntended(
+      "project references are rejected before native checking",
+      "selected-source-gate"
+    ),
+    async () => {
+      const f = await fixture();
+      f.state.references = [{ path: "../core" }];
+      await f.saveState();
+      const diagnostic = requireFailure(await f.run(), "invalid_compiler");
+      expect(diagnostic.path).toBe(join(f.root, "tsconfig.json"));
+      expect(diagnostic.message).toMatch(/references/);
+      await expectNoNativeCheck(f.root);
+    }
+  );
 });

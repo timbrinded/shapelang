@@ -1199,9 +1199,9 @@ reevaluation FormatterSharedStringHelpersRechecked {
 reevaluation SignatureFormattingRechecked {
   satisfies memory FormatterCanonicalDiffs
   outcome Confirmed
-  summary "Function, add-function, and modify-function signatures use one canonical source/signature/description/effects order. Escaped type strings round-trip, repeated formatting is stable, and unsigned functions retain their existing output."
+  summary "Function, add-function, and modify-function signatures use one canonical source/signature/description/effects order. The formatter quotes the parser's decoded signature value directly, so escaped type strings and type text that begins and ends with a quote round-trip, repeated formatting is stable, and unsigned functions retain their existing output."
   reviewer Codex
-  decided_on "2026-10-27"
+  decided_on "2026-10-29"
   evidence md("docs-site/src/content/docs/reference/language-syntax.md")
   evidence test("packages/shp-checker/src/function-signature-format.test.ts")
 }

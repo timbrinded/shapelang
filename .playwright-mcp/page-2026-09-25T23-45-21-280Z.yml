@@ -1,0 +1,80 @@
+- main [ref=f1e2]:
+  - generic [ref=f1e3]:
+    - generic [ref=f1e4]: Shape docs · introduction · revision 05
+    - 'heading "Shape: architecture you can check in CI." [level=1] [ref=f1e5]'
+    - paragraph [ref=f1e6]: A coding agent’s share button leaks private drafts. The Shape check stops the merge because the agreed model forbids it, so the agent fixes the code and updates the model to match. A change the team does want goes through the model with the code, and review keeps the claims honest.
+  - generic [ref=f1e9]:
+    - generic [ref=f1e10]: "48.9 s (rev 04: 54.8 s)"
+    - generic [ref=f1e11]: 1920 × 1080 · 30 fps · H.264 + AAC
+    - generic [ref=f1e12]: 9.1 MB
+    - generic [ref=f1e13]: "Narration: Gemini 3.8 Flash TTS, Charon, British English"
+    - generic [ref=f1e14]: HyperFrames 0.8.77
+  - generic [ref=f1e15]:
+    - generic [ref=f1e16]:
+      - heading "Beats" [level=2] [ref=f1e17]
+      - list [ref=f1e18]:
+        - listitem [ref=f1e19]:
+          - button "0:00 The ask Chat, app, feed. The Share button leaks a draft. no check" [ref=f1e20] [cursor=pointer]:
+            - generic [ref=f1e21]: 0:00
+            - generic [ref=f1e22]:
+              - text: The ask
+              - generic [ref=f1e23]: Chat, app, feed. The Share button leaks a draft.
+            - generic [ref=f1e24]: no check
+        - listitem [ref=f1e25]:
+          - 'button "0:08.5 Governed code PR #42 changes src/share/** without a model update. failed" [ref=f1e26] [cursor=pointer]':
+            - generic [ref=f1e27]: 0:08.5
+            - generic [ref=f1e28]:
+              - text: Governed code
+              - generic [ref=f1e29]:
+                - text: "PR #42 changes"
+                - code [ref=f1e30]: src/share/**
+                - text: without a model update.
+            - generic [ref=f1e31]: failed
+        - listitem [ref=f1e32]:
+          - button "0:15.3 Circuit breaker The agent writes down Export<PrivateDraft>. The final forbid rejects it, even with the agent’s own grant, and the merge stops. failed" [ref=f1e33] [cursor=pointer]:
+            - generic [ref=f1e34]: 0:15.3
+            - generic [ref=f1e35]:
+              - text: Circuit breaker
+              - generic [ref=f1e36]: The agent writes down Export<PrivateDraft>. The final forbid rejects it, even with the agent’s own grant, and the merge stops.
+            - generic [ref=f1e37]: failed
+        - listitem [ref=f1e38]:
+          - 'button "0:25.5 Decide: no “Should the Share button export private drafts?” The agent shares the published story and updates the model to match. passed" [ref=f1e39] [cursor=pointer]':
+            - generic [ref=f1e40]: 0:25.5
+            - generic [ref=f1e41]:
+              - text: "Decide: no"
+              - generic [ref=f1e42]: “Should the Share button export private drafts?” The agent shares the published story and updates the model to match.
+            - generic [ref=f1e43]: passed
+        - listitem [ref=f1e44]:
+          - 'button "0:33.0 A wanted change Sharing with an editor: update the model with the code. Shape checks the claims; review keeps them honest. hypothetical" [ref=f1e45] [cursor=pointer]':
+            - generic [ref=f1e46]: 0:33.0
+            - generic [ref=f1e47]:
+              - text: A wanted change
+              - generic [ref=f1e48]: "Sharing with an editor: update the model with the code. Shape checks the claims; review keeps them honest."
+            - generic [ref=f1e49]: hypothetical
+        - listitem [ref=f1e50]:
+          - button "0:41.3 Close Docs link, v0.9.0 install and shp check. passed" [ref=f1e51] [cursor=pointer]:
+            - generic [ref=f1e52]: 0:41.3
+            - generic [ref=f1e53]:
+              - text: Close
+              - generic [ref=f1e54]:
+                - text: Docs link, v0.9.0 install and
+                - code [ref=f1e55]: shp check
+                - text: .
+            - generic [ref=f1e56]: passed
+    - generic [ref=f1e57]:
+      - heading "Notes for review" [level=2] [ref=f1e58]
+      - list [ref=f1e59]:
+        - listitem [ref=f1e60]: "Pacing: each line starts 0.6–0.7 s after the previous one ends; the longest gap measured on the render is 0.8 s. No pauses for effect."
+        - listitem [ref=f1e61]:
+          - text: Every diagnostic on screen came from the real checker running on
+          - code [ref=f1e62]: examples/agent-story-*.shape
+          - text: . Both were re-checked against the current
+          - code [ref=f1e63]: master
+          - text: ": the agent’s model fails with a forbidden effect, and the fixed model passes."
+        - listitem [ref=f1e64]:
+          - text: When the agent updates the model, it now drops its own
+          - code [ref=f1e65]: grants Export<PrivateDraft>
+          - text: ", so no leftover grant appears on screen. The checker itself is unchanged: it would still accept an unused grant."
+        - listitem [ref=f1e66]: The “share with an editor” path is shown as a hypothetical card. It is not a second checker run.
+        - listitem [ref=f1e67]: Brief. The first diagnostic, “governed source changed without current Shape update”, is fully open for about 0.6 s before the camera moves. The red status and the headline carry that beat.
+        - listitem [ref=f1e68]: The HyperFrames check passes, with 0 layout, runtime and motion issues. There are 4 contrast warnings, all on the fix strip’s gutter and line numbers (3.7–4.3:1), and 3 lint hints, including one saying the file is too large.

@@ -40,9 +40,11 @@ An unqualified prelude trait name, such as `AppendOnly`, resolves to the prelude
 
 ### Reserved keywords
 
-Every keyword of the grammar is reserved and cannot be used as an identifier, including as a module path segment: `module experiment.evidence` is a parse error. Keywords are lowercase, so capitalized forms such as `Summary` are ordinary identifiers. The 83 keywords are:
+Every keyword of the grammar is reserved and cannot be used as an identifier, including as a module path segment: `module experiment.evidence` is a parse error. Keywords are lowercase, so capitalized forms such as `Summary` are ordinary identifiers. The 84 keywords are:
 
 `add`, `allow`, `applies_to`, `approver`, `as`, `attest`, `binding`, `callbacks`, `calls`, `candidate`, `change`, `complete`, `component`, `confidence`, `conforms_to`, `connects`, `coordinated_call`, `decided_on`, `description`, `effect`, `effects`, `evidence`, `except`, `expects`, `expires`, `final`, `fingerprint`, `fn`, `forbid`, `grants`, `guards`, `has`, `hypercycle`, `implementation`, `import`, `kind`, `memory`, `modify`, `module`, `observed`, `on_change`, `or`, `outcome`, `over`, `owner`, `owns`, `path`, `paths`, `pin`, `policy`, `protects`, `provides`, `rationale`, `reason`, `reevaluation`, `relation`, `remove`, `require`, `require_changed`, `require_context`, `required`, `requires`, `resource`, `review_by`, `reviewer`, `role`, `roles`, `rule`, `satisfied_by`, `satisfies`, `sensitive`, `signature`, `source`, `status`, `storage`, `summary`, `trait`, `transform`, `unknown`, `unsafe`, `when`, `when_changed`, `who`, `why`.
+
+`signature` became a keyword with function signature declarations, so a model that uses it as an identifier, for example `resource signature`, no longer parses and must rename it.
 
 A few positions accept specific keywords as values: `kind` and `over` accept `calls`, `callbacks`, `provides`, and `coordinated_call`; a `protects` entry accepts `description`; `satisfies` and `satisfied_by` accept `memory` and `rationale`; and a declaration target accepts its kind keyword.
 

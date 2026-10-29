@@ -6,6 +6,11 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource StringsModuleHasNumericEscapeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/strings.ts#hasNumericEscape")
+  fingerprint ast.semantic_subtree_v1("sha256:ba860df6939b8fe75a44ef084ca2e8c74bbd9fe2d9f671ba13498fd06df393bd")
+}
+
 resource StringsModuleStringSpanAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-ts-contract/src/mapper/strings.ts#stringSpan")
   fingerprint ast.semantic_subtree_v1("sha256:877d479f7e38a59fcac03be9b9158b64a9072c92cde42efd36c56fb1a6634b05")
@@ -16,21 +21,24 @@ resource StringsModuleStringTokenAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:20e906734e22fd2629d4cade95b9ab172978d096ddba8136c4af5d768239d77d")
 }
 
-resource StringsModuleStringValueAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-ts-contract/src/mapper/strings.ts#stringValue")
-  fingerprint ast.semantic_subtree_v1("sha256:0e4a4d5b288c876b8f70f09f89562141b9ec6cc57bdae408733091a06ddfc0f9")
-}
-
 component StringsModule : GeneratedCandidate {
+  fn hasNumericEscape
+    source ts("packages/shp-ts-contract/src/mapper/strings.ts#hasNumericEscape")
+    effects unknown
   fn stringSpan
     source ts("packages/shp-ts-contract/src/mapper/strings.ts#stringSpan")
     effects unknown
   fn stringToken
     source ts("packages/shp-ts-contract/src/mapper/strings.ts#stringToken")
     effects unknown
-  fn stringValue
-    source ts("packages/shp-ts-contract/src/mapper/strings.ts#stringValue")
-    effects unknown
+}
+
+relation StringsModuleHasNumericEscapeGeneratedFromStringsModuleHasNumericEscapeAstAnchor {
+  kind generated_from
+  connects StringsModule -> StringsModuleHasNumericEscapeAstAnchor
+  roles { StringsModule as generated, StringsModuleHasNumericEscapeAstAnchor as syntax }
+  expects StringsModuleHasNumericEscapeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba860df6939b8fe75a44ef084ca2e8c74bbd9fe2d9f671ba13498fd06df393bd")
+  summary "fn StringsModule.hasNumericEscape generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/strings.ts#hasNumericEscape."
 }
 
 relation StringsModuleStringSpanGeneratedFromStringsModuleStringSpanAstAnchor {
@@ -47,14 +55,6 @@ relation StringsModuleStringTokenGeneratedFromStringsModuleStringTokenAstAnchor 
   roles { StringsModule as generated, StringsModuleStringTokenAstAnchor as syntax }
   expects StringsModuleStringTokenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:20e906734e22fd2629d4cade95b9ab172978d096ddba8136c4af5d768239d77d")
   summary "fn StringsModule.stringToken generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/strings.ts#stringToken."
-}
-
-relation StringsModuleStringValueGeneratedFromStringsModuleStringValueAstAnchor {
-  kind generated_from
-  connects StringsModule -> StringsModuleStringValueAstAnchor
-  roles { StringsModule as generated, StringsModuleStringValueAstAnchor as syntax }
-  expects StringsModuleStringValueAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0e4a4d5b288c876b8f70f09f89562141b9ec6cc57bdae408733091a06ddfc0f9")
-  summary "fn StringsModule.stringValue generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/strings.ts#stringValue."
 }
 
 implementation StringsModuleImpl {

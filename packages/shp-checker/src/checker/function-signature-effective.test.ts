@@ -41,6 +41,17 @@ describe("effective fn signatures", () => {
     });
   });
 
+  test("keeps the quotes of a signature that begins and ends with a string-literal type", () => {
+    const quoted = BASE.replace(
+      'signature ts("(entry: AuditEntry) => Promise<void>")',
+      String.raw`signature ts("\"open\" | \"closed\"")`
+    );
+    expect(signatureFor("writeAudit", [quoted])).toEqual({
+      language: "ts",
+      value: '"open" | "closed"'
+    });
+  });
+
   test("preserves the existing signature when modify omits one", () => {
     expect(
       signatureFor("writeAudit", [

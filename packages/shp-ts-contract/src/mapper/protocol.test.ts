@@ -137,6 +137,44 @@ describe("native content-mapper project protocol", () => {
     expect(transform(session, "valid", "/projects/alpha").diagnostics).toEqual([]);
   });
 
+  test.each([
+    ["strict: false", { strict: false }],
+    ["strictNullChecks: false", { strict: true, strictNullChecks: false }],
+    ["strictFunctionTypes: false", { strict: true, strictFunctionTypes: false }],
+    ["noCheck: true", { strict: true, noCheck: true }],
+    ["absent compiler options", undefined]
+  ])("refuses %s for every transform in that project", (_label, compilerOptions) => {
+    const session = initialized();
+    const opened = session.handle("openProject", {
+      projectHandle: "weak",
+      configFileName: "/projects/alpha/config/tsconfig.json",
+      options: { repoRoot: ".." },
+      compilerOptions
+    });
+    expect(opened).toEqual({
+      optionDiagnostics: [
+        { path: [], code: 1006, messageText: expect.stringMatching(/compiler options|strict/) }
+      ]
+    });
+    expect(transform(session, "weak", "/projects/alpha")).toMatchObject({
+      text: "export {};\n",
+      mappings: [],
+      diagnostics: [{ code: 1006, start: 0, length: 1 }]
+    });
+  });
+
+  test("an omitted strict option is the compiler default and is accepted", () => {
+    const session = initialized();
+    const opened = session.handle("openProject", {
+      projectHandle: "default",
+      configFileName: "/projects/alpha/config/tsconfig.json",
+      options: { repoRoot: ".." },
+      compilerOptions: { module: 199, noEmit: true }
+    });
+    expect(opened).toEqual({});
+    expect(transform(session, "default", "/projects/alpha").diagnostics).toEqual([]);
+  });
+
   test("requests with unknown methods or invalid transform arguments return structured RPC failures", () => {
     const session = initialized();
     open(session, "project", "/projects/alpha");

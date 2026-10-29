@@ -41,18 +41,27 @@ shp ts-contract --config shape/ts-contract.json --run-external-code
 ```
 
 This opt-in source preview is not part of the pinned `v0.10.0` release. From a
-configured source checkout, use `bun shp ts-contract` with the same flags.
-It requires the project-local `typescript@7.1.0-beta` compiler, the
-`@shape/shp-ts-contract` mapper package, Bun and Node. See
+configured source checkout, run
+`bun --cwd /path/to/shapelang shp ts-contract` with the same flags and an
+absolute `--config` path, so that Bun loads no `bunfig.toml` from the project
+being checked. It requires the project-local `typescript@7.1.0-beta` compiler,
+the `@shape/shp-ts-contract` mapper package linked from the same checkout, Bun
+and Node. See
 [TypeScript content mapping](/shapelang/reference/typescript-content-mapping/)
 for the configuration, supported contract layout and limits.
 
 `--config` is required. `--run-external-code` explicitly permits running the
 selected compiler and mapper. The command checks every selected source and its
-authored sibling contract, validates compiler and mapper configuration, and then
-runs native TypeScript without emitting application code. It never generates or
-approves the expected signatures. Ordinary `shp check` remains a separate check
-of effects, architecture and review obligations.
+authored sibling contract. It rejects `.tsx`, `.mts`, `.cts` and `.d.ts` files
+and JavaScript compiler roots in the selected tree unless they are explicitly
+excluded.
+It validates the compiler version, strict options, the absence of project
+references and the mapper registration, and requires the mapper directory
+that native TypeScript loads for each project to be the package of the checkout
+running the gate. It then runs native
+TypeScript with `--noEmit`. It never generates or approves the expected
+signatures. Ordinary `shp check` remains a separate check of effects,
+architecture and review obligations.
 
 Gate diagnostics identify their kind, path and cause. Native compiler output
 retains its stdout/stderr streams and mapped Shape locations. Any failed

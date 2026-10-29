@@ -8,10 +8,9 @@ export type ContractProject = {
   exclude: string[];
 };
 
+/** The validated configuration; version and compiler are checked, not carried. */
 export type ContractConfig = {
-  version: 1;
   repoRoot: string;
-  compiler: { package: "typescript"; version: typeof TESTED_TYPESCRIPT_VERSION };
   projects: ContractProject[];
 };
 

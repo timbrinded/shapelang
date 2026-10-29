@@ -11,9 +11,17 @@ resource FunctionSignatureFormatTestModuleFormatAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:9ef5b458eaa7f440c0e7fdee1b6f1f2f68d879280015f2a066c2c3f2467f21d7")
 }
 
+resource FunctionSignatureFormatTestModuleSignatureValueAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/function-signature-format.test.ts#signatureValue")
+  fingerprint ast.semantic_subtree_v1("sha256:a7c859038f89c863fa39f120551b65f2eec1f27af981f6926f4ce71ef236b427")
+}
+
 component FunctionSignatureFormatTestModule : GeneratedCandidate {
   fn format
     source ts("packages/shp-checker/src/function-signature-format.test.ts#format")
+    effects unknown
+  fn signatureValue
+    source ts("packages/shp-checker/src/function-signature-format.test.ts#signatureValue")
     effects unknown
 }
 
@@ -23,6 +31,14 @@ relation FunctionSignatureFormatTestModuleFormatGeneratedFromFunctionSignatureFo
   roles { FunctionSignatureFormatTestModule as generated, FunctionSignatureFormatTestModuleFormatAstAnchor as syntax }
   expects FunctionSignatureFormatTestModuleFormatAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9ef5b458eaa7f440c0e7fdee1b6f1f2f68d879280015f2a066c2c3f2467f21d7")
   summary "fn FunctionSignatureFormatTestModule.format generated from typescript function_declaration at packages/shp-checker/src/function-signature-format.test.ts#format."
+}
+
+relation FunctionSignatureFormatTestModuleSignatureValueGeneratedFromFunctionSignatureFormatTestModuleSignatureValueAstAnchor {
+  kind generated_from
+  connects FunctionSignatureFormatTestModule -> FunctionSignatureFormatTestModuleSignatureValueAstAnchor
+  roles { FunctionSignatureFormatTestModule as generated, FunctionSignatureFormatTestModuleSignatureValueAstAnchor as syntax }
+  expects FunctionSignatureFormatTestModuleSignatureValueAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7c859038f89c863fa39f120551b65f2eec1f27af981f6926f4ce71ef236b427")
+  summary "fn FunctionSignatureFormatTestModule.signatureValue generated from typescript function_declaration at packages/shp-checker/src/function-signature-format.test.ts#signatureValue."
 }
 
 implementation FunctionSignatureFormatTestModuleImpl {

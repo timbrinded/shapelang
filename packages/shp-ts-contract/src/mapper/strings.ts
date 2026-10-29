@@ -24,45 +24,11 @@ export function stringSpan(node: Cst | undefined): Span {
     : { start: node?.offset ?? 0, length: Math.max(1, node?.length ?? 1) };
 }
 
-/** Langium retains escape spelling in STRING values; decode without evaluating code. */
-export function stringValue(node: Cst | undefined): string | undefined {
-  const raw = stringToken(node)?.text;
-  if (!raw) return undefined;
-  if (raw.startsWith('"')) {
-    try {
-      const value: unknown = JSON.parse(raw);
-      return typeof value === "string" ? value : undefined;
-    } catch {
-      return undefined;
-    }
-  }
-  let result = "";
-  const escapes: Record<string, string> = {
-    n: "\n",
-    r: "\r",
-    t: "\t",
-    b: "\b",
-    f: "\f",
-    "\\": "\\",
-    '"': '"',
-    "'": "'",
-    "/": "/"
-  };
-  for (let index = 1; index < raw.length - 1; index++) {
-    const character = raw[index];
-    if (character !== "\\") {
-      result += character;
-      continue;
-    }
-    const next = raw[++index];
-    if (next === "u") {
-      const hex = raw.slice(index + 1, index + 5);
-      if (!/^[0-9a-f]{4}$/i.test(hex)) return undefined;
-      result += String.fromCharCode(Number.parseInt(hex, 16));
-      index += 4;
-    } else if (next !== undefined && Object.hasOwn(escapes, next)) {
-      result += escapes[next];
-    } else return undefined;
-  }
-  return result;
+/**
+ * Langium decodes STRING values but drops the backslash of an escape it does not
+ * know, so `\u0041` and `\x41` read as `u0041` and `x41`. An escaped backslash
+ * (`\\u0041`) is an ordinary backslash and is not reported.
+ */
+export function hasNumericEscape(node: Cst | undefined): boolean {
+  return /(?<!\\)(?:\\\\)*\\[ux]/.test(stringToken(node)?.text ?? "");
 }

@@ -1,6 +1,12 @@
 import { readFile, realpath, stat } from "node:fs/promises";
 import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
-import { parseTree, printParseErrorCode, type Node, type ParseError } from "jsonc-parser";
+import {
+  getNodeValue,
+  parseTree,
+  printParseErrorCode,
+  type Node,
+  type ParseError
+} from "jsonc-parser";
 import { Glob } from "bun";
 import {
   fail,
@@ -43,7 +49,7 @@ export async function readJson(path: string, jsonc = false): Promise<unknown> {
     );
   }
   rejectDuplicateKeys(tree, path);
-  return nodeValue(tree);
+  return getNodeValue(tree);
 }
 
 function rejectDuplicateKeys(node: Node, path: string): void {
@@ -59,20 +65,6 @@ function rejectDuplicateKeys(node: Node, path: string): void {
     }
   }
   for (const child of node.children ?? []) rejectDuplicateKeys(child, path);
-}
-
-function nodeValue(node: Node): unknown {
-  if (node.type === "array") return (node.children ?? []).map(nodeValue);
-  if (node.type === "object") {
-    const entries: [string, unknown][] = [];
-    for (const property of node.children ?? []) {
-      const key = property.children?.[0]?.value;
-      const value = property.children?.[1];
-      if (typeof key === "string" && value) entries.push([key, nodeValue(value)]);
-    }
-    return Object.fromEntries(entries);
-  }
-  return node.value;
 }
 
 export function relativePath(value: unknown, path: string, label: string): string {
@@ -190,9 +182,7 @@ export async function loadConfig(configPath: string): Promise<ContractConfig> {
     };
   });
   return {
-    version: 1,
     repoRoot,
-    compiler: { package: "typescript", version: TESTED_TYPESCRIPT_VERSION },
     projects: projects.sort((left, right) => compareText(left.name, right.name))
   };
 }

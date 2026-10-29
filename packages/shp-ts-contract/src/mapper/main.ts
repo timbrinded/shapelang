@@ -1,19 +1,10 @@
-import { dispatch, frame, FrameDecoder, MapperSession, RpcError } from "./protocol.ts";
+import { dispatch, frame, FrameDecoder, MapperSession, rpcFailure } from "./protocol.ts";
 
 const session = new MapperSession();
 const decoder = new FrameDecoder();
 
 function fail(error: unknown): void {
-  process.stdout.write(
-    frame({
-      jsonrpc: "2.0",
-      id: null,
-      error: {
-        code: error instanceof RpcError ? error.code : -32603,
-        message: error instanceof Error ? error.message : String(error)
-      }
-    })
-  );
+  process.stdout.write(frame(rpcFailure(null, error)));
   process.exitCode = 1;
   process.stdin.destroy();
 }

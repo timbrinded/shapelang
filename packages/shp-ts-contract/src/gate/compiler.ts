@@ -1,9 +1,10 @@
 import { createRequire } from "node:module";
-import { dirname, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { realpath, stat } from "node:fs/promises";
 import { inside, object, readJson, relativePath } from "./config.ts";
 import { fail, MAPPER_PACKAGE, TESTED_TYPESCRIPT_VERSION, type ContractProject } from "./types.ts";
 import { captureProcess, type ProcessOutput } from "./process.ts";
+import { loosensStrictness, STRICT_CHECKING_REQUIRED } from "../mapper/protocol.ts";
 
 export type Compiler = { node: string; wrapper: string };
 
@@ -116,6 +117,41 @@ export async function validateMapper(project: ContractProject, root: string): Pr
       "Mapper repoRoot, resolved from the tsconfig directory, must equal the gate's repoRoot."
     );
   }
+  // A stale link to another checkout would otherwise check with a different mapper.
+  const gatePackage = await realpath(resolve(import.meta.dir, "../.."));
+  const linkedPackage = await nativeMapperPackage(project.tsconfig);
+  if (linkedPackage === undefined) {
+    fail(
+      "invalid_mapper",
+      project.tsconfig,
+      `Cannot find node_modules/${MAPPER_PACKAGE} from this project; link ${gatePackage}, the package this gate runs from.`
+    );
+  }
+  if (linkedPackage !== gatePackage) {
+    fail(
+      "invalid_mapper",
+      project.tsconfig,
+      `This project resolves ${MAPPER_PACKAGE} to ${linkedPackage}, but this gate runs from ${gatePackage}; link the same checkout's package.`
+    );
+  }
+}
+
+/**
+ * Locates the mapper package as the native compiler does: the nearest existing
+ * node_modules/@shape/shp-ts-contract directory above the tsconfig. Module
+ * resolution is not used, because Bun applies tsconfig `paths` and package
+ * `exports`, which the compiler ignores when it loads the mapper.
+ */
+async function nativeMapperPackage(tsconfig: string): Promise<string | undefined> {
+  for (let directory = dirname(tsconfig); ; directory = dirname(directory)) {
+    const candidate = join(directory, "node_modules", MAPPER_PACKAGE);
+    try {
+      if ((await stat(candidate)).isDirectory()) return await realpath(candidate);
+    } catch {
+      // A missing entry or a dangling link does not end the compiler's search.
+    }
+    if (dirname(directory) === directory) return undefined;
+  }
 }
 
 export async function runCompiler(
@@ -153,19 +189,20 @@ export function compilerRoots(output: string, project: ContractProject): Set<str
       "Compiler --showConfig must report its resolved root files."
     );
   }
-  const options = config.compilerOptions;
   if (
-    !object(options) ||
-    options.strict !== true ||
-    options.noCheck === true ||
-    options.strictFunctionTypes === false ||
-    options.strictNullChecks === false
+    config.references !== undefined &&
+    !(Array.isArray(config.references) && config.references.length === 0)
   ) {
     fail(
       "invalid_compiler",
       project.tsconfig,
-      "Contract checking requires strict: true, without noCheck or disabled strictFunctionTypes/strictNullChecks."
+      "Version 1 does not support project references: referenced types come from built .d.ts outputs, so the result would depend on whether those builds are current."
     );
+  }
+  // The mapper refuses the same options; checking here stops before any mapper runs.
+  const options = config.compilerOptions;
+  if (!object(options) || loosensStrictness(options)) {
+    fail("invalid_compiler", project.tsconfig, STRICT_CHECKING_REQUIRED);
   }
   if (
     options.moduleSuffixes !== undefined &&

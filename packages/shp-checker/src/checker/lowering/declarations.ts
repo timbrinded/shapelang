@@ -998,7 +998,7 @@ export function lowerSourceRef(source: { ref: SourceRef }): SourceRefInfo {
 export function lowerSignature(signature: FunctionSignatureDecl): SignatureInfo {
   return {
     language: signature.language,
-    value: unquoteShapeString(signature.value)
+    value: signature.value
   };
 }
 

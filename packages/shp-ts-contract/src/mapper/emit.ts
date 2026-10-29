@@ -1,7 +1,7 @@
 import { basename, isAbsolute, relative } from "node:path";
 import { isGeneratedAstModuleName, parseShapeModule } from "@shape/shp-checker";
 import { validateSignatureFragment } from "./signature.ts";
-import { stringSpan as span, stringValue, type Span } from "./strings.ts";
+import { hasNumericEscape, stringSpan as span, type Span } from "./strings.ts";
 
 export type MapperDiagnostic = { messageText: string; start: number; length: number; code: number };
 export type SpanMapping = [number, number, number, number, 1, 0];
@@ -13,47 +13,80 @@ export type TransformResult = {
 };
 export type EmitInput = { fileName: string; content: string; repoRoot: string };
 
-type Registration = { exported: string; signature: string; span: Span };
+type Registration = { exported: string; signature: string; span: Span; anchor: Span };
 
-const HELPERS = `type __ShapeEqual<X, Y> =
-  (<T>() => T extends X ? 1 : 2) extends (<T>() => T extends Y ? 1 : 2)
-    ? ((<T>() => T extends Y ? 1 : 2) extends (<T>() => T extends X ? 1 : 2) ? true : false)
-    : false;
+const NUMERIC_ESCAPE =
+  "Shape strings read \\u and \\x escapes as plain letters; write the character itself, or \\\\u for a TypeScript escape.";
+
+// A conditional whose check or extends type is the compiler's error type resolves to
+// that error type, which satisfies every constraint. __ShapeAny keeps T out of both
+// positions, so an error type counts as `any`, and __ShapeEqual settles top-level
+// `any` before its identity comparison. Wrapping the identity comparison in tuples
+// instead costs several times the compiler memory.
+// `export type *` adds value names to `keyof` that are absent at runtime and in the
+// module's structure; __ShapeExists skips them, but keeps an optional member of an
+// `export =` object, which a required-property test alone would drop. __ShapeNone
+// indexes a fresh mapped type so that messages list export names instead of a
+// helper alias and its path.
+const HELPERS = `type __ShapeAny<T> = [0] extends [1 & T] ? true : false;
 type __ShapeAssert<T extends true> = T;
-type __ShapeAssertNever<T extends never> = T;
-type __ShapeAny<T> = 0 extends (1 & T) ? true : false;
-type __ShapeNever<T> = [T] extends [never] ? true : false;
-type __ShapeUnknown<T> = __ShapeAny<T> extends true ? false : unknown extends T ? true : false;
+type __ShapeDegenerate<T> = __ShapeAny<T> extends true ? true : [T] extends [never] ? true : unknown extends T ? true : false;
 type __ShapeUnion<T, Whole = T> = T extends Whole ? ([Whole] extends [T] ? false : true) : never;
 type __ShapeCallable = (...args: never[]) => unknown;
 type __ShapeConstructor = abstract new (...args: never[]) => unknown;
 type __ShapeOpaqueFunction<T> = T extends Function ? (T extends __ShapeConstructor ? false : true) : false;
-type __ShapePotential<T> = __ShapeAny<T> extends true ? true :
-  __ShapeNever<T> extends true ? true : __ShapeUnknown<T> extends true ? true :
+type __ShapePotential<T> = __ShapeDegenerate<T> extends true ? true :
   [Extract<T, __ShapeCallable>] extends [never] ? (true extends __ShapeOpaqueFunction<T> ? true : false) : true;
-type __ShapeValid<T> = __ShapeAny<T> extends true ? false :
-  __ShapeNever<T> extends true ? false : __ShapeUnknown<T> extends true ? false :
+type __ShapeValid<T> = __ShapeDegenerate<T> extends true ? false :
   [T] extends [__ShapeCallable] ? ([__ShapeUnion<T>] extends [false] ? true : false) : false;
-type __ShapePotentialKeys<M> = { [K in keyof M]-?: __ShapePotential<M[K]> extends true ? K : never }[keyof M];
-type __ShapeUncertainKeys<M> = { [K in keyof M]-?: __ShapePotential<M[K]> extends true ? (__ShapeValid<M[K]> extends true ? never : K) : never }[keyof M];
+type __ShapeExists<M, K extends PropertyKey> = K extends keyof M
+  ? (M extends { [P in K]: unknown } ? true : {} extends Pick<M, K> ? true : false)
+  : false;
+type __ShapePotentialKeys<M> = { [K in keyof M]-?: __ShapeExists<M, K> extends true ? (__ShapePotential<M[K]> extends true ? K : never) : never }[keyof M];
+type __ShapeUncertainKeys<M> = { [K in keyof M]-?: __ShapeExists<M, K> extends true ? (__ShapePotential<M[K]> extends true ? (__ShapeValid<M[K]> extends true ? never : K) : never) : never }[keyof M];
+type __ShapeNone<Label extends string, Keys extends PropertyKey> = [Keys] extends [never] ? true : { [L in Label]: { [K in Keys]: K }[Keys] };
 `;
+
+// Emitted only with registrations, so an empty contract declares no unused helpers.
+// Pass or fail rests on __ShapeEqual alone: `exact: false` never satisfies `exact: true`.
+// A missing or noncallable export, or an unsupported signature, is reported by its own
+// assertion, so the comparison yields unknown there instead of a second diagnostic.
+const REGISTRATION_HELPERS = `type __ShapeEqual<X, Y> = __ShapeAny<X> extends true ? __ShapeAny<Y> : __ShapeAny<Y> extends true ? false :
+  (<T>() => T extends X ? 1 : 2) extends (<T>() => T extends Y ? 1 : 2)
+    ? ((<T>() => T extends Y ? 1 : 2) extends (<T>() => T extends X ? 1 : 2) ? true : false)
+    : false;
+type __ShapeRegistered<M, K extends string, Source extends string> = K extends __ShapePotentialKeys<M> ? true :
+  __ShapeExists<M, K> extends true ? \`Shape source anchor: export '\${K}' of \${Source} is not callable; remove this fn or anchor it to a callable export\`
+  : \`Shape source anchor: \${Source} has no export named '\${K}'; correct the anchor or restore the export\`;
+type __ShapeSupported<K extends string, Reviewed> = __ShapeValid<Reviewed> extends true ? true :
+  \`Shape signature: the reviewed signature for '\${K}' must be exactly one callable type\`;
+type __ShapeCompared<M, K extends string, Reviewed> = K extends __ShapePotentialKeys<M> ? __ShapeValid<Reviewed> : false;
+type __ShapeFound<M, K extends string, Reviewed> = K extends keyof M
+  ? (__ShapeCompared<M, K, Reviewed> extends true ? { export: K; signature: M[K]; exact: __ShapeEqual<M[K], Reviewed> } : unknown)
+  : unknown;
+type __ShapeReviewed<M, K extends string, Reviewed> = K extends keyof M
+  ? (__ShapeCompared<M, K, Reviewed> extends true ? (__ShapeEqual<M[K], Reviewed> extends true ? unknown : { export: K; signature: Reviewed; exact: true }) : unknown)
+  : unknown;
+type __ShapeConform<Found extends Reviewed, Reviewed> = Found;
+`;
+
+/** A diagnostic about the whole contract is placed on its first character. */
+export function contractStart(content: string): Span {
+  return { start: 0, length: Math.min(1, content.length) };
+}
+
+/** A rejected contract declares nothing, so only its diagnostics reach the compiler. */
+export function rejectedTransform(diagnostics: MapperDiagnostic[]): TransformResult {
+  return { text: "export {};\n", extension: ".ts", mappings: [], diagnostics };
+}
 
 /** Pure transform: the TypeScript compiler supplies export facts through virtual types. */
 export function emitContract(input: EmitInput): TransformResult {
   const diagnostics: MapperDiagnostic[] = [];
-  const reject = (
-    code: number,
-    messageText: string,
-    at: Span = { start: 0, length: Math.min(1, input.content.length) }
-  ): void => {
+  const fileSpan = contractStart(input.content);
+  const reject = (code: number, messageText: string, at: Span = fileSpan): void => {
     diagnostics.push({ code, messageText, ...at });
   };
-  const empty = (): TransformResult => ({
-    text: "export {};\n",
-    extension: ".ts",
-    mappings: [],
-    diagnostics
-  });
   const path = relative(input.repoRoot, input.fileName).replaceAll("\\", "/");
   if (
     !isAbsolute(input.fileName) ||
@@ -67,12 +100,12 @@ export function emitContract(input: EmitInput): TransformResult {
       1007,
       "A contract must be an authored .shape file inside repoRoot, paired with a .ts implementation."
     );
-    return empty();
+    return rejectedTransform(diagnostics);
   }
   const parsed = parseShapeModule(input.content, input.fileName);
   if (!parsed.ok) {
+    const lines = input.content.split("\n");
     for (const diagnostic of parsed.diagnostics) {
-      const lines = input.content.split("\n");
       const before = lines.slice(0, Math.max(0, (diagnostic.line ?? 1) - 1));
       const start =
         before.reduce((sum, line) => sum + line.length + 1, 0) +
@@ -82,7 +115,7 @@ export function emitContract(input: EmitInput): TransformResult {
         length: 1
       });
     }
-    return empty();
+    return rejectedTransform(diagnostics);
   }
   if (
     isGeneratedAstModuleName(parsed.module.name ?? "") ||
@@ -108,7 +141,11 @@ export function emitContract(input: EmitInput): TransformResult {
     if (declaration.$type !== "ComponentDecl") continue;
     for (const fn of declaration.members) {
       if (fn.$type !== "FunctionSummary") continue;
-      const source = fn.source ? stringValue(fn.source.ref.$cstNode) : undefined;
+      if (fn.source && hasNumericEscape(fn.source.ref.$cstNode)) {
+        reject(1003, NUMERIC_ESCAPE, span(fn.source.$cstNode));
+        continue;
+      }
+      const source = fn.source?.ref.path;
       const anchor = source?.indexOf("#") ?? -1;
       const exported = anchor >= 0 ? source?.slice(anchor + 1) : undefined;
       if (
@@ -142,12 +179,11 @@ export function emitContract(input: EmitInput): TransformResult {
         );
         continue;
       }
-      const signature = stringValue(fn.signature.$cstNode);
-      const problem =
-        signature === undefined
-          ? "Invalid string escape in signature."
-          : validateSignatureFragment(signature);
-      if (problem || signature === undefined) {
+      const signature = fn.signature.value;
+      const problem = hasNumericEscape(fn.signature.$cstNode)
+        ? NUMERIC_ESCAPE
+        : validateSignatureFragment(signature);
+      if (problem) {
         reject(
           1004,
           `Invalid signature fragment for ${JSON.stringify(exported)}: ${problem}`,
@@ -155,44 +191,56 @@ export function emitContract(input: EmitInput): TransformResult {
         );
         continue;
       }
-      registrations.push({ exported, signature, span: span(fn.signature.$cstNode) });
+      registrations.push({
+        exported,
+        signature,
+        span: span(fn.signature.$cstNode),
+        anchor: span(fn.source.$cstNode)
+      });
     }
   }
-  if (diagnostics.length) return empty();
+  if (diagnostics.length) return rejectedTransform(diagnostics);
   const mappings: SpanMapping[] = [];
-  const moduleName = `./${basename(expectedSource, ".ts")}.js`;
-  let text = `import type * as __ShapeSource from ${JSON.stringify(moduleName)};\n${HELPERS}`;
+  let text = "";
   const append = (line: string, at: Span): void => {
     mappings.push([text.length, line.length, at.start, at.length, 1, 0]);
     text += `${line}\n`;
   };
+  // Mapped so that an unresolved sibling is reported on the contract, not in virtual code.
+  const moduleName = `./${basename(expectedSource, ".ts")}.js`;
+  append(`import type * as __ShapeSource from ${JSON.stringify(moduleName)};`, fileSpan);
+  text += HELPERS;
+  if (registrations.length) text += REGISTRATION_HELPERS;
   const all = registrations.map((entry) => JSON.stringify(entry.exported)).join(" | ") || "never";
-  const fileSpan = { start: 0, length: Math.min(1, input.content.length) };
   append(
-    `export type __ShapeMissingExports = __ShapeAssertNever<Exclude<${all}, __ShapePotentialKeys<typeof __ShapeSource>>>;`,
+    `export type __ShapeMissingRegistrations = __ShapeAssert<__ShapeNone<"unregisteredCallableExports", Exclude<__ShapePotentialKeys<typeof __ShapeSource>, ${all}>>>;`,
     fileSpan
   );
   append(
-    `export type __ShapeMissingRegistrations = __ShapeAssertNever<Exclude<__ShapePotentialKeys<typeof __ShapeSource>, ${all}>>;`,
+    `export type __ShapeNoUncertainExports = __ShapeAssert<__ShapeNone<"uncertainExportTypes", __ShapeUncertainKeys<typeof __ShapeSource>>>;`,
     fileSpan
   );
-  append(
-    "export type __ShapeNoUncertainExports = __ShapeAssert<__ShapeEqual<__ShapeUncertainKeys<typeof __ShapeSource>, never>>;",
-    fileSpan
-  );
+  const quotedSource = JSON.stringify(expectedSource);
   for (const [index, entry] of registrations.entries()) {
+    const name = JSON.stringify(entry.exported);
+    const compared = `typeof __ShapeSource, ${name}, __ShapeExpected${index}[0]`;
     append(
-      `export type __ShapeMatch${index} = __ShapeAssert<__ShapeEqual<(typeof __ShapeSource)[${JSON.stringify(entry.exported)}], __ShapeExpected${index}>>;`,
+      `export type __ShapeRegistered${index} = __ShapeAssert<__ShapeRegistered<typeof __ShapeSource, ${name}, ${quotedSource}>>;`,
+      entry.anchor
+    );
+    append(
+      `export type __ShapeSupported${index} = __ShapeAssert<__ShapeSupported<${name}, __ShapeExpected${index}[0]>>;`,
       entry.span
     );
     append(
-      `export type __ShapeSupported${index} = __ShapeAssert<__ShapeValid<__ShapeExpected${index}>>;`,
+      `export type __ShapeMatch${index} = __ShapeConform<__ShapeFound<${compared}>, __ShapeReviewed<${compared}>>;`,
       entry.span
     );
   }
-  // Every generated assertion precedes all authored fragments; parentheses prevent alias escape.
+  // Every generated assertion precedes all authored fragments; parentheses prevent alias
+  // escape, and the tuple makes native messages print the reviewed type, not this alias.
   for (const [index, entry] of registrations.entries()) {
-    append(`type __ShapeExpected${index} = (${entry.signature});`, entry.span);
+    append(`type __ShapeExpected${index} = [(${entry.signature})];`, entry.span);
   }
   return { text, extension: ".ts", mappings, diagnostics };
 }

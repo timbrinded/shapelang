@@ -1,11 +1,16 @@
 import { expect } from "bun:test";
 import { mkdir, mkdtemp, open, readFile, rm, symlink, writeFile } from "node:fs/promises";
-import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { delimiter, dirname, join, resolve } from "node:path";
+import { resolveCompiler, type Compiler } from "./gate/compiler.ts";
 
 const packageRoot = resolve(import.meta.dir, "..");
-const requireFromPackage = createRequire(join(packageRoot, "package.json"));
+const reference = "docs-site/src/content/docs/reference/typescript-content-mapping.md";
+
+/** TESTING.md label for a law stated in a section of the content-mapping reference. */
+export function lockedIntended(title: string, section: string): string {
+  return `[locked-intended] ${title} — anchor: ${reference}#${section}`;
+}
 
 export interface NativeDiagnostic {
   file: string | undefined;
@@ -69,52 +74,23 @@ export function parseNativeDiagnostics(output: string): NativeDiagnostic[] {
   return diagnostics;
 }
 
-export async function nativeCompiler(): Promise<{ node: string; bin: string }> {
-  const node = Bun.which("node");
-  if (!node) throw new Error("Native contract tests require Node 24 or later on PATH.");
-  let metadataPath: string;
-  try {
-    metadataPath = requireFromPackage.resolve("typescript/package.json");
-  } catch {
-    throw new Error(
-      "Native contract tests require the package-local typescript@7.1.0-beta dependency; run bun install."
-    );
-  }
-  const metadata: unknown = JSON.parse(await readFile(metadataPath, "utf8"));
-  if (typeof metadata !== "object" || metadata === null) {
-    throw new Error("The selected TypeScript package has invalid metadata.");
-  }
-  const fields = metadata as Record<string, unknown>;
-  if (fields.version !== "7.1.0-beta") {
-    throw new Error(
-      `Native contract tests require TypeScript 7.1.0-beta; found ${String(fields.version)}.`
-    );
-  }
-  const bin = fields.bin;
-  const relativeBin =
-    typeof bin === "string"
-      ? bin
-      : typeof bin === "object" && bin !== null
-        ? (bin as Record<string, unknown>).tsc
-        : undefined;
-  if (typeof relativeBin !== "string") {
-    throw new Error("The selected TypeScript package does not declare its tsc executable.");
-  }
-  return { node, bin: resolve(dirname(metadataPath), relativeBin) };
-}
-
 export class NativeFixture {
   readonly buildInfo: string;
 
   private constructor(
     readonly root: string,
-    private readonly compiler: { node: string; bin: string }
+    private readonly compiler: Compiler
   ) {
     this.buildInfo = join(root, "native.tsbuildinfo");
   }
 
-  static async create(files = ["src/math.ts", "src/math.shape"]): Promise<NativeFixture> {
-    const compiler = await nativeCompiler();
+  /** `config.compilerOptions` entries override the defaults; an `undefined` value omits one. */
+  static async create(
+    files = ["src/math.ts", "src/math.shape"],
+    config: { extends?: string; compilerOptions?: Record<string, unknown> } = {}
+  ): Promise<NativeFixture> {
+    // The package's own pinned compiler, located and validated as the gate does.
+    const compiler = await resolveCompiler(join(packageRoot, "package.json"));
     const root = await mkdtemp(join(tmpdir(), "shape-native-contract-"));
     const fixture = new NativeFixture(root, compiler);
     await mkdir(join(root, "src"), { recursive: true });
@@ -134,6 +110,7 @@ export class NativeFixture {
       "tsconfig.json",
       JSON.stringify(
         {
+          extends: config.extends,
           compilerOptions: {
             target: "ES2022",
             module: "NodeNext",
@@ -142,7 +119,8 @@ export class NativeFixture {
             noEmit: true,
             noUnusedLocals: true,
             noUnusedParameters: true,
-            types: []
+            types: [],
+            ...config.compilerOptions
           },
           contentMappers: [
             {
@@ -173,7 +151,7 @@ export class NativeFixture {
   async check(options: { external?: boolean; incremental?: boolean } = {}): Promise<NativeResult> {
     const args = [
       this.compiler.node,
-      this.compiler.bin,
+      this.compiler.wrapper,
       "--pretty",
       "false",
       "--project",
@@ -245,4 +223,55 @@ export function requireContractFailure(result: NativeResult): NativeDiagnostic {
       diagnostic.file === "src/math.shape" &&
       (diagnostic.code.startsWith("TS") || diagnostic.code.startsWith("shape-ts"))
   );
+}
+
+export function expectedPosition(text: string, needle: string): { line: number; column: number } {
+  const offset = text.indexOf(needle);
+  if (offset < 0) throw new Error(`Fixture does not contain ${JSON.stringify(needle)}.`);
+  const preceding = text.slice(0, offset);
+  return { line: preceding.split("\n").length, column: offset - preceding.lastIndexOf("\n") };
+}
+
+export function diagnosticAt(result: NativeResult, text: string, needle: string): NativeDiagnostic {
+  const at = expectedPosition(text, needle);
+  return requireNativeDiagnostic(
+    result,
+    (item) => item.file === "src/math.shape" && item.line === at.line && item.column === at.column
+  );
+}
+
+/** A mismatch names the export and prints the found and reviewed types side by side. */
+export function expectSignatureFailure(
+  result: NativeResult,
+  text: string,
+  signature: string,
+  exported = "answer"
+): NativeDiagnostic {
+  const diagnostic = diagnosticAt(result, text, signature);
+  expect(diagnostic.code).toBe("TS2344");
+  expect(diagnostic.message).toMatch(
+    new RegExp(
+      `^Type '\\{ export: ${JSON.stringify(exported)}; signature: .*; exact: false; \\}' does not satisfy the constraint '\\{ export: ${JSON.stringify(exported)}; signature: .*; exact: true; \\}'`
+    )
+  );
+  return diagnostic;
+}
+
+/** File-level coverage failures sit at the contract's start and list every offending export. */
+export function expectCoverageFailure(
+  result: NativeResult,
+  label: "unregisteredCallableExports" | "uncertainExportTypes",
+  exported: string[]
+): NativeDiagnostic {
+  const diagnostic = requireNativeDiagnostic(
+    result,
+    (item) => item.file === "src/math.shape" && item.message.startsWith(`Type '{ ${label}: `)
+  );
+  expect(diagnostic.code).toBe("TS2344");
+  expect({ line: diagnostic.line, column: diagnostic.column }).toEqual({ line: 1, column: 1 });
+  const listed = new RegExp(
+    `^Type '\\{ ${label}: (.*); \\}' does not satisfy the constraint 'true'\\.$`
+  ).exec(diagnostic.message)?.[1];
+  expect(listed?.split(" | ").sort()).toEqual(exported.map((name) => JSON.stringify(name)).sort());
+  return diagnostic;
 }
