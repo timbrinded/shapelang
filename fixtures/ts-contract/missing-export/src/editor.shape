@@ -1,0 +1,19 @@
+module editor
+
+component Editor {
+  fn mergeAutosaves
+    source ts("src/editor.ts#mergeAutosaves")
+    signature ts("(autosaves: readonly string[]) => string")
+    effects complete {
+    }
+  fn restoreRevision
+    source ts("src/editor.ts#restoreRevision")
+    signature ts("(revisionId: string) => string")
+    effects complete {
+    }
+  fn saveDraft
+    source ts("src/editor.ts#saveDraft")
+    signature ts("(text: string) => number")
+    effects complete {
+    }
+}

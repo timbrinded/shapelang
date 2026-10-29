@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noEmit": true,
+    "types": []
+  },
+  "contentMappers": [
+    {
+      "package": "@shape/shp-ts-contract",
+      "extensions": [
+        ".shape"
+      ],
+      "options": {
+        "repoRoot": "."
+      }
+    }
+  ],
+  "include": [
+    "src/**/*"
+  ]
+}

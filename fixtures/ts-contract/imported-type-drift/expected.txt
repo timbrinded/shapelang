@@ -1,0 +1,6 @@
+src/editor.shape(6,19): error TS2344: Type '{ export: "latestRevision"; signature: (revisions: readonly Revision[]) => Revision | undefined; exact: false; }' does not satisfy the constraint '{ export: "latestRevision"; signature: (revisions: readonly { id: string; text: string; }[]) => { id: string; text: string; } | undefined; exact: true; }'.
+  Types of property 'signature' are incompatible.
+    Type '(revisions: readonly Revision[]) => Revision | undefined' is not assignable to type '(revisions: readonly { id: string; text: string; }[]) => { id: string; text: string; } | undefined'.
+      Types of parameters 'revisions' and 'revisions' are incompatible.
+        Type 'readonly { id: string; text: string; }[]' is not assignable to type 'readonly Revision[]'.
+          Property 'createdAt' is missing in type '{ id: string; text: string; }' but required in type 'Revision'.

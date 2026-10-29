@@ -1,0 +1,9 @@
+module editor
+
+component Editor {
+  fn mergeAutosaves
+    source ts("src/editor.ts#mergeAutosaves")
+    signature ts("(autosaves: readonly string[]) => string")
+    effects complete {
+    }
+}

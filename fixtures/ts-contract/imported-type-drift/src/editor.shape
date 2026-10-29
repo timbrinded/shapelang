@@ -1,0 +1,9 @@
+module editor
+
+component Editor {
+  fn latestRevision
+    source ts("src/editor.ts#latestRevision")
+    signature ts("(revisions: readonly { id: string; text: string }[]) => { id: string; text: string } | undefined")
+    effects complete {
+    }
+}

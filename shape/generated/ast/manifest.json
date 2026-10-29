@@ -276,6 +276,69 @@
       ]
     },
     {
+      "module": "shape.generated.ast.fixtures.ts_contract.imported_type_drift.src.editor",
+      "path": "shape/generated/ast/fixtures/ts-contract/imported-type-drift/src/editor.shape",
+      "sources": [
+        "fixtures/ts-contract/imported-type-drift/src/editor.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.ts_contract.imported_type_drift.src.history",
+      "path": "shape/generated/ast/fixtures/ts-contract/imported-type-drift/src/history.shape",
+      "sources": [
+        "fixtures/ts-contract/imported-type-drift/src/history.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.ts_contract.matching_contract.src.editor",
+      "path": "shape/generated/ast/fixtures/ts-contract/matching-contract/src/editor.shape",
+      "sources": [
+        "fixtures/ts-contract/matching-contract/src/editor.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.ts_contract.missing_export.src.editor",
+      "path": "shape/generated/ast/fixtures/ts-contract/missing-export/src/editor.shape",
+      "sources": [
+        "fixtures/ts-contract/missing-export/src/editor.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.ts_contract.signature_drift.src.editor",
+      "path": "shape/generated/ast/fixtures/ts-contract/signature-drift/src/editor.shape",
+      "sources": [
+        "fixtures/ts-contract/signature-drift/src/editor.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.ts_contract.unregistered_export.src.editor",
+      "path": "shape/generated/ast/fixtures/ts-contract/unregistered-export/src/editor.shape",
+      "sources": [
+        "fixtures/ts-contract/unregistered-export/src/editor.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.ts_contract.untyped_export.src.editor",
+      "path": "shape/generated/ast/fixtures/ts-contract/untyped-export/src/editor.shape",
+      "sources": [
+        "fixtures/ts-contract/untyped-export/src/editor.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.ts_contract.untyped_export.src.legacy_autosave",
+      "path": "shape/generated/ast/fixtures/ts-contract/untyped-export/src/legacy-autosave.shape",
+      "sources": [
+        "fixtures/ts-contract/untyped-export/src/legacy-autosave.js"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.ts_contract.weakened_strictness.src.editor",
+      "path": "shape/generated/ast/fixtures/ts-contract/weakened-strictness/src/editor.shape",
+      "sources": [
+        "fixtures/ts-contract/weakened-strictness/src/editor.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.analyzer_lexical",
       "path": "shape/generated/ast/packages/shp-checker/src/analyzer-lexical.shape",
       "sources": [
@@ -1421,6 +1484,13 @@
       "path": "shape/generated/ast/packages/shp-cli/src/version.shape",
       "sources": [
         "packages/shp-cli/src/version.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_ts_contract.src.fixture_projects_test",
+      "path": "shape/generated/ast/packages/shp-ts-contract/src/fixture-projects.test.shape",
+      "sources": [
+        "packages/shp-ts-contract/src/fixture-projects.test.ts"
       ]
     },
     {

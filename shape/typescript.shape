@@ -193,6 +193,11 @@ rationale TypeScriptContractScope : DesignRationale<component TypeScriptContract
 }
 
 attest no_shape_change {
+  source ts("packages/shp-ts-contract/src/fixture-projects.test.ts")
+  reason "Runs the fixtures/ts-contract example projects through the pinned compiler and mapper and compares the exact compiler output a developer sees; no production entry point is added."
+}
+
+attest no_shape_change {
   source ts("packages/shp-ts-contract/src/gate/process.test.ts")
   reason "Tests captured compiler output and POSIX timeout cleanup of a compiler-like process and mapper-like child. The runtime behavior is modeled by TypeScriptContractGate.captureProcess."
 }

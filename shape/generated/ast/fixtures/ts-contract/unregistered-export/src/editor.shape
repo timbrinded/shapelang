@@ -1,0 +1,65 @@
+module shape.generated.ast.fixtures.ts_contract.unregistered_export.src.editor
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource EditorModuleDiscardDraftAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/ts-contract/unregistered-export/src/editor.ts#discardDraft")
+  fingerprint ast.semantic_subtree_v1("sha256:bd07228a23e230835008e40454155052c7932eb87448f8037ffb17c38e919926")
+}
+
+resource EditorModuleMergeAutosavesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/ts-contract/unregistered-export/src/editor.ts#mergeAutosaves")
+  fingerprint ast.semantic_subtree_v1("sha256:4b2f6ec764306e2961584ef13746a62c427bd9775b2aa876688452152f4b2ae9")
+}
+
+resource EditorModuleSaveDraftAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/ts-contract/unregistered-export/src/editor.ts#saveDraft")
+  fingerprint ast.semantic_subtree_v1("sha256:88547fec39ec6665f174c3b85a33222b871d7ab18cb9c53597a25de97aa57e1f")
+}
+
+component EditorModule : GeneratedCandidate {
+  fn discardDraft
+    source ts("fixtures/ts-contract/unregistered-export/src/editor.ts#discardDraft")
+    effects unknown
+  fn mergeAutosaves
+    source ts("fixtures/ts-contract/unregistered-export/src/editor.ts#mergeAutosaves")
+    effects unknown
+  fn saveDraft
+    source ts("fixtures/ts-contract/unregistered-export/src/editor.ts#saveDraft")
+    effects unknown
+}
+
+relation EditorModuleDiscardDraftGeneratedFromEditorModuleDiscardDraftAstAnchor {
+  kind generated_from
+  connects EditorModule -> EditorModuleDiscardDraftAstAnchor
+  roles { EditorModule as generated, EditorModuleDiscardDraftAstAnchor as syntax }
+  expects EditorModuleDiscardDraftAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bd07228a23e230835008e40454155052c7932eb87448f8037ffb17c38e919926")
+  summary "fn EditorModule.discardDraft generated from typescript function_declaration at fixtures/ts-contract/unregistered-export/src/editor.ts#discardDraft."
+}
+
+relation EditorModuleMergeAutosavesGeneratedFromEditorModuleMergeAutosavesAstAnchor {
+  kind generated_from
+  connects EditorModule -> EditorModuleMergeAutosavesAstAnchor
+  roles { EditorModule as generated, EditorModuleMergeAutosavesAstAnchor as syntax }
+  expects EditorModuleMergeAutosavesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4b2f6ec764306e2961584ef13746a62c427bd9775b2aa876688452152f4b2ae9")
+  summary "fn EditorModule.mergeAutosaves generated from typescript function_declaration at fixtures/ts-contract/unregistered-export/src/editor.ts#mergeAutosaves."
+}
+
+relation EditorModuleSaveDraftGeneratedFromEditorModuleSaveDraftAstAnchor {
+  kind generated_from
+  connects EditorModule -> EditorModuleSaveDraftAstAnchor
+  roles { EditorModule as generated, EditorModuleSaveDraftAstAnchor as syntax }
+  expects EditorModuleSaveDraftAstAnchor fingerprint ast.semantic_subtree_v1("sha256:88547fec39ec6665f174c3b85a33222b871d7ab18cb9c53597a25de97aa57e1f")
+  summary "fn EditorModule.saveDraft generated from typescript function_declaration at fixtures/ts-contract/unregistered-export/src/editor.ts#saveDraft."
+}
+
+implementation EditorModuleImpl {
+  paths {
+    "fixtures/ts-contract/unregistered-export/src/editor.ts"
+  }
+  conforms_to EditorModule
+}

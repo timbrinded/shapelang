@@ -82,6 +82,7 @@ them even when every check passes:
 | `shape/generated/ast/` | Committed generated AST context and its `manifest.json` (see [Generated AST context](#generated-ast-context)). |
 | `fixtures/pass`, `fixtures/fail` | Focused semantic examples used by tests, one directory per case. |
 | `fixtures/changed`, `fixtures/diffs`, `fixtures/projects`, `fixtures/source`, `fixtures/skills` | Changed-file lists, authoring diffs, multi-file projects, analyzer and AST source samples, and the skill release cases (`fixtures/skills/cases.json`). |
+| `fixtures/ts-contract` | Example projects for the TypeScript contract mapper: sources, sibling contracts and the exact expected compiler output (see its README). |
 | `fixtures/loosening` | Before/after model pairs for `shp check --check-loosening`: `base/` and `head/` hold the Shape files at repository paths, with an optional `changed-files.txt` (not `changed.txt`, which `.gitignore` excludes). |
 | `docs-site/` | The Astro/Starlight documentation site: pages in `src/content/docs/`, diagrams in `src/assets/diagrams/`, Shape syntax highlighting in `src/syntax/`, and the Shape-fence verifier in `scripts/verify-shape-blocks.ts`. |
 | `docs/releases/` | Release notes, one `vX.Y.Z.md` per release. |

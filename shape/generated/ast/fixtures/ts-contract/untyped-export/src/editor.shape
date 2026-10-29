@@ -1,0 +1,7 @@
+module shape.generated.ast.fixtures.ts_contract.untyped_export.src.editor
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
