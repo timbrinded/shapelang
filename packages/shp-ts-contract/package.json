@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@shape/shp-checker": "workspace:*",
-    "jsonc-parser": "3.3.1",
-    "typescript": "7.1.0-beta"
+    "jsonc-parser": "catalog:",
+    "typescript": "catalog:"
   },
   "typescript": {
     "contentMapper": {

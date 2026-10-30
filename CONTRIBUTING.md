@@ -125,7 +125,7 @@ bun run docs:check
 | `bun run typecheck` | `tsgo -p tsconfig.json --noEmit` | Typecheck |
 | `bun run shape:ci` | The Shape gate, described [below](#the-shape-gate). | Shape |
 | `bun run shape:loosening` | `shp check --check-loosening` against `changed-base.txt`: fails when an edit to a rule, trait, memory, or governed path is what lets the change pass. See [Rule loosening](#rule-loosening). | Rule Loosening |
-| `bun run docs:check` | `astro check`, the Shape-fence verifier, and the static site build. | Docs |
+| `bun run docs:check` | `astro sync`, TypeScript 7.1 checking of the site including `.astro` files (through `@astrojs/ts-content-mapper`), the Shape-fence verifier, and the static site build. | Docs |
 
 These commands cover the CI jobs that you reproduce locally. The other jobs are
 listed in [CI in this repository](#ci-in-this-repository) and need no local run,
