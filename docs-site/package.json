@@ -19,6 +19,8 @@
     "@fontsource-variable/geist": "catalog:",
     "@fontsource-variable/geist-mono": "catalog:",
     "@shape/shp-checker": "workspace:*",
+    "@types/bun": "catalog:",
+    "astro-expressive-code": "catalog:",
     "typescript": "catalog:"
   }
 }
