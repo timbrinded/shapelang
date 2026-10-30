@@ -88,7 +88,7 @@ resource FormatterModuleFormatFingerprintAstAnchor : GeneratedAstAnchor {
 
 resource FormatterModuleFormatFunctionAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/formatter.ts#formatFunction")
-  fingerprint ast.semantic_subtree_v1("sha256:3f559a8b71e9027294d5661f98a2ceabb454d4677254ff4df1d577d7be5c5b2f")
+  fingerprint ast.semantic_subtree_v1("sha256:04da964a71053846652346ad94ebef9c5478fe6fa1a00f9a4a259fd83e43cd5d")
 }
 
 resource FormatterModuleFormatFunctionLocalNameAstAnchor : GeneratedAstAnchor {
@@ -103,7 +103,7 @@ resource FormatterModuleFormatFunctionMemberAstAnchor : GeneratedAstAnchor {
 
 resource FormatterModuleFormatFunctionPartsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/formatter.ts#formatFunctionParts")
-  fingerprint ast.semantic_subtree_v1("sha256:12702361cc0962582dd0bcfea069c46efdd9f309e7cff9e7ac40dff134b3cba0")
+  fingerprint ast.semantic_subtree_v1("sha256:0bdec736be8b2499fcfcb2f8f4575845e98ac6dce5d26fee45071f59361da5d9")
 }
 
 resource FormatterModuleFormatGuardActionEntryAstAnchor : GeneratedAstAnchor {
@@ -138,7 +138,7 @@ resource FormatterModuleFormatProtectsEntryAstAnchor : GeneratedAstAnchor {
 
 resource FormatterModuleFormatQualifiedFunctionAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/formatter.ts#formatQualifiedFunction")
-  fingerprint ast.semantic_subtree_v1("sha256:5abeae8a6184097cad176ea514527cc4641f98517847cec260ccb12736c13b69")
+  fingerprint ast.semantic_subtree_v1("sha256:c56ff23a63bc9961c31d426e0a2f787d60e06bd7ae56d5f933961f2eac03a878")
 }
 
 resource FormatterModuleFormatRationaleAstAnchor : GeneratedAstAnchor {
@@ -179,6 +179,11 @@ resource FormatterModuleFormatShapeSourceAstAnchor : GeneratedAstAnchor {
 resource FormatterModuleFormatShapeTraitListAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/formatter.ts#formatShapeTraitList")
   fingerprint ast.semantic_subtree_v1("sha256:f138ec0a4fac380d5bb9c66c779e9f6a6af32ca0bf23beb4da41c1ea3e3b501e")
+}
+
+resource FormatterModuleFormatSignatureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/formatter.ts#formatSignature")
+  fingerprint ast.semantic_subtree_v1("sha256:e731dbcbef93c4ebf61c4356ed7c6eb6f7121c5c693ba904110dfbec18c68e00")
 }
 
 resource FormatterModuleFormatSourceAstAnchor : GeneratedAstAnchor {
@@ -336,6 +341,9 @@ component FormatterModule : GeneratedCandidate {
     effects unknown
   fn formatShapeTraitList
     source ts("packages/shp-checker/src/formatter.ts#formatShapeTraitList")
+    effects unknown
+  fn formatSignature
+    source ts("packages/shp-checker/src/formatter.ts#formatSignature")
     effects unknown
   fn formatSource
     source ts("packages/shp-checker/src/formatter.ts#formatSource")
@@ -501,7 +509,7 @@ relation FormatterModuleFormatFunctionGeneratedFromFormatterModuleFormatFunction
   kind generated_from
   connects FormatterModule -> FormatterModuleFormatFunctionAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatFunctionAstAnchor as syntax }
-  expects FormatterModuleFormatFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3f559a8b71e9027294d5661f98a2ceabb454d4677254ff4df1d577d7be5c5b2f")
+  expects FormatterModuleFormatFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:04da964a71053846652346ad94ebef9c5478fe6fa1a00f9a4a259fd83e43cd5d")
   summary "fn FormatterModule.formatFunction generated from typescript function_declaration at packages/shp-checker/src/formatter.ts#formatFunction."
 }
 
@@ -525,7 +533,7 @@ relation FormatterModuleFormatFunctionPartsGeneratedFromFormatterModuleFormatFun
   kind generated_from
   connects FormatterModule -> FormatterModuleFormatFunctionPartsAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatFunctionPartsAstAnchor as syntax }
-  expects FormatterModuleFormatFunctionPartsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:12702361cc0962582dd0bcfea069c46efdd9f309e7cff9e7ac40dff134b3cba0")
+  expects FormatterModuleFormatFunctionPartsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0bdec736be8b2499fcfcb2f8f4575845e98ac6dce5d26fee45071f59361da5d9")
   summary "fn FormatterModule.formatFunctionParts generated from typescript function_declaration at packages/shp-checker/src/formatter.ts#formatFunctionParts."
 }
 
@@ -581,7 +589,7 @@ relation FormatterModuleFormatQualifiedFunctionGeneratedFromFormatterModuleForma
   kind generated_from
   connects FormatterModule -> FormatterModuleFormatQualifiedFunctionAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatQualifiedFunctionAstAnchor as syntax }
-  expects FormatterModuleFormatQualifiedFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5abeae8a6184097cad176ea514527cc4641f98517847cec260ccb12736c13b69")
+  expects FormatterModuleFormatQualifiedFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c56ff23a63bc9961c31d426e0a2f787d60e06bd7ae56d5f933961f2eac03a878")
   summary "fn FormatterModule.formatQualifiedFunction generated from typescript function_declaration at packages/shp-checker/src/formatter.ts#formatQualifiedFunction."
 }
 
@@ -647,6 +655,14 @@ relation FormatterModuleFormatShapeTraitListGeneratedFromFormatterModuleFormatSh
   roles { FormatterModule as generated, FormatterModuleFormatShapeTraitListAstAnchor as syntax }
   expects FormatterModuleFormatShapeTraitListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f138ec0a4fac380d5bb9c66c779e9f6a6af32ca0bf23beb4da41c1ea3e3b501e")
   summary "fn FormatterModule.formatShapeTraitList generated from typescript function_declaration at packages/shp-checker/src/formatter.ts#formatShapeTraitList."
+}
+
+relation FormatterModuleFormatSignatureGeneratedFromFormatterModuleFormatSignatureAstAnchor {
+  kind generated_from
+  connects FormatterModule -> FormatterModuleFormatSignatureAstAnchor
+  roles { FormatterModule as generated, FormatterModuleFormatSignatureAstAnchor as syntax }
+  expects FormatterModuleFormatSignatureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e731dbcbef93c4ebf61c4356ed7c6eb6f7121c5c693ba904110dfbec18c68e00")
+  summary "fn FormatterModule.formatSignature generated from typescript function_declaration at packages/shp-checker/src/formatter.ts#formatSignature."
 }
 
 relation FormatterModuleFormatSourceGeneratedFromFormatterModuleFormatSourceAstAnchor {

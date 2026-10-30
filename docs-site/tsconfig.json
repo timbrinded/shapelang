@@ -1,5 +1,16 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "**/*.test.ts"]
+  "compilerOptions": {
+    "types": ["bun"]
+  },
+  // Starlight renders code through Expressive Code, whose .ts sources import virtual
+  // modules declared only in this file; tsc checks those sources.
+  "include": [".astro/types.d.ts", "node_modules/astro-expressive-code/virtual.d.ts", "**/*"],
+  "exclude": ["dist", "**/*.test.ts"],
+  "contentMappers": [
+    {
+      "package": "@astrojs/ts-content-mapper",
+      "extensions": [".astro"]
+    }
+  ]
 }

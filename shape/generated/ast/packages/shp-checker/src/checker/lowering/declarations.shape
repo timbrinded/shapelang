@@ -63,7 +63,7 @@ resource DeclarationsModuleLowerForbidPatternAstAnchor : GeneratedAstAnchor {
 
 resource DeclarationsModuleLowerFunctionAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerFunction")
-  fingerprint ast.semantic_subtree_v1("sha256:7901f16b66e22e8d07713ba621e56583bf1b52ed84e31deab11bd05e7c653a35")
+  fingerprint ast.semantic_subtree_v1("sha256:0dd5f6a55d5779ebd04cea6174812f2af37da87c7bb3e68dbc93d09f17590f4e")
 }
 
 resource DeclarationsModuleLowerImplementationAstAnchor : GeneratedAstAnchor {
@@ -325,7 +325,7 @@ relation DeclarationsModuleLowerFunctionGeneratedFromDeclarationsModuleLowerFunc
   kind generated_from
   connects DeclarationsModule -> DeclarationsModuleLowerFunctionAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerFunctionAstAnchor as syntax }
-  expects DeclarationsModuleLowerFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7901f16b66e22e8d07713ba621e56583bf1b52ed84e31deab11bd05e7c653a35")
+  expects DeclarationsModuleLowerFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0dd5f6a55d5779ebd04cea6174812f2af37da87c7bb3e68dbc93d09f17590f4e")
   summary "fn DeclarationsModule.lowerFunction generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerFunction."
 }
 

@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_cli.src.commands.ts_contract.impl
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ImplModuleTsContractAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/ts-contract/impl.ts#tsContract")
+  fingerprint ast.semantic_subtree_v1("sha256:f507b60a7ee6fc62bb18a24446fa2e6912cf5246b139291f8584cc59988093b4")
+}
+
+component ImplModule : GeneratedCandidate {
+  fn tsContract
+    source ts("packages/shp-cli/src/commands/ts-contract/impl.ts#tsContract")
+    effects unknown
+}
+
+relation ImplModuleTsContractGeneratedFromImplModuleTsContractAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleTsContractAstAnchor
+  roles { ImplModule as generated, ImplModuleTsContractAstAnchor as syntax }
+  expects ImplModuleTsContractAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f507b60a7ee6fc62bb18a24446fa2e6912cf5246b139291f8584cc59988093b4")
+  summary "fn ImplModule.tsContract generated from typescript function_declaration at packages/shp-cli/src/commands/ts-contract/impl.ts#tsContract."
+}
+
+implementation ImplModuleImpl {
+  paths {
+    "packages/shp-cli/src/commands/ts-contract/impl.ts"
+  }
+  conforms_to ImplModule
+}

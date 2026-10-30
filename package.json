@@ -2,10 +2,32 @@
   "name": "shapelang",
   "private": true,
   "license": "BSD-3-Clause",
-  "workspaces": [
-    "packages/*",
-    "docs-site"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "docs-site"
+    ],
+    "catalog": {
+      "@astrojs/starlight": "^0.42.8",
+      "@astrojs/ts-content-mapper": "^0.2.0",
+      "@fontsource-variable/geist": "^5.2.8",
+      "@fontsource-variable/geist-mono": "^5.2.8",
+      "@kreuzberg/tree-sitter-language-pack": "1.9.0",
+      "@stricli/core": "^1.2.7",
+      "@types/bun": "latest",
+      "@typescript/native-preview": "beta",
+      "astro": "^7.4.4",
+      "astro-expressive-code": "^0.44.0",
+      "jsonc-parser": "3.3.1",
+      "langium": "^4.2.4",
+      "langium-cli": "^4.2.1",
+      "oxfmt": "^0.51.0",
+      "oxlint": "^1.66.0",
+      "typescript": "7.1.0-beta",
+      "vscode-languageserver": "~9.0.1",
+      "vscode-languageserver-textdocument": "~1.0.12"
+    }
+  },
   "type": "module",
   "scripts": {
     "ast:check": "bun scripts/generate-ast-shapes.ts --check",
@@ -37,11 +59,13 @@
     "typecheck": "tsgo -p tsconfig.json --noEmit"
   },
   "devDependencies": {
-    "@types/bun": "latest",
-    "@typescript/native-preview": "beta",
-    "langium-cli": "^4.2.1",
-    "oxfmt": "^0.51.0",
-    "oxlint": "^1.66.0"
+    "@shape/shp-ts-contract": "workspace:*",
+    "@types/bun": "catalog:",
+    "@typescript/native-preview": "catalog:",
+    "langium-cli": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "typescript": "catalog:"
   },
   "overrides": {
     "jsonschema": "1.4.1"

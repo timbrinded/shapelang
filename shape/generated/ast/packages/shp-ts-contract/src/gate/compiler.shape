@@ -1,0 +1,113 @@
+module shape.generated.ast.packages.shp_ts_contract.src.gate.compiler
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CompilerModuleCompilerRootsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/compiler.ts#compilerRoots")
+  fingerprint ast.semantic_subtree_v1("sha256:1ef12484b5531f817bef39e13428021433f0f2c0a79e6b7339fd7b73d201ced6")
+}
+
+resource CompilerModuleNativeMapperPackageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/compiler.ts#nativeMapperPackage")
+  fingerprint ast.semantic_subtree_v1("sha256:6e3ed82bfa317c9d45d3ae6d97fb4d64c1b48853458f11c7da028702d900a13c")
+}
+
+resource CompilerModuleRejectUnsupportedOptionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/compiler.ts#rejectUnsupportedOptions")
+  fingerprint ast.semantic_subtree_v1("sha256:b658d31661e1aa76e99bd8c7057a9306f9e53ccc53282d920e24de0a9a353076")
+}
+
+resource CompilerModuleResolveCompilerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/compiler.ts#resolveCompiler")
+  fingerprint ast.semantic_subtree_v1("sha256:7a6e5829eaf24a5e38ec8c03ec206021bea87e4da61409cb07ba8af54218af57")
+}
+
+resource CompilerModuleRunCompilerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/compiler.ts#runCompiler")
+  fingerprint ast.semantic_subtree_v1("sha256:5b2bc5a109ba15b9f6dea6bd6b019e3d87faf105743c08235646bb8ba9427665")
+}
+
+resource CompilerModuleValidateMapperAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/compiler.ts#validateMapper")
+  fingerprint ast.semantic_subtree_v1("sha256:9152fe7d7118d2a1a307ea72fdd1ab7f34f973fb8ba97cbc045663d6d7843dda")
+}
+
+component CompilerModule : GeneratedCandidate {
+  fn compilerRoots
+    source ts("packages/shp-ts-contract/src/gate/compiler.ts#compilerRoots")
+    effects unknown
+  fn nativeMapperPackage
+    source ts("packages/shp-ts-contract/src/gate/compiler.ts#nativeMapperPackage")
+    effects unknown
+  fn rejectUnsupportedOptions
+    source ts("packages/shp-ts-contract/src/gate/compiler.ts#rejectUnsupportedOptions")
+    effects unknown
+  fn resolveCompiler
+    source ts("packages/shp-ts-contract/src/gate/compiler.ts#resolveCompiler")
+    effects unknown
+  fn runCompiler
+    source ts("packages/shp-ts-contract/src/gate/compiler.ts#runCompiler")
+    effects unknown
+  fn validateMapper
+    source ts("packages/shp-ts-contract/src/gate/compiler.ts#validateMapper")
+    effects unknown
+}
+
+relation CompilerModuleCompilerRootsGeneratedFromCompilerModuleCompilerRootsAstAnchor {
+  kind generated_from
+  connects CompilerModule -> CompilerModuleCompilerRootsAstAnchor
+  roles { CompilerModule as generated, CompilerModuleCompilerRootsAstAnchor as syntax }
+  expects CompilerModuleCompilerRootsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1ef12484b5531f817bef39e13428021433f0f2c0a79e6b7339fd7b73d201ced6")
+  summary "fn CompilerModule.compilerRoots generated from typescript function_declaration at packages/shp-ts-contract/src/gate/compiler.ts#compilerRoots."
+}
+
+relation CompilerModuleNativeMapperPackageGeneratedFromCompilerModuleNativeMapperPackageAstAnchor {
+  kind generated_from
+  connects CompilerModule -> CompilerModuleNativeMapperPackageAstAnchor
+  roles { CompilerModule as generated, CompilerModuleNativeMapperPackageAstAnchor as syntax }
+  expects CompilerModuleNativeMapperPackageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6e3ed82bfa317c9d45d3ae6d97fb4d64c1b48853458f11c7da028702d900a13c")
+  summary "fn CompilerModule.nativeMapperPackage generated from typescript function_declaration at packages/shp-ts-contract/src/gate/compiler.ts#nativeMapperPackage."
+}
+
+relation CompilerModuleRejectUnsupportedOptionsGeneratedFromCompilerModuleRejectUnsupportedOptionsAstAnchor {
+  kind generated_from
+  connects CompilerModule -> CompilerModuleRejectUnsupportedOptionsAstAnchor
+  roles { CompilerModule as generated, CompilerModuleRejectUnsupportedOptionsAstAnchor as syntax }
+  expects CompilerModuleRejectUnsupportedOptionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b658d31661e1aa76e99bd8c7057a9306f9e53ccc53282d920e24de0a9a353076")
+  summary "fn CompilerModule.rejectUnsupportedOptions generated from typescript function_declaration at packages/shp-ts-contract/src/gate/compiler.ts#rejectUnsupportedOptions."
+}
+
+relation CompilerModuleResolveCompilerGeneratedFromCompilerModuleResolveCompilerAstAnchor {
+  kind generated_from
+  connects CompilerModule -> CompilerModuleResolveCompilerAstAnchor
+  roles { CompilerModule as generated, CompilerModuleResolveCompilerAstAnchor as syntax }
+  expects CompilerModuleResolveCompilerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7a6e5829eaf24a5e38ec8c03ec206021bea87e4da61409cb07ba8af54218af57")
+  summary "fn CompilerModule.resolveCompiler generated from typescript function_declaration at packages/shp-ts-contract/src/gate/compiler.ts#resolveCompiler."
+}
+
+relation CompilerModuleRunCompilerGeneratedFromCompilerModuleRunCompilerAstAnchor {
+  kind generated_from
+  connects CompilerModule -> CompilerModuleRunCompilerAstAnchor
+  roles { CompilerModule as generated, CompilerModuleRunCompilerAstAnchor as syntax }
+  expects CompilerModuleRunCompilerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5b2bc5a109ba15b9f6dea6bd6b019e3d87faf105743c08235646bb8ba9427665")
+  summary "fn CompilerModule.runCompiler generated from typescript function_declaration at packages/shp-ts-contract/src/gate/compiler.ts#runCompiler."
+}
+
+relation CompilerModuleValidateMapperGeneratedFromCompilerModuleValidateMapperAstAnchor {
+  kind generated_from
+  connects CompilerModule -> CompilerModuleValidateMapperAstAnchor
+  roles { CompilerModule as generated, CompilerModuleValidateMapperAstAnchor as syntax }
+  expects CompilerModuleValidateMapperAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9152fe7d7118d2a1a307ea72fdd1ab7f34f973fb8ba97cbc045663d6d7843dda")
+  summary "fn CompilerModule.validateMapper generated from typescript function_declaration at packages/shp-ts-contract/src/gate/compiler.ts#validateMapper."
+}
+
+implementation CompilerModuleImpl {
+  paths {
+    "packages/shp-ts-contract/src/gate/compiler.ts"
+  }
+  conforms_to CompilerModule
+}

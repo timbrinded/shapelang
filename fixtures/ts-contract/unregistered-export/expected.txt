@@ -1,0 +1,1 @@
+src/editor.shape(1,1): error TS2344: Type '{ unregisteredCallableExports: "discardDraft"; }' does not satisfy the constraint 'true'.

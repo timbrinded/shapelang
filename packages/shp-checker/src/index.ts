@@ -109,6 +109,7 @@ export {
   type ShapeInspectionRelation,
   type ShapeInspectionResource,
   type ShapeInspectionRule,
+  type ShapeInspectionSignature,
   type ShapeInspectionSourceRef,
   type ShapeInspectionStats
 } from "./checker/inspection.ts";

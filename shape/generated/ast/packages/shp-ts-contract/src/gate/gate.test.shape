@@ -1,0 +1,145 @@
+module shape.generated.ast.packages.shp_ts_contract.src.gate.gate_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GateTestModuleCompilerInvocationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/gate.test.ts#compilerInvocations")
+  fingerprint ast.semantic_subtree_v1("sha256:4b8b3ade1835fa5a75e4042effb5cfcfd4f23408c15e0dc4cf7ceae40be9e928")
+}
+
+resource GateTestModuleContractAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/gate.test.ts#contract")
+  fingerprint ast.semantic_subtree_v1("sha256:6a1a76a5b6e26f7a88bbdd17fc2a061204c1cbdc33213df97db949305de1b4f4")
+}
+
+resource GateTestModuleExpectNoNativeCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/gate.test.ts#expectNoNativeCheck")
+  fingerprint ast.semantic_subtree_v1("sha256:bee7fc6a5da6edfdfe145cae3f3a530e3f3ceb9b2b8002e49fa7e37f02001ca5")
+}
+
+resource GateTestModuleFixtureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/gate.test.ts#fixture")
+  fingerprint ast.semantic_subtree_v1("sha256:3d5b27533251a4c19321a6c026fcdf7b25051a8cd86a2898427ac1c269003641")
+}
+
+resource GateTestModuleJsonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/gate.test.ts#json")
+  fingerprint ast.semantic_subtree_v1("sha256:c5b815790e78b066a6339654bf6bfdca63e17e73786bce1a3d2a1683c238739b")
+}
+
+resource GateTestModulePutAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/gate.test.ts#put")
+  fingerprint ast.semantic_subtree_v1("sha256:bc224ecf8718352a1e659bc9531cde1721739fe5dd62a9eb3dbbe70eb905c71e")
+}
+
+resource GateTestModuleRequireFailureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/gate.test.ts#requireFailure")
+  fingerprint ast.semantic_subtree_v1("sha256:97acbd085b93d9381962ad7c65ee92b2354992539778276e152a73990d289abc")
+}
+
+resource GateTestModuleTsconfigAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/gate.test.ts#tsconfig")
+  fingerprint ast.semantic_subtree_v1("sha256:1eb6df5b99cc5473e8354b2e25d9ea04d488783748360a52b26abd1aa232b9a4")
+}
+
+component GateTestModule : GeneratedCandidate {
+  fn compilerInvocations
+    source ts("packages/shp-ts-contract/src/gate/gate.test.ts#compilerInvocations")
+    effects unknown
+  fn contract
+    source ts("packages/shp-ts-contract/src/gate/gate.test.ts#contract")
+    effects unknown
+  fn expectNoNativeCheck
+    source ts("packages/shp-ts-contract/src/gate/gate.test.ts#expectNoNativeCheck")
+    effects unknown
+  fn fixture
+    source ts("packages/shp-ts-contract/src/gate/gate.test.ts#fixture")
+    effects unknown
+  fn json
+    source ts("packages/shp-ts-contract/src/gate/gate.test.ts#json")
+    effects unknown
+  fn put
+    source ts("packages/shp-ts-contract/src/gate/gate.test.ts#put")
+    effects unknown
+  fn requireFailure
+    source ts("packages/shp-ts-contract/src/gate/gate.test.ts#requireFailure")
+    effects unknown
+  fn tsconfig
+    source ts("packages/shp-ts-contract/src/gate/gate.test.ts#tsconfig")
+    effects unknown
+}
+
+relation GateTestModuleCompilerInvocationsGeneratedFromGateTestModuleCompilerInvocationsAstAnchor {
+  kind generated_from
+  connects GateTestModule -> GateTestModuleCompilerInvocationsAstAnchor
+  roles { GateTestModule as generated, GateTestModuleCompilerInvocationsAstAnchor as syntax }
+  expects GateTestModuleCompilerInvocationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4b8b3ade1835fa5a75e4042effb5cfcfd4f23408c15e0dc4cf7ceae40be9e928")
+  summary "fn GateTestModule.compilerInvocations generated from typescript function_declaration at packages/shp-ts-contract/src/gate/gate.test.ts#compilerInvocations."
+}
+
+relation GateTestModuleContractGeneratedFromGateTestModuleContractAstAnchor {
+  kind generated_from
+  connects GateTestModule -> GateTestModuleContractAstAnchor
+  roles { GateTestModule as generated, GateTestModuleContractAstAnchor as syntax }
+  expects GateTestModuleContractAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6a1a76a5b6e26f7a88bbdd17fc2a061204c1cbdc33213df97db949305de1b4f4")
+  summary "fn GateTestModule.contract generated from typescript function_declaration at packages/shp-ts-contract/src/gate/gate.test.ts#contract."
+}
+
+relation GateTestModuleExpectNoNativeCheckGeneratedFromGateTestModuleExpectNoNativeCheckAstAnchor {
+  kind generated_from
+  connects GateTestModule -> GateTestModuleExpectNoNativeCheckAstAnchor
+  roles { GateTestModule as generated, GateTestModuleExpectNoNativeCheckAstAnchor as syntax }
+  expects GateTestModuleExpectNoNativeCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bee7fc6a5da6edfdfe145cae3f3a530e3f3ceb9b2b8002e49fa7e37f02001ca5")
+  summary "fn GateTestModule.expectNoNativeCheck generated from typescript function_declaration at packages/shp-ts-contract/src/gate/gate.test.ts#expectNoNativeCheck."
+}
+
+relation GateTestModuleFixtureGeneratedFromGateTestModuleFixtureAstAnchor {
+  kind generated_from
+  connects GateTestModule -> GateTestModuleFixtureAstAnchor
+  roles { GateTestModule as generated, GateTestModuleFixtureAstAnchor as syntax }
+  expects GateTestModuleFixtureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3d5b27533251a4c19321a6c026fcdf7b25051a8cd86a2898427ac1c269003641")
+  summary "fn GateTestModule.fixture generated from typescript function_declaration at packages/shp-ts-contract/src/gate/gate.test.ts#fixture."
+}
+
+relation GateTestModuleJsonGeneratedFromGateTestModuleJsonAstAnchor {
+  kind generated_from
+  connects GateTestModule -> GateTestModuleJsonAstAnchor
+  roles { GateTestModule as generated, GateTestModuleJsonAstAnchor as syntax }
+  expects GateTestModuleJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c5b815790e78b066a6339654bf6bfdca63e17e73786bce1a3d2a1683c238739b")
+  summary "fn GateTestModule.json generated from typescript function_declaration at packages/shp-ts-contract/src/gate/gate.test.ts#json."
+}
+
+relation GateTestModulePutGeneratedFromGateTestModulePutAstAnchor {
+  kind generated_from
+  connects GateTestModule -> GateTestModulePutAstAnchor
+  roles { GateTestModule as generated, GateTestModulePutAstAnchor as syntax }
+  expects GateTestModulePutAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bc224ecf8718352a1e659bc9531cde1721739fe5dd62a9eb3dbbe70eb905c71e")
+  summary "fn GateTestModule.put generated from typescript function_declaration at packages/shp-ts-contract/src/gate/gate.test.ts#put."
+}
+
+relation GateTestModuleRequireFailureGeneratedFromGateTestModuleRequireFailureAstAnchor {
+  kind generated_from
+  connects GateTestModule -> GateTestModuleRequireFailureAstAnchor
+  roles { GateTestModule as generated, GateTestModuleRequireFailureAstAnchor as syntax }
+  expects GateTestModuleRequireFailureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:97acbd085b93d9381962ad7c65ee92b2354992539778276e152a73990d289abc")
+  summary "fn GateTestModule.requireFailure generated from typescript function_declaration at packages/shp-ts-contract/src/gate/gate.test.ts#requireFailure."
+}
+
+relation GateTestModuleTsconfigGeneratedFromGateTestModuleTsconfigAstAnchor {
+  kind generated_from
+  connects GateTestModule -> GateTestModuleTsconfigAstAnchor
+  roles { GateTestModule as generated, GateTestModuleTsconfigAstAnchor as syntax }
+  expects GateTestModuleTsconfigAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1eb6df5b99cc5473e8354b2e25d9ea04d488783748360a52b26abd1aa232b9a4")
+  summary "fn GateTestModule.tsconfig generated from typescript function_declaration at packages/shp-ts-contract/src/gate/gate.test.ts#tsconfig."
+}
+
+implementation GateTestModuleImpl {
+  paths {
+    "packages/shp-ts-contract/src/gate/gate.test.ts"
+  }
+  conforms_to GateTestModule
+}

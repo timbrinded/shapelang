@@ -1,0 +1,258 @@
+module shape.typescript
+
+import shape.checker
+
+import shape.language
+
+import shape.tooling
+
+resource CompilerCaptureFiles
+
+resource MapperProjectState
+
+resource MapperProtocolStream
+
+resource NativeCompilerExecution
+
+resource TypeScriptContract
+
+resource TypeScriptContractDiagnostics
+
+resource TypeScriptProjectFiles
+
+resource TypeScriptVirtualSource
+
+component TypeScriptContractGate {
+  owns CompilerCaptureFiles
+  grants Append<TypeScriptContractDiagnostics>
+  grants HardDelete<CompilerCaptureFiles>
+  grants Read<TypeScriptContract>
+  grants Read<TypeScriptContractDiagnostics>
+  grants Read<TypeScriptProjectFiles>
+  grants Update<CompilerCaptureFiles>
+  grants Update<NativeCompilerExecution>
+  fn captureProcess
+    source ts("packages/shp-ts-contract/src/gate/process.ts#captureProcess")
+    description "Runs the authorized native compiler with a timeout, captures stdout/stderr through private temporary files, preserves failures, bounds returned output, and closes descriptors and removes captures in finally. POSIX process-group cancellation includes mapper children; Windows cancellation stops the direct child. NativeCompilerExecution includes trusted compiler and mapper process and cache effects."
+    effects complete {
+      HardDelete<CompilerCaptureFiles>
+        evidence ts("packages/shp-ts-contract/src/gate/process.ts")
+      Read<TypeScriptProjectFiles>
+        evidence ts("packages/shp-ts-contract/src/gate/compiler.ts")
+      Update<CompilerCaptureFiles>
+        evidence ts("packages/shp-ts-contract/src/gate/process.ts")
+      Update<NativeCompilerExecution>
+        evidence ts("packages/shp-ts-contract/src/gate/process.ts")
+    }
+  fn runCommand
+    source ts("packages/shp-cli/src/commands/ts-contract/impl.ts#tsContract")
+    description "Forwards gate diagnostics and original compiler streams to the CLI context and sets its exit status; consent is an explicit command flag."
+    effects complete {
+      Read<TypeScriptContractDiagnostics>
+        evidence ts("packages/shp-cli/src/commands/ts-contract/impl.ts")
+      Read<TypeScriptContractDiagnostics>
+        evidence ts("packages/shp-cli/src/commands/ts-contract/command.ts")
+      Update<NativeCompilerExecution>
+        evidence ts("packages/shp-cli/src/commands/ts-contract/impl.ts")
+    }
+  fn runTsContractGate
+    source ts("packages/shp-ts-contract/src/gate/index.ts#runTsContractGate")
+    description "An opt-in filesystem census requires a regular authored sibling contract for every selected .ts source, including new and ignored files, and rejects any contract the mapper's own validation would reject before a native run. Paths are also matched under their .ts spelling, so .tsx, .mts, .cts and .d.ts files and allowJs JavaScript roots in the selected tree are unsupported until explicitly excluded. Before invoking native checks with explicit external-code consent, it checks the exact compiler version, strict checking with strict true or omitted, the absence of project references, the mapper registration, that the mapper directory native TypeScript loads, the nearest node_modules link at or above the tsconfig regardless of tsconfig paths or package exports, is the package of the checkout running the gate, and the resolved roots. Native diagnostics and failures are preserved."
+    effects complete {
+      Append<TypeScriptContractDiagnostics>
+        evidence ts("packages/shp-ts-contract/src/gate/index.ts")
+      Append<TypeScriptContractDiagnostics>
+        evidence ts("packages/shp-ts-contract/src/gate/types.ts")
+      HardDelete<CompilerCaptureFiles>
+        evidence ts("packages/shp-ts-contract/src/gate/process.ts")
+      Read<TypeScriptContract>
+        evidence ts("packages/shp-ts-contract/src/gate/inventory.ts")
+      Read<TypeScriptProjectFiles>
+        evidence ts("packages/shp-ts-contract/src/gate/config.ts")
+      Read<TypeScriptProjectFiles>
+        evidence ts("packages/shp-ts-contract/src/gate/inventory.ts")
+      Read<TypeScriptProjectFiles>
+        evidence ts("packages/shp-ts-contract/src/gate/compiler.ts")
+      Update<CompilerCaptureFiles>
+        evidence ts("packages/shp-ts-contract/src/gate/process.ts")
+      Update<NativeCompilerExecution>
+        evidence ts("packages/shp-ts-contract/src/gate/compiler.ts")
+    }
+}
+
+component TypeScriptContractMapper {
+  owns MapperProjectState
+  owns TypeScriptVirtualSource
+  grants Append<MapperProtocolStream>
+  grants Append<TypeScriptContractDiagnostics>
+  grants Append<TypeScriptVirtualSource>
+  grants Read<MapperProtocolStream>
+  grants Read<TypeScriptContract>
+  grants Update<MapperProjectState>
+  fn emitContract
+    source ts("packages/shp-ts-contract/src/mapper/emit.ts#emitContract")
+    description "Purely translates authored sibling Shape signatures, read as the Shape parser decodes them, into type-only TypeScript assertions; numeric string escapes, which the parser reads as plain letters, are rejected. Any-detection keeps the compared type out of conditional check and extends positions, and equality settles top-level any first, so an export of the compiler's error type counts as uncertain and fails its signature instead of satisfying every assertion. Signature equality, registered export existence at the source anchor, and labelled callable export coverage that lists the offending exports, including optional members of an export = object, are separate assertions, and the sibling import maps to the contract's first character; malformed, unsigned, generated, imported, and changed contracts fail explicitly. Its validation step, checkContract, is shared with the gate."
+    effects complete {
+      Append<TypeScriptContractDiagnostics>
+        evidence ts("packages/shp-ts-contract/src/mapper/emit.ts")
+      Append<TypeScriptVirtualSource>
+        evidence ts("packages/shp-ts-contract/src/mapper/emit.ts")
+      Read<TypeScriptContract>
+        evidence ts("packages/shp-ts-contract/src/mapper/emit.ts")
+      Read<TypeScriptContract>
+        evidence ts("packages/shp-ts-contract/src/mapper/strings.ts")
+    }
+  fn handleProjectRequest
+    source ts("packages/shp-ts-contract/src/mapper/protocol.ts#MapperSession")
+    description "Keeps project options isolated by native project handle, requires UTF-16 positions, validates repoRoot, and removes state on close. It refuses a project whose forwarded compiler options are absent, set strict, strictNullChecks or strictFunctionTypes to false, or set noCheck to true, so every transform in that project fails; an omitted strict is the TypeScript 7 default and is accepted. Transforms use only the compiler-supplied source and project state."
+    effects complete {
+      Append<MapperProtocolStream>
+        evidence ts("packages/shp-ts-contract/src/mapper/protocol.ts")
+      Read<MapperProtocolStream>
+        evidence ts("packages/shp-ts-contract/src/mapper/protocol.ts")
+      Update<MapperProjectState>
+        evidence ts("packages/shp-ts-contract/src/mapper/protocol.ts")
+    }
+  fn serve
+    source ts("packages/shp-ts-contract/src/mapper/main.ts")
+    description "Reads framed JSON-RPC from stdin and writes only protocol replies to stdout. Invalid frames and handler errors produce explicit failures; no compiler execution occurs in the transform."
+    effects complete {
+      Append<MapperProtocolStream>
+        evidence ts("packages/shp-ts-contract/src/mapper/main.ts")
+      Read<MapperProtocolStream>
+        evidence ts("packages/shp-ts-contract/src/mapper/main.ts")
+      Update<MapperProjectState>
+        evidence ts("packages/shp-ts-contract/src/mapper/protocol.ts")
+    }
+  fn validateSignatureFragment
+    source ts("packages/shp-ts-contract/src/mapper/signature.ts#validateSignatureFragment")
+    description "Uses the pinned compiler scanner to reject signature fragments that escape their parenthesized alias, suppress diagnostics, use private mapper names, or contain unsupported type queries. Authored aliases follow all generated assertions."
+    effects complete {
+      Append<TypeScriptContractDiagnostics>
+        evidence ts("packages/shp-ts-contract/src/mapper/signature.ts")
+      Read<TypeScriptContract>
+        evidence ts("packages/shp-ts-contract/src/mapper/signature.ts")
+    }
+}
+
+relation TypeScriptCliUsesGate {
+  kind calls
+  connects ShpCli -> TypeScriptContractGate
+}
+
+relation TypeScriptGateUsesMapper {
+  kind calls
+  connects TypeScriptContractGate -> TypeScriptContractMapper
+  summary "The gate applies the mapper's contract validation in process; the pinned compiler launches the registered mapper only after the explicit external-code gate."
+}
+
+relation TypeScriptMapperUsesParser {
+  kind calls
+  connects TypeScriptContractMapper -> ShapeParser
+}
+
+implementation TypeScriptContractSource {
+  paths {
+    "packages/shp-ts-contract/src/**/*.ts"
+  }
+  conforms_to TypeScriptContractGate
+  on_change require shape_update
+}
+
+binding TypeScriptContractDocs {
+  when_changed paths {
+    "packages/shp-ts-contract/package.json"
+    "packages/shp-ts-contract/src/**/*.ts"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/reference/typescript-content-mapping.md"
+  }
+  allow attest docs_not_needed
+}
+
+rule TypeScriptNativeExecutionIsolation {
+  forbid path ShapeChecker -> TypeScriptContractGate over calls
+  forbid path ShapeChecker -> TypeScriptContractMapper over calls
+  forbid path ShapeEditorServices -> TypeScriptContractGate over calls
+  forbid path ShapeEditorServices -> TypeScriptContractMapper over calls
+}
+
+rationale TypeScriptContractScope : DesignRationale<component TypeScriptContractMapper> {
+  applies_to component TypeScriptContractMapper
+  summary "Native mapped diagnostics establish callable type agreement under the pinned compiler, not purity or all runtime-function coverage. Only the explicitly invoked ts-contract command and a consenting native compiler run the gate or mapper; ordinary checking and editor services never do. The independent source census closes wildcard deletion gaps, and the mapper refuses projects that weaken strict checking. Const-generic inference changes, added or removed this parameters, member form, accessor write types, imported type aliases, ambient declarations that count as exports, internal functions, methods, and type-erased object values remain explicit limits; composition-sensitive equality and inline distributive conditionals on 7.1.0-beta fail closed."
+  evidence md("docs-site/src/content/docs/reference/typescript-content-mapping.md")
+  evidence test("packages/shp-cli/src/commands/ts-contract/command.test.ts")
+  evidence test("packages/shp-ts-contract/src/gate/gate.test.ts")
+  evidence test("packages/shp-ts-contract/src/gate/native-gate.test.ts")
+  evidence test("packages/shp-ts-contract/src/mapper-type-limits.test.ts")
+  evidence test("packages/shp-ts-contract/src/mapper/emit.test.ts")
+  evidence test("packages/shp-ts-contract/src/mapper/protocol.test.ts")
+  evidence test("packages/shp-ts-contract/src/mapper/signature.test.ts")
+  evidence test("packages/shp-ts-contract/src/native-integration.test.ts")
+  evidence test("packages/shp-ts-contract/src/native-test-helpers.ts")
+}
+
+attest no_shape_change {
+  source ts("packages/shp-ts-contract/src/fixture-projects.test.ts")
+  reason "Runs the fixtures/ts-contract example projects through the pinned compiler and mapper and compares the exact compiler output a developer sees; no production entry point is added."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-ts-contract/src/gate/process.test.ts")
+  reason "Tests captured compiler output and POSIX timeout cleanup of a compiler-like process and mapper-like child. The runtime behavior is modeled by TypeScriptContractGate.captureProcess."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/change-planning.test.ts")
+  reason "Adds a regression that signature-only changes preserve isolated staging and existing memory guards; the corresponding lowering and inspection claims are updated."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/function-signature-effective.test.ts")
+  reason "Tests preservation, replacement, escaping, and optional inspection of signatures; production behavior is modeled by the current lowerer and checker updates."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/ts-contract/command.test.ts")
+  reason "Tests the opt-in command flags, consent, diagnostics, and exit status; runtime dispatch is modeled in the TypeScript contract gate."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-ts-contract/src/gate/gate.test.ts")
+  reason "Tests selected-source coverage, including sibling-extension and allowJs JavaScript selections, JavaScript links that are not compiler roots, decoded source anchors, ambiguous project claims, configuration, project-reference and foreign-mapper rejection through plain links, paths aliases and exports maps, consent, and native output forwarding against the separately modeled gate; the fixture links the gate's own mapper package."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-ts-contract/src/gate/native-gate.test.ts")
+  reason "Exercises the real CLI, pinned compiler, mapped signature failure, and missing source contract, and runs the gate in process on the real compiler for omitted and inherited strictness settings, without adding a production entry point."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-ts-contract/src/mapper-type-limits.test.ts")
+  reason "Characterizes the native compiler's const-generic equality limitation and call-site inference change, and the 7.1.0-beta failure of inline distributive conditionals with its exported-alias workaround; both limits are documented rather than hidden."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-ts-contract/src/mapper/emit.test.ts")
+  reason "Tests the modeled pure emitter's invalid-contract failures, including numeric escape rejection, decoded exported names, the mapped sibling import, and the tuple-wrapped generated assertion layout."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-ts-contract/src/mapper/protocol.test.ts")
+  reason "Tests framed protocol boundaries, project isolation, option diagnostics including the refusal of weakened strict checking, and handle lifecycle; no separate runtime service is introduced."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-ts-contract/src/mapper/signature.test.ts")
+  reason "Tests lexical containment, directive rejection, private identifier rejection, and the declared signature subset."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-ts-contract/src/native-integration.test.ts")
+  reason "Runs real pinned-compiler regressions for type drift, labelled mismatch and coverage messages, error-typed exports, refused non-strict projects, type-only star re-exports, optional export = members, unresolved siblings, formatting stability, Unicode diagnostics, incremental freshness, and invalid contracts."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-ts-contract/src/native-test-helpers.ts")
+  reason "Provides temporary project creation with tsconfig overrides, local package links, compiler capture, shared signature and coverage assertions, and cleanup solely for native integration tests."
+}

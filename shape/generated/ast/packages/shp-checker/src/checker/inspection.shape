@@ -43,7 +43,7 @@ resource InspectionModuleInspectComponentsAstAnchor : GeneratedAstAnchor {
 
 resource InspectionModuleInspectFunctionsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#inspectFunctions")
-  fingerprint ast.semantic_subtree_v1("sha256:7bee0327bcd476c65833c5b9c8ac770cb4e9205ce36b25a23daf3a54da22e55e")
+  fingerprint ast.semantic_subtree_v1("sha256:003f7b565f370c285ecb8658da4381f755d1437e386796bad7712b8617296e26")
 }
 
 resource InspectionModuleInspectImplementationsAstAnchor : GeneratedAstAnchor {
@@ -221,7 +221,7 @@ relation InspectionModuleInspectFunctionsGeneratedFromInspectionModuleInspectFun
   kind generated_from
   connects InspectionModule -> InspectionModuleInspectFunctionsAstAnchor
   roles { InspectionModule as generated, InspectionModuleInspectFunctionsAstAnchor as syntax }
-  expects InspectionModuleInspectFunctionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7bee0327bcd476c65833c5b9c8ac770cb4e9205ce36b25a23daf3a54da22e55e")
+  expects InspectionModuleInspectFunctionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:003f7b565f370c285ecb8658da4381f755d1437e386796bad7712b8617296e26")
   summary "fn InspectionModule.inspectFunctions generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#inspectFunctions."
 }
 

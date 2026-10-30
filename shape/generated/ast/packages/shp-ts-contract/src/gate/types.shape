@@ -1,0 +1,88 @@
+module shape.generated.ast.packages.shp_ts_contract.src.gate.types
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GateFailureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/types.ts#GateFailure")
+  fingerprint ast.semantic_subtree_v1("sha256:a48a6b4d564e39e3d056945c1ca735e40bd84d54b71394b24a84a9604e38961a")
+}
+
+resource GateFailureConstructorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/types.ts#GateFailure.constructor")
+  fingerprint ast.semantic_subtree_v1("sha256:f6516bc3f42922e8010c3b1c356791acb1fae94af414c42cdac270dea5d4c648")
+}
+
+resource TypesModuleErrorTextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/types.ts#errorText")
+  fingerprint ast.semantic_subtree_v1("sha256:f2fa7b2c37afa5916d0ac018a8458d8113f812599d7461b2b4ef06efdc7f881c")
+}
+
+resource TypesModuleFailAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/types.ts#fail")
+  fingerprint ast.semantic_subtree_v1("sha256:a06d0c4fbc8f6fb7af97dc64f688c22638186ec14ec21890cea991bc8286c02c")
+}
+
+component GateFailure : GeneratedCandidate {
+  fn constructor
+    source ts("packages/shp-ts-contract/src/gate/types.ts#GateFailure.constructor")
+    effects unknown
+}
+
+component TypesModule : GeneratedCandidate {
+  fn errorText
+    source ts("packages/shp-ts-contract/src/gate/types.ts#errorText")
+    effects unknown
+  fn fail
+    source ts("packages/shp-ts-contract/src/gate/types.ts#fail")
+    effects unknown
+}
+
+relation GateFailureConstructorGeneratedFromGateFailureConstructorAstAnchor {
+  kind generated_from
+  connects GateFailure -> GateFailureConstructorAstAnchor
+  roles { GateFailure as generated, GateFailureConstructorAstAnchor as syntax }
+  expects GateFailureConstructorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f6516bc3f42922e8010c3b1c356791acb1fae94af414c42cdac270dea5d4c648")
+  summary "fn GateFailure.constructor generated from typescript method_definition at packages/shp-ts-contract/src/gate/types.ts#GateFailure.constructor."
+}
+
+relation GateFailureGeneratedFromGateFailureAstAnchor {
+  kind generated_from
+  connects GateFailure -> GateFailureAstAnchor
+  roles { GateFailure as generated, GateFailureAstAnchor as syntax }
+  expects GateFailureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a48a6b4d564e39e3d056945c1ca735e40bd84d54b71394b24a84a9604e38961a")
+  summary "component GateFailure generated from typescript class_declaration at packages/shp-ts-contract/src/gate/types.ts#GateFailure."
+}
+
+relation TypesModuleErrorTextGeneratedFromTypesModuleErrorTextAstAnchor {
+  kind generated_from
+  connects TypesModule -> TypesModuleErrorTextAstAnchor
+  roles { TypesModule as generated, TypesModuleErrorTextAstAnchor as syntax }
+  expects TypesModuleErrorTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f2fa7b2c37afa5916d0ac018a8458d8113f812599d7461b2b4ef06efdc7f881c")
+  summary "fn TypesModule.errorText generated from typescript function_declaration at packages/shp-ts-contract/src/gate/types.ts#errorText."
+}
+
+relation TypesModuleFailGeneratedFromTypesModuleFailAstAnchor {
+  kind generated_from
+  connects TypesModule -> TypesModuleFailAstAnchor
+  roles { TypesModule as generated, TypesModuleFailAstAnchor as syntax }
+  expects TypesModuleFailAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a06d0c4fbc8f6fb7af97dc64f688c22638186ec14ec21890cea991bc8286c02c")
+  summary "fn TypesModule.fail generated from typescript function_declaration at packages/shp-ts-contract/src/gate/types.ts#fail."
+}
+
+implementation GateFailureImpl {
+  paths {
+    "packages/shp-ts-contract/src/gate/types.ts"
+  }
+  conforms_to GateFailure
+}
+
+implementation TypesModuleImpl {
+  paths {
+    "packages/shp-ts-contract/src/gate/types.ts"
+  }
+  conforms_to TypesModule
+}

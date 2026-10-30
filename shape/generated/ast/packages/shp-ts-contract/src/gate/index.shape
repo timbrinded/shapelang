@@ -1,0 +1,65 @@
+module shape.generated.ast.packages.shp_ts_contract.src.gate.index
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource IndexModuleFormatGateDiagnosticsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/index.ts#formatGateDiagnostics")
+  fingerprint ast.semantic_subtree_v1("sha256:e23fa2e56b2b0fe20ba650b2894d3f79ee5186f3ceeb2087252c61711751b8c1")
+}
+
+resource IndexModulePrepareProjectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/index.ts#prepareProject")
+  fingerprint ast.semantic_subtree_v1("sha256:eab44f657e8d06b3da29bf2fc983f8373202185fdeed1dbdaf18e0d28829bd1f")
+}
+
+resource IndexModuleRunTsContractGateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/index.ts#runTsContractGate")
+  fingerprint ast.semantic_subtree_v1("sha256:845e65d08fdcdd08aa83416d9f4f104d2143b94cf3cf7f707bda6e7d7fd7e7b0")
+}
+
+component IndexModule : GeneratedCandidate {
+  fn formatGateDiagnostics
+    source ts("packages/shp-ts-contract/src/gate/index.ts#formatGateDiagnostics")
+    effects unknown
+  fn prepareProject
+    source ts("packages/shp-ts-contract/src/gate/index.ts#prepareProject")
+    effects unknown
+  fn runTsContractGate
+    source ts("packages/shp-ts-contract/src/gate/index.ts#runTsContractGate")
+    effects unknown
+}
+
+relation IndexModuleFormatGateDiagnosticsGeneratedFromIndexModuleFormatGateDiagnosticsAstAnchor {
+  kind generated_from
+  connects IndexModule -> IndexModuleFormatGateDiagnosticsAstAnchor
+  roles { IndexModule as generated, IndexModuleFormatGateDiagnosticsAstAnchor as syntax }
+  expects IndexModuleFormatGateDiagnosticsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e23fa2e56b2b0fe20ba650b2894d3f79ee5186f3ceeb2087252c61711751b8c1")
+  summary "fn IndexModule.formatGateDiagnostics generated from typescript function_declaration at packages/shp-ts-contract/src/gate/index.ts#formatGateDiagnostics."
+}
+
+relation IndexModulePrepareProjectGeneratedFromIndexModulePrepareProjectAstAnchor {
+  kind generated_from
+  connects IndexModule -> IndexModulePrepareProjectAstAnchor
+  roles { IndexModule as generated, IndexModulePrepareProjectAstAnchor as syntax }
+  expects IndexModulePrepareProjectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eab44f657e8d06b3da29bf2fc983f8373202185fdeed1dbdaf18e0d28829bd1f")
+  summary "fn IndexModule.prepareProject generated from typescript function_declaration at packages/shp-ts-contract/src/gate/index.ts#prepareProject."
+}
+
+relation IndexModuleRunTsContractGateGeneratedFromIndexModuleRunTsContractGateAstAnchor {
+  kind generated_from
+  connects IndexModule -> IndexModuleRunTsContractGateAstAnchor
+  roles { IndexModule as generated, IndexModuleRunTsContractGateAstAnchor as syntax }
+  expects IndexModuleRunTsContractGateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:845e65d08fdcdd08aa83416d9f4f104d2143b94cf3cf7f707bda6e7d7fd7e7b0")
+  summary "fn IndexModule.runTsContractGate generated from typescript function_declaration at packages/shp-ts-contract/src/gate/index.ts#runTsContractGate."
+}
+
+implementation IndexModuleImpl {
+  paths {
+    "packages/shp-ts-contract/src/gate/index.ts"
+  }
+  conforms_to IndexModule
+}

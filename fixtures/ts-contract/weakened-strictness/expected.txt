@@ -1,0 +1,1 @@
+src/editor.shape(1,1): error shape-ts1006: Invalid mapper project options: Contract checking requires strict checking: strict, strictNullChecks and strictFunctionTypes must not be false, and noCheck must not be true.

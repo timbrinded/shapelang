@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_cli.src.commands.ts_contract.command_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CommandTestModuleInvokeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/ts-contract/command.test.ts#invoke")
+  fingerprint ast.semantic_subtree_v1("sha256:0d08e48921c8d0e634859537716b846a528c3f7b1ba6841499af6ada38ab8db1")
+}
+
+component CommandTestModule : GeneratedCandidate {
+  fn invoke
+    source ts("packages/shp-cli/src/commands/ts-contract/command.test.ts#invoke")
+    effects unknown
+}
+
+relation CommandTestModuleInvokeGeneratedFromCommandTestModuleInvokeAstAnchor {
+  kind generated_from
+  connects CommandTestModule -> CommandTestModuleInvokeAstAnchor
+  roles { CommandTestModule as generated, CommandTestModuleInvokeAstAnchor as syntax }
+  expects CommandTestModuleInvokeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0d08e48921c8d0e634859537716b846a528c3f7b1ba6841499af6ada38ab8db1")
+  summary "fn CommandTestModule.invoke generated from typescript function_declaration at packages/shp-cli/src/commands/ts-contract/command.test.ts#invoke."
+}
+
+implementation CommandTestModuleImpl {
+  paths {
+    "packages/shp-cli/src/commands/ts-contract/command.test.ts"
+  }
+  conforms_to CommandTestModule
+}

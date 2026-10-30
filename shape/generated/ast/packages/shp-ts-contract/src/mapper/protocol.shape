@@ -1,0 +1,278 @@
+module shape.generated.ast.packages.shp_ts_contract.src.mapper.protocol
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource FrameDecoderAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.ts#FrameDecoder")
+  fingerprint ast.semantic_subtree_v1("sha256:559e2585c103035d32b790f455a495c26faf822a2c1401ef931223a74cc7b172")
+}
+
+resource FrameDecoderFinishAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.ts#FrameDecoder.finish")
+  fingerprint ast.semantic_subtree_v1("sha256:504fa2f395b6db55e329f1c2a4329b09c8b63f0178899f2e037827cfe167ca32")
+}
+
+resource FrameDecoderPushAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.ts#FrameDecoder.push")
+  fingerprint ast.semantic_subtree_v1("sha256:b1f9b98586a5fd4b3586fa738c5933059e17ebf1c886e4b4487cccb5880ecbb9")
+}
+
+resource MapperSessionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.ts#MapperSession")
+  fingerprint ast.semantic_subtree_v1("sha256:c6714f5bc0c63130ed82cf83a811d03066f081891900ae8ab897f0d63a5620ea")
+}
+
+resource MapperSessionHandleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.ts#MapperSession.handle")
+  fingerprint ast.semantic_subtree_v1("sha256:4f0240683e99bc9061c850edd02d8acfc080be99aa678a04d64ed2d6d59ef3d8")
+}
+
+resource MapperSessionOpenProjectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.ts#MapperSession.#openProject")
+  fingerprint ast.semantic_subtree_v1("sha256:7eaa3e4e8368cc8627c60ca6745c9a09f24cbb22fb36af270d82ea94ef60f17c")
+}
+
+resource ProtocolModuleDispatchAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.ts#dispatch")
+  fingerprint ast.semantic_subtree_v1("sha256:0a43508c3fc503b8605310569c583778dc2ad039f605a50addde314e2990cbad")
+}
+
+resource ProtocolModuleFrameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.ts#frame")
+  fingerprint ast.semantic_subtree_v1("sha256:57d141bad6ad932a3bba8fafb79ffb0dadb7a3e374e6eba3417812e8b9bbfaa3")
+}
+
+resource ProtocolModuleGeneratedFunctionTransformAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.ts#transform")
+  fingerprint ast.semantic_subtree_v1("sha256:87124f2dd827f4af511140266c84ced1a8b8d0d5dd62af9aaca94758baa426ff")
+}
+
+resource ProtocolModuleLoosensStrictnessAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.ts#loosensStrictness")
+  fingerprint ast.semantic_subtree_v1("sha256:d3b95501ac27953d8efa1db0a5c48a51b0f1742ae1b257e73e074445ba588d5c")
+}
+
+resource ProtocolModuleObjectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.ts#object")
+  fingerprint ast.semantic_subtree_v1("sha256:4672231cd5751b94344ed70bdba6a51b284a9cb62b4640995d1c79899b951716")
+}
+
+resource ProtocolModuleProjectOptionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.ts#projectOptions")
+  fingerprint ast.semantic_subtree_v1("sha256:eca402a447d8051633ca0a66fd4fe2749cd028a0cd6a30df6d876704e1bf8a04")
+}
+
+resource ProtocolModuleRpcFailureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.ts#rpcFailure")
+  fingerprint ast.semantic_subtree_v1("sha256:a2010877561acc61417b537d4117fac98c376979a437bda00dec9b79180c639a")
+}
+
+resource RpcErrorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.ts#RpcError")
+  fingerprint ast.semantic_subtree_v1("sha256:96e3fc0f8c50d985e087b45db76be7feacdc4755a09becbf684ac44ec621c1cb")
+}
+
+resource RpcErrorConstructorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/protocol.ts#RpcError.constructor")
+  fingerprint ast.semantic_subtree_v1("sha256:b86e6a5201024c80aecddd716d57fba202e8c262962a9b2350fe4db670b0ab60")
+}
+
+component FrameDecoder : GeneratedCandidate {
+  fn finish
+    source ts("packages/shp-ts-contract/src/mapper/protocol.ts#FrameDecoder.finish")
+    effects unknown
+  fn push
+    source ts("packages/shp-ts-contract/src/mapper/protocol.ts#FrameDecoder.push")
+    effects unknown
+}
+
+component MapperSession : GeneratedCandidate {
+  fn _openProject
+    source ts("packages/shp-ts-contract/src/mapper/protocol.ts#MapperSession.#openProject")
+    effects unknown
+  fn handle
+    source ts("packages/shp-ts-contract/src/mapper/protocol.ts#MapperSession.handle")
+    effects unknown
+}
+
+component ProtocolModule : GeneratedCandidate {
+  fn dispatch
+    source ts("packages/shp-ts-contract/src/mapper/protocol.ts#dispatch")
+    effects unknown
+  fn frame
+    source ts("packages/shp-ts-contract/src/mapper/protocol.ts#frame")
+    effects unknown
+  fn generatedFunction_transform
+    source ts("packages/shp-ts-contract/src/mapper/protocol.ts#transform")
+    effects unknown
+  fn loosensStrictness
+    source ts("packages/shp-ts-contract/src/mapper/protocol.ts#loosensStrictness")
+    effects unknown
+  fn object
+    source ts("packages/shp-ts-contract/src/mapper/protocol.ts#object")
+    effects unknown
+  fn projectOptions
+    source ts("packages/shp-ts-contract/src/mapper/protocol.ts#projectOptions")
+    effects unknown
+  fn rpcFailure
+    source ts("packages/shp-ts-contract/src/mapper/protocol.ts#rpcFailure")
+    effects unknown
+}
+
+component RpcError : GeneratedCandidate {
+  fn constructor
+    source ts("packages/shp-ts-contract/src/mapper/protocol.ts#RpcError.constructor")
+    effects unknown
+}
+
+relation FrameDecoderFinishGeneratedFromFrameDecoderFinishAstAnchor {
+  kind generated_from
+  connects FrameDecoder -> FrameDecoderFinishAstAnchor
+  roles { FrameDecoder as generated, FrameDecoderFinishAstAnchor as syntax }
+  expects FrameDecoderFinishAstAnchor fingerprint ast.semantic_subtree_v1("sha256:504fa2f395b6db55e329f1c2a4329b09c8b63f0178899f2e037827cfe167ca32")
+  summary "fn FrameDecoder.finish generated from typescript method_definition at packages/shp-ts-contract/src/mapper/protocol.ts#FrameDecoder.finish."
+}
+
+relation FrameDecoderGeneratedFromFrameDecoderAstAnchor {
+  kind generated_from
+  connects FrameDecoder -> FrameDecoderAstAnchor
+  roles { FrameDecoder as generated, FrameDecoderAstAnchor as syntax }
+  expects FrameDecoderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:559e2585c103035d32b790f455a495c26faf822a2c1401ef931223a74cc7b172")
+  summary "component FrameDecoder generated from typescript class_declaration at packages/shp-ts-contract/src/mapper/protocol.ts#FrameDecoder."
+}
+
+relation FrameDecoderPushGeneratedFromFrameDecoderPushAstAnchor {
+  kind generated_from
+  connects FrameDecoder -> FrameDecoderPushAstAnchor
+  roles { FrameDecoder as generated, FrameDecoderPushAstAnchor as syntax }
+  expects FrameDecoderPushAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b1f9b98586a5fd4b3586fa738c5933059e17ebf1c886e4b4487cccb5880ecbb9")
+  summary "fn FrameDecoder.push generated from typescript method_definition at packages/shp-ts-contract/src/mapper/protocol.ts#FrameDecoder.push."
+}
+
+relation MapperSessionGeneratedFromMapperSessionAstAnchor {
+  kind generated_from
+  connects MapperSession -> MapperSessionAstAnchor
+  roles { MapperSession as generated, MapperSessionAstAnchor as syntax }
+  expects MapperSessionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c6714f5bc0c63130ed82cf83a811d03066f081891900ae8ab897f0d63a5620ea")
+  summary "component MapperSession generated from typescript class_declaration at packages/shp-ts-contract/src/mapper/protocol.ts#MapperSession."
+}
+
+relation MapperSessionHandleGeneratedFromMapperSessionHandleAstAnchor {
+  kind generated_from
+  connects MapperSession -> MapperSessionHandleAstAnchor
+  roles { MapperSession as generated, MapperSessionHandleAstAnchor as syntax }
+  expects MapperSessionHandleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4f0240683e99bc9061c850edd02d8acfc080be99aa678a04d64ed2d6d59ef3d8")
+  summary "fn MapperSession.handle generated from typescript method_definition at packages/shp-ts-contract/src/mapper/protocol.ts#MapperSession.handle."
+}
+
+relation MapperSessionOpenProjectGeneratedFromMapperSessionOpenProjectAstAnchor {
+  kind generated_from
+  connects MapperSession -> MapperSessionOpenProjectAstAnchor
+  roles { MapperSession as generated, MapperSessionOpenProjectAstAnchor as syntax }
+  expects MapperSessionOpenProjectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7eaa3e4e8368cc8627c60ca6745c9a09f24cbb22fb36af270d82ea94ef60f17c")
+  summary "fn MapperSession._openProject generated from typescript method_definition at packages/shp-ts-contract/src/mapper/protocol.ts#MapperSession.#openProject."
+}
+
+relation ProtocolModuleDispatchGeneratedFromProtocolModuleDispatchAstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleDispatchAstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleDispatchAstAnchor as syntax }
+  expects ProtocolModuleDispatchAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0a43508c3fc503b8605310569c583778dc2ad039f605a50addde314e2990cbad")
+  summary "fn ProtocolModule.dispatch generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/protocol.ts#dispatch."
+}
+
+relation ProtocolModuleFrameGeneratedFromProtocolModuleFrameAstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleFrameAstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleFrameAstAnchor as syntax }
+  expects ProtocolModuleFrameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:57d141bad6ad932a3bba8fafb79ffb0dadb7a3e374e6eba3417812e8b9bbfaa3")
+  summary "fn ProtocolModule.frame generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/protocol.ts#frame."
+}
+
+relation ProtocolModuleGeneratedFunctionTransformGeneratedFromProtocolModuleGeneratedFunctionTransformAstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleGeneratedFunctionTransformAstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleGeneratedFunctionTransformAstAnchor as syntax }
+  expects ProtocolModuleGeneratedFunctionTransformAstAnchor fingerprint ast.semantic_subtree_v1("sha256:87124f2dd827f4af511140266c84ced1a8b8d0d5dd62af9aaca94758baa426ff")
+  summary "fn ProtocolModule.generatedFunction_transform generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/protocol.ts#transform."
+}
+
+relation ProtocolModuleLoosensStrictnessGeneratedFromProtocolModuleLoosensStrictnessAstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleLoosensStrictnessAstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleLoosensStrictnessAstAnchor as syntax }
+  expects ProtocolModuleLoosensStrictnessAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d3b95501ac27953d8efa1db0a5c48a51b0f1742ae1b257e73e074445ba588d5c")
+  summary "fn ProtocolModule.loosensStrictness generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/protocol.ts#loosensStrictness."
+}
+
+relation ProtocolModuleObjectGeneratedFromProtocolModuleObjectAstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleObjectAstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleObjectAstAnchor as syntax }
+  expects ProtocolModuleObjectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4672231cd5751b94344ed70bdba6a51b284a9cb62b4640995d1c79899b951716")
+  summary "fn ProtocolModule.object generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/protocol.ts#object."
+}
+
+relation ProtocolModuleProjectOptionsGeneratedFromProtocolModuleProjectOptionsAstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleProjectOptionsAstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleProjectOptionsAstAnchor as syntax }
+  expects ProtocolModuleProjectOptionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eca402a447d8051633ca0a66fd4fe2749cd028a0cd6a30df6d876704e1bf8a04")
+  summary "fn ProtocolModule.projectOptions generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/protocol.ts#projectOptions."
+}
+
+relation ProtocolModuleRpcFailureGeneratedFromProtocolModuleRpcFailureAstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleRpcFailureAstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleRpcFailureAstAnchor as syntax }
+  expects ProtocolModuleRpcFailureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a2010877561acc61417b537d4117fac98c376979a437bda00dec9b79180c639a")
+  summary "fn ProtocolModule.rpcFailure generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/protocol.ts#rpcFailure."
+}
+
+relation RpcErrorConstructorGeneratedFromRpcErrorConstructorAstAnchor {
+  kind generated_from
+  connects RpcError -> RpcErrorConstructorAstAnchor
+  roles { RpcError as generated, RpcErrorConstructorAstAnchor as syntax }
+  expects RpcErrorConstructorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b86e6a5201024c80aecddd716d57fba202e8c262962a9b2350fe4db670b0ab60")
+  summary "fn RpcError.constructor generated from typescript method_definition at packages/shp-ts-contract/src/mapper/protocol.ts#RpcError.constructor."
+}
+
+relation RpcErrorGeneratedFromRpcErrorAstAnchor {
+  kind generated_from
+  connects RpcError -> RpcErrorAstAnchor
+  roles { RpcError as generated, RpcErrorAstAnchor as syntax }
+  expects RpcErrorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:96e3fc0f8c50d985e087b45db76be7feacdc4755a09becbf684ac44ec621c1cb")
+  summary "component RpcError generated from typescript class_declaration at packages/shp-ts-contract/src/mapper/protocol.ts#RpcError."
+}
+
+implementation FrameDecoderImpl {
+  paths {
+    "packages/shp-ts-contract/src/mapper/protocol.ts"
+  }
+  conforms_to FrameDecoder
+}
+
+implementation MapperSessionImpl {
+  paths {
+    "packages/shp-ts-contract/src/mapper/protocol.ts"
+  }
+  conforms_to MapperSession
+}
+
+implementation ProtocolModuleImpl {
+  paths {
+    "packages/shp-ts-contract/src/mapper/protocol.ts"
+  }
+  conforms_to ProtocolModule
+}
+
+implementation RpcErrorImpl {
+  paths {
+    "packages/shp-ts-contract/src/mapper/protocol.ts"
+  }
+  conforms_to RpcError
+}

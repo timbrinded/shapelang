@@ -77,10 +77,12 @@ them even when every check passes:
 | `packages/shp-checker/src/language/shape.langium` | The Langium grammar. |
 | `packages/shp-checker/src/language/generated` | Generated Langium artifacts. Regenerate them with `bun run langium:generate`; never hand-edit them. |
 | `packages/shp-cli` | The `shp` command-line wrapper around `@shape/shp-checker`. Each command lives in `src/commands/<command>/` (`command.ts` for flags, `impl.ts` for behaviour) and is registered in `src/app.ts`. The language server is in `src/lsp/`. |
-| `shape/` | Shape's own model of the language, checker, tooling, runtime, and delivery pipeline: `checker.shape`, `delivery.shape`, `incremental-checker.shape`, `language.shape`, `runtime.shape`, and `tooling.shape`. |
+| `packages/shp-ts-contract` | Opt-in source preview of TypeScript 7.1 native content mapping: sibling Shape signatures, a framed mapper process, and an independent selected-source coverage gate. Its tests use the pinned local compiler; see the [content mapping reference](docs-site/src/content/docs/reference/typescript-content-mapping.md). |
+| `shape/` | Shape's own model of the language, checker, tooling, runtime, TypeScript contract adapter, and delivery pipeline: `checker.shape`, `delivery.shape`, `incremental-checker.shape`, `language.shape`, `runtime.shape`, `tooling.shape`, and `typescript.shape`. |
 | `shape/generated/ast/` | Committed generated AST context and its `manifest.json` (see [Generated AST context](#generated-ast-context)). |
 | `fixtures/pass`, `fixtures/fail` | Focused semantic examples used by tests, one directory per case. |
 | `fixtures/changed`, `fixtures/diffs`, `fixtures/projects`, `fixtures/source`, `fixtures/skills` | Changed-file lists, authoring diffs, multi-file projects, analyzer and AST source samples, and the skill release cases (`fixtures/skills/cases.json`). |
+| `fixtures/ts-contract` | Example projects for the TypeScript contract mapper: sources, sibling contracts and the exact expected compiler output (see its README). |
 | `fixtures/loosening` | Before/after model pairs for `shp check --check-loosening`: `base/` and `head/` hold the Shape files at repository paths, with an optional `changed-files.txt` (not `changed.txt`, which `.gitignore` excludes). |
 | `docs-site/` | The Astro/Starlight documentation site: pages in `src/content/docs/`, diagrams in `src/assets/diagrams/`, Shape syntax highlighting in `src/syntax/`, and the Shape-fence verifier in `scripts/verify-shape-blocks.ts`. |
 | `docs/releases/` | Release notes, one `vX.Y.Z.md` per release. |
@@ -123,7 +125,7 @@ bun run docs:check
 | `bun run typecheck` | `tsgo -p tsconfig.json --noEmit` | Typecheck |
 | `bun run shape:ci` | The Shape gate, described [below](#the-shape-gate). | Shape |
 | `bun run shape:loosening` | `shp check --check-loosening` against `changed-base.txt`: fails when an edit to a rule, trait, memory, or governed path is what lets the change pass. See [Rule loosening](#rule-loosening). | Rule Loosening |
-| `bun run docs:check` | `astro check`, the Shape-fence verifier, and the static site build. | Docs |
+| `bun run docs:check` | `astro sync`, TypeScript 7.1 checking of the site including `.astro` files (through `@astrojs/ts-content-mapper`), the Shape-fence verifier, and the static site build. | Docs |
 
 These commands cover the CI jobs that you reproduce locally. The other jobs are
 listed in [CI in this repository](#ci-in-this-repository) and need no local run,

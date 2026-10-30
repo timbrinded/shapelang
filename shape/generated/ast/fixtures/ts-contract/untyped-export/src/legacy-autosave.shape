@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.ts_contract.untyped_export.src.legacy_autosave
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LegacyAutosaveModuleMergeAutosavesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/ts-contract/untyped-export/src/legacy-autosave.js#mergeAutosaves")
+  fingerprint ast.semantic_subtree_v1("sha256:ee65852a1ff57de03deefc3f3534cdc99d700e7c2cca7ac9b23ab5911ec0054a")
+}
+
+component LegacyAutosaveModule : GeneratedCandidate {
+  fn mergeAutosaves
+    source js("fixtures/ts-contract/untyped-export/src/legacy-autosave.js#mergeAutosaves")
+    effects unknown
+}
+
+relation LegacyAutosaveModuleMergeAutosavesGeneratedFromLegacyAutosaveModuleMergeAutosavesAstAnchor {
+  kind generated_from
+  connects LegacyAutosaveModule -> LegacyAutosaveModuleMergeAutosavesAstAnchor
+  roles { LegacyAutosaveModule as generated, LegacyAutosaveModuleMergeAutosavesAstAnchor as syntax }
+  expects LegacyAutosaveModuleMergeAutosavesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ee65852a1ff57de03deefc3f3534cdc99d700e7c2cca7ac9b23ab5911ec0054a")
+  summary "fn LegacyAutosaveModule.mergeAutosaves generated from javascript function_declaration at fixtures/ts-contract/untyped-export/src/legacy-autosave.js#mergeAutosaves."
+}
+
+implementation LegacyAutosaveModuleImpl {
+  paths {
+    "fixtures/ts-contract/untyped-export/src/legacy-autosave.js"
+  }
+  conforms_to LegacyAutosaveModule
+}

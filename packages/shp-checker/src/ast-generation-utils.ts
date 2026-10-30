@@ -82,6 +82,7 @@ const SHAPE_RESERVED_WORDS = new Set([
   "satisfied_by",
   "satisfies",
   "sensitive",
+  "signature",
   "source",
   "status",
   "storage",

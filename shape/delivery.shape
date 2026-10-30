@@ -1213,8 +1213,3 @@ reevaluation WindowsNativeParserPackagingRechecked {
   evidence ts("scripts/prepare-tree-sitter-parser-assets.ts")
   evidence yaml(".github/workflows/shape.yml")
 }
-
-attest no_shape_change {
-  source yaml(".github/workflows/release.yml")
-  reason "Extract the published release body with jq -j so the verifier compares its actual bytes without appending a newline. Exact notes equality, metadata checks, asset checksums, installers, and release approval requirements remain unchanged."
-}

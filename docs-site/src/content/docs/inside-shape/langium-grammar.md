@@ -35,6 +35,16 @@ Add every new keyword to `SHAPE_RESERVED_WORDS` in `packages/shp-checker/src/ast
 - **`effect candidate` stays separate from `effects complete`.** A candidate carries generated evidence for review, and authored Shape remains responsible for final effect claims.
 - **Bindings are a language feature, not CI shell logic.** A binding is an architecture claim: one surface cannot change without another being reviewed.
 
+## Function signatures
+
+Function summaries also accept an optional `signature TAG("TYPE EXPRESSION")`
+after `source` and before `description`. The generated AST stores the language
+tag and quoted expression; lowering unquotes it, modification preserves an
+omitted signature, and formatting keeps the canonical position. The grammar
+does not parse TypeScript or infer effects. The separate opt-in mapper checks
+the TypeScript contract; see
+[TypeScript content mapping](/shapelang/reference/typescript-content-mapping/).
+
 ## Grammar change checklist
 
 Make every change in the same branch as the grammar edit:

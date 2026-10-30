@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_checker.src.checker.function_signature_effective_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource FunctionSignatureEffectiveTestModuleSignatureForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/function-signature-effective.test.ts#signatureFor")
+  fingerprint ast.semantic_subtree_v1("sha256:9aee9bc8d702aab7113b83853c7e22dd63da049655548cb0aba4d01b5d270070")
+}
+
+component FunctionSignatureEffectiveTestModule : GeneratedCandidate {
+  fn signatureFor
+    source ts("packages/shp-checker/src/checker/function-signature-effective.test.ts#signatureFor")
+    effects unknown
+}
+
+relation FunctionSignatureEffectiveTestModuleSignatureForGeneratedFromFunctionSignatureEffectiveTestModuleSignatureForAstAnchor {
+  kind generated_from
+  connects FunctionSignatureEffectiveTestModule -> FunctionSignatureEffectiveTestModuleSignatureForAstAnchor
+  roles { FunctionSignatureEffectiveTestModule as generated, FunctionSignatureEffectiveTestModuleSignatureForAstAnchor as syntax }
+  expects FunctionSignatureEffectiveTestModuleSignatureForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9aee9bc8d702aab7113b83853c7e22dd63da049655548cb0aba4d01b5d270070")
+  summary "fn FunctionSignatureEffectiveTestModule.signatureFor generated from typescript function_declaration at packages/shp-checker/src/checker/function-signature-effective.test.ts#signatureFor."
+}
+
+implementation FunctionSignatureEffectiveTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/function-signature-effective.test.ts"
+  }
+  conforms_to FunctionSignatureEffectiveTestModule
+}

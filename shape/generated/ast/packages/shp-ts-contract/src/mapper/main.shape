@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_ts_contract.src.mapper.main
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource MainModuleFailAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/mapper/main.ts#fail")
+  fingerprint ast.semantic_subtree_v1("sha256:e7e9a60408bce98dcb990469959ce21f21ca3b6f175b9269164dbe0ce73f484f")
+}
+
+component MainModule : GeneratedCandidate {
+  fn fail
+    source ts("packages/shp-ts-contract/src/mapper/main.ts#fail")
+    effects unknown
+}
+
+relation MainModuleFailGeneratedFromMainModuleFailAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleFailAstAnchor
+  roles { MainModule as generated, MainModuleFailAstAnchor as syntax }
+  expects MainModuleFailAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e7e9a60408bce98dcb990469959ce21f21ca3b6f175b9269164dbe0ce73f484f")
+  summary "fn MainModule.fail generated from typescript function_declaration at packages/shp-ts-contract/src/mapper/main.ts#fail."
+}
+
+implementation MainModuleImpl {
+  paths {
+    "packages/shp-ts-contract/src/mapper/main.ts"
+  }
+  conforms_to MainModule
+}

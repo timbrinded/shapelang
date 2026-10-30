@@ -1,0 +1,4 @@
+src/editor.shape(1,1): error TS2344: Type '{ uncertainExportTypes: "mergeAutosaves"; }' does not satisfy the constraint 'true'.
+src/editor.shape(6,19): error TS2344: Type '{ export: "mergeAutosaves"; signature: any; exact: false; }' does not satisfy the constraint '{ export: "mergeAutosaves"; signature: (autosaves: readonly string[]) => string; exact: true; }'.
+  Types of property 'exact' are incompatible.
+    Type 'false' is not assignable to type 'true'.

@@ -1,0 +1,226 @@
+import { dirname, isAbsolute, resolve } from "node:path";
+import { contractStart, emitContract, rejectedTransform, type TransformResult } from "./emit.ts";
+
+export function object(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+export const STRICT_CHECKING_REQUIRED =
+  "Contract checking requires strict checking: strict, strictNullChecks and strictFunctionTypes must not be false, and noCheck must not be true.";
+
+/**
+ * The compiler forwards, and --showConfig reports, only options that are set, so an
+ * omitted strict is the TypeScript 7 default (on).
+ */
+export function loosensStrictness(options: Record<string, unknown>): boolean {
+  return (
+    options.strict === false ||
+    options.strictNullChecks === false ||
+    options.strictFunctionTypes === false ||
+    options.noCheck === true
+  );
+}
+
+export class RpcError extends Error {
+  constructor(
+    readonly code: number,
+    message: string
+  ) {
+    super(message);
+  }
+}
+
+type Project = { repoRoot: string } | { error: string };
+type OptionDiagnostic = { path: string[]; code: number; messageText: string };
+
+/** Resolves a project's repoRoot from the compiler-supplied openProject parameters. */
+function projectOptions(
+  input: Record<string, unknown>
+): { repoRoot: string } | { optionDiagnostics: OptionDiagnostic[] } {
+  const errors: OptionDiagnostic[] = [];
+  const report = (path: string[], messageText: string): void => {
+    errors.push({ path, code: 1006, messageText });
+  };
+  const options = input.options ?? {};
+  let root = ".";
+  if (!object(options)) report([], "Mapper options must be an object containing only repoRoot.");
+  else {
+    for (const key of Object.keys(options).sort()) {
+      if (key !== "repoRoot")
+        report([key], `Unknown mapper option ${key}; only repoRoot is supported.`);
+    }
+    if (options.repoRoot !== undefined) {
+      if (
+        typeof options.repoRoot !== "string" ||
+        !options.repoRoot ||
+        options.repoRoot.includes("\0")
+      )
+        report(["repoRoot"], "repoRoot must be a nonempty path string.");
+      else root = options.repoRoot;
+    }
+  }
+  const configFileName = input.configFileName;
+  if (typeof configFileName !== "string" || !isAbsolute(configFileName)) {
+    report([], "Version 1 requires a configured project with an absolute configFileName.");
+  }
+  const compiler = input.compilerOptions;
+  if (!object(compiler)) {
+    report([], "The compiler must supply the project's compiler options.");
+  } else if (loosensStrictness(compiler)) {
+    report([], STRICT_CHECKING_REQUIRED);
+  }
+  return errors.length || typeof configFileName !== "string"
+    ? { optionDiagnostics: errors }
+    : { repoRoot: resolve(dirname(configFileName), root) };
+}
+
+/** Only explicit, static project options affect transforms; no project files are read. */
+export class MapperSession {
+  readonly #projects = new Map<string, Project>();
+  #initialized = false;
+
+  handle(method: string, input: unknown): unknown {
+    if (!object(input)) throw new RpcError(-32602, "Expected an object of method parameters.");
+    if (method === "initialize") {
+      if (!Array.isArray(input.positionEncodings) || !input.positionEncodings.includes("utf-16")) {
+        throw new RpcError(-32602, "Shape contracts require the utf-16 position encoding.");
+      }
+      this.#initialized = true;
+      return { positionEncoding: "utf-16", diagnosticSource: "shape-ts" };
+    }
+    if (!this.#initialized)
+      throw new RpcError(-32002, "Initialize the mapper before opening a project.");
+    if (!["openProject", "transform", "closeProject"].includes(method)) {
+      throw new RpcError(-32601, `Unsupported mapper method ${method}.`);
+    }
+    if (typeof input.projectHandle !== "string" || !input.projectHandle) {
+      throw new RpcError(-32602, "A nonempty projectHandle is required.");
+    }
+    const handle = input.projectHandle;
+    if (method === "openProject") return this.#openProject(handle, input);
+    const project = this.#projects.get(handle);
+    if (!project) throw new RpcError(-32602, `Unknown or closed project handle ${handle}.`);
+    if (method === "closeProject") {
+      this.#projects.delete(handle);
+      return null;
+    }
+    return transform(project, input);
+  }
+
+  #openProject(handle: string, input: Record<string, unknown>): unknown {
+    if (this.#projects.has(handle))
+      throw new RpcError(-32602, `Project handle ${handle} is already open.`);
+    const options = projectOptions(input);
+    if ("optionDiagnostics" in options) {
+      const error = options.optionDiagnostics.map(({ messageText }) => messageText).join(" ");
+      this.#projects.set(handle, { error });
+      return options;
+    }
+    this.#projects.set(handle, options);
+    return {};
+  }
+}
+
+function transform(project: Project, input: Record<string, unknown>): TransformResult {
+  if (typeof input.fileName !== "string" || typeof input.content !== "string") {
+    throw new RpcError(-32602, "transform requires fileName and content strings.");
+  }
+  if ("error" in project) {
+    return rejectedTransform([
+      {
+        code: 1006,
+        messageText: `Invalid mapper project options: ${project.error}`,
+        ...contractStart(input.content)
+      }
+    ]);
+  }
+  return emitContract({
+    fileName: input.fileName,
+    content: input.content,
+    repoRoot: project.repoRoot
+  });
+}
+
+export type RpcReply = { jsonrpc: "2.0"; id: string | number | null } & (
+  | { result: unknown }
+  | { error: { code: number; message: string } }
+);
+
+export function rpcFailure(id: string | number | null, error: unknown): RpcReply {
+  return {
+    jsonrpc: "2.0",
+    id,
+    error: {
+      code: error instanceof RpcError ? error.code : -32603,
+      message: error instanceof Error ? error.message : String(error)
+    }
+  };
+}
+
+export function dispatch(session: MapperSession, message: unknown): RpcReply | undefined {
+  if (object(message) && message.id === undefined) return undefined;
+  const id =
+    object(message) && (typeof message.id === "string" || typeof message.id === "number")
+      ? message.id
+      : null;
+  try {
+    if (
+      !object(message) ||
+      message.jsonrpc !== "2.0" ||
+      typeof message.method !== "string" ||
+      id === null
+    ) {
+      throw new RpcError(-32600, "Expected a JSON-RPC 2.0 request with an id and method.");
+    }
+    return { jsonrpc: "2.0", id, result: session.handle(message.method, message.params ?? {}) };
+  } catch (error) {
+    return rpcFailure(id, error);
+  }
+}
+
+/** Content-Length is byte-based even though mappings use UTF-16 offsets. */
+export function frame(message: unknown): Buffer {
+  const body = Buffer.from(JSON.stringify(message), "utf8");
+  return Buffer.concat([Buffer.from(`Content-Length: ${body.length}\r\n\r\n`), body]);
+}
+
+export class FrameDecoder {
+  #buffer = Buffer.alloc(0);
+
+  push(chunk: Uint8Array): unknown[] {
+    this.#buffer = Buffer.concat([this.#buffer, chunk]);
+    const messages: unknown[] = [];
+    while (this.#buffer.length) {
+      const boundary = this.#buffer.indexOf("\r\n\r\n");
+      if ((boundary < 0 ? this.#buffer.length : boundary) > 8192)
+        throw new RpcError(-32700, "Mapper frame header exceeds 8192 bytes.");
+      if (boundary < 0) break;
+      const header = this.#buffer.subarray(0, boundary).toString("ascii");
+      const lengths: string[] = [];
+      for (const line of header.split("\r\n")) {
+        const colon = line.indexOf(":");
+        if (colon < 1) throw new RpcError(-32700, "Malformed mapper frame header.");
+        if (line.slice(0, colon).trim().toLowerCase() === "content-length") {
+          lengths.push(line.slice(colon + 1).trim());
+        }
+      }
+      const length = Number(lengths[0]);
+      if (lengths.length !== 1 || !/^\d+$/.test(lengths[0] ?? "") || length > 16 * 1024 * 1024) {
+        throw new RpcError(-32700, "Expected one Content-Length no larger than 16 MiB.");
+      }
+      if (this.#buffer.length < boundary + 4 + length) break;
+      const body = this.#buffer.subarray(boundary + 4, boundary + 4 + length).toString("utf8");
+      this.#buffer = this.#buffer.subarray(boundary + 4 + length);
+      try {
+        messages.push(JSON.parse(body));
+      } catch {
+        throw new RpcError(-32700, "Mapper frame body must contain valid JSON.");
+      }
+    }
+    return messages;
+  }
+
+  finish(): void {
+    if (this.#buffer.length) throw new RpcError(-32700, "Incomplete mapper frame at end of input.");
+  }
+}

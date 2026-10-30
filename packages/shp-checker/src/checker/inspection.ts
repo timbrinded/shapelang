@@ -17,6 +17,11 @@ export type ShapeInspectionSourceRef = {
   path: string;
 };
 
+export type ShapeInspectionSignature = {
+  language: string;
+  value: string;
+};
+
 export type ShapeInspectionDocument = {
   file: string;
   module: string;
@@ -39,6 +44,7 @@ export type ShapeInspectionComponent = DeclarationIdentity & {
 export type ShapeInspectionFunction = DeclarationIdentity & {
   component: string;
   source?: ShapeInspectionSourceRef;
+  signature?: ShapeInspectionSignature;
   unsafe: boolean;
   effectsComplete: boolean;
   effects: {
@@ -263,6 +269,9 @@ function inspectFunctions(context: InspectionContext): ShapeInspectionFunction[]
         ...identity(context, `${component.name}.${fn.name}`, fn.provenance, fn.name),
         component: component.name,
         ...(fn.source === undefined ? {} : { source: sourceRef(fn.source) }),
+        ...(fn.signature === undefined
+          ? {}
+          : { signature: { language: fn.signature.language, value: fn.signature.value } }),
         unsafe: fn.unsafe,
         effectsComplete: fn.effects.kind === "complete",
         effects,

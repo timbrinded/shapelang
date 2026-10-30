@@ -1,0 +1,3 @@
+src/editor.shape(11,19): error TS2344: Type '{ export: "saveDraft"; signature: (text: string) => Promise<number>; exact: false; }' does not satisfy the constraint '{ export: "saveDraft"; signature: (text: string) => number; exact: true; }'.
+  The types returned by 'signature(...)' are incompatible between these types.
+    Type 'Promise<number>' is not assignable to type 'number'.

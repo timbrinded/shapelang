@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_ts_contract.src.gate.process
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ProcessModuleCaptureProcessAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/process.ts#captureProcess")
+  fingerprint ast.semantic_subtree_v1("sha256:207a1915d1ed36da6073a0fab4439196a8fcd0cfb25697501fd59b737fc94195")
+}
+
+component ProcessModule : GeneratedCandidate {
+  fn captureProcess
+    source ts("packages/shp-ts-contract/src/gate/process.ts#captureProcess")
+    effects unknown
+}
+
+relation ProcessModuleCaptureProcessGeneratedFromProcessModuleCaptureProcessAstAnchor {
+  kind generated_from
+  connects ProcessModule -> ProcessModuleCaptureProcessAstAnchor
+  roles { ProcessModule as generated, ProcessModuleCaptureProcessAstAnchor as syntax }
+  expects ProcessModuleCaptureProcessAstAnchor fingerprint ast.semantic_subtree_v1("sha256:207a1915d1ed36da6073a0fab4439196a8fcd0cfb25697501fd59b737fc94195")
+  summary "fn ProcessModule.captureProcess generated from typescript function_declaration at packages/shp-ts-contract/src/gate/process.ts#captureProcess."
+}
+
+implementation ProcessModuleImpl {
+  paths {
+    "packages/shp-ts-contract/src/gate/process.ts"
+  }
+  conforms_to ProcessModule
+}

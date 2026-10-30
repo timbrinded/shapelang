@@ -174,4 +174,16 @@ describe("Shape parser", () => {
       expect(parsed.diagnostics[0]?.message).toContain("Expecting");
     }
   });
+
+  test("places an error at the end of input after the last character", () => {
+    // The end-of-input token itself carries no line or column.
+    const parsed = parseShapeModule("module app\ncomponent Api {\n");
+
+    expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.diagnostics).toEqual([
+        expect.objectContaining({ line: 3, column: 1, message: expect.stringContaining("'}'") })
+      ]);
+    }
+  });
 });

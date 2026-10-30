@@ -105,6 +105,7 @@ export default defineConfig({
           items: [
             { label: "Language Syntax", slug: "reference/language-syntax" },
             { label: "CLI Reference", slug: "reference/cli" },
+            { label: "TypeScript Content Mapping", slug: "reference/typescript-content-mapping" },
             { label: "Diagnostics", slug: "reference/diagnostics" },
             { label: "Glossary", slug: "reference/glossary" }
           ]

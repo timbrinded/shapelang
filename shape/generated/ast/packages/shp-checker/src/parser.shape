@@ -23,17 +23,17 @@ resource ParserModuleMessagePropertyAstAnchor : GeneratedAstAnchor {
 
 resource ParserModuleNumberPropertyAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/parser.ts#numberProperty")
-  fingerprint ast.semantic_subtree_v1("sha256:809fe9b7db7e06ca6e9ba05a2cb92d4952d43d6d7c1bb13902652552b65c0735")
+  fingerprint ast.semantic_subtree_v1("sha256:f3572f0107f97d94044929a94dcdff724785e139a528be60a1f25a7f420709a7")
 }
 
 resource ParserModuleParseShapeModuleAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/parser.ts#parseShapeModule")
-  fingerprint ast.semantic_subtree_v1("sha256:28475fdaba8dedd726f994e01fa357e1ee2fbfaa66eef8be69abcc228b32b782")
+  fingerprint ast.semantic_subtree_v1("sha256:cc4e1900fcac1cdfa6509eb221fba8d2a9064ea4f10be912f253a0f257144164")
 }
 
 resource ParserModuleParserDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/parser.ts#parserDiagnostic")
-  fingerprint ast.semantic_subtree_v1("sha256:f22a71c462aa5352d134d52c8e0e57017829ee558a1e5f92ad15db62f846814e")
+  fingerprint ast.semantic_subtree_v1("sha256:bee035437f758259f493e9ca09aac775e0efe6645bed5bba910403f1b440489a")
 }
 
 resource ParserModuleRecordPropertyAstAnchor : GeneratedAstAnchor {
@@ -101,7 +101,7 @@ relation ParserModuleNumberPropertyGeneratedFromParserModuleNumberPropertyAstAnc
   kind generated_from
   connects ParserModule -> ParserModuleNumberPropertyAstAnchor
   roles { ParserModule as generated, ParserModuleNumberPropertyAstAnchor as syntax }
-  expects ParserModuleNumberPropertyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:809fe9b7db7e06ca6e9ba05a2cb92d4952d43d6d7c1bb13902652552b65c0735")
+  expects ParserModuleNumberPropertyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f3572f0107f97d94044929a94dcdff724785e139a528be60a1f25a7f420709a7")
   summary "fn ParserModule.numberProperty generated from typescript function_declaration at packages/shp-checker/src/parser.ts#numberProperty."
 }
 
@@ -109,7 +109,7 @@ relation ParserModuleParseShapeModuleGeneratedFromParserModuleParseShapeModuleAs
   kind generated_from
   connects ParserModule -> ParserModuleParseShapeModuleAstAnchor
   roles { ParserModule as generated, ParserModuleParseShapeModuleAstAnchor as syntax }
-  expects ParserModuleParseShapeModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:28475fdaba8dedd726f994e01fa357e1ee2fbfaa66eef8be69abcc228b32b782")
+  expects ParserModuleParseShapeModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cc4e1900fcac1cdfa6509eb221fba8d2a9064ea4f10be912f253a0f257144164")
   summary "fn ParserModule.parseShapeModule generated from typescript function_declaration at packages/shp-checker/src/parser.ts#parseShapeModule."
 }
 
@@ -117,7 +117,7 @@ relation ParserModuleParserDiagnosticGeneratedFromParserModuleParserDiagnosticAs
   kind generated_from
   connects ParserModule -> ParserModuleParserDiagnosticAstAnchor
   roles { ParserModule as generated, ParserModuleParserDiagnosticAstAnchor as syntax }
-  expects ParserModuleParserDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f22a71c462aa5352d134d52c8e0e57017829ee558a1e5f92ad15db62f846814e")
+  expects ParserModuleParserDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bee035437f758259f493e9ca09aac775e0efe6645bed5bba910403f1b440489a")
   summary "fn ParserModule.parserDiagnostic generated from typescript function_declaration at packages/shp-checker/src/parser.ts#parserDiagnostic."
 }
 

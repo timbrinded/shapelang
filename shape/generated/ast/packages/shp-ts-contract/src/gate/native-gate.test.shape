@@ -1,0 +1,49 @@
+module shape.generated.ast.packages.shp_ts_contract.src.gate.native_gate_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource NativeGateTestModuleGateFixtureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/native-gate.test.ts#gateFixture")
+  fingerprint ast.semantic_subtree_v1("sha256:95c0d465f59a038eb4c978bb693319c6d74007d5dd223c01d7248b72f0d5d82d")
+}
+
+resource NativeGateTestModuleRunGateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/native-gate.test.ts#runGate")
+  fingerprint ast.semantic_subtree_v1("sha256:f8e94705d06139d68bbdd09304bbb184ec3832a8b54b3dc8614e0887846e6ee4")
+}
+
+component NativeGateTestModule : GeneratedCandidate {
+  fn gateFixture
+    source ts("packages/shp-ts-contract/src/gate/native-gate.test.ts#gateFixture")
+    effects unknown
+  fn runGate
+    source ts("packages/shp-ts-contract/src/gate/native-gate.test.ts#runGate")
+    effects unknown
+}
+
+relation NativeGateTestModuleGateFixtureGeneratedFromNativeGateTestModuleGateFixtureAstAnchor {
+  kind generated_from
+  connects NativeGateTestModule -> NativeGateTestModuleGateFixtureAstAnchor
+  roles { NativeGateTestModule as generated, NativeGateTestModuleGateFixtureAstAnchor as syntax }
+  expects NativeGateTestModuleGateFixtureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:95c0d465f59a038eb4c978bb693319c6d74007d5dd223c01d7248b72f0d5d82d")
+  summary "fn NativeGateTestModule.gateFixture generated from typescript function_declaration at packages/shp-ts-contract/src/gate/native-gate.test.ts#gateFixture."
+}
+
+relation NativeGateTestModuleRunGateGeneratedFromNativeGateTestModuleRunGateAstAnchor {
+  kind generated_from
+  connects NativeGateTestModule -> NativeGateTestModuleRunGateAstAnchor
+  roles { NativeGateTestModule as generated, NativeGateTestModuleRunGateAstAnchor as syntax }
+  expects NativeGateTestModuleRunGateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f8e94705d06139d68bbdd09304bbb184ec3832a8b54b3dc8614e0887846e6ee4")
+  summary "fn NativeGateTestModule.runGate generated from typescript function_declaration at packages/shp-ts-contract/src/gate/native-gate.test.ts#runGate."
+}
+
+implementation NativeGateTestModuleImpl {
+  paths {
+    "packages/shp-ts-contract/src/gate/native-gate.test.ts"
+  }
+  conforms_to NativeGateTestModule
+}

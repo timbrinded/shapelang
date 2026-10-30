@@ -692,6 +692,9 @@ export function lowerFunction(
     component: componentName,
     name: functionName,
     source,
+    signature: fn.signature
+      ? { language: fn.signature.language, value: fn.signature.value }
+      : undefined,
     unsafe: fn.unsafe,
     effects: lowerEffects(
       fn.effects,

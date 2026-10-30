@@ -1,0 +1,49 @@
+module shape.generated.ast.fixtures.ts_contract.signature_drift.src.editor
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource EditorModuleMergeAutosavesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/ts-contract/signature-drift/src/editor.ts#mergeAutosaves")
+  fingerprint ast.semantic_subtree_v1("sha256:4b2f6ec764306e2961584ef13746a62c427bd9775b2aa876688452152f4b2ae9")
+}
+
+resource EditorModuleSaveDraftAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/ts-contract/signature-drift/src/editor.ts#saveDraft")
+  fingerprint ast.semantic_subtree_v1("sha256:b74767b4f47f4da704d5f041a4513558d7d1964ff64445f48d243a5b8afa4dc3")
+}
+
+component EditorModule : GeneratedCandidate {
+  fn mergeAutosaves
+    source ts("fixtures/ts-contract/signature-drift/src/editor.ts#mergeAutosaves")
+    effects unknown
+  fn saveDraft
+    source ts("fixtures/ts-contract/signature-drift/src/editor.ts#saveDraft")
+    effects unknown
+}
+
+relation EditorModuleMergeAutosavesGeneratedFromEditorModuleMergeAutosavesAstAnchor {
+  kind generated_from
+  connects EditorModule -> EditorModuleMergeAutosavesAstAnchor
+  roles { EditorModule as generated, EditorModuleMergeAutosavesAstAnchor as syntax }
+  expects EditorModuleMergeAutosavesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4b2f6ec764306e2961584ef13746a62c427bd9775b2aa876688452152f4b2ae9")
+  summary "fn EditorModule.mergeAutosaves generated from typescript function_declaration at fixtures/ts-contract/signature-drift/src/editor.ts#mergeAutosaves."
+}
+
+relation EditorModuleSaveDraftGeneratedFromEditorModuleSaveDraftAstAnchor {
+  kind generated_from
+  connects EditorModule -> EditorModuleSaveDraftAstAnchor
+  roles { EditorModule as generated, EditorModuleSaveDraftAstAnchor as syntax }
+  expects EditorModuleSaveDraftAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b74767b4f47f4da704d5f041a4513558d7d1964ff64445f48d243a5b8afa4dc3")
+  summary "fn EditorModule.saveDraft generated from typescript function_declaration at fixtures/ts-contract/signature-drift/src/editor.ts#saveDraft."
+}
+
+implementation EditorModuleImpl {
+  paths {
+    "fixtures/ts-contract/signature-drift/src/editor.ts"
+  }
+  conforms_to EditorModule
+}

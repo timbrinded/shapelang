@@ -1,0 +1,1 @@
+src/editor.shape(10,16): error TS2344: Type '"Shape source anchor: src/editor.ts has no export named 'restoreRevision'; correct the anchor or restore the export"' does not satisfy the constraint 'true'.

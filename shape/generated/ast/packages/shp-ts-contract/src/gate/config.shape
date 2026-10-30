@@ -1,0 +1,129 @@
+module shape.generated.ast.packages.shp_ts_contract.src.gate.config
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ConfigModuleInsideAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/config.ts#inside")
+  fingerprint ast.semantic_subtree_v1("sha256:497a3df1cecfda3c3c8d3d79b5ee99fd47c1f310ff3450bf66e0c94409aa83f3")
+}
+
+resource ConfigModuleKeysAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/config.ts#keys")
+  fingerprint ast.semantic_subtree_v1("sha256:769ac858ec90cf3201cb8a7dd281663de143f1e4f30529657f7fd8484d63fb0b")
+}
+
+resource ConfigModuleLoadConfigAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/config.ts#loadConfig")
+  fingerprint ast.semantic_subtree_v1("sha256:11a2497c258c9945fd833bdcfb88176ca174f861ecf5146ff5d8a90ff090d2db")
+}
+
+resource ConfigModulePatternsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/config.ts#patterns")
+  fingerprint ast.semantic_subtree_v1("sha256:9ffa415e417b7c6c54423fbb538ce6072e016e5fb27c6b93c0ef3b9c5ce4cd68")
+}
+
+resource ConfigModuleReadJsonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/config.ts#readJson")
+  fingerprint ast.semantic_subtree_v1("sha256:073bc736205a63bfa47b92d2ae50b948be5b57653c2bd2cd8cca4fc4e7c533f9")
+}
+
+resource ConfigModuleRejectDuplicateKeysAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/config.ts#rejectDuplicateKeys")
+  fingerprint ast.semantic_subtree_v1("sha256:d314f89f210cd02c50177022c0c96caace8fa130061a510883b7c54235d1094e")
+}
+
+resource ConfigModuleRelativePathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-ts-contract/src/gate/config.ts#relativePath")
+  fingerprint ast.semantic_subtree_v1("sha256:d4d473227c619f1de029e50fbe4b41787f43167a979f4142f5a4d0f5928f9a02")
+}
+
+component ConfigModule : GeneratedCandidate {
+  fn inside
+    source ts("packages/shp-ts-contract/src/gate/config.ts#inside")
+    effects unknown
+  fn keys
+    source ts("packages/shp-ts-contract/src/gate/config.ts#keys")
+    effects unknown
+  fn loadConfig
+    source ts("packages/shp-ts-contract/src/gate/config.ts#loadConfig")
+    effects unknown
+  fn patterns
+    source ts("packages/shp-ts-contract/src/gate/config.ts#patterns")
+    effects unknown
+  fn readJson
+    source ts("packages/shp-ts-contract/src/gate/config.ts#readJson")
+    effects unknown
+  fn rejectDuplicateKeys
+    source ts("packages/shp-ts-contract/src/gate/config.ts#rejectDuplicateKeys")
+    effects unknown
+  fn relativePath
+    source ts("packages/shp-ts-contract/src/gate/config.ts#relativePath")
+    effects unknown
+}
+
+relation ConfigModuleInsideGeneratedFromConfigModuleInsideAstAnchor {
+  kind generated_from
+  connects ConfigModule -> ConfigModuleInsideAstAnchor
+  roles { ConfigModule as generated, ConfigModuleInsideAstAnchor as syntax }
+  expects ConfigModuleInsideAstAnchor fingerprint ast.semantic_subtree_v1("sha256:497a3df1cecfda3c3c8d3d79b5ee99fd47c1f310ff3450bf66e0c94409aa83f3")
+  summary "fn ConfigModule.inside generated from typescript function_declaration at packages/shp-ts-contract/src/gate/config.ts#inside."
+}
+
+relation ConfigModuleKeysGeneratedFromConfigModuleKeysAstAnchor {
+  kind generated_from
+  connects ConfigModule -> ConfigModuleKeysAstAnchor
+  roles { ConfigModule as generated, ConfigModuleKeysAstAnchor as syntax }
+  expects ConfigModuleKeysAstAnchor fingerprint ast.semantic_subtree_v1("sha256:769ac858ec90cf3201cb8a7dd281663de143f1e4f30529657f7fd8484d63fb0b")
+  summary "fn ConfigModule.keys generated from typescript function_declaration at packages/shp-ts-contract/src/gate/config.ts#keys."
+}
+
+relation ConfigModuleLoadConfigGeneratedFromConfigModuleLoadConfigAstAnchor {
+  kind generated_from
+  connects ConfigModule -> ConfigModuleLoadConfigAstAnchor
+  roles { ConfigModule as generated, ConfigModuleLoadConfigAstAnchor as syntax }
+  expects ConfigModuleLoadConfigAstAnchor fingerprint ast.semantic_subtree_v1("sha256:11a2497c258c9945fd833bdcfb88176ca174f861ecf5146ff5d8a90ff090d2db")
+  summary "fn ConfigModule.loadConfig generated from typescript function_declaration at packages/shp-ts-contract/src/gate/config.ts#loadConfig."
+}
+
+relation ConfigModulePatternsGeneratedFromConfigModulePatternsAstAnchor {
+  kind generated_from
+  connects ConfigModule -> ConfigModulePatternsAstAnchor
+  roles { ConfigModule as generated, ConfigModulePatternsAstAnchor as syntax }
+  expects ConfigModulePatternsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9ffa415e417b7c6c54423fbb538ce6072e016e5fb27c6b93c0ef3b9c5ce4cd68")
+  summary "fn ConfigModule.patterns generated from typescript function_declaration at packages/shp-ts-contract/src/gate/config.ts#patterns."
+}
+
+relation ConfigModuleReadJsonGeneratedFromConfigModuleReadJsonAstAnchor {
+  kind generated_from
+  connects ConfigModule -> ConfigModuleReadJsonAstAnchor
+  roles { ConfigModule as generated, ConfigModuleReadJsonAstAnchor as syntax }
+  expects ConfigModuleReadJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:073bc736205a63bfa47b92d2ae50b948be5b57653c2bd2cd8cca4fc4e7c533f9")
+  summary "fn ConfigModule.readJson generated from typescript function_declaration at packages/shp-ts-contract/src/gate/config.ts#readJson."
+}
+
+relation ConfigModuleRejectDuplicateKeysGeneratedFromConfigModuleRejectDuplicateKeysAstAnchor {
+  kind generated_from
+  connects ConfigModule -> ConfigModuleRejectDuplicateKeysAstAnchor
+  roles { ConfigModule as generated, ConfigModuleRejectDuplicateKeysAstAnchor as syntax }
+  expects ConfigModuleRejectDuplicateKeysAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d314f89f210cd02c50177022c0c96caace8fa130061a510883b7c54235d1094e")
+  summary "fn ConfigModule.rejectDuplicateKeys generated from typescript function_declaration at packages/shp-ts-contract/src/gate/config.ts#rejectDuplicateKeys."
+}
+
+relation ConfigModuleRelativePathGeneratedFromConfigModuleRelativePathAstAnchor {
+  kind generated_from
+  connects ConfigModule -> ConfigModuleRelativePathAstAnchor
+  roles { ConfigModule as generated, ConfigModuleRelativePathAstAnchor as syntax }
+  expects ConfigModuleRelativePathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d4d473227c619f1de029e50fbe4b41787f43167a979f4142f5a4d0f5928f9a02")
+  summary "fn ConfigModule.relativePath generated from typescript function_declaration at packages/shp-ts-contract/src/gate/config.ts#relativePath."
+}
+
+implementation ConfigModuleImpl {
+  paths {
+    "packages/shp-ts-contract/src/gate/config.ts"
+  }
+  conforms_to ConfigModule
+}

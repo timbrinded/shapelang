@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.ts_contract.imported_type_drift.src.editor
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource EditorModuleLatestRevisionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/ts-contract/imported-type-drift/src/editor.ts#latestRevision")
+  fingerprint ast.semantic_subtree_v1("sha256:5a2ab2447537ea2a890caf4967bc4deed81f8f50e9e39232e9eea938470973eb")
+}
+
+component EditorModule : GeneratedCandidate {
+  fn latestRevision
+    source ts("fixtures/ts-contract/imported-type-drift/src/editor.ts#latestRevision")
+    effects unknown
+}
+
+relation EditorModuleLatestRevisionGeneratedFromEditorModuleLatestRevisionAstAnchor {
+  kind generated_from
+  connects EditorModule -> EditorModuleLatestRevisionAstAnchor
+  roles { EditorModule as generated, EditorModuleLatestRevisionAstAnchor as syntax }
+  expects EditorModuleLatestRevisionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5a2ab2447537ea2a890caf4967bc4deed81f8f50e9e39232e9eea938470973eb")
+  summary "fn EditorModule.latestRevision generated from typescript function_declaration at fixtures/ts-contract/imported-type-drift/src/editor.ts#latestRevision."
+}
+
+implementation EditorModuleImpl {
+  paths {
+    "fixtures/ts-contract/imported-type-drift/src/editor.ts"
+  }
+  conforms_to EditorModule
+}
